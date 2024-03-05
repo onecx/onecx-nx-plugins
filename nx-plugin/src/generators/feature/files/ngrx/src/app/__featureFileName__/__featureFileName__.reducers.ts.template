@@ -1,0 +1,8 @@
+import { combineReducers, createFeature } from '@ngrx/store';
+import { <%= featureClassName %>State } from './<%= featureFileName %>.state';
+
+export const <%= featurePropertyName %>Feature = createFeature({
+  name: '<%= featurePropertyName %>',
+  reducer: combineReducers<<%= featureClassName %>State>({
+  }),
+});

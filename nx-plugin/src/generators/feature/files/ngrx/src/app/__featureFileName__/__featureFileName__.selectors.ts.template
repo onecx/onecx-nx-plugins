@@ -1,0 +1,6 @@
+import { createFeatureSelector } from '@ngrx/store';
+import { <%= featureClassName %>State } from './<%= featureFileName %>.state';
+import { <%= featurePropertyName %>Feature } from './<%= featureFileName %>.reducers';
+
+export const select<%= featureClassName %>Feature =
+  createFeatureSelector<<%= featureClassName %>State>(<%= featurePropertyName %>Feature.name);

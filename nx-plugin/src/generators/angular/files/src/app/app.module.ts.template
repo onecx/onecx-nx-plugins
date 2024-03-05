@@ -1,0 +1,72 @@
+import { BrowserModule } from '@angular/platform-browser';
+import { APP_INITIALIZER, NgModule } from '@angular/core';
+import { HttpClientModule, HttpClient } from '@angular/common/http';
+import { AppRoutingModule } from './app-routing.module';
+import { AppComponent } from './app.component';
+import {
+  AppStateService,
+  APP_CONFIG,
+  ConfigurationService,
+  createTranslateLoader,
+  PortalCoreModule,
+  PortalMissingTranslationHandler,
+  translateServiceInitializer,
+  UserService
+} from '@onecx/portal-integration-angular';
+import {
+  MissingTranslationHandler,
+  TranslateLoader,
+  TranslateModule,
+  TranslateService,
+} from '@ngx-translate/core';
+import { BASE_PATH } from './shared/generated';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { Observable } from 'rxjs';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { KeycloakAuthModule } from '@onecx/keycloak-auth';
+import { CommonModule } from '@angular/common';
+import { apiConfigProvider } from './shared/utils/apiConfigProvider.utils';
+import { Configuration } from './shared/generated';
+
+export const commonImports = [CommonModule];
+
+@NgModule({
+  declarations: [AppComponent],
+  imports: [
+    ...commonImports,
+    KeycloakAuthModule,
+    BrowserModule,
+    BrowserAnimationsModule,
+    AppRoutingModule,
+    HttpClientModule,
+    PortalCoreModule.forRoot('<%= name %>-app'),
+    TranslateModule.forRoot({
+      extend: true,
+      loader: {
+        provide: TranslateLoader,
+        useFactory: createTranslateLoader,
+        deps: [HttpClient, AppStateService],
+      },
+      missingTranslationHandler: {
+        provide: MissingTranslationHandler,
+        useClass: PortalMissingTranslationHandler,
+      },
+    }),
+  ],
+  providers: [
+    { provide: APP_CONFIG, useValue: environment },
+    {
+      provide: APP_INITIALIZER,
+      useFactory: translateServiceInitializer,
+      multi: true,
+      deps: [UserService, TranslateService],
+    },
+    {
+      provide: Configuration,
+      useFactory: apiConfigProvider,
+      deps: [ConfigurationService, AppStateService],
+    },
+  ],
+  bootstrap: [AppComponent],
+})
+export class AppModule {}

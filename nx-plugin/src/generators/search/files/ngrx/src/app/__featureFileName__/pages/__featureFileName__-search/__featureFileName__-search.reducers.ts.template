@@ -1,0 +1,115 @@
+import { createReducer, on } from '@ngrx/store';
+import { <%= featureClassName %>SearchActions } from './<%= featureFileName %>-search.actions';
+import { <%= featureClassName %>SearchState } from './<%= featureFileName %>-search.state';
+import { <%= featureClassName %>SearchCriteria } from './<%= featureFileName %>-search.parameters';
+import { <%= featurePropertyName %>SearchColumns } from './<%= featureFileName %>-search.columns';
+
+export const initialState: <%= featureClassName %>SearchState = {
+  columns: <%= featurePropertyName %>SearchColumns,
+  results: [],
+  searchConfigs: [],
+  selectedSearchConfig: null,
+  displayedColumns: null,
+  viewMode: 'basic',
+  chartVisible: false,
+};
+
+export const <%= featurePropertyName %>SearchReducer = createReducer(
+  initialState,
+  on(
+    <%= featureClassName %>SearchActions.resetButtonClicked,
+    (state: <%= featureClassName %>SearchState): <%= featureClassName %>SearchState => ({
+      ...state,
+      results: initialState.results,
+      selectedSearchConfig: initialState.selectedSearchConfig,
+    })
+  ),
+  on(
+    <%= featureClassName %>SearchActions.<%= featurePropertyName %>SearchResultsReceived,
+    (
+      state: <%= featureClassName %>SearchState,
+      { results }
+    ): <%= featureClassName %>SearchState => ({
+      ...state,
+      results,
+    })
+  ),
+  on(
+    <%= featureClassName %>SearchActions.<%= featurePropertyName %>SearchResultsLoadingFailed,
+    (state: <%= featureClassName %>SearchState): <%= featureClassName %>SearchState => ({
+      ...state,
+      results: [],
+    })
+  ),
+ on(
+    <%= featureClassName %>SearchActions.searchConfigsReceived,
+    (
+      state: <%= featureClassName %>SearchState,
+      { searchConfigs }
+    ): <%= featureClassName %>SearchState => ({
+      ...state,
+      searchConfigs,
+      selectedSearchConfig: searchConfigs.find(s => s.id === state.selectedSearchConfig?.id) ?? null,
+    })
+  ),
+  on(
+    <%= featureClassName %>SearchActions.searchConfigsLoadingFailed,
+    (state: <%= featureClassName %>SearchState): <%= featureClassName %>SearchState => ({
+      ...state,
+      searchConfigs: [],
+    })
+  ),
+  on(
+    <%= featureClassName %>SearchActions.searchConfigSelected,
+    (
+      state: <%= featureClassName %>SearchState,
+      { searchConfig }
+    ): <%= featureClassName %>SearchState => ({
+      ...state,
+      selectedSearchConfig: searchConfig,
+      viewMode: searchConfig?.isAdvanced ? 'advanced' : 'basic',
+      displayedColumns: searchConfig?.columns.length
+        ? searchConfig.columns
+        : state.displayedColumns,
+    })
+  ),
+  on(
+    <%= featureClassName %>SearchActions.searchButtonClicked,
+    (
+      state: <%= featureClassName %>SearchState,
+      { searchCriteria }
+    ): <%= featureClassName %>SearchState => ({
+      ...state,
+      selectedSearchConfig:
+        state.selectedSearchConfig &&
+        Object.keys(searchCriteria).length ==
+          Object.keys(state.selectedSearchConfig?.values ?? {}).length &&
+        Object.keys(searchCriteria).every(
+          (k) =>
+            state.selectedSearchConfig?.values[k] ===
+            searchCriteria[k as keyof <%= featureClassName %>SearchCriteria]
+        )
+          ? state.selectedSearchConfig
+          : null,
+    })
+  ),
+  on(
+    <%= featureClassName %>SearchActions.chartVisibilityRehydrated,
+    (
+      state: <%= featureClassName %>SearchState,
+      { visible }
+    ): <%= featureClassName %>SearchState => ({
+      ...state,
+      chartVisible: visible,
+    })
+  ),
+  on(
+    <%= featureClassName %>SearchActions.chartVisibilityToggled,
+    (
+      state: <%= featureClassName %>SearchState,
+    ): <%= featureClassName %>SearchState => ({
+      ...state,
+      chartVisible: !state.chartVisible,
+    })
+  )
+);

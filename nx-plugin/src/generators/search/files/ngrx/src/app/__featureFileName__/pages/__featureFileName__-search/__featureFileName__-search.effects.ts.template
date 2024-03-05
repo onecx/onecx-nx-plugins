@@ -1,0 +1,295 @@
+import { ActivatedRoute, Router, RoutesRecognized } from '@angular/router';
+import { Actions, createEffect, ofType, concatLatestFrom } from '@ngrx/effects';
+import { routerNavigatedAction } from '@ngrx/router-store';
+import { catchError, map, mergeMap, of, switchMap, tap, filter, mergeMap } from 'rxjs';
+import {
+  <%= featureClassName %>SearchRequest,
+  <%= featureClassName %>SearchResponse,
+  SearchConfigBffService,
+  <%= featureClassName %>BffService, <%= featureClassName %>SearchRequest,
+  CreateSearchConfigRequest,
+  CreateSearchConfigResponse,
+  SearchConfig,
+} from '../../../shared/generated';
+import { <%= featureClassName %>SearchActions } from './<%= featureFileName %>-search.actions';
+import { <%= featureClassName %>SearchComponent } from './<%= featureFileName %>-search.component';
+import {  CreateOrEditSearchConfigDialogComponent, PortalMessageService, PortalDialogService, CreateOrEditSearchConfigDialogComponent, } from '@onecx/portal-integration-angular';
+import {
+  createQueryParamsEffect,
+  filterForNavigatedTo,
+  filterOutOnlyQueryParamsChanged,
+  filterOutQueryParamsHaveNotChanged
+} from '@onecx/portal-integration-angular/ngrx';
+import {
+  <%= featureClassName %>SearchCriteria,
+  <%= featurePropertyName %>SearchCriteriasSchema,
+} from './<%= featureFileName %>-search.parameters';
+import { Injectable, SkipSelf } from '@angular/core';
+import { <%= featurePropertyName %>SearchSelectors, selectSearchCriteria, selectSearchConfigViewState, select<%= featureClassName %>SearchViewModel } from './<%= featureFileName %>-search.selectors';
+import { Action, Store } from '@ngrx/store';
+
+@Injectable()
+export class <%= featureClassName %>SearchEffects {
+  constructor(
+    private actions$: Actions,
+    @SkipSelf() private route: ActivatedRoute,
+    private <%= featurePropertyName %>Service: <%= featureClassName %>BffService,
+    private searchConfigService: SearchConfigBffService,
+    private router: Router,
+    private store: Store,
+    private messageService: PortalMessageService,
+    private portalDialogService: PortalDialogService
+  ) {}
+
+  pageName = '<%= featurePropertyName %>';
+
+createSearchConfig$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(<%= featureClassName %>SearchActions.createSearchConfigClicked),
+      mergeMap((action) => {
+        return this.portalDialogService.openDialog(
+          '<%= featureConstantName %>_SEARCH.HEADER_ACTIONS.CREATE_SEARCH_CONFIG',
+          CreateOrEditSearchConfigDialogComponent,
+         '<%= featureConstantName %>_SEARCH.HEADER_ACTIONS.DIALOG_CONFIRM',
+         '<%= featureConstantName %>_SEARCH.HEADER_ACTIONS.DIALOG_CANCEL',
+        );
+      }),
+      concatLatestFrom(() =>
+        this.store.select(selectSearchConfigViewState)
+      ),
+     switchMap(([dialogResult, viewState]) => {
+        if (dialogResult.button === 'secondary') {
+          return of(
+            <%= featureClassName %>SearchActions.searchConfigCreationCancelled()
+          );
+        }
+        let request: CreateSearchConfigRequest = {
+          page: this.pageName ?? '',
+          fieldListVersion: 0,
+          name: dialogResult.result?.searchConfigName ?? '',
+          isReadonly: false,
+          isAdvanced: viewState.viewMode === 'advanced' ?? false,
+          columns: dialogResult.result?.saveColumns
+            ? viewState.columns.map((c) => c.id)
+            : [],
+          // values: dialogResult.result?.saveInputValues
+          //   ? viewState.searchCriteria
+          //   : {},
+          values: {},
+        };
+        return this.searchConfigService.createSearchConfig(request).pipe(
+          map(({ configs }) => {
+            return  <%= featureClassName %>SearchActions.searchConfigCreatedSuccessfully(
+              {
+                searchConfigs: configs,
+              }
+            );
+          })
+        );
+      }),
+
+      catchError((error) =>
+        of(
+          <%= featureClassName %>SearchActions.searchConfigCreationFailed({
+            error,
+          })
+        )
+      )
+    );
+    });
+
+updateSearchConfig$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(<%= featureClassName %>SearchActions.updateSearchConfigClicked),
+      mergeMap(() => {
+        return this.portalDialogService.openDialog(
+          '<%= featureConstantName %>_SEARCH.HEADER_ACTIONS.UPDATE_SEARCH_CONFIG',
+          CreateOrEditSearchConfigDialogComponent,
+          '<%= featureConstantName %>_SEARCH.HEADER_ACTIONS.DIALOG_CONFIRM',
+           '<%= featureConstantName %>_SEARCH.HEADER_ACTIONS.DIALOG_CANCEL'
+        );
+      }),
+      concatLatestFrom(() => this.store.select(selectSearchConfigViewState)),
+      switchMap(([dialogResult, viewState]) => {
+        if (dialogResult.button === 'secondary') {
+          return of(<%= featureClassName %>SearchActions.searchConfigUpdateCancelled);
+        }
+        let request: CreateSearchConfigRequest = {
+          page: this.pageName ?? '',
+          name: dialogResult.result?.searchConfigName ?? '',
+          fieldListVersion:
+            viewState.selectedSearchConfig?.fieldListVersion ?? 0,
+          isReadonly: viewState.selectedSearchConfig?.isReadonly ?? false,
+          isAdvanced: viewState.viewMode === 'advanced' ?? false,
+          columns: dialogResult.result?.saveColumns
+            ? viewState.columns.map((c) => c.id)
+            : [],
+          // values: dialogResult.result?.saveInputValues
+          //   ? viewState?.searchCriteria
+          //   : {},
+          values: {},
+        };
+        return this.searchConfigService.createSearchConfig(request).pipe(
+          map(({ configs }) => {
+            return <%= featureClassName %>SearchActions.searchConfigUpdatedSuccessfully(
+              {
+                searchConfigs: configs,
+              }
+            );
+          })
+        );
+      }),
+
+      catchError((error) =>
+        of(
+          <%= featureClassName %>SearchActions.searchConfigCreationFailed({
+            error,
+          })
+        )
+      )
+    );
+  }); 
+  resetButtonClicked$ = createQueryParamsEffect(
+    this.actions$,
+    <%= featureClassName %>SearchActions.resetButtonClicked,
+    this.router,
+    this.route,
+    () => ({})
+  );
+  
+  searchButtonClicked$ = createQueryParamsEffect(
+    this.actions$,
+    <%= featureClassName %>SearchActions.searchButtonClicked,
+    this.router,
+    this.route,
+    (state, action) => ({
+      ...state,
+      ...action.searchCriteria,
+      //TODO: Move to docs to explain how to only put the date part in the URL in case you have date and not datetime
+      //exampleDate: action.searchCriteria.exampleDate?.slice(0, 10) 
+    })
+  );
+
+  searchConfigSelected$ = createQueryParamsEffect(
+    this.actions$,
+    <%= featureClassName %>SearchActions.searchConfigSelected,
+    this.router,
+    this.route,
+    (state, action) => ({
+      ...state,
+      ...action.searchConfig?.values ?? {},
+    })
+  );
+
+  searchByUrl$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(routerNavigatedAction),
+      filterForNavigatedTo(this.router, <%= featureClassName %>SearchComponent),
+      filterOutQueryParamsHaveNotChanged(this.router, <%= featurePropertyName %>SearchCriteriasSchema, false),
+      concatLatestFrom(() => this.store.select(selectSearchCriteria)),
+      switchMap(([,searchCriteria]) => 
+        this.<%= featurePropertyName %>Service.search<%= featureClassName %>s(searchCriteria).pipe(
+          map(({ results, totalNumberOfResults }) =>
+            <%= featureClassName %>SearchActions.<%= featurePropertyName %>SearchResultsReceived(
+              {
+                results,
+                totalNumberOfResults,
+              }
+            )
+          ),
+          catchError((error) =>
+            of(
+              <%= featureClassName %>SearchActions.<%= featurePropertyName %>SearchResultsLoadingFailed(
+                {
+                  error,
+                }
+              )
+            )
+          )
+        )
+      )
+    );
+  });
+
+  loadSearchConfigs$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(routerNavigatedAction),
+      filterForNavigatedTo(this.router, <%= featureClassName %>SearchComponent),
+      filterOutOnlyQueryParamsChanged(this.router),
+      switchMap(() =>
+        this.searchConfigService.getSearchConfigs('<%= featureFileName %>-search').pipe(
+          map(({ configs }) => 
+            <%= featureClassName %>SearchActions.searchConfigsReceived({
+              searchConfigs: configs,
+            })
+          ),
+          catchError((error) => 
+            of(
+              <%= featureClassName %>SearchActions.searchConfigsLoadingFailed({
+                error,
+              })
+            )
+          )
+        )
+      )
+    );
+  });
+
+  rehydrateChartVisibility$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(routerNavigatedAction),
+      filterForNavigatedTo(this.router, <%= featureClassName %>SearchComponent),
+      filterOutOnlyQueryParamsChanged(this.router),
+      map(() => <%= featureClassName %>SearchActions.chartVisibilityRehydrated({
+          visible: localStorage.getItem('<%= featurePropertyName %>ChartVisibility') === 'true',
+        })
+      )
+    )
+  });
+
+  saveChartVisibility$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(<%= featureClassName %>SearchActions.chartVisibilityToggled),
+      concatLatestFrom(() => this.store.select(<%= featurePropertyName %>SearchSelectors.selectChartVisible)),
+      tap(([,chartVisible]) => {
+          localStorage.setItem('<%= featurePropertyName %>ChartVisibility',String(chartVisible));
+      })
+    )
+  }, {dispatch: false});
+
+  errorMessages: { action: Action; key: string }[] = [
+    {
+      action:
+        <%= featureClassName %>SearchActions.<%= featurePropertyName %>SearchResultsLoadingFailed,
+      key: '<%= featureConstantName %>_SEARCH.ERROR_MESSAGES.SEARCH_RESULTS_LOADING_FAILED',
+    },
+    {
+      action: <%= featureClassName %>SearchActions.searchConfigCreationFailed,
+      key: '<%= featureConstantName %>_SEARCH.ERROR_MESSAGES.SEARCH_CONFIG_CREATION_FAILED',
+    },
+    {
+      action: <%= featureClassName %>SearchActions.searchConfigUpdateFailed,
+      key: '<%= featureConstantName %>_SEARCH.ERROR_MESSAGES.SEARCH_CONFIG_UPDATE_FAILED',
+    },
+    {
+      action: <%= featureClassName %>SearchActions.searchConfigsLoadingFailed,
+      key: '<%= featureConstantName %>_SEARCH.ERROR_MESSAGES.SEARCH_CONFIGS_LOADING_FAILED',
+    },
+  ];
+
+  displayError$ = createEffect(
+    () => {
+      return this.actions$.pipe(
+        tap((action) => {
+          const e = this.errorMessages.find(
+            (e) => e.action.type === action.type
+          );
+          if (e) {
+            this.messageService.error({ summaryKey: e.key });
+          }
+        })
+      );
+    },
+    { dispatch: false }
+  );
+}

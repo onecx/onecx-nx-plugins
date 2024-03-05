@@ -1,0 +1,15 @@
+{
+  "<%= featureConstantName %>_DETAILS": {
+    "HELP_ARTICLE_ID": "Help Article",
+    "BREADCRUMB": "Details",
+    "HEADER": "<%= featureClassName %> Details",
+    "SUB_HEADER": "ACTION D3: ADD TRANSLATION",
+    "ERROR_MESSAGES": {
+        "DETAILS_LOADING_FAILED": "Loading details failed."
+    },
+    "GENERAL": {
+      "BACK": "Back",
+      "MORE": "More"
+    }
+  }
+}

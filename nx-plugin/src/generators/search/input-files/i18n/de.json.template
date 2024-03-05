@@ -1,0 +1,27 @@
+{
+  "<%= featureConstantName %>_SEARCH": {
+    "HEADER": "<%= featureClassName %> Suche",
+    "SUB_HEADER": "ACTION S5: ADD TRANSLATION",
+    "HELP_ARTICLE_ID": "Hilfeartikel",
+    "EMPTY_RESULTS": "Keine Ergebnisse.",
+    "BREADCRUMB": "Suche",
+    "DIAGRAM": {
+      "SUM": "Gesamtanzahl"
+    },
+    "HEADER_ACTIONS": {
+        "EXPORT_ALL": "Alles exportieren",
+        "SHOW_CHART": "Diagramm anzeigen",
+        "HIDE_CHART": "Diagramm ausblenden",
+        "CREATE_SEARCH_CONFIG": "Suchkonfiguration erstellen",
+        "UPDATE_SEARCH_CONFIG_DIALOG": "Suchkonfiguration aktualisieren",
+        "DIALOG_CONFIRM": "Bestätigen",
+        "DIALOG_CANCEL": "Abbrechen"
+    },
+    "ERROR_MESSAGES": {
+        "SEARCH_RESULTS_LOADING_FAILED": "Suchergebnisse konnten nicht geladen werden.",
+        "SEARCH_CONFIG_CREATION_FAILED": "Suchkonfiguration konnte nicht erstellt werden.",
+        "SEARCH_CONFIG_UPDATE_FAILED": "Suchkonfiguration konnte nicht aktualisiert werden.",
+        "SEARCH_CONFIGS_LOADING_FAILED": "Suchkonfigurationen konnten nicht geladen werden."
+    }
+  }
+}

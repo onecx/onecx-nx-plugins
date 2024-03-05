@@ -1,0 +1,35 @@
+{
+  "generators": {
+    "angular": {
+      "factory": "./src/generators/angular/generator",
+      "schema": "./src/generators/angular/schema.json",
+      "description": "angular generator"
+    },
+    "preset": {
+      "factory": "./src/generators/preset/generator",
+      "schema": "./src/generators/preset/schema.json",
+      "description": "preset generator",
+      "x-use-standalone-layout": true
+    },
+    "ngrx": {
+      "factory": "./src/generators/ngrx/generator",
+      "schema": "./src/generators/ngrx/schema.json",
+      "description": "ngrx generator"
+    },
+    "details": {
+      "factory": "./src/generators/details/generator",
+      "schema": "./src/generators/details/schema.json",
+      "description": "details generator"
+    },
+    "search": {
+      "factory": "./src/generators/search/generator",
+      "schema": "./src/generators/search/schema.json",
+      "description": "search generator"
+    },
+    "feature": {
+      "factory": "./src/generators/feature/generator",
+      "schema": "./src/generators/feature/schema.json",
+      "description": "feature generator"
+    }
+  }
+}

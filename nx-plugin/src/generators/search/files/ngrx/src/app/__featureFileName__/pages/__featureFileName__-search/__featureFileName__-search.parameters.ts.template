@@ -1,0 +1,29 @@
+import { <%= featurePropertyName %>SearchRequestExampleEnumEnum } from 'src/app/shared/generated';
+import { z, ZodTypeAny } from 'zod';
+import { <%= featureClassName %>SearchRequest } from 'src/app/shared/generated'
+
+export const <%= featurePropertyName %>SearchCriteriasSchema = z.object({
+  changeMe: z.string().optional(),
+  //TODO: Move to docs
+  /*exampleString: z.string().optional(),
+  exampleDate: z.string().optional(),
+  exampleDateTime: z.string().optional(),
+  exampleEnum: z
+    .string()
+    .transform((v) => v as ConstructionTaskSearchRequestExampleEnumEnum)
+    .optional(),
+  exampleArray: z
+    .union([z.string(), z.array(z.string())])
+    .transform((v: string | string[] | undefined): string[] | undefined =>
+      v instanceof Array || !v
+        ? (v as string[] | undefined)
+        : ([v] as string[])
+    )
+    // Here you can add an additional transform to e.g. convert to array of enum
+    .optional(),*/
+  // ACTION S2: Please define the members for your <%= featurePropertyName %>SearchCriteriasSchema here
+}satisfies Partial<Record<keyof <%= featureClassName %>SearchRequest, ZodTypeAny>>);
+
+export type <%= featureClassName %>SearchCriteria = z.infer<
+  typeof <%= featurePropertyName %>SearchCriteriasSchema
+>;

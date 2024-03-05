@@ -1,0 +1,30 @@
+app:
+  name: ui
+  image:
+    repository: 'onecx/<%= fileName %>-ui'
+  routing:
+    enabled: true
+    path: /mfe/<%= propertyName %>/
+  
+  operator:
+    # Microfrontend
+    microfrontend:
+      enabled: true
+      spec:
+        exposedModule: "./<%= remoteModuleName %>Module"
+        description: "OneCX <%= remoteModuleName %> Module"
+        note: "OneCX <%= remoteModuleName %> UI module auto import via MF operator"
+    # Permission
+    permission:
+      enabled: true
+      spec:
+        permissions:
+    # Keycloak
+    keycloak:
+      client:
+        enabled: true
+        spec:
+          kcConfig:
+            clientId: "<%= fileName %>-ui"
+
+# PIPE Config

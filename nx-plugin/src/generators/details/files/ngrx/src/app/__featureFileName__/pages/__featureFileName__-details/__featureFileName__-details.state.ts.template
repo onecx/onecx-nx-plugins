@@ -1,0 +1,5 @@
+import { <%= featureClassName %> } from '../../../shared/generated';
+
+export interface <%= featureClassName %>DetailsState {
+    details: <%= featureClassName %> | undefined
+}

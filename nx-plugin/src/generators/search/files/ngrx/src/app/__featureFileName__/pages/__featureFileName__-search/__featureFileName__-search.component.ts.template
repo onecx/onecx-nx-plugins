@@ -1,0 +1,191 @@
+import { Component, Inject, OnInit, LOCALE_ID } from '@angular/core';
+import { FormBuilder, FormGroup, UntypedFormGroup, UntypedFormBuilder } from '@angular/forms';
+import { Store } from '@ngrx/store';
+import {
+  Action,
+  BreadcrumbService,
+  ColumnType,
+  DataTableColumn,
+  ExportDataService,
+  PortalDialogService,
+  DialogState,
+  CreateOrEditSearchConfigDialogComponent,
+} from '@onecx/portal-integration-angular';
+import { <%= featureClassName %>SearchActions } from './<%= featureFileName %>-search.actions';
+import {
+  <%= featureClassName %>SearchCriteria,
+  <%= featurePropertyName %>SearchCriteriasSchema,
+} from './<%= featureFileName %>-search.parameters';
+import { isValidDate } from '../../../shared/utils/isValidDate.utils';
+import { select<%= featureClassName %>SearchViewModel } from './<%= featureFileName %>-search.selectors';
+import { <%= featurePropertyName %>SearchColumns } from './<%= featureFileName %>-search.columns';
+import { <%= featureClassName %>SearchViewModel } from './<%= featureFileName %>-search.viewmodel';
+import { ActivatedRoute, Router } from '@angular/router';
+import { DatePipe } from '@angular/common';
+import {
+  <%= featureClassName %>Result,
+} from '../../../shared/generated';
+import { first, Observable, map } from 'rxjs';
+import { PrimeIcons } from 'primeng/api';
+
+@Component({
+  selector: 'app-<%= featureFileName %>-search',
+  templateUrl: './<%= featureFileName %>-search.component.html',
+  styleUrls: ['./<%= featureFileName %>-search.component.scss'],
+})
+
+export class <%= featureClassName %>SearchComponent implements OnInit {
+  viewModel$: Observable<<%= featureClassName %>SearchViewModel>  = this.store.select(select<%= featureClassName %>SearchViewModel);
+
+  headerActions$: Observable<Action[]> = this.viewModel$.pipe(map((vm) => {
+      const actions: Action[] = [
+        {
+          labelKey: '<%= featureConstantName %>_SEARCH.HEADER_ACTIONS.EXPORT_ALL',
+          icon: PrimeIcons.DOWNLOAD,
+          titleKey: '<%= featureConstantName %>_SEARCH.HEADER_ACTIONS.EXPORT_ALL',
+          show: 'asOverflow',
+          actionCallback: () => this.exportItems(),
+        },
+        {
+          labelKey: vm.chartVisible
+            ? '<%= featureConstantName %>_SEARCH.HEADER_ACTIONS.HIDE_CHART'
+            : '<%= featureConstantName %>_SEARCH.HEADER_ACTIONS.SHOW_CHART',
+          icon: PrimeIcons.EYE,
+          titleKey: vm.chartVisible
+            ? '<%= featureConstantName %>_SEARCH.HEADER_ACTIONS.HIDE_CHART'
+            : '<%= featureConstantName %>_SEARCH.HEADER_ACTIONS.SHOW_CHART',
+          show: 'asOverflow',
+          actionCallback: () => this.toggleChartVisibility(),
+        },
+      ]
+      if(vm.selectedSearchConfig ){
+        actions.push({
+          labelKey: '<%= featureConstantName %>_SEARCH.HEADER_ACTIONS.UPDATE_SEARCH_CONFIG',
+          icon: PrimeIcons.FILE_EDIT,
+          titleKey: '<%= featureConstantName %>_SEARCH.HEADER_ACTIONS.UPDATE_SEARCH_CONFIG',
+          show: 'asOverflow',
+          actionCallback: () => this.updateSearchConfig(),
+        });
+      }
+      else {
+        actions.push({
+          labelKey: '<%= featureConstantName %>_SEARCH.HEADER_ACTIONS.CREATE_SEARCH_CONFIG',
+          icon: PrimeIcons.SAVE,
+          titleKey: '<%= featureConstantName %>_SEARCH.HEADER_ACTIONS.CREATE_SEARCH_CONFIG',
+          show: 'asOverflow',
+          actionCallback: () => this.createSearchConfig(),
+        });
+      }
+      return actions
+    })
+  );
+
+  // ACTION S4: Please select the column to be displayed in the diagram
+  diagramColumnId = 'id';
+  diagramColumn$ = this.viewModel$.pipe(map((vm) =>vm.columns.find((e) => e.id === this.diagramColumnId) as DataTableColumn));
+
+  public <%= featurePropertyName %>SearchFormGroup: FormGroup = this.formBuilder.group(
+    {
+      ...Object.fromEntries(
+        <%= featurePropertyName %>SearchCriteriasSchema
+          .keyof()
+          .options.map((k) => [k, null])
+      ) as Record<keyof <%= featureClassName %>SearchCriteria, unknown>,
+      // ACTION S7: Add additional configuration of the group here if needed
+    } satisfies Record<keyof <%= featureClassName %>SearchCriteria, unknown>,
+  );
+
+  constructor(
+    private readonly breadcrumbService: BreadcrumbService,
+    private readonly store: Store,
+    private readonly formBuilder: FormBuilder,
+    @Inject(LOCALE_ID) public readonly locale: string,
+    private readonly exportDataService: ExportDataService,
+    private portalDialogService: PortalDialogService
+  ) {
+  }
+
+  ngOnInit() {
+    this.breadcrumbService.setItems([
+      {
+        titleKey: '<%= featureConstantName %>_SEARCH.BREADCRUMB',
+        labelKey: '<%= featureConstantName %>_SEARCH.BREADCRUMB',
+        routerLink: '/<%= featureFileName %>',
+      },
+    ]);
+  }
+
+  search(formValue: FormGroup) {
+    const searchCriteria = Object.entries(formValue.getRawValue()).reduce(
+      (acc: Partial<<%= featureClassName %>SearchCriteria>, [key, value]) => ({
+        ...acc,
+        [key]: isValidDate(value)
+          ? new Date(
+              Date.UTC(
+                value.getFullYear(),
+                value.getMonth(),
+                value.getDay(),
+                value.getHours(),
+                value.getMinutes(),
+                value.getSeconds()
+              )
+            ).toISOString()
+          : value || undefined,
+      }),
+      {}
+    );
+    this.store.dispatch(
+      <%= featureClassName %>SearchActions.searchButtonClicked({ searchCriteria })
+    );
+  }
+
+  resetSearch() {
+    this.store.dispatch(<%= featureClassName %>SearchActions.resetButtonClicked());
+  }
+
+
+  exportItems() {
+    this.viewModel$.pipe(first()).subscribe((data) => {
+      this.exportDataService.exportCsv(
+        data.displayedColumns,
+        data.results,
+        '<%= featureFileName %>.csv'
+        );  
+      }
+    )
+  }
+  
+
+  confirmSearchConfig(searchConfig:any){//}: SearchConfig | null {
+    if (searchConfig) {
+      const parameterGroup = Object.keys(this.<%= featurePropertyName %>SearchFormGroup.value);
+      const searchConfigKeys = Object.keys(searchConfig.values);
+      const filteredArray = parameterGroup.filter((value) =>
+        searchConfigKeys.includes(value)
+      );
+      if (filteredArray.length != searchConfigKeys.length) {
+        console.error(
+          'Not all fields can be mapped. Please check for search config migration. Amount of affected fields:',
+          searchConfigKeys.length - filteredArray.length
+        );
+      }
+    }
+    this.store.dispatch(<%= featureClassName %>SearchActions.searchConfigSelected(searchConfig))
+  }
+
+  onDisplayedColumnsChange(displayedColumns: DataTableColumn[]) {
+    this.store.dispatch(<%= featureClassName %>SearchActions.displayedColumnsChanged({displayedColumns}))
+  }
+
+  toggleChartVisibility() {
+    this.store.dispatch(<%= featureClassName %>SearchActions.chartVisibilityToggled());
+  }
+
+  createSearchConfig(): void {
+    this.store.dispatch(<%= featureClassName %>SearchActions.createSearchConfigClicked());
+  }
+
+  updateSearchConfig(): void {
+    this.store.dispatch(<%= featureClassName %>SearchActions.updateSearchConfigClicked());
+  }
+}

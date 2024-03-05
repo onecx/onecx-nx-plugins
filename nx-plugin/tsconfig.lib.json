@@ -1,0 +1,10 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "outDir": "../dist/out-tsc",
+    "declaration": true,
+    "types": ["node"]
+  },
+  "include": ["src/**/*.ts", "src/generators/ngrx/files/src/app/_name_/_name_.state.ts.template", "src/generators/ngrx/files/src/app/_name_/_name_.reducers.ts.template", "src/generators/ngrx/files/src/app/_name_/_name_.routes..ts.template", "src/generators/ngrx/files/src/app/_name_/_name_.selectors.ts.template", "src/generators/ngrx/files/src/app/_name_/_name_.module.ts.template", "src/generators/angular/files/src/polyfills.ts.template", "src/generators/angular/files/src/app/shared/utils/isValidDate.utils.ts.template"],
+  "exclude": ["jest.config.ts", "src/**/*.spec.ts", "src/**/*.test.ts"]
+}
