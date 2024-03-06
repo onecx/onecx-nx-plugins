@@ -32,7 +32,7 @@
     "release": {
       "executor": "nx-release:build-update-publish",
       "options": {
-        "libName": "nx-plugin"
+        "libName": "create-workspace"
       }
     }
   },
