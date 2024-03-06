@@ -2,10 +2,14 @@
   "name": "@onecx/nx-plugin",
   "version": "0.0.1",
   "dependencies": {
-    "@nx/devkit": "17.2.1",
+    "@nx/devkit": "17.3.0",
     "@nx/angular": "^17.2.2",
     "tslib": "^2.3.0",
-    "ora": "^5.3.0"
+    "ora": "^5.3.0",
+    "@nx/js": "17.3.0",
+    "typescript": "~5.3.2",
+    "ejs": "^3.1.9",
+    "yaml": "^2.3.4"
   },
   "type": "commonjs",
   "main": "./src/index.js",

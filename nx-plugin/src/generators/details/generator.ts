@@ -7,13 +7,11 @@ import {
   names,
   readJson,
   Tree,
-  updateJson
+  updateJson,
 } from '@nx/devkit';
-import { insertImport } from '@nx/js';
 import { execSync } from 'child_process';
 import * as fs from 'fs';
 import * as ora from 'ora';
-import * as tsModule from 'typescript';
 import { deepMerge } from '../shared/deepMerge';
 import { renderJsonFile } from '../shared/renderJsonFile';
 import { DetailsGeneratorSchema } from './schema';
@@ -221,21 +219,10 @@ function adaptFeatureRoutes(tree: Tree, options: DetailsGeneratorSchema) {
     `routes: Routes = [ { path: 'details/:id', component: ${className}DetailsComponent, pathMatch: 'full' },`
   );
 
+  moduleContent =
+    `import { ${className}DetailsComponent } from './pages/${fileName}-details/${fileName}-details.component'` +
+    moduleContent;
   tree.write(routesFilePath, moduleContent);
-
-  const source = tsModule.createSourceFile(
-    routesFilePath,
-    moduleContent,
-    tsModule.ScriptTarget.Latest,
-    true
-  );
-  insertImport(
-    tree,
-    source,
-    routesFilePath,
-    `${className}DetailsComponent`,
-    `./pages/${fileName}-details/${fileName}-details.component`
-  );
 }
 
 function adaptFeatureState(tree: Tree, options: DetailsGeneratorSchema) {
@@ -300,7 +287,7 @@ function addTranslations(tree: Tree, options: DetailsGeneratorSchema) {
         jsonContent = renderJsonFile(jsonPath, {
           ...options,
           featureConstantName: names(options.featureName).constantName,
-          featureClassName: names(options.featureName).className
+          featureClassName: names(options.featureName).className,
         });
       }
 
@@ -380,10 +367,10 @@ function adaptSearchEffects(tree: Tree, options: DetailsGeneratorSchema) {
 
   let htmlContent = tree.read(filePath, 'utf8');
   htmlContent =
-  `import { selectUrl } from 'src/app/shared/selectors/router.selectors';` +
-  htmlContent.replace(
-    'searchByUrl$',
-    `detailsButtonClicked$ = createEffect(
+    `import { selectUrl } from 'src/app/shared/selectors/router.selectors';` +
+    htmlContent.replace(
+      'searchByUrl$',
+      `detailsButtonClicked$ = createEffect(
       () => {
         return this.actions$.pipe(
           ofType(${className}SearchActions.detailsButtonClicked),
@@ -399,7 +386,7 @@ function adaptSearchEffects(tree: Tree, options: DetailsGeneratorSchema) {
     );
     
     searchByUrl$`
-  );
+    );
   tree.write(filePath, htmlContent);
 }
 

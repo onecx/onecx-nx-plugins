@@ -7,13 +7,11 @@ import {
   names,
   readJson,
   Tree,
-  updateJson
+  updateJson,
 } from '@nx/devkit';
-import { insertImport } from '@nx/js';
 import { execSync } from 'child_process';
 import * as fs from 'fs';
 import * as ora from 'ora';
-import * as tsModule from 'typescript';
 import { deepMerge } from '../shared/deepMerge';
 import { renderJsonFile } from '../shared/renderJsonFile';
 import { updateYaml } from '../shared/yaml';
@@ -34,10 +32,6 @@ export async function searchGenerator(
     spinner.fail('Currently only NgRx projects are supported.');
     throw new Error('Currently only NgRx projects are supported.');
   }
-
-  //addDependenciesToPackageJson(tree, { 'chart.js': '^4.4.0' }, {});
-  //addDependenciesToPackageJson(tree, { '@types/chart.js': '^2.9.37' }, {});
-  //addDependenciesToPackageJson(tree, { 'd3-scale-chromatic': '^3.0.0', }, {});
 
   generateFiles(
     tree,
@@ -164,10 +158,10 @@ function adaptSearchEffects(tree: Tree, options: SearchGeneratorSchema) {
 
   let htmlContent = tree.read(filePath, 'utf8');
   htmlContent =
-  `import { selectUrl } from 'src/app/shared/selectors/router.selectors';` +
-  htmlContent.replace(
-    'searchByUrl$',
-    `detailsButtonClicked$ = createEffect(
+    `import { selectUrl } from 'src/app/shared/selectors/router.selectors';` +
+    htmlContent.replace(
+      'searchByUrl$',
+      `detailsButtonClicked$ = createEffect(
       () => {
         return this.actions$.pipe(
           ofType(${className}SearchActions.detailsButtonClicked),
@@ -183,7 +177,7 @@ function adaptSearchEffects(tree: Tree, options: SearchGeneratorSchema) {
     );
     
     searchByUrl$`
-  );
+    );
   tree.write(filePath, htmlContent);
 }
 
@@ -279,21 +273,10 @@ function adaptFeatureRoutes(tree: Tree, options: SearchGeneratorSchema) {
     `routes: Routes = [ { path: '', component: ${className}SearchComponent, pathMatch: 'full' },`
   );
 
+  moduleContent =
+    `import { ${className}SearchComponent } from './pages/${fileName}-search/${fileName}-search.component'` +
+    moduleContent;
   tree.write(routesFilePath, moduleContent);
-
-  const source = tsModule.createSourceFile(
-    routesFilePath,
-    moduleContent,
-    tsModule.ScriptTarget.Latest,
-    true
-  );
-  insertImport(
-    tree,
-    source,
-    routesFilePath,
-    `${className}SearchComponent`,
-    `./pages/${fileName}-search/${fileName}-search.component`
-  );
 }
 
 function addPermissionDefinitionsToValuesYaml(
@@ -352,7 +335,7 @@ function addTranslations(tree: Tree, options: SearchGeneratorSchema) {
   const masterJsonContent = renderJsonFile(masterJsonPath, {
     ...options,
     featureConstantName: names(options.featureName).constantName,
-    featureClassName: names(options.featureName).className
+    featureClassName: names(options.featureName).className,
   });
 
   tree.children(folderPath).forEach((file) => {
@@ -366,7 +349,7 @@ function addTranslations(tree: Tree, options: SearchGeneratorSchema) {
         jsonContent = renderJsonFile(jsonPath, {
           ...options,
           featureConstantName: names(options.featureName).constantName,
-          featureClassName: names(options.featureName).className
+          featureClassName: names(options.featureName).className,
         });
       }
 
