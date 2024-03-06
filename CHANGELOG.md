@@ -1,3 +1,15 @@
+## [1.0.2](https://github.com/onecx/onecx-nx-plugins/compare/v1.0.1...v1.0.2) (2024-03-06)
+
+
+### Bug Fixes
+
+* Update project.json libName ([ad5a96d](https://github.com/onecx/onecx-nx-plugins/commit/ad5a96d5e282da6eba9869d0b8bf97d569801b7c))
+
+
+### Chores
+
+* release config for create workspace ([#13](https://github.com/onecx/onecx-nx-plugins/issues/13)) ([7ee78f0](https://github.com/onecx/onecx-nx-plugins/commit/7ee78f0dee4fa7434f4978452643048d95ae4938))
+
 ## [1.0.1](https://github.com/onecx/onecx-nx-plugins/compare/v1.0.0...v1.0.1) (2024-03-06)
 
 
