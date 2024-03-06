@@ -50,6 +50,12 @@
     "publish": {
       "command": "node tools/scripts/publish.mjs nx-plugin {args.ver} {args.tag}",
       "dependsOn": ["build"]
+    },
+    "release": {
+      "executor": "nx-release:build-update-publish",
+      "options": {
+        "libName": "nx-plugin"
+      }
     }
   },
   "tags": []
