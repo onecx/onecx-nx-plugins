@@ -1,3 +1,16 @@
+## [1.0.1](https://github.com/onecx/onecx-nx-plugins/compare/v1.0.0...v1.0.1) (2024-03-06)
+
+
+### Bug Fixes
+
+* Update package.json ([d364a91](https://github.com/onecx/onecx-nx-plugins/commit/d364a913126492569d15c32b1492a29e6fbded46))
+
+
+### Chores
+
+* add nx-release ([#6](https://github.com/onecx/onecx-nx-plugins/issues/6)) ([8cd5f4b](https://github.com/onecx/onecx-nx-plugins/commit/8cd5f4b9011cce9fce97a65813008292ae420b0c))
+* publish config public ([#7](https://github.com/onecx/onecx-nx-plugins/issues/7)) ([2f976cc](https://github.com/onecx/onecx-nx-plugins/commit/2f976cc995577769dd25069fe5681bbdacfed19e))
+
 ## 1.0.0 (2024-03-06)
 
 
