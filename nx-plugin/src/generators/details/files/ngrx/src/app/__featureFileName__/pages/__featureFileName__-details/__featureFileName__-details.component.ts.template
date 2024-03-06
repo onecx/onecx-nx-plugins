@@ -1,0 +1,63 @@
+import { Component, OnInit } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs'
+import { TranslatePipe } from '@ngx-translate/core';
+import {
+  Action,
+  BreadcrumbService,
+  ObjectDetailItem,
+} from '@onecx/portal-integration-angular';
+
+import { select<%= featureClassName %>DetailsViewModel } from './<%= featureFileName %>-details.selectors';
+import { <%= featureClassName %>DetailsActions } from './<%= featureFileName %>-details.actions';
+import {
+  <%= featureClassName %>DetailsViewModel
+} from './<%= featureFileName %>-details.viewmodel';
+import { PrimeIcons } from 'primeng/api';
+
+@Component({
+  selector: 'app-<%= featureFileName %>-details',
+  templateUrl: './<%= featureFileName %>-details.component.html',
+  styleUrls: ['./<%= featureFileName %>-details.component.scss'],
+})
+export class <%= featureClassName %>DetailsComponent implements OnInit {
+  headerLabels: ObjectDetailItem[] = [
+      //ACTION D1: Add header values here
+    ];
+
+  headerActions: Action[] = [
+      {
+        titleKey: '<%= featureConstantName %>_DETAILS.GENERAL.BACK',
+        labelKey: '<%= featureConstantName %>_DETAILS.GENERAL.BACK',
+        show: 'always',
+        actionCallback: () => {
+          window.history.back();
+        },
+      },
+      {
+        titleKey: '<%= featureConstantName %>_DETAILS.GENERAL.MORE',
+        icon: PrimeIcons.ELLIPSIS_V,
+        show: 'always',
+        btnClass: '',
+        actionCallback: () => {},
+      },
+    ];
+
+  viewModel$: Observable<<%= featureClassName %>DetailsViewModel> = this.store.select(select<%= featureClassName %>DetailsViewModel);
+
+  constructor(
+    private store: Store,
+    private breadcrumbService: BreadcrumbService
+  ) {
+  }
+
+  ngOnInit(): void {
+    this.breadcrumbService.setItems([
+      {
+        titleKey: '<%= featureConstantName %>_DETAILS.BREADCRUMB',
+        labelKey: '<%= featureConstantName %>_DETAILS.BREADCRUMB',
+        routerLink: '/<%= featureFileName %>',
+      },
+    ]);
+  }
+}

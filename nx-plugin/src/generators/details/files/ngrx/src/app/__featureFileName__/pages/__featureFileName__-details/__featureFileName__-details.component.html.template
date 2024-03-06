@@ -1,0 +1,12 @@
+<ocx-portal-page [helpArticleId]="'<%= featureConstantName %>_DETAILS.HELP_ARTICLE_ID' | translate" *ngrxLet="viewModel$; let vm">
+  <ocx-page-header
+    [header]="'<%= featureConstantName %>_DETAILS.HEADER' | translate"
+    [subheader]="'<%= featureConstantName %>_DETAILS.SUB_HEADER' | translate"
+    [objectDetails]="headerLabels"
+    [actions]="headerActions"
+    [disableDefaultActions]="true"
+    [manualBreadcrumbs]="true"
+  >
+  </ocx-page-header>
+
+</ocx-portal-page>

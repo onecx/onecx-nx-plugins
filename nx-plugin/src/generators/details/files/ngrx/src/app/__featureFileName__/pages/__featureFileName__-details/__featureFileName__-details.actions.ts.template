@@ -1,0 +1,12 @@
+import { createActionGroup, emptyProps, props } from '@ngrx/store';
+import { <%= featureClassName %> } from '../../../shared/generated';
+
+export const <%= featureClassName %>DetailsActions = createActionGroup({
+  source: '<%= featureClassName %>Details',
+  events: {
+    '<%= featureFileName.replace("-"," ") %> details received': props<{
+      details: <%= featureClassName %>;
+    }>(),
+    '<%= featureFileName.replace("-"," ") %> details loading failed': props<{ error: string | null }>(),
+  },
+});

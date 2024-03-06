@@ -1,0 +1,60 @@
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { <%= featureClassName %>DetailsComponent } from './<%= featureFileName %>-details.component';
+import { ActivatedRoute } from '@angular/router';
+import { LetModule } from '@ngrx/component';
+import { provideMockStore } from '@ngrx/store/testing';
+import { TranslateTestingModule } from 'ngx-translate-testing'
+import {
+  BreadcrumbService,
+  PortalCoreModule,
+} from '@onecx/portal-integration-angular';
+import { HttpClientTestingModule } from '@angular/common/http/testing'
+import { initialState } from './<%= featureFileName %>-details.reducers';
+
+describe('<%= featureClassName %>DetailsComponent', () => {
+  let component: <%= featureClassName %>DetailsComponent;
+  let fixture: ComponentFixture<<%= featureClassName %>DetailsComponent>;
+  let breadcrumbService: BreadcrumbService;
+  const mockActivatedRoute = {};
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      declarations: [<%= featureClassName %>DetailsComponent],
+      imports: [
+        PortalCoreModule,
+        LetModule,
+        TranslateTestingModule.withTranslations('en', require('./../../../../assets/i18n/en.json'))
+          .withTranslations('de', require('./../../../../assets/i18n/de.json')),
+        HttpClientTestingModule
+      ],
+      providers: [
+        provideMockStore({
+          initialState: { <%= featurePropertyName %>: { details: initialState } },
+        }),
+        BreadcrumbService,
+        { provide: ActivatedRoute, useValue: mockActivatedRoute },
+      ],
+    }).compileComponents();
+
+    fixture = TestBed.createComponent(<%= featureClassName %>DetailsComponent);
+    component = fixture.componentInstance;
+    breadcrumbService = TestBed.inject(BreadcrumbService);
+    fixture.detectChanges();
+  });
+
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+
+  it('should set breadcrumb items on ngOnInit', () => {
+    const breadcrumbServiceSpy = jest.spyOn(breadcrumbService, 'setItems');
+    component.ngOnInit();
+    expect(breadcrumbServiceSpy).toHaveBeenCalledWith([
+      {
+        titleKey: '<%= featureConstantName %>_DETAILS.BREADCRUMB',
+        labelKey: '<%= featureConstantName %>_DETAILS.BREADCRUMB',
+        routerLink: '/<%= featureFileName %>',
+      },
+    ]);
+  });
+});

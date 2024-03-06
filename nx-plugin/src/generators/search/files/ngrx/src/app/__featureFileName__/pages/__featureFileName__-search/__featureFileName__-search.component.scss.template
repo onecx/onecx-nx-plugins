@@ -1,0 +1,3 @@
+:host ::ng-deep .p-calendar-clear-icon {
+    right: 1rem;
+}

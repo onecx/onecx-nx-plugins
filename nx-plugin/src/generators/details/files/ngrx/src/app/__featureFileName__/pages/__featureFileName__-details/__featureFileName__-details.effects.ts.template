@@ -1,0 +1,79 @@
+import { Router } from '@angular/router';
+import { Actions, createEffect, ofType, concatLatestFrom } from '@ngrx/effects';
+import { routerNavigatedAction } from '@ngrx/router-store';
+import {
+  catchError,
+  map,
+  mergeMap,
+  of,
+  switchMap,
+  tap,
+} from 'rxjs';
+import { filterForNavigatedTo } from '@onecx/portal-integration-angular/ngrx';
+import { Injectable } from '@angular/core';
+import { <%= featureClassName %>Service } from 'src/app/shared/services/<%= featureFileName %>.service';
+import { <%= featureClassName %>DetailsActions } from './<%= featureFileName %>-details.actions';
+import { <%= featureClassName %>DetailsComponent } from './<%= featureFileName %>-details.component';
+import { Action, Store } from '@ngrx/store';
+import { selectRouteParam } from 'src/app/shared/selectors/router.selectors';
+import { PortalMessageService } from '@onecx/portal-integration-angular';
+import { <%= featureClassName %>BffService } from '../../../shared/generated';
+
+@Injectable()
+export class <%= featureClassName %>DetailsEffects {
+  constructor(
+    private actions$: Actions,
+    private <%= featurePropertyName %>Service: <%= featureClassName %>BffService,
+    private router: Router,
+    private store: Store,
+    private messageService: PortalMessageService
+  ) {}
+
+  load<%= featureClassName %>ById$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(routerNavigatedAction),
+      filterForNavigatedTo(this.router, <%= featureClassName %>DetailsComponent),
+      concatLatestFrom(() => this.store.select(selectRouteParam('id'))),
+      switchMap(([, id]) =>
+        this.<%= featurePropertyName %>Service.get<%= featureClassName %>ById(Number(id)).pipe(
+          map(({result}) =>
+            <%= featureClassName %>DetailsActions.<%= featurePropertyName %>DetailsReceived({
+              details: result,
+            })
+          ),
+          catchError((error) =>
+            of(
+              <%= featureClassName %>DetailsActions.<%= featurePropertyName %>DetailsLoadingFailed({
+                error,
+              })
+            )
+          )
+        )
+      )
+    );
+  });
+
+  errorMessages: { action: Action; key: string }[] = [
+    {
+      action:
+        <%= featureClassName %>DetailsActions.<%= featurePropertyName %>DetailsLoadingFailed,
+      key: '<%= featureConstantName %>_DETAILS.ERROR_MESSAGES.DETAILS_LOADING_FAILED',
+    },
+  ];
+
+  displayError$ = createEffect(
+    () => {
+      return this.actions$.pipe(
+        tap((action) => {
+          const e = this.errorMessages.find(
+            (e) => e.action.type === action.type
+          );
+          if (e) {
+            this.messageService.error({ summaryKey: e.key });
+          }
+        })
+      );
+    },
+    { dispatch: false }
+  );
+}

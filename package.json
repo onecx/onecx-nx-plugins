@@ -1,0 +1,50 @@
+{
+  "name": "onecx",
+  "version": "0.0.0",
+  "license": "MIT",
+  "scripts": {
+    "build": "nx run nx-plugin:build",
+    "test": "nx run nx-plugin-e2e:e2e"
+  },
+  "private": true,
+  "dependencies": {
+    "@nx/angular": "^17.3.0",
+    "@nx/devkit": "17.3.0",
+    "@nx/plugin": "^17.3.0",
+    "@swc/helpers": "~0.5.2",
+    "create-nx-workspace": "17.3.0",
+    "ora": "^5.3.0",
+    "tslib": "^2.3.0",
+    "yaml": "^2.3.4"
+  },
+  "devDependencies": {
+    "@nx/eslint": "17.3.0",
+    "@nx/eslint-plugin": "17.3.0",
+    "@nx/jest": "17.3.0",
+    "@nx/js": "17.3.0",
+    "@swc-node/register": "~1.6.7",
+    "@swc/cli": "~0.1.62",
+    "@swc/core": "~1.3.85",
+    "@types/jest": "^29.4.0",
+    "@types/node": "18.16.9",
+    "@typescript-eslint/eslint-plugin": "^6.9.1",
+    "@typescript-eslint/parser": "^6.9.1",
+    "ejs": "^3.1.9",
+    "eslint": "~8.48.0",
+    "eslint-config-prettier": "^9.0.0",
+    "jest": "^29.4.1",
+    "jest-environment-jsdom": "^29.4.1",
+    "nx": "17.3.0",
+    "prettier": "^2.6.2",
+    "ts-jest": "^29.1.0",
+    "ts-node": "10.9.1",
+    "typescript": "~5.3.2",
+    "verdaccio": "^5.0.4"
+  },
+  "workspaces": [
+    "packages/*"
+  ],
+  "nx": {
+    "includedScripts": []
+  }
+}

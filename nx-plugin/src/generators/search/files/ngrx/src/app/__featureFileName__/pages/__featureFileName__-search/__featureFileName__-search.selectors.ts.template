@@ -1,0 +1,103 @@
+import { createSelector } from '@ngrx/store';
+import { RowListGridData, DataTableColumn } from '@onecx/portal-integration-angular';
+import { createChildSelectors } from '@onecx/portal-integration-angular/ngrx';
+import { selectQueryParams } from 'src/app/shared/selectors/router.selectors';
+import { <%= featurePropertyName %>Feature } from '../../<%= featureFileName %>.reducers';
+import {
+  <%= featureClassName %>SearchCriteria,
+  <%= featurePropertyName %>SearchCriteriasSchema,
+} from './<%= featureFileName %>-search.parameters';
+import { initialState } from './<%= featureFileName %>-search.reducers';
+import { <%= featureClassName %>SearchViewModel } from './<%= featureFileName %>-search.viewmodel';
+import { <%= featureClassName %>SearchConfigState } from './<%= featureFileName %>-search.state';
+
+export const <%= featurePropertyName %>SearchSelectors = createChildSelectors(
+  <%= featurePropertyName %>Feature.selectSearch,
+  initialState
+);
+export const selectSearchCriteria = createSelector(
+  selectQueryParams,
+  (queryParams): <%= featureClassName %>SearchCriteria => {
+    const results =
+      <%= featurePropertyName %>SearchCriteriasSchema.safeParse(queryParams);
+    if (results.success) {
+      return results.data as <%= featureClassName %>SearchCriteria;
+    }
+    return {};
+  }
+);
+
+export const selectResults = createSelector(
+  <%= featurePropertyName %>SearchSelectors.selectResults,
+  (results): RowListGridData[] => {
+    return results.map((item) => ({
+      id: item.<%= featurePropertyName %>.id,
+      imagePath: '',
+      ...item,
+      // ACTION S6: Here you can create a mapping of the items and their corresponding translation strings
+    }));
+  }
+);
+
+export const selectDisplayedColumns = createSelector(
+  <%= featurePropertyName %>SearchSelectors.selectColumns,
+  <%= featurePropertyName %>SearchSelectors.selectDisplayedColumns,
+  (columns, displayedColumns): DataTableColumn[] => {
+    return (displayedColumns
+          ?.map((d) => columns.find((c) => c.id === d))
+          .filter((d) => d) as DataTableColumn[]) ?? [];
+  }
+);
+
+export const select<%= featureClassName %>SearchViewModel = createSelector(
+  <%= featurePropertyName %>SearchSelectors.selectColumns,
+  selectSearchCriteria,
+  selectResults,
+  <%= featurePropertyName %>SearchSelectors.selectSearchConfigs,
+  <%= featurePropertyName %>SearchSelectors.selectSelectedSearchConfig,
+  selectDisplayedColumns,
+  <%= featurePropertyName %>SearchSelectors.selectViewMode,
+  <%= featurePropertyName %>SearchSelectors.selectChartVisible,
+  (
+    columns,
+    searchCriteria, 
+    results,
+    searchConfigs,
+    selectedSearchConfig,
+    displayedColumns,
+    viewMode,
+    chartVisible): <%= featureClassName %>SearchViewModel => ({
+    columns,
+    searchCriteria,
+    results,
+    searchConfigs,
+    selectedSearchConfig,
+    displayedColumns,
+    viewMode,
+    chartVisible,
+  })
+);
+
+export const selectSearchConfigViewState = createSelector(
+  <%= featurePropertyName %>SearchSelectors.selectColumns,
+  <%= featurePropertyName %>SearchSelectors.selectSearchConfigs,
+  <%= featurePropertyName %>SearchSelectors.selectSelectedSearchConfig,
+  selectDisplayedColumns,
+  <%= featurePropertyName %>SearchSelectors.selectViewMode,
+  selectSearchCriteria,
+  (
+    columns,
+    searchConfigs,
+    selectedSearchConfig,
+    displayedColumns,
+    viewMode,
+    searchCriteria
+  ): <%= featureClassName %>SearchConfigState => ({
+    columns,
+    searchConfigs,
+    selectedSearchConfig,
+    displayedColumns,
+    viewMode,
+    searchCriteria,
+  })
+);

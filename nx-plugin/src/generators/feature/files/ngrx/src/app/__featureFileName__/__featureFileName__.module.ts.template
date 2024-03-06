@@ -1,0 +1,57 @@
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { RouterModule, Routes } from '@angular/router';
+import { SharedModule } from '../shared/shared.module';
+import {
+  createTranslateLoader,
+  PortalCoreModule,
+  addInitializeModuleGuard,
+  AppStateService,
+  PortalMissingTranslationHandler
+} from '@onecx/portal-integration-angular';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { CalendarModule } from 'primeng/calendar';
+import {
+  MissingTranslationHandler,
+  TranslateLoader,
+  TranslateModule
+} from '@ngx-translate/core';
+import { HttpClient } from '@angular/common/http';
+import { LetModule } from '@ngrx/component';
+import { StoreModule } from '@ngrx/store';
+import { routes } from './<%= featureFileName %>.routes';
+import { <%= featurePropertyName %>Feature } from './<%= featureFileName %>.reducers';
+import { EffectsModule } from '@ngrx/effects';
+
+
+@NgModule({
+  declarations: [
+  ],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  imports: [
+    CommonModule,
+    SharedModule,
+    LetModule,
+    PortalCoreModule.forMicroFrontend(),
+    RouterModule.forChild(addInitializeModuleGuard(routes)),
+    FormsModule,
+    ReactiveFormsModule,
+    CalendarModule,
+    StoreModule.forFeature(<%= featurePropertyName %>Feature),
+    EffectsModule.forFeature(),
+    TranslateModule.forRoot({
+      extend: true,
+      isolate: false,
+      loader: {
+        provide: TranslateLoader,
+        useFactory: createTranslateLoader,
+        deps: [HttpClient, AppStateService],
+      },
+      missingTranslationHandler: {
+        provide: MissingTranslationHandler,
+        useClass: PortalMissingTranslationHandler,
+      },
+    }),
+  ],
+})
+export class <%= featureClassName %>Module {}
