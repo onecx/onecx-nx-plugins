@@ -1,5 +1,5 @@
-export function deepMerge(...objects: any[]) {
-  const isObject = (obj: any) => obj && typeof obj === 'object';
+export function deepMerge(...objects: unknown[]) {
+  const isObject = (obj: unknown) => obj && typeof obj === 'object';
 
   return objects.reduce((prev, obj) => {
     Object.keys(obj).forEach((key) => {

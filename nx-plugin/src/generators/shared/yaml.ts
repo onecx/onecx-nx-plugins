@@ -1,7 +1,7 @@
 import { Tree } from '@nx/devkit';
 import { parse, stringify } from 'yaml';
 
-export function readYaml<T extends object = any>(tree: Tree, path: string): T {
+export function readYaml<T extends object = object>(tree: Tree, path: string): T {
   if (!tree.exists(path)) {
     throw new Error(`Cannot find ${path}`);
   }
@@ -20,10 +20,10 @@ export function writeYaml<T extends object = object>(
   tree.write(path, stringify(value));
 }
 
-export function updateYaml<T extends object = any, U extends object = T>(
+export function updateYaml<T extends object = object, U extends object = T>(
   tree: Tree,
   path: string,
-  updater: (value: any) => U
+  updater: (value: T) => U
 ) {
   const updatedValue = updater(readYaml(tree, path));
   writeYaml(tree, path, updatedValue);

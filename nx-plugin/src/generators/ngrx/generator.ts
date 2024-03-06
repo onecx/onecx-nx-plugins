@@ -4,14 +4,11 @@ import {
   joinPathFragments,
   Tree,
   names,
-  updateJson,
-  ensurePackage,
   addDependenciesToPackageJson,
   installPackagesTask,
   GeneratorCallback,
 } from '@nx/devkit';
 
-import * as path from 'path';
 import { NgrxGeneratorSchema } from './schema';
 import angularGenerator from '../angular/generator';
 import * as ora from 'ora';

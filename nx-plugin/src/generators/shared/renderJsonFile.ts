@@ -3,7 +3,7 @@ import { readFileSync } from 'fs';
 
 export function renderJsonFile(
   filePath: string,
-  options: { [k: string]: any }
+  options: Record<string, unknown>
 ) {
   const enJsonTemplate = readFileSync(filePath, 'utf-8');
   const enJsonContent = ejs.render(

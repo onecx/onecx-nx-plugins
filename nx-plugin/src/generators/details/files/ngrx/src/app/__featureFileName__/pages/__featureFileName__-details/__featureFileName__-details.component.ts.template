@@ -27,16 +27,16 @@ export class <%= featureClassName %>DetailsComponent implements OnInit {
 
   headerActions: Action[] = [
       {
-        titleKey: 'GENERAL.BACK',
-        labelKey: 'GENERAL.BACK',
+        titleKey: '<%= featureConstantName %>_DETAILS.GENERAL.BACK',
+        labelKey: '<%= featureConstantName %>_DETAILS.GENERAL.BACK',
         show: 'always',
         actionCallback: () => {
           window.history.back();
         },
       },
       {
-        titleKey: 'GENERAL.MORE',
-        icon: 'PrimeIcons.ELLIPSIS_V',
+        titleKey: '<%= featureConstantName %>_DETAILS.GENERAL.MORE',
+        icon: PrimeIcons.ELLIPSIS_V,
         show: 'always',
         btnClass: '',
         actionCallback: () => {},

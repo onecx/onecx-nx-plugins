@@ -6,7 +6,6 @@ import {
   installPackagesTask,
   joinPathFragments,
   names,
-  readJson,
   readProjectConfiguration,
   Tree,
   updateJson,
@@ -17,7 +16,6 @@ import { AngularGeneratorSchema } from './schema';
 import { execSync } from 'child_process';
 
 import * as ora from 'ora';
-import * as fs from 'fs';
 
 export async function angularGenerator(
   tree: Tree,

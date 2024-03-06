@@ -379,17 +379,22 @@ function adaptSearchEffects(tree: Tree, options: DetailsGeneratorSchema) {
   const filePath = `src/app/${fileName}/pages/${fileName}-search/${fileName}-search.effects.ts`;
 
   let htmlContent = tree.read(filePath, 'utf8');
-  htmlContent = htmlContent.replace(
+  htmlContent =
+  `import { selectUrl } from 'src/app/shared/selectors/router.selectors';` +
+  htmlContent.replace(
     'searchByUrl$',
     `detailsButtonClicked$ = createEffect(
       () => {
         return this.actions$.pipe(
           ofType(${className}SearchActions.detailsButtonClicked),
-          tap((action) => {
-            this.router.navigate(['details', action.id], { relativeTo: this.route });
-          })
-        );
-      },
+          concatLatestFrom(() => this.store.select(selectUrl)),
+          tap(([action, currentUrl]) => {
+            let urlTree = this.router.parseUrl(currentUrl);
+            urlTree.queryParams = {};
+            urlTree.fragment = null;
+            this.router.navigate([urlTree.toString(), 'details', action.id]);
+        })
+      )},
       { dispatch: false }
     );
     

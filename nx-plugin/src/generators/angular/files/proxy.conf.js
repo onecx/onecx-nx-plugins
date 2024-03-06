@@ -1,4 +1,4 @@
-const bypassFn = function (req, res, proxyOptions) {
+const bypassFn = function (req, res) {
   try {
     if (req.method === 'OPTIONS') {
       res.setHeader('Allow', 'GET, POST, HEAD, PUT, DELETE, OPTIONS');
