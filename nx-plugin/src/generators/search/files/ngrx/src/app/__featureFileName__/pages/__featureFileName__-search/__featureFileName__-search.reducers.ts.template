@@ -122,7 +122,7 @@ export const <%= featurePropertyName %>SearchReducer = createReducer(
           Object.keys(state.selectedSearchConfig ?? {}).length &&
         Object.keys(searchCriteria).every(
           (k) =>
-            state.selectedSearchConfig?.values?.id ===
+            state.selectedSearchConfig?.id ===
             searchCriteria[k as keyof <%= featureClassName %>SearchCriteria]
         )
           ? state.selectedSearchConfig

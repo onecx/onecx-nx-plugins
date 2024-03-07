@@ -13,13 +13,12 @@ import {
 } from '../../../shared/generated';
 import { <%= featureClassName %>SearchActions } from './<%= featureFileName %>-search.actions';
 import { <%= featureClassName %>SearchComponent } from './<%= featureFileName %>-search.component';
-import {  CreateOrEditSearchConfigDialogComponent, PortalMessageService, PortalDialogService, CreateOrEditSearchConfigDialogComponent, } from '@onecx/portal-integration-angular';
+import {  CreateOrEditSearchConfigDialogComponent, PortalMessageService, PortalDialogService, CreateOrEditSearchConfigDialogComponent, CreateOrEditSearchDialogContent } from '@onecx/portal-integration-angular';
 import {
   createQueryParamsEffect,
   filterForNavigatedTo,
   filterOutOnlyQueryParamsChanged,
   filterOutQueryParamsHaveNotChanged,
-  CreateOrEditSearchDialogContent
 } from '@onecx/portal-integration-angular/ngrx';
 import {
   <%= featureClassName %>SearchCriteria,

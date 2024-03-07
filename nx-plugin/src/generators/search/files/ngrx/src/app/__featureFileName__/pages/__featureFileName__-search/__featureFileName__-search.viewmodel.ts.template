@@ -1,4 +1,4 @@
-import { SearchConfig } from 'src/app/shared/generated';
+import { SearchConfig, SearchConfigInfo } from 'src/app/shared/generated';
 import { <%= featureClassName %>SearchCriteria } from './<%= featureFileName %>-search.parameters'
 import { RowListGridData, DataTableColumn } from '@onecx/portal-integration-angular'
 
