@@ -288,41 +288,43 @@ function addPermissionDefinitionsToValuesYaml(
 
   const folderPath = 'helm/values.yaml';
 
-  updateYaml(tree, folderPath, (yaml) => {
-    yaml['app'] ??= {};
-    yaml['app']['operator'] ??= {};
-    yaml['app']['operator']['permission'] ??= {};
-    yaml['app']['operator']['permission']['spec'] ??= {};
-    yaml['app']['operator']['permission']['spec']['permissions'] ??= {};
-    yaml['app']['operator']['permission']['spec']['permissions'][
-      constantName
-    ] ??= {};
-    yaml['app']['operator']['permission']['spec']['permissions'][constantName][
-      'CREATE'
-    ] ??= `Create ${propertyName}`;
-    yaml['app']['operator']['permission']['spec']['permissions'][constantName][
-      'EDIT'
-    ] ??= `Edit ${propertyName}`;
-    yaml['app']['operator']['permission']['spec']['permissions'][constantName][
-      'DELETE'
-    ] ??= `Delete ${propertyName}`;
-    yaml['app']['operator']['permission']['spec']['permissions'][constantName][
-      'SAVE'
-    ] ??= `Update and save ${propertyName}`;
-    yaml['app']['operator']['permission']['spec']['permissions'][constantName][
-      'IMPORT'
-    ] ??= `Import ${propertyName}`;
-    yaml['app']['operator']['permission']['spec']['permissions'][constantName][
-      'EXPORT'
-    ] ??= `Export ${propertyName}`;
-    yaml['app']['operator']['permission']['spec']['permissions'][constantName][
-      'VIEW'
-    ] ??= `View mode for ${propertyName}`;
-    yaml['app']['operator']['permission']['spec']['permissions'][constantName][
-      'SEARCH'
-    ] ??= `Seaarch ${propertyName}`;
-    return yaml;
-  });
+  if(tree.exists(folderPath)) {
+    updateYaml(tree, folderPath, (yaml) => {
+      yaml['app'] ??= {};
+      yaml['app']['operator'] ??= {};
+      yaml['app']['operator']['permission'] ??= {};
+      yaml['app']['operator']['permission']['spec'] ??= {};
+      yaml['app']['operator']['permission']['spec']['permissions'] ??= {};
+      yaml['app']['operator']['permission']['spec']['permissions'][
+        constantName
+      ] ??= {};
+      yaml['app']['operator']['permission']['spec']['permissions'][constantName][
+        'CREATE'
+      ] ??= `Create ${propertyName}`;
+      yaml['app']['operator']['permission']['spec']['permissions'][constantName][
+        'EDIT'
+      ] ??= `Edit ${propertyName}`;
+      yaml['app']['operator']['permission']['spec']['permissions'][constantName][
+        'DELETE'
+      ] ??= `Delete ${propertyName}`;
+      yaml['app']['operator']['permission']['spec']['permissions'][constantName][
+        'SAVE'
+      ] ??= `Update and save ${propertyName}`;
+      yaml['app']['operator']['permission']['spec']['permissions'][constantName][
+        'IMPORT'
+      ] ??= `Import ${propertyName}`;
+      yaml['app']['operator']['permission']['spec']['permissions'][constantName][
+        'EXPORT'
+      ] ??= `Export ${propertyName}`;
+      yaml['app']['operator']['permission']['spec']['permissions'][constantName][
+        'VIEW'
+      ] ??= `View mode for ${propertyName}`;
+      yaml['app']['operator']['permission']['spec']['permissions'][constantName][
+        'SEARCH'
+      ] ??= `Seaarch ${propertyName}`;
+      return yaml;
+    });
+  }
 }
 
 function addTranslations(tree: Tree, options: SearchGeneratorSchema) {
