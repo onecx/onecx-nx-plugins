@@ -220,7 +220,7 @@ function adaptFeatureRoutes(tree: Tree, options: DetailsGeneratorSchema) {
   );
 
   moduleContent =
-    `import { ${className}DetailsComponent } from './pages/${fileName}-details/${fileName}-details.component'` +
+    `import { ${className}DetailsComponent } from './pages/${fileName}-details/${fileName}-details.component';` +
     moduleContent;
   tree.write(routesFilePath, moduleContent);
 }

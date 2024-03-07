@@ -274,7 +274,7 @@ function adaptFeatureRoutes(tree: Tree, options: SearchGeneratorSchema) {
   );
 
   moduleContent =
-    `import { ${className}SearchComponent } from './pages/${fileName}-search/${fileName}-search.component'` +
+    `import { ${className}SearchComponent } from './pages/${fileName}-search/${fileName}-search.component';` +
     moduleContent;
   tree.write(routesFilePath, moduleContent);
 }
