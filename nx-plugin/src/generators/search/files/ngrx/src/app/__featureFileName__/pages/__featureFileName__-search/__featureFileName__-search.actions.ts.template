@@ -7,13 +7,11 @@ import { <%= featureClassName %>Result, SearchConfig, SearchConfigInfo, } from '
 export const <%= featureClassName %>SearchActions = createActionGroup({
   source: '<%= featureClassName %>Search',
   events: {
-    // button clicks
     'Search button clicked': props<{
       searchCriteria: <%= featureClassName %>SearchCriteria;
     }>(),
     'Reset button clicked': emptyProps(),
 
-     // search results
     '<%= featureFileName.replace("-"," ") %> search results received': props<{
       results: <%= featureClassName %>Result[];
       totalNumberOfResults: number;
@@ -22,8 +20,6 @@ export const <%= featureClassName %>SearchActions = createActionGroup({
     'Search configs received': props<{
       searchConfigs: SearchConfig[]
     }>(),
-
-    // search config
     'Search config received': props<{
       searchConfig: SearchConfig;
     }>(),
@@ -50,7 +46,6 @@ export const <%= featureClassName %>SearchActions = createActionGroup({
       error: string | null;
     }>(),
 
-    // search config info
     'Search config infos received': props<{
       searchConfigInfos: SearchConfigInfo[];
     }>(),
@@ -62,18 +57,13 @@ export const <%= featureClassName %>SearchActions = createActionGroup({
     }>(),
     'Search config info deselected': emptyProps(),
 
-    // columns
     'Displayed columns changed': props<{
       displayedColumns: DataTableColumn[];
     }>(),
-
-    // chart visibility
     'Chart visibility rehydrated': props<{
       visible: boolean;
     }>(),
     'Chart visibility toggled': emptyProps(),
-
-    // view mode
     'View mode changed': props<{
       viewMode: 'basic' | 'advanced';
     }>(),
