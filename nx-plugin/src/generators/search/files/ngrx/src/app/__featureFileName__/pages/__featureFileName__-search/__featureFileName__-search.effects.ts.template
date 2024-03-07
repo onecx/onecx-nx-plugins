@@ -18,7 +18,8 @@ import {
   createQueryParamsEffect,
   filterForNavigatedTo,
   filterOutOnlyQueryParamsChanged,
-  filterOutQueryParamsHaveNotChanged
+  filterOutQueryParamsHaveNotChanged,
+  CreateOrEditSearchDialogContent
 } from '@onecx/portal-integration-angular/ngrx';
 import {
   <%= featureClassName %>SearchCriteria,
@@ -50,7 +51,7 @@ createSearchConfig$ = createEffect(() => {
         return this.portalDialogService.openDialog(
           '<%= featureConstantName %>_SEARCH.HEADER_ACTIONS.CREATE_SEARCH_CONFIG',
           CreateOrEditSearchConfigDialogComponent,
-         '<%= featureConstantName %>_SEARCH.HEADER_ACTIONS.DIALOG_CONFIRM',
+         '<%= featureConstantName %>_SEARCH.HEADER_ACTIONS.DIALOG_SAVE',
          '<%= featureConstantName %>_SEARCH.HEADER_ACTIONS.DIALOG_CANCEL',
         );
       }),
@@ -72,16 +73,22 @@ createSearchConfig$ = createEffect(() => {
           columns: dialogResult.result?.saveColumns
             ? viewState.columns.map((c) => c.id)
             : [],
-          // values: dialogResult.result?.saveInputValues
-          //   ? viewState.searchCriteria
-          //   : {},
-          values: {},
+          values: dialogResult.result?.saveInputValues
+            ? Object.fromEntries(
+                Object.keys(viewState?.searchCriteria ?? {}).map((k) => [
+                  k,
+                  (viewState?.searchCriteria as Record<string, any>)[
+                    k
+                  ].toString(),
+                ])
+              )
+            : {},
         };
         return this.searchConfigService.createSearchConfig(request).pipe(
           map(({ configs }) => {
             return  <%= featureClassName %>SearchActions.searchConfigCreatedSuccessfully(
               {
-                searchConfigs: configs,
+                searchConfigInfos: configs,
               }
             );
           })
@@ -101,10 +108,23 @@ createSearchConfig$ = createEffect(() => {
 updateSearchConfig$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(<%= featureClassName %>SearchActions.updateSearchConfigClicked),
-      mergeMap(() => {
-        return this.portalDialogService.openDialog(
-          '<%= featureConstantName %>_SEARCH.HEADER_ACTIONS.UPDATE_SEARCH_CONFIG',
-          CreateOrEditSearchConfigDialogComponent,
+      concatLatestFrom(() =>
+        this.store.select(
+          constructionTaskSearchSelectors.selectSelectedSearchConfig
+        )
+      ),
+      mergeMap(([, selectedSearchConfig]) => {
+        return this.portalDialogService.openDialog<CreateOrEditSearchDialogContent>(
+          'CONSTRUCTION_TASK_SEARCH.HEADER_ACTIONS.UPDATE_SEARCH_CONFIG',
+          {
+            type: CreateOrEditSearchConfigDialogComponent,
+            inputs: {
+              // TODO: Recheck the conditions.
+              searchConfigName: selectedSearchConfig?.name,
+              saveInputValues: selectedSearchConfig?.values != null,
+              saveColumns: selectedSearchConfig?.columns != null,
+            },
+          },
           '<%= featureConstantName %>_SEARCH.HEADER_ACTIONS.DIALOG_CONFIRM',
            '<%= featureConstantName %>_SEARCH.HEADER_ACTIONS.DIALOG_CANCEL'
         );
@@ -117,23 +137,28 @@ updateSearchConfig$ = createEffect(() => {
         let request: CreateSearchConfigRequest = {
           page: this.pageName ?? '',
           name: dialogResult.result?.searchConfigName ?? '',
-          fieldListVersion:
-            viewState.selectedSearchConfig?.fieldListVersion ?? 0,
-          isReadonly: viewState.selectedSearchConfig?.isReadonly ?? false,
-          isAdvanced: viewState.viewMode === 'advanced' ?? false,
+          fieldListVersion: 0,
+          isReadonly: false,
+          isAdvanced: viewState.viewMode === 'advanced',
           columns: dialogResult.result?.saveColumns
             ? viewState.columns.map((c) => c.id)
             : [],
-          // values: dialogResult.result?.saveInputValues
-          //   ? viewState?.searchCriteria
-          //   : {},
-          values: {},
+          values: dialogResult.result?.saveInputValues
+            ? Object.fromEntries(
+                Object.keys(viewState?.searchCriteria ?? {}).map((k) => [
+                  k,
+                  (viewState?.searchCriteria as Record<string, any>)[
+                    k
+                  ].toString(),
+                ])
+              )
+            : {},
         };
         return this.searchConfigService.createSearchConfig(request).pipe(
           map(({ configs }) => {
             return <%= featureClassName %>SearchActions.searchConfigUpdatedSuccessfully(
               {
-                searchConfigs: configs,
+                searchConfigInfos: configs,
               }
             );
           })
@@ -149,6 +174,15 @@ updateSearchConfig$ = createEffect(() => {
       )
     );
   }); 
+
+   searchConfigDeselected$ = createQueryParamsEffect(
+    this.actions$,
+    <%= featureClassName %>SearchActions.searchConfigInfoDeselected,
+    this.router,
+    this.route,
+    () => ({})
+  );
+
   resetButtonClicked$ = createQueryParamsEffect(
     this.actions$,
     <%= featureClassName %>SearchActions.resetButtonClicked,
@@ -170,14 +204,14 @@ updateSearchConfig$ = createEffect(() => {
     })
   );
 
-  searchConfigSelected$ = createQueryParamsEffect(
+  searchConfigInfoSelected$ = createQueryParamsEffect(
     this.actions$,
-    <%= featureClassName %>SearchActions.searchConfigSelected,
+    <%= featureClassName %>SearchActions.selectedSearchConfigInfo,
     this.router,
     this.route,
     (state, action) => ({
       ...state,
-      ...action.searchConfig?.values ?? {},
+      ...action.searchConfigInfo ?? {},
     })
   );
 
@@ -211,19 +245,17 @@ updateSearchConfig$ = createEffect(() => {
     );
   });
 
-  loadSearchConfigs$ = createEffect(() => {
+loadSearchConfig$ = createEffect(() => {
     return this.actions$.pipe(
-      ofType(routerNavigatedAction),
-      filterForNavigatedTo(this.router, <%= featureClassName %>SearchComponent),
-      filterOutOnlyQueryParamsChanged(this.router),
-      switchMap(() =>
-        this.searchConfigService.getSearchConfigs('<%= featureFileName %>-search').pipe(
-          map(({ configs }) => 
-            <%= featureClassName %>SearchActions.searchConfigsReceived({
-              searchConfigs: configs,
+      ofType(<%= featureClassName %>SearchActions.selectedSearchConfigInfo),
+      switchMap(({ searchConfigInfo }) =>
+        this.searchConfigService.getSearchConfig(searchConfigInfo.id).pipe(
+          map(({ config }) =>
+            <%= featureClassName %>SearchActions.searchConfigReceived({
+              searchConfig: config,
             })
           ),
-          catchError((error) => 
+          catchError((error) =>
             of(
               <%= featureClassName %>SearchActions.searchConfigsLoadingFailed({
                 error,
@@ -231,6 +263,32 @@ updateSearchConfig$ = createEffect(() => {
             )
           )
         )
+      )
+    );
+  });
+
+  loadSearchConfigInfo$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(routerNavigatedAction),
+      filterForNavigatedTo(this.router, <%= featureClassName %>SearchComponent),
+      filterOutOnlyQueryParamsChanged(this.router),
+      switchMap(() =>
+        this.searchConfigService
+          .getSearchConfigInfos('construction-task-search')
+          .pipe(
+            map(({ configs }) =>
+              <%= featureClassName %>SearchActions.searchConfigInfosReceived({
+                searchConfigInfos: configs,
+              })
+            ),
+            catchError((error) =>
+              of(
+               <%= featureClassName %>SearchActions.searchConfigInfosLoadingFailed({
+                  error,
+                })
+              )
+            )
+          )
       )
     );
   });
@@ -272,7 +330,7 @@ updateSearchConfig$ = createEffect(() => {
       key: '<%= featureConstantName %>_SEARCH.ERROR_MESSAGES.SEARCH_CONFIG_UPDATE_FAILED',
     },
     {
-      action: <%= featureClassName %>SearchActions.searchConfigsLoadingFailed,
+      action: <%= featureClassName %>SearchActions.searchConfigInfosLoadingFailed,
       key: '<%= featureConstantName %>_SEARCH.ERROR_MESSAGES.SEARCH_CONFIGS_LOADING_FAILED',
     },
   ];

@@ -10,6 +10,7 @@ import {
   PortalDialogService,
   DialogState,
   CreateOrEditSearchConfigDialogComponent,
+  CreateOrEditSearchDialogContent,
 } from '@onecx/portal-integration-angular';
 import { <%= featureClassName %>SearchActions } from './<%= featureFileName %>-search.actions';
 import {
@@ -67,7 +68,7 @@ export class <%= featureClassName %>SearchComponent implements OnInit {
           actionCallback: () => this.updateSearchConfig(),
         });
       }
-      else {
+      else if (vm.searchConfigEnabled && vm.selectedSearchConfig) {
         actions.push({
           labelKey: '<%= featureConstantName %>_SEARCH.HEADER_ACTIONS.CREATE_SEARCH_CONFIG',
           icon: PrimeIcons.SAVE,
@@ -156,10 +157,10 @@ export class <%= featureClassName %>SearchComponent implements OnInit {
   }
   
 
-  confirmSearchConfig(searchConfig:any){//}: SearchConfig | null {
-    if (searchConfig) {
+  confirmSearchConfig(searchConfigInfo: any) {
+    if (searchConfigInfo.value) {
       const parameterGroup = Object.keys(this.<%= featurePropertyName %>SearchFormGroup.value);
-      const searchConfigKeys = Object.keys(searchConfig.values);
+     let searchConfigKeys = Object.keys(searchConfigInfo?.value);
       const filteredArray = parameterGroup.filter((value) =>
         searchConfigKeys.includes(value)
       );
@@ -169,9 +170,27 @@ export class <%= featureClassName %>SearchComponent implements OnInit {
           searchConfigKeys.length - filteredArray.length
         );
       }
+   this.store.dispatch(
+        ConstructionTaskSearchActions.selectedSearchConfigInfo({
+          searchConfigInfo: searchConfigInfo.value,
+        })
+      );
+    } else {
+      this.store.dispatch(
+        ConstructionTaskSearchActions.searchConfigInfoDeselected()
+      );
     }
-    this.store.dispatch(<%= featureClassName %>SearchActions.searchConfigSelected(searchConfig))
   }
+
+   viewModeChanged(viewMode: string) {
+    if (viewMode === 'basic' || viewMode === 'advanced') {
+      this.store.dispatch(
+        ConstructionTaskSearchActions.viewModeChanged({
+          viewMode: viewMode,
+        })
+      );
+    }
+   }
 
   onDisplayedColumnsChange(displayedColumns: DataTableColumn[]) {
     this.store.dispatch(<%= featureClassName %>SearchActions.displayedColumnsChanged({displayedColumns}))

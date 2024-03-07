@@ -1,16 +1,19 @@
 import { createActionGroup, emptyProps, props } from '@ngrx/store';
 import { DataTableColumn } from '@onecx/portal-integration-angular';
 import { <%= featureClassName %>SearchCriteria } from './<%= featureFileName %>-search.parameters';
-import { <%= featureClassName %>Result, SearchConfig } from '../../../shared/generated';
+import { <%= featureClassName %>Result, SearchConfig, SearchConfigInfo, } from '../../../shared/generated';
 
 
 export const <%= featureClassName %>SearchActions = createActionGroup({
   source: '<%= featureClassName %>Search',
   events: {
+    // button clicks
     'Search button clicked': props<{
       searchCriteria: <%= featureClassName %>SearchCriteria;
     }>(),
     'Reset button clicked': emptyProps(),
+
+     // search results
     '<%= featureFileName.replace("-"," ") %> search results received': props<{
       results: <%= featureClassName %>Result[];
       totalNumberOfResults: number;
@@ -18,6 +21,11 @@ export const <%= featureClassName %>SearchActions = createActionGroup({
     '<%= featureFileName.replace("-"," ") %> search results loading failed': props<{ error: string | null }>(),
     'Search configs received': props<{
       searchConfigs: SearchConfig[]
+    }>(),
+
+    // search config
+    'Search config received': props<{
+      searchConfig: SearchConfig;
     }>(),
     'Search configs loading failed': props<{
       error: string | null;
@@ -27,7 +35,7 @@ export const <%= featureClassName %>SearchActions = createActionGroup({
     }>(),
     'Create search config clicked': emptyProps(),
     'Search config created successfully': props<{
-      searchConfigs: SearchConfig[];
+      searchConfigInfos: SearchConfigInfo[];
     }>(),
     'Search config creation failed': props<{
       error: string | null;
@@ -35,18 +43,39 @@ export const <%= featureClassName %>SearchActions = createActionGroup({
     'Search config creation cancelled': emptyProps(),
     'Update search config clicked': emptyProps(),
     'Search config updated successfully': props<{
-      searchConfigs: SearchConfig[];
+      searchConfigInfos: SearchConfigInfo[];
     }>(),
     'Search config update failed': emptyProps(),
     'Search config update cancelled': props<{
       error: string | null;
     }>(),
+
+    // search config info
+    'Search config infos received': props<{
+      searchConfigInfos: SearchConfigInfo[];
+    }>(),
+    'Search config infos loading failed': props<{
+      error: string | null;
+    }>(),
+    'Selected search config info': props<{
+      searchConfigInfo: SearchConfigInfo;
+    }>(),
+    'Search config info deselected': emptyProps(),
+
+    // columns
     'Displayed columns changed': props<{
       displayedColumns: DataTableColumn[];
     }>(),
+
+    // chart visibility
     'Chart visibility rehydrated': props<{
       visible: boolean;
     }>(),
     'Chart visibility toggled': emptyProps(),
+
+    // view mode
+    'View mode changed': props<{
+      viewMode: 'basic' | 'advanced';
+    }>(),
   },
 });
