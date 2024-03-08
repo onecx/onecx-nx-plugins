@@ -17,6 +17,7 @@ import { execSync } from 'child_process';
 
 import * as ora from 'ora';
 
+
 export async function angularGenerator(
   tree: Tree,
   options: AngularGeneratorSchema
