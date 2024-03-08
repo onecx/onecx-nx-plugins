@@ -13,7 +13,7 @@
         "SHOW_CHART": "Show chart",
         "HIDE_CHART": "Hide chart",
         "CREATE_SEARCH_CONFIG": "Create search configuration",
-        "UPDATE_SEARCH_CONFIG_DIALOG": "Update search configuration",
+        "UPDATE_SEARCH_CONFIG": "Update search configuration",
         "DIALOG_CONFIRM": "Confirm",
         "DIALOG_CANCEL": "Cancel"
     },

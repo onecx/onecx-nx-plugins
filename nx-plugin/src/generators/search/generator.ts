@@ -471,13 +471,13 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ProblemDetailResponse'
-  /searchConfig/{page}:
+  /searchConfig/infos/{page}:
     get:
       tags:
         - SearchConfig
-      summary: Gets the search configs for the specified page.
-      description: The search config for the page is returned.
-      operationId: getSearchConfigs
+      summary: Gets the search config infos for the specified page.
+      description: The search config infos for the page is returned.
+      operationId: getSearchConfigInfos
       parameters:
         - name: page
           in: path
@@ -490,7 +490,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/GetSearchConfigsResponse'
+                $ref: '#/components/schemas/GetSearchConfigInfosResponse'
         '400':
           description: Bad request
           content:
@@ -503,6 +503,41 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ProblemDetailResponse'
+  /searchConfig/{id}:
+    get:
+      tags:
+        - SearchConfig
+      summary: Gets the search config infos for the specified page.
+      description: The search config for the page is returned.
+      operationId: getSearchConfig
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetSearchConfigResponse"
+        "404":
+          description: Not found
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetailResponse"
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetailResponse"
+
   /searchConfig/:
     post:
       tags:
@@ -592,13 +627,13 @@ components:
           results:
             type: array
             items:
-              $ref: '#/components/schemas/${className}Result'
+              $ref: '#/components/schemas/${className}SearchResult'
           totalNumberOfResults:
             description: Total number of results on the server.
             type: integer
             format: int64
 
-      ${className}Result:
+      ${className}SearchResult:
         type: object
         required:
         - "${propertyName}"
@@ -607,11 +642,21 @@ components:
             $ref: '#/components/schemas/${className}'
           # ACTION S8: add additional properties here
       
-      SearchConfig:
-        type: object
+      SearchConfigInfo:
         required:
           - id
-          - page
+          - name
+        properties:
+          id:
+            type: string
+          name:
+            type: string
+
+      SearchConfig:
+        allOf:
+        - $ref: "#/components/schemas/SearchConfigInfo"
+        type: object
+        required:
           - name
           - modificationCount
           - fieldListVersion
@@ -646,9 +691,17 @@ components:
             additionalProperties:
               type: string
               
-      GetSearchConfigsResponse:
+      GetSearchConfigInfosResponse:
         allOf:
-          - $ref: '#/components/schemas/SearchConfigList'
+          - $ref: '#/components/schemas/SearchConfigInfoList'
+
+      GetSearchConfigResponse:
+        type: object
+        required:
+          - config
+        properties:
+          config:
+            $ref: "#/components/schemas/SearchConfig"
               
       CreateSearchConfigRequest:
         type: object
@@ -685,7 +738,7 @@ components:
               
       CreateSearchConfigResponse:
         allOf:
-          - $ref: '#/components/schemas/SearchConfigList'
+          - $ref: '#/components/schemas/SearchConfigInfoList'
           
       UpdateSearchConfigRequest:
         type: object
@@ -697,12 +750,13 @@ components:
               
       UpdateSearchConfigResponse:
         allOf:
-          - $ref: '#/components/schemas/SearchConfigList'
+          - $ref: '#/components/schemas/SearchConfigInfoList'
       
-      SearchConfigList:
+      SearchConfigInfoList:
         type: object
         required:
-         - configs
+          - totalElements
+          - configs
         properties:
           totalElements:
             format: int64
@@ -711,7 +765,7 @@ components:
           configs:
             type: array
             items:
-              $ref: '#/components/schemas/SearchConfig'
+              $ref: '#/components/schemas/SearchConfigInfo'
               
       ProblemDetailResponse:
         type: object

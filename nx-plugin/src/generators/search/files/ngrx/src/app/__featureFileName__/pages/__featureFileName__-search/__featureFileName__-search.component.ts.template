@@ -10,6 +10,7 @@ import {
   PortalDialogService,
   DialogState,
   CreateOrEditSearchConfigDialogComponent,
+  CreateOrEditSearchDialogContent,
 } from '@onecx/portal-integration-angular';
 import { <%= featureClassName %>SearchActions } from './<%= featureFileName %>-search.actions';
 import {
@@ -27,6 +28,7 @@ import {
 } from '../../../shared/generated';
 import { first, Observable, map } from 'rxjs';
 import { PrimeIcons } from 'primeng/api';
+import { SearchConfigInfo } from 'src/app/shared/generated';
 
 @Component({
   selector: 'app-<%= featureFileName %>-search',
@@ -58,23 +60,24 @@ export class <%= featureClassName %>SearchComponent implements OnInit {
           actionCallback: () => this.toggleChartVisibility(),
         },
       ]
-      if(vm.selectedSearchConfig ){
-        actions.push({
-          labelKey: '<%= featureConstantName %>_SEARCH.HEADER_ACTIONS.UPDATE_SEARCH_CONFIG',
-          icon: PrimeIcons.FILE_EDIT,
-          titleKey: '<%= featureConstantName %>_SEARCH.HEADER_ACTIONS.UPDATE_SEARCH_CONFIG',
-          show: 'asOverflow',
-          actionCallback: () => this.updateSearchConfig(),
-        });
-      }
-      else {
-        actions.push({
-          labelKey: '<%= featureConstantName %>_SEARCH.HEADER_ACTIONS.CREATE_SEARCH_CONFIG',
-          icon: PrimeIcons.SAVE,
-          titleKey: '<%= featureConstantName %>_SEARCH.HEADER_ACTIONS.CREATE_SEARCH_CONFIG',
-          show: 'asOverflow',
-          actionCallback: () => this.createSearchConfig(),
-        });
+      if (vm.searchConfigEnabled) {
+        if (vm.selectedSearchConfig){
+          actions.push({
+            labelKey: '<%= featureConstantName %>_SEARCH.HEADER_ACTIONS.UPDATE_SEARCH_CONFIG',
+            icon: PrimeIcons.FILE_EDIT,
+            titleKey: '<%= featureConstantName %>_SEARCH.HEADER_ACTIONS.UPDATE_SEARCH_CONFIG',
+            show: 'asOverflow',
+            actionCallback: () => this.updateSearchConfig(),
+          });
+        } else {
+          actions.push({
+            labelKey: '<%= featureConstantName %>_SEARCH.HEADER_ACTIONS.CREATE_SEARCH_CONFIG',
+            icon: PrimeIcons.SAVE,
+            titleKey: '<%= featureConstantName %>_SEARCH.HEADER_ACTIONS.CREATE_SEARCH_CONFIG',
+            show: 'asOverflow',
+            actionCallback: () => this.createSearchConfig(),
+          });
+        }
       }
       return actions
     })
@@ -155,23 +158,27 @@ export class <%= featureClassName %>SearchComponent implements OnInit {
     )
   }
   
-
-  confirmSearchConfig(searchConfig:any){//}: SearchConfig | null {
-    if (searchConfig) {
-      const parameterGroup = Object.keys(this.<%= featurePropertyName %>SearchFormGroup.value);
-      const searchConfigKeys = Object.keys(searchConfig.values);
-      const filteredArray = parameterGroup.filter((value) =>
-        searchConfigKeys.includes(value)
+  searchConfigInfoSelectionChanged(searchConfigInfo: SearchConfigInfo) {
+    if (searchConfigInfo) {
+      this.store.dispatch(
+        ConstructionTaskSearchActions.selectedSearchConfigInfo({
+          searchConfigInfo: searchConfigInfo,
+        })
       );
-      if (filteredArray.length != searchConfigKeys.length) {
-        console.error(
-          'Not all fields can be mapped. Please check for search config migration. Amount of affected fields:',
-          searchConfigKeys.length - filteredArray.length
-        );
-      }
+    } else {
+      this.store.dispatch(
+        ConstructionTaskSearchActions.searchConfigInfoDeselected()
+      );
     }
-    this.store.dispatch(<%= featureClassName %>SearchActions.searchConfigSelected(searchConfig))
   }
+
+   viewModeChanged(viewMode: 'basic' | 'advanced') {
+    this.store.dispatch(
+      ConstructionTaskSearchActions.viewModeChanged({
+        viewMode: viewMode,
+      })
+    );
+   }
 
   onDisplayedColumnsChange(displayedColumns: DataTableColumn[]) {
     this.store.dispatch(<%= featureClassName %>SearchActions.displayedColumnsChanged({displayedColumns}))

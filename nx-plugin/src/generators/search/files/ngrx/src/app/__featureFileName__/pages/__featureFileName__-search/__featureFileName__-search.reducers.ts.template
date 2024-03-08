@@ -12,6 +12,7 @@ export const initialState: <%= featureClassName %>SearchState = {
   displayedColumns: null,
   viewMode: 'basic',
   chartVisible: false,
+  searchConfigEnabled: false,
 };
 
 export const <%= featurePropertyName %>SearchReducer = createReducer(
@@ -42,35 +43,63 @@ export const <%= featurePropertyName %>SearchReducer = createReducer(
     })
   ),
  on(
-    <%= featureClassName %>SearchActions.searchConfigsReceived,
+    <%= featureClassName %>SearchActions.searchConfigInfosReceived,
     (
       state: <%= featureClassName %>SearchState,
-      { searchConfigs }
+      { searchConfigInfos }
     ): <%= featureClassName %>SearchState => ({
       ...state,
-      searchConfigs,
-      selectedSearchConfig: searchConfigs.find(s => s.id === state.selectedSearchConfig?.id) ?? null,
+      searchConfigs: searchConfigInfos,
+      searchConfigEnabled: true,
+      selectedSearchConfig: null,
     })
   ),
   on(
-    <%= featureClassName %>SearchActions.searchConfigsLoadingFailed,
-    (state: <%= featureClassName %>SearchState): <%= featureClassName %>SearchState => ({
+    <%= featureClassName %>SearchActions.searchConfigReceived,
+    (
+      state: ConstructionTaskSearchState,
+      { searchConfig }
+    ): ConstructionTaskSearchState => ({
       ...state,
-      searchConfigs: [],
+      selectedSearchConfig: searchConfig,
     })
   ),
   on(
-    <%= featureClassName %>SearchActions.searchConfigSelected,
+    ConstructionTaskSearchActions.searchConfigInfoDeselected,
+    (state: ConstructionTaskSearchState): ConstructionTaskSearchState => ({
+      ...state,
+      selectedSearchConfig: null,
+    })
+  ),
+  on(
+    <%= featureClassName %>SearchActions.searchConfigReceived,
     (
       state: <%= featureClassName %>SearchState,
       { searchConfig }
     ): <%= featureClassName %>SearchState => ({
       ...state,
-      selectedSearchConfig: searchConfig,
       viewMode: searchConfig?.isAdvanced ? 'advanced' : 'basic',
-      displayedColumns: searchConfig?.columns.length
+      displayedColumns: searchConfig.columns.length
         ? searchConfig.columns
         : state.displayedColumns,
+    })
+  ),
+  on(
+    ConstructionTaskSearchActions.searchConfigCreatedSuccessfully,
+    (
+      state: ConstructionTaskSearchState,
+      { searchConfigInfos }
+    ): ConstructionTaskSearchState => ({
+      ...state,
+      searchConfigs: searchConfigInfos,
+    })
+  ),
+  on(
+    ConstructionTaskSearchActions.searchConfigInfoDeselected,
+    (state: ConstructionTaskSearchState): ConstructionTaskSearchState => ({
+      ...state,
+      results: initialState.results,
+      selectedSearchConfig: initialState.selectedSearchConfig,
     })
   ),
   on(
@@ -110,6 +139,16 @@ export const <%= featurePropertyName %>SearchReducer = createReducer(
     ): <%= featureClassName %>SearchState => ({
       ...state,
       chartVisible: !state.chartVisible,
+    })
+  ),
+  on(
+    ConstructionTaskSearchActions.viewModeChanged,
+    (
+      state: ConstructionTaskSearchState,
+      { viewMode }
+    ): ConstructionTaskSearchState => ({
+      ...state,
+      viewMode: viewMode,
     })
   )
 );

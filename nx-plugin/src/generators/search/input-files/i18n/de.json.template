@@ -13,7 +13,7 @@
         "SHOW_CHART": "Diagramm anzeigen",
         "HIDE_CHART": "Diagramm ausblenden",
         "CREATE_SEARCH_CONFIG": "Suchkonfiguration erstellen",
-        "UPDATE_SEARCH_CONFIG_DIALOG": "Suchkonfiguration aktualisieren",
+        "UPDATE_SEARCH_CONFIG": "Suchkonfiguration aktualisieren",
         "DIALOG_CONFIRM": "Bestätigen",
         "DIALOG_CANCEL": "Abbrechen"
     },

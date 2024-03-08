@@ -58,6 +58,7 @@ export const select<%= featureClassName %>SearchViewModel = createSelector(
   selectDisplayedColumns,
   <%= featurePropertyName %>SearchSelectors.selectViewMode,
   <%= featurePropertyName %>SearchSelectors.selectChartVisible,
+   <%= featurePropertyName %>SearchSelectors.selectSearchConfigEnabled,
   (
     columns,
     searchCriteria, 
@@ -66,7 +67,9 @@ export const select<%= featureClassName %>SearchViewModel = createSelector(
     selectedSearchConfig,
     displayedColumns,
     viewMode,
-    chartVisible): <%= featureClassName %>SearchViewModel => ({
+    chartVisible,
+    searchConfigEnabled,
+    ): <%= featureClassName %>SearchViewModel => ({
     columns,
     searchCriteria,
     results,
@@ -75,6 +78,7 @@ export const select<%= featureClassName %>SearchViewModel = createSelector(
     displayedColumns,
     viewMode,
     chartVisible,
+    searchConfigEnabled
   })
 );
 
@@ -85,13 +89,15 @@ export const selectSearchConfigViewState = createSelector(
   selectDisplayedColumns,
   <%= featurePropertyName %>SearchSelectors.selectViewMode,
   selectSearchCriteria,
+  <%= featurePropertyName %>SearchSelectors.selectSearchConfigEnabled,
   (
     columns,
     searchConfigs,
     selectedSearchConfig,
     displayedColumns,
     viewMode,
-    searchCriteria
+    searchCriteria,
+    searchConfigEnabled,
   ): <%= featureClassName %>SearchConfigState => ({
     columns,
     searchConfigs,
@@ -99,5 +105,6 @@ export const selectSearchConfigViewState = createSelector(
     displayedColumns,
     viewMode,
     searchCriteria,
+    searchConfigEnabled,
   })
 );
