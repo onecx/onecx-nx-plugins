@@ -6,8 +6,9 @@
     (resetted)="resetSearch()"
     [manualBreadcrumbs]="true"
     [actions]="(headerActions$ | async) ?? []"
-    (selectedSearchConfig)="confirmSearchConfig($event)"
+    (selectedSearchConfigChanged)="searchConfigInfoSelectionChanged($event)"
     [searchConfigs]="vm.searchConfigs"
+    (viewModeChanged)="viewModeChanged($event)"
   >
     <form [formGroup]="<%= featurePropertyName %>SearchFormGroup">
       // ACTION S3: Please specify here your desired search criterias, link to documentation; TODO: add info how to handle dates in p-calendar -> https://primeng.org/calendar#api.calendar.props.dateFormat
