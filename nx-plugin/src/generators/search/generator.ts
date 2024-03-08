@@ -627,13 +627,13 @@ components:
           results:
             type: array
             items:
-              $ref: '#/components/schemas/${className}Result'
+              $ref: '#/components/schemas/${className}SearchResult'
           totalNumberOfResults:
             description: Total number of results on the server.
             type: integer
             format: int64
 
-      ${className}Result:
+      ${className}SearchResult:
         type: object
         required:
         - "${propertyName}"

@@ -1,12 +1,12 @@
 import {
   DataTableColumn,
 } from '@onecx/portal-integration-angular';
-import { <%= featureClassName %>Result, SearchConfig, SearchConfigInfo } from 'src/app/shared/generated';
+import { <%= featureClassName %>SearchResult, SearchConfig, SearchConfigInfo } from 'src/app/shared/generated';
 import { <%= featureClassName %>SearchCriteria } from './<%= featureFileName %>-search.parameters';
 
 export interface <%= featureClassName %>SearchState {
   columns: DataTableColumn[];
-  results: <%= featureClassName %>Result[];
+  results: <%= featureClassName %>SearchResult[];
   searchConfigs: SearchConfigInfo[];
   selectedSearchConfig: SearchConfig | null;
   displayedColumns: string[] | null;

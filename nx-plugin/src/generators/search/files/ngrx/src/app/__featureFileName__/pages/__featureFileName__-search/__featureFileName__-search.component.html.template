@@ -6,7 +6,7 @@
     (resetted)="resetSearch()"
     [manualBreadcrumbs]="true"
     [actions]="(headerActions$ | async) ?? []"
-    (selectedSearchConfigChanged)="confirmSearchConfig($event)"
+    (selectedSearchConfigChanged)="searchConfigInfoSelectionChanged($event)"
     [searchConfigs]="vm.searchConfigs"
     (viewModeChanged)="viewModeChanged($event)"
   >

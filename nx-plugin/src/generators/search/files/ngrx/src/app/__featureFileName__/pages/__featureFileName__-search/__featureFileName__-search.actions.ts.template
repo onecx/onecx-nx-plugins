@@ -1,7 +1,7 @@
 import { createActionGroup, emptyProps, props } from '@ngrx/store';
 import { DataTableColumn } from '@onecx/portal-integration-angular';
 import { <%= featureClassName %>SearchCriteria } from './<%= featureFileName %>-search.parameters';
-import { <%= featureClassName %>Result, SearchConfig, SearchConfigInfo, } from '../../../shared/generated';
+import { <%= featureClassName %>SearchResult, SearchConfig, SearchConfigInfo, } from '../../../shared/generated';
 
 
 export const <%= featureClassName %>SearchActions = createActionGroup({
@@ -13,13 +13,10 @@ export const <%= featureClassName %>SearchActions = createActionGroup({
     'Reset button clicked': emptyProps(),
 
     '<%= featureFileName.replace("-"," ") %> search results received': props<{
-      results: <%= featureClassName %>Result[];
+      results: <%= featureClassName %>SearchResult[];
       totalNumberOfResults: number;
     }>(),
     '<%= featureFileName.replace("-"," ") %> search results loading failed': props<{ error: string | null }>(),
-    'Search configs received': props<{
-      searchConfigs: SearchConfig[]
-    }>(),
     'Search config received': props<{
       searchConfig: SearchConfig;
     }>(),
@@ -41,16 +38,13 @@ export const <%= featureClassName %>SearchActions = createActionGroup({
     'Search config updated successfully': props<{
       searchConfigInfos: SearchConfigInfo[];
     }>(),
-    'Search config update failed': emptyProps(),
-    'Search config update cancelled': props<{
+    'Search config update cancelled': emptyProps(),
+    'Search config update failed': props<{
       error: string | null;
     }>(),
 
     'Search config infos received': props<{
       searchConfigInfos: SearchConfigInfo[];
-    }>(),
-    'Search config infos loading failed': props<{
-      error: string | null;
     }>(),
     'Selected search config info': props<{
       searchConfigInfo: SearchConfigInfo;
