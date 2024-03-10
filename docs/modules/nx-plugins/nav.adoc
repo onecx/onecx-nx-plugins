@@ -1,2 +1,0 @@
-* nx-plugins
-** xref:general/index.adoc[General]
