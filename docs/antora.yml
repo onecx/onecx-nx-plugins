@@ -1,3 +1,6 @@
 name: nx-plugins
 title: nx-plugins
 version: latest
+start_page: general:index.adoc
+nav:
+  - modules/nx-plugins/nav.adoc
