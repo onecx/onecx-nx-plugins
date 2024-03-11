@@ -161,20 +161,20 @@ export class <%= featureClassName %>SearchComponent implements OnInit {
   searchConfigInfoSelectionChanged(searchConfigInfo: SearchConfigInfo) {
     if (searchConfigInfo) {
       this.store.dispatch(
-        ConstructionTaskSearchActions.selectedSearchConfigInfo({
+        <%= featureClassName %>SearchActions.selectedSearchConfigInfo({
           searchConfigInfo: searchConfigInfo,
         })
       );
     } else {
       this.store.dispatch(
-        ConstructionTaskSearchActions.searchConfigInfoDeselected()
+        <%= featureClassName %>SearchActions.searchConfigInfoDeselected()
       );
     }
   }
 
    viewModeChanged(viewMode: 'basic' | 'advanced') {
     this.store.dispatch(
-      ConstructionTaskSearchActions.viewModeChanged({
+      <%= featureClassName %>SearchActions.viewModeChanged({
         viewMode: viewMode,
       })
     );

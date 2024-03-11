@@ -109,7 +109,7 @@ updateSearchConfig$ = createEffect(() => {
       ofType(<%= featureClassName %>SearchActions.updateSearchConfigClicked),
       concatLatestFrom(() =>
         this.store.select(
-          constructionTaskSearchSelectors.selectSelectedSearchConfig
+          <%= featurePropertyName %>SearchSelectors.selectSelectedSearchConfig
         )
       ),
       mergeMap(([, selectedSearchConfig]) => {

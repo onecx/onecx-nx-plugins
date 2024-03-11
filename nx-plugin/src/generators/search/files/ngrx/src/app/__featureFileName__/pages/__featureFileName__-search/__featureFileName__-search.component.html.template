@@ -1,4 +1,4 @@
-<ocx-portal-page [helpArticleId]="'<%= featureConstantName %>_SEARCH.HELP_ARTICLE_ID' | translate" *ngrxLet="viewModel$; let vm">
+<ocx-portal-page permission="<%= featureConstantName %>#SEARCH" [helpArticleId]="'<%= featureConstantName %>_SEARCH.HELP_ARTICLE_ID' | translate" *ngrxLet="viewModel$; let vm">
   <ocx-search-header
     [headline]="'<%= featureConstantName %>_SEARCH.HEADER' | translate"
     [subheader]="'<%= featureConstantName %>_SEARCH.SUB_HEADER' | translate"

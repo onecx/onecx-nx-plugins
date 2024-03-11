@@ -1,4 +1,4 @@
-<ocx-portal-page [helpArticleId]="'<%= featureConstantName %>_DETAILS.HELP_ARTICLE_ID' | translate" *ngrxLet="viewModel$; let vm">
+<ocx-portal-page permission="<%= featureConstantName %>#VIEW" [helpArticleId]="'<%= featureConstantName %>_DETAILS.HELP_ARTICLE_ID' | translate" *ngrxLet="viewModel$; let vm">
   <ocx-page-header
     [header]="'<%= featureConstantName %>_DETAILS.HEADER' | translate"
     [subheader]="'<%= featureConstantName %>_DETAILS.SUB_HEADER' | translate"

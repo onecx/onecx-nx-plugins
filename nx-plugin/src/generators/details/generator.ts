@@ -104,6 +104,10 @@ function addFunctionToOpenApi(tree: Tree, options: DetailsGeneratorSchema) {
 paths:
   /${propertyName}/{id}:
     get:
+      x-onecx:
+        permissions:
+          ${propertyName}:
+            - read
       operationId: get${className}ById
       tags:
         - ${className}
@@ -121,12 +125,20 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Get${className}ByIdResponse'
-        400:
-          description: 'Bad request'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetailResponse'
         404:
           description: 'Not Found'
-        500:
-          description: 'Internal Server Error'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetailResponse'
 `
   );
   if (!hasSchemas) {
@@ -220,7 +232,7 @@ function adaptFeatureRoutes(tree: Tree, options: DetailsGeneratorSchema) {
   );
 
   moduleContent =
-    `import { ${className}DetailsComponent } from './pages/${fileName}-details/${fileName}-details.component'` +
+    `import { ${className}DetailsComponent } from './pages/${fileName}-details/${fileName}-details.component';` +
     moduleContent;
   tree.write(routesFilePath, moduleContent);
 }
