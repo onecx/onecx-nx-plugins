@@ -1,3 +1,10 @@
+## [1.1.2](https://github.com/onecx/onecx-nx-plugins/compare/v1.1.1...v1.1.2) (2024-03-11)
+
+
+### Bug Fixes
+
+* remove alwaysRun paramter from installPackagesTask ([#23](https://github.com/onecx/onecx-nx-plugins/issues/23)) ([4471c5e](https://github.com/onecx/onecx-nx-plugins/commit/4471c5e5ad62b5b36c8dad013f2069b43dee8fa2))
+
 ## [1.1.1](https://github.com/onecx/onecx-nx-plugins/compare/v1.1.0...v1.1.1) (2024-03-11)
 
 
