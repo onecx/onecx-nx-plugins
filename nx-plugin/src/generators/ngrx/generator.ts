@@ -59,7 +59,7 @@ export async function ngrxGenerator(
   return async () => {
     await angularGeneratorCallback();
 
-    installPackagesTask(tree);
+    installPackagesTask(tree, true);
 
     const files = tree
       .listChanges()
@@ -74,7 +74,6 @@ export async function ngrxGenerator(
       cwd: tree.root,
       stdio: 'inherit',
     });
-    installPackagesTask(tree);
   };
 }
 
