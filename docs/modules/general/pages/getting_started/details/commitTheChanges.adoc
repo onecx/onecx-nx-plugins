@@ -3,7 +3,7 @@
 * Please commit your changes with the following commit message.
 
 ----
-feat: details added for `* <nameOfTheProduct> *`
+feat: details added for <nameOfTheProduct>
 ----
 
-* Please replace `* <nameOfTheProduct> *` with the real name of your product
+* Please replace _<nameOfTheProduct>_ with the real name of your product

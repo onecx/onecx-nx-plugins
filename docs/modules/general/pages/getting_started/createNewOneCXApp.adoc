@@ -10,11 +10,11 @@ npx <namespaceOfTheGenerator>/create-workspace <flavor> <nameOfTheProduct>
 
 Replace the placeholders with the following values: 
 
-* <namespaceOfTheGenerator>: For the OneCX generator use @onecx. For a project specific generator, ask for the namespace of the generators. 
+* _<namespaceOfTheGenerator>_: For the OneCX generator use @onecx. For a project specific generator, ask for the namespace of the generators. 
 
-* <flavor>: ngrx or angular 
+* _<flavor>_: ngrx or angular 
 
-* <nameOfTheProduct>: The name of the product to create e.g., theme-mgmt 
+* _<nameOfTheProduct>_: The name of the product to create e.g., theme-mgmt 
 
 After running the generator take the following actions: 
 [start=1]

@@ -9,9 +9,9 @@ nx generate <namespaceOfTheGenerator>/nx-plugin:feature <nameOfTheFeature>:
 
 Replace the placeholders with the following values: 
 
-* <namespaceOfTheGenerator>: For the OneCX generator use @onecx. For a project specific generator, ask for the namespace of the generators. 
+* _<namespaceOfTheGenerator>_: For the OneCX generator use @onecx. For a project specific generator, ask for the namespace of the generators. 
 
-* <nameOfTheFeature>: The name of the feature to create e.g., theme 
+* _<nameOfTheFeature>_: The name of the feature to create e.g., theme 
 
 After running the generator, the following actions must be taken: 
 [start=1]
