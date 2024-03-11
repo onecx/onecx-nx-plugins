@@ -117,7 +117,7 @@ export async function angularGenerator(
       cwd: tree.root,
       stdio: 'inherit',
     });
-    installPackagesTask(tree);
+    installPackagesTask(tree, true);
   };
 }
 
