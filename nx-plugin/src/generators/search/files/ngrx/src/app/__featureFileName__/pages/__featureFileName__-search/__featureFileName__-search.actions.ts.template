@@ -12,11 +12,11 @@ export const <%= featureClassName %>SearchActions = createActionGroup({
     }>(),
     'Reset button clicked': emptyProps(),
 
-    '<%= featureFileName.replace("-"," ") %> search results received': props<{
+    '<%= featureFileName.replaceAll("-"," ") %> search results received': props<{
       results: <%= featureClassName %>SearchResult[];
       totalNumberOfResults: number;
     }>(),
-    '<%= featureFileName.replace("-"," ") %> search results loading failed': props<{ error: string | null }>(),
+    '<%= featureFileName.replaceAll("-"," ") %> search results loading failed': props<{ error: string | null }>(),
     'Search config received': props<{
       searchConfig: SearchConfig;
     }>(),

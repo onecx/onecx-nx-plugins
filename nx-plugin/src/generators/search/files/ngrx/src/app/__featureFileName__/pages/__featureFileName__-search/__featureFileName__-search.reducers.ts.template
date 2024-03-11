@@ -57,16 +57,16 @@ export const <%= featurePropertyName %>SearchReducer = createReducer(
   on(
     <%= featureClassName %>SearchActions.searchConfigReceived,
     (
-      state: ConstructionTaskSearchState,
+      state: <%= featureClassName %>SearchState,
       { searchConfig }
-    ): ConstructionTaskSearchState => ({
+    ): <%= featureClassName %>SearchState => ({
       ...state,
       selectedSearchConfig: searchConfig,
     })
   ),
   on(
-    ConstructionTaskSearchActions.searchConfigInfoDeselected,
-    (state: ConstructionTaskSearchState): ConstructionTaskSearchState => ({
+    <%= featureClassName %>SearchActions.searchConfigInfoDeselected,
+    (state: <%= featureClassName %>SearchState): <%= featureClassName %>SearchState => ({
       ...state,
       selectedSearchConfig: null,
     })
@@ -85,18 +85,18 @@ export const <%= featurePropertyName %>SearchReducer = createReducer(
     })
   ),
   on(
-    ConstructionTaskSearchActions.searchConfigCreatedSuccessfully,
+    <%= featureClassName %>SearchActions.searchConfigCreatedSuccessfully,
     (
-      state: ConstructionTaskSearchState,
+      state: <%= featureClassName %>SearchState,
       { searchConfigInfos }
-    ): ConstructionTaskSearchState => ({
+    ): <%= featureClassName %>SearchState => ({
       ...state,
       searchConfigs: searchConfigInfos,
     })
   ),
   on(
-    ConstructionTaskSearchActions.searchConfigInfoDeselected,
-    (state: ConstructionTaskSearchState): ConstructionTaskSearchState => ({
+    <%= featureClassName %>SearchActions.searchConfigInfoDeselected,
+    (state: <%= featureClassName %>SearchState): <%= featureClassName %>SearchState => ({
       ...state,
       results: initialState.results,
       selectedSearchConfig: initialState.selectedSearchConfig,
@@ -142,11 +142,11 @@ export const <%= featurePropertyName %>SearchReducer = createReducer(
     })
   ),
   on(
-    ConstructionTaskSearchActions.viewModeChanged,
+    <%= featureClassName %>SearchActions.viewModeChanged,
     (
-      state: ConstructionTaskSearchState,
+      state: <%= featureClassName %>SearchState,
       { viewMode }
-    ): ConstructionTaskSearchState => ({
+    ): <%= featureClassName %>SearchState => ({
       ...state,
       viewMode: viewMode,
     })

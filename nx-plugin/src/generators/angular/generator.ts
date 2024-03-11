@@ -52,6 +52,7 @@ export async function angularGenerator(
     `${directory}/`,
     {
       ...options,
+      className: names(options.name).className,
       remoteModuleName: names(options.name).className,
       remoteModuleFileName: names(options.name).fileName,
       fileName: names(options.name).fileName,

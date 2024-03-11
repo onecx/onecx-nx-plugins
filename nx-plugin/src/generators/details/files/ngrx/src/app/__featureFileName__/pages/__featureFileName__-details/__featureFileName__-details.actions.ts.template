@@ -4,9 +4,9 @@ import { <%= featureClassName %> } from '../../../shared/generated';
 export const <%= featureClassName %>DetailsActions = createActionGroup({
   source: '<%= featureClassName %>Details',
   events: {
-    '<%= featureFileName.replace("-"," ") %> details received': props<{
+    '<%= featureFileName.replaceAll("-"," ") %> details received': props<{
       details: <%= featureClassName %>;
     }>(),
-    '<%= featureFileName.replace("-"," ") %> details loading failed': props<{ error: string | null }>(),
+    '<%= featureFileName.replaceAll("-"," ") %> details loading failed': props<{ error: string | null }>(),
   },
 });

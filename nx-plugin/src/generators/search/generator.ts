@@ -384,6 +384,10 @@ function addFunctionToOpenApi(tree: Tree, options: SearchGeneratorSchema) {
 paths:
   /${propertyName}/search:
     post:
+      x-onecx:
+        permissions:
+          ${propertyName}:
+            - write
       operationId: search${className}s
       tags:
         - ${className}
@@ -402,11 +406,23 @@ paths:
                 $ref: '#/components/schemas/${className}SearchResponse'
         '400':
           description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetailResponse'
         '500':
-          description: Something went wrong
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetailResponse'
 
   /searchConfig/{configId}:
     put:
+      x-onecx:
+        permissions:
+          ${propertyName}:
+            - write
       tags:
         - SearchConfig
       summary: Updates the search config specified by the configId
@@ -446,6 +462,10 @@ paths:
               schema:
                 $ref: '#/components/schemas/ProblemDetailResponse'
     delete:
+      x-onecx:
+        permissions:
+          ${propertyName}:
+            - delete
       tags:
         - SearchConfig
       summary: Deletes the search config
@@ -475,6 +495,10 @@ paths:
                 $ref: '#/components/schemas/ProblemDetailResponse'
   /searchConfig/infos/{page}:
     get:
+      x-onecx:
+        permissions:
+          ${propertyName}:
+            - read
       tags:
         - SearchConfig
       summary: Gets the search config infos for the specified page.
@@ -542,6 +566,10 @@ paths:
 
   /searchConfig/:
     post:
+      x-onecx:
+        permissions:
+          ${propertyName}:
+            - write
       tags:
         - SearchConfig
       summary: Creates a new search config

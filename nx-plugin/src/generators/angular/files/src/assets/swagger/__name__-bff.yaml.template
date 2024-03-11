@@ -1,6 +1,6 @@
 ---
 openapi: 3.0.3
 info:
-  title: Generated API
+  title: <%= fileName %>-bff
   version: "1.0"
 paths: {}

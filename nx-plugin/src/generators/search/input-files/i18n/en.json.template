@@ -1,7 +1,7 @@
 {
   "<%= featureConstantName %>_SEARCH": {
     "HEADER": "<%= featureClassName %> Search",
-    "SUB_HEADER": "ACTION S5: ADD TRANSLATION",
+    "SUB_HEADER": "Searching and displaying of <%= featureClassName %>",
     "HELP_ARTICLE_ID": "Help Article",
     "EMPTY_RESULTS": "No results.",
     "BREADCRUMB": "Search",
