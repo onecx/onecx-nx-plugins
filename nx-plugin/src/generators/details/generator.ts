@@ -61,7 +61,7 @@ export async function detailsGenerator(
 
   await formatFiles(tree);
   return () => {
-    installPackagesTask(tree);
+    installPackagesTask(tree, true);
     execSync('npm run apigen', {
       cwd: tree.root,
       stdio: 'inherit',

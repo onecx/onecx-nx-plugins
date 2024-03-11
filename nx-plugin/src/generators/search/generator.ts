@@ -71,7 +71,7 @@ export async function searchGenerator(
   spinner.succeed();
 
   return () => {
-    installPackagesTask(tree);
+    installPackagesTask(tree, true);
     execSync('npm run apigen', {
       cwd: tree.root,
       stdio: 'inherit',
