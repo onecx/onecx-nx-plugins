@@ -1,3 +1,12 @@
+## [1.1.0](https://github.com/onecx/onecx-nx-plugins/compare/v1.0.2...v1.1.0) (2024-03-11)
+
+
+### Features
+
+* add the search config to the generator ([#16](https://github.com/onecx/onecx-nx-plugins/issues/16)) ([6122658](https://github.com/onecx/onecx-nx-plugins/commit/612265882aefa6fa7caac4e4900672fdd26ffad3))
+* install packages task ([#17](https://github.com/onecx/onecx-nx-plugins/issues/17)) ([29e2c36](https://github.com/onecx/onecx-nx-plugins/commit/29e2c3634ab0ba662be7e92ab6a734a48b0a4852))
+* skip angular generator in ngrx generator ([#14](https://github.com/onecx/onecx-nx-plugins/issues/14)) ([9ee2928](https://github.com/onecx/onecx-nx-plugins/commit/9ee2928a3c2d0cfb62365cfb9f7d6508d50edd46))
+
 ## [1.0.2](https://github.com/onecx/onecx-nx-plugins/compare/v1.0.1...v1.0.2) (2024-03-06)
 
 
