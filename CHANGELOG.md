@@ -1,3 +1,10 @@
+## [1.1.1](https://github.com/onecx/onecx-nx-plugins/compare/v1.1.0...v1.1.1) (2024-03-11)
+
+
+### Bug Fixes
+
+* install packages task second parameter true ([#22](https://github.com/onecx/onecx-nx-plugins/issues/22)) ([694824c](https://github.com/onecx/onecx-nx-plugins/commit/694824c43d78f164febefb2b28a7cbf926ab0a2f))
+
 ## [1.1.0](https://github.com/onecx/onecx-nx-plugins/compare/v1.0.2...v1.1.0) (2024-03-11)
 
 
