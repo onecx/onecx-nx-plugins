@@ -1,6 +1,14 @@
 === Commit your changes
 
-* Please commit your changes with the following commit message.
+* Please run the following two commands to make sure that the application builds and that the tests are running
+----
+npm run build
+----
+----
+npm run test
+---- 
+
+* Please commit your changes with the following commit message if the build and the tests passed.
 
 ----
 feat: feature added for <nameOfTheProduct>
