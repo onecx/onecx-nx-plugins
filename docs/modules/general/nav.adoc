@@ -1,1 +1,8 @@
-* xref:general:index.adoc[General]
+* Getting Started with the OneCX generator
+** xref:getting_started/createNewOneCXApp.adoc[Create a new OneCX App]
+*** xref:getting_started/createFeatureModule.adoc[Create a feature module]
+*** xref:getting_started/createSearchPage.adoc[Create a search page]
+**** xref:getting_started/search/configureSearchResults.adoc[Configure search results]
+**** xref:getting_started/search/configureSearchCriteria.adoc[Configure search criteria]
+**** xref:getting_started/search/configureResultDiagram.adoc[Configure result diagram]
+*** xref:getting_started/createDetailsPage.adoc[Create details page]

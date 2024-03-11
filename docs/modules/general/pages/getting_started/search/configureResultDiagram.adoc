@@ -1,0 +1,7 @@
+=== Configure the result diagram
+
+By the default the generator creates a diagram that counts the different values in a column and show the results. To make use of this diagram the column that should be displayed has to be selected. This is done by putting the ID of the column into the member diagramColumnId of the search component. 
+
+*Check if you can find the string ACTION somewhere in the output folder and take the action described there. It is not necessarily the case that there is an action to take.*
+
+*Commit the changes.* 

@@ -1,0 +1,22 @@
+The fastest way to create a new OneCX app is to use the OneCX generator. Some projects have their own generator based on the OneCX generator. It should be clarified before starting if this is the case for the project the app is generated for. 
+
+The generator supports two flavors of projects angular with and without NgRx. It is recommended to use the NgRx flavor because it leads to better structured projects and currently the support in the generator is better for the NgRx flavor.  
+
+To run the generator, execute the following command: 
+
+npx <namespaceOfTheGenerator>/create-workspace <flavor> <nameOfTheProduct> 
+
+
+Replace the placeholders with the following values: 
+
+* <namespaceOfTheGenerator>: For the OneCX generator use @onecx. For a project specific generator, ask for the namespace of the generators. 
+
+* <flavor>: ngrx or angular 
+
+* <nameOfTheProduct>: The name of the product to create e.g., theme-mgmt 
+
+After running the generator take the following actions: 
+
+* Check if you can find the string ACTION somewhere in the output folder and take the action described there. It is not necessarily the case that there is an action to take. 
+
+* Commit the content of the folder that was created to your repository. 

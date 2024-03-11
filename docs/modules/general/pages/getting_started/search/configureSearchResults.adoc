@@ -1,0 +1,16 @@
+=== Configure the search results. 
+To configure the search results, the following action must be taken. 
+
+* The <FeatureName>SearchResult data structure in the BFF yaml must be adapted. 
+
+** All the data that should be displayed in the results must be in that data structure either on top-level or in sub data structures. 
+
+** The data should be as minimal as possible to not create to much load to the backend and DB. 
+
+* The enums must be mapped to translation keys. 
+
+** TODO 
+
+* The column mappings must be defined. 
+
+** TODO: Takeover from Annikas draft 

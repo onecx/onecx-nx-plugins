@@ -1,0 +1,16 @@
+=== Create a search page
+The fastest way to create a new search page in a feature module is to use the OneCX generator. Some projects have their own generator based on the OneCX generator. It should be clarified before starting if this is the case for the project the app is generated for. 
+
+To run the generator, execute the following command: 
+
+nx generate <namespaceOfTheGenerator>/nx-plugin:search <nameOfTheFeature>: 
+
+ 
+
+Replace the placeholders with the following values: 
+
+* <namespaceOfTheGenerator>: For the OneCX generator use @onecx. For a project specific generator, ask for the namespace of the generators. 
+
+* <nameOfTheFeature>: The name the feature the search page should be created in e.g., theme 
+
+After running the generator, the following actions must be taken: 

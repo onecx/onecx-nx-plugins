@@ -1,0 +1,20 @@
+=== Configure the search criteria and parameters. 
+To configure the search results, the following action must be taken, 
+
+* The parameters of the search endpoint in the BFF yaml must be adapted  
+
+** TODO: Takeover from Annikas draft 
+
+* The mapping of the URL parameters must be configured. 
+
+** TODO: Takeover from Annikas draft 
+
+** TODO: Add the examples currently commented out in the generator 
+
+* The input fields must be created. 
+
+** TODO: Takeover from Annikas draft 
+
+** TODO: Add examples for Calendar, Dropdown,… 
+
+** TODO: Add info how to handle basic and advanced fields 
