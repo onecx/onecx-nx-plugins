@@ -74,6 +74,7 @@ export async function ngrxGenerator(
       cwd: tree.root,
       stdio: 'inherit',
     });
+    installPackagesTask(tree);
   };
 }
 
