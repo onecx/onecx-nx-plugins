@@ -1,0 +1,9 @@
+=== Commit your changes
+
+* Please commit your changes with the following commit message.
+
+----
+feat: search added for `* <nameOfTheProduct> *`
+----
+
+* Please replace `* <nameOfTheProduct> *` with the real name of your product

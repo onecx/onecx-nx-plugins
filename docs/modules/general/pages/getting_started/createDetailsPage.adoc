@@ -3,24 +3,21 @@ The fastest way to create a new details page in a feature module is to use the O
 
 To run the generator, execute the following command: 
 
+----
 nx generate <namespaceOfTheGenerator>/nx-plugin:details <nameOfTheFeature>: 
-
- 
+----
 
 Replace the placeholders with the following values: 
 
-* <namespaceOfTheGenerator>: For the OneCX generator use @onecx. For a project specific generator, ask for the namespace of the generators. 
+* `* <namespaceOfTheGenerator> *`: For the OneCX generator use @onecx. For a project specific generator, ask for the namespace of the generators. 
 
 * <nameOfTheFeature>: The name the feature the details page should be created in e.g., theme 
 
 After running the generator, the following actions must be taken: 
 
-*The detail data that is not loaded dynamically must be added to the Get<featureName>ByIdResponse data structure or its sub data structures*
-
-*The core data must be added to the header of the details page*
-
-*The rest of the data must be added to the body of the details page*
-
-*Check if you can find the string ACTION somewhere in the output folder and take the action described there. It is not necessarily the case that there is an action to take.*
-
-*Commit the changes.*
+[start=1]
+. xref:details/addNotDynamicallyLoadedDataToResponse.adoc[Add not dynamically loaded data to response]
+. xref:details/addCoreDataToDetailsPageHeader.adoc[Add core data to details page header]
+. xref:details/addRestOfTheDataToBody.adoc[Add the rest of the data to the body]
+. xref:details/checkForFurtherActions.adoc[Check for further actions]
+. xref:details/commitTheChanges.adoc[Commit the changes]

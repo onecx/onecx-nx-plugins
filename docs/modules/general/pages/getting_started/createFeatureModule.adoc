@@ -14,7 +14,6 @@ Replace the placeholders with the following values:
 * <nameOfTheFeature>: The name of the feature to create e.g., theme 
 
 After running the generator, the following actions must be taken: 
-
-* Check if you can find the string ACTION somewhere in the output folder and take the action described there. It is not necessarily the case that there is an action to take. 
-
-* Commit the changes. 
+[start=1]
+. xref:feature/checkForFurtherActions.adoc[Check for further actions]
+. xref:feature/commitTheChanges.adoc[Commit the changes]
