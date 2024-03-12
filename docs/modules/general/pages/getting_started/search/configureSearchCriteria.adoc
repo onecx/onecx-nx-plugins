@@ -13,8 +13,72 @@ To configure the search results, the following action must be taken,
 
 * The input fields must be created. 
 
-** TODO: Takeover from Annikas draft 
+*Where this snippet can be found*: <feature>-search.component.html. :
+[subs=+macros]
 
-** TODO: Add examples for Calendar, Dropdown,… 
+----
+ <form [formGroup]="criteriaGroup">
+      <div class="grid mt-0 p-fluid">
+        <div class="col-12 md:col-3">
+          <span class="p-float-label">
+           // PLACE YOUR INPUT FIELD HERE
+          </span>
+        </div>
+        ....
+----
 
-** TODO: Add info how to handle basic and advanced fields 
+* Examples for different fields
+** Example for text input field
+*** Remove // PLACE YOUR INPUT FIELD HERE and paste the following code
+
+----
+    <input
+      id="id"
+      pInputText
+      type="number"
+      formControlName="id"
+      class="p-inputtext p-component"
+      [ngModel]="vm.searchCriteria.id"
+    />
+    <label for="taskId">{{
+      'CONSTRUCTION_TASK_SEARCH.CRITERIA.ID' | translate
+    }}</label>
+----
+
+** Example for calendar input field
+*** Remove // PLACE YOUR INPUT FIELD HERE and paste the following code
+----
+    <p-calendar
+      id="endDate"
+      pInputDate
+      type="text"
+      appendTo="body"
+      formControlName="endDate"
+    ></p-calendar>
+    <label for="endDate">{{
+      'YOUR_PRODUCT.END_DATE' | translate
+    }}</label>
+----
+
+** Example for dropdown
+*** Remove // PLACE YOUR INPUT FIELD HERE and paste the following code
+----
+ <p-multiSelect [options]="dropdownOptions" formControlName="selectedOptions" optionLabel="name" placeholder="Select Options"></p-multiSelect>
+----
+** Directive *ocxAdvanced
+** The directive *ocxAdvanced indicates if a field belongs to the basic or the advanced mode. The mode can be toggled via a button in the search header.
+The directive *ocxAdvanced will be added to the div.
+
+----
+ <div *ocxAdvanced class="col-12 md:col-3">
+          <span class="p-float-label">
+          // INSERT your input field HERE
+          </span>
+  </div>
+----
+
+How to handle basic and advanced fields:
+// TODO: Add this information here.
+
+*HINT*: Please remove the "ACTION" comment after solving this issue
+
