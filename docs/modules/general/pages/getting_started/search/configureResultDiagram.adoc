@@ -1,3 +1,18 @@
 === Configure the result diagram
 
 By the default the generator creates a diagram that counts the different values in a column and show the results. To make use of this diagram the column that should be displayed has to be selected. This is done by putting the ID of the column into the member diagramColumnId of the search component. 
+
+
+=== ACTION S4: Please select the column to be displayed
+*Where this snippet can be found*: <feature>-search.component.html. :
+[subs=+macros]
+----
+    // ACTION: Please select the column to be displayed
+     // columnId = 'id';
+    // column = this.columns.find((e) => e.id === this.columnId);
+        ....
+----
+Please comment in the two lines of code and specify the columnId which results should be displayed in the visual diagram component. The diagram component shows the distribution of data of the selected column.
+
+
+*HINT*: Please remove the "ACTION" comment after solving this issue

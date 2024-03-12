@@ -1,18 +1,68 @@
 === Configure the search criteria and parameters. 
-To configure the search results, the following action must be taken, 
+To configure the search results, the following action must be taken.
+// TODO: Abklären:  The mapping of the URL parameters must be configured. 
 
-* The parameters of the search endpoint in the BFF yaml must be adapted  
+=== ACTION S1: Define search results columns
 
-** TODO: Takeover from Annikas draft 
+The column mappings must be defined. 
 
-* The mapping of the URL parameters must be configured. 
+*Where this snippet can be found*: <feature>-search.component.ts. :
 
-** TODO: Takeover from Annikas draft 
+[subs=+macros]
+----
+export const <%= featurePropertyName %>SearchColumns = [
+      {
+      columnType: ColumnType.STANDARD,
+      id: 'id',
+      nameKey: 'TRANSLATION_STRING',
+      filterable: true,
+      sortable: true,
+      predefinedGroupKeys: [
+        'FEATURE_SEARCH.PREDEFINED_GROUP.DEFAULT',
+        'FEATURE_SEARCH.PREDEFINED_GROUP.EXTENDED',
+        'FEATURE_SEARCH.PREDEFINED_GROUP.FULL',
+      ],
+    },
+]
+----
+Explanation of the properties:
 
-** TODO: Add the examples currently commented out in the generator 
+**	The columnType defines the type of the column. The following column types are available:
+[subs=+macros]
+----
+export const enum ColumnType {
+  STRING = 'STRING',
+  NUMBER = 'NUMBER',
+  DATE = 'DATE',
+  RELATIVE_DATE = 'RELATIVE_DATE',
+  TRANSLATION_KEY = 'TRANSLATION_KEY',
+}
+----
+** The property 'id' provides the property of the column
+* The property 'nameKey' provides the translation string. Furthermore, the translation needs to be added to the de.json and en.json file.
+* The property 'filterable' indicates if the column is filterable
+* The property 'sortable' indicates if the column is sortable
+* The property 'predefinedGroupKeys' defines in which group sets the following column is available. Furthermore, the predefinedGroups can be selected in a dropdown on top of the search results table. If you want that your searchColumn only belongs to your default column group, then only add  'FEATURE_SEARCH.PREDEFINED_GROUP.DEFAULT'
 
-* The input fields must be created. 
 
+*HINT*: Please remove the "ACTION" comment after solving this issue
+
+
+
+=== ACTION S2: Please define the members for your <%= featurePropertyName %>SearchCriteriasSchema here
+
+*Where this snippet can be found*: <feature>-search.parameters.ts. :
+[subs=+macros]
+
+----
+    // Here you can add an additional transform to e.g. convert to array of enum
+----
+
+*HINT*: Please remove the "ACTION" comment after solving this issue
+
+=== ACTION S3: Please specify here your desired search criterias, link to documentation
+ TODO: add info how to handle dates in p-calendar -> https://primeng.org/calendar#api.calendar.props.dateFormat
+The input fields must be added.
 *Where this snippet can be found*: <feature>-search.component.html. :
 [subs=+macros]
 
@@ -81,4 +131,9 @@ How to handle basic and advanced fields:
 // TODO: Add this information here.
 
 *HINT*: Please remove the "ACTION" comment after solving this issue
+
+=== ACTION S5: ADD TRANSLATION
+
+*Where this snippet can be found*: de.json / en.json  :
+Please add the missing translations
 
