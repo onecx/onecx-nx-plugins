@@ -1,0 +1,14 @@
+=== Add core data to the details page header
+The core data must be added to the header of the details page 
+
+=== ACTION D1: Add header values here
+*Where this snippet can be found*: <feature>-details.component.ts :
+[subs=+macros]
+----
+  headerLabels: ObjectDetailItem[] = [
+      //ACTION D1: Add header values here
+    ];
+----
+
+*HINT*: Please remove the "ACTION" comment after solving this issue
+

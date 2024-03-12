@@ -1,0 +1,76 @@
+=== Configure the search results. 
+To configure the search results, the following actions must be taken. 
+
+=== ACTION S5: ADD TRANSLATION
+
+*Where this snippet can be found*: de.json / en.json  :
+Please add the missing translations
+
+*HINT*: Please remove the "ACTION" comment after solving this issue
+
+=== ACTION S6: Here you can create a mapping of the items and their corresponding translation strings
+
+*Where this snippet can be found*: <feature>-search.selectors.ts :
+[subs=+macros]
+----
+export const selectResults = createSelector(
+  <%= featurePropertyName %>SearchSelectors.selectResults,
+  (results): RowListGridData[] => {
+    return results.map((item) => ({
+      id: item.<%= featurePropertyName %>.id,
+      imagePath: '',
+      ...item,
+      // ACTION S6: Here you can create a mapping of the items and their corresponding translation strings
+    }));
+  }
+);
+----
+
+*HINT*: Please remove the "ACTION" comment after solving this issue
+
+=== ACTION S7 Add additional configuration of the group here if needed
+
+*Where this snippet can be found*: <feature>-search.component.ts :
+[subs=+macros]
+----
+  public <%= featurePropertyName %>SearchFormGroup: FormGroup = this.formBuilder.group(
+    {
+      ...Object.fromEntries(
+        <%= featurePropertyName %>SearchCriteriasSchema
+          .keyof()
+          .options.map((k) => [k, null])
+      ) as Record<keyof <%= featureClassName %>SearchCriteria, unknown>,
+      // ACTION S7: Add additional configuration of the group here if needed
+    } satisfies Record<keyof <%= featureClassName %>SearchCriteria, unknown>,
+  );
+----
+
+*HINT*: Please remove the "ACTION" comment after solving this issue
+
+=== ACTION S8: Add additional properties here
+
+* The <FeatureName>SearchResult data structure in the BFF yaml must be adapted. 
+
+** All the data that should be displayed in the results must be in that data structure either on top-level or in sub data structures. 
+
+** The data should be as minimal as possible to not create to much load to the backend and DB. 
+
+**  The parameters of the search endpoint in the BFF yaml must be adapted
+
+*Where this snippet can be found*: <feature>-bff.yaml. :
+
+----
+<Feature>SearchRequest:
+      type: object
+      properties:
+        limit:
+          type: integer
+          maximum: 2500
+        id:
+          type: integer
+          format: int64
+        # ACTION S8: add additional properties here
+----
+Here you can add additional properties which you need for your <FeatureSearchRequest> / <FeatureSearchResult>, e.g. status, creationDate ...
+
+*HINT*: Please remove the "ACTION" comment after solving this issue

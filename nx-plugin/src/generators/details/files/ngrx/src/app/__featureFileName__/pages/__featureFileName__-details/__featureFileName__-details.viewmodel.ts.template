@@ -2,5 +2,4 @@ import { <%= featureClassName %> } from '../../../shared/generated';
 
 export interface <%= featureClassName %>DetailsViewModel {
     details: <%= featureClassName %> | undefined
-    //ACTION D2: add sub-viewmodel interface for each tab in details and add it here
 }

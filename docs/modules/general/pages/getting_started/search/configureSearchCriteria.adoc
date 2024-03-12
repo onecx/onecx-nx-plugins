@@ -1,0 +1,137 @@
+=== Configure the search criteria and parameters. 
+To configure the search results, the following action must be taken.
+// TODO: Provide explanation about: The mapping of the URL parameters must be configured. 
+
+=== ACTION S1: Define search results columns
+
+The column mappings must be defined. 
+
+*Where this snippet can be found*: <feature>-search.component.ts. :
+
+[subs=+macros]
+----
+export const <%= featurePropertyName %>SearchColumns = [
+      {
+      columnType: ColumnType.STANDARD,
+      id: 'id',
+      nameKey: 'TRANSLATION_STRING',
+      filterable: true,
+      sortable: true,
+      predefinedGroupKeys: [
+        'FEATURE_SEARCH.PREDEFINED_GROUP.DEFAULT',
+        'FEATURE_SEARCH.PREDEFINED_GROUP.EXTENDED',
+        'FEATURE_SEARCH.PREDEFINED_GROUP.FULL',
+      ],
+    },
+]
+----
+Explanation of the properties:
+
+**	The columnType defines the type of the column. The following column types are available:
+[subs=+macros]
+----
+export const enum ColumnType {
+  STRING = 'STRING',
+  NUMBER = 'NUMBER',
+  DATE = 'DATE',
+  RELATIVE_DATE = 'RELATIVE_DATE',
+  TRANSLATION_KEY = 'TRANSLATION_KEY',
+}
+----
+** The property 'id' provides the property of the column
+* The property 'nameKey' provides the translation string. Furthermore, the translation needs to be added to the de.json and en.json file.
+* The property 'filterable' indicates if the column is filterable
+* The property 'sortable' indicates if the column is sortable
+* The property 'predefinedGroupKeys' defines in which group sets the following column is available. Furthermore, the predefinedGroups can be selected in a dropdown on top of the search results table. If you want that your searchColumn only belongs to your default column group, then only add  'FEATURE_SEARCH.PREDEFINED_GROUP.DEFAULT'
+
+
+*HINT*: Please remove the "ACTION" comment after solving this issue
+
+
+
+=== ACTION S2: Please define the members for your <%= featurePropertyName %>SearchCriteriasSchema here
+
+*Where this snippet can be found*: <feature>-search.parameters.ts. :
+[subs=+macros]
+
+----
+    // Here you can add an additional transform to e.g. convert to array of enum
+----
+
+*HINT*: Please remove the "ACTION" comment after solving this issue
+
+=== ACTION S3: Please specify here your desired search criterias, link to documentation
+// TODO: add info how to handle dates in p-calendar -> https://primeng.org/calendar#api.calendar.props.dateFormat
+The input fields must be added.
+*Where this snippet can be found*: <feature>-search.component.html. :
+[subs=+macros]
+
+----
+ <form [formGroup]="criteriaGroup">
+      <div class="grid mt-0 p-fluid">
+        <div class="col-12 md:col-3">
+          <span class="p-float-label">
+           // PLACE YOUR INPUT FIELD HERE
+          </span>
+        </div>
+        ....
+----
+
+* Examples for different fields
+** Example for text input field
+*** Remove // PLACE YOUR INPUT FIELD HERE and paste the following code
+
+----
+    <input
+      id="id"
+      pInputText
+      type="number"
+      formControlName="id"
+      class="p-inputtext p-component"
+      [ngModel]="vm.searchCriteria.id"
+    />
+    <label for="taskId">{{
+      'CONSTRUCTION_TASK_SEARCH.CRITERIA.ID' | translate
+    }}</label>
+----
+
+** Example for calendar input field
+*** Remove // PLACE YOUR INPUT FIELD HERE and paste the following code
+----
+    <p-calendar
+      id="endDate"
+      pInputDate
+      type="text"
+      appendTo="body"
+      formControlName="endDate"
+    ></p-calendar>
+    <label for="endDate">{{
+      'YOUR_PRODUCT.END_DATE' | translate
+    }}</label>
+----
+
+** Example for dropdown
+*** Remove // PLACE YOUR INPUT FIELD HERE and paste the following code
+----
+ <p-multiSelect [options]="dropdownOptions" formControlName="selectedOptions" optionLabel="name" placeholder="Select Options"></p-multiSelect>
+----
+** Directive *ocxAdvanced
+** The directive *ocxAdvanced indicates if a field belongs to the basic or the advanced mode. The mode can be toggled via a button in the search header.
+The directive *ocxAdvanced will be added to the div.
+
+----
+ <div *ocxAdvanced class="col-12 md:col-3">
+          <span class="p-float-label">
+          // INSERT your input field HERE
+          </span>
+  </div>
+----
+The information if a field belongs to the basic or advanced view will be added to the <%= featureClassName %>SearchViewModel and the information is saved in the member 'viewMode'
+
+*HINT*: Please remove the "ACTION" comment after solving this issue
+
+=== ACTION S5: ADD TRANSLATION
+
+*Where this snippet can be found*: de.json / en.json  :
+Please add the missing translations
+

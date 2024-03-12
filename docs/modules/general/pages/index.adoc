@@ -1,1 +1,5 @@
-Test
+With the OneCX generator you can develop a new application. And in this generated application, a feature modules, a search page and a details page can be added.
+
+To get started we recommend you to visit:
+
+* xref:getting_started/createNewOneCXApp.adoc[Create a new OneCX application]
