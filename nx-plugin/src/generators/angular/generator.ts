@@ -29,7 +29,7 @@ export async function angularGenerator(
   addDependenciesToPackageJson(
     tree,
     { '@angular/core': '^15.2.7' },
-    { '@angular-devkit/build-angular': '^15.2.7', typescript: '~4.9.4' }
+    { '@angular-devkit/build-angular': '^15.2.7', typescript: '~4.9.4', 'js-yaml': '^4.1.0' }
   );
 
   const applicationGeneratorCallback = await applicationGenerator(tree, {
@@ -52,6 +52,7 @@ export async function angularGenerator(
     `${directory}/`,
     {
       ...options,
+      className: names(options.name).className,
       remoteModuleName: names(options.name).className,
       remoteModuleFileName: names(options.name).fileName,
       fileName: names(options.name).fileName,
@@ -116,6 +117,7 @@ export async function angularGenerator(
       cwd: tree.root,
       stdio: 'inherit',
     });
+    installPackagesTask(tree, true);
   };
 }
 

@@ -19,7 +19,11 @@ export async function ngrxGenerator(
   options: NgrxGeneratorSchema
 ): Promise<GeneratorCallback> {
   const directory = '.';
-  const angularGeneratorCallback = await angularGenerator(tree, options);
+  const angularGeneratorCallback = options.skipInitAngular
+    ? () => {
+        // empty do nothing
+      }
+    : await angularGenerator(tree, options);
 
   const spinner = ora('Adding NgRx').start();
   generateFiles(
@@ -55,7 +59,7 @@ export async function ngrxGenerator(
   return async () => {
     await angularGeneratorCallback();
 
-    installPackagesTask(tree);
+    installPackagesTask(tree, true);
 
     const files = tree
       .listChanges()

@@ -2,9 +2,8 @@ import { execSync } from 'child_process';
 import { join, dirname } from 'path';
 import { mkdirSync, rmSync } from 'fs';
 
-//TODO: change to test-project and test-feature
-const projectName = 'constr-task-mgmt';
-const featureName = 'construction-task';
+const projectName = 'test-project';
+const featureName = 'test-feature';
 describe('nx-plugin', () => {
   let projectDirectory: string;
 

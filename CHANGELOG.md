@@ -1,3 +1,26 @@
+## [1.1.2](https://github.com/onecx/onecx-nx-plugins/compare/v1.1.1...v1.1.2) (2024-03-11)
+
+
+### Bug Fixes
+
+* remove alwaysRun paramter from installPackagesTask ([#23](https://github.com/onecx/onecx-nx-plugins/issues/23)) ([4471c5e](https://github.com/onecx/onecx-nx-plugins/commit/4471c5e5ad62b5b36c8dad013f2069b43dee8fa2))
+
+## [1.1.1](https://github.com/onecx/onecx-nx-plugins/compare/v1.1.0...v1.1.1) (2024-03-11)
+
+
+### Bug Fixes
+
+* install packages task second parameter true ([#22](https://github.com/onecx/onecx-nx-plugins/issues/22)) ([694824c](https://github.com/onecx/onecx-nx-plugins/commit/694824c43d78f164febefb2b28a7cbf926ab0a2f))
+
+## [1.1.0](https://github.com/onecx/onecx-nx-plugins/compare/v1.0.2...v1.1.0) (2024-03-11)
+
+
+### Features
+
+* add the search config to the generator ([#16](https://github.com/onecx/onecx-nx-plugins/issues/16)) ([6122658](https://github.com/onecx/onecx-nx-plugins/commit/612265882aefa6fa7caac4e4900672fdd26ffad3))
+* install packages task ([#17](https://github.com/onecx/onecx-nx-plugins/issues/17)) ([29e2c36](https://github.com/onecx/onecx-nx-plugins/commit/29e2c3634ab0ba662be7e92ab6a734a48b0a4852))
+* skip angular generator in ngrx generator ([#14](https://github.com/onecx/onecx-nx-plugins/issues/14)) ([9ee2928](https://github.com/onecx/onecx-nx-plugins/commit/9ee2928a3c2d0cfb62365cfb9f7d6508d50edd46))
+
 ## [1.0.2](https://github.com/onecx/onecx-nx-plugins/compare/v1.0.1...v1.0.2) (2024-03-06)
 
 
