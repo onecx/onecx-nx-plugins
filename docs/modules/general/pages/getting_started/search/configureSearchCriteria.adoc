@@ -1,6 +1,6 @@
 === Configure the search criteria and parameters. 
 To configure the search results, the following action must be taken.
-// TODO: Abklären:  The mapping of the URL parameters must be configured. 
+// TODO: Provide explanation about: The mapping of the URL parameters must be configured. 
 
 === ACTION S1: Define search results columns
 
@@ -61,7 +61,7 @@ export const enum ColumnType {
 *HINT*: Please remove the "ACTION" comment after solving this issue
 
 === ACTION S3: Please specify here your desired search criterias, link to documentation
- TODO: add info how to handle dates in p-calendar -> https://primeng.org/calendar#api.calendar.props.dateFormat
+// TODO: add info how to handle dates in p-calendar -> https://primeng.org/calendar#api.calendar.props.dateFormat
 The input fields must be added.
 *Where this snippet can be found*: <feature>-search.component.html. :
 [subs=+macros]
@@ -126,9 +126,7 @@ The directive *ocxAdvanced will be added to the div.
           </span>
   </div>
 ----
-
-How to handle basic and advanced fields:
-// TODO: Add this information here.
+The information if a field belongs to the basic or advanced view will be added to the <%= featureClassName %>SearchViewModel and the information is saved in the member 'viewMode'
 
 *HINT*: Please remove the "ACTION" comment after solving this issue
 

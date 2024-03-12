@@ -1,6 +1,5 @@
 === Configure the search results. 
 To configure the search results, the following actions must be taken. 
-// TODO: Abklären:  The enums must be mapped to translation keys. 
 
 === ACTION S5: ADD TRANSLATION
 

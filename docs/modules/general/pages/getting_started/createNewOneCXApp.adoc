@@ -12,7 +12,6 @@ npx <namespaceOfTheGenerator>/create-workspace <flavor> <nameOfTheProduct>
 npm install
 ----
 
-// TODO: add here the other 3 missing commands
 Replace the placeholders with the following values: 
 
 * _<namespaceOfTheGenerator>_: For the OneCX generator use @onecx. For a project specific generator, ask for the namespace of the generators. 
