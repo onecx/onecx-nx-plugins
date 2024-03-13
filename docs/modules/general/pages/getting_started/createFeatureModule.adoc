@@ -15,5 +15,5 @@ Replace the placeholders with the following values:
 
 After running the generator, the following actions must be taken: 
 [start=1]
-. xref:feature/checkForFurtherActions.adoc[Check for further actions]
-. xref:feature/commitTheChanges.adoc[Commit the changes]
+. xref:getting_started/feature/checkForFurtherActions.adoc[Check for further actions]
+. xref:getting_started/feature/commitTheChanges.adoc[Commit the changes]
