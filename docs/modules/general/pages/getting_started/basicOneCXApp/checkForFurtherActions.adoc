@@ -1,2 +1,2 @@
 === Check for further ACTIONS
-Check if you can find the string ACTION somewhere in the output folder and take the action described there. It is not necessarily the case that there is an action to take. 
+Please check if the string 'ACTION' is present in any of the files within the output folder, and if it is, follow the instructions described therein. Note that there may not necessarily be an action required.
