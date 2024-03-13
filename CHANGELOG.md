@@ -1,3 +1,25 @@
+## [1.2.0](https://github.com/onecx/onecx-nx-plugins/compare/v1.1.2...v1.2.0) (2024-03-13)
+
+
+### Features
+
+* ACTIONS added for search ([71cd916](https://github.com/onecx/onecx-nx-plugins/commit/71cd9164d21aeafa801dce4bbf78725cd143d835))
+* add documentation for specification ([0d5f029](https://github.com/onecx/onecx-nx-plugins/commit/0d5f029dc431d8a79218ee7941f95bf4e8b73f04))
+* add npm i command ([1b64f76](https://github.com/onecx/onecx-nx-plugins/commit/1b64f76f5e2b350ddd446cb2adc05c92f5e02769))
+* final changes ([a71dcc3](https://github.com/onecx/onecx-nx-plugins/commit/a71dcc3b4503bb564c8f57ef0c9acade11fd5a1b))
+* improved styling and ([8035b44](https://github.com/onecx/onecx-nx-plugins/commit/8035b440d5cf1d558a503767ef439540ba06363e))
+* initial version of docs ([91c51ff](https://github.com/onecx/onecx-nx-plugins/commit/91c51ffd9a4b466cf8002e62381b3f2620094bdd))
+* run build and run test before committing ([05de618](https://github.com/onecx/onecx-nx-plugins/commit/05de6185ed937b114120acc536d9a92879f9c19a))
+
+
+### Bug Fixes
+
+* change Result back to SearchResult ([#28](https://github.com/onecx/onecx-nx-plugins/issues/28)) ([eea553c](https://github.com/onecx/onecx-nx-plugins/commit/eea553c50e2e3c85e0b4a86c87df35abfc5234ed))
+* folder structure ([3657902](https://github.com/onecx/onecx-nx-plugins/commit/3657902accdeb269c452e5aa3daaf1926793a002))
+* folder structure and links ([#27](https://github.com/onecx/onecx-nx-plugins/issues/27)) ([b2aeb42](https://github.com/onecx/onecx-nx-plugins/commit/b2aeb4282a71b811ebd0a3527e8c4d60050ec01f))
+* making multiple feature module possible ([d16bc9b](https://github.com/onecx/onecx-nx-plugins/commit/d16bc9bf3f84c7bc568c06bd12fa032f3bec8705))
+* smaller fixes ([8415798](https://github.com/onecx/onecx-nx-plugins/commit/8415798b5b8f1a4c90c893fc82a5a3a8459754fd))
+
 ## [1.1.2](https://github.com/onecx/onecx-nx-plugins/compare/v1.1.1...v1.1.2) (2024-03-11)
 
 
