@@ -376,47 +376,10 @@ function addFunctionToOpenApi(tree: Tree, options: SearchGeneratorSchema) {
   const hasSchemas = bffOpenApiContent.includes('schemas:');
   const hasEntitySchema =
     hasSchemas && bffOpenApiContent.includes(`${className}:`);
+  const hasSearchConfigSchema =
+    hasSchemas && bffOpenApiContent.includes(`SearchConfig:`);
 
-  //TODO: schema for error cases
-  bffOpenApiContent = bffOpenApiContent.replace(`paths: {}`, `paths:`).replace(
-    `paths:`,
-    `
-paths:
-  /${propertyName}/search:
-    post:
-      x-onecx:
-        permissions:
-          ${propertyName}:
-            - write
-      operationId: search${className}s
-      tags:
-        - ${className}
-      description: This operation performs a search based on provided search criteria. Search for ${propertyName} results.
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/${className}SearchRequest'
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/${className}SearchResponse'
-        '400':
-          description: Bad request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetailResponse'
-        '500':
-          description: Internal Server Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetailResponse'
-
+  let searchConfigEndpoints = `
   /searchConfig/{configId}:
     put:
       x-onecx:
@@ -601,6 +564,41 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ProblemDetailResponse'
+  `;
+
+  if (hasSearchConfigSchema) {
+    searchConfigEndpoints = '';
+  }
+
+  bffOpenApiContent = bffOpenApiContent.replace(`paths: {}`, `paths:`).replace(
+    `paths:`,
+    `
+paths:
+  /${propertyName}/search:
+    post:
+      operationId: search${className}s
+      tags:
+        - ${className}
+      description: This operation performs a search based on provided search criteria. Search for ${propertyName} results.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/${className}SearchRequest'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/${className}SearchResponse'
+        '400':
+          description: Bad request
+        '500':
+          description: Something went wrong
+
+  ${searchConfigEndpoints}
+
 `
   );
   if (!hasSchemas) {
@@ -628,50 +626,7 @@ components:
     entitySchema = '';
   }
 
-  bffOpenApiContent = bffOpenApiContent.replace(
-    `
-    schemas:`,
-    `
-    schemas:
-      ${entitySchema}
-
-      ${className}SearchRequest:
-        type: object
-        properties:
-          limit:
-            type: integer
-            maximum: 2500
-          id:
-            type: integer
-            format: int64
-          changeMe:
-            type: string
-          # ACTION S8: add additional properties here
-
-      ${className}SearchResponse:
-        type: object
-        required:
-        - "results"
-        - "totalNumberOfResults"
-        properties:
-          results:
-            type: array
-            items:
-              $ref: '#/components/schemas/${className}SearchResult'
-          totalNumberOfResults:
-            description: Total number of results on the server.
-            type: integer
-            format: int64
-
-      ${className}SearchResult:
-        type: object
-        required:
-        - "${propertyName}"
-        properties:
-          ${propertyName}:
-            $ref: '#/components/schemas/${className}'
-          # ACTION S8: add additional properties here
-      
+  let searchConfigSchema = `
       SearchConfigInfo:
         required:
           - id
@@ -781,7 +736,7 @@ components:
       UpdateSearchConfigResponse:
         allOf:
           - $ref: '#/components/schemas/SearchConfigInfoList'
-      
+
       SearchConfigInfoList:
         type: object
         required:
@@ -796,6 +751,57 @@ components:
             type: array
             items:
               $ref: '#/components/schemas/SearchConfigInfo'
+              `;
+
+  if (hasSearchConfigSchema) {
+    searchConfigSchema = '';
+  }
+
+  bffOpenApiContent = bffOpenApiContent.replace(
+    `
+    schemas:`,
+    `
+    schemas:
+      ${entitySchema}
+
+      ${className}SearchRequest:
+        type: object
+        properties:
+          limit:
+            type: integer
+            maximum: 2500
+          id:
+            type: integer
+            format: int64
+          changeMe:
+            type: string
+          # ACTION S8: add additional properties here
+
+      ${className}SearchResponse:
+        type: object
+        required:
+        - "results"
+        - "totalNumberOfResults"
+        properties:
+          results:
+            type: array
+            items:
+              $ref: '#/components/schemas/${className}Result'
+          totalNumberOfResults:
+            description: Total number of results on the server.
+            type: integer
+            format: int64
+
+      ${className}Result:
+        type: object
+        required:
+        - "${propertyName}"
+        properties:
+          ${propertyName}:
+            $ref: '#/components/schemas/${className}'
+          # ACTION S8: add additional properties here
+      
+      ${searchConfigSchema}
               
       ProblemDetailResponse:
         type: object
