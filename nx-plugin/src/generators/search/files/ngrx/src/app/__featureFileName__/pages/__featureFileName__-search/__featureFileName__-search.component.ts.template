@@ -39,6 +39,7 @@ import { SearchConfigInfo } from 'src/app/shared/generated';
 export class <%= featureClassName %>SearchComponent implements OnInit {
   viewModel$: Observable<<%= featureClassName %>SearchViewModel>  = this.store.select(select<%= featureClassName %>SearchViewModel);
 
+// ACTION S9: Update header actions
   headerActions$: Observable<Action[]> = this.viewModel$.pipe(map((vm) => {
       const actions: Action[] = [
         {
