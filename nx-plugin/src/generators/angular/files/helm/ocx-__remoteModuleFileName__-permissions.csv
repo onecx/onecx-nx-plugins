@@ -1,0 +1,2 @@
+PERMISSION NAME;PERMISSION_KEY;basic-user;
+Basic action;<%= constantName %>#ACTION;x;x;x;x;
