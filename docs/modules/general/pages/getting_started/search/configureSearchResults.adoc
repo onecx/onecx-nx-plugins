@@ -95,9 +95,6 @@ export const selectResults = createSelector(
 
 *HINT*: Please remove the "ACTION" comment after solving this issue
 
-*HINT*: Please remove the "ACTION" comment after solving this issue
-
-
 
 === ACTION S9: ADD TRANSLATION
 // TODO: Specify for what the translation is for : column headers and enums
