@@ -60,7 +60,7 @@ export const selectResults = createSelector(
 *Where this snippet can be found*: <feature>-bff.yaml. :
 
 ----
-<Feature>SearchRequest:
+Search<Feature>Request:
       type: object
       properties:
         limit:
@@ -71,6 +71,6 @@ export const selectResults = createSelector(
           format: int64
         # ACTION S8: add additional properties here
 ----
-Here you can add additional properties which you need for your <FeatureSearchRequest> / <FeatureSearchResult>, e.g. status, creationDate ...
+Here you can add additional properties which you need for your <SearchFeatureRequest> / <SearchFeatureResult>, e.g. status, creationDate ...
 
 *HINT*: Please remove the "ACTION" comment after solving this issue
