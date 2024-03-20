@@ -754,7 +754,7 @@ components:
               `;
 
   if (hasSearchConfigSchema) {
-    searchConfigSchema = '';
+    // searchConfigSchema = '';
   }
 
   bffOpenApiContent = bffOpenApiContent.replace(
