@@ -2,53 +2,6 @@
 To configure the search results, the following action must be taken.
 // TODO: Provide explanation about: The mapping of the URL parameters must be configured. 
 
-=== ACTION S1: Define search results columns
-
-The column mappings must be defined. 
-
-*Where this snippet can be found*: <feature>-search.component.ts. :
-
-[subs=+macros]
-----
-export const <%= featurePropertyName %>SearchColumns = [
-      {
-      columnType: ColumnType.STANDARD,
-      id: 'id',
-      nameKey: 'TRANSLATION_STRING',
-      filterable: true,
-      sortable: true,
-      predefinedGroupKeys: [
-        'FEATURE_SEARCH.PREDEFINED_GROUP.DEFAULT',
-        'FEATURE_SEARCH.PREDEFINED_GROUP.EXTENDED',
-        'FEATURE_SEARCH.PREDEFINED_GROUP.FULL',
-      ],
-    },
-]
-----
-Explanation of the properties:
-
-**	The columnType defines the type of the column. The following column types are available:
-[subs=+macros]
-----
-export const enum ColumnType {
-  STRING = 'STRING',
-  NUMBER = 'NUMBER',
-  DATE = 'DATE',
-  RELATIVE_DATE = 'RELATIVE_DATE',
-  TRANSLATION_KEY = 'TRANSLATION_KEY',
-}
-----
-** The property 'id' provides the property of the column
-* The property 'nameKey' provides the translation string. Furthermore, the translation needs to be added to the de.json and en.json file.
-* The property 'filterable' indicates if the column is filterable
-* The property 'sortable' indicates if the column is sortable
-* The property 'predefinedGroupKeys' defines in which group sets the following column is available. Furthermore, the predefinedGroups can be selected in a dropdown on top of the search results table. If you want that your searchColumn only belongs to your default column group, then only add  'FEATURE_SEARCH.PREDEFINED_GROUP.DEFAULT'
-
-
-*HINT*: Please remove the "ACTION" comment after solving this issue
-
-
-
 === ACTION S2: Please define the members for your <%= featurePropertyName %>SearchCriteriasSchema here
 
 *Where this snippet can be found*: <feature>-search.parameters.ts. :
