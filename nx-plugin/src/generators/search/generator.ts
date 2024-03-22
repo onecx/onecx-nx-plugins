@@ -626,7 +626,7 @@ components:
     entitySchema = '';
   }
 
-  const searchConfigSchema = `
+  let searchConfigSchema = `
       SearchConfigInfo:
         required:
           - id
@@ -754,7 +754,8 @@ components:
               `;
 
   if (hasSearchConfigSchema) {
-    // searchConfigSchema = '';
+    searchConfigSchema = '';
+    console.log(searchConfigSchema);
   }
 
   bffOpenApiContent = bffOpenApiContent.replace(
