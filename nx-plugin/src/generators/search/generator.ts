@@ -626,7 +626,7 @@ components:
     entitySchema = '';
   }
 
-  let searchConfigSchema = `
+  const searchConfigSchema = `
       SearchConfigInfo:
         required:
           - id
