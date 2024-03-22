@@ -2,11 +2,16 @@
 To configure the search results, the following action must be taken.
 // TODO: Provide explanation about: The mapping of the URL parameters must be configured. 
 
-=== ACTION S2: Please define the members for your <%= featurePropertyName %>SearchCriteriasSchema here
 
+=== ACTION S1: Add additional properties to the <feature>-bff.yaml
+// TODO: Content will be added soon.
+
+=== ACTION S2: Please define the members for your <%= featurePropertyName %>SearchCriteriasSchema here
+// TODO: Move the examples in comments from the zod library to the documentation here
+// TODO: Provide an example 
 *Where this snippet can be found*: <feature>-search.parameters.ts. :
 [subs=+macros]
-
+// TODO: Show that the names should have the same name as in the yaml
 ----
     // Here you can add an additional transform to e.g. convert to array of enum
 ----
@@ -15,6 +20,7 @@ To configure the search results, the following action must be taken.
 
 === ACTION S3: Please specify here your desired search criterias, link to documentation
 // TODO: add info how to handle dates in p-calendar -> https://primeng.org/calendar#api.calendar.props.dateFormat
+// TODO: Show that the names should have the same name as in the yaml
 The input fields must be added.
 *Where this snippet can be found*: <feature>-search.component.html. :
 [subs=+macros]
@@ -83,7 +89,8 @@ The information if a field belongs to the basic or advanced view will be added t
 
 *HINT*: Please remove the "ACTION" comment after solving this issue
 
-=== ACTION S5: ADD TRANSLATION
+=== ACTION S4: ADD TRANSLATION
+// TODO: Specify for what the translation will be added
 
 *Where this snippet can be found*: de.json / en.json  :
 Please add the missing translations

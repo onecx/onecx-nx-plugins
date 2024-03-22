@@ -775,7 +775,7 @@ components:
             format: int64
           changeMe:
             type: string
-          # ACTION S8: add additional properties here
+          # ACTION S6: Add additional properties to the <feature>-bff.yaml
 
       Search${className}Response:
         type: object

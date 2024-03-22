@@ -95,7 +95,6 @@ export class <%= featureClassName %>SearchComponent implements OnInit {
           .keyof()
           .options.map((k) => [k, null])
       ) as Record<keyof <%= featureClassName %>SearchCriteria, unknown>,
-      // ACTION S7: Add additional configuration of the group here if needed
     } satisfies Record<keyof <%= featureClassName %>SearchCriteria, unknown>,
   );
 
