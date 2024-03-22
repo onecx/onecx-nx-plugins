@@ -5,6 +5,12 @@ import { Search<%= featureClassName %>Request } from 'src/app/shared/generated'
 export const <%= featurePropertyName %>SearchCriteriasSchema = z.object({
   changeMe: z.string().optional(),
   //TODO: Move to docs
+  // TODO: it always starts with z.string()
+  // if you need transform () -> but this is optional
+  // final .optinal()
+  // das schema klarmachen
+  // über die Beispiele drüberschreiben
+  // die dates werden immer auf string gemappt, weil json kein DateTime kann 
   /*exampleString: z.string().optional(),
   exampleDate: z.string().optional(),
   exampleDateTime: z.string().optional(),

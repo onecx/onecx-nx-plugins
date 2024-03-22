@@ -1,53 +1,7 @@
 === Configure the search results. 
 To configure the search results, the following actions must be taken. 
 
-=== ACTION S5: ADD TRANSLATION
-
-*Where this snippet can be found*: de.json / en.json  :
-Please add the missing translations
-
-*HINT*: Please remove the "ACTION" comment after solving this issue
-
-=== ACTION S6: Here you can create a mapping of the items and their corresponding translation strings
-
-*Where this snippet can be found*: <feature>-search.selectors.ts :
-[subs=+macros]
-----
-export const selectResults = createSelector(
-  <%= featurePropertyName %>SearchSelectors.selectResults,
-  (results): RowListGridData[] => {
-    return results.map((item) => ({
-      id: item.<%= featurePropertyName %>.id,
-      imagePath: '',
-      ...item,
-      // ACTION S6: Here you can create a mapping of the items and their corresponding translation strings
-    }));
-  }
-);
-----
-
-*HINT*: Please remove the "ACTION" comment after solving this issue
-
-=== ACTION S7 Add additional configuration of the group here if needed
-
-*Where this snippet can be found*: <feature>-search.component.ts :
-[subs=+macros]
-----
-  public <%= featurePropertyName %>SearchFormGroup: FormGroup = this.formBuilder.group(
-    {
-      ...Object.fromEntries(
-        <%= featurePropertyName %>SearchCriteriasSchema
-          .keyof()
-          .options.map((k) => [k, null])
-      ) as Record<keyof <%= featureClassName %>SearchCriteria, unknown>,
-      // ACTION S7: Add additional configuration of the group here if needed
-    } satisfies Record<keyof <%= featureClassName %>SearchCriteria, unknown>,
-  );
-----
-
-*HINT*: Please remove the "ACTION" comment after solving this issue
-
-=== ACTION S8: Add additional properties here
+=== ACTION S6: Add additional properties to the <feature>-bff.yaml
 
 * The <FeatureName>SearchResult data structure in the BFF yaml must be adapted. 
 
@@ -72,5 +26,80 @@ Search<Feature>Request:
         # ACTION S8: add additional properties here
 ----
 Here you can add additional properties which you need for your <SearchFeatureRequest> / <SearchFeatureResult>, e.g. status, creationDate ...
+
+*HINT*: Please remove the "ACTION" comment after solving this issue
+=== ACTION S7: Define search results columns
+
+The column mappings must be defined. 
+
+*Where this snippet can be found*: <feature>-search.component.ts. :
+
+[subs=+macros]
+----
+export const <%= featurePropertyName %>SearchColumns = [
+      {
+      columnType: ColumnType.STANDARD,
+      id: 'id',
+      nameKey: 'TRANSLATION_STRING',
+      filterable: true,
+      sortable: true,
+      predefinedGroupKeys: [
+        'FEATURE_SEARCH.PREDEFINED_GROUP.DEFAULT',
+        'FEATURE_SEARCH.PREDEFINED_GROUP.EXTENDED',
+        'FEATURE_SEARCH.PREDEFINED_GROUP.FULL',
+      ],
+    },
+]
+----
+Explanation of the properties:
+
+**	The columnType defines the type of the column. The following column types are available:
+[subs=+macros]
+----
+export const enum ColumnType {
+  STRING = 'STRING',
+  NUMBER = 'NUMBER',
+  DATE = 'DATE',
+  RELATIVE_DATE = 'RELATIVE_DATE',
+  TRANSLATION_KEY = 'TRANSLATION_KEY',
+}
+----
+** The property 'id' provides the property of the column
+* The property 'nameKey' provides the translation string. Furthermore, the translation needs to be added to the de.json and en.json file.
+* The property 'filterable' indicates if the column is filterable
+* The property 'sortable' indicates if the column is sortable
+* The property 'predefinedGroupKeys' defines in which group sets the following column is available. Furthermore, the predefinedGroups can be selected in a dropdown on top of the search results table. If you want that your searchColumn only belongs to your default column group, then only add  'FEATURE_SEARCH.PREDEFINED_GROUP.DEFAULT'
+
+
+*HINT*: Please remove the "ACTION" comment after solving this issue
+
+
+
+=== ACTION S8: Here you can create a mapping of the items and their corresponding translation strings
+// here you can map as you want - is only needed for enums
+*Where this snippet can be found*: <feature>-search.selectors.ts :
+[subs=+macros]
+----
+export const selectResults = createSelector(
+  <%= featurePropertyName %>SearchSelectors.selectResults,
+  (results): RowListGridData[] => {
+    return results.map((item) => ({
+      id: item.<%= featurePropertyName %>.id,
+      imagePath: '',
+      ...item,
+      // ACTION S8: Here you can create a mapping of the items and their corresponding translation strings
+    }));
+  }
+);
+----
+
+*HINT*: Please remove the "ACTION" comment after solving this issue
+
+
+=== ACTION S9: ADD TRANSLATION
+// TODO: Specify for what the translation is for : column headers and enums
+
+*Where this snippet can be found*: de.json / en.json  :
+Please add the missing translations
 
 *HINT*: Please remove the "ACTION" comment after solving this issue
