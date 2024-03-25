@@ -5,6 +5,11 @@ To configure the search results, the following action must be taken.
 
 === ACTION S1: Add additional properties to the <feature>-bff.yaml
 // TODO: Content will be added soon.
+* The <FeatureName>SearchRequest data structure in the BFF yaml must be adapted. 
+
+** All the data that should be displayed in the request must be in that data structure either on top-level or in sub data structures. 
+
+*Where this snippet can be found*: <feature>-bff.yaml. :
 
 === ACTION S2: Please define the members for your <%= featurePropertyName %>SearchCriteriasSchema here
 // TODO: Move the examples in comments from the zod library to the documentation here

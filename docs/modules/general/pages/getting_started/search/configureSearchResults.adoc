@@ -1,7 +1,7 @@
 === Configure the search results. 
 To configure the search results, the following actions must be taken. 
 
-=== ACTION S6: Add additional properties to the <feature>-bff.yaml
+=== ACTION S5: Add additional properties to the <feature>-bff.yaml
 
 * The <FeatureName>SearchResult data structure in the BFF yaml must be adapted. 
 
@@ -16,18 +16,20 @@ To configure the search results, the following actions must be taken.
 ----
 Search<Feature>Request:
       type: object
-      required:
-        - "testFeature"
       properties:
-        testFeature:
-          $ref: "#/components/schemas/TestFeature"
-        # ACTION S6: add additional properties here if needed
+        limit:
+          type: integer
+          maximum: 2500
+        id:
+          type: integer
+          format: int64
+        # ACTION S5: add additional properties here if needed
 ----
 Here you can add additional properties which you need for your <SearchFeatureRequest> / <SearchFeatureResult>, e.g. status, creationDate ...
 
 *HINT*: Please remove the "ACTION" comment after solving this issue
 
-=== ACTION S7: Define search results columns
+=== ACTION S6: Define search results columns
 
 The column mappings must be defined. 
 
@@ -74,7 +76,7 @@ export const enum ColumnType {
 
 *HINT*: Please remove the "ACTION" comment after solving this issue
 
-=== ACTION S8: Here you can create a mapping of the items and their corresponding translation strings
+=== ACTION S7: Here you can create a mapping of the items and their corresponding translation strings
 // here you can map as you want - is only needed for enums
 *Where this snippet can be found*: <feature>-search.selectors.ts :
 [subs=+macros]
@@ -86,7 +88,7 @@ export const selectResults = createSelector(
       id: item.<%= featurePropertyName %>.id,
       imagePath: '',
       ...item,
-      // ACTION S8: Here you can create a mapping of the items and their corresponding translation strings
+      // ACTION S7: Here you can create a mapping of the items and their corresponding translation strings
     }));
   }
 );
@@ -96,7 +98,7 @@ export const selectResults = createSelector(
 
 
 
-=== ACTION S9: ADD TRANSLATION
+=== ACTION S8: ADD TRANSLATION
 // TODO: Specify for what the translation is for : column headers and enums
 
 *Where this snippet can be found*: de.json / en.json  :
