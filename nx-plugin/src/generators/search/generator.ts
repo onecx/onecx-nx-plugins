@@ -755,6 +755,7 @@ components:
 
   if (hasSearchConfigSchema) {
     searchConfigSchema = '';
+    console.log(searchConfigSchema);
   }
 
   bffOpenApiContent = bffOpenApiContent.replace(
@@ -775,13 +776,12 @@ components:
             format: int64
           changeMe:
             type: string
-          # ACTION S8: add additional properties here
+          # ACTION S6: Add additional properties to the <feature>-bff.yaml
 
       Search${className}Response:
         type: object
         required:
         - "results"
-        - "totalNumberOfResults"
         properties:
           results:
             type: array
@@ -795,14 +795,13 @@ components:
       ${className}SearchResult:
         type: object
         required:
-        - "${propertyName}"
+        - id
         properties:
-          ${propertyName}:
-            $ref: '#/components/schemas/${className}'
-          # ACTION S8: add additional properties here
+          id:
+            type: integer
+            format: int64
+        # ACTION S8: add additional properties here
       
-      ${searchConfigSchema}
-              
       ProblemDetailResponse:
         type: object
         properties:

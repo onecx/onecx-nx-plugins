@@ -14,7 +14,7 @@ To configure the search results, the following actions must be taken.
 *Where this snippet can be found*: <feature>-bff.yaml. :
 
 ----
-TestFeatureSearchResult:
+Search<Feature>Request:
       type: object
       required:
         - "testFeature"
