@@ -782,6 +782,7 @@ components:
         type: object
         required:
         - "results"
+        - "totalNumberOfResults"
         properties:
           results:
             type: array
@@ -795,13 +796,14 @@ components:
       ${className}SearchResult:
         type: object
         required:
-        - id
+        - "${propertyName}"
         properties:
-          id:
-            type: integer
-            format: int64
-        # ACTION S5: add additional properties here
+          ${propertyName}:
+            $ref: '#/components/schemas/${className}'
+        # ACTION S8: add additional properties here
       
+      ${searchConfigSchema}
+
       ProblemDetailResponse:
         type: object
         properties:
