@@ -89,7 +89,7 @@ The information if a field belongs to the basic or advanced view will be added t
 
 *HINT*: Please remove the "ACTION" comment after solving this issue
 
-=== ACTION S4: ADD TRANSLATION
+=== ACTION S4: ADD TRANSLATION for your input fields
 // TODO: Specify for what the translation will be added
 
 *Where this snippet can be found*: de.json / en.json  :

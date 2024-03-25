@@ -17,6 +17,9 @@
         "DIALOG_CONFIRM": "Confirm",
         "DIALOG_CANCEL": "Cancel"
     },
+    "INPUT_FIELDS":{
+      "DUMMY_INPUT_FIELD: "ACTION S4: ADD TRANSLATION for your input fields"
+    },
     "ERROR_MESSAGES": {
         "SEARCH_RESULTS_LOADING_FAILED": "Loading search results failed.",
         "SEARCH_CONFIG_CREATION_FAILED": "Create search configuration failed.",

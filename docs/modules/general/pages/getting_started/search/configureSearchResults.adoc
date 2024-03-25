@@ -75,7 +75,7 @@ export const enum ColumnType {
 *HINT*: Please remove the "ACTION" comment after solving this issue
 
 === ACTION S8: Here you can create a mapping of the items and their corresponding translation strings
-
+// here you can map as you want - is only needed for enums
 *Where this snippet can be found*: <feature>-search.selectors.ts :
 [subs=+macros]
 ----
@@ -99,4 +99,6 @@ export const selectResults = createSelector(
 === ACTION S9: ADD TRANSLATION
 // TODO: Specify for what the translation is for : column headers and enums
 
+*Where this snippet can be found*: de.json / en.json  :
+Please add the missing translations
 *HINT*: Please remove the "ACTION" comment after solving this issue

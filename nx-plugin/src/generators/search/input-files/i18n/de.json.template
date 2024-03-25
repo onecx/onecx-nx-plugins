@@ -17,6 +17,9 @@
         "DIALOG_CONFIRM": "Bestätigen",
         "DIALOG_CANCEL": "Abbrechen"
     },
+    "INPUT_FIELDS":{
+      "DUMMY_INPUT_FIELD: "ACTION S4: ADD TRANSLATION for your input fields"
+    },
     "ERROR_MESSAGES": {
         "SEARCH_RESULTS_LOADING_FAILED": "Suchergebnisse konnten nicht geladen werden.",
         "SEARCH_CONFIG_CREATION_FAILED": "Suchkonfiguration konnte nicht erstellt werden.",
