@@ -1,3 +1,17 @@
+## [1.3.0](https://github.com/onecx/onecx-nx-plugins/compare/v1.2.0...v1.3.0) (2024-03-26)
+
+
+### Features
+
+* add group key translation and correct order of actions ([#39](https://github.com/onecx/onecx-nx-plugins/issues/39)) ([2a58507](https://github.com/onecx/onecx-nx-plugins/commit/2a58507774a2f5747de66dfd4fa44a50508945ec))
+* update header actions and yaml correction ([#30](https://github.com/onecx/onecx-nx-plugins/issues/30)) ([37c68bf](https://github.com/onecx/onecx-nx-plugins/commit/37c68bfb51d69f54e9bc2c7c45660e8fedfb142e))
+
+
+### Bug Fixes
+
+* documentation order and yaml adaption ([#36](https://github.com/onecx/onecx-nx-plugins/issues/36)) ([ddbfb09](https://github.com/onecx/onecx-nx-plugins/commit/ddbfb0951cf246a9e4456b9ba217e9d199b8f9b4))
+* fix yaml error ([#38](https://github.com/onecx/onecx-nx-plugins/issues/38)) ([289269e](https://github.com/onecx/onecx-nx-plugins/commit/289269ebffb17015785400422987ad765fca4416))
+
 ## [1.2.0](https://github.com/onecx/onecx-nx-plugins/compare/v1.1.2...v1.2.0) (2024-03-13)
 
 
