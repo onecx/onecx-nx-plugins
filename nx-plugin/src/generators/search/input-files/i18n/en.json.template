@@ -19,9 +19,9 @@
         "DIALOG_CANCEL": "Cancel"
     },
     "PREDEFINED_GROUP": {
-      "DEFAULT": "Standard",
-      "EXTENDED": "Erweitert",
-      "FULL": "Vollständig"
+      "DEFAULT": "Default",
+      "EXTENDED": "Extended",
+      "FULL": "Full"
     },
     "ERROR_MESSAGES": {
         "SEARCH_RESULTS_LOADING_FAILED": "Loading search results failed.",
