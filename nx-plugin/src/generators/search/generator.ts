@@ -620,7 +620,7 @@ components:
           id:
             type: integer
             format: int64
-          # ACTION S8: add additional properties here`;
+          # ACTION S1: add additional properties here`;
 
   if (hasEntitySchema) {
     entitySchema = '';
@@ -776,7 +776,7 @@ components:
             format: int64
           changeMe:
             type: string
-          # ACTION S6: Add additional properties to the <feature>-bff.yaml
+          # ACTION S1: Add additional properties to the <feature>-bff.yaml
 
       Search${className}Response:
         type: object
