@@ -5,6 +5,7 @@
     "HELP_ARTICLE_ID": "Help Article",
     "EMPTY_RESULTS": "No results.",
     "BREADCRUMB": "Search",
+    "INPUT_FIELDS": "ACTION S4: ADD TRANSLATION for your input fields",
     "DIAGRAM": {
       "SUM": "Total"
     },
@@ -16,6 +17,11 @@
         "UPDATE_SEARCH_CONFIG": "Update search configuration",
         "DIALOG_CONFIRM": "Confirm",
         "DIALOG_CANCEL": "Cancel"
+    },
+    "PREDEFINED_GROUP": {
+      "DEFAULT": "Standard",
+      "EXTENDED": "Erweitert",
+      "FULL": "Vollständig"
     },
     "ERROR_MESSAGES": {
         "SEARCH_RESULTS_LOADING_FAILED": "Loading search results failed.",
