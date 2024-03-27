@@ -34,7 +34,7 @@ export const selectResults = createSelector(
       id: item.<%= featurePropertyName %>.id,
       imagePath: '',
       ...item,
-      // ACTION S6: Here you can create a mapping of the items and their corresponding translation strings
+      // ACTION S7: Here you can create a mapping of the items and their corresponding translation strings
     }));
   }
 );

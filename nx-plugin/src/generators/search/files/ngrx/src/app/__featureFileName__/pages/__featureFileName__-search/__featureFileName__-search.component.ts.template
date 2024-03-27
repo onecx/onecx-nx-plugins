@@ -39,6 +39,7 @@ import { SearchConfigInfo } from 'src/app/shared/generated';
 export class <%= featureClassName %>SearchComponent implements OnInit {
   viewModel$: Observable<<%= featureClassName %>SearchViewModel>  = this.store.select(select<%= featureClassName %>SearchViewModel);
 
+// ACTION S10: Update header actions
   headerActions$: Observable<Action[]> = this.viewModel$.pipe(map((vm) => {
       const actions: Action[] = [
         {
@@ -83,7 +84,7 @@ export class <%= featureClassName %>SearchComponent implements OnInit {
     })
   );
 
-  // ACTION S4: Please select the column to be displayed in the diagram
+  // ACTION S9: Please select the column to be displayed in the diagram
   diagramColumnId = 'id';
   diagramColumn$ = this.viewModel$.pipe(map((vm) =>vm.columns.find((e) => e.id === this.diagramColumnId) as DataTableColumn));
 
@@ -94,7 +95,6 @@ export class <%= featureClassName %>SearchComponent implements OnInit {
           .keyof()
           .options.map((k) => [k, null])
       ) as Record<keyof <%= featureClassName %>SearchCriteria, unknown>,
-      // ACTION S7: Add additional configuration of the group here if needed
     } satisfies Record<keyof <%= featureClassName %>SearchCriteria, unknown>,
   );
 

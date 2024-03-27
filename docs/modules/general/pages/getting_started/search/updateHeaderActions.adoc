@@ -1,0 +1,11 @@
+=== Configure the search results. 
+To configure the search results, the following actions must be taken. 
+
+=== ACTION S10: Update header actions
+
+If you want to add additional header actions, you can go to <feature>.component.ts and extend the following:
+----
+const actions: Action[] = [
+    ....
+]
+----

@@ -1,4 +1,4 @@
 import { DataTableColumn } from '@onecx/portal-integration-angular';
 
 export const <%= featurePropertyName %>SearchColumns: DataTableColumn[] = []
-// ACTION S1: Define search results columns
+// ACTION S6: Define search results columns

@@ -1,16 +1,22 @@
 import { <%= featurePropertyName %>SearchRequestExampleEnumEnum } from 'src/app/shared/generated';
 import { z, ZodTypeAny } from 'zod';
-import { <%= featureClassName %>SearchRequest } from 'src/app/shared/generated'
+import { Search<%= featureClassName %>Request } from 'src/app/shared/generated'
 
 export const <%= featurePropertyName %>SearchCriteriasSchema = z.object({
   changeMe: z.string().optional(),
   //TODO: Move to docs
+  // TODO: it always starts with z.string()
+  // if you need transform () -> but this is optional
+  // final .optinal()
+  // das schema klarmachen
+  // über die Beispiele drüberschreiben
+  // die dates werden immer auf string gemappt, weil json kein DateTime kann 
   /*exampleString: z.string().optional(),
   exampleDate: z.string().optional(),
   exampleDateTime: z.string().optional(),
   exampleEnum: z
     .string()
-    .transform((v) => v as ConstructionTaskSearchRequestExampleEnumEnum)
+    .transform((v) => v as <%= featurePropertyName %>SearchRequestExampleEnumEnum)
     .optional(),
   exampleArray: z
     .union([z.string(), z.array(z.string())])
@@ -22,7 +28,7 @@ export const <%= featurePropertyName %>SearchCriteriasSchema = z.object({
     // Here you can add an additional transform to e.g. convert to array of enum
     .optional(),*/
   // ACTION S2: Please define the members for your <%= featurePropertyName %>SearchCriteriasSchema here
-}satisfies Partial<Record<keyof <%= featureClassName %>SearchRequest, ZodTypeAny>>);
+}satisfies Partial<Record<keyof Search<%= featureClassName %>Request, ZodTypeAny>>);
 
 export type <%= featureClassName %>SearchCriteria = z.infer<
   typeof <%= featurePropertyName %>SearchCriteriasSchema

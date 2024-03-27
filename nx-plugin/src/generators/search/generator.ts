@@ -288,7 +288,7 @@ function addPermissionDefinitionsToValuesYaml(
 
   const folderPath = 'helm/values.yaml';
 
-  if(tree.exists(folderPath)) {
+  if (tree.exists(folderPath)) {
     updateYaml(tree, folderPath, (yaml) => {
       yaml['app'] ??= {};
       yaml['app']['operator'] ??= {};
@@ -298,30 +298,30 @@ function addPermissionDefinitionsToValuesYaml(
       yaml['app']['operator']['permission']['spec']['permissions'][
         constantName
       ] ??= {};
-      yaml['app']['operator']['permission']['spec']['permissions'][constantName][
-        'CREATE'
-      ] ??= `Create ${propertyName}`;
-      yaml['app']['operator']['permission']['spec']['permissions'][constantName][
-        'EDIT'
-      ] ??= `Edit ${propertyName}`;
-      yaml['app']['operator']['permission']['spec']['permissions'][constantName][
-        'DELETE'
-      ] ??= `Delete ${propertyName}`;
-      yaml['app']['operator']['permission']['spec']['permissions'][constantName][
-        'SAVE'
-      ] ??= `Update and save ${propertyName}`;
-      yaml['app']['operator']['permission']['spec']['permissions'][constantName][
-        'IMPORT'
-      ] ??= `Import ${propertyName}`;
-      yaml['app']['operator']['permission']['spec']['permissions'][constantName][
-        'EXPORT'
-      ] ??= `Export ${propertyName}`;
-      yaml['app']['operator']['permission']['spec']['permissions'][constantName][
-        'VIEW'
-      ] ??= `View mode for ${propertyName}`;
-      yaml['app']['operator']['permission']['spec']['permissions'][constantName][
-        'SEARCH'
-      ] ??= `Seaarch ${propertyName}`;
+      yaml['app']['operator']['permission']['spec']['permissions'][
+        constantName
+      ]['CREATE'] ??= `Create ${propertyName}`;
+      yaml['app']['operator']['permission']['spec']['permissions'][
+        constantName
+      ]['EDIT'] ??= `Edit ${propertyName}`;
+      yaml['app']['operator']['permission']['spec']['permissions'][
+        constantName
+      ]['DELETE'] ??= `Delete ${propertyName}`;
+      yaml['app']['operator']['permission']['spec']['permissions'][
+        constantName
+      ]['SAVE'] ??= `Update and save ${propertyName}`;
+      yaml['app']['operator']['permission']['spec']['permissions'][
+        constantName
+      ]['IMPORT'] ??= `Import ${propertyName}`;
+      yaml['app']['operator']['permission']['spec']['permissions'][
+        constantName
+      ]['EXPORT'] ??= `Export ${propertyName}`;
+      yaml['app']['operator']['permission']['spec']['permissions'][
+        constantName
+      ]['VIEW'] ??= `View mode for ${propertyName}`;
+      yaml['app']['operator']['permission']['spec']['permissions'][
+        constantName
+      ]['SEARCH'] ??= `Seaarch ${propertyName}`;
       return yaml;
     });
   }
@@ -584,14 +584,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/${className}SearchRequest'
+              $ref: '#/components/schemas/Search${className}Request'
       responses:
         '200':
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/${className}SearchResponse'
+                $ref: '#/components/schemas/Search${className}Response'
         '400':
           description: Bad request
         '500':
@@ -620,7 +620,7 @@ components:
           id:
             type: integer
             format: int64
-          # ACTION S8: add additional properties here`;
+          # ACTION S1: add additional properties here`;
 
   if (hasEntitySchema) {
     entitySchema = '';
@@ -755,6 +755,7 @@ components:
 
   if (hasSearchConfigSchema) {
     searchConfigSchema = '';
+    console.log(searchConfigSchema);
   }
 
   bffOpenApiContent = bffOpenApiContent.replace(
@@ -764,7 +765,7 @@ components:
     schemas:
       ${entitySchema}
 
-      ${className}SearchRequest:
+      Search${className}Request:
         type: object
         properties:
           limit:
@@ -775,9 +776,9 @@ components:
             format: int64
           changeMe:
             type: string
-          # ACTION S8: add additional properties here
+          # ACTION S1: Add additional properties to the <feature>-bff.yaml
 
-      ${className}SearchResponse:
+      Search${className}Response:
         type: object
         required:
         - "results"
@@ -799,10 +800,10 @@ components:
         properties:
           ${propertyName}:
             $ref: '#/components/schemas/${className}'
-          # ACTION S8: add additional properties here
+        # ACTION S8: add additional properties here
       
       ${searchConfigSchema}
-              
+
       ProblemDetailResponse:
         type: object
         properties:
