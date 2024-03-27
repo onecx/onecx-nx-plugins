@@ -13,5 +13,18 @@ By default, a diagram is created which counts the different values in a column a
 ----
 Please comment in the two lines of code and specify the columnId which results should be displayed in the visual diagram component. The diagram component shows the distribution of data of the selected column.
 
+[TIP] 
+.Adjust the position of the result diagram
+==== 
+If you want to change the position of the result diagram, you can change the layout of the ocx-content-container.
+
+----
+<ocx-content-container layout="vertical">
+----
+or
+----
+<ocx-content-container layout="horizontal">
+----
+====
 
 *HINT*: Please remove the "ACTION" comment after solving this issue
