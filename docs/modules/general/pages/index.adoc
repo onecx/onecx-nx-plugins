@@ -1,5 +1,24 @@
 With the OneCX generator you can develop a new application. And in this generated application, a feature modules, a search page and a details page can be added.
 
-To get started we recommend you to visit:
+To get started we recommend you to visit the following pages:
 
-* xref:getting_started/createNewOneCXApp.adoc[Create a new OneCX application]
+* xref:getting_started/prerequisites.adoc[Check your prerequisites]
+* xref:getting_started/createNewOneCXApp.adoc[Create a new OneCX App application]
+** xref:getting_started/basicOneCXApp/checkForFurtherActions.adoc[Check for further actions]
+** xref:getting_started/basicOneCXApp/commitTheChanges.adoc[Commit the changes]
+* xref:getting_started/createFeatureModule.adoc[Create a feature module]
+** xref:getting_started/feature/checkForFurtherActions.adoc[Check for further actions]
+** xref:getting_started/feature/commitTheChanges.adoc[Commit the changes]
+* xref:getting_started/createSearchPage.adoc[Create a search page]
+** xref:getting_started/search/configureSearchCriteria.adoc[Configure search criteria]
+** xref:getting_started/search/configureSearchResults.adoc[Configure search results]
+** xref:getting_started/search/configureResultDiagram.adoc[Configure result diagram]
+** xref:getting_started/search/updateHeaderActions.adoc[Update header actions]
+** xref:getting_started/search/checkForFurtherActions.adoc[Check for further actions]
+** xref:getting_started/search/commitTheChanges.adoc[Commit the changes]
+* xref:getting_started/createDetailsPage.adoc[Create details page]
+** xref:getting_started/details/addCoreDataToDetailsPageHeader.adoc[Add core data to details page header]
+** xref:getting_started/details/addNotDynamicallyLoadedDataToResponse.adoc[Add not dynamically loaded data to response]
+** xref:getting_started/details/addRestOfTheDataToBody.adoc[Add rest of the data to body]
+** xref:getting_started/details/checkForFurtherActions.adoc[Check for further actions]
+** xref:getting_started/details/commitTheChanges.adoc[Commit the changes]
