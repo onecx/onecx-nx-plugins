@@ -19,5 +19,6 @@ After running the generator, the following actions must be taken:
 . xref:getting_started/search/configureSearchResults.adoc[Configure search results]
 . xref:getting_started/search/configureResultDiagram.adoc[Configure result diagram]
 . xref:getting_started/search/updateHeaderActions.adoc[Update Header Actions]
+. xref:getting_started/search/updatePermissions.adoc[Update permissions]
 . xref:getting_started/search/checkForFurtherActions.adoc[Check for further actions]
 . xref:getting_started/search/commitTheChanges.adoc[Commit the changes]
