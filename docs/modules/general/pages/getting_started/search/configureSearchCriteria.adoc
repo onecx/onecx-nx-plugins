@@ -1,5 +1,5 @@
-=== Configure the search criteria and parameters. 
-To configure the search results, the following action must be taken.
+=== Configure the search criteria and parameters
+To configure the search results, the following actions must be taken.
 // TODO: Provide explanation about: The mapping of the URL parameters must be configured. 
 
 
