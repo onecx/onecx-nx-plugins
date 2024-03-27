@@ -2,9 +2,9 @@
 The fastest way to create a new feature module that works with OneCX you can use the OneCX generator. Some projects have their own generator based on the OneCX generator. It should be clarified before starting if this is the case for the project the app is generated for. 
 
 To run the generator, execute the following command: 
-
-nx generate <namespaceOfTheGenerator>/nx-plugin:feature <nameOfTheFeature>: 
-
+----
+nx generate <namespaceOfTheGenerator>/nx-plugin:feature <nameOfTheFeature> 
+----
  
 
 Replace the placeholders with the following values: 

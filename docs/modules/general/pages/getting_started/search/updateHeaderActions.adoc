@@ -1,11 +1,49 @@
-=== Configure the search results. 
-To configure the search results, the following actions must be taken. 
+== Update the header actions
 
 === ACTION S10: Update header actions
 
 If you want to add additional header actions, you can go to <feature>.component.ts and extend the following:
+
 ----
 const actions: Action[] = [
     ....
 ]
 ----
+
+.Example:
+[example]
+----
+const actions: Action[] = [
+        {
+          labelKey: 'FEATURE_SEARCH.HEADER_ACTIONS.EXPORT_ALL',
+          icon: PrimeIcons.DOWNLOAD,
+          titleKey: 'FEATURE_SEARCH.HEADER_ACTIONS.EXPORT_ALL',
+          show: 'asOverflow',
+          actionCallback: () => this.exportItems(),
+        },
+        {
+          labelKey: vm.chartVisible
+            ? 'FEATURE_SEARCH.HEADER_ACTIONS.HIDE_CHART'
+            : 'FEATURE_SEARCH.HEADER_ACTIONS.SHOW_CHART',
+          icon: PrimeIcons.EYE,
+          titleKey: vm.chartVisible
+            ? 'FEATURE_SEARCH.HEADER_ACTIONS.HIDE_CHART'
+            : 'FEATURE_SEARCH.HEADER_ACTIONS.SHOW_CHART',
+          show: 'asOverflow',
+          actionCallback: () => this.toggleChartVisibility(),
+        },
+        {
+          labelKey: 'FEATURE_SEARCH.HEADER_ACTIONS.MY_HEADER_ACTION',
+          icon: PrimeIcons.SYNC,
+          titleKey: 'FEATURE_SEARCH.HEADER_ACTIONS.MY_HEADER_ACTION',
+          show: 'asOverflow',
+          actionCallback: () => this.myHeaderAction(),
+        },
+      ];
+----
+
+[IMPORTANT] 
+.Remove the comment
+==== 
+Remove the ACTION comment after working on this task.
+====

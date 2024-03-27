@@ -1,5 +1,5 @@
-* Getting Started with the OneCX generator
-* xref:getting_started/prerequisites.adoc[Check your prerequisites]
+* Getting started with the OneCX generator
+** xref:getting_started/prerequisites.adoc[Check your prerequisites]
 ** xref:getting_started/createNewOneCXApp.adoc[Create a new OneCX App]
 *** xref:getting_started/basicOneCXApp/checkForFurtherActions.adoc[Check for further actions]
 *** xref:getting_started/basicOneCXApp/commitTheChanges.adoc[Commit the changes]
