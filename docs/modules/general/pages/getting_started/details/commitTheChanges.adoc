@@ -1,6 +1,9 @@
 === Commit your changes
 
-* Please run the following two commands to make sure that the application builds and that the tests are running
+[IMPORTANT] 
+.Build & test your application
+==== 
+Please run the following two commands to make sure that the application builds and that the tests are running
 ----
 npm run build
 ----
@@ -8,10 +11,13 @@ npm run build
 npm run test
 ---- 
 
-* Please commit your changes with the following commit message if the build and the tests passed.
+====
+
+[IMPORTANT] 
+.Commit your changes
+==== 
+Please commit your changes with the following commit message if the build and the tests passed.
 
 ----
 feat: details added for <nameOfTheProduct>
 ----
-
-* Please replace _<nameOfTheProduct>_ with the real name of your product

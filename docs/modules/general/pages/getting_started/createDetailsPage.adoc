@@ -4,7 +4,7 @@ The fastest way to create a new details page in a feature module is to use the O
 To run the generator, execute the following command: 
 
 ----
-nx generate <namespaceOfTheGenerator>/nx-plugin:details <nameOfTheFeature>: 
+nx generate <namespaceOfTheGenerator>/nx-plugin:details <nameOfTheFeature> 
 ----
 
 Replace the placeholders with the following values: 

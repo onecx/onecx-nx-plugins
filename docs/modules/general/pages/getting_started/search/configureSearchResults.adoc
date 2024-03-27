@@ -1,7 +1,8 @@
-=== Configure the search results. 
+== Configure the search results. 
 To configure the search results, the following actions must be taken. 
 
 === ACTION S5: Add additional properties to the <feature>-bff.yaml
+
 
 * The <FeatureName>SearchResult data structure in the BFF yaml must be adapted. 
 
@@ -103,4 +104,8 @@ export const selectResults = createSelector(
 *Where this snippet can be found*: de.json / en.json  :
 Please add the missing translations
 
-*HINT*: Please remove the "ACTION" comment after solving this issue
+[IMPORTANT] 
+.Remove the comment
+==== 
+Please remove the "ACTION" comment after solving this issue
+====
