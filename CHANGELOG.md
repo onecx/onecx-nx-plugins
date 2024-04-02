@@ -1,3 +1,17 @@
+## [1.4.0](https://github.com/onecx/onecx-nx-plugins/compare/v1.3.0...v1.4.0) (2024-03-27)
+
+
+### Features
+
+* add permissions setup and documentation ([#45](https://github.com/onecx/onecx-nx-plugins/issues/45)) ([b82e4a5](https://github.com/onecx/onecx-nx-plugins/commit/b82e4a505eedfa0fbaf84de9e144c9dfd5d1a41b))
+
+
+### Bug Fixes
+
+* correct documentation and order of the pages and minor adaptions ([#44](https://github.com/onecx/onecx-nx-plugins/issues/44)) ([8c0bec5](https://github.com/onecx/onecx-nx-plugins/commit/8c0bec5bcb717e3d6c8868cc14aa2c86811a9d2c))
+* prerequisites added to the docs ([#43](https://github.com/onecx/onecx-nx-plugins/issues/43)) ([51af4fe](https://github.com/onecx/onecx-nx-plugins/commit/51af4fea64af5ae401742daf89c68e03011b2cb4))
+* update nav.adoc ([07b6850](https://github.com/onecx/onecx-nx-plugins/commit/07b685002d22bfa8246a19dbf4362ef840fedbde))
+
 ## [1.3.0](https://github.com/onecx/onecx-nx-plugins/compare/v1.2.0...v1.3.0) (2024-03-26)
 
 

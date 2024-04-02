@@ -1,0 +1,39 @@
+=== Check your technical setup 
+
+[IMPORTANT] 
+.Check your npm version and please update if necessary
+==== 
+Your npm version should be >= 10.2.4 
+====
+[subs=+macros]
+----
+npm --version
+----
+
+[IMPORTANT] 
+.Check your node version and please update if necessary
+==== 
+Your node version should be 20.11.0
+====
+[subs=+macros]
+----
+node  --version
+----
+
+[IMPORTANT] 
+.Check your nx version and please update if necessary
+==== 
+Nx version should be 
+
+ - Local: v17.3.0 
+
+ - Global: v18.0.4 
+
+====
+[subs=+macros]
+----
+nx  --version
+----
+
+
+
