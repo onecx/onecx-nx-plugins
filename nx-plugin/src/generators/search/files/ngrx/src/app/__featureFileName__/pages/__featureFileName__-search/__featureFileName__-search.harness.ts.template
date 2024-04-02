@@ -1,0 +1,14 @@
+import { ComponentHarness } from '@angular/cdk/testing';
+import {
+  SearchHeaderHarness,
+  InteractiveDataViewHarness,
+  GroupByCountDiagramHarness,
+} from '@onecx/angular-accelerator/testing';
+
+export class <%= featureClassName %>SearchHarness extends ComponentHarness {
+  static hostSelector = 'app-<%= featureFileName %>-search';
+
+  getSearchHeader = this.locatorFor(SearchHeaderHarness);
+  getInteractiveDataView = this.locatorFor(InteractiveDataViewHarness);
+  getGroupByCountDiagram = this.locatorForOptional(GroupByCountDiagramHarness);
+}
