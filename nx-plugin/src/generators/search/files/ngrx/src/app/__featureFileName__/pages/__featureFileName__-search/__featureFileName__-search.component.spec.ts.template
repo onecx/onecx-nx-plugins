@@ -168,13 +168,13 @@ describe('<%= featureClassName %>SearchComponent', () => {
         doneFn();
       });
 
-    const searchHeader = await <%= featurePropertyName %>Search.getSearchHeader();
+    const searchHeader = await <%= featurePropertyName %>Search.getHeader();
     await searchHeader.clickResetButton();
     expect(doneFn).toHaveBeenCalledTimes(1);
   });
 
   it('should have 2 overFlow header actions when search config is disabled', async () => {
-    const searchHeader = await <%= featurePropertyName %>Search.getSearchHeader();
+    const searchHeader = await <%= featurePropertyName %>Search.getHeader();
     const pageHeader = await searchHeader.getPageHeader();
     const overflowActionButton = await pageHeader.getOverflowActionButton();
     await overflowActionButton?.click();
@@ -200,7 +200,7 @@ describe('<%= featureClassName %>SearchComponent', () => {
     });
     store.refreshState();
 
-    const searchHeader = await <%= featurePropertyName %>Search.getSearchHeader();
+    const searchHeader = await <%= featurePropertyName %>Search.getHeader();
     const pageHeader = await searchHeader.getPageHeader();
     const overflowActionButton = await pageHeader.getOverflowActionButton();
     await overflowActionButton?.click();
@@ -222,7 +222,7 @@ describe('<%= featureClassName %>SearchComponent', () => {
     });
     store.refreshState();
 
-    const searchHeader = await <%= featurePropertyName %>Search.getSearchHeader();
+    const searchHeader = await <%= featurePropertyName %>Search.getHeader();
     const pageHeader = await searchHeader.getPageHeader();
     const overflowActionButton = await pageHeader.getOverflowActionButton();
     await overflowActionButton?.click();
@@ -253,7 +253,7 @@ describe('<%= featureClassName %>SearchComponent', () => {
     });
     store.refreshState();
 
-    const searchHeader = await <%= featurePropertyName %>Search.getSearchHeader();
+    const searchHeader = await <%= featurePropertyName %>Search.getHeader();
     const pageHeader = await searchHeader.getPageHeader();
     const overflowActionButton = await pageHeader.getOverflowActionButton();
     await overflowActionButton?.click();
@@ -301,7 +301,7 @@ describe('<%= featureClassName %>SearchComponent', () => {
     store.refreshState();
 
     const diagram =
-      await (await <%= featurePropertyName %>Search.getGroupByCountDiagram())!.getDiagram();
+      await (await <%= featurePropertyName %>Search.getDiagram())!.getDiagram();
 
     expect(await diagram.getTotalNumberOfResults()).toBe(3);
     expect(await diagram.getSumLabel()).toEqual('Total');
@@ -315,7 +315,7 @@ describe('<%= featureClassName %>SearchComponent', () => {
     fixture.detectChanges();
 
     expect(breadcrumbService.setItems).toHaveBeenCalledTimes(1);
-    const searchHeader = await <%= featurePropertyName %>Search.getSearchHeader();
+    const searchHeader = await <%= featurePropertyName %>Search.getHeader();
     const pageHeader = await searchHeader.getPageHeader();
     const searchBreadcrumbItem = await pageHeader.getBreadcrumbItem('Search');
 
@@ -361,7 +361,7 @@ describe('<%= featureClassName %>SearchComponent', () => {
     store.refreshState();
 
     const interactiveDataView =
-      await <%= featurePropertyName %>Search.getInteractiveDataView();
+      await <%= featurePropertyName %>Search.getSearchResults();
     const dataView = await interactiveDataView.getDataView();
     const dataTable = await dataView.getDataTable();
     const rowActionButtons = await dataTable.getActionButtons();
@@ -405,7 +405,7 @@ describe('<%= featureClassName %>SearchComponent', () => {
     });
     store.refreshState();
 
-    const searchHeader = await <%= featurePropertyName %>Search.getSearchHeader();
+    const searchHeader = await <%= featurePropertyName %>Search.getHeader();
     const pageHeader = await searchHeader.getPageHeader();
     const overflowActionButton = await pageHeader.getOverflowActionButton();
     await overflowActionButton?.click();
@@ -440,7 +440,7 @@ describe('<%= featureClassName %>SearchComponent', () => {
     });
     store.refreshState();
 
-    const searchHeader = await <%= featurePropertyName %>Search.getSearchHeader();
+    const searchHeader = await <%= featurePropertyName %>Search.getHeader();
     const searchConfig = await searchHeader.getSearchConfig();
     const searchConfigDropdown = await searchConfig.getSearchConfigDropdown();
 
@@ -489,7 +489,7 @@ describe('<%= featureClassName %>SearchComponent', () => {
     });
     store.refreshState();
 
-    const searchHeader = await <%= featurePropertyName %>Search.getSearchHeader();
+    const searchHeader = await <%= featurePropertyName %>Search.getHeader();
     const searchConfig = await searchHeader.getSearchConfig();
     const searchConfigDropdown = await searchConfig.getSearchConfigDropdown();
     await searchConfigDropdown?.open();
@@ -552,7 +552,7 @@ describe('<%= featureClassName %>SearchComponent', () => {
     store.refreshState();
 
     const interactiveDataView =
-      await <%= featurePropertyName %>Search.getInteractiveDataView();
+      await <%= featurePropertyName %>Search.getSearchResults();
     const columnGroupSelector =
       await interactiveDataView.getCustomGroupColumnSelector();
     await columnGroupSelector.openCustomGroupColumnSelectorDialog();
@@ -591,7 +591,7 @@ describe('<%= featureClassName %>SearchComponent', () => {
     });
     store.refreshState();
 
-    const searchHeader = await <%= featurePropertyName %>Search.getSearchHeader();
+    const searchHeader = await <%= featurePropertyName %>Search.getHeader();
     const pageHeader = await searchHeader.getPageHeader();
     const overflowActionButton = await pageHeader.getOverflowActionButton();
     await overflowActionButton?.click();
@@ -615,7 +615,7 @@ describe('<%= featureClassName %>SearchComponent', () => {
     });
     store.refreshState();
 
-    const searchHeader = await <%= featurePropertyName %>Search.getSearchHeader();
+    const searchHeader = await <%= featurePropertyName %>Search.getHeader();
     const pageHeader = await searchHeader.getPageHeader();
     const overflowActionButton = await pageHeader.getOverflowActionButton();
     await overflowActionButton?.click();
@@ -646,7 +646,7 @@ describe('<%= featureClassName %>SearchComponent', () => {
     });
     store.refreshState();
 
-    const searchHeader = await <%= featurePropertyName %>Search.getSearchHeader();
+    const searchHeader = await <%= featurePropertyName %>Search.getHeader();
     const pageHeader = await searchHeader.getPageHeader();
     const overflowActionButton = await pageHeader.getOverflowActionButton();
     await overflowActionButton?.click();
@@ -660,7 +660,7 @@ describe('<%= featureClassName %>SearchComponent', () => {
   });
 
   it('should display translated headers', async () => {
-    const searchHeader = await <%= featurePropertyName %>Search.getSearchHeader();
+    const searchHeader = await <%= featurePropertyName %>Search.getHeader();
     const pageHeader = await searchHeader.getPageHeader();
     expect(await pageHeader.getHeaderText()).toEqual('<%= featureClassName %> Search');
     expect(await pageHeader.getSubheaderText()).toEqual(
@@ -685,7 +685,7 @@ describe('<%= featureClassName %>SearchComponent', () => {
     store.refreshState();
 
     const interactiveDataView =
-      await <%= featurePropertyName %>Search.getInteractiveDataView();
+      await <%= featurePropertyName %>Search.getSearchResults();
     const dataView = await interactiveDataView.getDataView();
     const dataTable = await dataView.getDataTable();
     const rows = await dataTable.getRows();
@@ -713,7 +713,7 @@ describe('<%= featureClassName %>SearchComponent', () => {
     });
     store.refreshState();
 
-    let diagram = await <%= featurePropertyName %>Search.getGroupByCountDiagram();
+    let diagram = await <%= featurePropertyName %>Search.getDiagram();
     expect(diagram).toBeNull();
 
     store.overrideSelector(select<%= featureClassName %>SearchViewModel, {
@@ -736,7 +736,7 @@ describe('<%= featureClassName %>SearchComponent', () => {
     });
     store.refreshState();
 
-    diagram = await <%= featurePropertyName %>Search.getGroupByCountDiagram();
+    diagram = await <%= featurePropertyName %>Search.getDiagram();
     expect(diagram).toBeNull();
 
     store.overrideSelector(select<%= featureClassName %>SearchViewModel, {
@@ -759,7 +759,7 @@ describe('<%= featureClassName %>SearchComponent', () => {
     });
     store.refreshState();
 
-    diagram = await <%= featurePropertyName %>Search.getGroupByCountDiagram();
+    diagram = await <%= featurePropertyName %>Search.getDiagram();
     expect(diagram).toBeTruthy();
   });
 });
