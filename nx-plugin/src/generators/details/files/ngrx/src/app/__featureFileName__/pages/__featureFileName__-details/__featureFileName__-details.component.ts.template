@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs'
+import { Observable, map } from 'rxjs'
 import { TranslatePipe } from '@ngx-translate/core';
 import {
   Action,
