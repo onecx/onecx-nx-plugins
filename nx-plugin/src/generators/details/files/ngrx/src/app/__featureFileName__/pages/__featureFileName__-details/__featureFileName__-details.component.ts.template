@@ -21,29 +21,39 @@ import { PrimeIcons } from 'primeng/api';
   styleUrls: ['./<%= featureFileName %>-details.component.scss'],
 })
 export class <%= featureClassName %>DetailsComponent implements OnInit {
-  headerLabels: ObjectDetailItem[] = [
-      //ACTION D1: Add header values here
-    ];
-
-  headerActions: Action[] = [
-      {
-        titleKey: '<%= featureConstantName %>_DETAILS.GENERAL.BACK',
-        labelKey: '<%= featureConstantName %>_DETAILS.GENERAL.BACK',
-        show: 'always',
-        actionCallback: () => {
-          window.history.back();
-        },
-      },
-      {
-        titleKey: '<%= featureConstantName %>_DETAILS.GENERAL.MORE',
-        icon: PrimeIcons.ELLIPSIS_V,
-        show: 'always',
-        btnClass: '',
-        actionCallback: () => {},
-      },
-    ];
-
   viewModel$: Observable<<%= featureClassName %>DetailsViewModel> = this.store.select(select<%= featureClassName %>DetailsViewModel);
+  
+  headerLabels$: Observable<ObjectDetailItem[]> = this.viewModel$.pipe(
+    map((vm) => {
+      const labels: ObjectDetailItem[] = [
+        //ACTION D1: Add header values here
+      ];
+      return labels;
+    })
+  );
+
+  headerActions$: Observable<Action[]> = this.viewModel$.pipe(
+    map((vm) => {
+      const actions: Action[] = [
+        {
+          titleKey: '<%= featureConstantName %>_DETAILS.GENERAL.BACK',
+          labelKey: '<%= featureConstantName %>_DETAILS.GENERAL.BACK',
+          show: 'always',
+          actionCallback: () => {
+            window.history.back();
+          },
+        },
+        {
+          titleKey: '<%= featureConstantName %>_DETAILS.GENERAL.MORE',
+          icon: PrimeIcons.ELLIPSIS_V,
+          show: 'always',
+          btnClass: '',
+          actionCallback: () => {},
+        },
+      ];
+      return actions;
+    })
+  );
 
   constructor(
     private store: Store,

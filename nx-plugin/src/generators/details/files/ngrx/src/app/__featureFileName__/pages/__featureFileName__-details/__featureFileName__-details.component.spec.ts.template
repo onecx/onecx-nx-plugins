@@ -122,7 +122,7 @@ describe('<%= featureClassName %>DetailsComponent', () => {
   });
 
   it('should display item details in page header', async () => {
-    component.headerLabels = [
+    component.headerLabels$ = of([
       {
         label: 'first',
         value: 'first value',
@@ -140,7 +140,7 @@ describe('<%= featureClassName %>DetailsComponent', () => {
         value: 'fourth value',
         icon: PrimeIcons.QUESTION,
       },
-    ];
+    ]);
 
     const pageHeader = await <%= featurePropertyName %>Details.getHeader();
     const objectDetails = await pageHeader.getObjectInfos();
