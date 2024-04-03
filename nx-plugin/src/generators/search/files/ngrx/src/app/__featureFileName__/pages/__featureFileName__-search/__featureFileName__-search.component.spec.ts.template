@@ -176,7 +176,7 @@ describe('<%= featureClassName %>SearchComponent', () => {
   it('should have 2 overFlow header actions when search config is disabled', async () => {
     const searchHeader = await <%= featurePropertyName %>Search.getHeader();
     const pageHeader = await searchHeader.getPageHeader();
-    const overflowActionButton = await pageHeader.getOverflowActionButton();
+    const overflowActionButton = await pageHeader.getOverflowActionMenuButton();
     await overflowActionButton?.click();
 
     const overflowMenuItems = await pageHeader.getOverFlowMenuItems();
@@ -202,7 +202,7 @@ describe('<%= featureClassName %>SearchComponent', () => {
 
     const searchHeader = await <%= featurePropertyName %>Search.getHeader();
     const pageHeader = await searchHeader.getPageHeader();
-    const overflowActionButton = await pageHeader.getOverflowActionButton();
+    const overflowActionButton = await pageHeader.getOverflowActionMenuButton();
     await overflowActionButton?.click();
 
     const overflowMenuItems = await pageHeader.getOverFlowMenuItems();
@@ -224,7 +224,7 @@ describe('<%= featureClassName %>SearchComponent', () => {
 
     const searchHeader = await <%= featurePropertyName %>Search.getHeader();
     const pageHeader = await searchHeader.getPageHeader();
-    const overflowActionButton = await pageHeader.getOverflowActionButton();
+    const overflowActionButton = await pageHeader.getOverflowActionMenuButton();
     await overflowActionButton?.click();
 
     const overflowMenuItems = await pageHeader.getOverFlowMenuItems();
@@ -255,7 +255,7 @@ describe('<%= featureClassName %>SearchComponent', () => {
 
     const searchHeader = await <%= featurePropertyName %>Search.getHeader();
     const pageHeader = await searchHeader.getPageHeader();
-    const overflowActionButton = await pageHeader.getOverflowActionButton();
+    const overflowActionButton = await pageHeader.getOverflowActionMenuButton();
     await overflowActionButton?.click();
 
     const overflowMenuItems = await pageHeader.getOverFlowMenuItems();
@@ -407,7 +407,7 @@ describe('<%= featureClassName %>SearchComponent', () => {
 
     const searchHeader = await <%= featurePropertyName %>Search.getHeader();
     const pageHeader = await searchHeader.getPageHeader();
-    const overflowActionButton = await pageHeader.getOverflowActionButton();
+    const overflowActionButton = await pageHeader.getOverflowActionMenuButton();
     await overflowActionButton?.click();
 
     const exportAllActionItem = await pageHeader.getOverFlowMenuItem(
@@ -593,7 +593,7 @@ describe('<%= featureClassName %>SearchComponent', () => {
 
     const searchHeader = await <%= featurePropertyName %>Search.getHeader();
     const pageHeader = await searchHeader.getPageHeader();
-    const overflowActionButton = await pageHeader.getOverflowActionButton();
+    const overflowActionButton = await pageHeader.getOverflowActionMenuButton();
     await overflowActionButton?.click();
 
     const showChartActionItem = await pageHeader.getOverFlowMenuItem(
@@ -617,7 +617,7 @@ describe('<%= featureClassName %>SearchComponent', () => {
 
     const searchHeader = await <%= featurePropertyName %>Search.getHeader();
     const pageHeader = await searchHeader.getPageHeader();
-    const overflowActionButton = await pageHeader.getOverflowActionButton();
+    const overflowActionButton = await pageHeader.getOverflowActionMenuButton();
     await overflowActionButton?.click();
 
     const createSearchConfigurationActionItem =
@@ -648,7 +648,7 @@ describe('<%= featureClassName %>SearchComponent', () => {
 
     const searchHeader = await <%= featurePropertyName %>Search.getHeader();
     const pageHeader = await searchHeader.getPageHeader();
-    const overflowActionButton = await pageHeader.getOverflowActionButton();
+    const overflowActionButton = await pageHeader.getOverflowActionMenuButton();
     await overflowActionButton?.click();
 
     const updateSearchConfigurationActionItem =
