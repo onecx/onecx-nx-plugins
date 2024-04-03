@@ -4,5 +4,5 @@ import { PageHeaderHarness } from '@onecx/angular-accelerator/testing';
 export class <%= featureClassName %>DetailsHarness extends ComponentHarness {
   static hostSelector = 'app-<%= featureFileName %>-details';
 
-  getPageHeader = this.locatorFor(PageHeaderHarness);
+  getHeader = this.locatorFor(PageHeaderHarness);
 }

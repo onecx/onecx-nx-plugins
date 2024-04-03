@@ -84,13 +84,13 @@ describe('<%= featureClassName %>DetailsComponent', () => {
     fixture.detectChanges();
 
     expect(breadcrumbService.setItems).toHaveBeenCalledTimes(1);
-    const pageHeader = await <%= featurePropertyName %>Details.getPageHeader();
+    const pageHeader = await <%= featurePropertyName %>Details.getHeader();
     const searchBreadcrumbItem = await pageHeader.getBreadcrumbItem('Details');
     expect(await searchBreadcrumbItem!.getText()).toEqual('Details');
   });
 
   it('should display translated headers', async () => {
-    const pageHeader = await <%= featurePropertyName %>Details.getPageHeader();
+    const pageHeader = await <%= featurePropertyName %>Details.getHeader();
     expect(await pageHeader.getHeaderText()).toEqual('<%= featureClassName %> Details');
     expect(await pageHeader.getSubheaderText()).toEqual(
       'Display of <%= featureClassName %> Details'
@@ -98,7 +98,7 @@ describe('<%= featureClassName %>DetailsComponent', () => {
   });
 
   it('should have 2 inline actions', async () => {
-    const pageHeader = await <%= featurePropertyName %>Details.getPageHeader();
+    const pageHeader = await <%= featurePropertyName %>Details.getHeader();
     const inlineActions = await pageHeader.getInlineActionButtons();
     expect(inlineActions.length).toBe(2);
 
@@ -114,7 +114,7 @@ describe('<%= featureClassName %>DetailsComponent', () => {
   it('should navigate back on back button click', async () => {
     jest.spyOn(window.history, 'back');
 
-    const pageHeader = await <%= featurePropertyName %>Details.getPageHeader();
+    const pageHeader = await <%= featurePropertyName %>Details.getHeader();
     const backAction = await pageHeader.getInlineActionButtonByLabel('Back');
     await backAction?.click();
 
@@ -142,7 +142,7 @@ describe('<%= featureClassName %>DetailsComponent', () => {
       },
     ];
 
-    const pageHeader = await <%= featurePropertyName %>Details.getPageHeader();
+    const pageHeader = await <%= featurePropertyName %>Details.getHeader();
     const objectDetails = await pageHeader.getObjectInfos();
     expect(objectDetails.length).toBe(4);
 
