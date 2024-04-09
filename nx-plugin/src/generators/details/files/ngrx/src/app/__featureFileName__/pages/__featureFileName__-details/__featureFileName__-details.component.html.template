@@ -2,8 +2,8 @@
   <ocx-page-header
     [header]="'<%= featureConstantName %>_DETAILS.HEADER' | translate"
     [subheader]="'<%= featureConstantName %>_DETAILS.SUB_HEADER' | translate"
-    [objectDetails]="headerLabels"
-    [actions]="headerActions"
+    [objectDetails]="(headerLabels$ | async) ?? []"
+    [actions]="(headerActions$ | async) ?? []"
     [disableDefaultActions]="true"
     [manualBreadcrumbs]="true"
   >
