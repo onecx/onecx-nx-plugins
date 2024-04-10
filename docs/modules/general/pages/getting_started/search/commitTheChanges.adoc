@@ -2,16 +2,26 @@
 
 
 [IMPORTANT] 
-.Build & test your application
+.Build & run & test your application
 ==== 
-Please run the following two commands to make sure that the application builds and that the tests are running
+Please run the following three commands to make sure that the application builds, that the tests are running and that the application starts.
 ----
 npm run build
 ----
 ----
 npm run test
 ---- 
+----
+npm start
+---- 
+====
 
+[TIP] 
+.Run your application on another port if needed (4211 is an example) 
+==== 
+----
+nx serve --port=4211
+---- 
 ====
 
 [IMPORTANT] 
