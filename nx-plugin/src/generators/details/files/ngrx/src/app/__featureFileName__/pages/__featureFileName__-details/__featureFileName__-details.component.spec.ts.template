@@ -1,21 +1,37 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { <%= featureClassName %>DetailsComponent } from './<%= featureFileName %>-details.component';
 import { ActivatedRoute } from '@angular/router';
 import { LetModule } from '@ngrx/component';
-import { provideMockStore } from '@ngrx/store/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing'
+import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { MockStore, provideMockStore } from '@ngrx/store/testing';
+import { Store, StoreModule } from '@ngrx/store';
+import { TranslateService } from '@ngx-translate/core';
 import { TranslateTestingModule } from 'ngx-translate-testing'
+import { PrimeIcons } from 'primeng/api';
+import { of } from 'rxjs';
 import {
   BreadcrumbService,
   PortalCoreModule,
+  UserService,
 } from '@onecx/portal-integration-angular';
-import { HttpClientTestingModule } from '@angular/common/http/testing'
+import { <%= featureClassName %>DetailsComponent } from './<%= featureFileName %>-details.component';
 import { initialState } from './<%= featureFileName %>-details.reducers';
+import { <%= featureClassName %>DetailsHarness } from './<%= featureFileName %>-details.harness';
+import { <%= featureClassName %>DetailsViewModel } from './<%= featureFileName %>-details.viewmodel';
+import { select<%= featureClassName %>DetailsViewModel } from './<%= featureFileName %>-details.selectors';
 
 describe('<%= featureClassName %>DetailsComponent', () => {
   let component: <%= featureClassName %>DetailsComponent;
   let fixture: ComponentFixture<<%= featureClassName %>DetailsComponent>;
+  let store: MockStore<Store>;
   let breadcrumbService: BreadcrumbService;
+  let <%= featurePropertyName %>Details: <%= featureClassName %>DetailsHarness;
+
   const mockActivatedRoute = {};
+  const base<%= featureClassName %>DetaulsViewModel: <%= featureClassName %>DetailsViewModel = {
+    details: undefined,
+  };
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -36,25 +52,119 @@ describe('<%= featureClassName %>DetailsComponent', () => {
       ],
     }).compileComponents();
 
+    const userService = TestBed.inject(UserService);
+    userService.hasPermission = () => true;
+    const translateService = TestBed.inject(TranslateService);
+    translateService.use('en');
+
+    store = TestBed.inject(MockStore);
+    store.overrideSelector(
+      select<%= featureClassName %>DetailsViewModel,
+      base<%= featureClassName %>DetaulsViewModel
+    );
+    store.refreshState();
+
     fixture = TestBed.createComponent(<%= featureClassName %>DetailsComponent);
     component = fixture.componentInstance;
     breadcrumbService = TestBed.inject(BreadcrumbService);
     fixture.detectChanges();
+    <%= featurePropertyName %>Details = await TestbedHarnessEnvironment.harnessForFixture(
+      fixture,
+      <%= featureClassName %>DetailsHarness
+    );
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should set breadcrumb items on ngOnInit', () => {
-    const breadcrumbServiceSpy = jest.spyOn(breadcrumbService, 'setItems');
+  it('should display correct breadcrumbs', async () => {
+    jest.spyOn(breadcrumbService, 'setItems');
+
     component.ngOnInit();
-    expect(breadcrumbServiceSpy).toHaveBeenCalledWith([
+    fixture.detectChanges();
+
+    expect(breadcrumbService.setItems).toHaveBeenCalledTimes(1);
+    const pageHeader = await <%= featurePropertyName %>Details.getHeader();
+    const searchBreadcrumbItem = await pageHeader.getBreadcrumbItem('Details');
+    expect(await searchBreadcrumbItem!.getText()).toEqual('Details');
+  });
+
+  it('should display translated headers', async () => {
+    const pageHeader = await <%= featurePropertyName %>Details.getHeader();
+    expect(await pageHeader.getHeaderText()).toEqual('<%= featureClassName %> Details');
+    expect(await pageHeader.getSubheaderText()).toEqual(
+      'Display of <%= featureClassName %> Details'
+    );
+  });
+
+  it('should have 2 inline actions', async () => {
+    const pageHeader = await <%= featurePropertyName %>Details.getHeader();
+    const inlineActions = await pageHeader.getInlineActionButtons();
+    expect(inlineActions.length).toBe(2);
+
+    const backAction = await pageHeader.getInlineActionButtonByLabel('Back');
+    expect(backAction).toBeTruthy();
+
+    const moreAction = await pageHeader.getInlineActionButtonByIcon(
+      PrimeIcons.ELLIPSIS_V
+    );
+    expect(moreAction).toBeTruthy();
+  });
+
+  it('should navigate back on back button click', async () => {
+    jest.spyOn(window.history, 'back');
+
+    const pageHeader = await <%= featurePropertyName %>Details.getHeader();
+    const backAction = await pageHeader.getInlineActionButtonByLabel('Back');
+    await backAction?.click();
+
+    expect(window.history.back).toHaveBeenCalledTimes(1);
+  });
+
+  it('should display item details in page header', async () => {
+    component.headerLabels$ = of([
       {
-        titleKey: '<%= featureConstantName %>_DETAILS.BREADCRUMB',
-        labelKey: '<%= featureConstantName %>_DETAILS.BREADCRUMB',
-        routerLink: '/<%= featureFileName %>',
+        label: 'first',
+        value: 'first value',
+      },
+      {
+        label: 'second',
+        value: 'second value',
+      },
+      {
+        label: 'third',
+        icon: PrimeIcons.PLUS,
+      },
+      {
+        label: 'fourth',
+        value: 'fourth value',
+        icon: PrimeIcons.QUESTION,
       },
     ]);
+
+    const pageHeader = await <%= featurePropertyName %>Details.getHeader();
+    const objectDetails = await pageHeader.getObjectInfos();
+    expect(objectDetails.length).toBe(4);
+
+    const firstDetailItem = await pageHeader.getObjectInfoByLabel('first');
+    expect(await firstDetailItem?.getLabel()).toEqual('first');
+    expect(await firstDetailItem?.getValue()).toEqual('first value');
+    expect(await firstDetailItem?.getIcon()).toBeUndefined();
+
+    const secondDetailItem = await pageHeader.getObjectInfoByLabel('second');
+    expect(await secondDetailItem?.getLabel()).toEqual('second');
+    expect(await secondDetailItem?.getValue()).toEqual('second value');
+    expect(await secondDetailItem?.getIcon()).toBeUndefined();
+
+    const thirdDetailItem = await pageHeader.getObjectInfoByLabel('third');
+    expect(await thirdDetailItem?.getLabel()).toEqual('third');
+    expect(await thirdDetailItem?.getValue()).toEqual('');
+    expect(await thirdDetailItem?.getIcon()).toEqual(PrimeIcons.PLUS);
+
+    const fourthDetailItem = await pageHeader.getObjectInfoByLabel('fourth');
+    expect(await fourthDetailItem?.getLabel()).toEqual('fourth');
+    expect(await fourthDetailItem?.getValue()).toEqual('fourth value');
+    expect(await fourthDetailItem?.getIcon()).toEqual(PrimeIcons.QUESTION);
   });
 });
