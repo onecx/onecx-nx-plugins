@@ -33,7 +33,7 @@ Here you can add additional properties which you need for your <SearchFeatureReq
 
 The column mappings must be defined. 
 
-*Where this snippet can be found*: <feature>-search.component.ts. :
+*Where this snippet can be found*: <feature>-search.columns.ts. :
 
 [subs=+macros]
 ----
