@@ -29,11 +29,12 @@ Search<Feature>Request:
 Here you can add additional properties which you need for your <SearchFeatureRequest> / <SearchFeatureResult>, e.g. status, creationDate ...
 
 *HINT*: Please remove the "ACTION" comment after solving this issue
+
 === ACTION S6: Define search results columns
 
 The column mappings must be defined. 
 
-*Where this snippet can be found*: <feature>-search.component.ts. :
+*Where this snippet can be found*: <feature>-search.columns.ts. :
 
 [subs=+macros]
 ----
@@ -74,7 +75,6 @@ export const enum ColumnType {
 
 
 *HINT*: Please remove the "ACTION" comment after solving this issue
-
 
 
 === ACTION S7: Here you can create a mapping of the items and their corresponding translation strings

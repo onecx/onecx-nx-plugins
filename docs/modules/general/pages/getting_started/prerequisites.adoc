@@ -35,5 +35,21 @@ Nx version should be
 nx  --version
 ----
 
+[TIP] 
+.How to install the nx CLI
+==== 
+npm install –global nx@latest
+
+If you face any issues, try the following steps:
+
+----
+rm -rf node_modules
+npm cache verify
+npm install -g @nrwl/cli
+npm install
+----
+
+====
+
 
 
