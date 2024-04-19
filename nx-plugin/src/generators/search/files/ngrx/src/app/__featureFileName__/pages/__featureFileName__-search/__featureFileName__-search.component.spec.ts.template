@@ -115,32 +115,6 @@ describe('<%= featureClassName %>SearchComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should dispatch searchButtonClicked action on search', (done) => {
-    const formValue = formBuilder.group({
-      changeMe: '123',
-    });
-    component.<%= featurePropertyName %>SearchFormGroup = formValue;
-
-    store.scannedActions$
-      .pipe(ofType(<%= featureClassName %>SearchActions.searchButtonClicked))
-      .subscribe((a) => {
-        expect(a.searchCriteria).toEqual({ changeMe: '123' });
-        done();
-      });
-
-    component.search(formValue);
-  });
-
-  it('should dispatch resetButtonClicked action on resetSearch', (done) => {
-    store.scannedActions$
-      .pipe(ofType(<%= featureClassName %>SearchActions.resetButtonClicked))
-      .subscribe(() => {
-        done();
-      });
-
-    component.resetSearch();
-  });
-
   it('should dispatch resetButtonClicked action on resetSearch', async () => {
     var doneFn = jest.fn();
     store.overrideSelector(select<%= featureClassName %>SearchViewModel, {
@@ -336,45 +310,6 @@ describe('<%= featureClassName %>SearchComponent', () => {
       });
 
     component.search(formValue);
-  });
-
-  it('should dispatch detailsButtonClicked action on item details click', async () => {
-    jest.spyOn(store, 'dispatch');
-
-    store.overrideSelector(select<%= featureClassName %>SearchViewModel, {
-      ...base<%= featureClassName %>SearchViewModel,
-      results: [
-        {
-          id: '1',
-          imagePath: '',
-          column_1: 'val_1',
-        },
-      ],
-      columns: [
-        {
-          columnType: ColumnType.STRING,
-          nameKey: 'COLUMN_KEY',
-          id: 'column_1',
-        },
-      ],
-    });
-    store.refreshState();
-
-    const interactiveDataView =
-      await <%= featurePropertyName %>Search.getSearchResults();
-    const dataView = await interactiveDataView.getDataView();
-    const dataTable = await dataView.getDataTable();
-    const rowActionButtons = await dataTable.getActionButtons();
-
-    expect(rowActionButtons.length).toEqual(1);
-    expect(await rowActionButtons[0].getAttribute('ng-reflect-icon')).toEqual(
-      'pi pi-eye'
-    );
-    await rowActionButtons[0].click();
-
-    expect(store.dispatch).toHaveBeenCalledWith(
-      <%= featureClassName %>SearchActions.detailsButtonClicked({ id: '1' })
-    );
   });
 
   it('should export csv data on export action click', async () => {
