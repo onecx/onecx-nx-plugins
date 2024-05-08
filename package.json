@@ -18,7 +18,7 @@
     "yaml": "^2.3.4"
   },
   "devDependencies": {
-    "@nx/eslint": "17.3.0",
+    "@nx/eslint": "19.0.1",
     "@nx/eslint-plugin": "17.3.0",
     "@nx/jest": "17.3.0",
     "@nx/js": "17.3.0",
