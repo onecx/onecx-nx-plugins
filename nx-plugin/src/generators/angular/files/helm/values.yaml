@@ -10,10 +10,11 @@ app:
     # Microfrontend
     microfrontend:
       enabled: true
-      spec:
+      specs:
         exposedModule: "./<%= remoteModuleName %>Module"
         description: "OneCX <%= remoteModuleName %> Module"
         note: "OneCX <%= remoteModuleName %> UI module auto import via MF operator"
+        type: MODULE
     # Permission
     permission:
       enabled: true

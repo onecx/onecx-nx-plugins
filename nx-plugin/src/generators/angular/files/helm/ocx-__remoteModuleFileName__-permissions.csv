@@ -1,6 +1,0 @@
-PERMISSION NAME;PERMISSION_KEY;basic-role;advanced-role;
-Basic permission;<%= constantName %>_SEARCH#BASIC;x;x;
-View search results;<%= constantName %>_SEARCH#VIEW;x;x;
-
-
-# ACTION 11: Update permissions and roles
