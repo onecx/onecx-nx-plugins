@@ -114,7 +114,7 @@ updateSearchConfig$ = createEffect(() => {
       ),
       mergeMap(([, selectedSearchConfig]) => {
         return this.portalDialogService.openDialog<CreateOrEditSearchDialogContent>(
-          'CONSTRUCTION_TASK_SEARCH.HEADER_ACTIONS.UPDATE_SEARCH_CONFIG',
+          '<%= featureConstantName %>_SEARCH.HEADER_ACTIONS.UPDATE_SEARCH_CONFIG',
           {
             type: CreateOrEditSearchConfigDialogComponent,
             inputs: {
