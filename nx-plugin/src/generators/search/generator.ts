@@ -321,7 +321,7 @@ function addPermissionDefinitionsToValuesYaml(
       ]['VIEW'] ??= `View mode for ${propertyName}`;
       yaml['app']['operator']['permission']['spec']['permissions'][
         constantName
-      ]['SEARCH'] ??= `Seaarch ${propertyName}`;
+      ]['SEARCH'] ??= `Search ${propertyName}`;
       return yaml;
     });
   }
