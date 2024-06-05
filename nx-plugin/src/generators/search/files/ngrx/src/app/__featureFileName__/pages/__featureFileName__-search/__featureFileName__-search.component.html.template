@@ -15,7 +15,7 @@
     </form>
   </ocx-search-header>
   <ocx-content-container layout="horizontal">
-    <ocx-content>
+    <ocx-content class="w-full">
       <div class="card mt-2 p-0">
         <div>
           <ocx-interactive-data-view
