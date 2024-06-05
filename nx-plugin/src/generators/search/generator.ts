@@ -46,8 +46,6 @@ export async function searchGenerator(
     }
   );
 
-  adaptRemoteModule(tree);
-
   adaptAppModule(tree);
 
   adaptFeatureModule(tree, options);
@@ -219,44 +217,25 @@ function adaptFeatureModule(tree: Tree, options: SearchGeneratorSchema) {
 function adaptAppModule(tree: Tree) {
   const moduleFilePath = joinPathFragments('src/app/app.module.ts');
   let moduleContent = tree.read(moduleFilePath, 'utf8');
-  moduleContent = moduleContent.replace(
-    'providers: [',
-    `providers: [DialogService,`
-  );
+  if (!moduleContent.includes('providers: [providePortalDialogService(),')) {
+    moduleContent = moduleContent.replace(
+      'providers: [',
+      `providers: [providePortalDialogService(),`
+    );
+  }
 
-  moduleContent = moduleContent.replace(
-    `} from '@onecx/portal-integration-angular'`,
-    `} from '@onecx/portal-integration-angular' \n import { DialogService } from 'primeng/dynamicdialog'; `
-  );
+  if (
+    !moduleContent.includes(
+      `providePortalDialogService } from '@onecx/portal-integration-angular'`
+    )
+  ) {
+    moduleContent = moduleContent.replace(
+      `} from '@onecx/portal-integration-angular'`,
+      `, providePortalDialogService } from '@onecx/portal-integration-angular'`
+    );
+  }
 
   tree.write(moduleFilePath, moduleContent);
-}
-
-function adaptRemoteModule(tree: Tree) {
-  const remoteModuleFolderPath = 'src/app';
-  const remoteModuleFile = tree.children(remoteModuleFolderPath);
-  const remoteModuleFilePath = remoteModuleFile.find((f) =>
-    f.endsWith('-app.remote.module.ts')
-  );
-
-  let remoteModuleContent = tree.read(
-    joinPathFragments(remoteModuleFolderPath, remoteModuleFilePath),
-    'utf8'
-  );
-
-  remoteModuleContent = remoteModuleContent.replace(
-    `} from '@onecx/portal-integration-angular'`,
-    `} from '@onecx/portal-integration-angular' \n import { DialogService } from 'primeng/dynamicdialog'; `
-  );
-  remoteModuleContent = remoteModuleContent.replace(
-    'providers: [',
-    `providers: [DialogService,`
-  );
-
-  tree.write(
-    joinPathFragments(remoteModuleFolderPath, remoteModuleFilePath),
-    remoteModuleContent
-  );
 }
 
 function adaptFeatureRoutes(tree: Tree, options: SearchGeneratorSchema) {
