@@ -63,7 +63,7 @@ createSearchConfig$ = createEffect(() => {
             <%= featureClassName %>SearchActions.searchConfigCreationCancelled()
           );
         }
-        let request: CreateSearchConfigRequest = {
+        const request: CreateSearchConfigRequest = {
           page: this.pageName ?? '',
           fieldListVersion: 0,
           name: dialogResult.result?.searchConfigName ?? '',
@@ -132,7 +132,7 @@ updateSearchConfig$ = createEffect(() => {
         if (dialogResult.button === 'secondary') {
           return of(<%= featureClassName %>SearchActions.searchConfigUpdateCancelled());
         }
-        let request: CreateSearchConfigRequest = {
+        const request: CreateSearchConfigRequest = {
           page: this.pageName ?? '',
           name: dialogResult.result?.searchConfigName ?? '',
           fieldListVersion: 0,
