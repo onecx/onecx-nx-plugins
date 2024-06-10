@@ -4,7 +4,7 @@
   "license": "MIT",
   "scripts": {
     "build": "nx run nx-plugin:build",
-    "test": "nx run nx-plugin-e2e:e2e"    
+    "test": "nx run nx-plugin-e2e:e2e"
   },
   "private": true,
   "dependencies": {
