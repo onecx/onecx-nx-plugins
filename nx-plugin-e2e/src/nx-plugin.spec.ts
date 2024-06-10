@@ -1,7 +1,7 @@
 import { execSync } from 'child_process';
 import { join, dirname } from 'path';
 import { mkdirSync, rmSync } from 'fs';
-
+const NON_INTERACTIVE_KEY = 'non-interactive';
 const projectName = 'test-project';
 const featureName = 'test-feature';
 describe('nx-plugin', () => {
@@ -81,12 +81,33 @@ return;
     });
   });
 
+  // Add all required parameters to this array with a value.
+  // As tests are non-interactive, not-added but required items will block the test
+  const requiredParameters = [
+    {
+      key: NON_INTERACTIVE_KEY,
+      value: true,
+    },
+    {
+      key: 'generateFeatureAPI',
+      value: true,
+    },
+  ];
+
+  const parameterString = requiredParameters
+    .map((o) => `--${o.key} ${o.value}`)
+    .join(' ');
+
   it('should add a search page', () => {
-    execSync(`nx generate @onecx/nx-plugin:search ${featureName} --verbose`, {
-      cwd: projectDirectory,
-      stdio: 'inherit',
-      env: process.env,
-    });
+    execSync(
+      `nx generate @onecx/nx-plugin:search ${featureName} ${parameterString} --verbose`,
+      {
+        cwd: projectDirectory,
+        stdio: 'inherit',
+        env: process.env,
+      }
+    );
+
     execSync(`nx run build --skip-nx-cache`, {
       cwd: projectDirectory,
       stdio: 'inherit',

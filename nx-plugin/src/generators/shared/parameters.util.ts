@@ -1,17 +1,27 @@
 import yargs = require('yargs');
 import { prompt } from 'enquirer';
 
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const chalk = require('chalk');
+
+const NON_INTERACTIVE_KEY = 'non-interactive';
 interface NameValue {
   name: string;
   value: unknown;
 }
 
+interface ShowRule {
+  key: string;
+  showIf: (value: unknown) => boolean;
+}
 interface GeneratorParameterBasic {
   key: string;
   type: 'boolean' | 'text' | 'number' | 'select';
-  required: boolean;
+  required: 'always' | 'interactive';
   default: unknown;
   prompt: string;
+  showRules?: ShowRule[];
+  showInSummary?: boolean;
   choices?: NameValue[];
 }
 
@@ -20,7 +30,9 @@ interface GeneratorParameterChoices extends GeneratorParameterBasic {
   choices: NameValue[];
 }
 
-export type GeneratorParameter = GeneratorParameterBasic | GeneratorParameterChoices;
+export type GeneratorParameter =
+  | GeneratorParameterBasic
+  | GeneratorParameterChoices;
 
 /**
  * This method validates if parameters have been set through the command line interface.
@@ -34,53 +46,90 @@ async function processParams(parameters: GeneratorParameter[]) {
   const argv = yargs(hideBin(process.argv)).argv;
 
   const parameterValues = {};
-  const missingRequired: GeneratorParameter[] = [];
+  const interactiveParameters: GeneratorParameter[] = [];
 
   for (const parameter of parameters) {
     if (argv[parameter.key] != null) {
       parameterValues[parameter.key] = argv[parameter.key];
     } else {
-      if (parameter.required) {
-        missingRequired.push(parameter);
+      if (
+        parameter.required == 'always' ||
+        (parameter.required == 'interactive' && !argv[NON_INTERACTIVE_KEY])
+      ) {
+        interactiveParameters.push(parameter);
       } else {
         parameterValues[parameter.key] = parameter.default;
       }
     }
   }
 
-  const prompts = [];
-
-  for (const parameter of missingRequired) {
+  let showSummary = false;
+  for (const parameter of interactiveParameters) {
+    // First filter interactive by rules
+    if (parameter.showRules) {
+      let show = true;
+      for (const rule of parameter.showRules) {
+        if (!rule.showIf(parameterValues[rule.key])) {
+          show = false;
+          return;
+        }
+      }
+      if (!show) continue;
+    }
+    let result = {};
     if (parameter.type == 'boolean') {
-      prompts.push({
+      result = await prompt({
         type: 'confirm',
         name: parameter.key,
         message: parameter.prompt,
       });
     } else if (parameter.type == 'text') {
-      prompts.push({
+      result = await prompt({
         type: 'text',
         name: parameter.key,
         message: parameter.prompt,
       });
     } else if (parameter.type == 'number') {
-      prompts.push({
+      result = await prompt({
         type: 'number',
         name: parameter.key,
         message: parameter.prompt,
       });
     } else if (parameter.type == 'select') {
-      prompts.push({
+      result = await prompt({
         type: 'select',
         name: parameter.key,
         message: parameter.prompt,
         choices: parameter.choices,
       });
     }
+    Object.assign(parameterValues, result);
+    showSummary = showSummary || parameter.showInSummary;
   }
 
-  const response = await prompt(prompts);
-  return Object.assign(parameterValues, response);
+  if (showSummary) {
+    console.log(chalk.bold(' *** Summary ***'));
+    for (const parameter of parameters) {
+      if (!parameter.showInSummary) continue;
+      console.log(
+        chalk.bold(parameter.key) +
+          ': ' +
+          chalk.bgGray(parameterValues[parameter.key])
+      );
+    }
+    const result = await prompt({
+      type: 'confirm',
+      name: 'continue',
+      message: 'Do you want to continue?',
+    });
+
+    if (!result['continue']) {
+      console.log('Stopped generator.');
+      process.exit(1);
+    }
+  }
+
+  return parameterValues;
 }
 
 export default processParams;
