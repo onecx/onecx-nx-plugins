@@ -17,11 +17,15 @@ import { renderJsonFile } from '../shared/renderJsonFile';
 import { updateYaml } from '../shared/yaml';
 import { SearchGeneratorSchema } from './schema';
 import path = require('path');
+import processParams from './parameters.util';
 
 export async function searchGenerator(
   tree: Tree,
   options: SearchGeneratorSchema
 ): Promise<GeneratorCallback> {
+  const parameters = await processParams();
+  Object.assign(options, parameters);
+  
   const spinner = ora(`Adding search to ${options.featureName}`).start();
   const directory = '.';
 
@@ -549,35 +553,36 @@ function addFunctionToOpenApi(tree: Tree, options: SearchGeneratorSchema) {
     searchConfigEndpoints = '';
   }
 
+  const propertySearchEndpoints = `
+      /${propertyName}/search:
+        post:
+          operationId: search${className}s
+          tags:
+            - ${className}
+          description: This operation performs a search based on provided search criteria. Search for ${propertyName} results.
+          requestBody:
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/Search${className}Request'
+          responses:
+            '200':
+              description: OK
+              content:
+                application/json:
+                  schema:
+                    $ref: '#/components/schemas/Search${className}Response'
+            '400':
+              description: Bad request
+            '500':
+              description: Something went wrong`;
+
   bffOpenApiContent = bffOpenApiContent.replace(`paths: {}`, `paths:`).replace(
     `paths:`,
     `
-paths:
-  /${propertyName}/search:
-    post:
-      operationId: search${className}s
-      tags:
-        - ${className}
-      description: This operation performs a search based on provided search criteria. Search for ${propertyName} results.
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Search${className}Request'
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Search${className}Response'
-        '400':
-          description: Bad request
-        '500':
-          description: Something went wrong
-
+paths:  
+  ${options.generateFeatureAPI ? propertySearchEndpoints : ''}
   ${searchConfigEndpoints}
-
 `
   );
   if (!hasSchemas) {
@@ -601,7 +606,7 @@ components:
             format: int64
           # ACTION S1: add additional properties here`;
 
-  if (hasEntitySchema) {
+  if (hasEntitySchema || !options.generateFeatureAPI) {
     entitySchema = '';
   }
 
@@ -737,13 +742,7 @@ components:
     console.log(searchConfigSchema);
   }
 
-  bffOpenApiContent = bffOpenApiContent.replace(
-    `
-    schemas:`,
-    `
-    schemas:
-      ${entitySchema}
-
+  const propertySearchComponents = `
       Search${className}Request:
         type: object
         properties:
@@ -779,8 +778,17 @@ components:
         properties:
           ${propertyName}:
             $ref: '#/components/schemas/${className}'
-        # ACTION S8: add additional properties here
-      
+        # ACTION S8: add additional properties here`;
+
+  bffOpenApiContent = bffOpenApiContent.replace(
+    `
+    schemas:`,
+    `
+    schemas:
+      ${entitySchema}  
+
+      ${options.generateFeatureAPI ? propertySearchComponents : ''}
+
       ${searchConfigSchema}
 
       ProblemDetailResponse:
