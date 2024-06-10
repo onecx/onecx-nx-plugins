@@ -88,10 +88,6 @@ return;
       key: NON_INTERACTIVE_KEY,
       value: true,
     },
-    {
-      key: 'generateFeatureAPI',
-      value: true,
-    },
   ];
 
   const parameterString = requiredParameters

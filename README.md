@@ -133,6 +133,8 @@ Now you can access `options.newOption` in all generator methods.
 The properties for the parameter are:
 - `key`: needs to be identical with the key in `SearchGeneratorSchema`
 - `type`: text, boolean, number and select are supported for now
-- `required`: if true, parameter has to be provided by either CLI parameter or the user will be asked interactively (CLI parameter needs to be added to tests, as interactive does not work there!)
-- `default`: a default value (if required is false and not provided via CLI, default will be used)
-- `prompt`: if not provided via CLI and required is true, this will be prompted to the user 
+- `required`: always: needs to provided via cli-parameter or interactive (no default used), interactive: in CLI either via cli-parameter or default used and asked in interactive
+- `default`: a default value (if required == interactive and not provided via cli-parameter, default will be used)
+- `prompt`: if not provided via cli-parameter and required is true, this will be prompted to the user 
+
+All cli-parameters can be provided via `--<key> <value>`.

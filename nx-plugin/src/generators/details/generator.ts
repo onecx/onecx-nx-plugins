@@ -22,7 +22,7 @@ const PARAMETERS: GeneratorParameter[] = [
   {
     key: 'generateFeatureAPI',
     type: 'boolean',
-    required: 'always',
+    required: 'interactive',
     default: true,
     prompt:
       'Do you want to generate API-Endpoints & Components into the OpenAPI File?',
