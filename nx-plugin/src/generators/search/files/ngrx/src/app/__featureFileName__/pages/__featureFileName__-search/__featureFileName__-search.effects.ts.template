@@ -4,7 +4,7 @@ import { routerNavigatedAction } from '@ngrx/router-store';
 import { catchError, map, mergeMap, of, switchMap, tap, filter, mergeMap } from 'rxjs';
 import {
   Search<%= featureClassName %>Request,
-  Search <%= featureClassName %>Response,
+  Search<%= featureClassName %>Response,
   SearchConfigBffService,
   <%= featureClassName %>BffService,
   CreateSearchConfigRequest,
