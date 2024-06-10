@@ -20,18 +20,7 @@ interface GeneratorParameterChoices extends GeneratorParameterBasic {
   choices: NameValue[];
 }
 
-type GeneratorParameter = GeneratorParameterBasic | GeneratorParameterChoices;
-
-const PARAMETERS: GeneratorParameter[] = [
-  {
-    key: 'generateFeatureAPI',
-    type: 'boolean',
-    required: true,
-    default: true,
-    prompt:
-      'Do you want to generate API-Endpoints & Components for the search?',
-  },
-];
+export type GeneratorParameter = GeneratorParameterBasic | GeneratorParameterChoices;
 
 /**
  * This method validates if parameters have been set through the command line interface.
@@ -39,7 +28,7 @@ const PARAMETERS: GeneratorParameter[] = [
  * If they are not required, the default values are used.
  * @returns dict with all parameters
  */
-async function processParams() {
+async function processParams(parameters: GeneratorParameter[]) {
   // eslint-disable-next-line @typescript-eslint/no-var-requires
   const { hideBin } = require('yargs/helpers');
   const argv = yargs(hideBin(process.argv)).argv;
@@ -47,7 +36,7 @@ async function processParams() {
   const parameterValues = {};
   const missingRequired: GeneratorParameter[] = [];
 
-  for (const parameter of PARAMETERS) {
+  for (const parameter of parameters) {
     if (argv[parameter.key] != null) {
       parameterValues[parameter.key] = argv[parameter.key];
     } else {

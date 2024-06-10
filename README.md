@@ -116,7 +116,7 @@ export interface SearchGeneratorSchema {
 }
 ```
 
-Next, you need to add the option to the parameter processing utility (`parameters.util.ts`) to the `PARAMETERS` array:
+Next, you need to add the option to the parameters in your generator, when calling `processParams(PARAMETERS)`:
 ```
 {
     key: 'newOption',

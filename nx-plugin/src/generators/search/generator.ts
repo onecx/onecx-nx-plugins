@@ -17,15 +17,26 @@ import { renderJsonFile } from '../shared/renderJsonFile';
 import { updateYaml } from '../shared/yaml';
 import { SearchGeneratorSchema } from './schema';
 import path = require('path');
-import processParams from './parameters.util';
+import processParams, { GeneratorParameter } from '../shared/parameters.util';
+
+const PARAMETERS: GeneratorParameter[] = [
+  {
+    key: 'generateFeatureAPI',
+    type: 'boolean',
+    required: true,
+    default: true,
+    prompt:
+      'Do you want to generate API-Endpoints & Components for the search?',
+  },
+];
 
 export async function searchGenerator(
   tree: Tree,
   options: SearchGeneratorSchema
 ): Promise<GeneratorCallback> {
-  const parameters = await processParams();
+  const parameters = await processParams(PARAMETERS);
   Object.assign(options, parameters);
-  
+
   const spinner = ora(`Adding search to ${options.featureName}`).start();
   const directory = '.';
 
