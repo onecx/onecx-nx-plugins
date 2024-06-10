@@ -108,24 +108,41 @@ async function processParams(parameters: GeneratorParameter[]) {
   }
 
   if (showSummary) {
-    console.log(chalk.bold(' *** Summary ***'));
-    for (const parameter of parameters) {
-      if (!parameter.showInSummary) continue;
-      console.log(
-        chalk.bold(parameter.key) +
-          ': ' +
-          chalk.bgGray(parameterValues[parameter.key])
-      );
-    }
-    const result = await prompt({
-      type: 'confirm',
-      name: 'continue',
-      message: 'Do you want to continue?',
-    });
+    let inputsFinal = false;
+    while (!inputsFinal) {
+      console.log(chalk.bold(' *** Summary ***'));
+      for (const parameter of parameters) {
+        if (!parameter.showInSummary) continue;
+        console.log(
+          chalk.bold(parameter.key) +
+            ': ' +
+            chalk.bgGray(parameterValues[parameter.key])
+        );
+      }
+  
+      const confirm = await prompt({
+        type: 'confirm',
+        name: 'adapt',
+        message: 'Do you need to adapt your inputs?',
+      });
+      if (!confirm['adapt']) {
+        inputsFinal = false;
+        break;
+      }
 
-    if (!result['continue']) {
-      console.log('Stopped generator.');
-      process.exit(1);
+      const result = await prompt({
+        type: 'form',
+        name: 'data',
+        message: 'Edit your input:',
+        choices: parameters
+          .filter((p) => p.showInSummary)
+          .map((p) => ({
+            name: p.key,
+            message: p.prompt,
+            initial: parameterValues[p.key],
+          })),
+      });
+      Object.assign(parameterValues, result['data']);
     }
   }
 

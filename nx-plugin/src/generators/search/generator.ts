@@ -23,10 +23,38 @@ const PARAMETERS: GeneratorParameter[] = [
   {
     key: 'generateFeatureAPI',
     type: 'boolean',
-    required: true,
+    required: 'always',
     default: true,
     prompt:
-      'Do you want to generate API-Endpoints & Components for the search?',
+      'Do you want to generate API-Endpoints & Components into the OpenAPI File?',
+  },
+  {
+    key: 'apiServiceName',
+    type: 'text',
+    required: 'interactive',
+    default: true,
+    prompt: 'Provide the class name of your API service (e.g., BookService): ',
+    showInSummary: true,
+    showRules: [{ key: 'generateFeatureAPI', showIf: (v) => !v }],
+  },
+  {
+    key: 'dataObjectName',
+    type: 'text',
+    required: 'interactive',
+    default: true,
+    prompt: 'Provide the class name of your Data Object (e.g., Book): ',
+    showInSummary: true,
+    showRules: [{ key: 'generateFeatureAPI', showIf: (v) => !v }],
+  },
+  {
+    key: 'searchCriteriaName',
+    type: 'text',
+    required: 'interactive',
+    default: true,
+    prompt:
+      'Provide the name of your Search Criteria (e.g., BookSearchCriteria): ',
+    showInSummary: true,
+    showRules: [{ key: 'generateFeatureAPI', showIf: (v) => !v }],
   },
 ];
 
@@ -58,6 +86,20 @@ export async function searchGenerator(
       featurePropertyName: names(options.featureName).propertyName,
       featureClassName: names(options.featureName).className,
       featureConstantName: names(options.featureName).constantName,
+      // If API is generated, result object has feature as child, so need to access sub-item
+      dataObjectIdPath: options.generateFeatureAPI
+        ? `item.${names(options.featureName).propertyName}.id`
+        : `item.id ?? ''`, // Else, id is directly accessible on data object
+      //  If API is generated, use generated name
+      dataObjectName: options.generateFeatureAPI
+        ? `${names(options.featureName).className}SearchResult`
+        : options.dataObjectName, // Else, use provided name,
+      serviceName: options.generateFeatureAPI
+        ? `${names(options.featureName).className}BffService`
+        : options.apiServiceName,
+      searchCriteriaName: options.generateFeatureAPI
+        ? `Search${names(options.featureName).className}Request`
+        : options.searchCriteriaName,
     }
   );
 
@@ -565,28 +607,28 @@ function addFunctionToOpenApi(tree: Tree, options: SearchGeneratorSchema) {
   }
 
   const propertySearchEndpoints = `
-      /${propertyName}/search:
-        post:
-          operationId: search${className}s
-          tags:
-            - ${className}
-          description: This operation performs a search based on provided search criteria. Search for ${propertyName} results.
-          requestBody:
-            content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/Search${className}Request'
-          responses:
-            '200':
-              description: OK
-              content:
-                application/json:
-                  schema:
-                    $ref: '#/components/schemas/Search${className}Response'
-            '400':
-              description: Bad request
-            '500':
-              description: Something went wrong`;
+  /${propertyName}/search:
+    post:
+      operationId: search${className}s
+      tags:
+        - ${className}
+      description: This operation performs a search based on provided search criteria. Search for ${propertyName} results.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Search${className}Request'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Search${className}Response'
+        '400':
+          description: Bad request
+        '500':
+          description: Something went wrong`;
 
   bffOpenApiContent = bffOpenApiContent.replace(`paths: {}`, `paths:`).replace(
     `paths:`,

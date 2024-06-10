@@ -3,29 +3,24 @@ import { Actions, createEffect, ofType, concatLatestFrom } from '@ngrx/effects';
 import { routerNavigatedAction } from '@ngrx/router-store';
 import { catchError, map, mergeMap, of, switchMap, tap, filter, mergeMap } from 'rxjs';
 import {
-  Search<%= featureClassName %>Request,
-  Search<%= featureClassName %>Response,
   SearchConfigBffService,
-  <%= featureClassName %>BffService,
+  <%= serviceName %>,
   CreateSearchConfigRequest,
-  CreateSearchConfigResponse,
-  SearchConfig,
 } from '../../../shared/generated';
 import { <%= featureClassName %>SearchActions } from './<%= featureFileName %>-search.actions';
 import { <%= featureClassName %>SearchComponent } from './<%= featureFileName %>-search.component';
-import {  CreateOrEditSearchConfigDialogComponent, PortalMessageService, PortalDialogService, CreateOrEditSearchConfigDialogComponent, CreateOrEditSearchDialogContent } from '@onecx/portal-integration-angular';
+import {  PortalMessageService, PortalDialogService, CreateOrEditSearchConfigDialogComponent, CreateOrEditSearchDialogContent } from '@onecx/portal-integration-angular';
 import {
   createQueryParamsEffect,
   filterForNavigatedTo,
   filterOutOnlyQueryParamsChanged,
   filterOutQueryParamsHaveNotChanged,
 } from '@onecx/portal-integration-angular/ngrx';
-import {
-  <%= featureClassName %>SearchCriteria,
+import {  
   <%= featurePropertyName %>SearchCriteriasSchema,
 } from './<%= featureFileName %>-search.parameters';
 import { Injectable, SkipSelf } from '@angular/core';
-import { <%= featurePropertyName %>SearchSelectors, selectSearchCriteria, selectSearchConfigViewState, select<%= featureClassName %>SearchViewModel } from './<%= featureFileName %>-search.selectors';
+import { <%= featurePropertyName %>SearchSelectors, selectSearchCriteria, selectSearchConfigViewState } from './<%= featureFileName %>-search.selectors';
 import { Action, Store } from '@ngrx/store';
 
 @Injectable()
@@ -33,7 +28,7 @@ export class <%= featureClassName %>SearchEffects {
   constructor(
     private actions$: Actions,
     @SkipSelf() private route: ActivatedRoute,
-    private <%= featurePropertyName %>Service: <%= featureClassName %>BffService,
+    private <%= featurePropertyName %>Service: <%= serviceName %>,
     private searchConfigService: SearchConfigBffService,
     private router: Router,
     private store: Store,
