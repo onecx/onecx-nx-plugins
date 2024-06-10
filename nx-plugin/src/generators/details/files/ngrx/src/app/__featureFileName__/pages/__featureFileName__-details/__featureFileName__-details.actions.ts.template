@@ -1,11 +1,11 @@
 import { createActionGroup, emptyProps, props } from '@ngrx/store';
-import { <%= featureClassName %> } from '../../../shared/generated';
+import { <%= dataObjectName %> } from '../../../shared/generated';
 
 export const <%= featureClassName %>DetailsActions = createActionGroup({
   source: '<%= featureClassName %>Details',
   events: {
     '<%= featureFileName.replaceAll("-"," ") %> details received': props<{
-      details: <%= featureClassName %>;
+      details: <%= dataObjectName %>;
     }>(),
     '<%= featureFileName.replaceAll("-"," ") %> details loading failed': props<{ error: string | null }>(),
   },

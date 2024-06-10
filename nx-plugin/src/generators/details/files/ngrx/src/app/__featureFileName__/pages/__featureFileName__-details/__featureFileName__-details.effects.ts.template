@@ -3,27 +3,25 @@ import { Actions, createEffect, ofType, concatLatestFrom } from '@ngrx/effects';
 import { routerNavigatedAction } from '@ngrx/router-store';
 import {
   catchError,
-  map,
-  mergeMap,
+  map,  
   of,
   switchMap,
   tap,
 } from 'rxjs';
 import { filterForNavigatedTo } from '@onecx/portal-integration-angular/ngrx';
 import { Injectable } from '@angular/core';
-import { <%= featureClassName %>Service } from 'src/app/shared/services/<%= featureFileName %>.service';
 import { <%= featureClassName %>DetailsActions } from './<%= featureFileName %>-details.actions';
 import { <%= featureClassName %>DetailsComponent } from './<%= featureFileName %>-details.component';
 import { Action, Store } from '@ngrx/store';
 import { selectRouteParam } from 'src/app/shared/selectors/router.selectors';
 import { PortalMessageService } from '@onecx/portal-integration-angular';
-import { <%= featureClassName %>BffService } from '../../../shared/generated';
+import { <%= serviceName %> } from '../../../shared/generated';
 
 @Injectable()
 export class <%= featureClassName %>DetailsEffects {
   constructor(
     private actions$: Actions,
-    private <%= featurePropertyName %>Service: <%= featureClassName %>BffService,
+    private <%= featurePropertyName %>Service: <%= serviceName %>,
     private router: Router,
     private store: Store,
     private messageService: PortalMessageService
@@ -35,8 +33,8 @@ export class <%= featureClassName %>DetailsEffects {
       filterForNavigatedTo(this.router, <%= featureClassName %>DetailsComponent),
       concatLatestFrom(() => this.store.select(selectRouteParam('id'))),
       switchMap(([, id]) =>
-        this.<%= featurePropertyName %>Service.get<%= featureClassName %>ById(Number(id)).pipe(
-          map(({result}) =>
+        this.<%= featurePropertyName %>Service.get<%= featureClassName %>ById(id ?? '').pipe(
+          map((<%= getByIdResultAccess %>) =>
             <%= featureClassName %>DetailsActions.<%= featurePropertyName %>DetailsReceived({
               details: result,
             })

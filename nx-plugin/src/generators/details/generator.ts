@@ -16,11 +16,44 @@ import { deepMerge } from '../shared/deepMerge';
 import { renderJsonFile } from '../shared/renderJsonFile';
 import { DetailsGeneratorSchema } from './schema';
 import path = require('path');
+import processParams, { GeneratorParameter } from '../shared/parameters.util';
+
+const PARAMETERS: GeneratorParameter[] = [
+  {
+    key: 'generateFeatureAPI',
+    type: 'boolean',
+    required: 'always',
+    default: true,
+    prompt:
+      'Do you want to generate API-Endpoints & Components into the OpenAPI File?',
+  },
+  {
+    key: 'apiServiceName',
+    type: 'text',
+    required: 'interactive',
+    default: true,
+    prompt: 'Provide the class name of your API service (e.g., BookService): ',
+    showInSummary: true,
+    showRules: [{ key: 'generateFeatureAPI', showIf: (v) => !v }],
+  },
+  {
+    key: 'dataObjectName',
+    type: 'text',
+    required: 'interactive',
+    default: true,
+    prompt: 'Provide the class name of your Data Object (e.g., Book): ',
+    showInSummary: true,
+    showRules: [{ key: 'generateFeatureAPI', showIf: (v) => !v }],
+  },
+];
 
 export async function detailsGenerator(
   tree: Tree,
   options: DetailsGeneratorSchema
 ): Promise<GeneratorCallback> {
+  const parameters = await processParams(PARAMETERS);
+  Object.assign(options, parameters);
+
   const spinner = ora(`Adding details to ${options.featureName}`).start();
   const directory = '.';
 
@@ -41,7 +74,17 @@ export async function detailsGenerator(
       featureFileName: names(options.featureName).fileName,
       featurePropertyName: names(options.featureName).propertyName,
       featureClassName: names(options.featureName).className,
-      featureConstantName: names(options.featureName).constantName,
+      featureConstantName: names(options.featureName).constantName,      
+      //  If API is generated, use generated name
+      dataObjectName: options.generateFeatureAPI
+        ? `${names(options.featureName).className}`
+        : options.dataObjectName, // Else, use provided name,
+      serviceName: options.generateFeatureAPI
+        ? `${names(options.featureName).className}BffService`
+        : options.apiServiceName,
+      getByIdResultAccess: options.generateFeatureAPI
+        ? `{ result }`
+        : ` result `,
     }
   );
 
@@ -148,19 +191,19 @@ components:
   }
 
   let entitySchema = `
-      ${className}:
-        type: object
-        required:
-          - "modificationCount"
-          - "id"
-        properties:
-          modificationCount:
-            type: integer
-            format: int32
-          id:
-            type: integer
-            format: int64
-          # ACTION: add additional properties here`;
+    ${className}:
+      type: object
+      required:
+        - "modificationCount"
+        - "id"
+      properties:
+        modificationCount:
+          type: integer
+          format: int32
+        id:
+          type: integer
+          format: int64
+        # ACTION: add additional properties here`;
 
   if (hasEntitySchema) {
     entitySchema = '';

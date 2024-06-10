@@ -48,7 +48,9 @@ export class <%= featureClassName %>DetailsComponent implements OnInit {
           icon: PrimeIcons.ELLIPSIS_V,
           show: 'always',
           btnClass: '',
-          actionCallback: () => {},
+          actionCallback: () => {
+            // TODO: add callback
+          },
         },
       ];
       return actions;
