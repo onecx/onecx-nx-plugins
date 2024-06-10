@@ -89,7 +89,7 @@ export async function searchGenerator(
       // If API is generated, result object has feature as child, so need to access sub-item
       dataObjectIdPath: options.generateFeatureAPI
         ? `item.${names(options.featureName).propertyName}.id`
-        : `item.id ?? ''`, // Else, id is directly accessible on data object
+        : `item.id`, // Else, id is directly accessible on data object
       //  If API is generated, use generated name
       dataObjectName: options.generateFeatureAPI
         ? `${names(options.featureName).className}SearchResult`
