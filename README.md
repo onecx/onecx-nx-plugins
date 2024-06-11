@@ -111,7 +111,7 @@ Example:
 ```
 export interface SearchGeneratorSchema {
   featureName: string;
-  generateFeatureAPI: boolean;
+  customizeNamingForAPI: boolean;
   newOption: string;
 }
 ```
@@ -134,7 +134,7 @@ The properties for the parameter are:
 - `key`: needs to be identical with the key in `SearchGeneratorSchema`
 - `type`: text, boolean, number and select are supported for now
 - `required`: always: needs to provided via cli-parameter or interactive (no default used), interactive: in CLI either via cli-parameter or default used and asked in interactive
-- `default`: a default value (if required == interactive and not provided via cli-parameter, default will be used)
+- `default`: a default value (if required == interactive and not provided via cli-parameter, default will be used), can be static value or callback provided with current values set
 - `prompt`: if not provided via cli-parameter and required is true, this will be prompted to the user 
 - `showInSummary`: if set to true, the respective option will be shown in a summary and can be edited again if required
 - `showRules`: if set to true, the respective option will only be shown if all provided rules apply (see more in the section about rules)

@@ -1,6 +1,6 @@
 export interface DetailsGeneratorSchema {
   featureName: string;
-  generateFeatureAPI: boolean;
+  customizeNamingForAPI: boolean;
   apiServiceName: string;
   dataObjectName: string;
 }

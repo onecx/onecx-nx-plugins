@@ -18,32 +18,35 @@ import { DetailsGeneratorSchema } from './schema';
 import path = require('path');
 import processParams, { GeneratorParameter } from '../shared/parameters.util';
 
-const PARAMETERS: GeneratorParameter[] = [
+const PARAMETERS: GeneratorParameter<DetailsGeneratorSchema>[] = [
   {
-    key: 'generateFeatureAPI',
+    key: 'customizeNamingForAPI',
     type: 'boolean',
     required: 'interactive',
     default: true,
-    prompt:
-      'Do you want to generate API-Endpoints & Components into the OpenAPI File?',
+    prompt: 'Do you want to customize the names for the generated API?',
   },
   {
     key: 'apiServiceName',
     type: 'text',
     required: 'interactive',
-    default: 'DefaultService',
-    prompt: 'Provide the class name of your API service (e.g., BookService): ',
+    default: (values) => {
+      return `${names(values.featureName).className}BffService`;
+    },
+    prompt: 'Provide a name for your API service (e.g., BookService): ',
     showInSummary: true,
-    showRules: [{ showIf: (values) => !values['generateFeatureAPI'] }],
+    showRules: [{ showIf: (values) => values.customizeNamingForAPI }],
   },
   {
     key: 'dataObjectName',
     type: 'text',
     required: 'interactive',
-    default: 'DefaultDataObject',
-    prompt: 'Provide the interface name of your Data Object (e.g., Book): ',
+    default: (values) => {
+      return `${names(values.featureName).className}`;
+    },
+    prompt: 'Provide a name for your Data Object (e.g., Book): ',
     showInSummary: true,
-    showRules: [{ showIf: (values) => !values['generateFeatureAPI'] }],
+    showRules: [{ showIf: (values) => values.customizeNamingForAPI }],
   },
 ];
 
@@ -51,7 +54,7 @@ export async function detailsGenerator(
   tree: Tree,
   options: DetailsGeneratorSchema
 ): Promise<GeneratorCallback> {
-  const parameters = await processParams(PARAMETERS);
+  const parameters = await processParams(PARAMETERS, options);
   Object.assign(options, parameters);
 
   const spinner = ora(`Adding details to ${options.featureName}`).start();
@@ -76,13 +79,13 @@ export async function detailsGenerator(
       featureClassName: names(options.featureName).className,
       featureConstantName: names(options.featureName).constantName,
       //  If API is generated, use generated name
-      dataObjectName: options.generateFeatureAPI
+      dataObjectName: options.customizeNamingForAPI
         ? `${names(options.featureName).className}`
         : options.dataObjectName, // Else, use provided name,
-      serviceName: options.generateFeatureAPI
+      serviceName: options.customizeNamingForAPI
         ? `${names(options.featureName).className}BffService`
         : options.apiServiceName,
-      getByIdResultAccess: options.generateFeatureAPI
+      getByIdResultAccess: options.customizeNamingForAPI
         ? `{ result }`
         : ` result `,
     }
@@ -98,7 +101,7 @@ export async function detailsGenerator(
 
   addTranslations(tree, options);
 
-  if (options.generateFeatureAPI) {
+  if (options.customizeNamingForAPI) {
     addFunctionToOpenApi(tree, options);
   }
 

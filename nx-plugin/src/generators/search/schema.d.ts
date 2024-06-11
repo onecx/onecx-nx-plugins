@@ -1,6 +1,6 @@
 export interface SearchGeneratorSchema {
   featureName: string;
-  generateFeatureAPI: boolean;
+  customizeNamingForAPI: boolean;
   apiServiceName: string;
   dataObjectName: string;
   searchCriteriaName: string;

@@ -10,31 +10,40 @@ interface NameValue {
   value: unknown;
 }
 
-interface ShowRule {
-  showIf: (values: object) => boolean;
+interface ShowRule<T> {
+  showIf: (values: T) => boolean;
 }
-interface GeneratorParameterBasic {
+interface GeneratorParameterBasic<T> {
   key: string;
   required: 'always' | 'interactive';
-  default: unknown;
+  default:
+    | string
+    | number
+    | boolean
+    | ((values: T) => string | number | boolean);
+  initial?:
+    | string
+    | number
+    | boolean
+    | ((values: T) => string | number | boolean);
   prompt: string;
-  showRules?: ShowRule[];
+  showRules?: ShowRule<T>[];
   showInSummary?: boolean;
   choices?: NameValue[];
 }
 
-interface GeneratorParameterInput extends GeneratorParameterBasic {
-  type: 'boolean' | 'text' | 'number' ;
+interface GeneratorParameterInput<T> extends GeneratorParameterBasic<T> {
+  type: 'boolean' | 'text' | 'number';
 }
 
-interface GeneratorParameterChoices extends GeneratorParameterBasic {
+interface GeneratorParameterChoices<T> extends GeneratorParameterBasic<T> {
   type: 'select';
   choices: NameValue[];
 }
 
-export type GeneratorParameter =
-  | GeneratorParameterInput
-  | GeneratorParameterChoices;
+export type GeneratorParameter<T> =
+  | GeneratorParameterInput<T>
+  | GeneratorParameterChoices<T>;
 
 /**
  * This method validates if parameters have been set through the command line interface.
@@ -42,13 +51,17 @@ export type GeneratorParameter =
  * If they are not required, the default values are used.
  * @returns dict with all parameters
  */
-async function processParams(parameters: GeneratorParameter[]) {
+async function processParams<T>(
+  parameters: GeneratorParameter<T>[],
+  options: T
+): Promise<T> {
   // eslint-disable-next-line @typescript-eslint/no-var-requires
   const { hideBin } = require('yargs/helpers');
   const argv = yargs(hideBin(process.argv)).argv;
 
-  const parameterValues = {};
-  const interactiveParameters: GeneratorParameter[] = [];
+  const parameterValues = Object.assign({}, options);
+  console.log('parameterValues ', parameterValues);
+  const interactiveParameters: GeneratorParameter<T>[] = [];
 
   for (const parameter of parameters) {
     if (argv[parameter.key] != null) {
@@ -60,7 +73,11 @@ async function processParams(parameters: GeneratorParameter[]) {
       ) {
         interactiveParameters.push(parameter);
       } else {
-        parameterValues[parameter.key] = parameter.default;
+        if (typeof parameter.default == 'function') {
+          parameterValues[parameter.key] = parameter.default(parameterValues);
+        } else {
+          parameterValues[parameter.key] = parameter.default;
+        }
       }
     }
   }
@@ -70,7 +87,7 @@ async function processParams(parameters: GeneratorParameter[]) {
     // First filter interactive by rules
     if (parameter.showRules) {
       let show = true;
-      for (const rule of parameter.showRules) {        
+      for (const rule of parameter.showRules) {
         if (!rule.showIf(parameterValues)) {
           show = false;
           return;
@@ -79,6 +96,10 @@ async function processParams(parameters: GeneratorParameter[]) {
       if (!show) continue;
     }
     let result = {};
+    let defaultValue = parameter.default;
+    if (typeof parameter.default == 'function') {
+      defaultValue = parameter.default(parameterValues);
+    }
     if (parameter.type == 'boolean') {
       result = await prompt({
         type: 'confirm',
@@ -89,12 +110,14 @@ async function processParams(parameters: GeneratorParameter[]) {
       result = await prompt({
         type: 'text',
         name: parameter.key,
+        initial: defaultValue,
         message: parameter.prompt,
       });
     } else if (parameter.type == 'number') {
       result = await prompt({
         type: 'number',
         name: parameter.key,
+        initial: defaultValue,
         message: parameter.prompt,
       });
     } else if (parameter.type == 'select') {
@@ -121,7 +144,7 @@ async function processParams(parameters: GeneratorParameter[]) {
             chalk.bgGray(parameterValues[parameter.key])
         );
       }
-  
+
       const confirm = await prompt({
         type: 'confirm',
         name: 'adapt',
@@ -148,7 +171,7 @@ async function processParams(parameters: GeneratorParameter[]) {
     }
   }
 
-  return parameterValues;
+  return parameterValues as T;
 }
 
 export default processParams;

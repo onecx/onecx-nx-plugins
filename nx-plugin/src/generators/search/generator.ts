@@ -19,50 +19,58 @@ import { SearchGeneratorSchema } from './schema';
 import path = require('path');
 import processParams, { GeneratorParameter } from '../shared/parameters.util';
 
-const PARAMETERS: GeneratorParameter[] = [
+const PARAMETERS: GeneratorParameter<SearchGeneratorSchema>[] = [
   {
-    key: 'generateFeatureAPI',
+    key: 'customizeNamingForAPI',
     type: 'boolean',
     required: 'interactive',
     default: true,
-    prompt:
-      'Do you want to generate API-Endpoints & Components into the OpenAPI File?',
+    prompt: 'Do you want to customize the names for the generated API?',
   },
   {
     key: 'apiServiceName',
     type: 'text',
     required: 'interactive',
-    default: 'DefaultService',
-    prompt: 'Provide the class name of your API service (e.g., BookService): ',
+    default: (values) => {
+      return `${names(values.featureName).className}BffService`;
+    },
+    prompt: 'Provide a name for your API service (e.g., BookService): ',
     showInSummary: true,
-    showRules: [{ showIf: (values) => !values['generateFeatureAPI'] }],
+    showRules: [{ showIf: (values) => values.customizeNamingForAPI }],
   },
   {
     key: 'dataObjectName',
     type: 'text',
     required: 'interactive',
-    default: 'DefaultDataObject',
-    prompt: 'Provide the interface name of your Data Object (e.g., Book): ',
+    default: (values) => {
+      return `${names(values.featureName).className}`;
+    },
+    prompt: 'Provide a name for your Data Object (e.g., Book): ',
     showInSummary: true,
-    showRules: [{ showIf: (values) => !values['generateFeatureAPI'] }],
+    showRules: [{ showIf: (values) => values.customizeNamingForAPI }],
   },
   {
     key: 'searchCriteriaName',
     type: 'text',
     required: 'interactive',
-    default: 'DefaultSearchCriteria',
+    default: (values) => {
+      return `${names(values.featureName).className}SearchCriteria`;
+    },
     prompt:
-      'Provide the name of your Search Criteria (e.g., BookSearchCriteria): ',
+      'Provide the name for your Search Criteria (e.g., BookSearchCriteria): ',
     showInSummary: true,
-    showRules: [{ showIf: (values) => !values['generateFeatureAPI'] }],
-  }
+    showRules: [{ showIf: (values) => values.customizeNamingForAPI }],
+  },
 ];
 
 export async function searchGenerator(
   tree: Tree,
   options: SearchGeneratorSchema
 ): Promise<GeneratorCallback> {
-  const parameters = await processParams(PARAMETERS);
+  const parameters = await processParams<SearchGeneratorSchema>(
+    PARAMETERS,
+    options
+  );
   Object.assign(options, parameters);
 
   const spinner = ora(`Adding search to ${options.featureName}`).start();
@@ -87,17 +95,17 @@ export async function searchGenerator(
       featureClassName: names(options.featureName).className,
       featureConstantName: names(options.featureName).constantName,
       // If API is generated, result object has feature as child, so need to access sub-item
-      dataObjectIdPath: options.generateFeatureAPI
+      dataObjectIdPath: options.customizeNamingForAPI
         ? `item.${names(options.featureName).propertyName}.id`
         : `item.id`, // Else, id is directly accessible on data object
       //  If API is generated, use generated name
-      dataObjectName: options.generateFeatureAPI
+      dataObjectName: options.customizeNamingForAPI
         ? `${names(options.featureName).className}SearchResult`
         : options.dataObjectName, // Else, use provided name,
-      serviceName: options.generateFeatureAPI
+      serviceName: options.customizeNamingForAPI
         ? `${names(options.featureName).className}BffService`
         : options.apiServiceName,
-      searchCriteriaName: options.generateFeatureAPI
+      searchCriteriaName: options.customizeNamingForAPI
         ? `Search${names(options.featureName).className}Request`
         : options.searchCriteriaName,
     }
@@ -634,7 +642,7 @@ function addFunctionToOpenApi(tree: Tree, options: SearchGeneratorSchema) {
     `paths:`,
     `
 paths:  
-  ${options.generateFeatureAPI ? propertySearchEndpoints : ''}
+  ${options.customizeNamingForAPI ? propertySearchEndpoints : ''}
   ${searchConfigEndpoints}
 `
   );
@@ -659,7 +667,7 @@ components:
             format: int64
           # ACTION S1: add additional properties here`;
 
-  if (hasEntitySchema || !options.generateFeatureAPI) {
+  if (hasEntitySchema || !options.customizeNamingForAPI) {
     entitySchema = '';
   }
 
@@ -840,7 +848,7 @@ components:
     schemas:
       ${entitySchema}  
 
-      ${options.generateFeatureAPI ? propertySearchComponents : ''}
+      ${options.customizeNamingForAPI ? propertySearchComponents : ''}
 
       ${searchConfigSchema}
 
