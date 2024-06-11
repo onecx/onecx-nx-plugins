@@ -31,7 +31,7 @@ const PARAMETERS: GeneratorParameter[] = [
     key: 'apiServiceName',
     type: 'text',
     required: 'interactive',
-    default: true,
+    default: 'DefaultService',
     prompt: 'Provide the class name of your API service (e.g., BookService): ',
     showInSummary: true,
     showRules: [{ showIf: (values) => !values['generateFeatureAPI'] }],
@@ -40,7 +40,7 @@ const PARAMETERS: GeneratorParameter[] = [
     key: 'dataObjectName',
     type: 'text',
     required: 'interactive',
-    default: true,
+    default: 'DefaultDataObject',
     prompt: 'Provide the interface name of your Data Object (e.g., Book): ',
     showInSummary: true,
     showRules: [{ showIf: (values) => !values['generateFeatureAPI'] }],
@@ -74,7 +74,7 @@ export async function detailsGenerator(
       featureFileName: names(options.featureName).fileName,
       featurePropertyName: names(options.featureName).propertyName,
       featureClassName: names(options.featureName).className,
-      featureConstantName: names(options.featureName).constantName,      
+      featureConstantName: names(options.featureName).constantName,
       //  If API is generated, use generated name
       dataObjectName: options.generateFeatureAPI
         ? `${names(options.featureName).className}`
@@ -98,7 +98,9 @@ export async function detailsGenerator(
 
   addTranslations(tree, options);
 
-  addFunctionToOpenApi(tree, options);
+  if (options.generateFeatureAPI) {
+    addFunctionToOpenApi(tree, options);
+  }
 
   addDetailsEventsToSearch(tree, options);
 
