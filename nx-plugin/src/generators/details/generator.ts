@@ -34,7 +34,7 @@ const PARAMETERS: GeneratorParameter[] = [
     default: true,
     prompt: 'Provide the class name of your API service (e.g., BookService): ',
     showInSummary: true,
-    showRules: [{ key: 'generateFeatureAPI', showIf: (v) => !v }],
+    showRules: [{ showIf: (values) => !values['generateFeatureAPI'] }],
   },
   {
     key: 'dataObjectName',
@@ -43,7 +43,7 @@ const PARAMETERS: GeneratorParameter[] = [
     default: true,
     prompt: 'Provide the interface name of your Data Object (e.g., Book): ',
     showInSummary: true,
-    showRules: [{ key: 'generateFeatureAPI', showIf: (v) => !v }],
+    showRules: [{ showIf: (values) => !values['generateFeatureAPI'] }],
   },
 ];
 

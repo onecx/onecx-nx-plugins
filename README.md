@@ -136,5 +136,11 @@ The properties for the parameter are:
 - `required`: always: needs to provided via cli-parameter or interactive (no default used), interactive: in CLI either via cli-parameter or default used and asked in interactive
 - `default`: a default value (if required == interactive and not provided via cli-parameter, default will be used)
 - `prompt`: if not provided via cli-parameter and required is true, this will be prompted to the user 
+- `showInSummary`: if set to true, the respective option will be shown in a summary and can be edited again if required
+- `showRules`: if set to true, the respective option will only be shown if all provided rules apply (see more in the section about rules)
+
+### Show Rules
+For each option, you can define rules that configure if an option is displayed or not. Each option has two attributes:
+- `showIf(values)`: an callback that needs to return whether the respective option should be shown or not. Values ar all inputs that were provided before
 
 All cli-parameters can be provided via `--<key> <value>`.

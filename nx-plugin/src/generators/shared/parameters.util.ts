@@ -11,8 +11,7 @@ interface NameValue {
 }
 
 interface ShowRule {
-  key: string;
-  showIf: (value: unknown) => boolean;
+  showIf: (values: object) => boolean;
 }
 interface GeneratorParameterBasic {
   key: string;
@@ -71,8 +70,8 @@ async function processParams(parameters: GeneratorParameter[]) {
     // First filter interactive by rules
     if (parameter.showRules) {
       let show = true;
-      for (const rule of parameter.showRules) {
-        if (!rule.showIf(parameterValues[rule.key])) {
+      for (const rule of parameter.showRules) {        
+        if (!rule.showIf(parameterValues)) {
           show = false;
           return;
         }
