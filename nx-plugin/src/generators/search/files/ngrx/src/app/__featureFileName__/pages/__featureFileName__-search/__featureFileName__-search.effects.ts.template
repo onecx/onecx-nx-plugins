@@ -63,7 +63,7 @@ createSearchConfig$ = createEffect(() => {
             <%= featureClassName %>SearchActions.searchConfigCreationCancelled()
           );
         }
-        let request: CreateSearchConfigRequest = {
+        const request: CreateSearchConfigRequest = {
           page: this.pageName ?? '',
           fieldListVersion: 0,
           name: dialogResult.result?.searchConfigName ?? '',
@@ -114,7 +114,7 @@ updateSearchConfig$ = createEffect(() => {
       ),
       mergeMap(([, selectedSearchConfig]) => {
         return this.portalDialogService.openDialog<CreateOrEditSearchDialogContent>(
-          'CONSTRUCTION_TASK_SEARCH.HEADER_ACTIONS.UPDATE_SEARCH_CONFIG',
+          '<%= featureConstantName %>_SEARCH.HEADER_ACTIONS.UPDATE_SEARCH_CONFIG',
           {
             type: CreateOrEditSearchConfigDialogComponent,
             inputs: {
@@ -132,7 +132,7 @@ updateSearchConfig$ = createEffect(() => {
         if (dialogResult.button === 'secondary') {
           return of(<%= featureClassName %>SearchActions.searchConfigUpdateCancelled());
         }
-        let request: CreateSearchConfigRequest = {
+        const request: CreateSearchConfigRequest = {
           page: this.pageName ?? '',
           name: dialogResult.result?.searchConfigName ?? '',
           fieldListVersion: 0,

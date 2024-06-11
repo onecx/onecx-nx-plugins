@@ -54,7 +54,7 @@ The input fields must be added.
       [ngModel]="vm.searchCriteria.id"
     />
     <label for="taskId">{{
-      'CONSTRUCTION_TASK_SEARCH.CRITERIA.ID' | translate
+      'YOUR_PRODUCT.CRITERIA.ID' | translate
     }}</label>
 ----
 

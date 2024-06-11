@@ -75,6 +75,8 @@ export async function angularGenerator(
       '@ngx-translate/core': '^14.0.0',
       '@ngx-translate/http-loader': '^7.0.0',
       '@angular-architects/module-federation': '^15.0.0',
+      "@angular/cdk": "^15.2.7",
+      "keycloak-angular": "^13.1.0",
     },
     {
       '@openapitools/openapi-generator-cli': '^2.5.2',
@@ -134,6 +136,7 @@ function addScriptsToPackageJson(tree: Tree, options: AngularGeneratorSchema) {
     pkgJson.scripts['lint'] = 'nx lint';
     pkgJson.scripts['lint:fix'] = 'nx lint --fix';
     pkgJson.scripts['test'] = 'nx test';
+    pkgJson.scripts['test:ci'] = 'ng test --watch=false --browsers=ChromeHeadless --code-coverage';
 
     return pkgJson;
   });
