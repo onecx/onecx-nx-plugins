@@ -41,7 +41,7 @@ const PARAMETERS: GeneratorParameter[] = [
     type: 'text',
     required: 'interactive',
     default: true,
-    prompt: 'Provide the class name of your Data Object (e.g., Book): ',
+    prompt: 'Provide the interface name of your Data Object (e.g., Book): ',
     showInSummary: true,
     showRules: [{ key: 'generateFeatureAPI', showIf: (v) => !v }],
   },

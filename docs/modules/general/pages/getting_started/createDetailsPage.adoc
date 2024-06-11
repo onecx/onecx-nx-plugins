@@ -13,6 +13,14 @@ Replace the placeholders with the following values:
 
 * _<nameOfTheFeature>_: The name the feature the details page should be created in e.g., theme 
 
+Next, the CLI will ask you whether you want to create API-Endpoints & Components in the OpenAPI Yaml or not.
+If you are doing an API-First approach (API was fully written before), then you should answer no.
+When answering no, the next few questions will ask you about names of the generated API:
+
+* The API service name relevant for your data, which you can find under `generated/api/api.ts`
+
+* The name of your data object (e.g., Book), which you can find under `generated/api/model/` (exported as interface).
+
 After running the generator, the following actions must be taken: 
 
 [start=1]
