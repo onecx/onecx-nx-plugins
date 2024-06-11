@@ -25,7 +25,7 @@ describe('nx-plugin', () => {
     //   recursive: true,
     //   force: true,
     // });
-return;
+    return;
     //Delete files to make it easier to compare with original
     rmSync(join(projectDirectory, 'node_modules'), {
       recursive: true,
@@ -81,20 +81,20 @@ return;
     });
   });
 
-  // Add all required parameters to this array with a value.
-  // As tests are non-interactive, not-added but required items will block the test
-  const requiredParameters = [
-    {
-      key: NON_INTERACTIVE_KEY,
-      value: true,
-    },
-  ];
-
-  const parameterString = requiredParameters
-    .map((o) => `--${o.key} ${o.value}`)
-    .join(' ');
-
   it('should add a search page', () => {
+    // Add all required parameters to this array with a value.
+    // As tests are non-interactive, not-added but required items will block the test
+    const requiredParameters = [
+      {
+        key: NON_INTERACTIVE_KEY,
+        value: true,
+      },
+    ];
+
+    const parameterString = requiredParameters
+      .map((o) => `--${o.key} ${o.value}`)
+      .join(' ');
+
     execSync(
       `nx generate @onecx/nx-plugin:search ${featureName} ${parameterString} --verbose`,
       {
@@ -117,7 +117,20 @@ return;
   });
 
   it('should add a details page', () => {
-    execSync(`nx generate @onecx/nx-plugin:details ${featureName} --verbose`, {
+    // Add all required parameters to this array with a value.
+    // As tests are non-interactive, not-added but required items will block the test
+    const requiredParameters = [
+      {
+        key: NON_INTERACTIVE_KEY,
+        value: true,
+      },
+    ];
+
+    const parameterString = requiredParameters
+      .map((o) => `--${o.key} ${o.value}`)
+      .join(' ');
+      
+    execSync(`nx generate @onecx/nx-plugin:details ${featureName} ${parameterString} --verbose`, {
       cwd: projectDirectory,
       stdio: 'inherit',
       env: process.env,
