@@ -55,15 +55,7 @@ const PARAMETERS: GeneratorParameter[] = [
       'Provide the name of your Search Criteria (e.g., BookSearchCriteria): ',
     showInSummary: true,
     showRules: [{ showIf: (values) => !values['generateFeatureAPI'] }],
-  },
-  {
-    key: 'test',
-    type: 'select',
-    required: 'interactive',
-    default: 'xyz',
-    prompt: 'test',
-    choices: [],
-  },
+  }
 ];
 
 export async function searchGenerator(
