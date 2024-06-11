@@ -159,8 +159,7 @@ paths:
         in: 'path'
         required: true
         schema:
-          type: 'integer'
-          format: 'int64'
+          type: 'string'
       responses:
         200:
           description: 'OK'
