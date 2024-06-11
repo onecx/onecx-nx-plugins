@@ -3,5 +3,6 @@ export interface SearchGeneratorSchema {
   customizeNamingForAPI: boolean;
   apiServiceName: string;
   dataObjectName: string;
-  searchCriteriaName: string;
+  searchRequestName: string;
+  searchResponseName: string;
 }

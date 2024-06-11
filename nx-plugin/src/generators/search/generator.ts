@@ -34,7 +34,7 @@ const PARAMETERS: GeneratorParameter<SearchGeneratorSchema>[] = [
     default: (values) => {
       return `${names(values.featureName).className}BffService`;
     },
-    prompt: 'Provide a name for your API service (e.g., BookService): ',
+    prompt: 'Provide a name for your API service (e.g., BookBffService): ',
     showInSummary: true,
     showRules: [{ showIf: (values) => values.customizeNamingForAPI }],
   },
@@ -50,14 +50,26 @@ const PARAMETERS: GeneratorParameter<SearchGeneratorSchema>[] = [
     showRules: [{ showIf: (values) => values.customizeNamingForAPI }],
   },
   {
-    key: 'searchCriteriaName',
+    key: 'searchRequestName',
     type: 'text',
     required: 'interactive',
     default: (values) => {
-      return `${names(values.featureName).className}SearchCriteria`;
+      return `${names(values.featureName).className}SearchRequest`;
     },
     prompt:
-      'Provide the name for your Search Criteria (e.g., BookSearchCriteria): ',
+      'Provide a name for your Search Request (e.g., BookSearchRequest): ',
+    showInSummary: true,
+    showRules: [{ showIf: (values) => values.customizeNamingForAPI }],
+  },
+  {
+    key: 'searchResponseName',
+    type: 'text',
+    required: 'interactive',
+    default: (values) => {
+      return `${names(values.featureName).className}SearchResponse`;
+    },
+    prompt:
+      'Provide a name for your Search Response (e.g., BookSearchResponse): ',
     showInSummary: true,
     showRules: [{ showIf: (values) => values.customizeNamingForAPI }],
   },
@@ -94,20 +106,10 @@ export async function searchGenerator(
       featurePropertyName: names(options.featureName).propertyName,
       featureClassName: names(options.featureName).className,
       featureConstantName: names(options.featureName).constantName,
-      // If API is generated, result object has feature as child, so need to access sub-item
-      dataObjectIdPath: options.customizeNamingForAPI
-        ? `item.${names(options.featureName).propertyName}.id`
-        : `item.id`, // Else, id is directly accessible on data object
-      //  If API is generated, use generated name
-      dataObjectName: options.customizeNamingForAPI
-        ? `${names(options.featureName).className}SearchResult`
-        : options.dataObjectName, // Else, use provided name,
-      serviceName: options.customizeNamingForAPI
-        ? `${names(options.featureName).className}BffService`
-        : options.apiServiceName,
-      searchCriteriaName: options.customizeNamingForAPI
-        ? `Search${names(options.featureName).className}Request`
-        : options.searchCriteriaName,
+      dataObjectName: options.dataObjectName,
+      serviceName: options.apiServiceName,
+      searchRequestName: options.searchRequestName,
+      searchResponseName: options.searchResponseName,
     }
   );
 
@@ -415,11 +417,14 @@ function addFunctionToOpenApi(tree: Tree, options: SearchGeneratorSchema) {
     'utf8'
   );
 
-  const className = names(options.featureName).className;
+  const dataObjectName = options.dataObjectName;  
   const propertyName = names(options.featureName).propertyName;
+  const searchRequestName = options.searchRequestName;
+  const searchResponseName = options.searchResponseName;
+  const apiServiceName = options.apiServiceName;
   const hasSchemas = bffOpenApiContent.includes('schemas:');
   const hasEntitySchema =
-    hasSchemas && bffOpenApiContent.includes(`${className}:`);
+    hasSchemas && bffOpenApiContent.includes(`${dataObjectName}:`);
   const hasSearchConfigSchema =
     hasSchemas && bffOpenApiContent.includes(`SearchConfig:`);
 
@@ -431,7 +436,7 @@ function addFunctionToOpenApi(tree: Tree, options: SearchGeneratorSchema) {
           ${propertyName}:
             - write
       tags:
-        - SearchConfig
+        - SearchConfigBffService
       summary: Updates the search config specified by the configId
       description: Updates the search config and returns the updated list of search configs  by page
       operationId: updateSearchConfig
@@ -474,7 +479,7 @@ function addFunctionToOpenApi(tree: Tree, options: SearchGeneratorSchema) {
           ${propertyName}:
             - delete
       tags:
-        - SearchConfig
+        - SearchConfigBffService
       summary: Deletes the search config
       description: Deletes the search config
       operationId: deleteSearchConfig
@@ -507,7 +512,7 @@ function addFunctionToOpenApi(tree: Tree, options: SearchGeneratorSchema) {
           ${propertyName}:
             - read
       tags:
-        - SearchConfig
+        - SearchConfigBffService
       summary: Gets the search config infos for the specified page.
       description: The search config infos for the page is returned.
       operationId: getSearchConfigInfos
@@ -539,7 +544,7 @@ function addFunctionToOpenApi(tree: Tree, options: SearchGeneratorSchema) {
   /searchConfig/{id}:
     get:
       tags:
-        - SearchConfig
+        - SearchConfigBffService
       summary: Gets the search config infos for the specified page.
       description: The search config for the page is returned.
       operationId: getSearchConfig
@@ -578,7 +583,7 @@ function addFunctionToOpenApi(tree: Tree, options: SearchGeneratorSchema) {
           ${propertyName}:
             - write
       tags:
-        - SearchConfig
+        - SearchConfigBffService
       summary: Creates a new search config
       description: Creates a new search config and returns the updated list of search configs by page
       operationId: createSearchConfig
@@ -617,22 +622,22 @@ function addFunctionToOpenApi(tree: Tree, options: SearchGeneratorSchema) {
   const propertySearchEndpoints = `
   /${propertyName}/search:
     post:
-      operationId: search${className}s
+      operationId: search${dataObjectName}s
       tags:
-        - ${className}
+        - ${apiServiceName}
       description: This operation performs a search based on provided search criteria. Search for ${propertyName} results.
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Search${className}Request'
+              $ref: '#/components/schemas/${searchRequestName}'
       responses:
         '200':
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Search${className}Response'
+                $ref: '#/components/schemas/${searchResponseName}'
         '400':
           description: Bad request
         '500':
@@ -642,7 +647,7 @@ function addFunctionToOpenApi(tree: Tree, options: SearchGeneratorSchema) {
     `paths:`,
     `
 paths:  
-  ${options.customizeNamingForAPI ? propertySearchEndpoints : ''}
+  ${propertySearchEndpoints}
   ${searchConfigEndpoints}
 `
   );
@@ -653,7 +658,7 @@ components:
   }
 
   let entitySchema = `
-      ${className}:
+      ${dataObjectName}:
         type: object
         required:
           - "modificationCount"
@@ -667,7 +672,7 @@ components:
             format: int64
           # ACTION S1: add additional properties here`;
 
-  if (hasEntitySchema || !options.customizeNamingForAPI) {
+  if (hasEntitySchema) {
     entitySchema = '';
   }
 
@@ -800,24 +805,22 @@ components:
 
   if (hasSearchConfigSchema) {
     searchConfigSchema = '';
-    console.log(searchConfigSchema);
   }
 
   const propertySearchComponents = `
-      Search${className}Request:
+      ${searchRequestName}:
         type: object
         properties:
           limit:
             type: integer
             maximum: 2500
           id:
-            type: integer
-            format: int64
+            type: string
           changeMe:
             type: string
           # ACTION S1: Add additional properties to the <feature>-bff.yaml
 
-      Search${className}Response:
+      ${searchResponseName}:
         type: object
         required:
         - "results"
@@ -826,20 +829,11 @@ components:
           results:
             type: array
             items:
-              $ref: '#/components/schemas/${className}SearchResult'
+              $ref: '#/components/schemas/${dataObjectName}'
           totalNumberOfResults:
             description: Total number of results on the server.
             type: integer
-            format: int64
-
-      ${className}SearchResult:
-        type: object
-        required:
-        - "${propertyName}"
-        properties:
-          ${propertyName}:
-            $ref: '#/components/schemas/${className}'
-        # ACTION S8: add additional properties here`;
+            format: int64`;
 
   bffOpenApiContent = bffOpenApiContent.replace(
     `
@@ -848,7 +842,7 @@ components:
     schemas:
       ${entitySchema}  
 
-      ${options.customizeNamingForAPI ? propertySearchComponents : ''}
+      ${propertySearchComponents}
 
       ${searchConfigSchema}
 

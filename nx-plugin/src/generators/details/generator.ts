@@ -48,6 +48,18 @@ const PARAMETERS: GeneratorParameter<DetailsGeneratorSchema>[] = [
     showInSummary: true,
     showRules: [{ showIf: (values) => values.customizeNamingForAPI }],
   },
+  {
+    key: 'getByIdResponseName',
+    type: 'text',
+    required: 'interactive',
+    default: (values) => {
+      return `Get${names(values.featureName).className}ByIdResponse`;
+    },
+    prompt:
+      'Provide a name for your GetByIdResponse (e.g., GetBookByIdResponse): ',
+    showInSummary: true,
+    showRules: [{ showIf: (values) => values.customizeNamingForAPI }],
+  },
 ];
 
 export async function detailsGenerator(
@@ -77,17 +89,9 @@ export async function detailsGenerator(
       featureFileName: names(options.featureName).fileName,
       featurePropertyName: names(options.featureName).propertyName,
       featureClassName: names(options.featureName).className,
-      featureConstantName: names(options.featureName).constantName,
-      //  If API is generated, use generated name
-      dataObjectName: options.customizeNamingForAPI
-        ? `${names(options.featureName).className}`
-        : options.dataObjectName, // Else, use provided name,
-      serviceName: options.customizeNamingForAPI
-        ? `${names(options.featureName).className}BffService`
-        : options.apiServiceName,
-      getByIdResultAccess: options.customizeNamingForAPI
-        ? `{ result }`
-        : ` result `,
+      featureConstantName: names(options.featureName).constantName,      
+      dataObjectName: options.dataObjectName,
+      serviceName: options.apiServiceName
     }
   );
 
@@ -101,9 +105,7 @@ export async function detailsGenerator(
 
   addTranslations(tree, options);
 
-  if (options.customizeNamingForAPI) {
-    addFunctionToOpenApi(tree, options);
-  }
+  addFunctionToOpenApi(tree, options);
 
   addDetailsEventsToSearch(tree, options);
 
@@ -139,11 +141,13 @@ function addFunctionToOpenApi(tree: Tree, options: DetailsGeneratorSchema) {
     'utf8'
   );
 
-  const className = names(options.featureName).className;
+  const dataObjectName = options.dataObjectName;
   const propertyName = names(options.featureName).propertyName;
+  const apiServiceName = options.apiServiceName;
+  const getByIdResponseName = options.getByIdResponseName;
   const hasSchemas = bffOpenApiContent.includes('schemas:');
   const hasEntitySchema =
-    hasSchemas && bffOpenApiContent.includes(`${className}:`);
+    hasSchemas && bffOpenApiContent.includes(`${dataObjectName}:`);
 
   //TODO: schema for error cases
   bffOpenApiContent = bffOpenApiContent.replace(`paths: {}`, `paths:`).replace(
@@ -156,9 +160,9 @@ paths:
         permissions:
           ${propertyName}:
             - read
-      operationId: get${className}ById
+      operationId: get${dataObjectName}ById
       tags:
-        - ${className}
+        - ${apiServiceName}
       parameters:
       - name: 'id'
         in: 'path'
@@ -171,7 +175,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Get${className}ByIdResponse'
+                $ref: '#/components/schemas/${getByIdResponseName}'
         '400':
           description: Bad request
           content:
@@ -195,7 +199,7 @@ components:
   }
 
   let entitySchema = `
-    ${className}:
+    ${dataObjectName}:
       type: object
       required:
         - "modificationCount"
@@ -220,13 +224,13 @@ components:
   schemas:
     ${entitySchema}
 
-    Get${className}ByIdResponse:
+    ${getByIdResponseName}:
       type: object
       required:
         - "result"
       properties:
         result:
-          $ref: '#/components/schemas/${className}'
+          $ref: '#/components/schemas/${dataObjectName}'
 
 `
   );

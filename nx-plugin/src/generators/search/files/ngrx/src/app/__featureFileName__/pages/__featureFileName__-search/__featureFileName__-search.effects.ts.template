@@ -215,7 +215,7 @@ updateSearchConfig$ = createEffect(() => {
       filterOutQueryParamsHaveNotChanged(this.router, <%= featurePropertyName %>SearchCriteriasSchema, false),
       concatLatestFrom(() => this.store.select(selectSearchCriteria)),
       switchMap(([,searchCriteria]) => 
-        this.<%= featurePropertyName %>Service.search<%= featureClassName %>s(searchCriteria).pipe(
+        this.<%= featurePropertyName %>Service.search<%= dataObjectName %>s(searchCriteria).pipe(
           map(({ results, totalNumberOfResults }) =>
             <%= featureClassName %>SearchActions.<%= featurePropertyName %>SearchResultsReceived(
               {

@@ -33,8 +33,8 @@ export class <%= featureClassName %>DetailsEffects {
       filterForNavigatedTo(this.router, <%= featureClassName %>DetailsComponent),
       concatLatestFrom(() => this.store.select(selectRouteParam('id'))),
       switchMap(([, id]) =>
-        this.<%= featurePropertyName %>Service.get<%= featureClassName %>ById(id ?? '').pipe(
-          map((<%= getByIdResultAccess %>) =>
+        this.<%= featurePropertyName %>Service.get<%= dataObjectName %>ById(id ?? '').pipe(
+          map(({ result }) =>
             <%= featureClassName %>DetailsActions.<%= featurePropertyName %>DetailsReceived({
               details: result,
             })

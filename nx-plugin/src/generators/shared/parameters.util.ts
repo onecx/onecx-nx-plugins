@@ -60,10 +60,16 @@ async function processParams<T>(
   const argv = yargs(hideBin(process.argv)).argv;
 
   const parameterValues = Object.assign({}, options);
-  console.log('parameterValues ', parameterValues);
   const interactiveParameters: GeneratorParameter<T>[] = [];
 
   for (const parameter of parameters) {
+    // Prefill with defaults
+    if (typeof parameter.default == 'function') {
+      parameterValues[parameter.key] = parameter.default(parameterValues);
+    } else {
+      parameterValues[parameter.key] = parameter.default;
+    }
+    // Check if provided by either CLI or continue with interactive
     if (argv[parameter.key] != null) {
       parameterValues[parameter.key] = argv[parameter.key];
     } else {
@@ -72,12 +78,6 @@ async function processParams<T>(
         (parameter.required == 'interactive' && !argv[NON_INTERACTIVE_KEY])
       ) {
         interactiveParameters.push(parameter);
-      } else {
-        if (typeof parameter.default == 'function') {
-          parameterValues[parameter.key] = parameter.default(parameterValues);
-        } else {
-          parameterValues[parameter.key] = parameter.default;
-        }
       }
     }
   }
@@ -90,16 +90,13 @@ async function processParams<T>(
       for (const rule of parameter.showRules) {
         if (!rule.showIf(parameterValues)) {
           show = false;
-          return;
+          break;
         }
       }
       if (!show) continue;
     }
     let result = {};
-    let defaultValue = parameter.default;
-    if (typeof parameter.default == 'function') {
-      defaultValue = parameter.default(parameterValues);
-    }
+    const defaultValue = parameterValues[parameter.key];
     if (parameter.type == 'boolean') {
       result = await prompt({
         type: 'confirm',

@@ -30,8 +30,7 @@ export const selectSearchCriteria = createSelector(
 export const selectResults = createSelector(
   <%= featurePropertyName %>SearchSelectors.selectResults,
   (results): RowListGridData[] => {
-    return results.map((item) => ({
-      id: <%= dataObjectIdPath %> ?? '',
+    return results.map((item) => ({      
       imagePath: '',
       ...item,
       // ACTION S7: Here you can create a mapping of the items and their corresponding translation strings

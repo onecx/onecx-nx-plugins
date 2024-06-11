@@ -3,4 +3,5 @@ export interface DetailsGeneratorSchema {
   customizeNamingForAPI: boolean;
   apiServiceName: string;
   dataObjectName: string;
+  getByIdResponseName: string;
 }
