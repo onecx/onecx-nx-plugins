@@ -16,7 +16,6 @@ interface ShowRule {
 }
 interface GeneratorParameterBasic {
   key: string;
-  type: 'boolean' | 'text' | 'number' | 'select';
   required: 'always' | 'interactive';
   default: unknown;
   prompt: string;
@@ -25,13 +24,17 @@ interface GeneratorParameterBasic {
   choices?: NameValue[];
 }
 
+interface GeneratorParameterInput extends GeneratorParameterBasic {
+  type: 'boolean' | 'text' | 'number' ;
+}
+
 interface GeneratorParameterChoices extends GeneratorParameterBasic {
   type: 'select';
   choices: NameValue[];
 }
 
 export type GeneratorParameter =
-  | GeneratorParameterBasic
+  | GeneratorParameterInput
   | GeneratorParameterChoices;
 
 /**
