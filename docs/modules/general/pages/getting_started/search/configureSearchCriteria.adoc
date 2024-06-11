@@ -4,6 +4,8 @@ To configure the search results, the following actions must be taken.
 
 
 === ACTION S1: Add additional properties to the <feature>-bff.yaml
+__This step is only necessary if you decided to generate API-Endpoints & Components.__
+
 * The <FeatureName>SearchRequest data structure in the BFF yaml must be adapted. 
 
 ** All the data that should be displayed in the request must be in that data structure either on top-level or in sub data structures. 
