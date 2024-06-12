@@ -24,7 +24,7 @@ const PARAMETERS: GeneratorParameter<SearchGeneratorSchema>[] = [
     key: 'customizeNamingForAPI',
     type: 'boolean',
     required: 'interactive',
-    default: true,
+    default: false,
     prompt: 'Do you want to customize the names for the generated API?',
   },
   {
