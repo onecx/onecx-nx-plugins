@@ -4,8 +4,7 @@
   "license": "MIT",
   "scripts": {
     "build": "nx run nx-plugin:build",
-    "test": "nx run nx-plugin-e2e:e2e",
-    "bl": "npm run build && cp dist/nx-plugin/* ../../../test/nx-plugin-test/testproduct/node_modules/@onecx/nx-plugin -r"
+    "test": "nx run nx-plugin-e2e:e2e"    
   },
   "private": true,
   "dependencies": {
