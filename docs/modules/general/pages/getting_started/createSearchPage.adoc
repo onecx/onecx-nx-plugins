@@ -12,15 +12,9 @@ Replace the placeholders with the following values:
 
 * _<nameOfTheFeature>_: The name the feature the search page should be created in e.g., theme 
 
-Next, the CLI will ask you whether you want to create API-Endpoints & Components in the OpenAPI Yaml or not.
-If you are doing an API-First approach (API was fully written before), then you should answer no.
-When answering no, the next few questions will ask you about names of the generated API:
-
-* The API service name relevant for your data, which you can find under `generated/api/api.ts` (e.g., BookInternalBffService)
-
-* The name of your data object (e.g., Book), which you can find under `generated/api/model/` (exported as interface).
-
-* The name of your search criteria (e.g., BookSearchCriteria), which you can also find under `generated/api/model/`
+Next, the CLI will ask you whether you want to customize names for the generation.
+When answering yes, the next few questions will ask you about names for the API.
+This can be useful if you want to adapt to a legacy API.
 
 After running the generator, the following actions must be taken: 
 
