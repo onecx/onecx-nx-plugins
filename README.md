@@ -101,7 +101,9 @@ And then use it to, e.g. generate a feature:
 nx g @onecx/nx-plugin:feature <feature_name>
 ```
 
-
+### Alternative: Copy into node_modules
+You can also use a command to first build and the copy over the build library into your test-projects node_modules folder:
+`npm run build && cp dist/nx-plugin/* ../path/to/test-project/node_modules/@onecx/nx-plugin -r`
 
 ## Generator Parameters / Options
 In order to add a new parameter / option to the generator you need to do the following:
