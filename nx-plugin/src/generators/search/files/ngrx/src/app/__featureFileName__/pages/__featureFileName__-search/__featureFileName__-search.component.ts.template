@@ -18,7 +18,6 @@ import { select<%= featureClassName %>SearchViewModel } from './<%= featureFileN
 import { <%= featureClassName %>SearchViewModel } from './<%= featureFileName %>-search.viewmodel';
 import { first, Observable, map } from 'rxjs';
 import { PrimeIcons } from 'primeng/api';
-import { SearchConfigInfo } from 'src/app/shared/generated';
 
 @Component({
   selector: 'app-<%= featureFileName %>-search',
@@ -50,26 +49,7 @@ export class <%= featureClassName %>SearchComponent implements OnInit {
           show: 'asOverflow',
           actionCallback: () => this.toggleChartVisibility(),
         },
-      ]
-      if (vm.searchConfigEnabled) {
-        if (vm.selectedSearchConfig){
-          actions.push({
-            labelKey: '<%= featureConstantName %>_SEARCH.HEADER_ACTIONS.UPDATE_SEARCH_CONFIG',
-            icon: PrimeIcons.FILE_EDIT,
-            titleKey: '<%= featureConstantName %>_SEARCH.HEADER_ACTIONS.UPDATE_SEARCH_CONFIG',
-            show: 'asOverflow',
-            actionCallback: () => this.updateSearchConfig(),
-          });
-        } else {
-          actions.push({
-            labelKey: '<%= featureConstantName %>_SEARCH.HEADER_ACTIONS.CREATE_SEARCH_CONFIG',
-            icon: PrimeIcons.SAVE,
-            titleKey: '<%= featureConstantName %>_SEARCH.HEADER_ACTIONS.CREATE_SEARCH_CONFIG',
-            show: 'asOverflow',
-            actionCallback: () => this.createSearchConfig(),
-          });
-        }
-      }
+      ]      
       return actions
     })
   );
@@ -146,21 +126,7 @@ export class <%= featureClassName %>SearchComponent implements OnInit {
         );  
       }
     )
-  }
-  
-  searchConfigInfoSelectionChanged(searchConfigInfo: SearchConfigInfo) {
-    if (searchConfigInfo) {
-      this.store.dispatch(
-        <%= featureClassName %>SearchActions.selectedSearchConfigInfo({
-          searchConfigInfo: searchConfigInfo,
-        })
-      );
-    } else {
-      this.store.dispatch(
-        <%= featureClassName %>SearchActions.searchConfigInfoDeselected()
-      );
-    }
-  }
+  }   
 
    viewModeChanged(viewMode: 'basic' | 'advanced') {
     this.store.dispatch(
@@ -176,13 +142,5 @@ export class <%= featureClassName %>SearchComponent implements OnInit {
 
   toggleChartVisibility() {
     this.store.dispatch(<%= featureClassName %>SearchActions.chartVisibilityToggled());
-  }
-
-  createSearchConfig(): void {
-    this.store.dispatch(<%= featureClassName %>SearchActions.createSearchConfigClicked());
-  }
-
-  updateSearchConfig(): void {
-    this.store.dispatch(<%= featureClassName %>SearchActions.updateSearchConfigClicked());
   }
 }

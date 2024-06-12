@@ -5,9 +5,7 @@
     (searched)="search(<%= featurePropertyName %>SearchFormGroup)"
     (resetted)="resetSearch()"
     [manualBreadcrumbs]="true"
-    [actions]="(headerActions$ | async) ?? []"
-    (selectedSearchConfigChanged)="searchConfigInfoSelectionChanged($event)"
-    [searchConfigs]="vm.searchConfigs"
+    [actions]="(headerActions$ | async) ?? []"        
     (viewModeChanged)="viewModeChanged($event)"
   >
     <form [formGroup]="<%= featurePropertyName %>SearchFormGroup">

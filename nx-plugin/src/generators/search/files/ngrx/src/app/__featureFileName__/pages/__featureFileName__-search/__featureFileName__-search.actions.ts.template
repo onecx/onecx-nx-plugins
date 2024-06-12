@@ -1,7 +1,7 @@
 import { createActionGroup, emptyProps, props } from '@ngrx/store';
 import { DataTableColumn } from '@onecx/portal-integration-angular';
 import { <%= featureClassName %>SearchCriteria } from './<%= featureFileName %>-search.parameters';
-import { <%= dataObjectName %>, SearchConfig, SearchConfigInfo, } from '../../../shared/generated';
+import { <%= dataObjectName %> } from '../../../shared/generated';
 
 
 export const <%= featureClassName %>SearchActions = createActionGroup({
@@ -11,46 +11,11 @@ export const <%= featureClassName %>SearchActions = createActionGroup({
       searchCriteria: <%= featureClassName %>SearchCriteria;
     }>(),
     'Reset button clicked': emptyProps(),
-
     '<%= featureFileName.replaceAll("-"," ") %> search results received': props<{
       results: <%= dataObjectName %>[];
       totalNumberOfResults: number;
     }>(),
-    '<%= featureFileName.replaceAll("-"," ") %> search results loading failed': props<{ error: string | null }>(),
-    'Search config received': props<{
-      searchConfig: SearchConfig;
-    }>(),
-    'Search configs loading failed': props<{
-      error: string | null;
-    }>(),
-    'Search config selected': props<{
-      searchConfig: SearchConfig | null;
-    }>(),
-    'Create search config clicked': emptyProps(),
-    'Search config created successfully': props<{
-      searchConfigInfos: SearchConfigInfo[];
-    }>(),
-    'Search config creation failed': props<{
-      error: string | null;
-    }>(),
-    'Search config creation cancelled': emptyProps(),
-    'Update search config clicked': emptyProps(),
-    'Search config updated successfully': props<{
-      searchConfigInfos: SearchConfigInfo[];
-    }>(),
-    'Search config update cancelled': emptyProps(),
-    'Search config update failed': props<{
-      error: string | null;
-    }>(),
-
-    'Search config infos received': props<{
-      searchConfigInfos: SearchConfigInfo[];
-    }>(),
-    'Selected search config info': props<{
-      searchConfigInfo: SearchConfigInfo;
-    }>(),
-    'Search config info deselected': emptyProps(),
-
+    '<%= featureFileName.replaceAll("-"," ") %> search results loading failed': props<{ error: string | null }>(),    
     'Displayed columns changed': props<{
       displayedColumns: DataTableColumn[];
     }>(),

@@ -9,7 +9,6 @@ import {
 } from './<%= featureFileName %>-search.parameters';
 import { initialState } from './<%= featureFileName %>-search.reducers';
 import { <%= featureClassName %>SearchViewModel } from './<%= featureFileName %>-search.viewmodel';
-import { <%= featureClassName %>SearchConfigState } from './<%= featureFileName %>-search.state';
 
 export const <%= featurePropertyName %>SearchSelectors = createChildSelectors(
   <%= featurePropertyName %>Feature.selectSearch,
@@ -51,59 +50,23 @@ export const selectDisplayedColumns = createSelector(
 export const select<%= featureClassName %>SearchViewModel = createSelector(
   <%= featurePropertyName %>SearchSelectors.selectColumns,
   selectSearchCriteria,
-  selectResults,
-  <%= featurePropertyName %>SearchSelectors.selectSearchConfigs,
-  <%= featurePropertyName %>SearchSelectors.selectSelectedSearchConfig,
+  selectResults,  
   selectDisplayedColumns,
   <%= featurePropertyName %>SearchSelectors.selectViewMode,
-  <%= featurePropertyName %>SearchSelectors.selectChartVisible,
-   <%= featurePropertyName %>SearchSelectors.selectSearchConfigEnabled,
+  <%= featurePropertyName %>SearchSelectors.selectChartVisible,   
   (
     columns,
     searchCriteria, 
     results,
-    searchConfigs,
-    selectedSearchConfig,
     displayedColumns,
     viewMode,
     chartVisible,
-    searchConfigEnabled,
     ): <%= featureClassName %>SearchViewModel => ({
     columns,
     searchCriteria,
     results,
-    searchConfigs,
-    selectedSearchConfig,
     displayedColumns,
     viewMode,
-    chartVisible,
-    searchConfigEnabled
-  })
-);
-
-export const selectSearchConfigViewState = createSelector(
-  <%= featurePropertyName %>SearchSelectors.selectColumns,
-  <%= featurePropertyName %>SearchSelectors.selectSearchConfigs,
-  <%= featurePropertyName %>SearchSelectors.selectSelectedSearchConfig,
-  selectDisplayedColumns,
-  <%= featurePropertyName %>SearchSelectors.selectViewMode,
-  selectSearchCriteria,
-  <%= featurePropertyName %>SearchSelectors.selectSearchConfigEnabled,
-  (
-    columns,
-    searchConfigs,
-    selectedSearchConfig,
-    displayedColumns,
-    viewMode,
-    searchCriteria,
-    searchConfigEnabled,
-  ): <%= featureClassName %>SearchConfigState => ({
-    columns,
-    searchConfigs,
-    selectedSearchConfig,
-    displayedColumns,
-    viewMode,
-    searchCriteria,
-    searchConfigEnabled,
+    chartVisible
   })
 );

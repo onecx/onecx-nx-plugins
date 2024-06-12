@@ -1,26 +1,13 @@
 import {
   DataTableColumn,
 } from '@onecx/portal-integration-angular';
-import { <%= dataObjectName %>, SearchConfig, SearchConfigInfo } from 'src/app/shared/generated';
+import { <%= dataObjectName %> } from 'src/app/shared/generated';
 import { <%= featureClassName %>SearchCriteria } from './<%= featureFileName %>-search.parameters';
 
 export interface <%= featureClassName %>SearchState {
   columns: DataTableColumn[];
   results: <%= dataObjectName %>[];
-  searchConfigs: SearchConfigInfo[];
-  selectedSearchConfig: SearchConfig | null;
   displayedColumns: string[] | null;
   viewMode: 'basic' | 'advanced';
-  chartVisible: boolean,
-  searchConfigEnabled: boolean;
-}
-
-export interface <%= featureClassName %>SearchConfigState {
-  columns: DataTableColumn[];
-  searchConfigs: SearchConfigInfo[];
-  selectedSearchConfig: SearchConfig | null;
-  displayedColumns: DataTableColumn[];
-  viewMode: 'basic' | 'advanced';
-  searchCriteria: <%= featureClassName %>SearchCriteria;
-  searchConfigEnabled: boolean;
+  chartVisible: boolean,  
 }
