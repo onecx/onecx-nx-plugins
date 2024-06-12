@@ -38,12 +38,9 @@ describe('<%= featureClassName %>SearchComponent', () => {
     columns: <%= featurePropertyName %>SearchColumns,
     searchCriteria: { changeMe: '0' },
     results: [],
-    searchConfigs: [],
-    selectedSearchConfig: null,
     displayedColumns: [],
     viewMode: 'basic',
     chartVisible: false,
-    searchConfigEnabled: false,
   };
 
   beforeAll(() => {
@@ -188,60 +185,6 @@ describe('<%= featureClassName %>SearchComponent', () => {
     expect(await showHideChartActionItem!.getText()).toEqual('Hide chart');
   });
 
-  it('should display create search config action when search config is enabled and none selected', async () => {
-    store.overrideSelector(select<%= featureClassName %>SearchViewModel, {
-      ...base<%= featureClassName %>SearchViewModel,
-      searchConfigEnabled: true,
-      selectedSearchConfig: null,
-    });
-    store.refreshState();
-
-    const searchHeader = await <%= featurePropertyName %>Search.getHeader();
-    const pageHeader = await searchHeader.getPageHeader();
-    const overflowActionButton = await pageHeader.getOverflowActionMenuButton();
-    await overflowActionButton?.click();
-
-    const overflowMenuItems = await pageHeader.getOverFlowMenuItems();
-    expect(overflowMenuItems.length).toBe(3);
-
-    const createSearchConfigurationActionItem =
-      await pageHeader.getOverFlowMenuItem('Create search configuration');
-    expect(await createSearchConfigurationActionItem!.getText()).toEqual(
-      'Create search configuration'
-    );
-  });
-
-  it('should display update search config action when search config is enabled and config is selected', async () => {
-    store.overrideSelector(select<%= featureClassName %>SearchViewModel, {
-      ...base<%= featureClassName %>SearchViewModel,
-      searchConfigEnabled: true,
-      selectedSearchConfig: {
-        name: '',
-        modificationCount: 0,
-        fieldListVersion: 0,
-        isReadonly: true,
-        isAdvanced: false,
-        columns: [],
-        values: {},
-      },
-    });
-    store.refreshState();
-
-    const searchHeader = await <%= featurePropertyName %>Search.getHeader();
-    const pageHeader = await searchHeader.getPageHeader();
-    const overflowActionButton = await pageHeader.getOverflowActionMenuButton();
-    await overflowActionButton?.click();
-
-    const overflowMenuItems = await pageHeader.getOverFlowMenuItems();
-    expect(overflowMenuItems.length).toBe(3);
-
-    const updateSearchConfigurationActionItem =
-      await pageHeader.getOverFlowMenuItem('Update search configuration');
-    expect(await updateSearchConfigurationActionItem!.getText()).toEqual(
-      'Update search configuration'
-    );
-  });
-
   it('should display chosen column in the diagram', async () => {
     component.diagramColumnId = 'column_1';
     store.overrideSelector(select<%= featureClassName %>SearchViewModel, {
@@ -356,92 +299,7 @@ describe('<%= featureClassName %>SearchComponent', () => {
       '<%= featureFileName %>.csv'
     );
   });
-
-  it('should dispatch selectedSearchConfigInfo on search config selection', async () => {
-    jest.spyOn(store, 'dispatch');
-
-    store.overrideSelector(select<%= featureClassName %>SearchViewModel, {
-      ...base<%= featureClassName %>SearchViewModel,
-      searchConfigs: [
-        {
-          id: '1',
-          name: 'config_1',
-        },
-        {
-          id: '2',
-          name: 'config_2',
-        },
-      ],
-    });
-    store.refreshState();
-
-    const searchHeader = await <%= featurePropertyName %>Search.getHeader();
-    const searchConfig = await searchHeader.getSearchConfig();
-    const searchConfigDropdown = await searchConfig.getSearchConfigDropdown();
-
-    const dropdownItems = await searchConfigDropdown?.getDropdownItems();
-    expect(dropdownItems?.length).toBe(2);
-
-    const firstConfigItem = await searchConfigDropdown?.getDropdownItem(
-      'config_1'
-    );
-    expect(firstConfigItem).toBeTruthy();
-    expect(await firstConfigItem?.getText()).toEqual('config_1');
-
-    const secondConfigItem = await searchConfigDropdown?.getDropdownItem(
-      'config_2'
-    );
-    expect(secondConfigItem).toBeTruthy();
-    expect(await secondConfigItem?.getText()).toEqual('config_2');
-
-    await firstConfigItem?.selectItem();
-
-    expect(store.dispatch).toHaveBeenCalledWith(
-      <%= featureClassName %>SearchActions.selectedSearchConfigInfo({
-        searchConfigInfo: {
-          id: '1',
-          name: 'config_1',
-        },
-      })
-    );
-  });
-
-  it('should dispatch searchConfigInfoDeselected on search config clear', async () => {
-    jest.spyOn(store, 'dispatch');
-
-    store.overrideSelector(select<%= featureClassName %>SearchViewModel, {
-      ...base<%= featureClassName %>SearchViewModel,
-      searchConfigs: [
-        {
-          id: '1',
-          name: 'config_1',
-        },
-        {
-          id: '2',
-          name: 'config_2',
-        },
-      ],
-    });
-    store.refreshState();
-
-    const searchHeader = await <%= featurePropertyName %>Search.getHeader();
-    const searchConfig = await searchHeader.getSearchConfig();
-    const searchConfigDropdown = await searchConfig.getSearchConfigDropdown();
-    await searchConfigDropdown?.open();
-
-    const firstConfigItem = await searchConfigDropdown?.getDropdownItem(
-      'config_1'
-    );
-    await firstConfigItem?.selectItem();
-    jest.clearAllMocks();
-
-    await searchConfigDropdown?.clear();
-
-    expect(store.dispatch).toHaveBeenCalledWith(
-      <%= featureClassName %>SearchActions.searchConfigInfoDeselected()
-    );
-  });
-
+  
   it('should dispatch viewModeChanged action on view mode changes', async () => {
     jest.spyOn(store, 'dispatch');
 
@@ -538,61 +396,7 @@ describe('<%= featureClassName %>SearchComponent', () => {
     expect(store.dispatch).toHaveBeenCalledWith(
       <%= featureClassName %>SearchActions.chartVisibilityToggled()
     );
-  });
-
-  it('should dispatch createSearchConfigClicked on search config create header action', async () => {
-    jest.spyOn(store, 'dispatch');
-
-    store.overrideSelector(select<%= featureClassName %>SearchViewModel, {
-      ...base<%= featureClassName %>SearchViewModel,
-      searchConfigEnabled: true,
-      selectedSearchConfig: null,
-    });
-    store.refreshState();
-
-    const searchHeader = await <%= featurePropertyName %>Search.getHeader();
-    const pageHeader = await searchHeader.getPageHeader();
-    const overflowActionButton = await pageHeader.getOverflowActionMenuButton();
-    await overflowActionButton?.click();
-
-    const createSearchConfigurationActionItem =
-      await pageHeader.getOverFlowMenuItem('Create search configuration');
-    await createSearchConfigurationActionItem!.selectItem();
-    expect(store.dispatch).toHaveBeenCalledWith(
-      <%= featureClassName %>SearchActions.createSearchConfigClicked()
-    );
-  });
-
-  it('should dispatch updateSearchConfigClicked on search config update header action', async () => {
-    jest.spyOn(store, 'dispatch');
-
-    store.overrideSelector(select<%= featureClassName %>SearchViewModel, {
-      ...base<%= featureClassName %>SearchViewModel,
-      searchConfigEnabled: true,
-      selectedSearchConfig: {
-        name: '',
-        modificationCount: 0,
-        fieldListVersion: 0,
-        isReadonly: true,
-        isAdvanced: false,
-        columns: [],
-        values: {},
-      },
-    });
-    store.refreshState();
-
-    const searchHeader = await <%= featurePropertyName %>Search.getHeader();
-    const pageHeader = await searchHeader.getPageHeader();
-    const overflowActionButton = await pageHeader.getOverflowActionMenuButton();
-    await overflowActionButton?.click();
-
-    const updateSearchConfigurationActionItem =
-      await pageHeader.getOverFlowMenuItem('Update search configuration');
-    await updateSearchConfigurationActionItem!.selectItem();
-    expect(store.dispatch).toHaveBeenCalledWith(
-      <%= featureClassName %>SearchActions.updateSearchConfigClicked()
-    );
-  });
+  });  
 
   it('should display translated headers', async () => {
     const searchHeader = await <%= featurePropertyName %>Search.getHeader();

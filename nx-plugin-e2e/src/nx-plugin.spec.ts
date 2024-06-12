@@ -4,6 +4,7 @@ import { mkdirSync, rmSync } from 'fs';
 const NON_INTERACTIVE_KEY = 'non-interactive';
 const projectName = 'test-project';
 const featureName = 'test-feature';
+const featureNameCustom = 'test-custom-feature';
 describe('nx-plugin', () => {
   let projectDirectory: string;
 
@@ -129,12 +130,130 @@ describe('nx-plugin', () => {
     const parameterString = requiredParameters
       .map((o) => `--${o.key} ${o.value}`)
       .join(' ');
-      
-    execSync(`nx generate @onecx/nx-plugin:details ${featureName} ${parameterString} --verbose`, {
+
+    execSync(
+      `nx generate @onecx/nx-plugin:details ${featureName} ${parameterString} --verbose`,
+      {
+        cwd: projectDirectory,
+        stdio: 'inherit',
+        env: process.env,
+      }
+    );
+    execSync(`nx run build --skip-nx-cache`, {
       cwd: projectDirectory,
       stdio: 'inherit',
       env: process.env,
     });
+    execSync(`nx run test --skip-nx-cache --coverage`, {
+      cwd: projectDirectory,
+      stdio: 'inherit',
+      env: process.env,
+    });
+  });
+
+  it('should add a custom naming feature', () => {
+    execSync(`nx generate @onecx/nx-plugin:feature ${featureNameCustom} --verbose`, {
+      cwd: projectDirectory,
+      stdio: 'inherit',
+      env: process.env,
+    });
+    execSync(`nx run build --skip-nx-cache`, {
+      cwd: projectDirectory,
+      stdio: 'inherit',
+      env: process.env,
+    });
+    execSync(`nx run test --skip-nx-cache`, {
+      cwd: projectDirectory,
+      stdio: 'inherit',
+      env: process.env,
+    });
+  });
+
+  it('should add a custom naming search page', () => {
+    // Add all required parameters to this array with a value.
+    // As tests are non-interactive, not-added but required items will block the test
+    const requiredParameters = [
+      {
+        key: NON_INTERACTIVE_KEY,
+        value: true,
+      },
+      {
+        key: 'apiServiceName',
+        value: 'CustomService',
+      },
+      {
+        key: 'dataObjectName',
+        value: 'CustomDataObject',
+      },
+      {
+        key: 'searchRequestName',
+        value: 'CustomDataObjectSearchRequest',
+      },
+      {
+        key: 'searchResponseName',
+        value: 'CustomDataObjectSearchResponse',
+      },
+    ];
+
+    const parameterString = requiredParameters
+      .map((o) => `--${o.key} ${o.value}`)
+      .join(' ');
+
+    execSync(
+      `nx generate @onecx/nx-plugin:search ${featureNameCustom} ${parameterString} --verbose`,
+      {
+        cwd: projectDirectory,
+        stdio: 'inherit',
+        env: process.env,
+      }
+    );
+
+    execSync(`nx run build --skip-nx-cache`, {
+      cwd: projectDirectory,
+      stdio: 'inherit',
+      env: process.env,
+    });
+    execSync(`nx run test --skip-nx-cache`, {
+      cwd: projectDirectory,
+      stdio: 'inherit',
+      env: process.env,
+    });
+  });
+
+  it('should add a custom naming details page', () => {
+    // Add all required parameters to this array with a value.
+    // As tests are non-interactive, not-added but required items will block the test
+    const requiredParameters = [
+      {
+        key: NON_INTERACTIVE_KEY,
+        value: true,
+      },
+      {
+        key: 'apiServiceName',
+        value: 'CustomService',
+      },
+      {
+        key: 'dataObjectName',
+        value: 'CustomDataObject',
+      },
+      {
+        key: 'getByIdResponseName',
+        value: 'GetCustomDataObjectByIdResponse',
+      },
+    ];
+
+    const parameterString = requiredParameters
+      .map((o) => `--${o.key} ${o.value}`)
+      .join(' ');
+
+    execSync(
+      `nx generate @onecx/nx-plugin:details ${featureNameCustom} ${parameterString} --verbose`,
+      {
+        cwd: projectDirectory,
+        stdio: 'inherit',
+        env: process.env,
+      }
+    );
     execSync(`nx run build --skip-nx-cache`, {
       cwd: projectDirectory,
       stdio: 'inherit',

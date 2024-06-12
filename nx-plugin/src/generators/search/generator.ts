@@ -515,66 +515,67 @@ paths:
   if (!hasSchemas) {
     bffOpenApiContent += `
 components:
-    schemas:`;
+  schemas:`;
   }
 
-  let entitySchema = `
-      ${dataObjectName}:
-        type: object
-        required:
-          - "modificationCount"
-          - "id"
-        properties:
-          modificationCount:
-            type: integer
-            format: int32
-          id:
-            type: integer
-            format: int64
-          # ACTION S1: add additional properties here`;
+  const entitySchema = `
+    ${dataObjectName}:
+      type: object
+      required:
+        - "modificationCount"
+        - "id"
+      properties:
+        modificationCount:
+          type: integer
+          format: int32
+        id:
+          type: integer
+          format: int64
+        # ACTION S1: add additional properties here
+    `;
 
-  if (hasEntitySchema) {
-    entitySchema = '';
-  }
+  const searchRequestSchema = `
+    ${searchRequestName}:
+      type: object
+      properties:
+        limit:
+          type: integer
+          maximum: 2600
+        id:
+          type: string
+        changeMe:
+          type: string
+        # ACTION S1: Add additional properties to the <feature>-bff.yaml
+  `;
 
-  const propertySearchComponents = `
-      ${searchRequestName}:
-        type: object
-        properties:
-          limit:
-            type: integer
-            maximum: 2500
-          id:
-            type: string
-          changeMe:
-            type: string
-          # ACTION S1: Add additional properties to the <feature>-bff.yaml
-
-      ${searchResponseName}:
-        type: object
-        required:
-        - "results"
-        - "totalNumberOfResults"
-        properties:
-          results:
-            type: array
-            items:
-              $ref: '#/components/schemas/${dataObjectName}'
-          totalNumberOfResults:
-            description: Total number of results on the server.
-            type: integer
-            format: int64`;
+  const searchResponseSchema = `
+    ${searchResponseName}:
+      type: object
+      required:
+      - "results"
+      - "totalNumberOfResults"
+      properties:
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/${dataObjectName}'
+        totalNumberOfResults:
+          description: Total number of results on the server.
+          type: integer
+          format: int64
+  `
 
   bffOpenApiContent = bffOpenApiContent.replace(
-    `
-    schemas:`,
-    `
-    schemas:
-      ${entitySchema}  
-
-      ${propertySearchComponents}    
-  `
+    `schemas:`,
+`schemas:
+      ${hasEntitySchema ? '' : entitySchema}
+      ${searchRequestSchema}
+      ${searchResponseSchema}
+`    
   );
+
+  console.log(bffOpenApiContent);
+  
 
   tree.write(
     joinPathFragments(openApiFolderPath, bffOpenApiPath),

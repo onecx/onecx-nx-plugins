@@ -1,8 +1,8 @@
 import yargs = require('yargs');
 import { prompt } from 'enquirer';
+import * as pc from 'picocolors';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-const chalk = require('chalk');
 
 const NON_INTERACTIVE_KEY = 'non-interactive';
 interface NameValue {
@@ -132,13 +132,13 @@ async function processParams<T>(
   if (showSummary) {
     let inputsFinal = false;
     while (!inputsFinal) {
-      console.log(chalk.bold(' *** Summary ***'));
+      console.log(pc.bold(' *** Summary ***'));
       for (const parameter of parameters) {
         if (!parameter.showInSummary) continue;
         console.log(
-          chalk.bold(parameter.key) +
+          pc.bold(parameter.key) +
             ': ' +
-            chalk.bgGray(parameterValues[parameter.key])
+            parameterValues[parameter.key]
         );
       }
 
