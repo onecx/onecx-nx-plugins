@@ -2,24 +2,49 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
+import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { LetModule } from '@ngrx/component';
 import { Store, StoreModule } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
-import { PortalCoreModule } from '@onecx/portal-integration-angular';
+import { ofType } from '@ngrx/effects';
+import { TranslateService } from '@ngx-translate/core';
 import { TranslateTestingModule } from 'ngx-translate-testing';
+import { DialogService } from 'primeng/dynamicdialog';
+import {
+  BreadcrumbService,
+  ColumnType,
+  ExportDataService,
+  PortalCoreModule,
+  UserService,
+} from '@onecx/portal-integration-angular';
 import { <%= featureClassName %>SearchActions } from './<%= featureFileName %>-search.actions';
 import { <%= featureClassName %>SearchComponent } from './<%= featureFileName %>-search.component';
+import { <%= featureClassName %>SearchHarness } from './<%= featureFileName %>-search.harness';
+import { <%= featureClassName %>SearchViewModel } from './<%= featureFileName %>-search.viewmodel';
+import { <%= featurePropertyName %>SearchColumns } from './<%= featureFileName %>-search.columns';
+import { select<%= featureClassName %>SearchViewModel } from './<%= featureFileName %>-search.selectors';
 import { initialState } from './<%= featureFileName %>-search.reducers';
-import { ofType } from '@ngrx/effects';
-import { DialogService } from 'primeng/dynamicdialog';
 
 describe('<%= featureClassName %>SearchComponent', () => {
   let component: <%= featureClassName %>SearchComponent;
   let fixture: ComponentFixture<<%= featureClassName %>SearchComponent>;
   let store: MockStore<Store>;
   let formBuilder: FormBuilder;
-
+  let <%= featurePropertyName %>Search: <%= featureClassName %>SearchHarness;
+  
   const mockActivatedRoute = {};
+  const base<%= featureClassName %>SearchViewModel: <%= featureClassName %>SearchViewModel = {
+    columns: <%= featurePropertyName %>SearchColumns,
+    searchCriteria: { changeMe: '0' },
+    results: [],
+    searchConfigs: [],
+    selectedSearchConfig: null,
+    displayedColumns: [],
+    viewMode: 'basic',
+    chartVisible: false,
+    searchConfigEnabled: false,
+  };
 
   beforeAll(() => {
     Object.defineProperty(window, 'matchMedia', {
@@ -50,6 +75,7 @@ describe('<%= featureClassName %>SearchComponent', () => {
           require('./../../../../assets/i18n/en.json')
         ).withTranslations('de', require('./../../../../assets/i18n/de.json')),
         HttpClientTestingModule,
+        NoopAnimationsModule,
       ],
       providers: [
         DialogService,
@@ -62,16 +88,212 @@ describe('<%= featureClassName %>SearchComponent', () => {
     }).compileComponents();
   });
 
-  beforeEach(() => {
+  beforeEach(async () => {
+    const userService = TestBed.inject(UserService);
+    userService.hasPermission = () => true;
+    const translateService = TestBed.inject(TranslateService);
+    translateService.use('en');
+    formBuilder = TestBed.inject(FormBuilder);
+
+    store = TestBed.inject(MockStore);
+    store.overrideSelector(
+      select<%= featureClassName %>SearchViewModel,
+      base<%= featureClassName %>SearchViewModel
+    );
+    store.refreshState();
+
     fixture = TestBed.createComponent(<%= featureClassName %>SearchComponent);
     component = fixture.componentInstance;
-    store = TestBed.inject(MockStore);
-    formBuilder = TestBed.inject(FormBuilder);
     fixture.detectChanges();
+    <%= featurePropertyName %>Search = await TestbedHarnessEnvironment.harnessForFixture(
+      fixture,
+      <%= featureClassName %>SearchHarness
+    );
   });
 
   it('should create the component', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should dispatch resetButtonClicked action on resetSearch', async () => {
+    var doneFn = jest.fn();
+    store.overrideSelector(select<%= featureClassName %>SearchViewModel, {
+      ...base<%= featureClassName %>SearchViewModel,
+      results: [
+        {
+          id: '1',
+          imagePath: '',
+          column_1: 'val_1',
+        },
+      ],
+      columns: [
+        {
+          columnType: ColumnType.STRING,
+          nameKey: 'COLUMN_KEY',
+          id: 'column_1',
+        },
+      ],
+    });
+    store.refreshState();
+
+    store.scannedActions$
+      .pipe(ofType(<%= featureClassName %>SearchActions.resetButtonClicked))
+      .subscribe(() => {
+        doneFn();
+      });
+
+    const searchHeader = await <%= featurePropertyName %>Search.getHeader();
+    await searchHeader.clickResetButton();
+    expect(doneFn).toHaveBeenCalledTimes(1);
+  });
+
+  it('should have 2 overFlow header actions when search config is disabled', async () => {
+    const searchHeader = await <%= featurePropertyName %>Search.getHeader();
+    const pageHeader = await searchHeader.getPageHeader();
+    const overflowActionButton = await pageHeader.getOverflowActionMenuButton();
+    await overflowActionButton?.click();
+
+    const overflowMenuItems = await pageHeader.getOverFlowMenuItems();
+    expect(overflowMenuItems.length).toBe(2);
+
+    const exportAllActionItem = await pageHeader.getOverFlowMenuItem(
+      'Export all'
+    );
+    expect(await exportAllActionItem!.getText()).toBe('Export all');
+
+    const showHideChartActionItem = await pageHeader.getOverFlowMenuItem(
+      'Show chart'
+    );
+    expect(await showHideChartActionItem!.getText()).toBe('Show chart');
+  });
+
+  it('should display hide chart action if chart is visible', async () => {
+    store.overrideSelector(select<%= featureClassName %>SearchViewModel, {
+      ...base<%= featureClassName %>SearchViewModel,
+      chartVisible: true,
+    });
+    store.refreshState();
+
+    const searchHeader = await <%= featurePropertyName %>Search.getHeader();
+    const pageHeader = await searchHeader.getPageHeader();
+    const overflowActionButton = await pageHeader.getOverflowActionMenuButton();
+    await overflowActionButton?.click();
+
+    const overflowMenuItems = await pageHeader.getOverFlowMenuItems();
+    expect(overflowMenuItems.length).toBe(2);
+
+    const showHideChartActionItem = await pageHeader.getOverFlowMenuItem(
+      'Hide chart'
+    );
+    expect(await showHideChartActionItem!.getText()).toEqual('Hide chart');
+  });
+
+  it('should display create search config action when search config is enabled and none selected', async () => {
+    store.overrideSelector(select<%= featureClassName %>SearchViewModel, {
+      ...base<%= featureClassName %>SearchViewModel,
+      searchConfigEnabled: true,
+      selectedSearchConfig: null,
+    });
+    store.refreshState();
+
+    const searchHeader = await <%= featurePropertyName %>Search.getHeader();
+    const pageHeader = await searchHeader.getPageHeader();
+    const overflowActionButton = await pageHeader.getOverflowActionMenuButton();
+    await overflowActionButton?.click();
+
+    const overflowMenuItems = await pageHeader.getOverFlowMenuItems();
+    expect(overflowMenuItems.length).toBe(3);
+
+    const createSearchConfigurationActionItem =
+      await pageHeader.getOverFlowMenuItem('Create search configuration');
+    expect(await createSearchConfigurationActionItem!.getText()).toEqual(
+      'Create search configuration'
+    );
+  });
+
+  it('should display update search config action when search config is enabled and config is selected', async () => {
+    store.overrideSelector(select<%= featureClassName %>SearchViewModel, {
+      ...base<%= featureClassName %>SearchViewModel,
+      searchConfigEnabled: true,
+      selectedSearchConfig: {
+        name: '',
+        modificationCount: 0,
+        fieldListVersion: 0,
+        isReadonly: true,
+        isAdvanced: false,
+        columns: [],
+        values: {},
+      },
+    });
+    store.refreshState();
+
+    const searchHeader = await <%= featurePropertyName %>Search.getHeader();
+    const pageHeader = await searchHeader.getPageHeader();
+    const overflowActionButton = await pageHeader.getOverflowActionMenuButton();
+    await overflowActionButton?.click();
+
+    const overflowMenuItems = await pageHeader.getOverFlowMenuItems();
+    expect(overflowMenuItems.length).toBe(3);
+
+    const updateSearchConfigurationActionItem =
+      await pageHeader.getOverFlowMenuItem('Update search configuration');
+    expect(await updateSearchConfigurationActionItem!.getText()).toEqual(
+      'Update search configuration'
+    );
+  });
+
+  it('should display chosen column in the diagram', async () => {
+    component.diagramColumnId = 'column_1';
+    store.overrideSelector(select<%= featureClassName %>SearchViewModel, {
+      ...base<%= featureClassName %>SearchViewModel,
+      chartVisible: true,
+      results: [
+        {
+          id: '1',
+          imagePath: '',
+          column_1: 'val_1',
+        },
+        {
+          id: '2',
+          imagePath: '',
+          column_1: 'val_2',
+        },
+        {
+          id: '3',
+          imagePath: '',
+          column_1: 'val_2',
+        },
+      ],
+      columns: [
+        {
+          columnType: ColumnType.STRING,
+          nameKey: 'COLUMN_KEY',
+          id: 'column_1',
+        },
+      ],
+    });
+    store.refreshState();
+
+    const diagram =
+      await (await <%= featurePropertyName %>Search.getDiagram())!.getDiagram();
+
+    expect(await diagram.getTotalNumberOfResults()).toBe(3);
+    expect(await diagram.getSumLabel()).toEqual('Total');
+  });
+
+  it('should display correct breadcrumbs', async () => {
+    const breadcrumbService = TestBed.inject(BreadcrumbService);
+    jest.spyOn(breadcrumbService, 'setItems');
+
+    component.ngOnInit();
+    fixture.detectChanges();
+
+    expect(breadcrumbService.setItems).toHaveBeenCalledTimes(1);
+    const searchHeader = await <%= featurePropertyName %>Search.getHeader();
+    const pageHeader = await searchHeader.getPageHeader();
+    const searchBreadcrumbItem = await pageHeader.getBreadcrumbItem('Search');
+
+    expect(await searchBreadcrumbItem!.getText()).toEqual('Search');
   });
 
   it('should dispatch searchButtonClicked action on search', (done) => {
@@ -90,13 +312,389 @@ describe('<%= featureClassName %>SearchComponent', () => {
     component.search(formValue);
   });
 
-  it('should dispatch resetButtonClicked action on resetSearch', (done) => {
-    store.scannedActions$
-      .pipe(ofType(<%= featureClassName %>SearchActions.resetButtonClicked))
-      .subscribe(() => {
-        done();
-      });
+  it('should export csv data on export action click', async () => {
+    const exportDataService = TestBed.inject(ExportDataService);
+    jest
+      .spyOn(exportDataService, 'exportCsv')
+      .mockImplementation(() => Promise.resolve());
 
-    component.resetSearch();
+    const results = [
+      {
+        id: '1',
+        imagePath: '',
+        column_1: 'val_1',
+      },
+    ];
+    const columns = [
+      {
+        columnType: ColumnType.STRING,
+        nameKey: 'COLUMN_KEY',
+        id: 'column_1',
+      },
+    ];
+    store.overrideSelector(select<%= featureClassName %>SearchViewModel, {
+      ...base<%= featureClassName %>SearchViewModel,
+      results: results,
+      columns: columns,
+      displayedColumns: columns,
+    });
+    store.refreshState();
+
+    const searchHeader = await <%= featurePropertyName %>Search.getHeader();
+    const pageHeader = await searchHeader.getPageHeader();
+    const overflowActionButton = await pageHeader.getOverflowActionMenuButton();
+    await overflowActionButton?.click();
+
+    const exportAllActionItem = await pageHeader.getOverFlowMenuItem(
+      'Export all'
+    );
+    await exportAllActionItem!.selectItem();
+
+    expect(exportDataService.exportCsv).toHaveBeenCalledWith(
+      columns,
+      results,
+      '<%= featureFileName %>.csv'
+    );
+  });
+
+  it('should dispatch selectedSearchConfigInfo on search config selection', async () => {
+    jest.spyOn(store, 'dispatch');
+
+    store.overrideSelector(select<%= featureClassName %>SearchViewModel, {
+      ...base<%= featureClassName %>SearchViewModel,
+      searchConfigs: [
+        {
+          id: '1',
+          name: 'config_1',
+        },
+        {
+          id: '2',
+          name: 'config_2',
+        },
+      ],
+    });
+    store.refreshState();
+
+    const searchHeader = await <%= featurePropertyName %>Search.getHeader();
+    const searchConfig = await searchHeader.getSearchConfig();
+    const searchConfigDropdown = await searchConfig.getSearchConfigDropdown();
+
+    const dropdownItems = await searchConfigDropdown?.getDropdownItems();
+    expect(dropdownItems?.length).toBe(2);
+
+    const firstConfigItem = await searchConfigDropdown?.getDropdownItem(
+      'config_1'
+    );
+    expect(firstConfigItem).toBeTruthy();
+    expect(await firstConfigItem?.getText()).toEqual('config_1');
+
+    const secondConfigItem = await searchConfigDropdown?.getDropdownItem(
+      'config_2'
+    );
+    expect(secondConfigItem).toBeTruthy();
+    expect(await secondConfigItem?.getText()).toEqual('config_2');
+
+    await firstConfigItem?.selectItem();
+
+    expect(store.dispatch).toHaveBeenCalledWith(
+      <%= featureClassName %>SearchActions.selectedSearchConfigInfo({
+        searchConfigInfo: {
+          id: '1',
+          name: 'config_1',
+        },
+      })
+    );
+  });
+
+  it('should dispatch searchConfigInfoDeselected on search config clear', async () => {
+    jest.spyOn(store, 'dispatch');
+
+    store.overrideSelector(select<%= featureClassName %>SearchViewModel, {
+      ...base<%= featureClassName %>SearchViewModel,
+      searchConfigs: [
+        {
+          id: '1',
+          name: 'config_1',
+        },
+        {
+          id: '2',
+          name: 'config_2',
+        },
+      ],
+    });
+    store.refreshState();
+
+    const searchHeader = await <%= featurePropertyName %>Search.getHeader();
+    const searchConfig = await searchHeader.getSearchConfig();
+    const searchConfigDropdown = await searchConfig.getSearchConfigDropdown();
+    await searchConfigDropdown?.open();
+
+    const firstConfigItem = await searchConfigDropdown?.getDropdownItem(
+      'config_1'
+    );
+    await firstConfigItem?.selectItem();
+    jest.clearAllMocks();
+
+    await searchConfigDropdown?.clear();
+
+    expect(store.dispatch).toHaveBeenCalledWith(
+      <%= featureClassName %>SearchActions.searchConfigInfoDeselected()
+    );
+  });
+
+  it('should dispatch viewModeChanged action on view mode changes', async () => {
+    jest.spyOn(store, 'dispatch');
+
+    component.viewModeChanged('advanced');
+
+    expect(store.dispatch).toHaveBeenCalledWith(
+      <%= featureClassName %>SearchActions.viewModeChanged({ viewMode: 'advanced' })
+    );
+  });
+
+  it('should dispatch displayedColumnsChanged on data view column change', async () => {
+    jest.spyOn(store, 'dispatch');
+
+    fixture = TestBed.createComponent(<%= featureClassName %>SearchComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+    <%= featurePropertyName %>Search = await TestbedHarnessEnvironment.harnessForFixture(
+      fixture,
+      <%= featureClassName %>SearchHarness
+    );
+
+    expect(store.dispatch).toHaveBeenCalledWith(
+      <%= featureClassName %>SearchActions.displayedColumnsChanged({ displayedColumns: [] })
+    );
+
+    jest.clearAllMocks();
+
+    store.overrideSelector(select<%= featureClassName %>SearchViewModel, {
+      ...base<%= featureClassName %>SearchViewModel,
+      columns: [
+        {
+          columnType: ColumnType.STRING,
+          nameKey: 'COLUMN_KEY',
+          id: 'column_1',
+        },
+        {
+          columnType: ColumnType.STRING,
+          nameKey: 'SECOND_COLUMN_KEY',
+          id: 'column_2',
+        },
+      ],
+    });
+    store.refreshState();
+
+    const interactiveDataView =
+      await <%= featurePropertyName %>Search.getSearchResults();
+    const columnGroupSelector =
+      await interactiveDataView.getCustomGroupColumnSelector();
+    await columnGroupSelector.openCustomGroupColumnSelectorDialog();
+    const pickList = await columnGroupSelector.getPicklist();
+    const transferControlButtons = await pickList.getTransferControlsButtons();
+    expect(transferControlButtons.length).toBe(4);
+    const activateAllColumnsButton = transferControlButtons[3];
+    await activateAllColumnsButton.click();
+    const saveButton = await columnGroupSelector.getSaveButton();
+    await saveButton.click();
+
+    expect(store.dispatch).toHaveBeenCalledWith(
+      <%= featureClassName %>SearchActions.displayedColumnsChanged({
+        displayedColumns: [
+          {
+            columnType: ColumnType.STRING,
+            nameKey: 'COLUMN_KEY',
+            id: 'column_1',
+          },
+          {
+            columnType: ColumnType.STRING,
+            nameKey: 'SECOND_COLUMN_KEY',
+            id: 'column_2',
+          },
+        ],
+      })
+    );
+  });
+
+  it('should dispatch chartVisibilityToggled on show/hide chart header', async () => {
+    jest.spyOn(store, 'dispatch');
+
+    store.overrideSelector(select<%= featureClassName %>SearchViewModel, {
+      ...base<%= featureClassName %>SearchViewModel,
+      chartVisible: false,
+    });
+    store.refreshState();
+
+    const searchHeader = await <%= featurePropertyName %>Search.getHeader();
+    const pageHeader = await searchHeader.getPageHeader();
+    const overflowActionButton = await pageHeader.getOverflowActionMenuButton();
+    await overflowActionButton?.click();
+
+    const showChartActionItem = await pageHeader.getOverFlowMenuItem(
+      'Show chart'
+    );
+    await showChartActionItem!.selectItem();
+    expect(store.dispatch).toHaveBeenCalledWith(
+      <%= featureClassName %>SearchActions.chartVisibilityToggled()
+    );
+  });
+
+  it('should dispatch createSearchConfigClicked on search config create header action', async () => {
+    jest.spyOn(store, 'dispatch');
+
+    store.overrideSelector(select<%= featureClassName %>SearchViewModel, {
+      ...base<%= featureClassName %>SearchViewModel,
+      searchConfigEnabled: true,
+      selectedSearchConfig: null,
+    });
+    store.refreshState();
+
+    const searchHeader = await <%= featurePropertyName %>Search.getHeader();
+    const pageHeader = await searchHeader.getPageHeader();
+    const overflowActionButton = await pageHeader.getOverflowActionMenuButton();
+    await overflowActionButton?.click();
+
+    const createSearchConfigurationActionItem =
+      await pageHeader.getOverFlowMenuItem('Create search configuration');
+    await createSearchConfigurationActionItem!.selectItem();
+    expect(store.dispatch).toHaveBeenCalledWith(
+      <%= featureClassName %>SearchActions.createSearchConfigClicked()
+    );
+  });
+
+  it('should dispatch updateSearchConfigClicked on search config update header action', async () => {
+    jest.spyOn(store, 'dispatch');
+
+    store.overrideSelector(select<%= featureClassName %>SearchViewModel, {
+      ...base<%= featureClassName %>SearchViewModel,
+      searchConfigEnabled: true,
+      selectedSearchConfig: {
+        name: '',
+        modificationCount: 0,
+        fieldListVersion: 0,
+        isReadonly: true,
+        isAdvanced: false,
+        columns: [],
+        values: {},
+      },
+    });
+    store.refreshState();
+
+    const searchHeader = await <%= featurePropertyName %>Search.getHeader();
+    const pageHeader = await searchHeader.getPageHeader();
+    const overflowActionButton = await pageHeader.getOverflowActionMenuButton();
+    await overflowActionButton?.click();
+
+    const updateSearchConfigurationActionItem =
+      await pageHeader.getOverFlowMenuItem('Update search configuration');
+    await updateSearchConfigurationActionItem!.selectItem();
+    expect(store.dispatch).toHaveBeenCalledWith(
+      <%= featureClassName %>SearchActions.updateSearchConfigClicked()
+    );
+  });
+
+  it('should display translated headers', async () => {
+    const searchHeader = await <%= featurePropertyName %>Search.getHeader();
+    const pageHeader = await searchHeader.getPageHeader();
+    expect(await pageHeader.getHeaderText()).toEqual('<%= featureClassName %> Search');
+    expect(await pageHeader.getSubheaderText()).toEqual(
+      'Searching and displaying of <%= featureClassName %>'
+    );
+  });
+
+  it('should display translated empty message when no search results', async () => {
+    const columns = [
+      {
+        columnType: ColumnType.STRING,
+        nameKey: 'COLUMN_KEY',
+        id: 'column_1',
+      },
+    ];
+    store.overrideSelector(select<%= featureClassName %>SearchViewModel, {
+      ...base<%= featureClassName %>SearchViewModel,
+      results: [],
+      columns: columns,
+      displayedColumns: columns,
+    });
+    store.refreshState();
+
+    const interactiveDataView =
+      await <%= featurePropertyName %>Search.getSearchResults();
+    const dataView = await interactiveDataView.getDataView();
+    const dataTable = await dataView.getDataTable();
+    const rows = await dataTable.getRows();
+    expect(rows.length).toBe(1);
+
+    const rowData = await rows[0].getData();
+    expect(rowData.length).toBe(1);
+    expect(rowData[0]).toEqual('No results.');
+  });
+
+  it('should not display chart when no results or toggled to not visible', async () => {
+    component.diagramColumnId = 'column_1';
+
+    store.overrideSelector(select<%= featureClassName %>SearchViewModel, {
+      ...base<%= featureClassName %>SearchViewModel,
+      results: [],
+      chartVisible: true,
+      columns: [
+        {
+          columnType: ColumnType.STRING,
+          nameKey: 'COLUMN_KEY',
+          id: 'column_1',
+        },
+      ],
+    });
+    store.refreshState();
+
+    let diagram = await <%= featurePropertyName %>Search.getDiagram();
+    expect(diagram).toBeNull();
+
+    store.overrideSelector(select<%= featureClassName %>SearchViewModel, {
+      ...base<%= featureClassName %>SearchViewModel,
+      results: [
+        {
+          id: '1',
+          imagePath: '',
+          column_1: 'val_1',
+        },
+      ],
+      chartVisible: false,
+      columns: [
+        {
+          columnType: ColumnType.STRING,
+          nameKey: 'COLUMN_KEY',
+          id: 'column_1',
+        },
+      ],
+    });
+    store.refreshState();
+
+    diagram = await <%= featurePropertyName %>Search.getDiagram();
+    expect(diagram).toBeNull();
+
+    store.overrideSelector(select<%= featureClassName %>SearchViewModel, {
+      ...base<%= featureClassName %>SearchViewModel,
+      results: [
+        {
+          id: '1',
+          imagePath: '',
+          column_1: 'val_1',
+        },
+      ],
+      chartVisible: true,
+      columns: [
+        {
+          columnType: ColumnType.STRING,
+          nameKey: 'COLUMN_KEY',
+          id: 'column_1',
+        },
+      ],
+    });
+    store.refreshState();
+
+    diagram = await <%= featurePropertyName %>Search.getDiagram();
+    expect(diagram).toBeTruthy();
   });
 });
