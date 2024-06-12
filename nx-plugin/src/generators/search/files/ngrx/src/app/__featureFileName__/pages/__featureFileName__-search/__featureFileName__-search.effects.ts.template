@@ -32,8 +32,6 @@ export class <%= featureClassName %>SearchEffects {
     private messageService: PortalMessageService    
   ) {}
 
-  pageName = '<%= featurePropertyName %>';
-
   resetButtonClicked$ = createQueryParamsEffect(
     this.actions$,
     <%= featureClassName %>SearchActions.resetButtonClicked,
