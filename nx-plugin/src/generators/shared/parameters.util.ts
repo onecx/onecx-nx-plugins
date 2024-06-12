@@ -7,7 +7,7 @@ import * as pc from 'picocolors';
 const NON_INTERACTIVE_KEY = 'non-interactive';
 interface NameValue {
   name: string;
-  value: unknown;
+  value?: unknown;
 }
 
 interface ShowRule<T> {
