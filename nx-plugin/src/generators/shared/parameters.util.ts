@@ -5,7 +5,7 @@ import * as pc from 'picocolors';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 
 const NON_INTERACTIVE_KEY = 'non-interactive';
-interface Choice {
+interface MyChoice {
   name: string;
   message?: string;
   value?: unknown;
@@ -34,7 +34,7 @@ interface GeneratorParameterBasic<T> {
   prompt: string;
   showRules?: ShowRule<T>[];
   showInSummary?: boolean;
-  choices?: Choice[];
+  choices?: MyChoice[];
 }
 
 interface GeneratorParameterInput<T> extends GeneratorParameterBasic<T> {
@@ -43,7 +43,7 @@ interface GeneratorParameterInput<T> extends GeneratorParameterBasic<T> {
 
 interface GeneratorParameterChoices<T> extends GeneratorParameterBasic<T> {
   type: 'select';
-  choices: Choice[];
+  choices: MyChoice[];
 }
 
 export type GeneratorParameter<T> =
@@ -127,7 +127,7 @@ async function processParams<T>(
         type: 'select',
         name: parameter.key,
         message: parameter.prompt,
-        choices: (parameter.choices as Choice[]),
+        choices: parameter.choices,
       });
     }
     Object.assign(parameterValues, result);
