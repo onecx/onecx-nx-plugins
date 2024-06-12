@@ -89,9 +89,9 @@ export async function detailsGenerator(
       featureFileName: names(options.featureName).fileName,
       featurePropertyName: names(options.featureName).propertyName,
       featureClassName: names(options.featureName).className,
-      featureConstantName: names(options.featureName).constantName,      
+      featureConstantName: names(options.featureName).constantName,
       dataObjectName: options.dataObjectName,
-      serviceName: options.apiServiceName
+      serviceName: options.apiServiceName,
     }
   );
 
@@ -148,6 +148,8 @@ function addFunctionToOpenApi(tree: Tree, options: DetailsGeneratorSchema) {
   const hasSchemas = bffOpenApiContent.includes('schemas:');
   const hasEntitySchema =
     hasSchemas && bffOpenApiContent.includes(`${dataObjectName}:`);
+  const hasProblemDetailSchema =
+    hasSchemas && bffOpenApiContent.includes('ProblemDetailResponse:');
 
   //TODO: schema for error cases
   bffOpenApiContent = bffOpenApiContent.replace(`paths: {}`, `paths:`).replace(
@@ -217,6 +219,39 @@ components:
     entitySchema = '';
   }
 
+  const problemDetailResponseSchema = `
+    ProblemDetailResponse:
+      type: object
+      properties:
+        errorCode:
+          type: string
+        detail:
+          type: string
+        params:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProblemDetailParam'
+        invalidParams:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProblemDetailInvalidParam'
+          
+    ProblemDetailParam:
+      type: object
+      properties:
+        key:
+          type: string
+        value:
+          type: string
+          
+    ProblemDetailInvalidParam:
+      type: object
+      properties:
+        name:
+          type: string
+        message:
+          type: string`;
+
   bffOpenApiContent = bffOpenApiContent.replace(
     `
   schemas:`,
@@ -232,6 +267,7 @@ components:
         result:
           $ref: '#/components/schemas/${dataObjectName}'
 
+    ${hasProblemDetailSchema ? '' : problemDetailResponseSchema}
 `
   );
 
