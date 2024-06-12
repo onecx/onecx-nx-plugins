@@ -5,9 +5,14 @@ import * as pc from 'picocolors';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 
 const NON_INTERACTIVE_KEY = 'non-interactive';
-interface NameValue {
-  name: string;
-  value?: unknown;
+interface Choice {
+  name: string
+  message?: string
+  value?: unknown
+  hint?: string
+  role?: string
+  enabled?: boolean
+  disabled?: boolean | string
 }
 
 interface ShowRule<T> {
@@ -29,7 +34,7 @@ interface GeneratorParameterBasic<T> {
   prompt: string;
   showRules?: ShowRule<T>[];
   showInSummary?: boolean;
-  choices?: NameValue[];
+  choices?: Choice[];
 }
 
 interface GeneratorParameterInput<T> extends GeneratorParameterBasic<T> {
@@ -38,7 +43,7 @@ interface GeneratorParameterInput<T> extends GeneratorParameterBasic<T> {
 
 interface GeneratorParameterChoices<T> extends GeneratorParameterBasic<T> {
   type: 'select';
-  choices: NameValue[];
+  choices: Choice[];
 }
 
 export type GeneratorParameter<T> =
