@@ -6,13 +6,13 @@ import * as pc from 'picocolors';
 
 const NON_INTERACTIVE_KEY = 'non-interactive';
 interface Choice {
-  name: string
-  message?: string
-  value?: unknown
-  hint?: string
-  role?: string
-  enabled?: boolean
-  disabled?: boolean | string
+  name: string;
+  message?: string;
+  value?: unknown;
+  hint?: string;
+  role?: string;
+  enabled?: boolean;
+  disabled?: boolean | string;
 }
 
 interface ShowRule<T> {
@@ -127,7 +127,7 @@ async function processParams<T>(
         type: 'select',
         name: parameter.key,
         message: parameter.prompt,
-        choices: parameter.choices,
+        choices: (parameter.choices as Choice[]),
       });
     }
     Object.assign(parameterValues, result);
@@ -141,9 +141,7 @@ async function processParams<T>(
       for (const parameter of parameters) {
         if (!parameter.showInSummary) continue;
         console.log(
-          pc.bold(parameter.key) +
-            ': ' +
-            parameterValues[parameter.key]
+          pc.bold(parameter.key) + ': ' + parameterValues[parameter.key]
         );
       }
 
