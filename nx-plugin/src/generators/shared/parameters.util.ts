@@ -5,15 +5,6 @@ import * as pc from 'picocolors';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 
 const NON_INTERACTIVE_KEY = 'non-interactive';
-interface MyChoice {
-  name: string;
-  message?: string;
-  value?: unknown;
-  hint?: string;
-  role?: string;
-  enabled?: boolean;
-  disabled?: boolean | string;
-}
 
 interface ShowRule<T> {
   showIf: (values: T) => boolean;
@@ -34,7 +25,7 @@ interface GeneratorParameterBasic<T> {
   prompt: string;
   showRules?: ShowRule<T>[];
   showInSummary?: boolean;
-  choices?: MyChoice[];
+  choices?: string[];
 }
 
 interface GeneratorParameterInput<T> extends GeneratorParameterBasic<T> {
@@ -43,7 +34,7 @@ interface GeneratorParameterInput<T> extends GeneratorParameterBasic<T> {
 
 interface GeneratorParameterChoices<T> extends GeneratorParameterBasic<T> {
   type: 'select';
-  choices: MyChoice[];
+  choices: string[];
 }
 
 export type GeneratorParameter<T> =
