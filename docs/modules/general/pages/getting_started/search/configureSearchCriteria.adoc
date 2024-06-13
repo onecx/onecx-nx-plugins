@@ -2,20 +2,26 @@
 To configure the search results, the following actions must be taken.
 // TODO: Provide explanation about: The mapping of the URL parameters must be configured. 
 
+:toc:
 
-=== ACTION S1: Add additional properties to the <feature>-bff.yaml
-__This step is only necessary if you decided to generate API-Endpoints & Components.__
 
-* The <FeatureName>SearchRequest data structure in the BFF yaml must be adapted. 
+==== ACTION S1: Add additional properties to the `+<feature>-bff.yaml+`
+_Adapt in File:_ `+<feature>-bff.yaml+`
+
+===== Todos:
+
+* The `+<FeatureName>SearchRequest+` data structure in the BFF yaml must be adapted. 
 
 ** All the data that should be displayed in the request must be in that data structure either on top-level or in sub data structures. 
 
-*Where this snippet can be found*: <feature>-bff.yaml.
+---
 
-=== ACTION S2: Please define the members for your <%= featurePropertyName %>SearchCriteriasSchema here
+==== ACTION S2: Please define the members for your `+<%= featurePropertyName %>SearchCriteriasSchema+` here
+_Adapt in File:_ `+<feature>-search.parameters.ts+`
+
+===== Todos:
 // TODO: Move the examples in comments from the zod library to the documentation here
 // TODO: Provide an example 
-*Where this snippet can be found*: <feature>-search.parameters.ts. :
 [subs=+macros]
 // TODO: Show that the names should have the same name as in the yaml
 ----
@@ -24,13 +30,17 @@ __This step is only necessary if you decided to generate API-Endpoints & Compone
 
 *HINT*: Please remove the "ACTION" comment after solving this issue
 
-=== ACTION S3: Please specify here your desired search criterias, link to documentation
+---
+
+==== ACTION S3: Please specify here your desired search criterias, link to documentation
+_Adapt in File:_ `+<feature>-search.component.html+`
+
+===== Todos:
 // TODO: add info how to handle dates in p-calendar -> https://primeng.org/calendar#api.calendar.props.dateFormat
 // TODO: Show that the names should have the same name as in the yaml
 The input fields must be added.
-*Where this snippet can be found*: <feature>-search.component.html. :
 [subs=+macros]
-
+[source, html]
 ----
  <form [formGroup]="criteriaGroup">
       <div class="grid mt-0 p-fluid">
@@ -39,13 +49,13 @@ The input fields must be added.
            // PLACE YOUR INPUT FIELD HERE
           </span>
         </div>
-        ....
+        ...
 ----
 
 * Examples for different fields
 ** Example for text input field
-*** Remove // PLACE YOUR INPUT FIELD HERE and paste the following code
-
+*** Remove `+// PLACE YOUR INPUT FIELD HERE+` and paste the following code
+[source, html]
 ----
     <input
       id="id"
@@ -61,7 +71,8 @@ The input fields must be added.
 ----
 
 ** Example for calendar input field
-*** Remove // PLACE YOUR INPUT FIELD HERE and paste the following code
+*** Remove `+// PLACE YOUR INPUT FIELD HERE+` and paste the following code
+[source, html]
 ----
     <p-calendar
       id="endDate"
@@ -76,14 +87,16 @@ The input fields must be added.
 ----
 
 ** Example for dropdown
-*** Remove // PLACE YOUR INPUT FIELD HERE and paste the following code
+*** Remove `+// PLACE YOUR INPUT FIELD HERE+` and paste the following code
+[source, html]
 ----
  <p-multiSelect [options]="dropdownOptions" formControlName="selectedOptions" optionLabel="name" placeholder="Select Options"></p-multiSelect>
 ----
-** Directive *ocxAdvanced
-** The directive *ocxAdvanced indicates if a field belongs to the basic or the advanced mode. The mode can be toggled via a button in the search header.
-The directive *ocxAdvanced will be added to the div.
+** Directive `+*ocxAdvanced+`
+** The directive `+*ocxAdvanced+` indicates if a field belongs to the basic or the advanced mode. The mode can be toggled via a button in the search header.
+The directive `+*ocxAdvanced+` will be added to the div.
 
+[source, html]
 ----
  <div *ocxAdvanced class="col-12 md:col-3">
           <span class="p-float-label">
@@ -91,13 +104,16 @@ The directive *ocxAdvanced will be added to the div.
           </span>
   </div>
 ----
-The information if a field belongs to the basic or advanced view will be added to the <%= featureClassName %>SearchViewModel and the information is saved in the member 'viewMode'
+The information if a field belongs to the basic or advanced view will be added to the `+<%= featureClassName %>SearchViewModel+` and the information is saved in the member `+viewMode+`
 
-*HINT*: Please remove the "ACTION" comment after solving this issue
+IMPORTANT: Remove the "ACTION" comment after solving this issue
 
-=== ACTION S4: ADD TRANSLATION for your input fields
+---
+
+==== ACTION S4: ADD TRANSLATION for your input fields
+_Adapt in File:_  `+de.json+` / `+en.json+`
+
+===== Todos:
+
+* Please add the missing translations
 // TODO: Specify for what the translation will be added
-
-*Where this snippet can be found*: de.json / en.json  :
-Please add the missing translations
-

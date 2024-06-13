@@ -1,33 +1,39 @@
 === Update permissions
 To configure the search results, the following actions must be taken. 
 
-=== ACTION S11: Update permissions and roles
+==== ACTION S11: Update permissions and roles
 
-If you want to adapt the permissions, adapt the ocx_<product_name>-permissions.csv in the helm folder.
+If you want to adapt the permissions, adapt the `+values.yml+` in the helm folder.
 
 .Example
 [example]
 ----
-PERMISSION NAME;PERMISSION_KEY;basic-role;advanced-role;
-Edit search results;<%= productName %_SEARCH>#EDIT;;x;
-View search results;<%= productName %_SEARCH>#VIEW;x;x;
-Delete search results;<%= productName %_SEARCH>#VIEW;;x;
+permission:
+    enabled: true
+    spec:
+        permissions:
+            EXAMPLE:
+                CREATE: Create example
+                EDIT: Edit example
+                DELETE: Delete example
+                SAVE: Update and save example
+                IMPORT: Import example
+                EXPORT: Export example
+                VIEW: View mode for example
+                SEARCH: Search example
 ----
-The 'x' determines if a role has got the permission.
-In this example only the advanced-user has all three permissions and the basic-user has only the permission to "view search results", because it is marked with the 'x'
+
 
 [TIP] 
 .Import the permissions into your environment
-==== 
-1. Reach out to your technical lead.
-====
+You can use `scripts/load-permission.sh` to upload permissions.
+When in doubt about the setup contact your technical lead.
 
 [IMPORTANT] 
 .Clarify the permission-role concept
 ==== 
 1. Please clarify the permission-role concept with your business analyst or your solution designer.
-2. Remove the ACTION comment from the .csv after solving this issue.
-3. Delete the not necessary roles (e.g. basic-user) and permissions which you do not need.
+2. Delete permissions that you do not need.
 ====
 
 
