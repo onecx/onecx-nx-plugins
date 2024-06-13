@@ -39,7 +39,8 @@ _Adapt in File:_ `+<feature>-search.columns.ts+`
 * The column mappings must be defined. 
 
 [subs=+macros]
-[source, typescript]
+
+[source, javascript]
 ----
 export const <%= featurePropertyName %>SearchColumns = [
       {
@@ -61,7 +62,8 @@ Explanation of the properties:
 
 **	The `+columnType+` defines the type of the column. The following column types are available:
 [subs=+macros]
-[source, typescript]
+
+[source, javascript]
 ----
 export const enum ColumnType {
   STRING = 'STRING',
@@ -89,7 +91,8 @@ _Adapt in File:_ <feature>-search.selectors.ts
 * Adapt the mapping as required
 
 [subs=+macros]
-[source, typescript]
+
+[source, javascript]
 ----
 export const selectResults = createSelector(
   <%= featurePropertyName %>SearchSelectors.selectResults,

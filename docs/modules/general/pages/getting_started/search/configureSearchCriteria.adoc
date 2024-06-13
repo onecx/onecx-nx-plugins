@@ -26,7 +26,7 @@ _Adapt in File:_ `+<feature>-search.parameters.ts+`
 ** when required, you can use `+.transform()+` to extend the validation
 ** dates are always mapped to strings (as JSON does not know DateTime)
 
-[source, typescript]
+[source, javascript]
 ----    
   exampleDate: z.string().optional(),
   exampleDateTime: z.string().optional(),
@@ -56,6 +56,7 @@ _Adapt in File:_ `+<feature>-search.component.html+`
 * The input fields must be added
 ** `+formControlName+` and `+ngModel+`-path must match to your SearchCriteria model
 [subs=+macros]
+
 [source, html]
 ----
  <form [formGroup]="criteriaGroup">
@@ -72,6 +73,7 @@ _Adapt in File:_ `+<feature>-search.component.html+`
 ** Example for text input field
 *** Remove `+// PLACE YOUR INPUT FIELD HERE+` and paste the following code
 *** Adapt `+id+`, `+formControlName+`, `+ngModel+` and `+for+` as well as the labels translation key
+
 [source, html]
 ----
     <input
@@ -90,6 +92,7 @@ _Adapt in File:_ `+<feature>-search.component.html+`
 ** Example for calendar input field
 *** Remove `+// PLACE YOUR INPUT FIELD HERE+` and paste the following code
 *** Adapt `+id+`, `+formControlName+` and `+for+` as well as the labels translation key
+
 [source, html]
 ----
     <p-calendar
@@ -106,6 +109,7 @@ _Adapt in File:_ `+<feature>-search.component.html+`
 
 ** Example for dropdown
 *** Remove `+// PLACE YOUR INPUT FIELD HERE+` and paste the following code
+
 [source, html]
 ----
  <p-multiSelect [options]="dropdownOptions" formControlName="selectedOptions" optionLabel="name" placeholder="Select Options"></p-multiSelect>
