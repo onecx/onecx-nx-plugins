@@ -33,3 +33,4 @@ feat: details added for <nameOfTheProduct>
 ----
 
 ==== 
+Please replace `+<nameOfTheProduct>+` with the real name of your product
