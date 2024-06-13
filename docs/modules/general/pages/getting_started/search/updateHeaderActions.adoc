@@ -1,17 +1,19 @@
-== Update the header actions
+=== Update the header actions
 
-=== ACTION S10: Update header actions
+==== ACTION S10: Update header actions
+_Adapt in File:_ `+<feature>.component.ts+`
 
-If you want to add additional header actions, you can go to <feature>.component.ts and extend the following:
+If you want to add additional header actions, you can extend the following:
 
+[source, typescript]
 ----
 const actions: Action[] = [
-    ....
+    ...
 ]
 ----
 
 .Example:
-[example]
+[source, typescript]
 ----
 const actions: Action[] = [
         {
@@ -42,8 +44,4 @@ const actions: Action[] = [
       ];
 ----
 
-[IMPORTANT] 
-.Remove the comment
-==== 
-Remove the ACTION comment after working on this task.
-====
+IMPORTANT: Remove the ACTION comment after working on this task

@@ -34,4 +34,4 @@ feat: search added for <nameOfTheProduct>
 ----
 
 ====
-Please replace _<nameOfTheProduct>_ with the real name of your product
+Please replace `+<nameOfTheProduct>+` with the real name of your product
