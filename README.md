@@ -143,6 +143,6 @@ The properties for the parameter are:
 
 ### Show Rules
 For each option, you can define rules that configure if an option is displayed or not. Each option has two attributes:
-- `showIf(values)`: an callback that needs to return whether the respective option should be shown or not. Values ar all inputs that were provided before
+- `showIf(values)`: a callback that needs to return whether the respective option should be shown or not. Values or all inputs that were provided before
 
 All cli-parameters can be provided via `--<key> <value>`.
