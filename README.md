@@ -70,3 +70,79 @@ nx g create-package create-workspace --project nx-plugin --e2eProject ''
 npx nx local-registry
 
 npx nx run-many --targets publish --ver 1.0.0 --tag latest --skip-nx-cache
+
+
+## Local Development
+To locally use a build generator you can use [Verdaccio](https://verdaccio.org/).
+
+### Setup Verdaccio
+To install & run Verdaccio in docker use:
+```
+docker pull verdaccio/verdaccio
+docker run -it --rm --name verdaccio -p 4873:4873 verdaccio/verdaccio
+```
+
+Then add a local user to it: `npm adduser --registry http://localhost:4873/`
+
+### Publish local library
+First we need to modify to version in order to use our local version later on.
+Navigate to `nx-plugin/package.json` and change `version` temporarily to something like `0.0.X-local`.
+Now we have to build the plugin `npm run build`.
+
+Next navigate to `/dist/nx-plugin/` and publish it: `npm publish --registry http://localhost:4873/`
+
+Go to your web-browser and open `http://localhost:4873/` to validate if your image is shown there.
+
+### Use local library
+Now you can install the package in your local test project:
+`npm i @onecx/nx-plugin:0.0.X-local --registry http://localhost:4873`
+And then use it to, e.g. generate a feature:
+```
+nx g @onecx/nx-plugin:feature <feature_name>
+```
+
+### Alternative: Copy into node_modules
+You can also use a command to first build and the copy over the build library into your test-projects node_modules folder:
+`npm run build && cp dist/nx-plugin/* ../path/to/test-project/node_modules/@onecx/nx-plugin -r`
+
+## Generator Parameters / Options
+In order to add a new parameter / option to the generator you need to do the following:
+
+First, you have to add the option to the `schema.d.ts` file.
+Example:
+```
+export interface SearchGeneratorSchema {
+  featureName: string;
+  customizeNamingForAPI: boolean;
+  newOption: string;
+}
+```
+
+Next, you need to add the option to the parameters in your generator, when calling `processParams(PARAMETERS)`:
+```
+{
+    key: 'newOption',
+    type: 'string',
+    required: true,
+    default: 'default_value',
+    prompt: 'Please provide a name for the element:',
+},
+```
+
+When using `type: 'select'` you need to specify `choices` as well.
+
+Now you can access `options.newOption` in all generator methods.
+The properties for the parameter are:
+- `key`: needs to be identical with the key in `SearchGeneratorSchema`
+- `type`: text, boolean, number and select are supported for now
+- `required`: always: needs to provided via cli-parameter or interactive (no default used), interactive: in CLI either via cli-parameter or default used and asked in interactive
+- `default`: a default value (if required == interactive and not provided via cli-parameter, default will be used), can be static value or callback provided with current values set
+- `prompt`: if not provided via cli-parameter and required is true, this will be prompted to the user 
+- `showInSummary`: if set to true, the respective option will be shown in a summary and can be edited again if required
+- `showRules`: if set to true, the respective option will only be shown if all provided rules apply (see more in the section about rules)
+
+### Show Rules
+For each option, you can define rules that configure if an option is displayed or not. Each option has two attributes:
+- `showIf(values)`: a callback that needs to return whether the respective option should be shown or not. Values or all inputs that were provided before
+
+All cli-parameters can be provided via `--<key> <value>`.

@@ -5,7 +5,7 @@ import { initialState } from './<%= featureFileName %>-details.reducers';
 import {
   <%= featureClassName %>DetailsViewModel,
 } from './<%= featureFileName %>-details.viewmodel';
-import { <%= featureClassName %> } from '../../../shared/generated';
+import { <%= dataObjectName %> } from '../../../shared/generated';
 
 export const <%= featurePropertyName %>DetailsSelectors = createChildSelectors(
   <%= featurePropertyName %>Feature.selectDetails,
@@ -14,7 +14,7 @@ export const <%= featurePropertyName %>DetailsSelectors = createChildSelectors(
 
 export const select<%= featureClassName %>DetailsViewModel = createSelector(
   <%= featurePropertyName %>DetailsSelectors.selectDetails,
-  (details: <%= featureClassName %> | undefined): <%= featureClassName %>DetailsViewModel => ({
+  (details: <%= dataObjectName %> | undefined): <%= featureClassName %>DetailsViewModel => ({
     details
   })
 );

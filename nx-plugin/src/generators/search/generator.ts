@@ -17,11 +17,74 @@ import { renderJsonFile } from '../shared/renderJsonFile';
 import { updateYaml } from '../shared/yaml';
 import { SearchGeneratorSchema } from './schema';
 import path = require('path');
+import processParams, { GeneratorParameter } from '../shared/parameters.util';
+
+const PARAMETERS: GeneratorParameter<SearchGeneratorSchema>[] = [
+  {
+    key: 'customizeNamingForAPI',
+    type: 'boolean',
+    required: 'interactive',
+    default: false,
+    prompt: 'Do you want to customize the names for the generated API?',
+  },
+  {
+    key: 'apiServiceName',
+    type: 'text',
+    required: 'interactive',
+    default: (values) => {
+      return `${names(values.featureName).className}BffService`;
+    },
+    prompt: 'Provide a name for your API service (e.g., BookBffService): ',
+    showInSummary: true,
+    showRules: [{ showIf: (values) => values.customizeNamingForAPI }],
+  },
+  {
+    key: 'dataObjectName',
+    type: 'text',
+    required: 'interactive',
+    default: (values) => {
+      return `${names(values.featureName).className}`;
+    },
+    prompt: 'Provide a name for your Data Object (e.g., Book): ',
+    showInSummary: true,
+    showRules: [{ showIf: (values) => values.customizeNamingForAPI }],
+  },
+  {
+    key: 'searchRequestName',
+    type: 'text',
+    required: 'interactive',
+    default: (values) => {
+      return `${names(values.featureName).className}SearchRequest`;
+    },
+    prompt:
+      'Provide a name for your Search Request (e.g., BookSearchRequest): ',
+    showInSummary: true,
+    showRules: [{ showIf: (values) => values.customizeNamingForAPI }],
+  },
+  {
+    key: 'searchResponseName',
+    type: 'text',
+    required: 'interactive',
+    default: (values) => {
+      return `${names(values.featureName).className}SearchResponse`;
+    },
+    prompt:
+      'Provide a name for your Search Response (e.g., BookSearchResponse): ',
+    showInSummary: true,
+    showRules: [{ showIf: (values) => values.customizeNamingForAPI }],
+  },
+];
 
 export async function searchGenerator(
   tree: Tree,
   options: SearchGeneratorSchema
 ): Promise<GeneratorCallback> {
+  const parameters = await processParams<SearchGeneratorSchema>(
+    PARAMETERS,
+    options
+  );
+  Object.assign(options, parameters);
+
   const spinner = ora(`Adding search to ${options.featureName}`).start();
   const directory = '.';
 
@@ -43,6 +106,10 @@ export async function searchGenerator(
       featurePropertyName: names(options.featureName).propertyName,
       featureClassName: names(options.featureName).className,
       featureConstantName: names(options.featureName).constantName,
+      dataObjectName: options.dataObjectName,
+      serviceName: options.apiServiceName,
+      searchRequestName: options.searchRequestName,
+      searchResponseName: options.searchResponseName,
     }
   );
 
@@ -405,472 +472,110 @@ function addFunctionToOpenApi(tree: Tree, options: SearchGeneratorSchema) {
     'utf8'
   );
 
-  const className = names(options.featureName).className;
+  const dataObjectName = options.dataObjectName;  
   const propertyName = names(options.featureName).propertyName;
+  const searchRequestName = options.searchRequestName;
+  const searchResponseName = options.searchResponseName;
+  const apiServiceName = options.apiServiceName;
   const hasSchemas = bffOpenApiContent.includes('schemas:');
   const hasEntitySchema =
-    hasSchemas && bffOpenApiContent.includes(`${className}:`);
-  const hasSearchConfigSchema =
-    hasSchemas && bffOpenApiContent.includes(`SearchConfig:`);
+    hasSchemas && bffOpenApiContent.includes(`${dataObjectName}:`);
 
-  let searchConfigEndpoints = `
-  /searchConfig/{configId}:
-    put:
-      x-onecx:
-        permissions:
-          ${propertyName}:
-            - write
-      tags:
-        - SearchConfig
-      summary: Updates the search config specified by the configId
-      description: Updates the search config and returns the updated list of search configs  by page
-      operationId: updateSearchConfig
-      parameters:
-        - name: configId
-          in: path
-          description: ConfigId for the search config to be updated
-          required: true
-          schema:
-            type: string
-      requestBody:
-        description: Updated values for the specified search config
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/UpdateSearchConfigRequest'
-        required: true
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/UpdateSearchConfigResponse'
-        '400':
-          description: Bad request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetailResponse'
-        '500':
-          description: Internal Server Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetailResponse'
-    delete:
-      x-onecx:
-        permissions:
-          ${propertyName}:
-            - delete
-      tags:
-        - SearchConfig
-      summary: Deletes the search config
-      description: Deletes the search config
-      operationId: deleteSearchConfig
-      parameters:
-        - name: configId
-          in: path
-          description: ConfigId for the searchConfig to be deleted
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: OK
-        '400':
-          description: Bad request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetailResponse'
-        '500':
-          description: Internal Server Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetailResponse'
-  /searchConfig/infos/{page}:
-    get:
-      x-onecx:
-        permissions:
-          ${propertyName}:
-            - read
-      tags:
-        - SearchConfig
-      summary: Gets the search config infos for the specified page.
-      description: The search config infos for the page is returned.
-      operationId: getSearchConfigInfos
-      parameters:
-        - name: page
-          in: path
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GetSearchConfigInfosResponse'
-        '400':
-          description: Bad request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetailResponse'
-        '500':
-          description: Internal Server Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetailResponse'
-  /searchConfig/{id}:
-    get:
-      tags:
-        - SearchConfig
-      summary: Gets the search config infos for the specified page.
-      description: The search config for the page is returned.
-      operationId: getSearchConfig
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/GetSearchConfigResponse"
-        "404":
-          description: Not found
-        "400":
-          description: Bad request
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ProblemDetailResponse"
-        "500":
-          description: Internal Server Error
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ProblemDetailResponse"
-
-  /searchConfig/:
-    post:
-      x-onecx:
-        permissions:
-          ${propertyName}:
-            - write
-      tags:
-        - SearchConfig
-      summary: Creates a new search config
-      description: Creates a new search config and returns the updated list of search configs by page
-      operationId: createSearchConfig
-      requestBody:
-        description: Creates a new search config
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/CreateSearchConfigRequest'
-        required: true
-      responses:
-        '201':
-          description: Created
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/CreateSearchConfigResponse'
-        '400':
-          description: Bad request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetailResponse'
-        '500':
-          description: Internal Server Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetailResponse'
-  `;
-
-  if (hasSearchConfigSchema) {
-    searchConfigEndpoints = '';
-  }
-
-  bffOpenApiContent = bffOpenApiContent.replace(`paths: {}`, `paths:`).replace(
-    `paths:`,
-    `
-paths:
+  const propertySearchEndpoints = `
   /${propertyName}/search:
     post:
-      operationId: search${className}s
+      operationId: search${dataObjectName}s
       tags:
-        - ${className}
+        - ${apiServiceName}
       description: This operation performs a search based on provided search criteria. Search for ${propertyName} results.
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Search${className}Request'
+              $ref: '#/components/schemas/${searchRequestName}'
       responses:
         '200':
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Search${className}Response'
+                $ref: '#/components/schemas/${searchResponseName}'
         '400':
           description: Bad request
         '500':
-          description: Something went wrong
+          description: Something went wrong`;
 
-  ${searchConfigEndpoints}
-
+  bffOpenApiContent = bffOpenApiContent.replace(`paths: {}`, `paths:`).replace(
+    `paths:`,
+    `
+paths:  
+  ${propertySearchEndpoints}  
 `
   );
   if (!hasSchemas) {
     bffOpenApiContent += `
 components:
-    schemas:`;
+  schemas:`;
   }
 
-  let entitySchema = `
-      ${className}:
-        type: object
-        required:
-          - "modificationCount"
-          - "id"
-        properties:
-          modificationCount:
-            type: integer
-            format: int32
-          id:
-            type: integer
-            format: int64
-          # ACTION S1: add additional properties here`;
+  const entitySchema = `
+    ${dataObjectName}:
+      type: object
+      required:
+        - "modificationCount"
+        - "id"
+      properties:
+        modificationCount:
+          type: integer
+          format: int32
+        id:
+          type: integer
+          format: int64
+        # ACTION S1: add additional properties here
+    `;
 
-  if (hasEntitySchema) {
-    entitySchema = '';
-  }
+  const searchRequestSchema = `
+    ${searchRequestName}:
+      type: object
+      properties:
+        limit:
+          type: integer
+          maximum: 2600
+        id:
+          type: string
+        changeMe:
+          type: string
+        # ACTION S1: Add additional properties to the <feature>-bff.yaml
+  `;
 
-  let searchConfigSchema = `
-      SearchConfigInfo:
-        required:
-          - id
-          - name
-        properties:
-          id:
-            type: string
-          name:
-            type: string
-
-      SearchConfig:
-        allOf:
-        - $ref: "#/components/schemas/SearchConfigInfo"
-        type: object
-        required:
-          - name
-          - modificationCount
-          - fieldListVersion
-          - isReadonly
-          - isAdvanced
-          - columns
-          - values
-        properties:
-          id:
-            type: string
-          page:
-            type: string
-          name:
-            type: string
-          modificationCount:
-            type: integer
-          fieldListVersion:
-            type: integer
-            description: Version increment of the fields in the UI which you should use when you are making incompatible changes to those fields.
-          isReadonly:
-            type: boolean
-            description: Defines whether this config can be changed in the UI
-          isAdvanced:
-            type: boolean
-            description: Indicates whether the advanced mode should be displayed
-          columns:
-            type: array
-            items:
-              type: string
-          values:
-            type: object
-            additionalProperties:
-              type: string
-              
-      GetSearchConfigInfosResponse:
-        allOf:
-          - $ref: '#/components/schemas/SearchConfigInfoList'
-
-      GetSearchConfigResponse:
-        type: object
-        required:
-          - config
-        properties:
-          config:
-            $ref: "#/components/schemas/SearchConfig"
-              
-      CreateSearchConfigRequest:
-        type: object
-        required:
-          - 'page'
-          - 'name'
-          - 'fieldListVersion'
-          - 'isReadonly'
-          - 'isAdvanced'
-          - 'columns'
-          - 'values'
-        properties:
-          page:
-            type: string
-          name:
-            type: string
-          fieldListVersion:
-            type: integer
-            description: Version increment of the fields in the UI which you should use when you are making incompatible changes to those fields.
-          isReadonly:
-            type: boolean
-            description: Defines whether this config can be changed in the UI
-          isAdvanced:
-            type: boolean
-            description: Indicates whether the advanced mode should be displayed
-          columns:
-            type: array
-            items:
-              type: string
-          values:
-            type: object
-            additionalProperties:
-              type: string
-              
-      CreateSearchConfigResponse:
-        allOf:
-          - $ref: '#/components/schemas/SearchConfigInfoList'
-          
-      UpdateSearchConfigRequest:
-        type: object
-        required: 
-          - searchConfig
-        properties:
-          searchConfig:
-            $ref: '#/components/schemas/SearchConfig'
-              
-      UpdateSearchConfigResponse:
-        allOf:
-          - $ref: '#/components/schemas/SearchConfigInfoList'
-
-      SearchConfigInfoList:
-        type: object
-        required:
-          - totalElements
-          - configs
-        properties:
-          totalElements:
-            format: int64
-            description: The total elements in the resource.
-            type: integer
-          configs:
-            type: array
-            items:
-              $ref: '#/components/schemas/SearchConfigInfo'
-              `;
-
-  if (hasSearchConfigSchema) {
-    searchConfigSchema = '';
-    console.log(searchConfigSchema);
-  }
+  const searchResponseSchema = `
+    ${searchResponseName}:
+      type: object
+      required:
+      - "results"
+      - "totalNumberOfResults"
+      properties:
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/${dataObjectName}'
+        totalNumberOfResults:
+          description: Total number of results on the server.
+          type: integer
+          format: int64
+  `
 
   bffOpenApiContent = bffOpenApiContent.replace(
-    `
-    schemas:`,
-    `
-    schemas:
-      ${entitySchema}
-
-      Search${className}Request:
-        type: object
-        properties:
-          limit:
-            type: integer
-            maximum: 2500
-          id:
-            type: integer
-            format: int64
-          changeMe:
-            type: string
-          # ACTION S1: Add additional properties to the <feature>-bff.yaml
-
-      Search${className}Response:
-        type: object
-        required:
-        - "results"
-        - "totalNumberOfResults"
-        properties:
-          results:
-            type: array
-            items:
-              $ref: '#/components/schemas/${className}SearchResult'
-          totalNumberOfResults:
-            description: Total number of results on the server.
-            type: integer
-            format: int64
-
-      ${className}SearchResult:
-        type: object
-        required:
-        - "${propertyName}"
-        properties:
-          ${propertyName}:
-            $ref: '#/components/schemas/${className}'
-        # ACTION S8: add additional properties here
-      
-      ${searchConfigSchema}
-
-      ProblemDetailResponse:
-        type: object
-        properties:
-          errorCode:
-            type: string
-          detail:
-            type: string
-          params:
-            type: array
-            items:
-              $ref: '#/components/schemas/ProblemDetailParam'
-          invalidParams:
-            type: array
-            items:
-              $ref: '#/components/schemas/ProblemDetailInvalidParam'
-              
-      ProblemDetailParam:
-        type: object
-        properties:
-          key:
-            type: string
-          value:
-            type: string
-            
-      ProblemDetailInvalidParam:
-        type: object
-        properties:
-          name:
-            type: string
-          message:
-            type: string
-  `
+    `schemas:`,
+`schemas:
+      ${hasEntitySchema ? '' : entitySchema}
+      ${searchRequestSchema}
+      ${searchResponseSchema}
+`    
   );
+
+  console.log(bffOpenApiContent);
+  
 
   tree.write(
     joinPathFragments(openApiFolderPath, bffOpenApiPath),

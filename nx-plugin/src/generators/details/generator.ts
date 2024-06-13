@@ -16,11 +16,59 @@ import { deepMerge } from '../shared/deepMerge';
 import { renderJsonFile } from '../shared/renderJsonFile';
 import { DetailsGeneratorSchema } from './schema';
 import path = require('path');
+import processParams, { GeneratorParameter } from '../shared/parameters.util';
+
+const PARAMETERS: GeneratorParameter<DetailsGeneratorSchema>[] = [
+  {
+    key: 'customizeNamingForAPI',
+    type: 'boolean',
+    required: 'interactive',
+    default: false,
+    prompt: 'Do you want to customize the names for the generated API?',
+  },
+  {
+    key: 'apiServiceName',
+    type: 'text',
+    required: 'interactive',
+    default: (values) => {
+      return `${names(values.featureName).className}BffService`;
+    },
+    prompt: 'Provide a name for your API service (e.g., BookService): ',
+    showInSummary: true,
+    showRules: [{ showIf: (values) => values.customizeNamingForAPI }],
+  },
+  {
+    key: 'dataObjectName',
+    type: 'text',
+    required: 'interactive',
+    default: (values) => {
+      return `${names(values.featureName).className}`;
+    },
+    prompt: 'Provide a name for your Data Object (e.g., Book): ',
+    showInSummary: true,
+    showRules: [{ showIf: (values) => values.customizeNamingForAPI }],
+  },
+  {
+    key: 'getByIdResponseName',
+    type: 'text',
+    required: 'interactive',
+    default: (values) => {
+      return `Get${names(values.featureName).className}ByIdResponse`;
+    },
+    prompt:
+      'Provide a name for your GetByIdResponse (e.g., GetBookByIdResponse): ',
+    showInSummary: true,
+    showRules: [{ showIf: (values) => values.customizeNamingForAPI }],
+  },
+];
 
 export async function detailsGenerator(
   tree: Tree,
   options: DetailsGeneratorSchema
 ): Promise<GeneratorCallback> {
+  const parameters = await processParams(PARAMETERS, options);
+  Object.assign(options, parameters);
+
   const spinner = ora(`Adding details to ${options.featureName}`).start();
   const directory = '.';
 
@@ -42,6 +90,8 @@ export async function detailsGenerator(
       featurePropertyName: names(options.featureName).propertyName,
       featureClassName: names(options.featureName).className,
       featureConstantName: names(options.featureName).constantName,
+      dataObjectName: options.dataObjectName,
+      serviceName: options.apiServiceName,
     }
   );
 
@@ -91,11 +141,15 @@ function addFunctionToOpenApi(tree: Tree, options: DetailsGeneratorSchema) {
     'utf8'
   );
 
-  const className = names(options.featureName).className;
+  const dataObjectName = options.dataObjectName;
   const propertyName = names(options.featureName).propertyName;
+  const apiServiceName = options.apiServiceName;
+  const getByIdResponseName = options.getByIdResponseName;
   const hasSchemas = bffOpenApiContent.includes('schemas:');
   const hasEntitySchema =
-    hasSchemas && bffOpenApiContent.includes(`${className}:`);
+    hasSchemas && bffOpenApiContent.includes(`${dataObjectName}:`);
+  const hasProblemDetailSchema =
+    hasSchemas && bffOpenApiContent.includes('ProblemDetailResponse:');
 
   //TODO: schema for error cases
   bffOpenApiContent = bffOpenApiContent.replace(`paths: {}`, `paths:`).replace(
@@ -108,23 +162,22 @@ paths:
         permissions:
           ${propertyName}:
             - read
-      operationId: get${className}ById
+      operationId: get${dataObjectName}ById
       tags:
-        - ${className}
+        - ${apiServiceName}
       parameters:
       - name: 'id'
         in: 'path'
         required: true
         schema:
-          type: 'integer'
-          format: 'int64'
+          type: 'string'
       responses:
         200:
           description: 'OK'
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Get${className}ByIdResponse'
+                $ref: '#/components/schemas/${getByIdResponseName}'
         '400':
           description: Bad request
           content:
@@ -148,23 +201,56 @@ components:
   }
 
   let entitySchema = `
-      ${className}:
-        type: object
-        required:
-          - "modificationCount"
-          - "id"
-        properties:
-          modificationCount:
-            type: integer
-            format: int32
-          id:
-            type: integer
-            format: int64
-          # ACTION: add additional properties here`;
+    ${dataObjectName}:
+      type: object
+      required:
+        - "modificationCount"
+        - "id"
+      properties:
+        modificationCount:
+          type: integer
+          format: int32
+        id:
+          type: integer
+          format: int64
+        # ACTION: add additional properties here`;
 
   if (hasEntitySchema) {
     entitySchema = '';
   }
+
+  const problemDetailResponseSchema = `
+    ProblemDetailResponse:
+      type: object
+      properties:
+        errorCode:
+          type: string
+        detail:
+          type: string
+        params:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProblemDetailParam'
+        invalidParams:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProblemDetailInvalidParam'
+          
+    ProblemDetailParam:
+      type: object
+      properties:
+        key:
+          type: string
+        value:
+          type: string
+          
+    ProblemDetailInvalidParam:
+      type: object
+      properties:
+        name:
+          type: string
+        message:
+          type: string`;
 
   bffOpenApiContent = bffOpenApiContent.replace(
     `
@@ -173,14 +259,15 @@ components:
   schemas:
     ${entitySchema}
 
-    Get${className}ByIdResponse:
+    ${getByIdResponseName}:
       type: object
       required:
         - "result"
       properties:
         result:
-          $ref: '#/components/schemas/${className}'
+          $ref: '#/components/schemas/${dataObjectName}'
 
+    ${hasProblemDetailSchema ? '' : problemDetailResponseSchema}
 `
   );
 

@@ -1,7 +1,6 @@
 import { createReducer, on } from '@ngrx/store';
 import { <%= featureClassName %>DetailsActions } from './<%= featureFileName %>-details.actions';
 import { <%= featureClassName %>DetailsState } from './<%= featureFileName %>-details.state';
-import { <%= featureClassName %>Details } from '../../../shared/generated';
 
 export const initialState: <%= featureClassName %>DetailsState = {
   details: undefined

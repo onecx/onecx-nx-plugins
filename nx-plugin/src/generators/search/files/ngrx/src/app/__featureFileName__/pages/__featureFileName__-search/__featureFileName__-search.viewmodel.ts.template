@@ -1,15 +1,11 @@
-import { SearchConfig, SearchConfigInfo } from 'src/app/shared/generated';
 import { <%= featureClassName %>SearchCriteria } from './<%= featureFileName %>-search.parameters'
 import { RowListGridData, DataTableColumn } from '@onecx/portal-integration-angular'
 
 export interface <%= featureClassName %>SearchViewModel {
     columns: DataTableColumn[];
     searchCriteria: <%= featureClassName %>SearchCriteria;
-    results: RowListGridData[];
-    searchConfigs: SearchConfigInfo[];
-    selectedSearchConfig: SearchConfig | null;
+    results: RowListGridData[];    
     displayedColumns: DataTableColumn[];
     viewMode: 'basic' | 'advanced';
-    chartVisible: boolean;
-    searchConfigEnabled: boolean;
+    chartVisible: boolean;    
 }

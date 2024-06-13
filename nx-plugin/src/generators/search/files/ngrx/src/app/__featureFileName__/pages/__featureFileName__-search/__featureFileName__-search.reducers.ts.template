@@ -6,13 +6,10 @@ import { <%= featurePropertyName %>SearchColumns } from './<%= featureFileName %
 
 export const initialState: <%= featureClassName %>SearchState = {
   columns: <%= featurePropertyName %>SearchColumns,
-  results: [],
-  searchConfigs: [],
-  selectedSearchConfig: null,
+  results: [],    
   displayedColumns: null,
   viewMode: 'basic',
-  chartVisible: false,
-  searchConfigEnabled: false,
+  chartVisible: false,  
 };
 
 export const <%= featurePropertyName %>SearchReducer = createReducer(
@@ -21,8 +18,7 @@ export const <%= featurePropertyName %>SearchReducer = createReducer(
     <%= featureClassName %>SearchActions.resetButtonClicked,
     (state: <%= featureClassName %>SearchState): <%= featureClassName %>SearchState => ({
       ...state,
-      results: initialState.results,
-      selectedSearchConfig: initialState.selectedSearchConfig,
+      results: initialState.results,      
     })
   ),
   on(
@@ -41,87 +37,7 @@ export const <%= featurePropertyName %>SearchReducer = createReducer(
       ...state,
       results: [],
     })
-  ),
- on(
-    <%= featureClassName %>SearchActions.searchConfigInfosReceived,
-    (
-      state: <%= featureClassName %>SearchState,
-      { searchConfigInfos }
-    ): <%= featureClassName %>SearchState => ({
-      ...state,
-      searchConfigs: searchConfigInfos,
-      searchConfigEnabled: true,
-      selectedSearchConfig: null,
-    })
-  ),
-  on(
-    <%= featureClassName %>SearchActions.searchConfigReceived,
-    (
-      state: <%= featureClassName %>SearchState,
-      { searchConfig }
-    ): <%= featureClassName %>SearchState => ({
-      ...state,
-      selectedSearchConfig: searchConfig,
-    })
-  ),
-  on(
-    <%= featureClassName %>SearchActions.searchConfigInfoDeselected,
-    (state: <%= featureClassName %>SearchState): <%= featureClassName %>SearchState => ({
-      ...state,
-      selectedSearchConfig: null,
-    })
-  ),
-  on(
-    <%= featureClassName %>SearchActions.searchConfigReceived,
-    (
-      state: <%= featureClassName %>SearchState,
-      { searchConfig }
-    ): <%= featureClassName %>SearchState => ({
-      ...state,
-      viewMode: searchConfig?.isAdvanced ? 'advanced' : 'basic',
-      displayedColumns: searchConfig.columns.length
-        ? searchConfig.columns
-        : state.displayedColumns,
-    })
-  ),
-  on(
-    <%= featureClassName %>SearchActions.searchConfigCreatedSuccessfully,
-    (
-      state: <%= featureClassName %>SearchState,
-      { searchConfigInfos }
-    ): <%= featureClassName %>SearchState => ({
-      ...state,
-      searchConfigs: searchConfigInfos,
-    })
-  ),
-  on(
-    <%= featureClassName %>SearchActions.searchConfigInfoDeselected,
-    (state: <%= featureClassName %>SearchState): <%= featureClassName %>SearchState => ({
-      ...state,
-      results: initialState.results,
-      selectedSearchConfig: initialState.selectedSearchConfig,
-    })
-  ),
-  on(
-    <%= featureClassName %>SearchActions.searchButtonClicked,
-    (
-      state: <%= featureClassName %>SearchState,
-      { searchCriteria }
-    ): <%= featureClassName %>SearchState => ({
-      ...state,
-      selectedSearchConfig:
-        state.selectedSearchConfig &&
-        Object.keys(searchCriteria).length ==
-          Object.keys(state.selectedSearchConfig?.values ?? {}).length &&
-        Object.keys(searchCriteria).every(
-          (k) =>
-            state.selectedSearchConfig?.values[k] ===
-            searchCriteria[k as keyof <%= featureClassName %>SearchCriteria]
-        )
-          ? state.selectedSearchConfig
-          : null,
-    })
-  ),
+  ), 
   on(
     <%= featureClassName %>SearchActions.chartVisibilityRehydrated,
     (
