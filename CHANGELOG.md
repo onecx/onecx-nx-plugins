@@ -1,3 +1,21 @@
+## [1.5.0](https://github.com/onecx/onecx-nx-plugins/compare/v1.4.0...v1.5.0) (2024-06-13)
+
+
+### Features
+
+* details feature harness and tests added ([#51](https://github.com/onecx/onecx-nx-plugins/issues/51)) ([f4c6f1f](https://github.com/onecx/onecx-nx-plugins/commit/f4c6f1f5d1dd47964360322af03e6c7fea14be82))
+* parameter processing + custom naming ([#101](https://github.com/onecx/onecx-nx-plugins/issues/101)) ([392e3d6](https://github.com/onecx/onecx-nx-plugins/commit/392e3d6cb642155c1d5bafc6e1fd74fde33fc7ad))
+* search harnesses with search component tests ([#50](https://github.com/onecx/onecx-nx-plugins/issues/50)) ([a6ced09](https://github.com/onecx/onecx-nx-plugins/commit/a6ced091ab19129b146a3b44f3bfdc30e316a895))
+
+
+### Bug Fixes
+
+* add space before ACTION S6 ([72396a1](https://github.com/onecx/onecx-nx-plugins/commit/72396a1dc7178955a76bad70c7858abe502e2ec6))
+* correct the location where to do the column mappings ([ef469d7](https://github.com/onecx/onecx-nx-plugins/commit/ef469d7aa73452cbab723353a8b78bc6f24b2295))
+* documentation setup ([#63](https://github.com/onecx/onecx-nx-plugins/issues/63)) ([290e1fc](https://github.com/onecx/onecx-nx-plugins/commit/290e1fc6f90c358ec44d31d15a3e85b54562c0d9))
+* multiple fixes ([#100](https://github.com/onecx/onecx-nx-plugins/issues/100)) ([9b28089](https://github.com/onecx/onecx-nx-plugins/commit/9b28089a928dad78fc2503909ffc19632d21d003))
+* nx CLI ([#57](https://github.com/onecx/onecx-nx-plugins/issues/57)) ([27e89ec](https://github.com/onecx/onecx-nx-plugins/commit/27e89ec3a7ece662396830e6402fe576a63aec69))
+
 ## [1.4.0](https://github.com/onecx/onecx-nx-plugins/compare/v1.3.0...v1.4.0) (2024-03-27)
 
 
