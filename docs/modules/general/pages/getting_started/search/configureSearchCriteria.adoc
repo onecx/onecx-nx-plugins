@@ -20,15 +20,30 @@ _Adapt in File:_ `+<feature>-bff.yaml+`
 _Adapt in File:_ `+<feature>-search.parameters.ts+`
 
 ===== Todos:
-// TODO: Move the examples in comments from the zod library to the documentation here
-// TODO: Provide an example 
-[subs=+macros]
-// TODO: Show that the names should have the same name as in the yaml
-----
-    // Here you can add an additional transform to e.g. convert to array of enum
+* Adapt search parameters
+** keys need to match the keys from your OpenAPIs SearchCriteria Object
+** always start with `+z.string()+`
+** when required, you can use `+.transform()+` to extend the validation
+** dates are always mapped to strings (as JSON does not know DateTime)
+
+[source, typescript]
+----    
+  exampleDate: z.string().optional(),
+  exampleDateTime: z.string().optional(),
+  exampleEnum: z
+    .string()
+    .transform((v) => v as <%= featurePropertyName %>SearchRequestExampleEnum)
+    .optional(),
+  exampleArray: z
+    .union([z.string(), z.array(z.string())])
+    .transform((v: string | string[] | undefined): string[] | undefined =>
+      v instanceof Array || !v
+        ? (v as string[] | undefined)
+        : ([v] as string[])
+    )
 ----
 
-*HINT*: Please remove the "ACTION" comment after solving this issue
+IMPORTANT: Remove the "ACTION" comment after solving this issue
 
 ---
 
@@ -37,8 +52,9 @@ _Adapt in File:_ `+<feature>-search.component.html+`
 
 ===== Todos:
 // TODO: add info how to handle dates in p-calendar -> https://primeng.org/calendar#api.calendar.props.dateFormat
-// TODO: Show that the names should have the same name as in the yaml
-The input fields must be added.
+
+* The input fields must be added
+** `+formControlName+` and `+ngModel+`-path must match to your SearchCriteria model
 [subs=+macros]
 [source, html]
 ----
@@ -55,6 +71,7 @@ The input fields must be added.
 * Examples for different fields
 ** Example for text input field
 *** Remove `+// PLACE YOUR INPUT FIELD HERE+` and paste the following code
+*** Adapt `+id+`, `+formControlName+`, `+ngModel+` and `+for+` as well as the labels translation key
 [source, html]
 ----
     <input
@@ -65,13 +82,14 @@ The input fields must be added.
       class="p-inputtext p-component"
       [ngModel]="vm.searchCriteria.id"
     />
-    <label for="taskId">{{
+    <label for="id">{{
       'YOUR_PRODUCT.CRITERIA.ID' | translate
     }}</label>
 ----
 
 ** Example for calendar input field
 *** Remove `+// PLACE YOUR INPUT FIELD HERE+` and paste the following code
+*** Adapt `+id+`, `+formControlName+` and `+for+` as well as the labels translation key
 [source, html]
 ----
     <p-calendar
