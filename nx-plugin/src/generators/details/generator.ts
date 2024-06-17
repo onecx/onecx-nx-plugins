@@ -145,13 +145,7 @@ function addFunctionToOpenApi(tree: Tree, options: DetailsGeneratorSchema) {
   const dataObjectName = options.dataObjectName;
   const propertyName = names(options.featureName).propertyName;
   const apiServiceName = options.apiServiceName;
-  const getByIdResponseName = options.getByIdResponseName;
-  const hasSchemas = bffOpenApiContent.includes('schemas:');
-  const hasEntitySchema =
-    hasSchemas && bffOpenApiContent.includes(`${dataObjectName}:`);
-  const hasProblemDetailSchema =
-    hasSchemas && bffOpenApiContent.includes('ProblemDetailResponse:');
-
+  const getByIdResponseName = options.getByIdResponseName;  
   const apiUtil = new OpenAPIUtil(bffOpenApiContent);
 
   apiUtil.paths().set(`/${propertyName}/id`, {
@@ -211,83 +205,79 @@ function addFunctionToOpenApi(tree: Tree, options: DetailsGeneratorSchema) {
     },
   });
 
-  if (!hasEntitySchema) {
-    apiUtil.schemas().set(dataObjectName, {
-      type: 'object',
-      required: ['modificationCount', 'id'],
-      properties: {
-        modificationCount: {
-          type: 'integer',
-          format: 'int32',
-        },
-        id: {
-          type: 'integer',
-          format: 'int64',
-        },
-        [COMMENT_KEY]: 'ACTION: add additional properties here',
+  apiUtil.schemas().set(dataObjectName, {
+    type: 'object',
+    required: ['modificationCount', 'id'],
+    properties: {
+      modificationCount: {
+        type: 'integer',
+        format: 'int32',
       },
-    });
-  }
+      id: {
+        type: 'integer',
+        format: 'int64',
+      },
+      [COMMENT_KEY]: 'ACTION: add additional properties here',
+    },
+  });
 
-  if (!hasProblemDetailSchema) {
-    apiUtil.schemas().set('ProblemDetailResponse', {
-      type: 'object',
-      properties: {
-        errorCode: {
-          type: 'string',
-        },
-        detail: {
-          type: 'string',
-        },
-        params: {
-          type: 'array',
-          items: {
-            $ref: '#/components/schemas/ProblemDetailParam',
-          },
-        },
-        invalidParams: {
-          type: 'array',
-          items: {
-            $ref: '#/components/schemas/ProblemDetailInvalidParam',
-          },
+  apiUtil.schemas().set('ProblemDetailResponse', {
+    type: 'object',
+    properties: {
+      errorCode: {
+        type: 'string',
+      },
+      detail: {
+        type: 'string',
+      },
+      params: {
+        type: 'array',
+        items: {
+          $ref: '#/components/schemas/ProblemDetailParam',
         },
       },
-    });
-    apiUtil.schemas().set('ProblemDetailParam', {
-      type: 'object',
-      properties: {
-        key: {
-          type: 'string',
-        },
-        value: {
-          type: 'string',
+      invalidParams: {
+        type: 'array',
+        items: {
+          $ref: '#/components/schemas/ProblemDetailInvalidParam',
         },
       },
-    });
-    apiUtil.schemas().set('ProblemDetailInvalidParam', {
-      "type": "object",
-      "properties": {
-          "name": {
-              "type": "string"
-          },
-          "message": {
-              "type": "string"
-          }
-      }
-    });
-  }
+    },
+  });
+
+  apiUtil.schemas().set('ProblemDetailParam', {
+    type: 'object',
+    properties: {
+      key: {
+        type: 'string',
+      },
+      value: {
+        type: 'string',
+      },
+    },
+  });
+
+  apiUtil.schemas().set('ProblemDetailInvalidParam', {
+    type: 'object',
+    properties: {
+      name: {
+        type: 'string',
+      },
+      message: {
+        type: 'string',
+      },
+    },
+  });
 
   apiUtil.schemas().set(getByIdResponseName, {
     type: 'object',
-    "required": [
-        "result"
-    ],
-    "properties": {
-        "result": {
-            "$ref": `#/components/schemas/${dataObjectName}`
-        }
-    }
-  })
+    required: ['result'],
+    properties: {
+      result: {
+        $ref: `#/components/schemas/${dataObjectName}`,
+      },
+    },
+  });
   tree.write(
     joinPathFragments(openApiFolderPath, bffOpenApiPath),
     apiUtil.finalize()
