@@ -518,11 +518,10 @@ function addFunctionToOpenApi(tree: Tree, options: SearchGeneratorSchema) {
     })
     .set(`${searchRequestName}`, {
       type: 'object',
-      required: ['id'],
       properties: {
         limit: {
           type: 'integer',
-          format: 'int32',
+          maximum: '2500',
         },
         id: {
           type: 'integer',
