@@ -13,7 +13,7 @@ import { execSync } from 'child_process';
 import * as fs from 'fs';
 import * as ora from 'ora';
 import { deepMerge } from '../shared/deepMerge';
-import { OpenAPIUtil } from '../shared/openapi/openapi.util';
+import { COMMENT_KEY, OpenAPIUtil } from '../shared/openapi/openapi.util';
 import processParams, { GeneratorParameter } from '../shared/parameters.util';
 import { renderJsonFile } from '../shared/renderJsonFile';
 import { updateYaml } from '../shared/yaml';
@@ -489,7 +489,7 @@ function addFunctionToOpenApi(tree: Tree, options: SearchGeneratorSchema) {
         {
           type: 'post',
           operationId: `search${dataObjectName}s`,
-          tags: [`${apiServiceName}`],
+          tags: [apiServiceName],
           description: `This operation performs a search based on provided search criteria. Search for ${propertyName} results.`,
         },
         {
@@ -513,7 +513,7 @@ function addFunctionToOpenApi(tree: Tree, options: SearchGeneratorSchema) {
           type: 'integer',
           format: 'int32',
         },
-        '~comment~': 'ACTION S1: add additional properties here',
+        [COMMENT_KEY]: 'ACTION S1: add additional properties here',
       },
     })
     .set(`${searchRequestName}`, {
@@ -531,7 +531,7 @@ function addFunctionToOpenApi(tree: Tree, options: SearchGeneratorSchema) {
         changeMe: {
           type: 'string',
         },
-        '~comment~':
+        [COMMENT_KEY]:
           ' ACTION S1: Add additional properties to the <feature>-bff.yaml',
       },
     })
@@ -555,10 +555,7 @@ function addFunctionToOpenApi(tree: Tree, options: SearchGeneratorSchema) {
     .done()
     .finalize();
 
-  tree.write(
-    joinPathFragments(openApiFolderPath, bffOpenApiPath),
-    res
-  );
+  tree.write(joinPathFragments(openApiFolderPath, bffOpenApiPath), res);
 }
 
 function adaptFeatureState(tree: Tree, options: SearchGeneratorSchema) {

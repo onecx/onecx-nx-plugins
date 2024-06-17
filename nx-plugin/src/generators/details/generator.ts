@@ -17,6 +17,7 @@ import { renderJsonFile } from '../shared/renderJsonFile';
 import { DetailsGeneratorSchema } from './schema';
 import path = require('path');
 import processParams, { GeneratorParameter } from '../shared/parameters.util';
+import { COMMENT_KEY, OpenAPIUtil } from '../shared/openapi/openapi.util';
 
 const PARAMETERS: GeneratorParameter<DetailsGeneratorSchema>[] = [
   {
@@ -136,7 +137,7 @@ function addFunctionToOpenApi(tree: Tree, options: DetailsGeneratorSchema) {
   const openApiFolderPath = 'src/assets/swagger';
   const openApiFiles = tree.children(openApiFolderPath);
   const bffOpenApiPath = openApiFiles.find((f) => f.endsWith('-bff.yaml'));
-  let bffOpenApiContent = tree.read(
+  const bffOpenApiContent = tree.read(
     joinPathFragments(openApiFolderPath, bffOpenApiPath),
     'utf8'
   );
@@ -151,129 +152,145 @@ function addFunctionToOpenApi(tree: Tree, options: DetailsGeneratorSchema) {
   const hasProblemDetailSchema =
     hasSchemas && bffOpenApiContent.includes('ProblemDetailResponse:');
 
-  //TODO: schema for error cases
-  bffOpenApiContent = bffOpenApiContent.replace(`paths: {}`, `paths:`).replace(
-    `paths:`,
-    `
-paths:
-  /${propertyName}/{id}:
-    get:
-      x-onecx:
-        permissions:
-          ${propertyName}:
-            - read
-      operationId: get${dataObjectName}ById
-      tags:
-        - ${apiServiceName}
-      parameters:
-      - name: 'id'
-        in: 'path'
-        required: true
-        schema:
-          type: 'string'
-      responses:
-        200:
-          description: 'OK'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/${getByIdResponseName}'
-        '400':
-          description: Bad request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetailResponse'
-        404:
-          description: 'Not Found'
-        '500':
-          description: Internal Server Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetailResponse'
-`
-  );
-  if (!hasSchemas) {
-    bffOpenApiContent += `
-components:
-  schemas:`;
+  const apiUtil = new OpenAPIUtil(bffOpenApiContent);
+
+  apiUtil.paths().set(`/${propertyName}/id`, {
+    get: {
+      'x-onecx': {
+        permissions: {
+          [propertyName]: ['read'],
+        },
+      },
+      operationId: `get${dataObjectName}ById`,
+      tags: [apiServiceName],
+      parameters: [
+        {
+          name: 'id',
+          in: 'path',
+          required: true,
+          schema: {
+            type: 'string',
+          },
+        },
+      ],
+      responses: {
+        '200': {
+          description: 'OK',
+          content: {
+            'application/json': {
+              schema: {
+                $ref: `#/components/schemas/${getByIdResponseName}`,
+              },
+            },
+          },
+        },
+        '400': {
+          description: 'Bad request',
+          content: {
+            'application/json': {
+              schema: {
+                $ref: '#/components/schemas/ProblemDetailResponse',
+              },
+            },
+          },
+        },
+        '404': {
+          description: 'Not Found',
+        },
+        '500': {
+          description: 'Internal Server Error',
+          content: {
+            'application/json': {
+              schema: {
+                $ref: '#/components/schemas/ProblemDetailResponse',
+              },
+            },
+          },
+        },
+      },
+    },
+  });
+
+  if (!hasEntitySchema) {
+    apiUtil.schemas().set(dataObjectName, {
+      type: 'object',
+      required: ['modificationCount', 'id'],
+      properties: {
+        modificationCount: {
+          type: 'integer',
+          format: 'int32',
+        },
+        id: {
+          type: 'integer',
+          format: 'int64',
+        },
+        [COMMENT_KEY]: 'ACTION: add additional properties here',
+      },
+    });
   }
 
-  let entitySchema = `
-    ${dataObjectName}:
-      type: object
-      required:
-        - "modificationCount"
-        - "id"
-      properties:
-        modificationCount:
-          type: integer
-          format: int32
-        id:
-          type: integer
-          format: int64
-        # ACTION: add additional properties here`;
-
-  if (hasEntitySchema) {
-    entitySchema = '';
+  if (!hasProblemDetailSchema) {
+    apiUtil.schemas().set('ProblemDetailResponse', {
+      type: 'object',
+      properties: {
+        errorCode: {
+          type: 'string',
+        },
+        detail: {
+          type: 'string',
+        },
+        params: {
+          type: 'array',
+          items: {
+            $ref: '#/components/schemas/ProblemDetailParam',
+          },
+        },
+        invalidParams: {
+          type: 'array',
+          items: {
+            $ref: '#/components/schemas/ProblemDetailInvalidParam',
+          },
+        },
+      },
+    });
+    apiUtil.schemas().set('ProblemDetailParam', {
+      type: 'object',
+      properties: {
+        key: {
+          type: 'string',
+        },
+        value: {
+          type: 'string',
+        },
+      },
+    });
+    apiUtil.schemas().set('ProblemDetailInvalidParam', {
+      "type": "object",
+      "properties": {
+          "name": {
+              "type": "string"
+          },
+          "message": {
+              "type": "string"
+          }
+      }
+    });
   }
 
-  const problemDetailResponseSchema = `
-    ProblemDetailResponse:
-      type: object
-      properties:
-        errorCode:
-          type: string
-        detail:
-          type: string
-        params:
-          type: array
-          items:
-            $ref: '#/components/schemas/ProblemDetailParam'
-        invalidParams:
-          type: array
-          items:
-            $ref: '#/components/schemas/ProblemDetailInvalidParam'
-          
-    ProblemDetailParam:
-      type: object
-      properties:
-        key:
-          type: string
-        value:
-          type: string
-          
-    ProblemDetailInvalidParam:
-      type: object
-      properties:
-        name:
-          type: string
-        message:
-          type: string`;
-
-  bffOpenApiContent = bffOpenApiContent.replace(
-    `
-  schemas:`,
-    `
-  schemas:
-    ${entitySchema}
-
-    ${getByIdResponseName}:
-      type: object
-      required:
-        - "result"
-      properties:
-        result:
-          $ref: '#/components/schemas/${dataObjectName}'
-
-    ${hasProblemDetailSchema ? '' : problemDetailResponseSchema}
-`
-  );
-
+  apiUtil.schemas().set(getByIdResponseName, {
+    type: 'object',
+    "required": [
+        "result"
+    ],
+    "properties": {
+        "result": {
+            "$ref": `#/components/schemas/${dataObjectName}`
+        }
+    }
+  })
   tree.write(
     joinPathFragments(openApiFolderPath, bffOpenApiPath),
-    bffOpenApiContent
+    apiUtil.finalize()
   );
 }
 
