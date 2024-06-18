@@ -503,15 +503,14 @@ function addFunctionToOpenApi(tree: Tree, options: SearchGeneratorSchema) {
     .schemas()
     .set(`${dataObjectName}`, {
       type: 'object',
-      required: ['modificationCount', 'id'],
+      required: ['id'],
       properties: {
         modificationCount: {
           type: 'integer',
           format: 'int32',
         },
         id: {
-          type: 'integer',
-          format: 'int32',
+          type: 'string'
         },
         [COMMENT_KEY]: 'ACTION S1: add additional properties here',
       },
@@ -521,7 +520,7 @@ function addFunctionToOpenApi(tree: Tree, options: SearchGeneratorSchema) {
       properties: {
         limit: {
           type: 'integer',
-          maximum: '2500',
+          maximum: 2500,
         },
         id: {
           type: 'integer',

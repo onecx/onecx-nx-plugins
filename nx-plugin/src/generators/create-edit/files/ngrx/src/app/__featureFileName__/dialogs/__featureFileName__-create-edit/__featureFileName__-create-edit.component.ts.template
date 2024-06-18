@@ -16,7 +16,7 @@ import { TranslateService } from '@ngx-translate/core';
 import {
   Create<%= featureClassName%>,
   <%= featureClassName%>,
-  <%= featureClassName%>sInternalBffService,
+  <%= serviceName%>,
 } from 'src/app/shared/generated';
 
 @Component({
@@ -24,7 +24,7 @@ import {
   templateUrl: './<%= featureFileName %>-create-edit.component.html',
   styleUrls: ['./<%= featureFileName %>-create-edit.component.scss'],
 })
-export class <%= featureClassName%>CreateEditComponent implements OnInit, OnChanges {
+export class <%= featureClassName%>CreateEditComponent implements OnChanges {
   @Input() public dataItem: <%= featureClassName%> | undefined;
   @Input() public changeMode = 'NEW';
   @Input() public displayDetailDialog = false;
@@ -36,34 +36,9 @@ export class <%= featureClassName%>CreateEditComponent implements OnInit, OnChan
   // Form Definitions
   public formGroup: FormGroup;
   public columns: Column[] = [
-    { field: 'name', header: 'NAME' },
-    { field: 'allowedWagonClass', header: 'ALLOWED_WAGON_CLASS' },
-    { field: 'group', header: 'GROUP' },
-    { field: 'remoteId', header: 'REMOTE_ID' },
-    { field: 'state', header: 'STATE' },
+    { field: 'changeMe', header: 'CHANGEME' },
   ];
 
-  private groupKeys = ['DAILY_M_FAR', 'REGIO_M_50', 'PUPIL_M', 'DB_JOB_M'];
-
-  public groupOptions = this.groupKeys.map((key) => ({
-    label: key,
-    value: key,
-  }));
-
-  public dropdownOptions = [
-    {
-      label: 'INITIALIZED',
-      value: 'INITIALIZED',
-    },
-    {
-      label: 'ACTIVE',
-      value: 'ACTIVE',
-    },
-    {
-      label: 'INACTIVE',
-      value: 'INACTIVE',
-    },
-  ];
 
   constructor(
     private <%= featurePropertyName %>Service: <%= serviceName %>,
@@ -71,31 +46,15 @@ export class <%= featureClassName%>CreateEditComponent implements OnInit, OnChan
     private translateService: TranslateService
   ) {
     this.formGroup = new FormGroup({
-      name: new FormControl(null, [Validators.maxLength(255)]),
-      allowedWagonClass: new FormControl(null, [Validators.maxLength(255)]),
-      remoteId: new FormControl(null, [Validators.maxLength(255)]),
-      state: new FormControl(null, [Validators.maxLength(255)]),
-      group: new FormControl(null, [Validators.maxLength(255)]),
-    });
-  }
-
-  ngOnInit(): void {
-    this.groupOptions = [];
-    this.groupKeys.forEach((key) => {
-      this.groupOptions.push({
-        label: this.translateService.instant(
-          'GENERAL.<%= featureConstantName %>.GROUP_OPTIONS.' + key
-        ),
-        value: key,
-      });
+      changeMe: new FormControl(null, [Validators.maxLength(255)]),
     });
   }
 
   ngOnChanges() {
-    if (this.changeMode === 'EDIT') {
+    if (this.changeMode === 'UPDATE') {
       this.itemId = this.dataItem?.id;
     }
-    if (this.changeMode === 'NEW') {
+    if (this.changeMode === 'CREATE') {
       this.itemId = undefined;
     }
     if (this.dataItem) {
@@ -104,10 +63,6 @@ export class <%= featureClassName%>CreateEditComponent implements OnInit, OnChan
       });
     } else {
       this.formGroup.reset();
-      this.formGroup.patchValue({
-        state: 'INITIALIZED',
-        group: this.groupKeys[0],
-      });
     }
   }
 
@@ -119,7 +74,7 @@ export class <%= featureClassName%>CreateEditComponent implements OnInit, OnChan
    *  SAVING
    */
   public onSave() {
-    this.changeMode === 'NEW'
+    this.changeMode === 'CREATE'
       ? this.create<%= featureClassName%>Item()
       : this.update<%= featureClassName%>Item();
   }
@@ -127,7 +82,7 @@ export class <%= featureClassName%>CreateEditComponent implements OnInit, OnChan
   private create<%= featureClassName%>Item() {
     if (this.formGroup.valid) {
       this.<%= featurePropertyName %>Service
-        .createNew<%= featureClassName%>(this.formGroup.value as Create<%= featureClassName%>)
+        .create<%= featureClassName%>(this.formGroup.value as Create<%= featureClassName%>)
         .subscribe({
           next: () => {
             this.searchEmitter.emit();

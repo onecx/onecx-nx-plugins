@@ -220,8 +220,7 @@ function addFunctionToOpenApi(tree: Tree, options: DetailsGeneratorSchema) {
         format: 'int32',
       },
       id: {
-        type: 'integer',
-        format: 'int64',
+        type: 'string',
       },
       [COMMENT_KEY]: 'ACTION: add additional properties here',
     },

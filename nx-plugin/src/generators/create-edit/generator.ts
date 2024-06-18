@@ -14,16 +14,12 @@ import * as fs from 'fs';
 import * as ora from 'ora';
 import { deepMerge } from '../shared/deepMerge';
 
+import { COMMENT_KEY, OpenAPIUtil } from '../shared/openapi/openapi.util';
 import processParams, { GeneratorParameter } from '../shared/parameters.util';
 import { renderJsonFile } from '../shared/renderJsonFile';
-import { updateYaml } from '../shared/yaml';
-import {
-  createCreateEndpoint as createCreateEndpoint,
-  createUpdateEndpoint,
-} from './endpoint.util';
+import { createCreateEndpoint, createUpdateEndpoint } from './endpoint.util';
 import { CreateEditGeneratorSchema } from './schema';
 import path = require('path');
-import { COMMENT_KEY, OpenAPIUtil } from '../shared/openapi/openapi.util';
 
 const PARAMETERS: GeneratorParameter<CreateEditGeneratorSchema>[] = [
   {
@@ -62,8 +58,7 @@ const PARAMETERS: GeneratorParameter<CreateEditGeneratorSchema>[] = [
     default: (values) => {
       return `Create${names(values.featureName).className}`;
     },
-    prompt:
-      'Provide a name for your creation request (e.g., CreateBook): ',
+    prompt: 'Provide a name for your creation request (e.g., CreateBook): ',
     showInSummary: true,
     showRules: [{ showIf: (values) => values.customizeNamingForAPI }],
   },
@@ -84,10 +79,9 @@ const PARAMETERS: GeneratorParameter<CreateEditGeneratorSchema>[] = [
     type: 'text',
     required: 'interactive',
     default: (values) => {
-      return `Create${names(values.featureName).className}`;
+      return `Update${names(values.featureName).className}`;
     },
-    prompt:
-      'Provide a name for your update request (e.g., UpdateBook): ',
+    prompt: 'Provide a name for your update request (e.g., UpdateBook): ',
     showInSummary: true,
     showRules: [{ showIf: (values) => values.customizeNamingForAPI }],
   },
@@ -145,23 +139,13 @@ export async function createEditGenerator(
     }
   );
 
-  adaptAppModule(tree);
-
   adaptFeatureModule(tree, options);
 
-  adaptFeatureRoutes(tree, options);
-
-  adaptFeatureState(tree, options);
-
-  adaptFeatureReducer(tree, options);
-
-  addDetailsEventsToSearch(tree, options);
+  addCreateEditEventsToSearch(tree, options);
 
   addTranslations(tree, options);
 
   addFunctionToOpenApi(tree, options);
-
-  addPermissionDefinitionsToValuesYaml(tree, options);
 
   await formatFiles(tree);
 
@@ -189,29 +173,45 @@ export async function createEditGenerator(
   };
 }
 
-function addDetailsEventsToSearch(
+function addCreateEditEventsToSearch(
   tree: Tree,
   options: CreateEditGeneratorSchema
 ) {
   const fileName = names(options.featureName).fileName;
-  const htmlDetailsFilePath = `src/app/${fileName}/pages/${fileName}-details/${fileName}-details.component.html`;
+  const htmlDetailsFilePath = `src/app/${fileName}/dialogs/${fileName}-create-edit/${fileName}-create-edit.component.html`;
   if (tree.exists(htmlDetailsFilePath)) {
-    adaptSearchHTML(tree, options);
-    adaptSearchComponent(tree, options);
     adaptSearchActions(tree, options);
     adaptSearchEffects(tree, options);
+    adaptSearchReducers(tree, options);
+    adaptSearchComponent(tree, options);
+    adaptSearchHTML(tree, options);
+    adaptSearchState(tree, options);
+    adaptSearchViewModel(tree, options);
     adaptSearchTests(tree, options);
+    adaptSearchSelectors(tree, options);
   }
 }
 
 function adaptSearchHTML(tree: Tree, options: CreateEditGeneratorSchema) {
   const fileName = names(options.featureName).fileName;
+  const propertyName = names(options.featureName).propertyName;
   const htmlSearchFilePath = `src/app/${fileName}/pages/${fileName}-search/${fileName}-search.component.html`;
 
   let htmlContent = tree.read(htmlSearchFilePath, 'utf8');
   htmlContent = htmlContent.replace(
     '<ocx-interactive-data-view',
-    `<ocx-interactive-data-view \n (viewItem)="details($event)"`
+    `<ocx-interactive-data-view \n (editItem)="edit($event)"`
+  );
+  htmlContent = htmlContent.replace(
+    '</>',
+    `<app-${fileName}-create
+      [displayDetailDialog]="vm.displayDetailDialog"      
+      [dataItem]="vm.dataItem"
+      [changeMode]="vm.changeMode"
+      (searchEmitter)="search(${propertyName}SearchFormGroup)"
+      (displayDetailDialogChange)="onDetailClose()"
+    ></app-${fileName}-create>
+    </ocx-portal-page>`
   );
   tree.write(htmlSearchFilePath, htmlContent);
 }
@@ -221,40 +221,167 @@ function adaptSearchComponent(tree: Tree, options: CreateEditGeneratorSchema) {
   const className = names(options.featureName).className;
   const filePath = `src/app/${fileName}/pages/${fileName}-search/${fileName}-search.component.ts`;
 
-  let htmlContent = tree.read(filePath, 'utf8');
-  htmlContent =
-    `import {RowListGridData} from '@onecx/portal-integration-angular';` +
-    htmlContent.replace(
-      'resetSearch',
-      `
-    details({id}:RowListGridData) {
-      this.store.dispatch(${className}SearchActions.detailsButtonClicked({id}));
+  let content = tree.read(filePath, 'utf8');
+  content = content.replace(
+    `} from '@onecx/portal-integration-angular';`,
+    `RowListGridData
+    } from '@onecx/portal-integration-angular';`
+  );
+  content = content.replace(
+    'resetSearch',
+    `
+    onCreate() {
+      this.store.dispatch(${className}SearchActions.createButtonClicked());
+    }
+
+    onDetailClose() {
+      this.store.dispatch(${className}SearchActions.detailDialogClose());
+    }
+
+    edit({ id }: RowListGridData) {
+      this.store.dispatch(${className}SearchActions.editButtonClicked({ id }));
     }
 
     resetSearch`
-    );
-  tree.write(filePath, htmlContent);
+  );
+  tree.write(filePath, content);
 }
 
 function adaptSearchActions(tree: Tree, options: CreateEditGeneratorSchema) {
   const fileName = names(options.featureName).fileName;
   const filePath = `src/app/${fileName}/pages/${fileName}-search/${fileName}-search.actions.ts`;
 
-  let htmlContent = tree.read(filePath, 'utf8');
-  htmlContent = htmlContent.replace(
+  let content = tree.read(filePath, 'utf8');
+  content = content.replace(
     'events: {',
     `events: {
-      'Details button clicked': props<{
+      'Create button clicked': emptyProps(),
+      'Detail Dialog close': emptyProps(),
+      'Edit button clicked': props<{
         id: number | string;
+      }>(),
+      'Data Item set': props<{
+        dataItem: ${options.dataObjectName};
       }>(),
     `
   );
-  tree.write(filePath, htmlContent);
+  tree.write(filePath, content);
+}
+
+function adaptSearchState(tree: Tree, options: CreateEditGeneratorSchema) {
+  const fileName = names(options.featureName).fileName;
+  const filePath = `src/app/${fileName}/pages/${fileName}-search/${fileName}-search.state.ts`;
+
+  let content = tree.read(filePath, 'utf8');
+  content = content.replace(
+    'SearchState {',
+    `SearchState {
+        changeMode: 'CREATE' | 'UPDATE';
+        displayDetailDialog: boolean;
+        dataItem: ${options.dataObjectName} | undefined;`
+  );
+  tree.write(filePath, content);
+}
+
+function adaptSearchViewModel(tree: Tree, options: CreateEditGeneratorSchema) {
+  const fileName = names(options.featureName).fileName;
+  const filePath = `src/app/${fileName}/pages/${fileName}-search/${fileName}-search.viewmodel.ts`;
+
+  let content = tree.read(filePath, 'utf8');
+  content =
+    `import { ${options.dataObjectName} } from 'src/app/shared/generated'` +
+    content.replace(
+      'ViewModel {',
+      `ViewModel {
+        changeMode: 'CREATE' | 'UPDATE';
+        displayDetailDialog: boolean;
+        dataItem: ${options.dataObjectName} | undefined;`
+    );
+  tree.write(filePath, content);
+}
+
+function adaptSearchSelectors(tree: Tree, options: CreateEditGeneratorSchema) {
+  const fileName = names(options.featureName).fileName;
+  const propertyName = names(options.featureName).propertyName;
+  const filePath = `src/app/${fileName}/pages/${fileName}-search/${fileName}-search.selectors.ts`;
+
+  let content = tree.read(filePath, 'utf8');
+  content = content.replace(
+    'SearchSelectors.selectChartVisible',
+    `SearchSelectors.selectChartVisible,
+    ${propertyName}SearchSelectors.selectChangeMode,
+    ${propertyName}SearchSelectors.selectDisplayDetailDialog,
+    ${propertyName}SearchSelectors.selectDataItem`
+  );
+  content = content.replaceAll(
+    `chartVisible`,
+    `chartVisible,
+    changeMode,
+    displayDetailDialog,
+    dataItem`
+  );
+  tree.write(filePath, content);
+}
+
+function adaptSearchReducers(tree: Tree, options: CreateEditGeneratorSchema) {
+  const fileName = names(options.featureName).fileName;
+  const className = names(options.featureName).className;
+  const filePath = `src/app/${fileName}/pages/${fileName}-search/${fileName}-search.reducers.ts`;
+
+  let content = tree.read(filePath, 'utf8');
+
+  content = content.replace(
+    `SearchState = {`,
+    `SearchState = {
+        changeMode: 'CREATE',
+        displayDetailDialog: false,
+        dataItem: undefined,`
+  );
+
+  content = content.replace(
+    `createReducer(
+  initialState,`,
+    `createReducer(
+  initialState,
+     on(
+    ${className}SearchActions.createButtonClicked,
+    (state: ${className}SearchState): ${className}SearchState => ({
+      ...state,
+      changeMode: 'CREATE',
+      displayDetailDialog: true,
+      dataItem: { id: 'new' },
+    })
+  ),
+  on(
+    ${className}SearchActions.detailDialogClose,
+    (state: ${className}SearchState): ${className}SearchState => ({
+      ...state,
+      changeMode: 'CREATE',
+      displayDetailDialog: false,
+      dataItem: undefined,
+    })
+  ),
+  on(
+    ${className}SearchActions.dataItemSet,
+    (
+      state: ${className}SearchState,
+      { dataItem }
+    ): ${className}SearchState => ({
+      ...state,
+      changeMode: 'UPDATE',
+      displayDetailDialog: true,
+      dataItem: dataItem,
+    })
+  ),`
+  );
+
+  tree.write(filePath, content);
 }
 
 function adaptSearchEffects(tree: Tree, options: CreateEditGeneratorSchema) {
   const fileName = names(options.featureName).fileName;
   const className = names(options.featureName).className;
+  const propertyName = names(options.featureName).propertyName;
   const filePath = `src/app/${fileName}/pages/${fileName}-search/${fileName}-search.effects.ts`;
 
   let htmlContent = tree.read(filePath, 'utf8');
@@ -262,20 +389,20 @@ function adaptSearchEffects(tree: Tree, options: CreateEditGeneratorSchema) {
     `import { selectUrl } from 'src/app/shared/selectors/router.selectors';` +
     htmlContent.replace(
       'searchByUrl$',
-      `detailsButtonClicked$ = createEffect(
-      () => {
-        return this.actions$.pipe(
-          ofType(${className}SearchActions.detailsButtonClicked),
-          concatLatestFrom(() => this.store.select(selectUrl)),
-          tap(([action, currentUrl]) => {
-            let urlTree = this.router.parseUrl(currentUrl);
-            urlTree.queryParams = {};
-            urlTree.fragment = null;
-            this.router.navigate([urlTree.toString(), 'details', action.id]);
-        })
-      )},
-      { dispatch: false }
+      `editButtonClicked$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(${className}SearchActions.editButtonClicked),
+      concatLatestFrom(() =>
+        this.store.select(${propertyName}SearchSelectors.selectResults)
+      ),
+      map(([action, results]) => {
+        const dataItem = results.filter((item) => item.id == action.id)[0];
+        return ${className}SearchActions.dataItemSet({
+          dataItem,
+        });
+      })
     );
+  });
     
     searchByUrl$`
     );
@@ -292,7 +419,7 @@ function adaptSearchTests(tree: Tree, options: CreateEditGeneratorSchema) {
   htmlContent = htmlContent.replace(
     "it('should export csv data on export action click'",
     `
-    it('should dispatch detailsButtonClicked action on item details click', async () => {
+    it('should dispatch editButtonClicked action on item edit click', async () => {
       jest.spyOn(store, 'dispatch');
   
       store.overrideSelector(select${className}SearchViewModel, {
@@ -322,12 +449,12 @@ function adaptSearchTests(tree: Tree, options: CreateEditGeneratorSchema) {
   
       expect(rowActionButtons.length).toEqual(1);
       expect(await rowActionButtons[0].getAttribute('ng-reflect-icon')).toEqual(
-        'pi pi-eye'
+        'pi pi-pencil'
       );
       await rowActionButtons[0].click();
   
       expect(store.dispatch).toHaveBeenCalledWith(
-        ${className}SearchActions.detailsButtonClicked({ id: '1' })
+        ${className}SearchActions.editButtonClicked({ id: '1' })
       );
     });
 
@@ -347,121 +474,60 @@ function adaptFeatureModule(tree: Tree, options: CreateEditGeneratorSchema) {
   let moduleContent = tree.read(moduleFilePath, 'utf8');
   moduleContent = moduleContent.replace(
     'declarations: [',
-    `declarations: [${className}SearchComponent,`
-  );
-  moduleContent = moduleContent.replace(
-    `} from '@onecx/portal-integration-angular'`,
-    `InitializeModuleGuard, } from '@onecx/portal-integration-angular'`
-  );
-  moduleContent = moduleContent.replace(
-    'EffectsModule.forFeature()',
-    `EffectsModule.forFeature([])`
-  );
-  moduleContent = moduleContent.replace(
-    'EffectsModule.forFeature([',
-    `EffectsModule.forFeature([${className}SearchEffects,`
+    `declarations: [${className}CreateEditComponent,`
   );
   moduleContent = moduleContent.replace(
     `from '@ngrx/effects';`,
-    `from '@ngrx/effects';
-  import { ${className}SearchEffects } from './pages/${fileName}-search/${fileName}-search.effects';
-  import { ${className}SearchComponent } from './pages/${fileName}-search/${fileName}-search.component';`
+    `from '@ngrx/effects';  
+  import { ${className}CreateEditComponent } from './pages/${fileName}-create-edit/${fileName}-create-edit.component';`
   );
 
   tree.write(moduleFilePath, moduleContent);
 }
 
-function adaptAppModule(tree: Tree) {
-  const moduleFilePath = joinPathFragments('src/app/app.module.ts');
-  let moduleContent = tree.read(moduleFilePath, 'utf8');
-  if (!moduleContent.includes('providers: [providePortalDialogService(),')) {
-    moduleContent = moduleContent.replace(
-      'providers: [',
-      `providers: [providePortalDialogService(),`
-    );
-  }
+// function adaptAppModule(tree: Tree) {
+//   const moduleFilePath = joinPathFragments('src/app/app.module.ts');
+//   let moduleContent = tree.read(moduleFilePath, 'utf8');
+//   if (!moduleContent.includes('providers: [providePortalDialogService(),')) {
+//     moduleContent = moduleContent.replace(
+//       'providers: [',
+//       `providers: [providePortalDialogService(),`
+//     );
+//   }
 
-  if (
-    !moduleContent.includes(
-      `providePortalDialogService } from '@onecx/portal-integration-angular'`
-    )
-  ) {
-    moduleContent = moduleContent.replace(
-      `} from '@onecx/portal-integration-angular'`,
-      `, providePortalDialogService } from '@onecx/portal-integration-angular'`
-    );
-  }
+//   if (
+//     !moduleContent.includes(
+//       `providePortalDialogService } from '@onecx/portal-integration-angular'`
+//     )
+//   ) {
+//     moduleContent = moduleContent.replace(
+//       `} from '@onecx/portal-integration-angular'`,
+//       `, providePortalDialogService } from '@onecx/portal-integration-angular'`
+//     );
+//   }
 
-  tree.write(moduleFilePath, moduleContent);
-}
+//   tree.write(moduleFilePath, moduleContent);
+// }
 
-function adaptFeatureRoutes(tree: Tree, options: CreateEditGeneratorSchema) {
-  const fileName = names(options.featureName).fileName;
-  const className = names(options.featureName).className;
-  const routesFilePath = joinPathFragments(
-    'src/app',
-    fileName,
-    fileName + '.routes.ts'
-  );
-  let moduleContent = tree.read(routesFilePath, 'utf8');
-  moduleContent = moduleContent.replace(
-    'routes: Routes = [',
-    `routes: Routes = [ { path: '', component: ${className}SearchComponent, pathMatch: 'full' },`
-  );
+// function adaptFeatureRoutes(tree: Tree, options: CreateEditGeneratorSchema) {
+//   const fileName = names(options.featureName).fileName;
+//   const className = names(options.featureName).className;
+//   const routesFilePath = joinPathFragments(
+//     'src/app',
+//     fileName,
+//     fileName + '.routes.ts'
+//   );
+//   let moduleContent = tree.read(routesFilePath, 'utf8');
+//   moduleContent = moduleContent.replace(
+//     'routes: Routes = [',
+//     `routes: Routes = [ { path: '', component: ${className}SearchComponent, pathMatch: 'full' },`
+//   );
 
-  moduleContent =
-    `import { ${className}SearchComponent } from './pages/${fileName}-search/${fileName}-search.component';` +
-    moduleContent;
-  tree.write(routesFilePath, moduleContent);
-}
-
-function addPermissionDefinitionsToValuesYaml(
-  tree: Tree,
-  options: CreateEditGeneratorSchema
-) {
-  const constantName = names(options.featureName).constantName;
-  const propertyName = names(options.featureName).propertyName;
-
-  const folderPath = 'helm/values.yaml';
-
-  if (tree.exists(folderPath)) {
-    updateYaml(tree, folderPath, (yaml) => {
-      yaml['app'] ??= {};
-      yaml['app']['operator'] ??= {};
-      yaml['app']['operator']['permission'] ??= {};
-      yaml['app']['operator']['permission']['spec'] ??= {};
-      yaml['app']['operator']['permission']['spec']['permissions'] ??= {};
-      yaml['app']['operator']['permission']['spec']['permissions'][
-        constantName
-      ] ??= {};
-      yaml['app']['operator']['permission']['spec']['permissions'][
-        constantName
-      ]['CREATE'] ??= `Create ${propertyName}`;
-      yaml['app']['operator']['permission']['spec']['permissions'][
-        constantName
-      ]['EDIT'] ??= `Edit ${propertyName}`;
-      yaml['app']['operator']['permission']['spec']['permissions'][
-        constantName
-      ]['DELETE'] ??= `Delete ${propertyName}`;
-      yaml['app']['operator']['permission']['spec']['permissions'][
-        constantName
-      ]['SAVE'] ??= `Update and save ${propertyName}`;
-      yaml['app']['operator']['permission']['spec']['permissions'][
-        constantName
-      ]['IMPORT'] ??= `Import ${propertyName}`;
-      yaml['app']['operator']['permission']['spec']['permissions'][
-        constantName
-      ]['EXPORT'] ??= `Export ${propertyName}`;
-      yaml['app']['operator']['permission']['spec']['permissions'][
-        constantName
-      ]['VIEW'] ??= `View mode for ${propertyName}`;
-      yaml['app']['operator']['permission']['spec']['permissions'][
-        constantName
-      ]['SEARCH'] ??= `Search ${propertyName}`;
-      return yaml;
-    });
-  }
-}
+//   moduleContent =
+//     `import { ${className}SearchComponent } from './pages/${fileName}-search/${fileName}-search.component';` +
+//     moduleContent;
+//   tree.write(routesFilePath, moduleContent);
+// }
 
 function addTranslations(tree: Tree, options: CreateEditGeneratorSchema) {
   const folderPath = 'src/assets/i18n/';
@@ -558,83 +624,101 @@ function addFunctionToOpenApi(tree: Tree, options: CreateEditGeneratorSchema) {
   // Schemas
   apiUtil
     .schemas()
-    .set(`Create${dataObjectName}`, {
+    .set(`${options.creationRequestName}`, {
       type: 'object',
-      required: ['modificationCount', 'id'],
       properties: {
-        modificationCount: {
-          type: 'integer',
-          format: 'int32',
-        },
-        id: {
-          type: 'integer',
-          format: 'int32',
+        changeMe: {
+          type: 'string',
         },
         [COMMENT_KEY]: 'ACTION S1: add additional properties here',
       },
     })
-    .set(`Update${dataObjectName}`, {
+    .set(`${options.updateRequestName}`, {
       type: 'object',
       properties: {
-        limit: {
-          type: 'integer',
-          maximum: '2500',
+        changeMe: {
+          type: 'string',
         },
+        [COMMENT_KEY]: ' ACTION S1: add additional properties here',
+      },
+    })
+    .set(`${options.creationResponseName}`, {
+      type: 'object',
+      properties: {
         id: {
-          type: 'integer',
-          format: 'int32',
+          type: 'string',
         },
         changeMe: {
           type: 'string',
         },
-        [COMMENT_KEY]:
-          ' ACTION S1: Add additional properties to the <feature>-bff.yaml',
+        [COMMENT_KEY]: 'ACTION S1: add additional properties here',
+      },
+    })
+    .set(`${options.updateResponseName}`, {
+      type: 'object',
+      properties: {
+        id: {
+          type: 'string',
+        },
+        changeMe: {
+          type: 'string',
+        },
+        [COMMENT_KEY]: ' ACTION S1: add additional properties here',
       },
     });
+
+  apiUtil.schemas().set('ProblemDetailResponse', {
+    type: 'object',
+    properties: {
+      errorCode: {
+        type: 'string',
+      },
+      detail: {
+        type: 'string',
+      },
+      params: {
+        type: 'array',
+        items: {
+          $ref: '#/components/schemas/ProblemDetailParam',
+        },
+      },
+      invalidParams: {
+        type: 'array',
+        items: {
+          $ref: '#/components/schemas/ProblemDetailInvalidParam',
+        },
+      },
+    },
+  });
+
+  apiUtil.schemas().set('ProblemDetailParam', {
+    type: 'object',
+    properties: {
+      key: {
+        type: 'string',
+      },
+      value: {
+        type: 'string',
+      },
+    },
+  });
+
+  apiUtil.schemas().set('ProblemDetailInvalidParam', {
+    type: 'object',
+    properties: {
+      name: {
+        type: 'string',
+      },
+      message: {
+        type: 'string',
+      },
+    },
+  });
 
   tree.write(
     joinPathFragments(openApiFolderPath, bffOpenApiPath),
     apiUtil.finalize()
   );
-}
-
-function adaptFeatureState(tree: Tree, options: CreateEditGeneratorSchema) {
-  const fileName = names(options.featureName).fileName;
-  const className = names(options.featureName).className;
-  const filePath = `src/app/${fileName}/${fileName}.state.ts`;
-
-  let fileContent = tree.read(filePath, 'utf8');
-
-  fileContent = fileContent.replace(
-    '{',
-    `{
-    search: ${className}SearchState;
-  `
-  );
-
-  fileContent =
-    `import { ${className}SearchState } from './pages/${fileName}-search/${fileName}-search.state';` +
-    fileContent;
-  tree.write(filePath, fileContent);
-}
-
-function adaptFeatureReducer(tree: Tree, options: CreateEditGeneratorSchema) {
-  const fileName = names(options.featureName).fileName;
-  const propertyName = names(options.featureName).propertyName;
-  const filePath = `src/app/${fileName}/${fileName}.reducers.ts`;
-
-  let fileContent = tree.read(filePath, 'utf8');
-
-  fileContent = fileContent.replace(
-    '>({',
-    `>({
-    search: ${propertyName}SearchReducer,`
-  );
-
-  fileContent =
-    `import { ${propertyName}SearchReducer } from './pages/${fileName}-search/${fileName}-search.reducers';` +
-    fileContent;
-  tree.write(filePath, fileContent);
 }
 
 export default createEditGenerator;

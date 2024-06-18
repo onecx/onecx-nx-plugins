@@ -103,7 +103,7 @@ export class OpenAPIObjectSectionUtil {
    * @returns
    */
   set(key: string, value: object, options?: ObjectSetOptions) {
-    const existStrategy = options.existStrategy ?? 'skip';
+    const existStrategy = options ? options.existStrategy : 'skip';
     if (this.sectionContent[key] != null) {
       if (existStrategy == 'extend') {
         if (this.sectionContent[key]) {
@@ -119,7 +119,7 @@ export class OpenAPIObjectSectionUtil {
       // Replace is same as initial set
     }
     this.sectionContent[key] = value;
-    if (options.comment) {
+    if (options && options.comment) {
       this.sectionContent[key][COMMENT_KEY] = options.comment;
     }
     return this;
