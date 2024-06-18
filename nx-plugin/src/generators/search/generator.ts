@@ -13,11 +13,13 @@ import { execSync } from 'child_process';
 import * as fs from 'fs';
 import * as ora from 'ora';
 import { deepMerge } from '../shared/deepMerge';
+import { COMMENT_KEY, OpenAPIUtil } from '../shared/openapi/openapi.util';
+import processParams, { GeneratorParameter } from '../shared/parameters.util';
 import { renderJsonFile } from '../shared/renderJsonFile';
 import { updateYaml } from '../shared/yaml';
+import { createSearchEndpoint } from './endpoint.util';
 import { SearchGeneratorSchema } from './schema';
 import path = require('path');
-import processParams, { GeneratorParameter } from '../shared/parameters.util';
 
 const PARAMETERS: GeneratorParameter<SearchGeneratorSchema>[] = [
   {
@@ -467,120 +469,92 @@ function addFunctionToOpenApi(tree: Tree, options: SearchGeneratorSchema) {
   const openApiFolderPath = 'src/assets/swagger';
   const openApiFiles = tree.children(openApiFolderPath);
   const bffOpenApiPath = openApiFiles.find((f) => f.endsWith('-bff.yaml'));
-  let bffOpenApiContent = tree.read(
+  const bffOpenApiContent = tree.read(
     joinPathFragments(openApiFolderPath, bffOpenApiPath),
     'utf8'
   );
 
-  const dataObjectName = options.dataObjectName;  
+  const dataObjectName = options.dataObjectName;
   const propertyName = names(options.featureName).propertyName;
   const searchRequestName = options.searchRequestName;
   const searchResponseName = options.searchResponseName;
   const apiServiceName = options.apiServiceName;
-  const hasSchemas = bffOpenApiContent.includes('schemas:');
-  const hasEntitySchema =
-    hasSchemas && bffOpenApiContent.includes(`${dataObjectName}:`);
 
-  const propertySearchEndpoints = `
-  /${propertyName}/search:
-    post:
-      operationId: search${dataObjectName}s
-      tags:
-        - ${apiServiceName}
-      description: This operation performs a search based on provided search criteria. Search for ${propertyName} results.
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/${searchRequestName}'
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/${searchResponseName}'
-        '400':
-          description: Bad request
-        '500':
-          description: Something went wrong`;
+  const apiUtil = new OpenAPIUtil(bffOpenApiContent);
+  const res = apiUtil
+    .paths()
+    .set(
+      `/${propertyName}/search`,
+      createSearchEndpoint(
+        {
+          type: 'post',
+          operationId: `search${dataObjectName}s`,
+          tags: [apiServiceName],
+          description: `This operation performs a search based on provided search criteria. Search for ${propertyName} results.`,
+        },
+        {
+          dataObjectName: dataObjectName,
+          searchRequestName: searchRequestName,
+          searchResponseName: searchResponseName,
+        }
+      )
+    )
+    .done()
+    .schemas()
+    .set(`${dataObjectName}`, {
+      type: 'object',
+      required: ['modificationCount', 'id'],
+      properties: {
+        modificationCount: {
+          type: 'integer',
+          format: 'int32',
+        },
+        id: {
+          type: 'integer',
+          format: 'int32',
+        },
+        [COMMENT_KEY]: 'ACTION S1: add additional properties here',
+      },
+    })
+    .set(`${searchRequestName}`, {
+      type: 'object',
+      properties: {
+        limit: {
+          type: 'integer',
+          maximum: '2500',
+        },
+        id: {
+          type: 'integer',
+          format: 'int32',
+        },
+        changeMe: {
+          type: 'string',
+        },
+        [COMMENT_KEY]:
+          ' ACTION S1: Add additional properties to the <feature>-bff.yaml',
+      },
+    })
+    .set(`${searchResponseName}`, {
+      type: 'object',
+      required: ['results', 'totalNumberOfResults'],
+      properties: {
+        results: {
+          type: 'array',
+          items: {
+            $ref: `#/components/schemas/${dataObjectName}`,
+          },
+        },
+        totalNumberOfResults: {
+          type: 'integer',
+          format: 'int32',
+          description: 'Total number of results on the server.',
+        },
+      },
+    })
+    .done()
+    .finalize();
 
-  bffOpenApiContent = bffOpenApiContent.replace(`paths: {}`, `paths:`).replace(
-    `paths:`,
-    `
-paths:  
-  ${propertySearchEndpoints}  
-`
-  );
-  if (!hasSchemas) {
-    bffOpenApiContent += `
-components:
-  schemas:`;
-  }
-
-  const entitySchema = `
-    ${dataObjectName}:
-      type: object
-      required:
-        - "modificationCount"
-        - "id"
-      properties:
-        modificationCount:
-          type: integer
-          format: int32
-        id:
-          type: integer
-          format: int64
-        # ACTION S1: add additional properties here
-    `;
-
-  const searchRequestSchema = `
-    ${searchRequestName}:
-      type: object
-      properties:
-        limit:
-          type: integer
-          maximum: 2600
-        id:
-          type: string
-        changeMe:
-          type: string
-        # ACTION S1: Add additional properties to the <feature>-bff.yaml
-  `;
-
-  const searchResponseSchema = `
-    ${searchResponseName}:
-      type: object
-      required:
-      - "results"
-      - "totalNumberOfResults"
-      properties:
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/${dataObjectName}'
-        totalNumberOfResults:
-          description: Total number of results on the server.
-          type: integer
-          format: int64
-  `
-
-  bffOpenApiContent = bffOpenApiContent.replace(
-    `schemas:`,
-`schemas:
-      ${hasEntitySchema ? '' : entitySchema}
-      ${searchRequestSchema}
-      ${searchResponseSchema}
-`    
-  );
-
-  console.log(bffOpenApiContent);
-  
-
-  tree.write(
-    joinPathFragments(openApiFolderPath, bffOpenApiPath),
-    bffOpenApiContent
-  );
+  tree.write(joinPathFragments(openApiFolderPath, bffOpenApiPath), res);
 }
 
 function adaptFeatureState(tree: Tree, options: SearchGeneratorSchema) {
