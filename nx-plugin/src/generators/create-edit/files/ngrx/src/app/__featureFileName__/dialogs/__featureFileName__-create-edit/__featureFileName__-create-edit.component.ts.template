@@ -1,0 +1,182 @@
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+} from '@angular/core';
+import {
+  Column,
+  PortalMessageService,
+} from '@onecx/portal-integration-angular';
+
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { TranslateService } from '@ngx-translate/core';
+import {
+  Create<%= featureClassName%>,
+  <%= featureClassName%>,
+  <%= featureClassName%>sInternalBffService,
+} from 'src/app/shared/generated';
+
+@Component({
+  selector: 'app-<%= featureFileName %>-create-edit',
+  templateUrl: './<%= featureFileName %>-create-edit.component.html',
+  styleUrls: ['./<%= featureFileName %>-create-edit.component.scss'],
+})
+export class <%= featureClassName%>CreateEditComponent implements OnInit, OnChanges {
+  @Input() public dataItem: <%= featureClassName%> | undefined;
+  @Input() public changeMode = 'NEW';
+  @Input() public displayDetailDialog = false;
+  @Output() public displayDetailDialogChange = new EventEmitter<boolean>();
+  @Output() public searchEmitter = new EventEmitter();
+
+  public itemId: string | undefined;
+
+  // Form Definitions
+  public formGroup: FormGroup;
+  public columns: Column[] = [
+    { field: 'name', header: 'NAME' },
+    { field: 'allowedWagonClass', header: 'ALLOWED_WAGON_CLASS' },
+    { field: 'group', header: 'GROUP' },
+    { field: 'remoteId', header: 'REMOTE_ID' },
+    { field: 'state', header: 'STATE' },
+  ];
+
+  private groupKeys = ['DAILY_M_FAR', 'REGIO_M_50', 'PUPIL_M', 'DB_JOB_M'];
+
+  public groupOptions = this.groupKeys.map((key) => ({
+    label: key,
+    value: key,
+  }));
+
+  public dropdownOptions = [
+    {
+      label: 'INITIALIZED',
+      value: 'INITIALIZED',
+    },
+    {
+      label: 'ACTIVE',
+      value: 'ACTIVE',
+    },
+    {
+      label: 'INACTIVE',
+      value: 'INACTIVE',
+    },
+  ];
+
+  constructor(
+    private <%= featurePropertyName %>Service: <%= serviceName %>,
+    private msgService: PortalMessageService,
+    private translateService: TranslateService
+  ) {
+    this.formGroup = new FormGroup({
+      name: new FormControl(null, [Validators.maxLength(255)]),
+      allowedWagonClass: new FormControl(null, [Validators.maxLength(255)]),
+      remoteId: new FormControl(null, [Validators.maxLength(255)]),
+      state: new FormControl(null, [Validators.maxLength(255)]),
+      group: new FormControl(null, [Validators.maxLength(255)]),
+    });
+  }
+
+  ngOnInit(): void {
+    this.groupOptions = [];
+    this.groupKeys.forEach((key) => {
+      this.groupOptions.push({
+        label: this.translateService.instant(
+          'GENERAL.<%= featureConstantName %>.GROUP_OPTIONS.' + key
+        ),
+        value: key,
+      });
+    });
+  }
+
+  ngOnChanges() {
+    if (this.changeMode === 'EDIT') {
+      this.itemId = this.dataItem?.id;
+    }
+    if (this.changeMode === 'NEW') {
+      this.itemId = undefined;
+    }
+    if (this.dataItem) {
+      this.formGroup.patchValue({
+        ...this.dataItem,
+      });
+    } else {
+      this.formGroup.reset();
+      this.formGroup.patchValue({
+        state: 'INITIALIZED',
+        group: this.groupKeys[0],
+      });
+    }
+  }
+
+  public onDialogHide() {
+    this.displayDetailDialogChange.emit(false);
+  }
+
+  /****************************************************************************
+   *  SAVING
+   */
+  public onSave() {
+    this.changeMode === 'NEW'
+      ? this.create<%= featureClassName%>Item()
+      : this.update<%= featureClassName%>Item();
+  }
+
+  private create<%= featureClassName%>Item() {
+    if (this.formGroup.valid) {
+      this.<%= featurePropertyName %>Service
+        .createNew<%= featureClassName%>(this.formGroup.value as Create<%= featureClassName%>)
+        .subscribe({
+          next: () => {
+            this.searchEmitter.emit();
+            this.msgService.success({
+              summaryKey: '<%= featureConstantName%>_CREATION.CREATION_SUCCESS',
+            });
+            this.displayDetailDialog = false;
+          },
+          error: (err: { error: { key: string } }) => {
+            err.error.key && err.error.key === 'PERSIST_ENTITY_FAILED'
+              ? this.msgService.error({
+                  summaryKey: '<%= featureConstantName%>_CREATION.CREATION_FAILED',
+                  detailKey: '<%= featureConstantName%>_CREATION.UNIQUE_CONSTRAINT',
+                })
+              : this.msgService.error({
+                  summaryKey: '<%= featureConstantName%>_CREATION.CREATION_FAILED',
+                });
+          },
+        });
+    } else {
+      this.msgService.error({
+        summaryKey: '<%= featureConstantName%>_CREATION.VALIDATION_ERROR',
+      });
+    }
+  }
+
+  private update<%= featureClassName%>Item(): void {
+    if (this.formGroup.valid && this.itemId) {
+      this.<%= featurePropertyName %>Service
+        .update<%= featureClassName%>(this.itemId, this.formGroup.value)
+        .subscribe({
+          next: () => {
+            this.searchEmitter.emit();
+            this.msgService.success({
+              summaryKey: '<%= featureConstantName %>_DETAIL.UPDATE_SUCCESSFUL',
+            });
+            this.displayDetailDialog = false;
+          },
+          error: () => {
+            this.msgService.error({
+              summaryKey: '<%= featureConstantName %>_DETAIL.UPDATE_ERROR',
+            });
+            // console.error(err)
+          },
+        });
+    } else {
+      this.msgService.error({
+        summaryKey: '<%= featureConstantName %>_DETAIL.VALIDATION_ERROR',
+      });
+    }
+  }
+}

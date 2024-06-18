@@ -79,6 +79,12 @@ export class OpenAPIUtil {
   }
 }
 
+export interface ObjectSetOptions {
+  // Add a comment after insertion
+  comment?: string | undefined;
+  // If a value already exists for a key, what action should be performed
+  existStrategy: 'skip' | 'replace' | 'extend';
+}
 export class OpenAPIObjectSectionUtil {
   private util: OpenAPIUtil;
   private sectionContent: object;
@@ -93,18 +99,36 @@ export class OpenAPIObjectSectionUtil {
    * @param key key of the entry object
    * @param value value of the entry object
    * @param comment comment for the entry (added last)
-   * @param forceReplace if an existing entry for the key should be replaced (default=False)
-   * @returns 
+   * @param options some options you can pass
+   * @returns
    */
-  set(key: string, value: object, comment?: string, forceReplace = false) {
-    if (this.sectionContent[key] != null && !forceReplace) return this;
+  set(key: string, value: object, options?: ObjectSetOptions) {
+    const existStrategy = options.existStrategy ?? 'skip';
+    if (this.sectionContent[key] != null) {
+      if (existStrategy == 'extend') {
+        if (this.sectionContent[key]) {
+          this.sectionContent[key] = {
+            ...this.sectionContent[key],
+            ...value,
+          };
+        }
+      }
+      if (existStrategy == 'skip') {
+        return this;
+      }
+      // Replace is same as initial set
+    }
     this.sectionContent[key] = value;
-    if (comment) {
-      this.sectionContent[key][COMMENT_KEY] = comment;
+    if (options.comment) {
+      this.sectionContent[key][COMMENT_KEY] = options.comment;
     }
     return this;
   }
-  
+
+  get(key: string) {
+    return this.sectionContent[key];
+  }
+
   /**
    * Return to util interface
    * @returns initial util interface
@@ -125,7 +149,7 @@ export class OpenAPIArraySectionUtil<T = unknown> {
 
   /**
    * Add a new item to the section
-   * @param value 
+   * @param value
    * @returns this util
    */
   add(value: T) {
@@ -138,7 +162,7 @@ export class OpenAPIArraySectionUtil<T = unknown> {
    * @param manipulator method to invoke with section data, return value is set
    * @returns this util
    */
-  manipulate(manipulator: (sectionContent: T[]) => T[]){
+  manipulate(manipulator: (sectionContent: T[]) => T[]) {
     this.sectionContent = manipulator(this.sectionContent);
     return this;
   }

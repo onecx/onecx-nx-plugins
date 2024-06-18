@@ -10,5 +10,5 @@
     "src/**/*.test.ts",
     "src/**/*.spec.ts",
     "src/**/*.d.ts"
-  ]
+, "src/generators/create-edit/files/ngrx/src/app/__featureFileName__/dialogs/__featureFileName__-create-edit/__featureFileName__-create-edit.component.spec.ts.template"  ]
 }
