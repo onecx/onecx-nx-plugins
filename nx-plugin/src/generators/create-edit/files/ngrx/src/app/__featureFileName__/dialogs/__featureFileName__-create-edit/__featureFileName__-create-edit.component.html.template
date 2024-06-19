@@ -1,8 +1,8 @@
 <p-dialog
   header="{{
-    (this.changeMode === 'EDIT'
-      ? '<%= featureConstantName%>_DETAIL.HEADER'
-      : '<%= featureConstantName%>_CREATION.HEADER'
+    (this.changeMode === 'UPDATE'
+      ? '<%= featureConstantName%>_CREATE_EDIT.UPDATE.HEADER'
+      : '<%= featureConstantName%>_CREATE_EDIT.CREATE.HEADER'
     ) | translate
   }}"
   [(visible)]="displayDetailDialog"
@@ -23,11 +23,8 @@
       }"
 >
   <form [formGroup]="formGroup">
-    <ng-template pTemplate="header">
-      <span>{{ '<%= featureConstantName%>_CREATION.HEADER' | translate }}</span>
-    </ng-template>
     <div class="flex flex-wrap flex-column gap-4 justify-content-between mt-2">
-      <div [title]="'GENERAL.<%= featureConstantName %>.NAME' | translate">
+      <div [title]="'<%= featureConstantName%>_CREATE_EDIT.FORM.CHANGE_ME' | translate">
         <span class="p-float-label" controlErrorAnchor>
           <input
             pInputText
@@ -40,67 +37,8 @@
             class="ocx-required-label"
             for="<%= featureFileName %>_detail_form_name"
           >
-            {{ 'GENERAL.<%= featureConstantName %>.NAME' | translate }}</label
+            {{ '<%= featureConstantName%>_CREATE_EDIT.FORM.CHANGE_ME' | translate }}</label
           >
-        </span>
-      </div>
-      <div [title]="'GENERAL.<%= featureConstantName %>.STATE' | translate">
-        <span class="p-float-label">
-          <p-dropdown
-            [options]="dropdownOptions"
-            formControlName="state"
-            placeholder="State"
-            appendTo="body"
-            [style]="{ width: '100%' }"
-          ></p-dropdown>
-          <label class="" for="<%= featureFileName %>_detail_form_state">{{
-            'GENERAL.<%= featureConstantName %>.STATE' | translate
-          }}</label>
-        </span>
-      </div>
-      <div [title]="'GENERAL.<%= featureConstantName %>.ALLOWED_WAGON_CLASS' | translate">
-        <span class="p-float-label">
-          <input
-            pInputText
-            type="text"
-            id="<%= featureFileName %>_detail_form_wagon_class"
-            class="w-full pt-3 pb-2"
-            formControlName="allowedWagonClass"
-          />
-          <label class="" for="<%= featureFileName %>_detail_form_wagon_class">{{
-            'GENERAL.<%= featureConstantName %>.ALLOWED_WAGON_CLASS' | translate
-          }}</label>
-        </span>
-      </div>
-      <div [title]="'GENERAL.<%= featureConstantName %>.REMOTE_ID' | translate">
-        <span class="p-float-label">
-          <input
-            pInputText
-            type="text"
-            id="<%= featureFileName %>_detail_form_remote_id"
-            class="w-full pt-3 pb-2"
-            formControlName="remoteId"
-          />
-          <label class="" for="<%= featureFileName %>_detail_form_remote_id">{{
-            'GENERAL.<%= featureConstantName %>.REMOTE_ID' | translate
-          }}</label>
-        </span>
-      </div>
-      <div [title]="'GENERAL.<%= featureConstantName %>.GROUP' | translate">
-        <span class="p-float-label">
-          <p-dropdown
-            display="chip"
-            [options]="groupOptions"
-            id="group"
-            [showClear]="true"
-            formControlName="group"
-            appendTo="body"
-            scrollHeight="250px"
-            [style]="{ width: '100%' }"
-          ></p-dropdown>
-          <label class="" for="<%= featureFileName %>_detail_form_group">{{
-            'GENERAL.<%= featureConstantName %>.GROUP' | translate
-          }}</label>
         </span>
       </div>
     </div>
@@ -110,13 +48,13 @@
     <div class="flex flex-wrap justify-content-end gap-2 mb-1">
       <p-button
         id="help_detail_button_close"
-        [label]="'GENERAL.CANCEL' | translate"
+        [label]="'<%= featureConstantName%>_CREATE_EDIT.FORM.CANCEL' | translate"
         (onClick)="onDialogHide()"
         icon="pi pi-times"
       ></p-button>
       <p-button
         id="help_detail_button_save"
-        [label]="'GENERAL.SAVE' | translate"
+        [label]="'<%= featureConstantName%>_CREATE_EDIT.FORM.SAVE' | translate"
         (onClick)="onSave()"
         icon="pi pi-save"
         [disabled]="!formGroup.valid"

@@ -87,24 +87,24 @@ export class <%= featureClassName%>CreateEditComponent implements OnChanges {
           next: () => {
             this.searchEmitter.emit();
             this.msgService.success({
-              summaryKey: '<%= featureConstantName%>_CREATION.CREATION_SUCCESS',
+              summaryKey: '<%= featureConstantName%>_CREATE_EDIT.CREATE.SUCCESS',
             });
             this.displayDetailDialog = false;
           },
           error: (err: { error: { key: string } }) => {
             err.error.key && err.error.key === 'PERSIST_ENTITY_FAILED'
               ? this.msgService.error({
-                  summaryKey: '<%= featureConstantName%>_CREATION.CREATION_FAILED',
-                  detailKey: '<%= featureConstantName%>_CREATION.UNIQUE_CONSTRAINT',
+                  summaryKey: '<%= featureConstantName%>_CREATE_EDIT.CREATE.FAILED',
+                  detailKey: '<%= featureConstantName%>_CREATE_EDIT.CREATE.UNIQUE_CONSTRAINT',
                 })
               : this.msgService.error({
-                  summaryKey: '<%= featureConstantName%>_CREATION.CREATION_FAILED',
+                  summaryKey: '<%= featureConstantName%>_CREATE_EDIT.CREATE.FAILED',
                 });
           },
         });
     } else {
       this.msgService.error({
-        summaryKey: '<%= featureConstantName%>_CREATION.VALIDATION_ERROR',
+        summaryKey: '<%= featureConstantName%>_CREATE_EDIT.VALIDATION_ERROR',
       });
     }
   }
@@ -117,20 +117,20 @@ export class <%= featureClassName%>CreateEditComponent implements OnChanges {
           next: () => {
             this.searchEmitter.emit();
             this.msgService.success({
-              summaryKey: '<%= featureConstantName %>_DETAIL.UPDATE_SUCCESSFUL',
+              summaryKey: '<%= featureConstantName %>_CREATE_EDIT.UPDATE.SUCCESSFUL',
             });
             this.displayDetailDialog = false;
           },
           error: () => {
             this.msgService.error({
-              summaryKey: '<%= featureConstantName %>_DETAIL.UPDATE_ERROR',
+              summaryKey: '<%= featureConstantName %>_CREATE_EDIT.UPDATE.FAILED',
             });
             // console.error(err)
           },
         });
     } else {
       this.msgService.error({
-        summaryKey: '<%= featureConstantName %>_DETAIL.VALIDATION_ERROR',
+        summaryKey: '<%= featureConstantName %>_CREATE_EDIT.VALIDATION_ERROR',
       });
     }
   }

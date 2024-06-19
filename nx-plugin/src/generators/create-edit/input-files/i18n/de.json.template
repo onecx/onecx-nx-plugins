@@ -1,33 +1,19 @@
 {
-  "<%= featureConstantName %>_SEARCH": {
-    "HEADER": "<%= featureClassName %> Suche",
-    "SUB_HEADER": "Suchen und Anzeigen von <%= featureClassName %>",
-    "HELP_ARTICLE_ID": "Hilfeartikel",
-    "EMPTY_RESULTS": "Keine Ergebnisse.",
-    "BREADCRUMB": "Suche",
-    "INPUT_FIELDS": "ACTION S4: ADD TRANSLATION for your input fields",
-    "DIAGRAM": {
-      "SUM": "Gesamtanzahl"
+  "<%= featureConstantName %>_CREATE_EDIT": {
+    "CREATE": {
+      "SUCCESS": "Erstellung erfolgreich",
+      "FAILED": "Erstellung fehlgeschlagen",
+      "UNIQUE_CONSTRAINT": "Doppelter eindeutiger Schlüssel",      
     },
-    "HEADER_ACTIONS": {
-        "EXPORT_ALL": "Alles exportieren",
-        "SHOW_CHART": "Diagramm anzeigen",
-        "HIDE_CHART": "Diagramm ausblenden",
-        "CREATE_SEARCH_CONFIG": "Suchkonfiguration erstellen",
-        "UPDATE_SEARCH_CONFIG": "Suchkonfiguration aktualisieren",
-        "DIALOG_CONFIRM": "Bestätigen",
-        "DIALOG_CANCEL": "Abbrechen"
+    "UPDATE": {
+      "SUCCESS": "Aktualisierung erfolgreich",
+      "FAILED": "Aktualisierung fehlgeschlagen",      
     },
-    "PREDEFINED_GROUP": {
-      "DEFAULT": "Standard",
-      "EXTENDED": "Erweitert",
-      "FULL": "Vollständig"
-    },
-    "ERROR_MESSAGES": {
-        "SEARCH_RESULTS_LOADING_FAILED": "Suchergebnisse konnten nicht geladen werden.",
-        "SEARCH_CONFIG_CREATION_FAILED": "Suchkonfiguration konnte nicht erstellt werden.",
-        "SEARCH_CONFIG_UPDATE_FAILED": "Suchkonfiguration konnte nicht aktualisiert werden.",
-        "SEARCH_CONFIGS_LOADING_FAILED": "Suchkonfigurationen konnten nicht geladen werden."
+    "VALIDATION_ERROR": "Validierungs-Fehler",
+    "FORM": {
+      "CHANGE_ME": "ChangeMe",
+      "SAVE": "Speichern",
+      "CANCEL": "Abbrechen"
     }
   }
 }

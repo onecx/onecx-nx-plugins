@@ -1,33 +1,19 @@
 {
-  "<%= featureConstantName %>_SEARCH": {
-    "HEADER": "<%= featureClassName %> Search",
-    "SUB_HEADER": "Searching and displaying of <%= featureClassName %>",
-    "HELP_ARTICLE_ID": "Help Article",
-    "EMPTY_RESULTS": "No results.",
-    "BREADCRUMB": "Search",
-    "INPUT_FIELDS": "ACTION S4: ADD TRANSLATION for your input fields",
-    "DIAGRAM": {
-      "SUM": "Total"
+  "<%= featureConstantName %>_CREATE_EDIT": {
+    "CREATE": {
+      "SUCCESS": "Creation succesful",
+      "FAILED": "Creation failed",
+      "UNIQUE_CONSTRAINT": "Duplicate unique key",      
     },
-    "HEADER_ACTIONS": {
-        "EXPORT_ALL": "Export all",
-        "SHOW_CHART": "Show chart",
-        "HIDE_CHART": "Hide chart",
-        "CREATE_SEARCH_CONFIG": "Create search configuration",
-        "UPDATE_SEARCH_CONFIG": "Update search configuration",
-        "DIALOG_CONFIRM": "Confirm",
-        "DIALOG_CANCEL": "Cancel"
+    "UPDATE": {
+      "SUCCESS": "Update successful",
+      "FAILED": "Update failed",
     },
-    "PREDEFINED_GROUP": {
-      "DEFAULT": "Default",
-      "EXTENDED": "Extended",
-      "FULL": "Full"
-    },
-    "ERROR_MESSAGES": {
-        "SEARCH_RESULTS_LOADING_FAILED": "Loading search results failed.",
-        "SEARCH_CONFIG_CREATION_FAILED": "Create search configuration failed.",
-        "SEARCH_CONFIG_UPDATE_FAILED": "Update search configuration failed.",
-        "SEARCH_CONFIGS_LOADING_FAILED": "Loading search configurations failed."
+    "VALIDATION_ERROR": "Validation Error",
+    "FORM": {
+      "CHANGE_ME": "ChangeMe",
+      "SAVE": "Save",
+      "CANCEL": "Cancel"
     }
   }
 }
