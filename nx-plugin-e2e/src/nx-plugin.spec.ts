@@ -151,12 +151,49 @@ describe('nx-plugin', () => {
     });
   });
 
-  it('should add a custom naming feature', () => {
-    execSync(`nx generate @onecx/nx-plugin:feature ${featureNameCustom} --verbose`, {
+  it('should add a create-edit dialog', () => {
+    // Add all required parameters to this array with a value.
+    // As tests are non-interactive, not-added but required items will block the test
+    const requiredParameters = [
+      {
+        key: NON_INTERACTIVE_KEY,
+        value: true,
+      },
+    ];
+
+    const parameterString = requiredParameters
+      .map((o) => `--${o.key} ${o.value}`)
+      .join(' ');
+
+    execSync(
+      `nx generate @onecx/nx-plugin:create-edit ${featureName} ${parameterString} --verbose`,
+      {
+        cwd: projectDirectory,
+        stdio: 'inherit',
+        env: process.env,
+      }
+    );
+    execSync(`nx run build --skip-nx-cache`, {
       cwd: projectDirectory,
       stdio: 'inherit',
       env: process.env,
     });
+    execSync(`nx run test --skip-nx-cache --coverage`, {
+      cwd: projectDirectory,
+      stdio: 'inherit',
+      env: process.env,
+    });
+  });
+
+  it('should add a custom naming feature', () => {
+    execSync(
+      `nx generate @onecx/nx-plugin:feature ${featureNameCustom} --verbose`,
+      {
+        cwd: projectDirectory,
+        stdio: 'inherit',
+        env: process.env,
+      }
+    );
     execSync(`nx run build --skip-nx-cache`, {
       cwd: projectDirectory,
       stdio: 'inherit',
@@ -248,6 +285,64 @@ describe('nx-plugin', () => {
 
     execSync(
       `nx generate @onecx/nx-plugin:details ${featureNameCustom} ${parameterString} --verbose`,
+      {
+        cwd: projectDirectory,
+        stdio: 'inherit',
+        env: process.env,
+      }
+    );
+    execSync(`nx run build --skip-nx-cache`, {
+      cwd: projectDirectory,
+      stdio: 'inherit',
+      env: process.env,
+    });
+    execSync(`nx run test --skip-nx-cache --coverage`, {
+      cwd: projectDirectory,
+      stdio: 'inherit',
+      env: process.env,
+    });
+  });
+
+  it('should add a create-edit dialog', () => {
+    // Add all required parameters to this array with a value.
+    // As tests are non-interactive, not-added but required items will block the test
+    const requiredParameters = [
+      {
+        key: NON_INTERACTIVE_KEY,
+        value: true,
+      },
+      {
+        key: 'apiServiceName',
+        value: 'CustomService',
+      },
+      {
+        key: 'dataObjectName',
+        value: 'CustomDataObject',
+      },
+      {
+        key: 'creationRequestName',
+        value: 'CustomCreateDataObject',
+      },
+      {
+        key: 'creationResponseName',
+        value: 'DataObjectCustomCreationResponse',
+      },
+      {
+        key: 'updateRequestName',
+        value: 'DataObjectCustomUpdate',
+      },
+      {
+        key: 'updateResponseName',
+        value: 'DataObjectCustomUpdateResponse',
+      },
+    ];
+
+    const parameterString = requiredParameters
+      .map((o) => `--${o.key} ${o.value}`)
+      .join(' ');
+
+    execSync(
+      `nx generate @onecx/nx-plugin:create-edit ${featureNameCustom} ${parameterString} --verbose`,
       {
         cwd: projectDirectory,
         stdio: 'inherit',
