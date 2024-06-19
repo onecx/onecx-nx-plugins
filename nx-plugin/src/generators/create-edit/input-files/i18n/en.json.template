@@ -3,11 +3,11 @@
     "CREATE": {
       "SUCCESS": "Creation succesful",
       "FAILED": "Creation failed",
-      "UNIQUE_CONSTRAINT": "Duplicate unique key",      
+      "UNIQUE_CONSTRAINT": "Duplicate unique key"  
     },
     "UPDATE": {
       "SUCCESS": "Update successful",
-      "FAILED": "Update failed",
+      "FAILED": "Update failed"
     },
     "VALIDATION_ERROR": "Validation Error",
     "FORM": {

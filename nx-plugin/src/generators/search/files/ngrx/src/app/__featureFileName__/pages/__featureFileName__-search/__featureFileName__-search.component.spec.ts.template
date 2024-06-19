@@ -27,6 +27,7 @@ import { select<%= featureClassName %>SearchViewModel } from './<%= featureFileN
 import { initialState } from './<%= featureFileName %>-search.reducers';
 
 describe('<%= featureClassName %>SearchComponent', () => {
+  HTMLCanvasElement.prototype.getContext = jest.fn();
   let component: <%= featureClassName %>SearchComponent;
   let fixture: ComponentFixture<<%= featureClassName %>SearchComponent>;
   let store: MockStore<Store>;

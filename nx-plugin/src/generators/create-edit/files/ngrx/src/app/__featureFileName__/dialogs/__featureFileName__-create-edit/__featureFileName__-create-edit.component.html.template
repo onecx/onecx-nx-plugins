@@ -29,13 +29,13 @@
           <input
             pInputText
             type="text"
-            id="<%= featureFileName %>_detail_form_name"
+            id="<%= featureFileName %>_detail_form_changeMe"
             class="w-full pt-3 pb-2"
-            formControlName="name"
+            formControlName="changeMe"
           />
           <label
             class="ocx-required-label"
-            for="<%= featureFileName %>_detail_form_name"
+            for="<%= featureFileName %>_detail_form_changeMe"
           >
             {{ '<%= featureConstantName%>_CREATE_EDIT.FORM.CHANGE_ME' | translate }}</label
           >

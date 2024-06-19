@@ -106,12 +106,11 @@ export class OpenAPIObjectSectionUtil {
     const existStrategy = options ? options.existStrategy : 'skip';
     if (this.sectionContent[key] != null) {
       if (existStrategy == 'extend') {
-        if (this.sectionContent[key]) {
-          this.sectionContent[key] = {
-            ...this.sectionContent[key],
-            ...value,
-          };
-        }
+        this.sectionContent[key] = {
+          ...this.sectionContent[key],
+          ...value,
+        };
+        return this;
       }
       if (existStrategy == 'skip') {
         return this;

@@ -3,11 +3,11 @@
     "CREATE": {
       "SUCCESS": "Erstellung erfolgreich",
       "FAILED": "Erstellung fehlgeschlagen",
-      "UNIQUE_CONSTRAINT": "Doppelter eindeutiger Schlüssel",      
+      "UNIQUE_CONSTRAINT": "Doppelter eindeutiger Schlüssel"    
     },
     "UPDATE": {
       "SUCCESS": "Aktualisierung erfolgreich",
-      "FAILED": "Aktualisierung fehlgeschlagen",      
+      "FAILED": "Aktualisierung fehlgeschlagen" 
     },
     "VALIDATION_ERROR": "Validierungs-Fehler",
     "FORM": {

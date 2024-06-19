@@ -3,11 +3,11 @@
     "CREATE": {
       "SUCCESS": "ACTION: Add Translation",
       "FAILED": "ACTION: Add Translation",
-      "UNIQUE_CONSTRAINT": "ACTION: Add Translation",      
+      "UNIQUE_CONSTRAINT": "ACTION: Add Translation"     
     },
     "UPDATE": {
       "SUCCESS": "ACTION: Add Translation",
-      "FAILED": "ACTION: Add Translation",      
+      "FAILED": "ACTION: Add Translation"
     },
     "VALIDATION_ERROR": "ACTION: Add Translation",
     "FORM": {

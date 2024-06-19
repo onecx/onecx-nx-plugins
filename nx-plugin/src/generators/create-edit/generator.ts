@@ -194,13 +194,16 @@ function addCreateEditEventsToSearch(
 
 function adaptSearchHTML(tree: Tree, options: CreateEditGeneratorSchema) {
   const fileName = names(options.featureName).fileName;
+  const constantName = names(options.featureName).constantName;
   const propertyName = names(options.featureName).propertyName;
   const htmlSearchFilePath = `src/app/${fileName}/pages/${fileName}-search/${fileName}-search.component.html`;
 
   let htmlContent = tree.read(htmlSearchFilePath, 'utf8');
   htmlContent = htmlContent.replace(
     '<ocx-interactive-data-view',
-    `<ocx-interactive-data-view \n (editItem)="edit($event)"`
+    `<ocx-interactive-data-view 
+      (editItem)="edit($event)"
+      editPermission="${constantName}#EDIT"`
   );
   htmlContent = htmlContent.replace(
     '</>',
@@ -417,6 +420,13 @@ function adaptSearchTests(tree: Tree, options: CreateEditGeneratorSchema) {
 
   let htmlContent = tree.read(filePath, 'utf8');
   htmlContent = htmlContent.replace(
+    `chartVisible: false,`,
+    `chartVisible: false,
+     changeMode: 'CREATE',
+     dataItem: undefined,
+     displayDetailDialog: false,`
+  );
+  htmlContent = htmlContent.replace(
     "it('should export csv data on export action click'",
     `
     it('should dispatch editButtonClicked action on item edit click', async () => {
@@ -447,11 +457,11 @@ function adaptSearchTests(tree: Tree, options: CreateEditGeneratorSchema) {
       const dataTable = await dataView.getDataTable();
       const rowActionButtons = await dataTable.getActionButtons();
   
-      expect(rowActionButtons.length).toEqual(1);
-      expect(await rowActionButtons[0].getAttribute('ng-reflect-icon')).toEqual(
+      expect(rowActionButtons.length).toEqual(2);
+      expect(await rowActionButtons[1].getAttribute('ng-reflect-icon')).toEqual(
         'pi pi-pencil'
       );
-      await rowActionButtons[0].click();
+      await rowActionButtons[1].click();
   
       expect(store.dispatch).toHaveBeenCalledWith(
         ${className}SearchActions.editButtonClicked({ id: '1' })
@@ -479,55 +489,11 @@ function adaptFeatureModule(tree: Tree, options: CreateEditGeneratorSchema) {
   moduleContent = moduleContent.replace(
     `from '@ngrx/effects';`,
     `from '@ngrx/effects';  
-  import { ${className}CreateEditComponent } from './pages/${fileName}-create-edit/${fileName}-create-edit.component';`
+  import { ${className}CreateEditComponent } from './dialogs/${fileName}-create-edit/${fileName}-create-edit.component';`
   );
 
   tree.write(moduleFilePath, moduleContent);
 }
-
-// function adaptAppModule(tree: Tree) {
-//   const moduleFilePath = joinPathFragments('src/app/app.module.ts');
-//   let moduleContent = tree.read(moduleFilePath, 'utf8');
-//   if (!moduleContent.includes('providers: [providePortalDialogService(),')) {
-//     moduleContent = moduleContent.replace(
-//       'providers: [',
-//       `providers: [providePortalDialogService(),`
-//     );
-//   }
-
-//   if (
-//     !moduleContent.includes(
-//       `providePortalDialogService } from '@onecx/portal-integration-angular'`
-//     )
-//   ) {
-//     moduleContent = moduleContent.replace(
-//       `} from '@onecx/portal-integration-angular'`,
-//       `, providePortalDialogService } from '@onecx/portal-integration-angular'`
-//     );
-//   }
-
-//   tree.write(moduleFilePath, moduleContent);
-// }
-
-// function adaptFeatureRoutes(tree: Tree, options: CreateEditGeneratorSchema) {
-//   const fileName = names(options.featureName).fileName;
-//   const className = names(options.featureName).className;
-//   const routesFilePath = joinPathFragments(
-//     'src/app',
-//     fileName,
-//     fileName + '.routes.ts'
-//   );
-//   let moduleContent = tree.read(routesFilePath, 'utf8');
-//   moduleContent = moduleContent.replace(
-//     'routes: Routes = [',
-//     `routes: Routes = [ { path: '', component: ${className}SearchComponent, pathMatch: 'full' },`
-//   );
-
-//   moduleContent =
-//     `import { ${className}SearchComponent } from './pages/${fileName}-search/${fileName}-search.component';` +
-//     moduleContent;
-//   tree.write(routesFilePath, moduleContent);
-// }
 
 function addTranslations(tree: Tree, options: CreateEditGeneratorSchema) {
   const folderPath = 'src/assets/i18n/';

@@ -14,8 +14,9 @@ import {
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import {
-  Create<%= featureClassName%>,
-  <%= featureClassName%>,
+  <%= creationRequestName%>,
+  <%= updateRequestName%>,  
+  <%= dataObjectName%>,
   <%= serviceName%>,
 } from 'src/app/shared/generated';
 
@@ -25,7 +26,7 @@ import {
   styleUrls: ['./<%= featureFileName %>-create-edit.component.scss'],
 })
 export class <%= featureClassName%>CreateEditComponent implements OnChanges {
-  @Input() public dataItem: <%= featureClassName%> | undefined;
+  @Input() public dataItem: <%= dataObjectName%> | undefined;
   @Input() public changeMode = 'NEW';
   @Input() public displayDetailDialog = false;
   @Output() public displayDetailDialogChange = new EventEmitter<boolean>();
@@ -67,6 +68,7 @@ export class <%= featureClassName%>CreateEditComponent implements OnChanges {
   }
 
   public onDialogHide() {
+    this.displayDetailDialog = false;
     this.displayDetailDialogChange.emit(false);
   }
 
@@ -75,14 +77,14 @@ export class <%= featureClassName%>CreateEditComponent implements OnChanges {
    */
   public onSave() {
     this.changeMode === 'CREATE'
-      ? this.create<%= featureClassName%>Item()
-      : this.update<%= featureClassName%>Item();
+      ? this.create<%= dataObjectName%>Item()
+      : this.update<%= dataObjectName%>Item();
   }
 
-  private create<%= featureClassName%>Item() {
+  private create<%= dataObjectName%>Item() {
     if (this.formGroup.valid) {
       this.<%= featurePropertyName %>Service
-        .create<%= featureClassName%>(this.formGroup.value as Create<%= featureClassName%>)
+        .create<%= dataObjectName%>(this.formGroup.value as <%= creationRequestName%>)
         .subscribe({
           next: () => {
             this.searchEmitter.emit();
@@ -109,10 +111,10 @@ export class <%= featureClassName%>CreateEditComponent implements OnChanges {
     }
   }
 
-  private update<%= featureClassName%>Item(): void {
+  private update<%= dataObjectName%>Item(): void {
     if (this.formGroup.valid && this.itemId) {
       this.<%= featurePropertyName %>Service
-        .update<%= featureClassName%>(this.itemId, this.formGroup.value)
+        .update<%= dataObjectName%>(this.itemId, this.formGroup.value)
         .subscribe({
           next: () => {
             this.searchEmitter.emit();
