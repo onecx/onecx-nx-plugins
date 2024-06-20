@@ -109,7 +109,7 @@ export async function createEditGenerator(
   );
   Object.assign(options, parameters);
 
-  const spinner = ora(`Adding create/edit to ${options.featureName}`).start();
+  const spinner = ora(`Adding create/update to ${options.featureName}`).start();
   const directory = '.';
 
   const isNgRx = !!Object.keys(
