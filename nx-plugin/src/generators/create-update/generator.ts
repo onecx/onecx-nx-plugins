@@ -58,7 +58,7 @@ const PARAMETERS: GeneratorParameter<CreateUpdateGeneratorSchema>[] = [
     default: (values) => {
       return `Create${names(values.featureName).className}`;
     },
-    prompt: 'Provide a name for your creation request (e.g., CreateBook): ',
+    prompt: 'Provide a name for your create request (e.g., CreateBook): ',
     showInSummary: true,
     showRules: [{ showIf: (values) => values.customizeNamingForAPI }],
   },
@@ -70,7 +70,7 @@ const PARAMETERS: GeneratorParameter<CreateUpdateGeneratorSchema>[] = [
       return `${names(values.featureName).className}CreateResponse`;
     },
     prompt:
-      'Provide a name for your Creation Response (e.g., BookCreateResponse): ',
+      'Provide a name for your create response (e.g., BookCreateResponse): ',
     showInSummary: true,
     showRules: [{ showIf: (values) => values.customizeNamingForAPI }],
   },
@@ -93,7 +93,7 @@ const PARAMETERS: GeneratorParameter<CreateUpdateGeneratorSchema>[] = [
       return `${names(values.featureName).className}UpdateResponse`;
     },
     prompt:
-      'Provide a name for your Update Response (e.g., BookUpdateResponse): ',
+      'Provide a name for your update response (e.g., BookUpdateResponse): ',
     showInSummary: true,
     showRules: [{ showIf: (values) => values.customizeNamingForAPI }],
   },
@@ -555,12 +555,12 @@ function addFunctionToOpenApi(tree: Tree, options: CreateUpdateGeneratorSchema) 
         type: 'post',
         operationId: `create${dataObjectName}`,
         tags: [apiServiceName],
-        description: `This operation performs a creation.`,
+        description: `This operation performs a create.`,
       },
       {
         dataObjectName: dataObjectName,
-        creationRequestSchema: createRequestName,
-        creationResponseSchema: createResponseName,
+        createRequestName: createRequestName,
+        createResponseName: createResponseName,
       }
     ),
   });

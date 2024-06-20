@@ -2,8 +2,8 @@ import { OpenAPIDefault } from '../shared/openapi/models/openapi-default.model';
 
 interface CreateEndpointParameter {
   dataObjectName: string;
-  creationRequestSchema: string;
-  creationResponseSchema: string;
+  createRequestName: string;
+  createResponseName: string;
 }
 
 export function createCreateEndpoint(
@@ -20,7 +20,7 @@ export function createCreateEndpoint(
       content: {
         'application/json': {
           schema: {
-            $ref: `#/components/schemas/${parameter.creationRequestSchema}`,
+            $ref: `#/components/schemas/${parameter.createRequestName}`,
           },
         },
       },
@@ -40,7 +40,7 @@ export function createCreateEndpoint(
         content: {
           'application/json': {
             schema: {
-              $ref: `#/components/schemas/${parameter.creationResponseSchema}`,
+              $ref: `#/components/schemas/${parameter.createResponseName}`,
             },
           },
         },
