@@ -1,8 +1,8 @@
 <p-dialog
   header="{{
     (this.changeMode === 'UPDATE'
-      ? '<%= featureConstantName%>_CREATE_EDIT.UPDATE.HEADER'
-      : '<%= featureConstantName%>_CREATE_EDIT.CREATE.HEADER'
+      ? '<%= featureConstantName%>_CREATE_UPDATE.UPDATE.HEADER'
+      : '<%= featureConstantName%>_CREATE_UPDATE.CREATE.HEADER'
     ) | translate
   }}"
   [(visible)]="displayDetailDialog"
@@ -24,7 +24,7 @@
 >
   <form [formGroup]="formGroup">
     <div class="flex flex-wrap flex-column gap-4 justify-content-between mt-2">
-      <div [title]="'<%= featureConstantName%>_CREATE_EDIT.FORM.CHANGE_ME' | translate">
+      <div [title]="'<%= featureConstantName%>_CREATE_UPDATE.FORM.CHANGE_ME' | translate">
         <span class="p-float-label" controlErrorAnchor>
           <input
             pInputText
@@ -37,7 +37,7 @@
             class="ocx-required-label"
             for="<%= featureFileName %>_detail_form_changeMe"
           >
-            {{ '<%= featureConstantName%>_CREATE_EDIT.FORM.CHANGE_ME' | translate }}</label
+            {{ '<%= featureConstantName%>_CREATE_UPDATE.FORM.CHANGE_ME' | translate }}</label
           >
         </span>
       </div>
@@ -48,13 +48,13 @@
     <div class="flex flex-wrap justify-content-end gap-2 mb-1">
       <p-button
         id="help_detail_button_close"
-        [label]="'<%= featureConstantName%>_CREATE_EDIT.FORM.CANCEL' | translate"
+        [label]="'<%= featureConstantName%>_CREATE_UPDATE.FORM.CANCEL' | translate"
         (onClick)="onDialogHide()"
         icon="pi pi-times"
       ></p-button>
       <p-button
         id="help_detail_button_save"
-        [label]="'<%= featureConstantName%>_CREATE_EDIT.FORM.SAVE' | translate"
+        [label]="'<%= featureConstantName%>_CREATE_UPDATE.FORM.SAVE' | translate"
         (onClick)="onSave()"
         icon="pi pi-save"
         [disabled]="!formGroup.valid"

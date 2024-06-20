@@ -1,5 +1,5 @@
 {
-  "<%= featureConstantName %>_CREATE_EDIT": {
+  "<%= featureConstantName %>_CREATE_UPDATE": {
     "CREATE": {
       "SUCCESS": "Erstellung erfolgreich",
       "FAILED": "Erstellung fehlgeschlagen",

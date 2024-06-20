@@ -9,7 +9,7 @@ import {
   PortalCoreModule,
 } from '@onecx/portal-integration-angular';
 import { TranslateTestingModule } from 'ngx-translate-testing';
-import { <%= featureClassName%>CreateEditComponent } from './<%= featureFileName%>-create-edit.component';
+import { <%= featureClassName%>CreateEditComponent } from './<%= featureFileName%>-create-update.component';
 import { By } from '@angular/platform-browser';
 
 Object.defineProperty(window, 'matchMedia', {

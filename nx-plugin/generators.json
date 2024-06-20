@@ -26,10 +26,10 @@
       "schema": "./src/generators/search/schema.json",
       "description": "search generator"
     },
-    "create-edit": {
-      "factory": "./src/generators/create-edit/generator",
-      "schema": "./src/generators/create-edit/schema.json",
-      "description": "create-edit generator"
+    "create-update": {
+      "factory": "./src/generators/create-update/generator",
+      "schema": "./src/generators/create-update/schema.json",
+      "description": "create-update generator"
     },
     "feature": {
       "factory": "./src/generators/feature/generator",

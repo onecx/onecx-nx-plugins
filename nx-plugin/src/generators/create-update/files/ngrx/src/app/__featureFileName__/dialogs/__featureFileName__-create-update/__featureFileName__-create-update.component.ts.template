@@ -21,13 +21,13 @@ import {
 } from 'src/app/shared/generated';
 
 @Component({
-  selector: 'app-<%= featureFileName %>-create-edit',
-  templateUrl: './<%= featureFileName %>-create-edit.component.html',
-  styleUrls: ['./<%= featureFileName %>-create-edit.component.scss'],
+  selector: 'app-<%= featureFileName %>-create-update',
+  templateUrl: './<%= featureFileName %>-create-update.component.html',
+  styleUrls: ['./<%= featureFileName %>-create-update.component.scss'],
 })
 export class <%= featureClassName%>CreateEditComponent implements OnChanges {
   @Input() public dataItem: <%= dataObjectName%> | undefined;
-  @Input() public changeMode = 'NEW';
+  @Input() public changeMode = 'CREATE';
   @Input() public displayDetailDialog = false;
   @Output() public displayDetailDialogChange = new EventEmitter<boolean>();
   @Output() public searchEmitter = new EventEmitter();
@@ -89,24 +89,24 @@ export class <%= featureClassName%>CreateEditComponent implements OnChanges {
           next: () => {
             this.searchEmitter.emit();
             this.msgService.success({
-              summaryKey: '<%= featureConstantName%>_CREATE_EDIT.CREATE.SUCCESS',
+              summaryKey: '<%= featureConstantName%>_CREATE_UPDATE.CREATE.SUCCESS',
             });
             this.displayDetailDialog = false;
           },
           error: (err: { error: { key: string } }) => {
             err.error.key && err.error.key === 'PERSIST_ENTITY_FAILED'
               ? this.msgService.error({
-                  summaryKey: '<%= featureConstantName%>_CREATE_EDIT.CREATE.FAILED',
-                  detailKey: '<%= featureConstantName%>_CREATE_EDIT.CREATE.UNIQUE_CONSTRAINT',
+                  summaryKey: '<%= featureConstantName%>_CREATE_UPDATE.CREATE.FAILED',
+                  detailKey: '<%= featureConstantName%>_CREATE_UPDATE.CREATE.UNIQUE_CONSTRAINT',
                 })
               : this.msgService.error({
-                  summaryKey: '<%= featureConstantName%>_CREATE_EDIT.CREATE.FAILED',
+                  summaryKey: '<%= featureConstantName%>_CREATE_UPDATE.CREATE.FAILED',
                 });
           },
         });
     } else {
       this.msgService.error({
-        summaryKey: '<%= featureConstantName%>_CREATE_EDIT.VALIDATION_ERROR',
+        summaryKey: '<%= featureConstantName%>_CREATE_UPDATE.VALIDATION_ERROR',
       });
     }
   }
@@ -119,20 +119,20 @@ export class <%= featureClassName%>CreateEditComponent implements OnChanges {
           next: () => {
             this.searchEmitter.emit();
             this.msgService.success({
-              summaryKey: '<%= featureConstantName %>_CREATE_EDIT.UPDATE.SUCCESSFUL',
+              summaryKey: '<%= featureConstantName %>_CREATE_UPDATE.UPDATE.SUCCESSFUL',
             });
             this.displayDetailDialog = false;
           },
           error: () => {
             this.msgService.error({
-              summaryKey: '<%= featureConstantName %>_CREATE_EDIT.UPDATE.FAILED',
+              summaryKey: '<%= featureConstantName %>_CREATE_UPDATE.UPDATE.FAILED',
             });
             // console.error(err)
           },
         });
     } else {
       this.msgService.error({
-        summaryKey: '<%= featureConstantName %>_CREATE_EDIT.VALIDATION_ERROR',
+        summaryKey: '<%= featureConstantName %>_CREATE_UPDATE.VALIDATION_ERROR',
       });
     }
   }

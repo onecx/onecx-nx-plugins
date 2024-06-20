@@ -151,7 +151,7 @@ describe('nx-plugin', () => {
     });
   });
 
-  it('should add a create-edit dialog', () => {
+  it('should add a create-update dialog', () => {
     // Add all required parameters to this array with a value.
     // As tests are non-interactive, not-added but required items will block the test
     const requiredParameters = [
@@ -166,7 +166,7 @@ describe('nx-plugin', () => {
       .join(' ');
 
     execSync(
-      `nx generate @onecx/nx-plugin:create-edit ${featureName} ${parameterString} --verbose`,
+      `nx generate @onecx/nx-plugin:create-update ${featureName} ${parameterString} --verbose`,
       {
         cwd: projectDirectory,
         stdio: 'inherit',
@@ -303,7 +303,7 @@ describe('nx-plugin', () => {
     });
   });
 
-  it('should add a create-edit dialog', () => {
+  it('should add a create-update dialog', () => {
     // Add all required parameters to this array with a value.
     // As tests are non-interactive, not-added but required items will block the test
     const requiredParameters = [
@@ -342,7 +342,7 @@ describe('nx-plugin', () => {
       .join(' ');
 
     execSync(
-      `nx generate @onecx/nx-plugin:create-edit ${featureNameCustom} ${parameterString} --verbose`,
+      `nx generate @onecx/nx-plugin:create-update ${featureNameCustom} ${parameterString} --verbose`,
       {
         cwd: projectDirectory,
         stdio: 'inherit',

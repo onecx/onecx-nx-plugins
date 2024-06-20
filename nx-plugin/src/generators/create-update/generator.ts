@@ -178,7 +178,7 @@ function addCreateEditEventsToSearch(
   options: CreateEditGeneratorSchema
 ) {
   const fileName = names(options.featureName).fileName;
-  const htmlDetailsFilePath = `src/app/${fileName}/dialogs/${fileName}-create-edit/${fileName}-create-edit.component.html`;
+  const htmlDetailsFilePath = `src/app/${fileName}/dialogs/${fileName}-create-update/${fileName}-create-update.component.html`;
   if (tree.exists(htmlDetailsFilePath)) {
     adaptSearchActions(tree, options);
     adaptSearchEffects(tree, options);
@@ -489,7 +489,7 @@ function adaptFeatureModule(tree: Tree, options: CreateEditGeneratorSchema) {
   moduleContent = moduleContent.replace(
     `from '@ngrx/effects';`,
     `from '@ngrx/effects';  
-  import { ${className}CreateEditComponent } from './dialogs/${fileName}-create-edit/${fileName}-create-edit.component';`
+  import { ${className}CreateEditComponent } from './dialogs/${fileName}-create-update/${fileName}-create-update.component';`
   );
 
   tree.write(moduleFilePath, moduleContent);
