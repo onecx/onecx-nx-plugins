@@ -18,10 +18,10 @@ import { COMMENT_KEY, OpenAPIUtil } from '../shared/openapi/openapi.util';
 import processParams, { GeneratorParameter } from '../shared/parameters.util';
 import { renderJsonFile } from '../shared/renderJsonFile';
 import { createCreateEndpoint, createUpdateEndpoint } from './endpoint.util';
-import { CreateEditGeneratorSchema } from './schema';
+import { CreateUpdateGeneratorSchema } from './schema';
 import path = require('path');
 
-const PARAMETERS: GeneratorParameter<CreateEditGeneratorSchema>[] = [
+const PARAMETERS: GeneratorParameter<CreateUpdateGeneratorSchema>[] = [
   {
     key: 'customizeNamingForAPI',
     type: 'boolean',
@@ -101,9 +101,9 @@ const PARAMETERS: GeneratorParameter<CreateEditGeneratorSchema>[] = [
 
 export async function createEditGenerator(
   tree: Tree,
-  options: CreateEditGeneratorSchema
+  options: CreateUpdateGeneratorSchema
 ): Promise<GeneratorCallback> {
-  const parameters = await processParams<CreateEditGeneratorSchema>(
+  const parameters = await processParams<CreateUpdateGeneratorSchema>(
     PARAMETERS,
     options
   );
@@ -141,7 +141,7 @@ export async function createEditGenerator(
 
   adaptFeatureModule(tree, options);
 
-  addCreateEditEventsToSearch(tree, options);
+  addCreateUpdateEventsToSearch(tree, options);
 
   addTranslations(tree, options);
 
@@ -173,9 +173,9 @@ export async function createEditGenerator(
   };
 }
 
-function addCreateEditEventsToSearch(
+function addCreateUpdateEventsToSearch(
   tree: Tree,
-  options: CreateEditGeneratorSchema
+  options: CreateUpdateGeneratorSchema
 ) {
   const fileName = names(options.featureName).fileName;
   const htmlDetailsFilePath = `src/app/${fileName}/dialogs/${fileName}-create-update/${fileName}-create-update.component.html`;
@@ -192,7 +192,7 @@ function addCreateEditEventsToSearch(
   }
 }
 
-function adaptSearchHTML(tree: Tree, options: CreateEditGeneratorSchema) {
+function adaptSearchHTML(tree: Tree, options: CreateUpdateGeneratorSchema) {
   const fileName = names(options.featureName).fileName;
   const constantName = names(options.featureName).constantName;
   const propertyName = names(options.featureName).propertyName;
@@ -219,7 +219,7 @@ function adaptSearchHTML(tree: Tree, options: CreateEditGeneratorSchema) {
   tree.write(htmlSearchFilePath, htmlContent);
 }
 
-function adaptSearchComponent(tree: Tree, options: CreateEditGeneratorSchema) {
+function adaptSearchComponent(tree: Tree, options: CreateUpdateGeneratorSchema) {
   const fileName = names(options.featureName).fileName;
   const className = names(options.featureName).className;
   const filePath = `src/app/${fileName}/pages/${fileName}-search/${fileName}-search.component.ts`;
@@ -250,7 +250,7 @@ function adaptSearchComponent(tree: Tree, options: CreateEditGeneratorSchema) {
   tree.write(filePath, content);
 }
 
-function adaptSearchActions(tree: Tree, options: CreateEditGeneratorSchema) {
+function adaptSearchActions(tree: Tree, options: CreateUpdateGeneratorSchema) {
   const fileName = names(options.featureName).fileName;
   const filePath = `src/app/${fileName}/pages/${fileName}-search/${fileName}-search.actions.ts`;
 
@@ -271,7 +271,7 @@ function adaptSearchActions(tree: Tree, options: CreateEditGeneratorSchema) {
   tree.write(filePath, content);
 }
 
-function adaptSearchState(tree: Tree, options: CreateEditGeneratorSchema) {
+function adaptSearchState(tree: Tree, options: CreateUpdateGeneratorSchema) {
   const fileName = names(options.featureName).fileName;
   const filePath = `src/app/${fileName}/pages/${fileName}-search/${fileName}-search.state.ts`;
 
@@ -286,7 +286,7 @@ function adaptSearchState(tree: Tree, options: CreateEditGeneratorSchema) {
   tree.write(filePath, content);
 }
 
-function adaptSearchViewModel(tree: Tree, options: CreateEditGeneratorSchema) {
+function adaptSearchViewModel(tree: Tree, options: CreateUpdateGeneratorSchema) {
   const fileName = names(options.featureName).fileName;
   const filePath = `src/app/${fileName}/pages/${fileName}-search/${fileName}-search.viewmodel.ts`;
 
@@ -303,7 +303,7 @@ function adaptSearchViewModel(tree: Tree, options: CreateEditGeneratorSchema) {
   tree.write(filePath, content);
 }
 
-function adaptSearchSelectors(tree: Tree, options: CreateEditGeneratorSchema) {
+function adaptSearchSelectors(tree: Tree, options: CreateUpdateGeneratorSchema) {
   const fileName = names(options.featureName).fileName;
   const propertyName = names(options.featureName).propertyName;
   const filePath = `src/app/${fileName}/pages/${fileName}-search/${fileName}-search.selectors.ts`;
@@ -326,7 +326,7 @@ function adaptSearchSelectors(tree: Tree, options: CreateEditGeneratorSchema) {
   tree.write(filePath, content);
 }
 
-function adaptSearchReducers(tree: Tree, options: CreateEditGeneratorSchema) {
+function adaptSearchReducers(tree: Tree, options: CreateUpdateGeneratorSchema) {
   const fileName = names(options.featureName).fileName;
   const className = names(options.featureName).className;
   const filePath = `src/app/${fileName}/pages/${fileName}-search/${fileName}-search.reducers.ts`;
@@ -381,7 +381,7 @@ function adaptSearchReducers(tree: Tree, options: CreateEditGeneratorSchema) {
   tree.write(filePath, content);
 }
 
-function adaptSearchEffects(tree: Tree, options: CreateEditGeneratorSchema) {
+function adaptSearchEffects(tree: Tree, options: CreateUpdateGeneratorSchema) {
   const fileName = names(options.featureName).fileName;
   const className = names(options.featureName).className;
   const propertyName = names(options.featureName).propertyName;
@@ -412,7 +412,7 @@ function adaptSearchEffects(tree: Tree, options: CreateEditGeneratorSchema) {
   tree.write(filePath, htmlContent);
 }
 
-function adaptSearchTests(tree: Tree, options: CreateEditGeneratorSchema) {
+function adaptSearchTests(tree: Tree, options: CreateUpdateGeneratorSchema) {
   const fileName = names(options.featureName).fileName;
   const className = names(options.featureName).className;
   const propertyName = names(options.featureName).propertyName;
@@ -473,7 +473,7 @@ function adaptSearchTests(tree: Tree, options: CreateEditGeneratorSchema) {
   tree.write(filePath, htmlContent);
 }
 
-function adaptFeatureModule(tree: Tree, options: CreateEditGeneratorSchema) {
+function adaptFeatureModule(tree: Tree, options: CreateUpdateGeneratorSchema) {
   const fileName = names(options.featureName).fileName;
   const className = names(options.featureName).className;
   const moduleFilePath = joinPathFragments(
@@ -484,18 +484,18 @@ function adaptFeatureModule(tree: Tree, options: CreateEditGeneratorSchema) {
   let moduleContent = tree.read(moduleFilePath, 'utf8');
   moduleContent = moduleContent.replace(
     'declarations: [',
-    `declarations: [${className}CreateEditComponent,`
+    `declarations: [${className}CreateUpdateComponent,`
   );
   moduleContent = moduleContent.replace(
     `from '@ngrx/effects';`,
     `from '@ngrx/effects';  
-  import { ${className}CreateEditComponent } from './dialogs/${fileName}-create-update/${fileName}-create-update.component';`
+  import { ${className}CreateUpdateComponent } from './dialogs/${fileName}-create-update/${fileName}-create-update.component';`
   );
 
   tree.write(moduleFilePath, moduleContent);
 }
 
-function addTranslations(tree: Tree, options: CreateEditGeneratorSchema) {
+function addTranslations(tree: Tree, options: CreateUpdateGeneratorSchema) {
   const folderPath = 'src/assets/i18n/';
   const masterJsonPath = path.resolve(
     __dirname,
@@ -530,7 +530,7 @@ function addTranslations(tree: Tree, options: CreateEditGeneratorSchema) {
   });
 }
 
-function addFunctionToOpenApi(tree: Tree, options: CreateEditGeneratorSchema) {
+function addFunctionToOpenApi(tree: Tree, options: CreateUpdateGeneratorSchema) {
   const openApiFolderPath = 'src/assets/swagger';
   const openApiFiles = tree.children(openApiFolderPath);
   const bffOpenApiPath = openApiFiles.find((f) => f.endsWith('-bff.yaml'));

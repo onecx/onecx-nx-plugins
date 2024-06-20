@@ -9,7 +9,7 @@ import {
   PortalCoreModule,
 } from '@onecx/portal-integration-angular';
 import { TranslateTestingModule } from 'ngx-translate-testing';
-import { <%= featureClassName%>CreateEditComponent } from './<%= featureFileName%>-create-update.component';
+import { <%= featureClassName%>CreateUpdateComponent } from './<%= featureFileName%>-create-update.component';
 import { By } from '@angular/platform-browser';
 
 Object.defineProperty(window, 'matchMedia', {
@@ -26,15 +26,15 @@ Object.defineProperty(window, 'matchMedia', {
   })),
 });
 
-describe('<%= featureClassName%>CreateEditComponent', () => {
-  let component: <%= featureClassName%>CreateEditComponent;
-  let fixture: ComponentFixture<<%= featureClassName%>CreateEditComponent>;
+describe('<%= featureClassName%>CreateUpdateComponent', () => {
+  let component: <%= featureClassName%>CreateUpdateComponent;
+  let fixture: ComponentFixture<<%= featureClassName%>CreateUpdateComponent>;
 
   const mockActivatedRoute = {};
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [<%= featureClassName%>CreateEditComponent],
+      declarations: [<%= featureClassName%>CreateUpdateComponent],
       imports: [
         PortalCoreModule,
         FormsModule,
@@ -52,7 +52,7 @@ describe('<%= featureClassName%>CreateEditComponent', () => {
       ],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(<%= featureClassName%>CreateEditComponent);
+    fixture = TestBed.createComponent(<%= featureClassName%>CreateUpdateComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

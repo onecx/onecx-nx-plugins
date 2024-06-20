@@ -1,4 +1,4 @@
-export interface CreateEditGeneratorSchema {
+export interface CreateUpdateGeneratorSchema {
   featureName: string;
   customizeNamingForAPI: boolean;
   apiServiceName: string;

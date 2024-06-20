@@ -25,7 +25,7 @@ import {
   templateUrl: './<%= featureFileName %>-create-update.component.html',
   styleUrls: ['./<%= featureFileName %>-create-update.component.scss'],
 })
-export class <%= featureClassName%>CreateEditComponent implements OnChanges {
+export class <%= featureClassName%>CreateUpdateComponent implements OnChanges {
   @Input() public dataItem: <%= dataObjectName%> | undefined;
   @Input() public changeMode = 'CREATE';
   @Input() public displayDetailDialog = false;
