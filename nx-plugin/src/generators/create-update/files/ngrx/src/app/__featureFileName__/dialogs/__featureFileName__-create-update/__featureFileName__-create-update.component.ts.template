@@ -126,8 +126,7 @@ export class <%= featureClassName%>CreateUpdateComponent implements OnChanges {
           error: () => {
             this.msgService.error({
               summaryKey: '<%= featureConstantName %>_CREATE_UPDATE.UPDATE.FAILED',
-            });
-            // console.error(err)
+            });            
           },
         });
     } else {
