@@ -67,10 +67,10 @@ const PARAMETERS: GeneratorParameter<CreateUpdateGeneratorSchema>[] = [
     type: 'text',
     required: 'interactive',
     default: (values) => {
-      return `${names(values.featureName).className}CreationResponse`;
+      return `${names(values.featureName).className}CreateResponse`;
     },
     prompt:
-      'Provide a name for your Creation Response (e.g., BookCreationResponse): ',
+      'Provide a name for your Creation Response (e.g., BookCreateResponse): ',
     showInSummary: true,
     showRules: [{ showIf: (values) => values.customizeNamingForAPI }],
   },
