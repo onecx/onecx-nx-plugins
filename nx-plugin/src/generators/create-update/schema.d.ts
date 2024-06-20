@@ -3,8 +3,8 @@ export interface CreateUpdateGeneratorSchema {
   customizeNamingForAPI: boolean;
   apiServiceName: string;
   dataObjectName: string;
-  creationRequestName: string;
-  creationResponseName: string;
+  createRequestName: string;
+  createResponseName: string;
   updateRequestName: string;
   updateResponseName: string;
 }

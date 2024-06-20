@@ -14,7 +14,7 @@ import {
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import {
-  <%= creationRequestName%>,
+  <%= createRequestName%>,
   <%= updateRequestName%>,  
   <%= dataObjectName%>,
   <%= serviceName%>,
@@ -84,7 +84,7 @@ export class <%= featureClassName%>CreateUpdateComponent implements OnChanges {
   private create<%= dataObjectName%>Item() {
     if (this.formGroup.valid) {
       this.<%= featurePropertyName %>Service
-        .create<%= dataObjectName%>(this.formGroup.value as <%= creationRequestName%>)
+        .create<%= dataObjectName%>(this.formGroup.value as <%= createRequestName%>)
         .subscribe({
           next: () => {
             this.searchEmitter.emit();

@@ -320,11 +320,11 @@ describe('nx-plugin', () => {
         value: 'CustomDataObject',
       },
       {
-        key: 'creationRequestName',
+        key: 'createRequestName',
         value: 'CustomCreateDataObject',
       },
       {
-        key: 'creationResponseName',
+        key: 'createResponseName',
         value: 'DataObjectCustomCreationResponse',
       },
       {

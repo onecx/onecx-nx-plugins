@@ -52,7 +52,7 @@ const PARAMETERS: GeneratorParameter<CreateUpdateGeneratorSchema>[] = [
     showRules: [{ showIf: (values) => values.customizeNamingForAPI }],
   },
   {
-    key: 'creationRequestName',
+    key: 'createRequestName',
     type: 'text',
     required: 'interactive',
     default: (values) => {
@@ -63,7 +63,7 @@ const PARAMETERS: GeneratorParameter<CreateUpdateGeneratorSchema>[] = [
     showRules: [{ showIf: (values) => values.customizeNamingForAPI }],
   },
   {
-    key: 'creationResponseName',
+    key: 'createResponseName',
     type: 'text',
     required: 'interactive',
     default: (values) => {
@@ -132,8 +132,8 @@ export async function createEditGenerator(
       featureConstantName: names(options.featureName).constantName,
       dataObjectName: options.dataObjectName,
       serviceName: options.apiServiceName,
-      creationRequestName: options.creationRequestName,
-      creationResponseName: options.creationResponseName,
+      createRequestName: options.createRequestName,
+      createResponseName: options.createResponseName,
       updateRequestName: options.updateRequestName,
       updateResponseName: options.updateResponseName,
     }
@@ -541,8 +541,8 @@ function addFunctionToOpenApi(tree: Tree, options: CreateUpdateGeneratorSchema) 
 
   const dataObjectName = options.dataObjectName;
   const propertyName = names(options.featureName).propertyName;
-  const creationRequestName = options.creationRequestName;
-  const creationResponseName = options.creationResponseName;
+  const createRequestName = options.createRequestName;
+  const createResponseName = options.createResponseName;
   const updateRequestName = options.updateRequestName;
   const updateResponseName = options.updateResponseName;
   const apiServiceName = options.apiServiceName;
@@ -559,8 +559,8 @@ function addFunctionToOpenApi(tree: Tree, options: CreateUpdateGeneratorSchema) 
       },
       {
         dataObjectName: dataObjectName,
-        creationRequestSchema: creationRequestName,
-        creationResponseSchema: creationResponseName,
+        creationRequestSchema: createRequestName,
+        creationResponseSchema: createResponseName,
       }
     ),
   });
@@ -590,7 +590,7 @@ function addFunctionToOpenApi(tree: Tree, options: CreateUpdateGeneratorSchema) 
   // Schemas
   apiUtil
     .schemas()
-    .set(`${options.creationRequestName}`, {
+    .set(`${options.createRequestName}`, {
       type: 'object',
       properties: {
         changeMe: {
@@ -608,7 +608,7 @@ function addFunctionToOpenApi(tree: Tree, options: CreateUpdateGeneratorSchema) 
         [COMMENT_KEY]: ' ACTION S1: add additional properties here',
       },
     })
-    .set(`${options.creationResponseName}`, {
+    .set(`${options.createResponseName}`, {
       type: 'object',
       properties: {
         id: {
