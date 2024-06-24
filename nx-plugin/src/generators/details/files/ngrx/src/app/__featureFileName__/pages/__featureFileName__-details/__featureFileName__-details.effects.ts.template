@@ -27,12 +27,23 @@ export class <%= featureClassName %>DetailsEffects {
     private messageService: PortalMessageService
   ) {}
 
-  load<%= featureClassName %>ById$ = createEffect(() => {
+  navigatedToDetails$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(routerNavigatedAction),
       filterForNavigatedTo(this.router, <%= featureClassName %>DetailsComponent),
       concatLatestFrom(() => this.store.select(selectRouteParam('id'))),
-      switchMap(([, id]) =>
+      map(([, id]) => {
+        return <%= featureClassName %>DetailsActions.navigatedToDetails({
+          id,
+        });
+      })
+    );
+  });
+
+  load<%= featureClassName %>ById$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(<%= featureClassName %>DetailsActions.navigatedToDetails),
+      switchMap(({ id }) =>
         this.<%= featurePropertyName %>Service.get<%= dataObjectName %>ById(id ?? '').pipe(
           map(({ result }) =>
             <%= featureClassName %>DetailsActions.<%= featurePropertyName %>DetailsReceived({

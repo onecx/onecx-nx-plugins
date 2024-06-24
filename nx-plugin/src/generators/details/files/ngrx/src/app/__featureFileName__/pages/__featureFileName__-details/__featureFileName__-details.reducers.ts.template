@@ -21,5 +21,11 @@ export const <%= featurePropertyName %>DetailsReducer = createReducer(
       ...state,
       details: undefined,
     })
+  ),
+  on(
+    <%= featureClassName %>DetailsActions.navigatedToDetails,
+    (): <%= featureClassName %>DetailsState => ({
+      ...initialState,
+    })
   )
 );
