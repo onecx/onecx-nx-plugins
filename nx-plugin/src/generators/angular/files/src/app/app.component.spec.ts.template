@@ -12,7 +12,12 @@ describe('AppComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations:[AppComponent],
-      imports: [RouterTestingModule, PortalCoreModule.forRoot('test'), HttpClientTestingModule],
+      imports: [
+        RouterTestingModule,
+        PortalCoreModule.forRoot('test'),
+        TranslateModule.forRoot(),
+        HttpClientTestingModule,
+      ],
       providers: [{ provide: AUTH_SERVICE, useClass: MockAuthModule }]
     }).compileComponents();
   });

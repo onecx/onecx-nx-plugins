@@ -23,7 +23,7 @@ export const <%= featurePropertyName %>DetailsReducer = createReducer(
     })
   ),
   on(
-    <%= featureClassName %>DetailsActions.navigatedToDetails,
+    <%= featureClassName %>DetailsActions.navigatedToDetailsPage,
     (): <%= featureClassName %>DetailsState => ({
       ...initialState,
     })

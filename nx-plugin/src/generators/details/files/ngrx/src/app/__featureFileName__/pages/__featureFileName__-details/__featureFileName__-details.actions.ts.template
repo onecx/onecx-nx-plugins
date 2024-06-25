@@ -4,7 +4,7 @@ import { <%= dataObjectName %> } from '../../../shared/generated';
 export const <%= featureClassName %>DetailsActions = createActionGroup({
   source: '<%= featureClassName %>Details',
   events: {
-    'navigated to details': props<{
+    'navigated to details page': props<{
       id: string | undefined;
     }>(),
     '<%= featureFileName.replaceAll("-"," ") %> details received': props<{

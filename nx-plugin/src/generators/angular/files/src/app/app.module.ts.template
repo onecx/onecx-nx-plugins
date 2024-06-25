@@ -9,12 +9,10 @@ import {
   ConfigurationService,
   createTranslateLoader,
   PortalCoreModule,
-  PortalMissingTranslationHandler,
   translateServiceInitializer,
   UserService
 } from '@onecx/portal-integration-angular';
 import {
-  MissingTranslationHandler,
   TranslateLoader,
   TranslateModule,
   TranslateService,
@@ -46,11 +44,7 @@ export const commonImports = [CommonModule];
         provide: TranslateLoader,
         useFactory: createTranslateLoader,
         deps: [HttpClient, AppStateService],
-      },
-      missingTranslationHandler: {
-        provide: MissingTranslationHandler,
-        useClass: PortalMissingTranslationHandler,
-      },
+      }
     }),
   ],
   providers: [
