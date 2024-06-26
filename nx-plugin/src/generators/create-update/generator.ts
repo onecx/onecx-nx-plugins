@@ -99,7 +99,7 @@ const PARAMETERS: GeneratorParameter<CreateUpdateGeneratorSchema>[] = [
   },
 ];
 
-export async function createEditGenerator(
+export async function createUpdateGenerator(
   tree: Tree,
   options: CreateUpdateGeneratorSchema
 ): Promise<GeneratorCallback> {
@@ -178,24 +178,19 @@ function addCreateUpdateEventsToSearch(
   options: CreateUpdateGeneratorSchema
 ) {
   const fileName = names(options.featureName).fileName;
-  const htmlDetailsFilePath = `src/app/${fileName}/dialogs/${fileName}-create-update/${fileName}-create-update.component.html`;
+  const htmlDetailsFilePath = `src/app/${fileName}/pages/${fileName}-search/dialogs/${fileName}-create-update/${fileName}-create-update.component.html`;
   if (tree.exists(htmlDetailsFilePath)) {
     adaptSearchActions(tree, options);
     adaptSearchEffects(tree, options);
-    adaptSearchReducers(tree, options);
     adaptSearchComponent(tree, options);
     adaptSearchHTML(tree, options);
-    adaptSearchState(tree, options);
-    adaptSearchViewModel(tree, options);
     adaptSearchTests(tree, options);
-    adaptSearchSelectors(tree, options);
   }
 }
 
 function adaptSearchHTML(tree: Tree, options: CreateUpdateGeneratorSchema) {
   const fileName = names(options.featureName).fileName;
   const constantName = names(options.featureName).constantName;
-  const propertyName = names(options.featureName).propertyName;
   const htmlSearchFilePath = `src/app/${fileName}/pages/${fileName}-search/${fileName}-search.component.html`;
 
   let htmlContent = tree.read(htmlSearchFilePath, 'utf8');
@@ -205,23 +200,16 @@ function adaptSearchHTML(tree: Tree, options: CreateUpdateGeneratorSchema) {
       (editItem)="edit($event)"
       editPermission="${constantName}#EDIT"`
   );
-  htmlContent = htmlContent.replace(
-    '</>',
-    `<app-${fileName}-create
-      [displayDetailDialog]="vm.displayDetailDialog"      
-      [dataItem]="vm.dataItem"
-      [changeMode]="vm.changeMode"
-      (searchEmitter)="search(${propertyName}SearchFormGroup)"
-      (displayDetailDialogChange)="onDetailClose()"
-    ></app-${fileName}-create>
-    </ocx-portal-page>`
-  );
   tree.write(htmlSearchFilePath, htmlContent);
 }
 
-function adaptSearchComponent(tree: Tree, options: CreateUpdateGeneratorSchema) {
+function adaptSearchComponent(
+  tree: Tree,
+  options: CreateUpdateGeneratorSchema
+) {
   const fileName = names(options.featureName).fileName;
   const className = names(options.featureName).className;
+  const constantName = names(options.featureName).constantName;
   const filePath = `src/app/${fileName}/pages/${fileName}-search/${fileName}-search.component.ts`;
 
   let content = tree.read(filePath, 'utf8');
@@ -231,14 +219,20 @@ function adaptSearchComponent(tree: Tree, options: CreateUpdateGeneratorSchema) 
     } from '@onecx/portal-integration-angular';`
   );
   content = content.replace(
+    'const actions: Action[] = [',
+    `const actions: Action[] = [
+    {
+     labelKey: '${constantName}_CREATE_UPDATE.ACTION.CREATE',
+     icon: PrimeIcons.PLUS,
+     show: 'always',
+     actionCallback: () => this.create(),
+    },`
+  );
+  content = content.replace(
     'resetSearch',
     `
-    onCreate() {
+    create() {
       this.store.dispatch(${className}SearchActions.createButtonClicked());
-    }
-
-    onDetailClose() {
-      this.store.dispatch(${className}SearchActions.detailDialogClose());
     }
 
     edit({ id }: RowListGridData) {
@@ -259,125 +253,19 @@ function adaptSearchActions(tree: Tree, options: CreateUpdateGeneratorSchema) {
     'events: {',
     `events: {
       'Create button clicked': emptyProps(),
-      'Detail Dialog close': emptyProps(),
       'Edit button clicked': props<{
         id: number | string;
       }>(),
-      'Data Item set': props<{
-        dataItem: ${options.dataObjectName};
+      'Create cancelled': emptyProps(),
+      'Update cancelled': emptyProps(),      
+      'Create failed': props<{
+        error: string | null;
       }>(),
+      'Update failed': props<{
+        error: string | null;
+      }>(),      
     `
   );
-  tree.write(filePath, content);
-}
-
-function adaptSearchState(tree: Tree, options: CreateUpdateGeneratorSchema) {
-  const fileName = names(options.featureName).fileName;
-  const filePath = `src/app/${fileName}/pages/${fileName}-search/${fileName}-search.state.ts`;
-
-  let content = tree.read(filePath, 'utf8');
-  content = content.replace(
-    'SearchState {',
-    `SearchState {
-        changeMode: 'CREATE' | 'UPDATE';
-        displayDetailDialog: boolean;
-        dataItem: ${options.dataObjectName} | undefined;`
-  );
-  tree.write(filePath, content);
-}
-
-function adaptSearchViewModel(tree: Tree, options: CreateUpdateGeneratorSchema) {
-  const fileName = names(options.featureName).fileName;
-  const filePath = `src/app/${fileName}/pages/${fileName}-search/${fileName}-search.viewmodel.ts`;
-
-  let content = tree.read(filePath, 'utf8');
-  content =
-    `import { ${options.dataObjectName} } from 'src/app/shared/generated'` +
-    content.replace(
-      'ViewModel {',
-      `ViewModel {
-        changeMode: 'CREATE' | 'UPDATE';
-        displayDetailDialog: boolean;
-        dataItem: ${options.dataObjectName} | undefined;`
-    );
-  tree.write(filePath, content);
-}
-
-function adaptSearchSelectors(tree: Tree, options: CreateUpdateGeneratorSchema) {
-  const fileName = names(options.featureName).fileName;
-  const propertyName = names(options.featureName).propertyName;
-  const filePath = `src/app/${fileName}/pages/${fileName}-search/${fileName}-search.selectors.ts`;
-
-  let content = tree.read(filePath, 'utf8');
-  content = content.replace(
-    'SearchSelectors.selectChartVisible',
-    `SearchSelectors.selectChartVisible,
-    ${propertyName}SearchSelectors.selectChangeMode,
-    ${propertyName}SearchSelectors.selectDisplayDetailDialog,
-    ${propertyName}SearchSelectors.selectDataItem`
-  );
-  content = content.replaceAll(
-    `chartVisible`,
-    `chartVisible,
-    changeMode,
-    displayDetailDialog,
-    dataItem`
-  );
-  tree.write(filePath, content);
-}
-
-function adaptSearchReducers(tree: Tree, options: CreateUpdateGeneratorSchema) {
-  const fileName = names(options.featureName).fileName;
-  const className = names(options.featureName).className;
-  const filePath = `src/app/${fileName}/pages/${fileName}-search/${fileName}-search.reducers.ts`;
-
-  let content = tree.read(filePath, 'utf8');
-
-  content = content.replace(
-    `SearchState = {`,
-    `SearchState = {
-        changeMode: 'CREATE',
-        displayDetailDialog: false,
-        dataItem: undefined,`
-  );
-
-  content = content.replace(
-    `createReducer(
-  initialState,`,
-    `createReducer(
-  initialState,
-     on(
-    ${className}SearchActions.createButtonClicked,
-    (state: ${className}SearchState): ${className}SearchState => ({
-      ...state,
-      changeMode: 'CREATE',
-      displayDetailDialog: true,
-      dataItem: { id: 'new' },
-    })
-  ),
-  on(
-    ${className}SearchActions.detailDialogClose,
-    (state: ${className}SearchState): ${className}SearchState => ({
-      ...state,
-      changeMode: 'CREATE',
-      displayDetailDialog: false,
-      dataItem: undefined,
-    })
-  ),
-  on(
-    ${className}SearchActions.dataItemSet,
-    (
-      state: ${className}SearchState,
-      { dataItem }
-    ): ${className}SearchState => ({
-      ...state,
-      changeMode: 'UPDATE',
-      displayDetailDialog: true,
-      dataItem: dataItem,
-    })
-  ),`
-  );
-
   tree.write(filePath, content);
 }
 
@@ -385,31 +273,140 @@ function adaptSearchEffects(tree: Tree, options: CreateUpdateGeneratorSchema) {
   const fileName = names(options.featureName).fileName;
   const className = names(options.featureName).className;
   const propertyName = names(options.featureName).propertyName;
+  const constantName = names(options.featureName).constantName;
   const filePath = `src/app/${fileName}/pages/${fileName}-search/${fileName}-search.effects.ts`;
 
-  let htmlContent = tree.read(filePath, 'utf8');
-  htmlContent =
-    `import { selectUrl } from 'src/app/shared/selectors/router.selectors';` +
-    htmlContent.replace(
-      'searchByUrl$',
-      `editButtonClicked$ = createEffect(() => {
+  let content = tree.read(filePath, 'utf8');
+  content =
+    `import { PortalDialogService } from '@onecx/portal-integration-angular';` +
+    `import { mergeMap } from 'rxjs';` +
+    `import {
+      ${options.dataObjectName},
+      ${options.createRequestName},
+      ${options.updateRequestName},
+    } from 'src/app/shared/generated';` +
+    `import { ${className}CreateUpdateComponent } from './dialogs/${options.featureName}-create-update/${options.featureName}-create-update.component';` +
+    content.replace(
+      'constructor(',
+      `constructor(
+      private portalDialogService: PortalDialogService,`
+    );
+  content = content.replace(
+    'searchByUrl$',
+    `editButtonClicked$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(${className}SearchActions.editButtonClicked),
       concatLatestFrom(() =>
         this.store.select(${propertyName}SearchSelectors.selectResults)
       ),
       map(([action, results]) => {
-        const dataItem = results.filter((item) => item.id == action.id)[0];
-        return ${className}SearchActions.dataItemSet({
-          dataItem,
+        return results.filter((item) => item.id == action.id)[0];        
+      }),
+      mergeMap((dataItem) => {
+        return this.portalDialogService.openDialog< ${options.updateRequestName}>(
+          '${constantName}_CREATE_UPDATE.UPDATE.HEADER',
+          {
+            type: ${className}CreateUpdateComponent,
+            inputs: {
+              dataItem,
+              changeMode: 'UPDATE',
+            },
+          },
+          '${constantName}_CREATE_UPDATE.FORM.SAVE',
+          '${constantName}_CREATE_UPDATE.FORM.CANCEL', {
+            baseZIndex: 100
+          }
+        );
+      }),
+      concatLatestFrom(() => this.store.select(selectSearchCriteria)),
+      switchMap(([dialogResult, searchCriteria]) => {
+        if (dialogResult.button == 'secondary') {
+          return of(${className}SearchActions.updateCancelled());
+        }
+        const dataItemId = (dialogResult.result as ${options.dataObjectName}).id ?? '';
+        const dataItem = dialogResult.result as ${options.updateRequestName};
+        return this.${propertyName}Service
+          .update${options.dataObjectName}(dataItemId, dataItem)
+          .pipe(
+            map(() => {
+              this.messageService.success({
+                summaryKey: '${constantName}_CREATE_UPDATE.UPDATE.SUCCESS',
+              });
+              return ${className}SearchActions.searchButtonClicked({
+                searchCriteria,
+              });
+            })
+          );
+      }),
+      catchError((error) => {
+        this.messageService.error({
+          summaryKey: '${constantName}_CREATE_UPDATE.UPDATE.ERROR',
         });
+        return of(
+          ${className}SearchActions.updateFailed({
+            error,
+          })
+        );
       })
     );
   });
-    
+
+  createButtonClicked$ = createEffect(
+    () => {
+      return this.actions$.pipe(
+        ofType(${className}SearchActions.createButtonClicked),
+        switchMap(() => {
+          return this.portalDialogService.openDialog< ${options.createRequestName}>(
+            '${constantName}_CREATE_UPDATE.CREATE.HEADER',
+            {
+              type: ${className}CreateUpdateComponent,
+              inputs: {
+                dataItem: {},
+                changeMode: 'CREATE',
+              },
+            },
+            '${constantName}_CREATE_UPDATE.FORM.SAVE',
+            '${constantName}_CREATE_UPDATE.FORM.CANCEL', {
+              baseZIndex: 100
+            }
+          );
+        }),
+        concatLatestFrom(() => this.store.select(selectSearchCriteria)),
+        switchMap(([dialogResult, searchCriteria]) => {
+          if (dialogResult.button == 'secondary') {
+            return of(${className}SearchActions.createCancelled());
+          }
+          const dataItem = dialogResult.result as ${options.createRequestName};
+          return this.${propertyName}Service
+            .create${options.dataObjectName}(dataItem)
+            .pipe(
+              map(() => {
+                this.messageService.success({
+                  summaryKey: '${constantName}_CREATE_UPDATE.CREATE.SUCCESS',
+                });
+                return ${className}SearchActions.searchButtonClicked({
+                  searchCriteria,
+                });
+              })
+            );
+        }),
+        catchError((error) => {
+          this.messageService.error({
+            summaryKey: '${constantName}_CREATE_UPDATE.CREATE.ERROR',
+          });
+          return of(
+            ${className}SearchActions.createFailed({
+              error,
+            })
+          );
+        })
+      );
+    }
+  );
+
     searchByUrl$`
-    );
-  tree.write(filePath, htmlContent);
+  );
+  tree.write(filePath, content);
 }
 
 function adaptSearchTests(tree: Tree, options: CreateUpdateGeneratorSchema) {
@@ -419,13 +416,7 @@ function adaptSearchTests(tree: Tree, options: CreateUpdateGeneratorSchema) {
   const filePath = `src/app/${fileName}/pages/${fileName}-search/${fileName}-search.component.spec.ts`;
 
   let htmlContent = tree.read(filePath, 'utf8');
-  htmlContent = htmlContent.replace(
-    `chartVisible: false,`,
-    `chartVisible: false,
-     changeMode: 'CREATE',
-     dataItem: undefined,
-     displayDetailDialog: false,`
-  );
+
   htmlContent = htmlContent.replace(
     "it('should export csv data on export action click'",
     `
@@ -487,9 +478,16 @@ function adaptFeatureModule(tree: Tree, options: CreateUpdateGeneratorSchema) {
     `declarations: [${className}CreateUpdateComponent,`
   );
   moduleContent = moduleContent.replace(
+    'declarations:',
+    `
+    providers: [providePortalDialogService()],
+    declarations:`
+  );
+  moduleContent = moduleContent.replace(
     `from '@ngrx/effects';`,
     `from '@ngrx/effects';  
-  import { ${className}CreateUpdateComponent } from './dialogs/${fileName}-create-update/${fileName}-create-update.component';`
+     import { ${className}CreateUpdateComponent } from './pages/${fileName}-search/dialogs/${fileName}-create-update/${fileName}-create-update.component';
+     import { providePortalDialogService } from '@onecx/portal-integration-angular';`
   );
 
   tree.write(moduleFilePath, moduleContent);
@@ -530,7 +528,10 @@ function addTranslations(tree: Tree, options: CreateUpdateGeneratorSchema) {
   });
 }
 
-function addFunctionToOpenApi(tree: Tree, options: CreateUpdateGeneratorSchema) {
+function addFunctionToOpenApi(
+  tree: Tree,
+  options: CreateUpdateGeneratorSchema
+) {
   const openApiFolderPath = 'src/assets/swagger';
   const openApiFiles = tree.children(openApiFolderPath);
   const bffOpenApiPath = openApiFiles.find((f) => f.endsWith('-bff.yaml'));
@@ -687,4 +688,4 @@ function addFunctionToOpenApi(tree: Tree, options: CreateUpdateGeneratorSchema) 
   );
 }
 
-export default createEditGenerator;
+export default createUpdateGenerator;

@@ -1,15 +1,18 @@
 {
   "<%= featureConstantName %>_CREATE_UPDATE": {
+    "ACTION": {
+      "CREATE": "Erstellen"
+    },
     "CREATE": {
+      "HEADER": "Neues <%= featureClassName %> erstellen",
       "SUCCESS": "Erstellung erfolgreich",
-      "FAILED": "Erstellung fehlgeschlagen",
-      "UNIQUE_CONSTRAINT": "Doppelter eindeutiger Schlüssel"    
+      "ERROR": "Erstellung fehlgeschlagen"      
     },
     "UPDATE": {
+      "HEADER": "<%= featureClassName %> bearbeiten",
       "SUCCESS": "Aktualisierung erfolgreich",
-      "FAILED": "Aktualisierung fehlgeschlagen" 
+      "ERROR": "Aktualisierung fehlgeschlagen" 
     },
-    "VALIDATION_ERROR": "Validierungs-Fehler",
     "FORM": {
       "CHANGE_ME": "ChangeMe",
       "SAVE": "Speichern",

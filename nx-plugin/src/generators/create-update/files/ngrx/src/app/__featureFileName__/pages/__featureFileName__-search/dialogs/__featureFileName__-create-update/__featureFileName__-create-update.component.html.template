@@ -1,27 +1,3 @@
-<p-dialog
-  header="{{
-    (this.changeMode === 'UPDATE'
-      ? '<%= featureConstantName%>_CREATE_UPDATE.UPDATE.HEADER'
-      : '<%= featureConstantName%>_CREATE_UPDATE.CREATE.HEADER'
-    ) | translate
-  }}"
-  [(visible)]="displayDetailDialog"
-  (onHide)="onDialogHide()"
-  [baseZIndex]="10000"
-  [draggable]="true"
-  [resizable]="true"
-  [closable]="true"
-  [modal]="true"
-  [style]="{ width: '400px' }"
-  [showHeader]="true"
-  [breakpoints]="{
-    '992px': '50vw',
-    '700px': '70vw',
-    '600px': '80vw',
-    '500px': '90vw',
-    '400px': '100vw',
-      }"
->
   <form [formGroup]="formGroup">
     <div class="flex flex-wrap flex-column gap-4 justify-content-between mt-2">
       <div [title]="'<%= featureConstantName%>_CREATE_UPDATE.FORM.CHANGE_ME' | translate">
@@ -43,22 +19,3 @@
       </div>
     </div>
   </form>
-
-  <ng-template pTemplate="footer">
-    <div class="flex flex-wrap justify-content-end gap-2 mb-1">
-      <p-button
-        id="help_detail_button_close"
-        [label]="'<%= featureConstantName%>_CREATE_UPDATE.FORM.CANCEL' | translate"
-        (onClick)="onDialogHide()"
-        icon="pi pi-times"
-      ></p-button>
-      <p-button
-        id="help_detail_button_save"
-        [label]="'<%= featureConstantName%>_CREATE_UPDATE.FORM.SAVE' | translate"
-        (onClick)="onSave()"
-        icon="pi pi-save"
-        [disabled]="!formGroup.valid"
-      ></p-button>
-    </div>
-  </ng-template>
-</p-dialog>
