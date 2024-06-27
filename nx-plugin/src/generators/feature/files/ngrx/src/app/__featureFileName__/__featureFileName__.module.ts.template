@@ -6,8 +6,7 @@ import {
   createTranslateLoader,
   PortalCoreModule,
   addInitializeModuleGuard,
-  AppStateService,
-  PortalMissingTranslationHandler
+  AppStateService
 } from '@onecx/portal-integration-angular';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CalendarModule } from 'primeng/calendar';
@@ -46,11 +45,7 @@ import { EffectsModule } from '@ngrx/effects';
         provide: TranslateLoader,
         useFactory: createTranslateLoader,
         deps: [HttpClient, AppStateService],
-      },
-      missingTranslationHandler: {
-        provide: MissingTranslationHandler,
-        useClass: PortalMissingTranslationHandler,
-      },
+      }
     }),
   ],
 })
