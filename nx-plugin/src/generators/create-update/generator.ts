@@ -448,11 +448,17 @@ function adaptSearchTests(tree: Tree, options: CreateUpdateGeneratorSchema) {
       const dataTable = await dataView.getDataTable();
       const rowActionButtons = await dataTable.getActionButtons();
   
-      expect(rowActionButtons.length).toEqual(2);
-      expect(await rowActionButtons[1].getAttribute('ng-reflect-icon')).toEqual(
-        'pi pi-pencil'
-      );
-      await rowActionButtons[1].click();
+      expect(rowActionButtons.length).toBeGreaterThan(0);
+      let editButton;
+      for (const actionButton of rowActionButtons) {
+        const icon = await actionButton.getAttribute('ng-reflect-icon');
+        expect(icon).toBeTruthy();;
+        if (icon == 'pi pi-pencil') {
+          editButton = actionButton;
+        }
+      }
+      expect(editButton).toBeTruthy();
+      editButton?.click();
   
       expect(store.dispatch).toHaveBeenCalledWith(
         ${className}SearchActions.editButtonClicked({ id: '1' })

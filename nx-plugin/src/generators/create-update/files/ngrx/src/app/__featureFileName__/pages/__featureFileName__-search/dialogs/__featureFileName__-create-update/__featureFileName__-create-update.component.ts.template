@@ -48,7 +48,7 @@ export class <%= featureClassName%>CreateUpdateComponent
   constructor() {
     this.formGroup = new FormGroup({
       changeMe: new FormControl(null, [Validators.maxLength(255)]),
-      # ACTION C3: Add form fields
+      // ACTION C3: Add form fields
     });
     this.formGroup.statusChanges.subscribe((status) => {
       if (status == 'VALID') {
