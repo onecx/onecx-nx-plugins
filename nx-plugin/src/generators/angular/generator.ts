@@ -60,6 +60,7 @@ export async function angularGenerator(
       propertyName: names(options.name).propertyName,
     }
   );
+
   const oneCXLibVersion = '^4.34.0';
   addDependenciesToPackageJson(
     tree,
