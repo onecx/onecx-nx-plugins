@@ -1,15 +1,18 @@
 {
   "<%= featureConstantName %>_CREATE_UPDATE": {
+    "ACTION": {
+      "CREATE": "Erstellen"
+    },
     "CREATE": {
+      "HEADER": "ACTION: Add Translation",
       "SUCCESS": "ACTION: Add Translation",
-      "FAILED": "ACTION: Add Translation",
-      "UNIQUE_CONSTRAINT": "ACTION: Add Translation"     
+      "ERROR": "ACTION: Add Translation"     
     },
     "UPDATE": {
       "SUCCESS": "ACTION: Add Translation",
-      "FAILED": "ACTION: Add Translation"
-    },
-    "VALIDATION_ERROR": "ACTION: Add Translation",
+      "FAILED": "ACTION: Add Translation",
+      "ERROR": "ACTION: Add Translation" 
+    },    
     "FORM": {
       "CHANGE_ME": "ACTION: Add Translation",
       "SAVE": "ACTION: Add Translation",
