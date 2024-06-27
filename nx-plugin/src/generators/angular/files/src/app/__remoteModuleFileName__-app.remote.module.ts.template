@@ -6,7 +6,6 @@ import { StoreRouterConnectingModule } from '@ngrx/router-store';
 import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import {
-  MissingTranslationHandler,
   TranslateLoader,
   TranslateModule
 } from '@ngx-translate/core';
@@ -15,8 +14,7 @@ import {
   AppStateService,
   ConfigurationService,
   createTranslateLoader,
-  PortalCoreModule,
-  PortalMissingTranslationHandler
+  PortalCoreModule
 } from '@onecx/portal-integration-angular';
 import { routes } from './app-routing.module';
 import { commonImports } from './app.module';
@@ -47,11 +45,7 @@ effectProvidersForWorkaround.forEach(p => p.ɵprov.providedIn = null);
         provide: TranslateLoader,
         useFactory: createTranslateLoader,
         deps: [HttpClient, AppStateService],
-      },
-      missingTranslationHandler: {
-        provide: MissingTranslationHandler,
-        useClass: PortalMissingTranslationHandler,
-      },
+      }
     }),
     SharedModule,
     StoreModule.forRoot(reducers, { metaReducers }),
