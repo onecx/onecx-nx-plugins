@@ -1,0 +1,27 @@
+=== Create Create/Update Dialogs
+The fastest way to create a create and update dialogs in a feature module is to use the OneCX generator. Some projects have their own generator based on the OneCX generator. It should be clarified before starting if this is the case for the project the app is generated for. 
+
+******
+To run the generator, execute the following command: 
+
+----
+nx generate <namespaceOfTheGenerator>/nx-plugin:create-update <nameOfTheFeature> 
+----
+
+*Placeholder*: 
+
+* _<namespaceOfTheGenerator>_: For the OneCX generator use @onecx. For a project specific generator, ask for the namespace of the generators. 
+
+* _<nameOfTheFeature>_: The name the feature the details page should be created in e.g., theme 
+
+TIP: Next, the CLI will ask you whether you want to customize names for the generation.
+When answering yes, the next few questions will ask you about names for the API.
+This can be useful if you want to adapt to a legacy API. 
+When modifying names, assure that you use the same custom names for all generated components of the feature (search, details, create-update) for the data object name, and the api service name as these ones are shared.
+******
+
+After running the generator, the following actions must be taken: 
+
+[start=1]
+. xref:getting_started/create-update/extendFormFields.adoc[Extend schema and form fields]
+. xref:getting_started/create-update/commitTheChanges.adoc[Commit the changes]

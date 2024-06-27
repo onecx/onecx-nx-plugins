@@ -597,7 +597,7 @@ function addFunctionToOpenApi(
         changeMe: {
           type: 'string',
         },
-        [COMMENT_KEY]: 'ACTION S1: add additional properties here',
+        [COMMENT_KEY]: 'ACTION C1: add additional properties here',
       },
     })
     .set(`${options.updateRequestName}`, {
@@ -606,7 +606,7 @@ function addFunctionToOpenApi(
         changeMe: {
           type: 'string',
         },
-        [COMMENT_KEY]: ' ACTION S1: add additional properties here',
+        [COMMENT_KEY]: ' ACTION C1: add additional properties here',
       },
     })
     .set(`${options.createResponseName}`, {
@@ -618,7 +618,7 @@ function addFunctionToOpenApi(
         changeMe: {
           type: 'string',
         },
-        [COMMENT_KEY]: 'ACTION S1: add additional properties here',
+        [COMMENT_KEY]: 'ACTION C1: add additional properties here',
       },
     })
     .set(`${options.updateResponseName}`, {
@@ -630,7 +630,7 @@ function addFunctionToOpenApi(
         changeMe: {
           type: 'string',
         },
-        [COMMENT_KEY]: ' ACTION S1: add additional properties here',
+        [COMMENT_KEY]: ' ACTION C1: add additional properties here',
       },
     });
 

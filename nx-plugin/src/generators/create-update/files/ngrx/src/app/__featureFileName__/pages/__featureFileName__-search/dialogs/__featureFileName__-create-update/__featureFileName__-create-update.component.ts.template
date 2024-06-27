@@ -39,10 +39,7 @@ export class <%= featureClassName%>CreateUpdateComponent
   @Input() public changeMode = 'CREATE';
 
   // Form Definitions
-  public formGroup: FormGroup;
-  public columns: Column[] = [
-    { field: 'changeMe', header: 'CHANGEME' },
-  ];
+  public formGroup: FormGroup;  
 
   // Dialog Properties
   primaryButtonEnabled: EventEmitter<boolean> = new EventEmitter();
@@ -51,6 +48,7 @@ export class <%= featureClassName%>CreateUpdateComponent
   constructor() {
     this.formGroup = new FormGroup({
       changeMe: new FormControl(null, [Validators.maxLength(255)]),
+      # ACTION C3: Add form fields
     });
     this.formGroup.statusChanges.subscribe((status) => {
       if (status == 'VALID') {
