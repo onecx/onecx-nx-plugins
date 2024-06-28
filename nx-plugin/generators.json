@@ -30,6 +30,11 @@
       "factory": "./src/generators/feature/generator",
       "schema": "./src/generators/feature/schema.json",
       "description": "feature generator"
+    },
+    "standalone-angular": {
+      "factory": "./src/generators/standalone/angular/generator",
+      "schema": "./src/generators/standalone/angular/schema.json",
+      "description": "standalone angular generator"
     }
   }
 }

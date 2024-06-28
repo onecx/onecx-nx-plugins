@@ -1,0 +1,7 @@
+app:
+  name: ui
+  image:
+    repository: 'onecx-standalone/<%= fileName %>-ui'
+  routing:
+    enabled: true
+    path: /mfe/<%= propertyName %>/
