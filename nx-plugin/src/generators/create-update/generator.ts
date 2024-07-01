@@ -427,9 +427,11 @@ function adaptSearchTests(tree: Tree, options: CreateUpdateGeneratorSchema) {
 
   let htmlContent = tree.read(filePath, 'utf8');
 
-  htmlContent = htmlContent.replace(
-    "it('should export csv data on export action click'",
-    `
+  htmlContent =
+    `import { PrimeIcons } from 'primeng/api';` +
+    htmlContent.replace(
+      "it('should export csv data on export action click'",
+      `
     it('should dispatch editButtonClicked action on item edit click', async () => {
       jest.spyOn(store, 'dispatch');
   
@@ -492,7 +494,7 @@ function adaptSearchTests(tree: Tree, options: CreateUpdateGeneratorSchema) {
     });
 
     it('should export csv data on export action click'`
-  );
+    );
   tree.write(filePath, htmlContent);
 }
 
