@@ -59,8 +59,12 @@ export class <%= featureClassName %>SearchEffects {
       filterForNavigatedTo(this.router, <%= featureClassName %>SearchComponent),
       filterOutQueryParamsHaveNotChanged(this.router, <%= featurePropertyName %>SearchCriteriasSchema, false),
       concatLatestFrom(() => this.store.select(selectSearchCriteria)),
-      switchMap(([,searchCriteria]) => 
-        this.<%= featurePropertyName %>Service.search<%= dataObjectName %>s(searchCriteria).pipe(
+      switchMap(([,searchCriteria]) => this.performSearch(searchCriteria))
+    );
+  });
+
+  performSearch(searchCriteria: Record<string, any>) {
+    return this.<%= featurePropertyName %>Service.search<%= dataObjectName %>s(searchCriteria).pipe(
           map(({ results, totalNumberOfResults }) =>
             <%= featureClassName %>SearchActions.<%= featurePropertyName %>SearchResultsReceived(
               {
@@ -79,9 +83,7 @@ export class <%= featureClassName %>SearchEffects {
             )
           )
         )
-      )
-    );
-  });
+  }
 
   rehydrateChartVisibility$ = createEffect(() => {
     return this.actions$.pipe(

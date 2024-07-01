@@ -257,7 +257,9 @@ function adaptSearchActions(tree: Tree, options: CreateUpdateGeneratorSchema) {
         id: number | string;
       }>(),
       'Create cancelled': emptyProps(),
-      'Update cancelled': emptyProps(),      
+      'Update cancelled': emptyProps(),
+      'Create success': emptyProps(),
+      'Update success': emptyProps(),
       'Create failed': props<{
         error: string | null;
       }>(),
@@ -293,23 +295,36 @@ function adaptSearchEffects(tree: Tree, options: CreateUpdateGeneratorSchema) {
     );
   content = content.replace(
     'searchByUrl$',
-    `editButtonClicked$ = createEffect(() => {
+    `
+      refreshSearch$ = createEffect(() => {
+        return this.actions$.pipe(
+          ofType(
+            ${className}SearchActions.createSuccess,
+            ${className}SearchActions.updateSuccess
+          ),
+          concatLatestFrom(() => this.store.select(selectSearchCriteria)),
+          switchMap(([, searchCriteria]) => this.performSearch(searchCriteria))
+        );
+    });
+
+    editButtonClicked$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(${className}SearchActions.editButtonClicked),
       concatLatestFrom(() =>
         this.store.select(${propertyName}SearchSelectors.selectResults)
       ),
       map(([action, results]) => {
-        return results.filter((item) => item.id == action.id)[0];        
+        return results.find((item) => item.id == action.id);
       }),
       mergeMap((dataItem) => {
-        return this.portalDialogService.openDialog< ${options.updateRequestName}>(
+        return this.portalDialogService.openDialog< ${options.dataObjectName}>(
           '${constantName}_CREATE_UPDATE.UPDATE.HEADER',
           {
             type: ${className}CreateUpdateComponent,
             inputs: {
-              dataItem,
-              changeMode: 'UPDATE',
+              vm: {
+                dataItem,
+              }
             },
           },
           '${constantName}_CREATE_UPDATE.FORM.SAVE',
@@ -318,8 +333,7 @@ function adaptSearchEffects(tree: Tree, options: CreateUpdateGeneratorSchema) {
           }
         );
       }),
-      concatLatestFrom(() => this.store.select(selectSearchCriteria)),
-      switchMap(([dialogResult, searchCriteria]) => {
+      switchMap((dialogResult) => {
         if (dialogResult.button == 'secondary') {
           return of(${className}SearchActions.updateCancelled());
         }
@@ -332,9 +346,7 @@ function adaptSearchEffects(tree: Tree, options: CreateUpdateGeneratorSchema) {
               this.messageService.success({
                 summaryKey: '${constantName}_CREATE_UPDATE.UPDATE.SUCCESS',
               });
-              return ${className}SearchActions.searchButtonClicked({
-                searchCriteria,
-              });
+              return ${className}SearchActions.updateSuccess();
             })
           );
       }),
@@ -356,13 +368,14 @@ function adaptSearchEffects(tree: Tree, options: CreateUpdateGeneratorSchema) {
       return this.actions$.pipe(
         ofType(${className}SearchActions.createButtonClicked),
         switchMap(() => {
-          return this.portalDialogService.openDialog< ${options.createRequestName}>(
+          return this.portalDialogService.openDialog< ${options.dataObjectName}>(
             '${constantName}_CREATE_UPDATE.CREATE.HEADER',
             {
               type: ${className}CreateUpdateComponent,
               inputs: {
-                dataItem: {},
-                changeMode: 'CREATE',
+                vm: {
+                  dataItem: {},
+                }
               },
             },
             '${constantName}_CREATE_UPDATE.FORM.SAVE',
@@ -371,8 +384,7 @@ function adaptSearchEffects(tree: Tree, options: CreateUpdateGeneratorSchema) {
             }
           );
         }),
-        concatLatestFrom(() => this.store.select(selectSearchCriteria)),
-        switchMap(([dialogResult, searchCriteria]) => {
+        switchMap((dialogResult) => {
           if (dialogResult.button == 'secondary') {
             return of(${className}SearchActions.createCancelled());
           }
@@ -384,9 +396,7 @@ function adaptSearchEffects(tree: Tree, options: CreateUpdateGeneratorSchema) {
                 this.messageService.success({
                   summaryKey: '${constantName}_CREATE_UPDATE.CREATE.SUCCESS',
                 });
-                return ${className}SearchActions.searchButtonClicked({
-                  searchCriteria,
-                });
+                return ${className}SearchActions.createSuccess();
               })
             );
         }),
@@ -462,6 +472,22 @@ function adaptSearchTests(tree: Tree, options: CreateUpdateGeneratorSchema) {
   
       expect(store.dispatch).toHaveBeenCalledWith(
         ${className}SearchActions.editButtonClicked({ id: '1' })
+      );
+    });
+
+    it('should dispatch createButtonClicked action on create click', async () => {
+      jest.spyOn(store, 'dispatch');
+
+      const header = await ${propertyName}Search.getHeader();
+      const createButton = await (
+        await header.getPageHeader()
+      ).getInlineActionButtonByIcon(PrimeIcons.PLUS);
+
+      expect(createButton).toBeTruthy();
+      await createButton?.click();
+
+      expect(store.dispatch).toHaveBeenCalledWith(
+        ${className}SearchActions.createButtonClicked()
       );
     });
 

@@ -24,6 +24,9 @@ import {
   <%= serviceName%>,
 } from 'src/app/shared/generated';
 
+import { <%= featureClassName%>CreateUpdateViewModel } from './<%= featureFileName %>-create-update.viewmodel';
+
+
 @Component({
   selector: 'app-<%= featureFileName %>-create-update',
   templateUrl: './<%= featureFileName %>-create-update.component.html',
@@ -32,18 +35,20 @@ import {
 export class <%= featureClassName%>CreateUpdateComponent 
   implements
     DialogPrimaryButtonDisabled,
-    DialogResult<<%= createRequestName%> | <%= updateRequestName%>>,
+    DialogResult<<%= dataObjectName %>>,
     DialogButtonClicked<<%= featureClassName%>CreateUpdateComponent>,
     OnChanges {
-  @Input() public dataItem: <%= dataObjectName%> | undefined;
-  @Input() public changeMode = 'CREATE';
+
+  @Input() public vm: <%= featureClassName%>CreateUpdateViewModel = {
+    dataItem: undefined,
+  };
 
   // Form Definitions
   public formGroup: FormGroup;  
 
   // Dialog Properties
   primaryButtonEnabled: EventEmitter<boolean> = new EventEmitter();
-  dialogResult: <%= createRequestName%> | <%= updateRequestName%> = {};
+  dialogResult: <%= dataObjectName %> = {};
 
   constructor() {
     this.formGroup = new FormGroup({
@@ -60,21 +65,17 @@ export class <%= featureClassName%>CreateUpdateComponent
   }
 
   ocxDialogButtonClicked(): boolean | Observable<boolean> | Promise<boolean> | undefined {
-    if (this.changeMode == 'CREATE') {
-      this.dialogResult = this.formGroup.value;
-    } else {
-      this.dialogResult = {
-        ...this.dataItem,
-        ...this.formGroup.value,
-      };
-    }
+    this.dialogResult = {
+      ...this.vm.dataItem,
+      ...this.formGroup.value,
+    };    
     return undefined;
   }
 
   ngOnChanges() {
-    if (this.dataItem) {
+    if (this.vm.dataItem) {
       this.formGroup.patchValue({
-        ...this.dataItem,
+        ...this.vm.dataItem,
       });
     } else {
       this.formGroup.reset();
