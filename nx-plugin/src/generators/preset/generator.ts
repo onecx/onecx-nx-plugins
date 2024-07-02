@@ -2,6 +2,7 @@ import { Tree } from '@nx/devkit';
 import { PresetGeneratorSchema } from './schema';
 import angularGenerator from '../angular/generator';
 import ngrxGenerator from '../ngrx/generator';
+import standaloneNGRXGenerator from '../standalone/ngrx/generator';
 
 export async function presetGenerator(
   tree: Tree,
@@ -9,7 +10,8 @@ export async function presetGenerator(
 ) {
   const generators = {
     angular: angularGenerator,
-    ngrx: ngrxGenerator
+    ngrx: ngrxGenerator,
+    'standalone-ngrx': standaloneNGRXGenerator
   };
 
   if (!generators[options.flavor]) {

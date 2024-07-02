@@ -11,7 +11,7 @@ interface ShowRule<T> {
 }
 interface GeneratorParameterBasic<T> {
   key: string;
-  required: 'always' | 'interactive';
+  required: 'always' | 'interactive' | 'never';
   default:
     | string
     | number
@@ -22,7 +22,7 @@ interface GeneratorParameterBasic<T> {
     | number
     | boolean
     | ((values: T) => string | number | boolean);
-  prompt: string;
+  prompt?: string;
   showRules?: ShowRule<T>[];
   showInSummary?: boolean;
   choices?: string[];

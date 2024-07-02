@@ -151,7 +151,6 @@ function adaptTsConfig(tree: Tree, options: AngularGeneratorSchema) {
   fileContent = fileContent.replace(
     '"files": [',
     `"files": [
-    "src/app/${fileName}-app.remote.module.ts",
     "src/polyfills.ts",
   `
   );

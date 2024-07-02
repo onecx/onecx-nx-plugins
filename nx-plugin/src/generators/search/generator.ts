@@ -75,6 +75,12 @@ const PARAMETERS: GeneratorParameter<SearchGeneratorSchema>[] = [
     showInSummary: true,
     showRules: [{ showIf: (values) => values.customizeNamingForAPI }],
   },
+  {
+    key: 'standalone',
+    type: 'boolean',
+    required: 'never',
+    default: false,
+  }
 ];
 
 export async function searchGenerator(
@@ -112,6 +118,7 @@ export async function searchGenerator(
       serviceName: options.apiServiceName,
       searchRequestName: options.searchRequestName,
       searchResponseName: options.searchResponseName,
+      standalone: options.standalone
     }
   );
 
