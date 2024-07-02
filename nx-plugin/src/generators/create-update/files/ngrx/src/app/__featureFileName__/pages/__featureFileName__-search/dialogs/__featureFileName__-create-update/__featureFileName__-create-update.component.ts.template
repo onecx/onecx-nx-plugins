@@ -39,7 +39,7 @@ export class <%= featureClassName%>CreateUpdateComponent
     OnInit {
 
   @Input() public vm: <%= featureClassName%>CreateUpdateViewModel = {
-    dataItem: undefined,
+    toEditItem: undefined,
   };
   
   public formGroup: FormGroup;  
@@ -63,16 +63,16 @@ export class <%= featureClassName%>CreateUpdateComponent
 
   ocxDialogButtonClicked(): boolean | Observable<boolean> | Promise<boolean> | undefined {
     this.dialogResult = {
-      ...this.vm.dataItem,
+      ...this.vm.toEditItem,
       ...this.formGroup.value,
     };    
     return undefined;
   }
 
   ngOnInit() {
-    if (this.vm.dataItem) {
+    if (this.vm.toEditItem) {
       this.formGroup.patchValue({
-        ...this.vm.dataItem,
+        ...this.vm.toEditItem,
       });
     } else {
       this.formGroup.reset();

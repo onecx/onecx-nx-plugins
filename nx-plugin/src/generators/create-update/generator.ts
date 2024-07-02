@@ -316,14 +316,14 @@ function adaptSearchEffects(tree: Tree, options: CreateUpdateGeneratorSchema) {
       map(([action, results]) => {
         return results.find((item) => item.id == action.id);
       }),
-      mergeMap((dataItem) => {
+      mergeMap((toEditItem) => {
         return this.portalDialogService.openDialog< ${options.dataObjectName}>(
           '${constantName}_CREATE_UPDATE.UPDATE.HEADER',
           {
             type: ${className}CreateUpdateComponent,
             inputs: {
               vm: {
-                dataItem,
+                toEditItem,
               }
             },
           },
@@ -337,10 +337,10 @@ function adaptSearchEffects(tree: Tree, options: CreateUpdateGeneratorSchema) {
         if (dialogResult.button == 'secondary') {
           return of(${className}SearchActions.updateCancelled());
         }
-        const dataItemId = (dialogResult.result as ${options.dataObjectName}).id ?? '';
-        const dataItem = dialogResult.result as ${options.updateRequestName};
+        const toEditItemId = (dialogResult.result as ${options.dataObjectName}).id ?? '';
+        const toEditItem = dialogResult.result as ${options.updateRequestName};
         return this.${propertyName}Service
-          .update${options.dataObjectName}(dataItemId, dataItem)
+          .update${options.dataObjectName}(toEditItemId, toEditItem)
           .pipe(
             map(() => {
               this.messageService.success({
@@ -374,7 +374,7 @@ function adaptSearchEffects(tree: Tree, options: CreateUpdateGeneratorSchema) {
               type: ${className}CreateUpdateComponent,
               inputs: {
                 vm: {
-                  dataItem: {},
+                  toEditItem: {},
                 }
               },
             },
@@ -388,9 +388,9 @@ function adaptSearchEffects(tree: Tree, options: CreateUpdateGeneratorSchema) {
           if (dialogResult.button == 'secondary') {
             return of(${className}SearchActions.createCancelled());
           }
-          const dataItem = dialogResult.result as ${options.createRequestName};
+          const toEditItem = dialogResult.result as ${options.createRequestName};
           return this.${propertyName}Service
-            .create${options.dataObjectName}(dataItem)
+            .create${options.dataObjectName}(toEditItem)
             .pipe(
               map(() => {
                 this.messageService.success({
