@@ -2,7 +2,6 @@ import {
   Component,
   EventEmitter,
   Input,
-  OnChanges,
   OnInit,
 } from '@angular/core';
 import {
@@ -37,16 +36,14 @@ export class <%= featureClassName%>CreateUpdateComponent
     DialogPrimaryButtonDisabled,
     DialogResult<<%= dataObjectName %>>,
     DialogButtonClicked<<%= featureClassName%>CreateUpdateComponent>,
-    OnChanges {
+    OnInit {
 
   @Input() public vm: <%= featureClassName%>CreateUpdateViewModel = {
     dataItem: undefined,
   };
-
-  // Form Definitions
+  
   public formGroup: FormGroup;  
-
-  // Dialog Properties
+  
   primaryButtonEnabled: EventEmitter<boolean> = new EventEmitter();
   dialogResult: <%= dataObjectName %> = {};
 
@@ -55,13 +52,13 @@ export class <%= featureClassName%>CreateUpdateComponent
       changeMe: new FormControl(null, [Validators.maxLength(255)]),
       // ACTION C3: Add form fields
     });
-    this.formGroup.statusChanges.subscribe((status) => {
-      if (status == 'VALID') {
-        this.primaryButtonEnabled.emit(true);
-      } else {
-        this.primaryButtonEnabled.emit(false);
-      }
-    });
+    this.formGroup.statusChanges
+      .pipe(
+        map((status) => {
+          return status === 'VALID';
+        })
+      )
+      .subscribe(this.primaryButtonEnabled);
   }
 
   ocxDialogButtonClicked(): boolean | Observable<boolean> | Promise<boolean> | undefined {
@@ -72,7 +69,7 @@ export class <%= featureClassName%>CreateUpdateComponent
     return undefined;
   }
 
-  ngOnChanges() {
+  ngOnInit() {
     if (this.vm.dataItem) {
       this.formGroup.patchValue({
         ...this.vm.dataItem,
