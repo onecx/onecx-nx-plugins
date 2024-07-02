@@ -1,11 +1,11 @@
 app:
   name: ui
   image:
-    repository: 'onecx/<%= fileName %>-ui'
+    repository: 'onecx<% if(standalone){ %>-standalone<% } %>/<%= fileName %>-ui'
   routing:
     enabled: true
     path: /mfe/<%= propertyName %>/
-  
+<% if(!standalone){ %>  
   operator:
     # Microfrontend
     microfrontend:
@@ -29,3 +29,4 @@ app:
             clientId: "<%= fileName %>-ui"
 
 # PIPE Config
+<% } %>

@@ -11,7 +11,6 @@ COPY dist/<%= fileName %>-ui/ $DIR_HTML
 # Application environments default values
 ENV BFF_URL http://<%= fileName %>-bff:8080/
 ENV APP_BASE_HREF /
-ENV TKIT_PORTAL_URL http://tkit-portal-server/
 
 RUN chmod 775 -R "$DIR_HTML"/assets
 USER 1001

@@ -19,7 +19,7 @@ describe('AppComponent', () => {
         TranslateTestingModule.withTranslations({}),
         HttpClientTestingModule,
       ],
-      providers: [{ provide: AUTH_SERVICE, useClass: MockAuthModule }]
+      <% if(!standalone){ %>providers: [{ provide: AUTH_SERVICE, useClass: MockAuthModule }] <% } %>
     }).compileComponents();
   });
 

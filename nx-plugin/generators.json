@@ -31,11 +31,6 @@
       "schema": "./src/generators/feature/schema.json",
       "description": "feature generator"
     },
-    "standalone-angular": {
-      "factory": "./src/generators/standalone/angular/generator",
-      "schema": "./src/generators/standalone/angular/schema.json",
-      "description": "standalone angular generator"
-    },
     "standalone-ngrx": {
       "factory": "./src/generators/standalone/ngrx/generator",
       "schema": "./src/generators/standalone/ngrx/schema.json",

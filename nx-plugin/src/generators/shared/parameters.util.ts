@@ -63,7 +63,9 @@ async function processParams<T>(
     if (typeof parameter.default == 'function') {
       parameterValues[parameter.key] = parameter.default(parameterValues);
     } else {
-      parameterValues[parameter.key] = parameter.default;
+      if (parameterValues[parameter.key] == undefined) {
+        parameterValues[parameter.key] = parameter.default;
+      }
     }
     // Check if provided by either CLI or continue with interactive
     if (argv[parameter.key] != null) {
