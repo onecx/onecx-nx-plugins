@@ -6,17 +6,23 @@
     "CREATE": {
       "HEADER": "Create <%= featureClassName %>",
       "SUCCESS": "Creation succesful",
-      "ERROR": "Creation failed"
+      "ERROR": "Creation failed",
+      "FORM": {
+        "SAVE": "Save",
+        "CANCEL": "Cancel"
+      }
     },
     "UPDATE": {
       "HEADER": "Update <%= featureClassName %>",
       "SUCCESS": "Update successful",
-      "ERROR": "Update failed"
+      "ERROR": "Update failed",
+      "FORM": {
+        "SAVE": "Save",
+        "CANCEL": "Cancel",
+      }
     },
     "FORM": {
-      "CHANGE_ME": "ChangeMe",
-      "SAVE": "Save",
-      "CANCEL": "Cancel"
+      "CHANGE_ME": "ChangeMe"
     }
   }
 }

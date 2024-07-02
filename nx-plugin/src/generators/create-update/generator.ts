@@ -327,8 +327,8 @@ function adaptSearchEffects(tree: Tree, options: CreateUpdateGeneratorSchema) {
               }
             },
           },
-          '${constantName}_CREATE_UPDATE.FORM.SAVE',
-          '${constantName}_CREATE_UPDATE.FORM.CANCEL', {
+          '${constantName}_CREATE_UPDATE.UPDATE.FORM.SAVE',
+          '${constantName}_CREATE_UPDATE.UPDATE.FORM.CANCEL', {
             baseZIndex: 100
           }
         );
@@ -378,8 +378,8 @@ function adaptSearchEffects(tree: Tree, options: CreateUpdateGeneratorSchema) {
                 }
               },
             },
-            '${constantName}_CREATE_UPDATE.FORM.SAVE',
-            '${constantName}_CREATE_UPDATE.FORM.CANCEL', {
+            '${constantName}_CREATE_UPDATE.CREATE.FORM.SAVE',
+            '${constantName}_CREATE_UPDATE.CREATE.FORM.CANCEL', {
               baseZIndex: 100
             }
           );

@@ -6,17 +6,23 @@
     "CREATE": {
       "HEADER": "Neues <%= featureClassName %> erstellen",
       "SUCCESS": "Erstellung erfolgreich",
-      "ERROR": "Erstellung fehlgeschlagen"      
+      "ERROR": "Erstellung fehlgeschlagen",      
+      "FORM": {
+        "SAVE": "Save",
+        "CANCEL": "Cancel"
+      }
     },
     "UPDATE": {
       "HEADER": "<%= featureClassName %> bearbeiten",
       "SUCCESS": "Aktualisierung erfolgreich",
-      "ERROR": "Aktualisierung fehlgeschlagen" 
+      "ERROR": "Aktualisierung fehlgeschlagen",      
+      "FORM": {
+        "SAVE": "Save",
+        "CANCEL": "Cancel"
+      }
     },
     "FORM": {
-      "CHANGE_ME": "ChangeMe",
-      "SAVE": "Speichern",
-      "CANCEL": "Abbrechen"
+      "CHANGE_ME": "ChangeMe"
     }
   }
 }

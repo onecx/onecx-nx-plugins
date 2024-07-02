@@ -6,17 +6,23 @@
     "CREATE": {
       "HEADER": "ACTION: Add Translation",
       "SUCCESS": "ACTION: Add Translation",
-      "ERROR": "ACTION: Add Translation"     
+      "ERROR": "ACTION: Add Translation",
+      "FORM": {
+        "SAVE": "ACTION: Add Translation",
+        "CANCEL": "ACTION: Add Translation"
+      }
     },
     "UPDATE": {
       "SUCCESS": "ACTION: Add Translation",
       "FAILED": "ACTION: Add Translation",
-      "ERROR": "ACTION: Add Translation" 
+      "ERROR": "ACTION: Add Translation",
+      "FORM": {
+        "SAVE": "ACTION: Add Translation",
+        "CANCEL": "ACTION: Add Translation"
+      }
     },    
     "FORM": {
-      "CHANGE_ME": "ACTION: Add Translation",
-      "SAVE": "ACTION: Add Translation",
-      "CANCEL": "ACTION: Add Translation"
+      "CHANGE_ME": "ACTION: Add Translation"
     }
   }
 }
