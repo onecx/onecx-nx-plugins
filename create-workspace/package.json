@@ -1,5 +1,5 @@
 {
-  "name": "@myonecx/create-workspace",
+  "name": "@onecx/create-workspace",
   "version": "0.0.2",
   "dependencies": {
     "create-nx-workspace": "17.3.0",
