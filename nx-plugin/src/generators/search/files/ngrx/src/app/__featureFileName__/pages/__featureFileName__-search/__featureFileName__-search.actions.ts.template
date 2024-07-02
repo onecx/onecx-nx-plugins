@@ -26,5 +26,6 @@ export const <%= featureClassName %>SearchActions = createActionGroup({
     'View mode changed': props<{
       viewMode: 'basic' | 'advanced';
     }>(),
+    'Export button clicked': emptyProps(),
   },
 });

@@ -117,14 +117,7 @@ export class <%= featureClassName %>SearchComponent implements OnInit {
 
 
   exportItems() {
-    this.viewModel$.pipe(first()).subscribe((data) => {
-      this.exportDataService.exportCsv(
-        data.displayedColumns,
-        data.results,
-        '<%= featureFileName %>.csv'
-        );  
-      }
-    )
+    this.store.dispatch(<%= featureClassName %>SearchActions.exportButtonClicked());
   }   
 
    viewModeChanged(viewMode: 'basic' | 'advanced') {

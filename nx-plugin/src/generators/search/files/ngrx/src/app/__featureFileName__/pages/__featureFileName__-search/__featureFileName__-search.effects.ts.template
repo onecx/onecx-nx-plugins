@@ -7,7 +7,7 @@ import {
 } from '../../../shared/generated';
 import { <%= featureClassName %>SearchActions } from './<%= featureFileName %>-search.actions';
 import { <%= featureClassName %>SearchComponent } from './<%= featureFileName %>-search.component';
-import {  PortalMessageService } from '@onecx/portal-integration-angular';
+import { ExportDataService, PortalMessageService } from '@onecx/portal-integration-angular';
 import {
   createQueryParamsEffect,
   filterForNavigatedTo,
@@ -20,7 +20,6 @@ import {
 import { Injectable, SkipSelf } from '@angular/core';
 import { <%= featurePropertyName %>SearchSelectors, selectSearchCriteria } from './<%= featureFileName %>-search.selectors';
 import { Action, Store } from '@ngrx/store';
-
 @Injectable()
 export class <%= featureClassName %>SearchEffects {
   constructor(
@@ -29,7 +28,8 @@ export class <%= featureClassName %>SearchEffects {
     private <%= featurePropertyName %>Service: <%= serviceName %>,    
     private router: Router,
     private store: Store,
-    private messageService: PortalMessageService    
+    private messageService: PortalMessageService,  
+    private readonly exportDataService: ExportDataService
   ) {}
 
   resetButtonClicked$ = createQueryParamsEffect(
@@ -106,6 +106,25 @@ export class <%= featureClassName %>SearchEffects {
       })
     )
   }, {dispatch: false});
+
+  exportData$ = createEffect(
+    () => {
+      return this.actions$.pipe(
+        ofType(<%= featureClassName %>SearchActions.chartVisibilityToggled),
+        concatLatestFrom(() =>
+          this.store.select(select<%= featureClassName %>SearchViewModel)
+        ),
+        map(([, viewModel]) => {
+          this.exportDataService.exportCsv(
+            viewModel.displayedColumns,
+            viewModel.results,
+            '<%= featureClassName %>.csv'
+          );
+        })
+      );
+    },
+    { dispatch: false }
+  );
 
   errorMessages: { action: Action; key: string }[] = [
     {
