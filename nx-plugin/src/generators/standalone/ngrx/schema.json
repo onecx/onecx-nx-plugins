@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/schema",
-  "$id": "Angular-standalone",
+  "$id": "ngrx-standalone",
   "title": "",
   "type": "object",
   "properties": {

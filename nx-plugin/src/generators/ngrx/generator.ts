@@ -13,17 +13,24 @@ import { NgrxGeneratorSchema } from './schema';
 import angularGenerator from '../angular/generator';
 import * as ora from 'ora';
 import { execSync } from 'child_process';
+import standaloneAngularGenerator from '../standalone/angular/generator';
 
 export async function ngrxGenerator(
   tree: Tree,
   options: NgrxGeneratorSchema
 ): Promise<GeneratorCallback> {
   const directory = '.';
-  const angularGeneratorCallback = options.skipInitAngular
-    ? () => {
-        // empty do nothing
-      }
-    : await angularGenerator(tree, options);
+  let angularGeneratorCallback;
+  if (!options.skipInitAngular) {
+    if (options.standalone) {
+      angularGeneratorCallback = await standaloneAngularGenerator(
+        tree,
+        options
+      );
+    } else {
+      angularGeneratorCallback = await angularGenerator(tree, options);
+    }
+  }
 
   const spinner = ora('Adding NgRx').start();
   generateFiles(

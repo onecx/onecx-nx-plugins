@@ -18,7 +18,7 @@ async function main() {
   // eslint-disable-next-line @typescript-eslint/no-var-requires
   const presetVersion = require('../package.json').version;
 
-  await createWorkspace(`@onecx/nx-plugin@${presetVersion}`, {
+  await createWorkspace(`@myonecx/nx-plugin@${presetVersion}`, {
     flavor,
     name,
     nxCloud: 'skip',
