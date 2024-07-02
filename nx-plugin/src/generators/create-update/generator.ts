@@ -232,11 +232,11 @@ function adaptSearchComponent(
     'resetSearch',
     `
     create() {
-      this.store.dispatch(${className}SearchActions.createButtonClicked());
+      this.store.dispatch(${className}SearchActions.create${className}ButtonClicked());
     }
 
     edit({ id }: RowListGridData) {
-      this.store.dispatch(${className}SearchActions.editButtonClicked({ id }));
+      this.store.dispatch(${className}SearchActions.edit${className}ButtonClicked({ id }));
     }
 
     resetSearch`
@@ -247,23 +247,24 @@ function adaptSearchComponent(
 function adaptSearchActions(tree: Tree, options: CreateUpdateGeneratorSchema) {
   const fileName = names(options.featureName).fileName;
   const filePath = `src/app/${fileName}/pages/${fileName}-search/${fileName}-search.actions.ts`;
+  const className = names(options.featureName).className;
 
   let content = tree.read(filePath, 'utf8');
   content = content.replace(
     'events: {',
     `events: {
-      'Create button clicked': emptyProps(),
-      'Edit button clicked': props<{
+      'Create ${className} button clicked': emptyProps(),
+      'Edit ${className} button clicked': props<{
         id: number | string;
       }>(),
-      'Create cancelled': emptyProps(),
-      'Update cancelled': emptyProps(),
-      'Create success': emptyProps(),
-      'Update success': emptyProps(),
-      'Create failed': props<{
+      'Create ${className} cancelled': emptyProps(),
+      'Update ${className} cancelled': emptyProps(),
+      'Create ${className} success': emptyProps(),
+      'Update ${className} success': emptyProps(),
+      'Create ${className} failed': props<{
         error: string | null;
       }>(),
-      'Update failed': props<{
+      'Update ${className} failed': props<{
         error: string | null;
       }>(),      
     `
@@ -299,8 +300,8 @@ function adaptSearchEffects(tree: Tree, options: CreateUpdateGeneratorSchema) {
       refreshSearch$ = createEffect(() => {
         return this.actions$.pipe(
           ofType(
-            ${className}SearchActions.createSuccess,
-            ${className}SearchActions.updateSuccess
+            ${className}SearchActions.create${className}Success,
+            ${className}SearchActions.update${className}Success
           ),
           concatLatestFrom(() => this.store.select(selectSearchCriteria)),
           switchMap(([, searchCriteria]) => this.performSearch(searchCriteria))
@@ -309,7 +310,7 @@ function adaptSearchEffects(tree: Tree, options: CreateUpdateGeneratorSchema) {
 
     editButtonClicked$ = createEffect(() => {
     return this.actions$.pipe(
-      ofType(${className}SearchActions.editButtonClicked),
+      ofType(${className}SearchActions.edit${className}ButtonClicked),
       concatLatestFrom(() =>
         this.store.select(${propertyName}SearchSelectors.selectResults)
       ),
@@ -335,7 +336,7 @@ function adaptSearchEffects(tree: Tree, options: CreateUpdateGeneratorSchema) {
       }),
       switchMap((dialogResult) => {
         if (dialogResult.button == 'secondary') {
-          return of(${className}SearchActions.updateCancelled());
+          return of(${className}SearchActions.update${className}Cancelled());
         }
         if (dialogResult.result == undefined) {
           throw new Error('DialogResult was not set as expected!');
@@ -349,7 +350,7 @@ function adaptSearchEffects(tree: Tree, options: CreateUpdateGeneratorSchema) {
               this.messageService.success({
                 summaryKey: '${constantName}_CREATE_UPDATE.UPDATE.SUCCESS',
               });
-              return ${className}SearchActions.updateSuccess();
+              return ${className}SearchActions.update${className}Success();
             })
           );
       }),
@@ -358,7 +359,7 @@ function adaptSearchEffects(tree: Tree, options: CreateUpdateGeneratorSchema) {
           summaryKey: '${constantName}_CREATE_UPDATE.UPDATE.ERROR',
         });
         return of(
-          ${className}SearchActions.updateFailed({
+          ${className}SearchActions.update${className}Failed({
             error,
           })
         );
@@ -369,7 +370,7 @@ function adaptSearchEffects(tree: Tree, options: CreateUpdateGeneratorSchema) {
   createButtonClicked$ = createEffect(
     () => {
       return this.actions$.pipe(
-        ofType(${className}SearchActions.createButtonClicked),
+        ofType(${className}SearchActions.create${className}ButtonClicked),
         switchMap(() => {
           return this.portalDialogService.openDialog< ${options.dataObjectName}>(
             '${constantName}_CREATE_UPDATE.CREATE.HEADER',
@@ -389,7 +390,7 @@ function adaptSearchEffects(tree: Tree, options: CreateUpdateGeneratorSchema) {
         }),
         switchMap((dialogResult) => {
           if (dialogResult.button == 'secondary') {
-            return of(${className}SearchActions.createCancelled());
+            return of(${className}SearchActions.create${className}Cancelled());
           }
           const toEditItem = dialogResult.result as ${options.createRequestName};
           return this.${propertyName}Service
@@ -399,7 +400,7 @@ function adaptSearchEffects(tree: Tree, options: CreateUpdateGeneratorSchema) {
                 this.messageService.success({
                   summaryKey: '${constantName}_CREATE_UPDATE.CREATE.SUCCESS',
                 });
-                return ${className}SearchActions.createSuccess();
+                return ${className}SearchActions.create${className}Success();
               })
             );
         }),
@@ -408,7 +409,7 @@ function adaptSearchEffects(tree: Tree, options: CreateUpdateGeneratorSchema) {
             summaryKey: '${constantName}_CREATE_UPDATE.CREATE.ERROR',
           });
           return of(
-            ${className}SearchActions.createFailed({
+            ${className}SearchActions.create${className}Failed({
               error,
             })
           );
@@ -435,7 +436,7 @@ function adaptSearchTests(tree: Tree, options: CreateUpdateGeneratorSchema) {
     htmlContent.replace(
       "it('should export csv data on export action click'",
       `
-    it('should dispatch editButtonClicked action on item edit click', async () => {
+    it('should dispatch edit${className}ButtonClicked action on item edit click', async () => {
       jest.spyOn(store, 'dispatch');
   
       store.overrideSelector(select${className}SearchViewModel, {
@@ -476,11 +477,11 @@ function adaptSearchTests(tree: Tree, options: CreateUpdateGeneratorSchema) {
       editButton?.click();
   
       expect(store.dispatch).toHaveBeenCalledWith(
-        ${className}SearchActions.editButtonClicked({ id: '1' })
+        ${className}SearchActions.edit${className}ButtonClicked({ id: '1' })
       );
     });
 
-    it('should dispatch createButtonClicked action on create click', async () => {
+    it('should dispatch create${className}ButtonClicked action on create click', async () => {
       jest.spyOn(store, 'dispatch');
 
       const header = await ${propertyName}Search.getHeader();
@@ -492,7 +493,7 @@ function adaptSearchTests(tree: Tree, options: CreateUpdateGeneratorSchema) {
       await createButton?.click();
 
       expect(store.dispatch).toHaveBeenCalledWith(
-        ${className}SearchActions.createButtonClicked()
+        ${className}SearchActions.create${className}ButtonClicked()
       );
     });
 
@@ -631,8 +632,9 @@ function addFunctionToOpenApi(
     .set(`${options.createRequestName}`, {
       type: 'object',
       properties: {
-        changeMe: {
-          type: 'string',
+        dataObject: {
+          type: 'object',
+          '$ref': dataObjectName
         },
         [COMMENT_KEY]: 'ACTION C1: add additional properties here',
       },
@@ -640,8 +642,9 @@ function addFunctionToOpenApi(
     .set(`${options.updateRequestName}`, {
       type: 'object',
       properties: {
-        changeMe: {
-          type: 'string',
+        dataObject: {
+          type: 'object',
+          '$ref': dataObjectName
         },
         [COMMENT_KEY]: ' ACTION C1: add additional properties here',
       },
