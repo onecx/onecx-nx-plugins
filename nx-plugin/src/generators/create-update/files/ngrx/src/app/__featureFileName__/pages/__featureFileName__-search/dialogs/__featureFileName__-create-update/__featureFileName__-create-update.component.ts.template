@@ -45,7 +45,9 @@ export class <%= featureClassName%>CreateUpdateComponent
   public formGroup: FormGroup;  
   
   primaryButtonEnabled: EventEmitter<boolean> = new EventEmitter();
-  dialogResult: <%= dataObjectName %> = {};
+  dialogResult: <%= dataObjectName %> = {
+    id: ''
+  };
 
   constructor() {
     this.formGroup = new FormGroup({
