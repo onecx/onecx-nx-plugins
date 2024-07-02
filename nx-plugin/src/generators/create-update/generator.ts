@@ -342,7 +342,9 @@ function adaptSearchEffects(tree: Tree, options: CreateUpdateGeneratorSchema) {
           throw new Error('DialogResult was not set as expected!');
         }
         const toEditItemId = dialogResult.result.id;
-        const toEditItem = dialogResult.result as ${options.updateRequestName};
+        const toEditItem = {
+            dataObject: dialogResult.result
+        } as ${options.updateRequestName};
         return this.${propertyName}Service
           .update${options.dataObjectName}(toEditItemId, toEditItem)
           .pipe(
@@ -392,9 +394,11 @@ function adaptSearchEffects(tree: Tree, options: CreateUpdateGeneratorSchema) {
           if (dialogResult.button == 'secondary') {
             return of(${className}SearchActions.create${className}Cancelled());
           }
-          const toEditItem = dialogResult.result as ${options.createRequestName};
+          const toCreateItem = {
+            dataObject: dialogResult.result
+        } as ${options.createRequestName};
           return this.${propertyName}Service
-            .create${options.dataObjectName}(toEditItem)
+            .create${options.dataObjectName}(toCreateItem)
             .pipe(
               map(() => {
                 this.messageService.success({
