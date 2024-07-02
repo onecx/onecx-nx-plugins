@@ -18,7 +18,11 @@ import {
   <%= featurePropertyName %>SearchCriteriasSchema,
 } from './<%= featureFileName %>-search.parameters';
 import { Injectable, SkipSelf } from '@angular/core';
-import { <%= featurePropertyName %>SearchSelectors, selectSearchCriteria } from './<%= featureFileName %>-search.selectors';
+import { 
+  <%= featurePropertyName %>SearchSelectors, 
+  select<%= featureClassName %>SearchViewModel, 
+  selectSearchCriteria 
+} from './<%= featureFileName %>-search.selectors';
 import { Action, Store } from '@ngrx/store';
 @Injectable()
 export class <%= featureClassName %>SearchEffects {

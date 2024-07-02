@@ -337,7 +337,10 @@ function adaptSearchEffects(tree: Tree, options: CreateUpdateGeneratorSchema) {
         if (dialogResult.button == 'secondary') {
           return of(${className}SearchActions.updateCancelled());
         }
-        const toEditItemId = (dialogResult.result as ${options.dataObjectName}).id ?? '';
+        if (dialogResult.result == undefined) {
+          throw new Error('DialogResult was not set as expected!');
+        }
+        const toEditItemId = dialogResult.result.id;
         const toEditItem = dialogResult.result as ${options.updateRequestName};
         return this.${propertyName}Service
           .update${options.dataObjectName}(toEditItemId, toEditItem)
