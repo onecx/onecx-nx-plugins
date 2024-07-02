@@ -68,7 +68,7 @@ export const <%= featurePropertyName %>SearchReducer = createReducer(
     })
   ),
   on(
-    <%= featureClassName %>Actions.displayedColumnsChanged,
+    <%= featureClassName %>SearchActions.displayedColumnsChanged,
     (state: <%= featureClassName %>SearchState, { displayedColumns }): <%= featureClassName %>SearchState => ({
       ...state,
       displayedColumns: displayedColumns.map((v) => v.id),
