@@ -10,7 +10,7 @@ import {
 import { FeatureGeneratorSchema } from './schema';
 import * as ora from 'ora';
 import { execSync } from 'child_process';
-import processParams, { GeneratorParameter } from '../shared/parameters.util';
+import processParams, { GeneratorParameter } from '../shared/parameters.utils';
 
 const PARAMETERS: GeneratorParameter<FeatureGeneratorSchema>[] = [
   {

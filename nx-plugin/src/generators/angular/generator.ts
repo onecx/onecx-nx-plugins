@@ -16,7 +16,7 @@ import { AngularGeneratorSchema } from './schema';
 import { execSync } from 'child_process';
 
 import * as ora from 'ora';
-import processParams, { GeneratorParameter } from '../shared/parameters.util';
+import processParams, { GeneratorParameter } from '../shared/parameters.utils';
 
 const PARAMETERS: GeneratorParameter<AngularGeneratorSchema>[] = [
   {
