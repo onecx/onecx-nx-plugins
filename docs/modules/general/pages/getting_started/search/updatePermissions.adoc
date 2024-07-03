@@ -5,8 +5,8 @@ To configure the search results, the following actions must be taken.
 
 If you want to adapt the permissions, adapt the `+values.yml+` in the helm folder.
 
-.Example
-[example]
+.Helm's values.yml
+[source, yml]
 ----
 permission:
     enabled: true

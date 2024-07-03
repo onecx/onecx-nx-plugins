@@ -8,7 +8,7 @@ _Adapt in File:_ `+<feature>-search.component.html+`
 * Uncomment and adapt as required
 ** `+columnId+` is the key for the diagram which shows the distribution of data of the selected column
 
-[source, typescript]
+[source, javascript]
 ----
     // ACTION: Please select the column to be displayed
     columnId = 'id';
