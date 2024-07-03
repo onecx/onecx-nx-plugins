@@ -1,7 +1,7 @@
 === Create a new OneCX app 
 The fastest way to create a new OneCX app is to use the OneCX generator. Some projects have their own generator based on the OneCX generator. It should be clarified before starting if this is the case for the project the app is generated for. 
 
-The generator supports three flavors of projects angular with and without NgRx. It is recommended to use the NgRx flavor because it leads to better structured projects and currently the support in the generator is better for the NgRx flavor. If you plan to not use any onecx-services and build a standalone app with the components of OneCX, please use `+ngrx-standalone+`.
+The generator supports three flavors of projects angular with and without NgRx. It is recommended to use the NgRx flavor because it leads to better structured projects and currently the support in the generator is better for the NgRx flavor. If you plan not to use any onecx-services and build a standalone app with the components of OneCX, please use `+ngrx-standalone+`.
 
 *****
 To run the generator, execute the following two commands: 
