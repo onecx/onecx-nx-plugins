@@ -259,8 +259,8 @@ function adaptSearchActions(tree: Tree, options: CreateUpdateGeneratorSchema) {
       }>(),
       'Create ${className} cancelled': emptyProps(),
       'Update ${className} cancelled': emptyProps(),
-      'Create ${className} success': emptyProps(),
-      'Update ${className} success': emptyProps(),
+      'Create ${className} succeeded': emptyProps(),
+      'Update ${className} succeeded': emptyProps(),
       'Create ${className} failed': props<{
         error: string | null;
       }>(),
@@ -300,8 +300,8 @@ function adaptSearchEffects(tree: Tree, options: CreateUpdateGeneratorSchema) {
       refreshSearch$ = createEffect(() => {
         return this.actions$.pipe(
           ofType(
-            ${className}SearchActions.create${className}Success,
-            ${className}SearchActions.update${className}Success
+            ${className}SearchActions.create${className}Succeeded,
+            ${className}SearchActions.update${className}Succeeded
           ),
           concatLatestFrom(() => this.store.select(selectSearchCriteria)),
           switchMap(([, searchCriteria]) => this.performSearch(searchCriteria))
@@ -352,7 +352,7 @@ function adaptSearchEffects(tree: Tree, options: CreateUpdateGeneratorSchema) {
               this.messageService.success({
                 summaryKey: '${constantName}_CREATE_UPDATE.UPDATE.SUCCESS',
               });
-              return ${className}SearchActions.update${className}Success();
+              return ${className}SearchActions.update${className}Succeeded();
             })
           );
       }),
@@ -407,7 +407,7 @@ function adaptSearchEffects(tree: Tree, options: CreateUpdateGeneratorSchema) {
                 this.messageService.success({
                   summaryKey: '${constantName}_CREATE_UPDATE.CREATE.SUCCESS',
                 });
-                return ${className}SearchActions.create${className}Success();
+                return ${className}SearchActions.create${className}Succeeded();
               })
             );
         }),
