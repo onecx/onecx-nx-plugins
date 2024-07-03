@@ -14,12 +14,13 @@ import * as fs from 'fs';
 import * as ora from 'ora';
 import { deepMerge } from '../shared/deepMerge';
 
-import { COMMENT_KEY, OpenAPIUtil } from '../shared/openapi/openapi.util';
-import processParams, { GeneratorParameter } from '../shared/parameters.util';
+
 import { renderJsonFile } from '../shared/renderJsonFile';
 import { createCreateEndpoint, createUpdateEndpoint } from './endpoint.util';
 import { CreateUpdateGeneratorSchema } from './schema';
 import path = require('path');
+import processParams, { GeneratorParameter } from '../shared/parameters.utils';
+import { COMMENT_KEY, OpenAPIUtil } from '../shared/openapi/openapi.utils';
 
 const PARAMETERS: GeneratorParameter<CreateUpdateGeneratorSchema>[] = [
   {
