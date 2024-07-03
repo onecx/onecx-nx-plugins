@@ -1,11 +1,11 @@
 import { GeneratorCallback, Tree } from '@nx/devkit';
-import { NGRXStandaloneGeneratorSchema } from './schema';
+import { NGRXStandaloneGeneratorSchema as NgRXStandaloneGeneratorSchema } from './schema';
 
 import ngrxGenerator from '../../ngrx/generator';
 
-export async function standaloneNGRXGenerator(
+export async function standaloneNgRxGenerator(
   tree: Tree,
-  options: NGRXStandaloneGeneratorSchema
+  options: NgRXStandaloneGeneratorSchema
 ): Promise<GeneratorCallback> {
   const ngrxGeneratorCallback = await ngrxGenerator(tree, {
     ...options,
@@ -16,4 +16,4 @@ export async function standaloneNGRXGenerator(
   };
 }
 
-export default standaloneNGRXGenerator;
+export default standaloneNgRxGenerator;
