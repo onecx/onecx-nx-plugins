@@ -61,12 +61,11 @@ export class <%= featureClassName%>CreateUpdateComponent
       .subscribe(this.primaryButtonEnabled);
   }
 
-  ocxDialogButtonClicked(): boolean | Observable<boolean> | Promise<boolean> | undefined {
+  ocxDialogButtonClicked() {
     this.dialogResult = {
       ...this.vm.itemToEdit,
       ...this.formGroup.value,
-    };    
-    return undefined;
+    };
   }
 
   ngOnInit() {
