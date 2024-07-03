@@ -5,7 +5,7 @@ _Adapt in File:_ `+<feature>.component.ts+`
 
 If you want to add additional header actions, you can extend the following:
 
-[source, typescript]
+[source, javascript]
 ----
 const actions: Action[] = [
     ...
@@ -13,7 +13,7 @@ const actions: Action[] = [
 ----
 
 .Example:
-[source, typescript]
+[source, javascript]
 ----
 const actions: Action[] = [
         {

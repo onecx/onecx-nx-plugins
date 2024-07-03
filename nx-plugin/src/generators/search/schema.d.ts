@@ -5,4 +5,5 @@ export interface SearchGeneratorSchema {
   dataObjectName: string;
   searchRequestName: string;
   searchResponseName: string;
+  standalone?: boolean;
 }

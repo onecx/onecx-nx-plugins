@@ -20,7 +20,7 @@ describe('AppComponent', () => {
         TranslateTestingModule.withTranslations('en', require('./../assets/i18n/en.json'))
           .withTranslations('de', require('./../assets/i18n/de.json')),
       ],
-      providers: [{ provide: AUTH_SERVICE, useClass: MockAuthModule }]
+      <% if(!standalone){ %>providers: [{ provide: AUTH_SERVICE, useClass: MockAuthModule }] <% } %>
     }).compileComponents();
   });
 

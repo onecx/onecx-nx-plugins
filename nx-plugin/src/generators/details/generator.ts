@@ -16,8 +16,8 @@ import { deepMerge } from '../shared/deepMerge';
 import { renderJsonFile } from '../shared/renderJsonFile';
 import { DetailsGeneratorSchema } from './schema';
 import path = require('path');
-import processParams, { GeneratorParameter } from '../shared/parameters.util';
-import { COMMENT_KEY, OpenAPIUtil } from '../shared/openapi/openapi.util';
+import processParams, { GeneratorParameter } from '../shared/parameters.utils';
+import { COMMENT_KEY, OpenAPIUtil } from '../shared/openapi/openapi.utils';
 
 const PARAMETERS: GeneratorParameter<DetailsGeneratorSchema>[] = [
   {

@@ -4,7 +4,7 @@ The fastest way to create a new feature module that works with OneCX you can use
 ******
 To generate a feature, execute the following command:
 ----
-nx generate <namespaceOfTheGenerator>/nx-plugin:feature <nameOfTheFeature> 
+nx generate <namespaceOfTheGenerator>/nx-plugin:feature <nameOfTheFeature> [--standalone]
 ----
  
 
@@ -13,6 +13,11 @@ nx generate <namespaceOfTheGenerator>/nx-plugin:feature <nameOfTheFeature>
 * _<namespaceOfTheGenerator>_: For the OneCX generator use @onecx. For a project specific generator, ask for the namespace of the generators. 
 
 * _<nameOfTheFeature>_: The name of the feature to create e.g., theme 
+
+*Options*:
+
+* --standalone: if you want to develop an application that does not depend on onecx-services
+
 ******
 
 After running the generator, the following actions must be taken: 

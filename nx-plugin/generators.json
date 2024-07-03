@@ -35,6 +35,11 @@
       "factory": "./src/generators/feature/generator",
       "schema": "./src/generators/feature/schema.json",
       "description": "feature generator"
+    },
+    "standalone-ngrx": {
+      "factory": "./src/generators/standalone/ngrx/generator",
+      "schema": "./src/generators/standalone/ngrx/schema.json",
+      "description": "standalone ngrx generator"
     }
   }
 }
