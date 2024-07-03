@@ -237,6 +237,7 @@ function adaptAngularPrefixConfig(tree: Tree) {
   });
   updateJson(tree, 'project.json', (json) => {
     json.prefix = 'app';
+    json.targets.test.options.coverage = true;
     return json;
   });
 }
