@@ -317,14 +317,14 @@ function adaptSearchEffects(tree: Tree, options: CreateUpdateGeneratorSchema) {
       map(([action, results]) => {
         return results.find((item) => item.id == action.id);
       }),
-      mergeMap((toEditItem) => {
-        return this.portalDialogService.openDialog< ${options.dataObjectName}>(
+      mergeMap((itemToEdit) => {
+        return this.portalDialogService.openDialog< ${options.dataObjectName} | undefined>(
           '${constantName}_CREATE_UPDATE.UPDATE.HEADER',
           {
             type: ${className}CreateUpdateComponent,
             inputs: {
               vm: {
-                toEditItem,
+                itemToEdit,
               }
             },
           },
@@ -338,15 +338,15 @@ function adaptSearchEffects(tree: Tree, options: CreateUpdateGeneratorSchema) {
         if (dialogResult.button == 'secondary') {
           return of(${className}SearchActions.update${className}Cancelled());
         }
-        if (dialogResult.result == undefined) {
+        if (!dialogResult?.result) {
           throw new Error('DialogResult was not set as expected!');
         }
-        const toEditItemId = dialogResult.result.id;
-        const toEditItem = {
+        const itemToEditId = dialogResult.result.id;
+        const itemToEdit = {
             dataObject: dialogResult.result
         } as ${options.updateRequestName};
         return this.${propertyName}Service
-          .update${options.dataObjectName}(toEditItemId, toEditItem)
+          .update${options.dataObjectName}(itemToEditId, itemToEdit)
           .pipe(
             map(() => {
               this.messageService.success({
@@ -374,13 +374,13 @@ function adaptSearchEffects(tree: Tree, options: CreateUpdateGeneratorSchema) {
       return this.actions$.pipe(
         ofType(${className}SearchActions.create${className}ButtonClicked),
         switchMap(() => {
-          return this.portalDialogService.openDialog< ${options.dataObjectName}>(
+          return this.portalDialogService.openDialog< ${options.dataObjectName} | undefined>(
             '${constantName}_CREATE_UPDATE.CREATE.HEADER',
             {
               type: ${className}CreateUpdateComponent,
               inputs: {
                 vm: {
-                  toEditItem: {},
+                  itemToEdit: {},
                 }
               },
             },
@@ -394,9 +394,12 @@ function adaptSearchEffects(tree: Tree, options: CreateUpdateGeneratorSchema) {
           if (dialogResult.button == 'secondary') {
             return of(${className}SearchActions.create${className}Cancelled());
           }
+          if (!dialogResult?.result) {
+            throw new Error('DialogResult was not set as expected!');
+          }
           const toCreateItem = {
             dataObject: dialogResult.result
-        } as ${options.createRequestName};
+          } as ${options.createRequestName};
           return this.${propertyName}Service
             .create${options.dataObjectName}(toCreateItem)
             .pipe(

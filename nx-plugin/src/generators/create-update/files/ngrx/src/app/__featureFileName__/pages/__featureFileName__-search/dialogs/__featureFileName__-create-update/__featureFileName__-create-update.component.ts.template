@@ -34,20 +34,18 @@ import { <%= featureClassName%>CreateUpdateViewModel } from './<%= featureFileNa
 export class <%= featureClassName%>CreateUpdateComponent 
   implements
     DialogPrimaryButtonDisabled,
-    DialogResult<<%= dataObjectName %>>,
+    DialogResult<<%= dataObjectName %> | undefined>,
     DialogButtonClicked<<%= featureClassName%>CreateUpdateComponent>,
     OnInit {
 
   @Input() public vm: <%= featureClassName%>CreateUpdateViewModel = {
-    toEditItem: undefined,
+    itemToEdit: undefined,
   };
   
   public formGroup: FormGroup;  
   
   primaryButtonEnabled: EventEmitter<boolean> = new EventEmitter();
-  dialogResult: <%= dataObjectName %> = {
-    id: ''
-  };
+  dialogResult: <%= dataObjectName %> | undefined = undefined;;
 
   constructor() {
     this.formGroup = new FormGroup({
@@ -65,16 +63,16 @@ export class <%= featureClassName%>CreateUpdateComponent
 
   ocxDialogButtonClicked(): boolean | Observable<boolean> | Promise<boolean> | undefined {
     this.dialogResult = {
-      ...this.vm.toEditItem,
+      ...this.vm.itemToEdit,
       ...this.formGroup.value,
     };    
     return undefined;
   }
 
   ngOnInit() {
-    if (this.vm.toEditItem) {
+    if (this.vm.itemToEdit) {
       this.formGroup.patchValue({
-        ...this.vm.toEditItem,
+        ...this.vm.itemToEdit,
       });
     } else {
       this.formGroup.reset();

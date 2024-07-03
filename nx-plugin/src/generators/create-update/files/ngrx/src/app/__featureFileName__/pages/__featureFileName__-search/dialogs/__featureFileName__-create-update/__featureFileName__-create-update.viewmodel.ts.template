@@ -1,5 +1,5 @@
 import { <%= dataObjectName %> } from '../../../../../shared/generated';
 
 export interface <%= featureClassName %>CreateUpdateViewModel {
-  toEditItem: <%= dataObjectName %> | undefined;
+  itemToEdit: <%= dataObjectName %> | undefined;
 }
