@@ -15,16 +15,6 @@ const bypassFn = function (req, res) {
 };
 
 const PROXY_CONFIG = {
-  '/portal-api': {
-    target: 'http://tkit-portal-server/',
-    secure: false,
-    pathRewrite: {
-      '^.*/portal-api': '',
-    },
-    changeOrigin: true,
-    logLevel: 'debug',
-    bypass: bypassFn,
-  },
   '/bff': {
     target: 'http://<%= fileName %>-bff',
     secure: false,

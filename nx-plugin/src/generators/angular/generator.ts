@@ -16,11 +16,27 @@ import { AngularGeneratorSchema } from './schema';
 import { execSync } from 'child_process';
 
 import * as ora from 'ora';
+import processParams, { GeneratorParameter } from '../shared/parameters.utils';
+
+const PARAMETERS: GeneratorParameter<AngularGeneratorSchema>[] = [
+  {
+    key: 'standalone',
+    type: 'boolean',
+    required: 'never',
+    default: false,
+  },
+];
 
 export async function angularGenerator(
   tree: Tree,
   options: AngularGeneratorSchema
 ): Promise<GeneratorCallback> {
+  const parameters = await processParams<AngularGeneratorSchema>(
+    PARAMETERS,
+    options
+  );
+  Object.assign(options, parameters);
+
   const spinner = ora('Adding angular').start();
   const directory = '.';
 
@@ -29,7 +45,11 @@ export async function angularGenerator(
   addDependenciesToPackageJson(
     tree,
     { '@angular/core': '^15.2.7' },
-    { '@angular-devkit/build-angular': '^15.2.7', typescript: '~4.9.4', 'js-yaml': '^4.1.0' }
+    {
+      '@angular-devkit/build-angular': '^15.2.7',
+      typescript: '~4.9.4',
+      'js-yaml': '^4.1.0',
+    }
   );
 
   const applicationGeneratorCallback = await applicationGenerator(tree, {
@@ -58,8 +78,15 @@ export async function angularGenerator(
       fileName: names(options.name).fileName,
       constantName: names(options.name).constantName,
       propertyName: names(options.name).propertyName,
+      standalone: options.standalone,
     }
   );
+
+  // If standalone, remove unwanted files
+  if (options.standalone) {
+    tree.delete(`${directory}/scripts/load-permissions.sh`);
+  }
+
   const oneCXLibVersion = '^4.33.2';
   addDependenciesToPackageJson(
     tree,
@@ -75,8 +102,8 @@ export async function angularGenerator(
       '@ngx-translate/core': '^14.0.0',
       '@ngx-translate/http-loader': '^7.0.0',
       '@angular-architects/module-federation': '^15.0.0',
-      "@angular/cdk": "^15.2.7",
-      "keycloak-angular": "^13.1.0",
+      '@angular/cdk': '^15.2.7',
+      'keycloak-angular': '^13.1.0',
     },
     {
       '@openapitools/openapi-generator-cli': '^2.5.2',
@@ -136,7 +163,8 @@ function addScriptsToPackageJson(tree: Tree, options: AngularGeneratorSchema) {
     pkgJson.scripts['lint'] = 'nx lint';
     pkgJson.scripts['lint:fix'] = 'nx lint --fix';
     pkgJson.scripts['test'] = 'nx test';
-    pkgJson.scripts['test:ci'] = 'ng test --watch=false --browsers=ChromeHeadless --code-coverage';
+    pkgJson.scripts['test:ci'] =
+      'ng test --watch=false --browsers=ChromeHeadless --code-coverage';
 
     return pkgJson;
   });

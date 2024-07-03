@@ -25,19 +25,22 @@ import { KeycloakAuthModule } from '@onecx/keycloak-auth';
 import { CommonModule } from '@angular/common';
 import { apiConfigProvider } from './shared/utils/apiConfigProvider.utils';
 import { Configuration } from './shared/generated';
-
+<%_ if(standalone){ _%>
+import { firstValueFrom } from 'rxjs';
+import { MfeInfo } from '@onecx/integration-interface';
+<% } %>
 export const commonImports = [CommonModule];
 
 @NgModule({
   declarations: [AppComponent],
   imports: [
     ...commonImports,
-    KeycloakAuthModule,
+    <%_ if(!standalone){ _%>KeycloakAuthModule, <%_ } _%>
     BrowserModule,
     BrowserAnimationsModule,
     AppRoutingModule,
     HttpClientModule,
-    PortalCoreModule.forRoot('<%= name %>-app'),
+    PortalCoreModule<% if(!standalone){ %>.forRoot('<%= name %>-app')<% } %>,
     TranslateModule.forRoot({
       extend: true,
       loader: {
@@ -50,16 +53,43 @@ export const commonImports = [CommonModule];
   providers: [
     { provide: APP_CONFIG, useValue: environment },
     {
+      provide: Configuration,
+      useFactory: apiConfigProvider,
+      deps: [ConfigurationService, AppStateService],
+    },
+    <%_ if(!standalone){ _%> 
+    {
       provide: APP_INITIALIZER,
       useFactory: translateServiceInitializer,
       multi: true,
       deps: [UserService, TranslateService],
     },
+    <%_ }else{ _%>
     {
-      provide: Configuration,
-      useFactory: apiConfigProvider,
-      deps: [ConfigurationService, AppStateService],
-    },
+      provide: APP_INITIALIZER,
+      useFactory: (
+        appStateService: AppStateService,
+        translateService: TranslateService
+      ) => {
+        return async () => {
+          const standaloneMfeInfo: MfeInfo = {
+            mountPath: '/',
+            remoteBaseUrl: '.',
+            baseHref: '/',
+            shellName: 'standalone',
+            appId: '',
+            productName: '',
+          };
+          await appStateService.globalLoading$.publish(true);
+          await appStateService.currentMfe$.publish(standaloneMfeInfo);
+          await appStateService.globalLoading$.publish(false);
+          await firstValueFrom(translateService.use('en'));
+        };
+      },
+      multi: true,
+      deps: [AppStateService, TranslateService],
+    }
+    <%_ } _%>
   ],
   bootstrap: [AppComponent],
 })

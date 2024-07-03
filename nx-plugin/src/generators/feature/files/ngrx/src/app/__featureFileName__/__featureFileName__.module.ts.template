@@ -32,21 +32,13 @@ import { EffectsModule } from '@ngrx/effects';
     SharedModule,
     LetModule,
     PortalCoreModule.forMicroFrontend(),
-    RouterModule.forChild(addInitializeModuleGuard(routes)),
+    RouterModule.forChild(<% if(!standalone){ %>addInitializeModuleGuard(routes)<% }else{ %>routes<% } %>),
     FormsModule,
     ReactiveFormsModule,
     CalendarModule,
     StoreModule.forFeature(<%= featurePropertyName %>Feature),
     EffectsModule.forFeature(),
-    TranslateModule.forRoot({
-      extend: true,
-      isolate: false,
-      loader: {
-        provide: TranslateLoader,
-        useFactory: createTranslateLoader,
-        deps: [HttpClient, AppStateService],
-      }
-    }),
+    TranslateModule
   ],
 })
 export class <%= featureClassName %>Module {}

@@ -11,7 +11,7 @@ interface ShowRule<T> {
 }
 interface GeneratorParameterBasic<T> {
   key: string;
-  required: 'always' | 'interactive';
+  required: 'always' | 'interactive' | 'never';
   default:
     | string
     | number
@@ -22,7 +22,7 @@ interface GeneratorParameterBasic<T> {
     | number
     | boolean
     | ((values: T) => string | number | boolean);
-  prompt: string;
+  prompt?: string;
   showRules?: ShowRule<T>[];
   showInSummary?: boolean;
   choices?: string[];
@@ -63,7 +63,9 @@ async function processParams<T>(
     if (typeof parameter.default == 'function') {
       parameterValues[parameter.key] = parameter.default(parameterValues);
     } else {
-      parameterValues[parameter.key] = parameter.default;
+      if (parameterValues[parameter.key] == undefined) {
+        parameterValues[parameter.key] = parameter.default;
+      }
     }
     // Check if provided by either CLI or continue with interactive
     if (argv[parameter.key] != null) {

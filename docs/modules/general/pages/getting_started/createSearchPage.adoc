@@ -4,7 +4,7 @@ The fastest way to create a new search page in a feature module is to use the On
 ******
 To run the generator, execute the following command: 
 ----
-nx generate <namespaceOfTheGenerator>/nx-plugin:search <nameOfTheFeature>
+nx generate <namespaceOfTheGenerator>/nx-plugin:search <nameOfTheFeature> [--standalone]
 ----
 
 *Placeholder*: 
@@ -16,6 +16,12 @@ nx generate <namespaceOfTheGenerator>/nx-plugin:search <nameOfTheFeature>
 TIP: Next, the CLI will ask you whether you want to customize names for the generation.
 When answering yes, the next few questions will ask you about names for the API.
 This can be useful if you want to adapt to a legacy API.
+******
+
+*Options*:
+
+* --standalone: if you want to develop an application that does not depend on onecx-services
+
 ******
 
 After running the generator, the following actions must be taken: 

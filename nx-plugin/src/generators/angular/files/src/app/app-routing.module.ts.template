@@ -8,7 +8,7 @@ export const routes: Routes = [
 
 @NgModule({
   imports: [
-    RouterModule.forRoot(addInitializeModuleGuard(routes)),
+    RouterModule.forRoot(<% if(!standalone){ %>addInitializeModuleGuard(routes)<% }else{ %>routes<% } %>),
     TranslateModule,
   ],
   exports: [RouterModule],

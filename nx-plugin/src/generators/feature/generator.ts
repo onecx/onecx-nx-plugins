@@ -10,11 +10,27 @@ import {
 import { FeatureGeneratorSchema } from './schema';
 import * as ora from 'ora';
 import { execSync } from 'child_process';
+import processParams, { GeneratorParameter } from '../shared/parameters.utils';
+
+const PARAMETERS: GeneratorParameter<FeatureGeneratorSchema>[] = [
+  {
+    key: 'standalone',
+    type: 'boolean',
+    required: 'never',
+    default: false,
+  },
+];
 
 export async function featureGenerator(
   tree: Tree,
   options: FeatureGeneratorSchema
 ): Promise<GeneratorCallback> {
+  const parameters = await processParams<FeatureGeneratorSchema>(
+    PARAMETERS,
+    options
+  );
+  Object.assign(options, parameters);
+
   const spinner = ora(`Adding feature ${options.name}`).start();
   const directory = '.';
 
@@ -35,6 +51,7 @@ export async function featureGenerator(
       featureFileName: names(options.name).fileName,
       featurePropertyName: names(options.name).propertyName,
       featureClassName: names(options.name).className,
+      standalone: options.standalone
     }
   );
 

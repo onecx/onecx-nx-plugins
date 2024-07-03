@@ -13,8 +13,8 @@ import { execSync } from 'child_process';
 import * as fs from 'fs';
 import * as ora from 'ora';
 import { deepMerge } from '../shared/deepMerge';
-import { COMMENT_KEY, OpenAPIUtil } from '../shared/openapi/openapi.util';
-import processParams, { GeneratorParameter } from '../shared/parameters.util';
+import { COMMENT_KEY, OpenAPIUtil } from '../shared/openapi/openapi.utils';
+import processParams, { GeneratorParameter } from '../shared/parameters.utils';
 import { renderJsonFile } from '../shared/renderJsonFile';
 import { updateYaml } from '../shared/yaml';
 import { createSearchEndpoint } from './endpoint.util';
@@ -75,6 +75,12 @@ const PARAMETERS: GeneratorParameter<SearchGeneratorSchema>[] = [
     showInSummary: true,
     showRules: [{ showIf: (values) => values.customizeNamingForAPI }],
   },
+  {
+    key: 'standalone',
+    type: 'boolean',
+    required: 'never',
+    default: false,
+  }
 ];
 
 export async function searchGenerator(
@@ -112,6 +118,7 @@ export async function searchGenerator(
       serviceName: options.apiServiceName,
       searchRequestName: options.searchRequestName,
       searchResponseName: options.searchResponseName,
+      standalone: options.standalone
     }
   );
 
