@@ -72,6 +72,7 @@ export async function angularGenerator(
       '@onecx/portal-integration-angular': oneCXLibVersion,
       '@onecx/portal-layout-styles': oneCXLibVersion,
       '@onecx/accelerator': oneCXLibVersion,
+      "@onecx/angular-accelerator": oneCXLibVersion,
       '@onecx/integration-interface': oneCXLibVersion,
       '@ngx-translate/core': '^14.0.0',
       '@ngx-translate/http-loader': '^7.0.0',
