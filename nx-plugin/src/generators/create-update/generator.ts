@@ -441,7 +441,7 @@ function adaptSearchTests(tree: Tree, options: CreateUpdateGeneratorSchema) {
   htmlContent =
     `import { PrimeIcons } from 'primeng/api';` +
     htmlContent.replace(
-      "it('should export csv data on export action click'",
+      "it('should dispatch export csv data on export action click'",
       `
     it('should dispatch edit${className}ButtonClicked action on item edit click', async () => {
       jest.spyOn(store, 'dispatch');
