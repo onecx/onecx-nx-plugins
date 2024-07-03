@@ -14,7 +14,6 @@ import * as fs from 'fs';
 import * as ora from 'ora';
 import { deepMerge } from '../shared/deepMerge';
 
-
 import { renderJsonFile } from '../shared/renderJsonFile';
 import { createCreateEndpoint, createUpdateEndpoint } from './endpoint.util';
 import { CreateUpdateGeneratorSchema } from './schema';
@@ -249,23 +248,24 @@ function adaptSearchActions(tree: Tree, options: CreateUpdateGeneratorSchema) {
   const fileName = names(options.featureName).fileName;
   const filePath = `src/app/${fileName}/pages/${fileName}-search/${fileName}-search.actions.ts`;
   const className = names(options.featureName).className;
+  const actionName = names(options.featureName).fileName.replaceAll('-', ' ');
 
   let content = tree.read(filePath, 'utf8');
   content = content.replace(
     'events: {',
     `events: {
-      'Create ${className} button clicked': emptyProps(),
-      'Edit ${className} button clicked': props<{
+      'Create ${actionName} button clicked': emptyProps(),
+      'Edit ${actionName} button clicked': props<{
         id: number | string;
       }>(),
-      'Create ${className} cancelled': emptyProps(),
-      'Update ${className} cancelled': emptyProps(),
-      'Create ${className} succeeded': emptyProps(),
-      'Update ${className} succeeded': emptyProps(),
-      'Create ${className} failed': props<{
+      'Create ${actionName} cancelled': emptyProps(),
+      'Update ${actionName} cancelled': emptyProps(),
+      'Create ${actionName} succeeded': emptyProps(),
+      'Update ${actionName} succeeded': emptyProps(),
+      'Create ${actionName} failed': props<{
         error: string | null;
       }>(),
-      'Update ${className} failed': props<{
+      'Update ${actionName} failed': props<{
         error: string | null;
       }>(),      
     `
@@ -642,7 +642,7 @@ function addFunctionToOpenApi(
       properties: {
         dataObject: {
           type: 'object',
-          '$ref': dataObjectName
+          $ref: dataObjectName,
         },
         [COMMENT_KEY]: 'ACTION C1: add additional properties here',
       },
@@ -652,7 +652,7 @@ function addFunctionToOpenApi(
       properties: {
         dataObject: {
           type: 'object',
-          '$ref': dataObjectName
+          $ref: dataObjectName,
         },
         [COMMENT_KEY]: ' ACTION C1: add additional properties here',
       },
