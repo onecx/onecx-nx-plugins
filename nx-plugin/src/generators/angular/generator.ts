@@ -61,7 +61,7 @@ export async function angularGenerator(
     }
   );
 
-  const oneCXLibVersion = '^4.34.0';
+  const oneCXLibVersion = '^4.39.0';
   addDependenciesToPackageJson(
     tree,
     {
