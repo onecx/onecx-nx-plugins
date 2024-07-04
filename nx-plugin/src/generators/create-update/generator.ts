@@ -246,7 +246,7 @@ function adaptSearchComponent(
 
 function adaptSearchActions(tree: Tree, options: CreateUpdateGeneratorSchema) {
   const fileName = names(options.featureName).fileName;
-  const filePath = `src/app/${fileName}/pages/${fileName}-search/${fileName}-search.actions.ts`;  
+  const filePath = `src/app/${fileName}/pages/${fileName}-search/${fileName}-search.actions.ts`;
   const actionName = names(options.featureName).fileName.replaceAll('-', ' ');
 
   let content = tree.read(filePath, 'utf8');
@@ -288,26 +288,39 @@ function adaptSearchEffects(tree: Tree, options: CreateUpdateGeneratorSchema) {
       ${options.createRequestName},
       ${options.updateRequestName},
     } from 'src/app/shared/generated';` +
-    `import { ${className}CreateUpdateComponent } from './dialogs/${options.featureName}-create-update/${options.featureName}-create-update.component';` +
-    content.replace(
+    `import { ${className}CreateUpdateComponent } from './dialogs/${options.featureName}-create-update/${options.featureName}-create-update.component';`;
+
+  if (!content.includes('private portalDialogService: PortalDialogService')) {
+    content = content.replace(
       'constructor(',
       `constructor(
-      private portalDialogService: PortalDialogService,`
+        private portalDialogService: PortalDialogService,`
     );
+  }
+
+  if (!content.includes('refreshSearch$ =')) {
+    content = content.replace(
+      'searchByUrl$',
+      `
+          refreshSearch$ = createEffect(() => {
+            return this.actions$.pipe(
+              ofType(
+                ${className}SearchActions.create${className}Succeeded,
+                ${className}SearchActions.update${className}Succeeded
+              ),
+              concatLatestFrom(() => this.store.select(selectSearchCriteria)),
+              switchMap(([, searchCriteria]) => this.performSearch(searchCriteria))
+            );
+        });
+        
+        searchByUrl$`
+    );
+  }
+
   content = content.replace(
     'searchByUrl$',
     `
-      refreshSearch$ = createEffect(() => {
-        return this.actions$.pipe(
-          ofType(
-            ${className}SearchActions.create${className}Succeeded,
-            ${className}SearchActions.update${className}Succeeded
-          ),
-          concatLatestFrom(() => this.store.select(selectSearchCriteria)),
-          switchMap(([, searchCriteria]) => this.performSearch(searchCriteria))
-        );
-    });
-
+    
     editButtonClicked$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(${className}SearchActions.edit${className}ButtonClicked),
