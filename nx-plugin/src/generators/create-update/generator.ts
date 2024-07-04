@@ -246,8 +246,7 @@ function adaptSearchComponent(
 
 function adaptSearchActions(tree: Tree, options: CreateUpdateGeneratorSchema) {
   const fileName = names(options.featureName).fileName;
-  const filePath = `src/app/${fileName}/pages/${fileName}-search/${fileName}-search.actions.ts`;
-  const className = names(options.featureName).className;
+  const filePath = `src/app/${fileName}/pages/${fileName}-search/${fileName}-search.actions.ts`;  
   const actionName = names(options.featureName).fileName.replaceAll('-', ' ');
 
   let content = tree.read(filePath, 'utf8');
