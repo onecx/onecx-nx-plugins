@@ -288,7 +288,8 @@ function adaptSearchEffects(tree: Tree, options: CreateUpdateGeneratorSchema) {
       ${options.createRequestName},
       ${options.updateRequestName},
     } from 'src/app/shared/generated';` +
-    `import { ${className}CreateUpdateComponent } from './dialogs/${options.featureName}-create-update/${options.featureName}-create-update.component';`;
+    `import { ${className}CreateUpdateComponent } from './dialogs/${options.featureName}-create-update/${options.featureName}-create-update.component';` +
+    content;
 
   if (!content.includes('private portalDialogService: PortalDialogService')) {
     content = content.replace(
