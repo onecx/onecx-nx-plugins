@@ -71,7 +71,7 @@ export async function createUpdateGenerator(
     throw new Error('Currently only NgRx projects are supported.');
   }
 
-  addCreateUpdateEventsToSearch(tree, options);
+  addDeleteEventsToSearch(tree, options);
 
   addTranslations(tree, options);
 
@@ -103,19 +103,15 @@ export async function createUpdateGenerator(
   };
 }
 
-function addCreateUpdateEventsToSearch(
+function addDeleteEventsToSearch(
   tree: Tree,
   options: DeleteGeneratorSchema
 ) {
-  const fileName = names(options.featureName).fileName;
-  const htmlDetailsFilePath = `src/app/${fileName}/pages/${fileName}-search/dialogs/${fileName}-create-update/${fileName}-create-update.component.html`;
-  if (tree.exists(htmlDetailsFilePath)) {
-    adaptSearchActions(tree, options);
-    adaptSearchEffects(tree, options);
-    adaptSearchComponent(tree, options);
-    adaptSearchHTML(tree, options);
-    adaptSearchTests(tree, options);
-  }
+  adaptSearchActions(tree, options);
+  adaptSearchEffects(tree, options);
+  adaptSearchComponent(tree, options);
+  adaptSearchHTML(tree, options);
+  adaptSearchTests(tree, options);
 }
 
 function adaptSearchHTML(tree: Tree, options: DeleteGeneratorSchema) {
@@ -189,7 +185,7 @@ function adaptSearchEffects(tree: Tree, options: DeleteGeneratorSchema) {
 
   let content = tree.read(filePath, 'utf8');
   content =
-    `import { PortalDialogService } from '@onecx/portal-integration-angular';` +
+    `import { PortalDialogService, DialogState } from '@onecx/portal-integration-angular';` +
     `import { mergeMap } from 'rxjs';` +
     `import {
       ${options.dataObjectName},
@@ -205,15 +201,14 @@ function adaptSearchEffects(tree: Tree, options: DeleteGeneratorSchema) {
     );
   }
 
-  if (!content.includes('refreshSearch$ =')) {
+  if (!content.includes('refreshSearchAfterDelete$ =')) {
     content = content.replace(
       'searchByUrl$',
       `
-        refreshSearch$ = createEffect(() => {
+        refreshSearchAfterDelete$ = createEffect(() => {
           return this.actions$.pipe(
             ofType(
-              ${className}SearchActions.create${className}Succeeded,
-              ${className}SearchActions.update${className}Succeeded
+              ${className}SearchActions.delete${className}Succeeded,
             ),
             concatLatestFrom(() => this.store.select(selectSearchCriteria)),
             switchMap(([, searchCriteria]) => this.performSearch(searchCriteria))

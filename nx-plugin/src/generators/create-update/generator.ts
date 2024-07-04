@@ -298,11 +298,11 @@ function adaptSearchEffects(tree: Tree, options: CreateUpdateGeneratorSchema) {
     );
   }
 
-  if (!content.includes('refreshSearch$ =')) {
+  if (!content.includes('refreshSearchAfterCreateUpdate$ =')) {
     content = content.replace(
       'searchByUrl$',
       `
-          refreshSearch$ = createEffect(() => {
+          refreshSearchAfterCreateUpdate$ = createEffect(() => {
             return this.actions$.pipe(
               ofType(
                 ${className}SearchActions.create${className}Succeeded,
