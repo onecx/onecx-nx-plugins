@@ -7,13 +7,13 @@ import {
   DataTableColumn,
   ExportDataService,
   PortalDialogService,
+  isValidDate,
 } from '@onecx/portal-integration-angular';
 import { <%= featureClassName %>SearchActions } from './<%= featureFileName %>-search.actions';
 import {
   <%= featureClassName %>SearchCriteria,
   <%= featurePropertyName %>SearchCriteriasSchema,
 } from './<%= featureFileName %>-search.parameters';
-import { isValidDate } from '../../../shared/utils/isValidDate.utils';
 import { select<%= featureClassName %>SearchViewModel } from './<%= featureFileName %>-search.selectors';
 import { <%= featureClassName %>SearchViewModel } from './<%= featureFileName %>-search.viewmodel';
 import { first, Observable, map } from 'rxjs';
@@ -117,14 +117,7 @@ export class <%= featureClassName %>SearchComponent implements OnInit {
 
 
   exportItems() {
-    this.viewModel$.pipe(first()).subscribe((data) => {
-      this.exportDataService.exportCsv(
-        data.displayedColumns,
-        data.results,
-        '<%= featureFileName %>.csv'
-        );  
-      }
-    )
+    this.store.dispatch(<%= featureClassName %>SearchActions.exportButtonClicked());
   }   
 
    viewModeChanged(viewMode: 'basic' | 'advanced') {

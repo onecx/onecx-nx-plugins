@@ -87,7 +87,7 @@ export async function angularGenerator(
     tree.delete(`${directory}/scripts/load-permissions.sh`);
   }
 
-  const oneCXLibVersion = '^4.33.2';
+  const oneCXLibVersion = '^4.39.0';
   addDependenciesToPackageJson(
     tree,
     {
@@ -98,6 +98,7 @@ export async function angularGenerator(
       '@onecx/portal-integration-angular': oneCXLibVersion,
       '@onecx/portal-layout-styles': oneCXLibVersion,
       '@onecx/accelerator': oneCXLibVersion,
+      "@onecx/angular-accelerator": oneCXLibVersion,
       '@onecx/integration-interface': oneCXLibVersion,
       '@ngx-translate/core': '^14.0.0',
       '@ngx-translate/http-loader': '^7.0.0',
@@ -263,6 +264,7 @@ function adaptAngularPrefixConfig(tree: Tree) {
   });
   updateJson(tree, 'project.json', (json) => {
     json.prefix = 'app';
+    json.targets.test.options.coverage = true;
     return json;
   });
 }

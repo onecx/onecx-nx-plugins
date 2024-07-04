@@ -1,0 +1,28 @@
+{
+  "<%= featureConstantName %>_CREATE_UPDATE": {
+    "ACTION": {
+      "CREATE": "Erstellen"
+    },
+    "CREATE": {
+      "HEADER": "Neues <%= featureClassName %> erstellen",
+      "SUCCESS": "Erstellung erfolgreich",
+      "ERROR": "Erstellung fehlgeschlagen",      
+      "FORM": {
+        "SAVE": "Save",
+        "CANCEL": "Cancel"
+      }
+    },
+    "UPDATE": {
+      "HEADER": "<%= featureClassName %> bearbeiten",
+      "SUCCESS": "Aktualisierung erfolgreich",
+      "ERROR": "Aktualisierung fehlgeschlagen",      
+      "FORM": {
+        "SAVE": "Save",
+        "CANCEL": "Cancel"
+      }
+    },
+    "FORM": {
+      "CHANGE_ME": "ChangeMe"
+    }
+  }
+}

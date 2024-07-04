@@ -1,0 +1,27 @@
+=== Extend form fields
+The form fields of the dialog need to be adapted
+
+==== ACTION C1: Extend schemas inside OpenAPI
+_Adapt in File:_  `+<feature>-bff.yaml+`
+
+Extend the 4 generated components to your needs.
+Create and Update-Requests need to match your form field values, as they will be key matched. Assure that keys are absolutely equal (upper / lower case, etc.).
+Create and Update-Responses are not used yet for anything, you can modify them to your needs and then use them in the corresponding effect.
+
+IMPORTANT: Remove the "ACTION" comment after solving this issue
+
+==== ACTION C2: Add form fields to html component
+_Adapt in File:_  `+<feature>-create-update.component.html+`
+
+Add new form fields similar to the example one. Key match to your OpenAPI components.
+The formControlName must match the form control names in the `+...component.ts+` file.
+
+IMPORTANT: Remove the "ACTION" comment after solving this issue
+
+==== ACTION C3: Add form fields to ts component
+_Adapt in File:_  `+<feature>-create-update.component.ts+`
+
+Add the corresponding form fields into the formGroup. Key match to your OpenAPI components.
+Use appropriate validators.
+
+IMPORTANT: Remove the "ACTION" comment after solving this issue

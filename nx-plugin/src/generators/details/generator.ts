@@ -145,65 +145,71 @@ function addFunctionToOpenApi(tree: Tree, options: DetailsGeneratorSchema) {
   const dataObjectName = options.dataObjectName;
   const propertyName = names(options.featureName).propertyName;
   const apiServiceName = options.apiServiceName;
-  const getByIdResponseName = options.getByIdResponseName;  
+  const getByIdResponseName = options.getByIdResponseName;
   const apiUtil = new OpenAPIUtil(bffOpenApiContent);
 
-  apiUtil.paths().set(`/${propertyName}/id`, {
-    get: {
-      'x-onecx': {
-        permissions: {
-          [propertyName]: ['read'],
-        },
-      },
-      operationId: `get${dataObjectName}ById`,
-      tags: [apiServiceName],
-      parameters: [
-        {
-          name: 'id',
-          in: 'path',
-          required: true,
-          schema: {
-            type: 'string',
+  apiUtil.paths().set(
+    `/${propertyName}/{id}`,
+    {
+      get: {
+        'x-onecx': {
+          permissions: {
+            [propertyName]: ['read'],
           },
         },
-      ],
-      responses: {
-        '200': {
-          description: 'OK',
-          content: {
-            'application/json': {
-              schema: {
-                $ref: `#/components/schemas/${getByIdResponseName}`,
+        operationId: `get${dataObjectName}ById`,
+        tags: [apiServiceName],
+        parameters: [
+          {
+            name: 'id',
+            in: 'path',
+            required: true,
+            schema: {
+              type: 'string',
+            },
+          },
+        ],
+        responses: {
+          '200': {
+            description: 'OK',
+            content: {
+              'application/json': {
+                schema: {
+                  $ref: `#/components/schemas/${getByIdResponseName}`,
+                },
               },
             },
           },
-        },
-        '400': {
-          description: 'Bad request',
-          content: {
-            'application/json': {
-              schema: {
-                $ref: '#/components/schemas/ProblemDetailResponse',
+          '400': {
+            description: 'Bad request',
+            content: {
+              'application/json': {
+                schema: {
+                  $ref: '#/components/schemas/ProblemDetailResponse',
+                },
               },
             },
           },
-        },
-        '404': {
-          description: 'Not Found',
-        },
-        '500': {
-          description: 'Internal Server Error',
-          content: {
-            'application/json': {
-              schema: {
-                $ref: '#/components/schemas/ProblemDetailResponse',
+          '404': {
+            description: 'Not Found',
+          },
+          '500': {
+            description: 'Internal Server Error',
+            content: {
+              'application/json': {
+                schema: {
+                  $ref: '#/components/schemas/ProblemDetailResponse',
+                },
               },
             },
           },
         },
       },
     },
-  });
+    {
+      existStrategy: 'extend',
+    }
+  );
 
   apiUtil.schemas().set(dataObjectName, {
     type: 'object',
@@ -214,8 +220,7 @@ function addFunctionToOpenApi(tree: Tree, options: DetailsGeneratorSchema) {
         format: 'int32',
       },
       id: {
-        type: 'integer',
-        format: 'int64',
+        type: 'string',
       },
       [COMMENT_KEY]: 'ACTION: add additional properties here',
     },

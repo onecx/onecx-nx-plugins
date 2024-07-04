@@ -1,0 +1,79 @@
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+} from '@angular/core';
+import {
+  Column,
+  DialogButtonClicked,
+  DialogPrimaryButtonDisabled,
+  DialogResult,
+  DialogState,
+  PortalMessageService,
+} from '@onecx/portal-integration-angular';
+
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { TranslateService } from '@ngx-translate/core';
+import { Observable, map } from 'rxjs';
+import {
+  <%= createRequestName%>,
+  <%= updateRequestName%>,  
+  <%= dataObjectName%>,
+  <%= serviceName%>,
+} from 'src/app/shared/generated';
+
+import { <%= featureClassName%>CreateUpdateViewModel } from './<%= featureFileName %>-create-update.viewmodel';
+
+
+@Component({
+  selector: 'app-<%= featureFileName %>-create-update',
+  templateUrl: './<%= featureFileName %>-create-update.component.html',
+  styleUrls: ['./<%= featureFileName %>-create-update.component.scss'],
+})
+export class <%= featureClassName%>CreateUpdateComponent 
+  implements
+    DialogPrimaryButtonDisabled,
+    DialogResult<<%= dataObjectName %> | undefined>,
+    DialogButtonClicked<<%= featureClassName%>CreateUpdateComponent>,
+    OnInit {
+
+  @Input() public vm: <%= featureClassName%>CreateUpdateViewModel = {
+    itemToEdit: undefined,
+  };
+  
+  public formGroup: FormGroup;  
+  
+  primaryButtonEnabled: EventEmitter<boolean> = new EventEmitter();
+  dialogResult: <%= dataObjectName %> | undefined = undefined;;
+
+  constructor() {
+    this.formGroup = new FormGroup({
+      changeMe: new FormControl(null, [Validators.maxLength(255)]),
+      // ACTION C3: Add form fields
+    });
+    this.formGroup.statusChanges
+      .pipe(
+        map((status) => {
+          return status === 'VALID';
+        })
+      )
+      .subscribe(this.primaryButtonEnabled);
+  }
+
+  ocxDialogButtonClicked() {
+    this.dialogResult = {
+      ...this.vm.itemToEdit,
+      ...this.formGroup.value,
+    };
+  }
+
+  ngOnInit() {
+    if (this.vm.itemToEdit) {
+      this.formGroup.patchValue({
+        ...this.vm.itemToEdit,
+      });
+    }
+  }
+
+}

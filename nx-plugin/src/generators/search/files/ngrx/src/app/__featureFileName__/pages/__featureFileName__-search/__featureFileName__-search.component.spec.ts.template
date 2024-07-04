@@ -27,6 +27,7 @@ import { select<%= featureClassName %>SearchViewModel } from './<%= featureFileN
 import { initialState } from './<%= featureFileName %>-search.reducers';
 
 describe('<%= featureClassName %>SearchComponent', () => {
+  HTMLCanvasElement.prototype.getContext = jest.fn();
   let component: <%= featureClassName %>SearchComponent;
   let fixture: ComponentFixture<<%= featureClassName %>SearchComponent>;
   let store: MockStore<Store>;
@@ -255,11 +256,8 @@ describe('<%= featureClassName %>SearchComponent', () => {
     component.search(formValue);
   });
 
-  it('should export csv data on export action click', async () => {
-    const exportDataService = TestBed.inject(ExportDataService);
-    jest
-      .spyOn(exportDataService, 'exportCsv')
-      .mockImplementation(() => Promise.resolve());
+  it('should dispatch export csv data on export action click', async () => {
+    jest.spyOn(store, 'dispatch');
 
     const results = [
       {
@@ -293,10 +291,8 @@ describe('<%= featureClassName %>SearchComponent', () => {
     );
     await exportAllActionItem!.selectItem();
 
-    expect(exportDataService.exportCsv).toHaveBeenCalledWith(
-      columns,
-      results,
-      '<%= featureFileName %>.csv'
+    expect(store.dispatch).toHaveBeenCalledWith(
+      <%= featureClassName %>SearchActions.exportButtonClicked()
     );
   });
   

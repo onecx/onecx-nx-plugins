@@ -1,0 +1,22 @@
+  <form [formGroup]="formGroup">
+    <div class="flex flex-wrap flex-column gap-4 justify-content-between mt-2">
+      <div [title]="'<%= featureConstantName%>_CREATE_UPDATE.FORM.CHANGE_ME' | translate">
+        <span class="p-float-label" controlErrorAnchor>
+          <input
+            pInputText
+            type="text"
+            id="<%= featureFileName %>_detail_form_changeMe"
+            class="w-full pt-3 pb-2"
+            formControlName="changeMe"
+          />
+          <label
+            class="ocx-required-label"
+            for="<%= featureFileName %>_detail_form_changeMe"
+          >
+            {{ '<%= featureConstantName%>_CREATE_UPDATE.FORM.CHANGE_ME' | translate }}</label
+          >
+        </span>
+      </div>
+      <!-- ACTION C2: Extend form fields -->
+    </div>
+  </form>
