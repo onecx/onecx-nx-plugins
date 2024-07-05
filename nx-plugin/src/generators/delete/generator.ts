@@ -103,10 +103,7 @@ export async function createUpdateGenerator(
   };
 }
 
-function addDeleteEventsToSearch(
-  tree: Tree,
-  options: DeleteGeneratorSchema
-) {
+function addDeleteEventsToSearch(tree: Tree, options: DeleteGeneratorSchema) {
   adaptSearchActions(tree, options);
   adaptSearchEffects(tree, options);
   adaptSearchComponent(tree, options);
@@ -200,27 +197,19 @@ function adaptSearchEffects(tree: Tree, options: DeleteGeneratorSchema) {
     );
   }
 
-  if (!content.includes('refreshSearchAfterDelete$ =')) {
-    content = content.replace(
-      'searchByUrl$',
-      `
-        refreshSearchAfterDelete$ = createEffect(() => {
-          return this.actions$.pipe(
-            ofType(
-              ${className}SearchActions.delete${className}Succeeded,
-            ),
-            concatLatestFrom(() => this.store.select(selectSearchCriteria)),
-            switchMap(([, searchCriteria]) => this.performSearch(searchCriteria))
-          );
-      });
-      
-      searchByUrl$`
-    );
-  }
-
   content = content.replace(
     'searchByUrl$',
     `
+    refreshSearchAfterDelete$ = createEffect(() => {
+      return this.actions$.pipe(
+        ofType(
+          ${className}SearchActions.delete${className}Succeeded,
+        ),
+        concatLatestFrom(() => this.store.select(selectSearchCriteria)),
+        switchMap(([, searchCriteria]) => this.performSearch(searchCriteria))
+      );
+    });
+    
     deleteButtonClicked$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(${className}SearchActions.delete${className}ButtonClicked),

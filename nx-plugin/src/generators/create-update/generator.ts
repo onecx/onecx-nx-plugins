@@ -299,28 +299,19 @@ function adaptSearchEffects(tree: Tree, options: CreateUpdateGeneratorSchema) {
     );
   }
 
-  if (!content.includes('refreshSearchAfterCreateUpdate$ =')) {
-    content = content.replace(
-      'searchByUrl$',
-      `
-          refreshSearchAfterCreateUpdate$ = createEffect(() => {
-            return this.actions$.pipe(
-              ofType(
-                ${className}SearchActions.create${className}Succeeded,
-                ${className}SearchActions.update${className}Succeeded
-              ),
-              concatLatestFrom(() => this.store.select(selectSearchCriteria)),
-              switchMap(([, searchCriteria]) => this.performSearch(searchCriteria))
-            );
-        });
-        
-        searchByUrl$`
-    );
-  }
-
   content = content.replace(
     'searchByUrl$',
     `
+    refreshSearchAfterCreateUpdate$ = createEffect(() => {
+      return this.actions$.pipe(
+        ofType(
+          ${className}SearchActions.create${className}Succeeded,
+          ${className}SearchActions.update${className}Succeeded
+        ),
+        concatLatestFrom(() => this.store.select(selectSearchCriteria)),
+        switchMap(([, searchCriteria]) => this.performSearch(searchCriteria))
+      );
+    });
     
     editButtonClicked$ = createEffect(() => {
     return this.actions$.pipe(
