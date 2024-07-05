@@ -115,7 +115,6 @@ function addDeleteEventsToSearch(tree: Tree, options: DeleteGeneratorSchema) {
 
 function adaptFeatureModule(tree: Tree, options: DeleteGeneratorSchema) {
   const fileName = names(options.featureName).fileName;
-  const className = names(options.featureName).className;
   const moduleFilePath = joinPathFragments(
     'src/app',
     fileName,
