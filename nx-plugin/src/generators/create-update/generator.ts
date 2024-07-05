@@ -340,7 +340,7 @@ function adaptSearchEffects(tree: Tree, options: CreateUpdateGeneratorSchema) {
         );
       }),
       switchMap((dialogResult) => {
-        if (dialogResult.button == 'secondary') {
+        if (!dialogResult || dialogResult.button == 'secondary') {
           return of(${className}SearchActions.update${className}Cancelled());
         }
         if (!dialogResult?.result) {
@@ -396,7 +396,7 @@ function adaptSearchEffects(tree: Tree, options: CreateUpdateGeneratorSchema) {
           );
         }),
         switchMap((dialogResult) => {
-          if (dialogResult.button == 'secondary') {
+          if (!dialogResult || dialogResult.button == 'secondary') {
             return of(${className}SearchActions.create${className}Cancelled());
           }
           if (!dialogResult?.result) {
@@ -527,12 +527,14 @@ function adaptFeatureModule(tree: Tree, options: CreateUpdateGeneratorSchema) {
     'declarations: [',
     `declarations: [${className}CreateUpdateComponent,`
   );
-  moduleContent = moduleContent.replace(
-    'declarations:',
-    `
+  if (!moduleContent.includes('providePortalDialogService()')) {
+    moduleContent = moduleContent.replace(
+      'declarations:',
+      `
     providers: [providePortalDialogService()],
     declarations:`
-  );
+    );
+  }
   moduleContent = moduleContent.replace(
     `from '@ngrx/effects';`,
     `from '@ngrx/effects';  

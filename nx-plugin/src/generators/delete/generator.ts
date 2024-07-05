@@ -71,6 +71,8 @@ export async function createUpdateGenerator(
     throw new Error('Currently only NgRx projects are supported.');
   }
 
+  adaptFeatureModule(tree, options);
+
   addDeleteEventsToSearch(tree, options);
 
   addTranslations(tree, options);
@@ -109,6 +111,32 @@ function addDeleteEventsToSearch(tree: Tree, options: DeleteGeneratorSchema) {
   adaptSearchComponent(tree, options);
   adaptSearchHTML(tree, options);
   adaptSearchTests(tree, options);
+}
+
+function adaptFeatureModule(tree: Tree, options: DeleteGeneratorSchema) {
+  const fileName = names(options.featureName).fileName;
+  const className = names(options.featureName).className;
+  const moduleFilePath = joinPathFragments(
+    'src/app',
+    fileName,
+    fileName + '.module.ts'
+  );
+  let moduleContent = tree.read(moduleFilePath, 'utf8');
+
+  if (!moduleContent.includes('providePortalDialogService()')) {
+    moduleContent = moduleContent.replace(
+      'declarations:',
+      `
+    providers: [providePortalDialogService()],
+    declarations:`
+    );
+    moduleContent = moduleContent.replace(
+      `from '@ngrx/effects';`,
+      `from '@ngrx/effects';
+       import { providePortalDialogService } from '@onecx/portal-integration-angular';`
+    );
+  }
+  tree.write(moduleFilePath, moduleContent);
 }
 
 function adaptSearchHTML(tree: Tree, options: DeleteGeneratorSchema) {
@@ -241,7 +269,7 @@ function adaptSearchEffects(tree: Tree, options: DeleteGeneratorSchema) {
         );
       }),
       switchMap(([dialogResult, itemToDelete]) => {
-        if (dialogResult.button == 'secondary') {
+        if (!dialogResult || dialogResult.button == 'secondary') {
           return of(${className}SearchActions.delete${className}Cancelled());
         }
         if (!itemToDelete) {

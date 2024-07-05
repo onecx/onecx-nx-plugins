@@ -1,6 +1,6 @@
 {
   "<%= featureConstantName %>_DELETE": {
-    "HEADER": "Delete <%= featureConstantName %>",
+    "HEADER": "Delete <%= featureClassName %>",
     "MESSAGE": "Please confirm that you want to delete this <%= featureClassName %>.",
     "CONFIRM": "Confirm",
     "CANCEL": "Cancel",
