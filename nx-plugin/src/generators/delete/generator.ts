@@ -132,7 +132,6 @@ function adaptSearchHTML(tree: Tree, options: DeleteGeneratorSchema) {
 function adaptSearchComponent(tree: Tree, options: DeleteGeneratorSchema) {
   const fileName = names(options.featureName).fileName;
   const className = names(options.featureName).className;
-  const constantName = names(options.featureName).constantName;
   const filePath = `src/app/${fileName}/pages/${fileName}-search/${fileName}-search.component.ts`;
 
   let content = tree.read(filePath, 'utf8');
