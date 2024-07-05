@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/schema",
-  "$id": "CreateUpdate",
+  "$id": "Delete",
   "title": "",
   "type": "object",
   "properties": {
