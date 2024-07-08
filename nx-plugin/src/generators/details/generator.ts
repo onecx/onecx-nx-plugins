@@ -61,6 +61,12 @@ const PARAMETERS: GeneratorParameter<DetailsGeneratorSchema>[] = [
     showInSummary: true,
     showRules: [{ showIf: (values) => values.customizeNamingForAPI }],
   },
+  {
+    key: 'standalone',
+    type: 'boolean',
+    required: 'never',
+    default: false,
+  },
 ];
 
 export async function detailsGenerator(
@@ -423,13 +429,16 @@ function addDetailsEventsToSearch(tree: Tree, options: DetailsGeneratorSchema) {
 
 function adaptSearchHTML(tree: Tree, options: DetailsGeneratorSchema) {
   const fileName = names(options.featureName).fileName;
+  const constantName = names(options.featureName).constantName;
   const htmlSearchFilePath = `src/app/${fileName}/pages/${fileName}-search/${fileName}-search.component.html`;
 
   let htmlContent = tree.read(htmlSearchFilePath, 'utf8');
   if (!htmlContent.includes('(viewItem)="details($event)")')) {
     htmlContent = htmlContent.replace(
       '<ocx-interactive-data-view',
-      `<ocx-interactive-data-view \n (viewItem)="details($event)"`
+      `<ocx-interactive-data-view \n 
+      (viewItem)="details($event)"
+      ${options.standalone ? '' : `viewPermission="${constantName}#VIEW"`}`
     );
     tree.write(htmlSearchFilePath, htmlContent);
   }
