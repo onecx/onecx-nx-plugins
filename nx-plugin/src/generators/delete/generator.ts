@@ -49,6 +49,12 @@ const PARAMETERS: GeneratorParameter<DeleteGeneratorSchema>[] = [
     showInSummary: true,
     showRules: [{ showIf: (values) => values.customizeNamingForAPI }],
   },
+  {
+    key: 'standalone',
+    type: 'boolean',
+    required: 'never',
+    default: false,
+  },
 ];
 
 export async function createUpdateGenerator(
@@ -148,7 +154,7 @@ function adaptSearchHTML(tree: Tree, options: DeleteGeneratorSchema) {
     '<ocx-interactive-data-view',
     `<ocx-interactive-data-view 
       (deleteItem)="delete($event)"
-      deletePermission="${constantName}#DELETE"`
+      ${options.standalone ? '' : `deletePermission="${constantName}#DELETE"`}`
   );
   tree.write(htmlSearchFilePath, htmlContent);
 }

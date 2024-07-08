@@ -3,4 +3,5 @@ export interface DeleteGeneratorSchema {
   customizeNamingForAPI: boolean;
   apiServiceName: string;
   dataObjectName: string;
+  standalone?: boolean;
 }
