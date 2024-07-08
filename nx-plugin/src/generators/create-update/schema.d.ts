@@ -7,4 +7,5 @@ export interface CreateUpdateGeneratorSchema {
   createResponseName: string;
   updateRequestName: string;
   updateResponseName: string;
+  standalone?: boolean;
 }
