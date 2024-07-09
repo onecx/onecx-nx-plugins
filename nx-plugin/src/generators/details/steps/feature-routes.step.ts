@@ -17,7 +17,6 @@ export class FeatureRoutesStep implements GeneratorStep<DetailsGeneratorSchema> 
       `import { ${className}DetailsComponent } from './pages/${fileName}-details/${fileName}-details.component';` +
       moduleContent;
     tree.write(routesFilePath, moduleContent);
-    throw new Error('Method not implemented.');
   }
   getName(): string {
     return "Adapting Feature Routes"

@@ -13,7 +13,7 @@ export class GeneralTranslationsStep
     const folderPath = 'src/assets/i18n/';
   const masterJsonPath = path.resolve(
     __dirname,
-    './input-files/i18n/master.json.template'
+    '../input-files/i18n/master.json.template'
   );
 
   const masterJsonContent = renderJsonFile(masterJsonPath, {
@@ -25,7 +25,7 @@ export class GeneralTranslationsStep
   tree.children(folderPath).forEach((file) => {
     updateJson(tree, joinPathFragments(folderPath, file), (json) => {
       const jsonPath = joinPathFragments(
-        path.resolve(__dirname, './input-files/i18n/'),
+        path.resolve(__dirname, '../input-files/i18n/'),
         file + '.template'
       );
       let jsonContent = {};

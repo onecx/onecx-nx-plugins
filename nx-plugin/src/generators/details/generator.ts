@@ -13,6 +13,7 @@ import * as ora from 'ora';
 import { GeneratorProcessor } from '../shared/generator.utils';
 import processParams, { GeneratorParameter } from '../shared/parameters.utils';
 import { DetailsGeneratorSchema } from './schema';
+
 import { FeatureModuleStep } from './steps/feature-module.step';
 import { FeatureReducerStep } from './steps/feature-reducer.step';
 import { FeatureRoutesStep } from './steps/feature-routes.step';
@@ -24,7 +25,6 @@ import { SearchComponentStep } from './steps/search-component.step';
 import { SearchEffectsStep } from './steps/search-effects.step';
 import { SearchHTMLStep } from './steps/search-html.step';
 import { SearchTestsStep } from './steps/search-tests.step';
-import path = require('path');
 
 const PARAMETERS: GeneratorParameter<DetailsGeneratorSchema>[] = [
   {
