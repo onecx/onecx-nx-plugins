@@ -13,12 +13,12 @@ export class GeneratorProcessor<T> {
     this.steps.push(step);
   }
 
-  run(tree: Tree, options: T, ora?: ora.Ora) {
+  async run(tree: Tree, options: T, ora?: ora.Ora) {
     for (const step of this.steps) {
       if (ora) {
-        ora.start(step.getName());
+        ora.text = step.getName();
       }
-      step.process(tree, options);      
+      step.process(tree, options);
     }
   }
 }
