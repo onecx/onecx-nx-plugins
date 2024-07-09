@@ -219,7 +219,7 @@ describe('nx-plugin', () => {
     });
   });
 
-  it('should add a custom naming feature', () => {
+  it('should add a custom named feature', () => {
     execSync(
       `nx generate @onecx/nx-plugin:feature ${featureNameCustom} --verbose`,
       {
@@ -240,7 +240,7 @@ describe('nx-plugin', () => {
     });
   });
 
-  it('should add a custom naming search page', () => {
+  it('should add a custom named search page', () => {
     // Add all required parameters to this array with a value.
     // As tests are non-interactive, not-added but required items will block the test
     const requiredParameters = [
@@ -291,7 +291,7 @@ describe('nx-plugin', () => {
     });
   });
 
-  it('should add a custom naming details page', () => {
+  it('should add a custom named details page', () => {
     // Add all required parameters to this array with a value.
     // As tests are non-interactive, not-added but required items will block the test
     const requiredParameters = [
@@ -337,7 +337,7 @@ describe('nx-plugin', () => {
     });
   });
 
-  it('should add a custom naming create-update dialog', () => {
+  it('should add a custom named create-update dialog', () => {
     // Add all required parameters to this array with a value.
     // As tests are non-interactive, not-added but required items will block the test
     const requiredParameters = [
@@ -395,7 +395,7 @@ describe('nx-plugin', () => {
     });
   });
 
-  it('should add a custom naming delete dialog', () => {
+  it('should add a custom named delete dialog', () => {
     // Add all required parameters to this array with a value.
     // As tests are non-interactive, not-added but required items will block the test
     const requiredParameters = [
