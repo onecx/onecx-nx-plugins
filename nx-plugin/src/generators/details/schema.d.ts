@@ -4,4 +4,5 @@ export interface DetailsGeneratorSchema {
   apiServiceName: string;
   dataObjectName: string;
   getByIdResponseName: string;
+  standalone?: boolean;
 }
