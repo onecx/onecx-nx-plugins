@@ -97,6 +97,12 @@ const PARAMETERS: GeneratorParameter<CreateUpdateGeneratorSchema>[] = [
     showInSummary: true,
     showRules: [{ showIf: (values) => values.customizeNamingForAPI }],
   },
+  {
+    key: 'standalone',
+    type: 'boolean',
+    required: 'never',
+    default: false,
+  },
 ];
 
 export async function createUpdateGenerator(
@@ -198,7 +204,7 @@ function adaptSearchHTML(tree: Tree, options: CreateUpdateGeneratorSchema) {
     '<ocx-interactive-data-view',
     `<ocx-interactive-data-view 
       (editItem)="edit($event)"
-      editPermission="${constantName}#EDIT"`
+      ${options.standalone ? '' : `editPermission="${constantName}#EDIT"`}`
   );
   tree.write(htmlSearchFilePath, htmlContent);
 }
