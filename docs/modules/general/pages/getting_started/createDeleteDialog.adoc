@@ -1,11 +1,11 @@
-=== Create Create/Update Dialogs
-The fastest way to create a create and update dialogs in a feature module is to use the OneCX generator. Some projects have their own generator based on the OneCX generator. It should be clarified before starting if this is the case for the project the app is generated for. 
+=== Create Delete Dialog
+The fastest way to create a delete dialog in a feature module is to use the OneCX generator. Some projects have their own generator based on the OneCX generator. It should be clarified before starting if this is the case for the project the app is generated for. 
 
 ******
 To run the generator, execute the following command: 
 
 ----
-nx generate <namespaceOfTheGenerator>/nx-plugin:create-update <nameOfTheFeature> 
+nx generate <namespaceOfTheGenerator>/nx-plugin:delete <nameOfTheFeature> [--standalone]
 ----
 
 *Placeholder*: 
@@ -18,6 +18,11 @@ TIP: Next, the CLI will ask you whether you want to customize names for the gene
 When answering yes, the next few questions will ask you about names for the API.
 This can be useful if you want to adapt to a legacy API. 
 When modifying names, assure that you use the same custom names for all generated components of the feature (search, details, create-update, delete) for the data object name, and the api service name as these ones are shared.
+
+*Options*:
+
+* --standalone: if you want to develop an application that does not depend on onecx-services
+
 ******
 
 After running the generator, the following actions must be taken: 
