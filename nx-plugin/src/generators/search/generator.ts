@@ -10,6 +10,11 @@ import {
 } from '@nx/devkit';
 import { execSync } from 'child_process';
 import * as ora from 'ora';
+import { SearchActionsStep } from '../details/steps/search-actions.step';
+import { SearchComponentStep } from '../details/steps/search-component.step';
+import { SearchEffectsStep } from '../details/steps/search-effects.step';
+import { SearchHTMLStep } from '../details/steps/search-html.step';
+import { SearchTestsStep } from '../details/steps/search-tests.step';
 import { GeneratorProcessor } from '../shared/generator.utils';
 import processParams, { GeneratorParameter } from '../shared/parameters.utils';
 import { SearchGeneratorSchema } from './schema';
@@ -21,12 +26,6 @@ import { FeatureStateStep } from './steps/feature-state.step';
 import { GeneralOpenAPIStep } from './steps/general-openapi.step';
 import { GeneralPermissionsStep } from './steps/general-permissions.step';
 import { GeneralTranslationsStep } from './steps/general-translations.step';
-import { SearchActionsStep } from './steps/search-actions.step';
-import { SearchComponentStep } from './steps/search-component.step';
-import { SearchEffectsStep } from './steps/search-effects.step';
-import { SearchHTMLStep } from './steps/search-html.step';
-import { SearchTestsStep } from './steps/search-tests.step';
-import path = require('path');
 
 const PARAMETERS: GeneratorParameter<SearchGeneratorSchema>[] = [
   {
@@ -139,7 +138,7 @@ export async function searchGenerator(
   generatorProcessor.addStep(new GeneralOpenAPIStep());
   generatorProcessor.addStep(new GeneralPermissionsStep());
 
-  // Optionally extend search with features to navigate to details (if that was generated beforehand)
+  // Optionally extend search with features to navigate to details (if details were generated beforehand)
   const fileName = names(options.featureName).fileName;
   const htmlDetailsFilePath = `src/app/${fileName}/pages/${fileName}-details/${fileName}-details.component.html`;
   if (tree.exists(htmlDetailsFilePath)) {

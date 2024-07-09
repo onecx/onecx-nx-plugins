@@ -1,6 +1,6 @@
 import { Tree, names } from '@nx/devkit';
 import { GeneratorStep } from '../../shared/generator.utils';
-import { SearchGeneratorSchema } from '../schema';
+import { SearchGeneratorSchema } from '../../search/schema';
 
 export class SearchComponentStep
   implements GeneratorStep<SearchGeneratorSchema>
