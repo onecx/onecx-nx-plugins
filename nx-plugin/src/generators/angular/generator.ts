@@ -87,7 +87,7 @@ export async function angularGenerator(
     tree.delete(`${directory}/scripts/load-permissions.sh`);
   }
 
-  const oneCXLibVersion = '^4.40.0';
+  const oneCXLibVersion = '^4.40.2';
   addDependenciesToPackageJson(
     tree,
     {
