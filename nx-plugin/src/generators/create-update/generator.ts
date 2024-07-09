@@ -295,25 +295,30 @@ function adaptSearchEffects(tree: Tree, options: CreateUpdateGeneratorSchema) {
       ${options.updateRequestName},
     } from 'src/app/shared/generated';` +
     `import { ${className}CreateUpdateComponent } from './dialogs/${options.featureName}-create-update/${options.featureName}-create-update.component';` +
-    content.replace(
+    content;
+
+  if (!content.includes('private portalDialogService: PortalDialogService')) {
+    content = content.replace(
       'constructor(',
       `constructor(
-      private portalDialogService: PortalDialogService,`
+        private portalDialogService: PortalDialogService,`
     );
+  }
+
   content = content.replace(
     'searchByUrl$',
     `
-      refreshSearch$ = createEffect(() => {
-        return this.actions$.pipe(
-          ofType(
-            ${className}SearchActions.create${className}Succeeded,
-            ${className}SearchActions.update${className}Succeeded
-          ),
-          concatLatestFrom(() => this.store.select(selectSearchCriteria)),
-          switchMap(([, searchCriteria]) => this.performSearch(searchCriteria))
-        );
+    refreshSearchAfterCreateUpdate$ = createEffect(() => {
+      return this.actions$.pipe(
+        ofType(
+          ${className}SearchActions.create${className}Succeeded,
+          ${className}SearchActions.update${className}Succeeded
+        ),
+        concatLatestFrom(() => this.store.select(selectSearchCriteria)),
+        switchMap(([, searchCriteria]) => this.performSearch(searchCriteria))
+      );
     });
-
+    
     editButtonClicked$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(${className}SearchActions.edit${className}ButtonClicked),
@@ -341,7 +346,7 @@ function adaptSearchEffects(tree: Tree, options: CreateUpdateGeneratorSchema) {
         );
       }),
       switchMap((dialogResult) => {
-        if (dialogResult.button == 'secondary') {
+        if (!dialogResult || dialogResult.button == 'secondary') {
           return of(${className}SearchActions.update${className}Cancelled());
         }
         if (!dialogResult?.result) {
@@ -397,7 +402,7 @@ function adaptSearchEffects(tree: Tree, options: CreateUpdateGeneratorSchema) {
           );
         }),
         switchMap((dialogResult) => {
-          if (dialogResult.button == 'secondary') {
+          if (!dialogResult || dialogResult.button == 'secondary') {
             return of(${className}SearchActions.create${className}Cancelled());
           }
           if (!dialogResult?.result) {
@@ -528,12 +533,14 @@ function adaptFeatureModule(tree: Tree, options: CreateUpdateGeneratorSchema) {
     'declarations: [',
     `declarations: [${className}CreateUpdateComponent,`
   );
-  moduleContent = moduleContent.replace(
-    'declarations:',
-    `
+  if (!moduleContent.includes('providePortalDialogService()')) {
+    moduleContent = moduleContent.replace(
+      'declarations:',
+      `
     providers: [providePortalDialogService()],
     declarations:`
-  );
+    );
+  }
   moduleContent = moduleContent.replace(
     `from '@ngrx/effects';`,
     `from '@ngrx/effects';  

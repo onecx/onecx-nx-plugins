@@ -3,7 +3,7 @@
   "version": "1.6.0",
   "license": "MIT",
   "scripts": {
-    "build": "nx run nx-plugin:build",
+    "build": "nx run nx-plugin:build && nx run create-workspace:build",
     "test": "nx run nx-plugin-e2e:e2e"
   },
   "private": true,
