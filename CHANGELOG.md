@@ -1,3 +1,10 @@
+## [1.7.1](https://github.com/onecx/onecx-nx-plugins/compare/v1.7.0...v1.7.1) (2024-07-11)
+
+
+### Bug Fixes
+
+* generator name ([#112](https://github.com/onecx/onecx-nx-plugins/issues/112)) ([91a2828](https://github.com/onecx/onecx-nx-plugins/commit/91a2828623c7dd897c95394171f281d6c3a52d40))
+
 ## [1.7.0](https://github.com/onecx/onecx-nx-plugins/compare/v1.6.0...v1.7.0) (2024-07-11)
 
 
