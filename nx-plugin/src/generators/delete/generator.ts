@@ -59,7 +59,7 @@ const PARAMETERS: GeneratorParameter<DeleteGeneratorSchema>[] = [
   },
 ];
 
-export async function createUpdateGenerator(
+export async function deleteGenerator(
   tree: Tree,
   options: DeleteGeneratorSchema
 ): Promise<GeneratorCallback> {
@@ -119,4 +119,4 @@ export async function createUpdateGenerator(
   };
 }
 
-export default createUpdateGenerator;
+export default deleteGenerator;
