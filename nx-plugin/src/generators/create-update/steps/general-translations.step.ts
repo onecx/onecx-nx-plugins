@@ -44,6 +44,6 @@ export class GeneralTranslationsStep
   });
   }
   getName(): string {
-    return 'Adapting Search Tests';
+    return 'Adapting Translations';
   }
 }

@@ -3,7 +3,8 @@ import { GeneratorStep } from '../../shared/generator.utils';
 import { SearchGeneratorSchema } from '../schema';
 
 export class AppModuleStep implements GeneratorStep<SearchGeneratorSchema> {
-  process(tree: Tree, options: SearchGeneratorSchema): void {
+  //@ts-eslint:ignore @typescript-eslint/no-unused-var
+  process(tree: Tree, _options: SearchGeneratorSchema): void {
     const moduleFilePath = joinPathFragments('src/app/app.module.ts');
     let moduleContent = tree.read(moduleFilePath, 'utf8');
     if (!moduleContent.includes('providers: [providePortalDialogService(),')) {

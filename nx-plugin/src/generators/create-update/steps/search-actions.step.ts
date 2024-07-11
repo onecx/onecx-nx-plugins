@@ -33,6 +33,6 @@ export class SearchActionsStep
     tree.write(filePath, content);
   }
   getName(): string {
-    return 'Adapting Search Tests';
+    return 'Adapting Search Actions';
   }
 }

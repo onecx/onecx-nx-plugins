@@ -38,6 +38,6 @@ export class FeatureModuleStep
     tree.write(moduleFilePath, moduleContent);
   }
   getName(): string {
-    return 'Adapting Search Tests';
+    return 'Adapting Feature Module';
   }
 }
