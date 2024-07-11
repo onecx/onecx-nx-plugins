@@ -1,0 +1,10 @@
+{
+  "<%= featureConstantName %>_DELETE": {
+    "HEADER": "ACTION: Add Translation",
+    "MESSAGE": "ACTION: Add Translation",
+    "CONFIRM": "ACTION: Add Translation",
+    "CANCEL": "ACTION: Add Translation",
+    "SUCCESS": "ACTION: Add Translation",
+    "ERROR": "ACTION: Add Translation"
+  }
+}

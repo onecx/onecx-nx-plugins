@@ -185,7 +185,41 @@ describe('nx-plugin', () => {
     });
   });
 
-  it('should add a custom naming feature', () => {
+  it('should add a delete dialog', () => {
+    // Add all required parameters to this array with a value.
+    // As tests are non-interactive, not-added but required items will block the test
+    const requiredParameters = [
+      {
+        key: NON_INTERACTIVE_KEY,
+        value: true,
+      },
+    ];
+
+    const parameterString = requiredParameters
+      .map((o) => `--${o.key} ${o.value}`)
+      .join(' ');
+
+    execSync(
+      `nx generate @onecx/nx-plugin:delete ${featureName} ${parameterString} --verbose`,
+      {
+        cwd: projectDirectory,
+        stdio: 'inherit',
+        env: process.env,
+      }
+    );
+    execSync(`nx run build --skip-nx-cache`, {
+      cwd: projectDirectory,
+      stdio: 'inherit',
+      env: process.env,
+    });
+    execSync(`nx run test --skip-nx-cache --coverage`, {
+      cwd: projectDirectory,
+      stdio: 'inherit',
+      env: process.env,
+    });
+  });
+
+  it('should add a custom named feature', () => {
     execSync(
       `nx generate @onecx/nx-plugin:feature ${featureNameCustom} --verbose`,
       {
@@ -206,7 +240,7 @@ describe('nx-plugin', () => {
     });
   });
 
-  it('should add a custom naming search page', () => {
+  it('should add a custom named search page', () => {
     // Add all required parameters to this array with a value.
     // As tests are non-interactive, not-added but required items will block the test
     const requiredParameters = [
@@ -257,7 +291,7 @@ describe('nx-plugin', () => {
     });
   });
 
-  it('should add a custom naming details page', () => {
+  it('should add a custom named details page', () => {
     // Add all required parameters to this array with a value.
     // As tests are non-interactive, not-added but required items will block the test
     const requiredParameters = [
@@ -303,7 +337,7 @@ describe('nx-plugin', () => {
     });
   });
 
-  it('should add a create-update dialog', () => {
+  it('should add a custom named create-update dialog', () => {
     // Add all required parameters to this array with a value.
     // As tests are non-interactive, not-added but required items will block the test
     const requiredParameters = [
@@ -343,6 +377,48 @@ describe('nx-plugin', () => {
 
     execSync(
       `nx generate @onecx/nx-plugin:create-update ${featureNameCustom} ${parameterString} --verbose`,
+      {
+        cwd: projectDirectory,
+        stdio: 'inherit',
+        env: process.env,
+      }
+    );
+    execSync(`nx run build --skip-nx-cache`, {
+      cwd: projectDirectory,
+      stdio: 'inherit',
+      env: process.env,
+    });
+    execSync(`nx run test --skip-nx-cache --coverage`, {
+      cwd: projectDirectory,
+      stdio: 'inherit',
+      env: process.env,
+    });
+  });
+
+  it('should add a custom named delete dialog', () => {
+    // Add all required parameters to this array with a value.
+    // As tests are non-interactive, not-added but required items will block the test
+    const requiredParameters = [
+      {
+        key: NON_INTERACTIVE_KEY,
+        value: true,
+      },
+      {
+        key: 'apiServiceName',
+        value: 'CustomService',
+      },
+      {
+        key: 'dataObjectName',
+        value: 'CustomDataObject',
+      },
+    ];
+
+    const parameterString = requiredParameters
+      .map((o) => `--${o.key} ${o.value}`)
+      .join(' ');
+
+    execSync(
+      `nx generate @onecx/nx-plugin:delete ${featureNameCustom} ${parameterString} --verbose`,
       {
         cwd: projectDirectory,
         stdio: 'inherit',

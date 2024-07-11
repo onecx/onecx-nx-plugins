@@ -22,7 +22,6 @@ import { SearchComponentStep } from './steps/search-component.step';
 import { SearchEffectsStep } from './steps/search-effects.step';
 import { SearchHTMLStep } from './steps/search-html.step';
 import { SearchTestsStep } from './steps/search-tests.step';
-import path = require('path');
 
 const PARAMETERS: GeneratorParameter<CreateUpdateGeneratorSchema>[] = [
   {

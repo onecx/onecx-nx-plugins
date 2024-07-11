@@ -1,3 +1,64 @@
+## [1.7.0](https://github.com/onecx/onecx-nx-plugins/compare/v1.6.0...v1.7.0) (2024-07-11)
+
+
+### Features
+
+* generate delete functionality ([#109](https://github.com/onecx/onecx-nx-plugins/issues/109)) ([e50ab5a](https://github.com/onecx/onecx-nx-plugins/commit/e50ab5a4045e2abdaed639f7328d513fbb7e88e0))
+
+## [1.6.0](https://github.com/onecx/onecx-nx-plugins/compare/v1.5.0...v1.6.0) (2024-07-09)
+
+
+### Features
+
+* add create-update generator ([ab659f8](https://github.com/onecx/onecx-nx-plugins/commit/ab659f874aa0d3027ae926f94e90b4da367f0878))
+* added angular standalone ([d220984](https://github.com/onecx/onecx-nx-plugins/commit/d220984c035ec1d2af31c50fb8aa0d10f7e01432))
+* added standalone flag for details ([ecc8eaf](https://github.com/onecx/onecx-nx-plugins/commit/ecc8eaf60e79d705f9fa4a9fa7acbd6975354f83))
+* added standalone flag for details ([4437636](https://github.com/onecx/onecx-nx-plugins/commit/44376363d24038b816e1a76ecc6375292d15ee41))
+* added standalone flag to create-update ([bdb4a8b](https://github.com/onecx/onecx-nx-plugins/commit/bdb4a8b0fa7b506afa2f03b3d32a11751e2c99e1))
+* added standalone flag to create-update ([018ade1](https://github.com/onecx/onecx-nx-plugins/commit/018ade135e4f133589c19734806f0b35631125c3))
+* added standalone generator ([3cea4d3](https://github.com/onecx/onecx-nx-plugins/commit/3cea4d317730cc59c9aaf29dfad6a4af7cd7663a))
+* added translations ([87122bc](https://github.com/onecx/onecx-nx-plugins/commit/87122bc0fcef2c39e53e79613b1bee5ba8ae0bb9))
+* custom standalone create-workspace ([b4222d6](https://github.com/onecx/onecx-nx-plugins/commit/b4222d6968528ec1b88b75498fdfa7401372aa3b))
+* extracted create/update success actions, added create dispatch test ([0a90e0f](https://github.com/onecx/onecx-nx-plugins/commit/0a90e0f166484c587bb151c39487615fd25e0f7b))
+* finished initial standalone generator ([df7c4b4](https://github.com/onecx/onecx-nx-plugins/commit/df7c4b402999bfd16a95766d833b0fbe81103faf))
+* moved standalone generator into existing ([615f1ce](https://github.com/onecx/onecx-nx-plugins/commit/615f1cee54b76d5084942a550cb85b75bc4892d8))
+
+
+### Bug Fixes
+
+* adapted naming ([5c81e73](https://github.com/onecx/onecx-nx-plugins/commit/5c81e73dfafae043a15870ccef8525352836cc74))
+* adapted naming ([41cb49f](https://github.com/onecx/onecx-nx-plugins/commit/41cb49fbefe66eb43fc11de6478480815fde2fb9))
+* adapted naming ([4e5e19a](https://github.com/onecx/onecx-nx-plugins/commit/4e5e19ac3c1a4b801cfb38687efa984894da8fa0))
+* adapted naming and translation imports ([0decc54](https://github.com/onecx/onecx-nx-plugins/commit/0decc54e008afb4b4d47c05d1d32b3ed0a08a657))
+* added default id to dialog ([3f1adda](https://github.com/onecx/onecx-nx-plugins/commit/3f1adda090d7661baff9b949fa3ba55971e681c6))
+* added missing reducer ([#107](https://github.com/onecx/onecx-nx-plugins/issues/107)) ([302a3d7](https://github.com/onecx/onecx-nx-plugins/commit/302a3d7a05e2ccda3fc13d5ea1c4d9a1a7376027))
+* added tests ([fa42279](https://github.com/onecx/onecx-nx-plugins/commit/fa42279491492abc383a992bbd55c3d8709b1c2f))
+* commented code ([bc6fc0b](https://github.com/onecx/onecx-nx-plugins/commit/bc6fc0bd51854c8b4271ea2b73e81412f547b770))
+* fixed bugs and tests ([f44b345](https://github.com/onecx/onecx-nx-plugins/commit/f44b345023686d20e9e13a8520455568a663dce8))
+* fixed details not cleared before navigate ([d6cfdcc](https://github.com/onecx/onecx-nx-plugins/commit/d6cfdcca27fdd4e8ff90610f313e1458736f721c))
+* fixed import/formating ([75c4aab](https://github.com/onecx/onecx-nx-plugins/commit/75c4aaba3894ba81f6b158433651c864198c6e15))
+* fixed imports ([da04ec9](https://github.com/onecx/onecx-nx-plugins/commit/da04ec92fad9bc6c6eb8904141af9edec05e5333))
+* fixed invalid reuse of translation keys ([8aac47d](https://github.com/onecx/onecx-nx-plugins/commit/8aac47dafaa51be25ac5d5542c868e0706e0f801))
+* fixed linter issues ([5916434](https://github.com/onecx/onecx-nx-plugins/commit/59164344ec64c7aa9799e190951b8879f5d9b033))
+* fixed master template ([0bb079f](https://github.com/onecx/onecx-nx-plugins/commit/0bb079f070965686063900ab20482d202710a111))
+* fixed naming mistake ([f0c3568](https://github.com/onecx/onecx-nx-plugins/commit/f0c3568e3c5bad27152a3fe7271d3046f4271d16))
+* fixed replacement string for tests ([ca4bffe](https://github.com/onecx/onecx-nx-plugins/commit/ca4bffed5600f5e11c45e26a009a27a5277eabaf))
+* fixed some minor issues ([b3db715](https://github.com/onecx/onecx-nx-plugins/commit/b3db715fdf6b65e2511401a9df41d3f3628934ae))
+* fixed test generation ([33a3c5b](https://github.com/onecx/onecx-nx-plugins/commit/33a3c5bde985250dae9796c128cfc29ff0d7d75b))
+* fixed tests ([2b214ae](https://github.com/onecx/onecx-nx-plugins/commit/2b214ae40404fc831197c045cfae67f9b5a9d5ef))
+* fixed tests ([a6e9129](https://github.com/onecx/onecx-nx-plugins/commit/a6e91295cd5055d2baa1b0d3ed57e2073dcb5e38))
+* fixed tests ([6dc7a76](https://github.com/onecx/onecx-nx-plugins/commit/6dc7a764bd841ed32ca92050f7292453862693d8))
+* format ([ffdff83](https://github.com/onecx/onecx-nx-plugins/commit/ffdff83d7d4df4dad04a8d801f1cfbf771e7aa84))
+* removed changes from ts config files ([b8d86cb](https://github.com/onecx/onecx-nx-plugins/commit/b8d86cbad5e955939c990db674cec65346b1e121))
+* replaced edit with update ([801840d](https://github.com/onecx/onecx-nx-plugins/commit/801840d7e18f5e432c7662cd1f0d35a6b1da5303))
+* replaced edit with update ([5622704](https://github.com/onecx/onecx-nx-plugins/commit/56227049b1d4b04f187b3120396671eebc7f9fa7))
+* switched from onChanges to onInit; fixed statusChange subscribe ([f56ccc2](https://github.com/onecx/onecx-nx-plugins/commit/f56ccc20edfdd3fd05b48b4a9391dc9ff5865dce))
+
+
+### Refactoring
+
+* switched to void for ocx button dialog clicked ([113cf0c](https://github.com/onecx/onecx-nx-plugins/commit/113cf0c0eea10e061cc564287e28ce49b7604203))
+
 ## [1.5.0](https://github.com/onecx/onecx-nx-plugins/compare/v1.4.0...v1.5.0) (2024-06-13)
 
 

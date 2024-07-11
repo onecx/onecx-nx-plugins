@@ -40,6 +40,11 @@
       "factory": "./src/generators/standalone/ngrx/generator",
       "schema": "./src/generators/standalone/ngrx/schema.json",
       "description": "standalone ngrx generator"
+    },
+    "delete": {
+      "factory": "./src/generators/delete/generator",
+      "schema": "./src/generators/delete/schema.json",
+      "description": "delete generator"
     }
   }
 }

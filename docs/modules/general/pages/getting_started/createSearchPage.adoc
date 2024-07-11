@@ -16,7 +16,7 @@ nx generate <namespaceOfTheGenerator>/nx-plugin:search <nameOfTheFeature> [--sta
 TIP: Next, the CLI will ask you whether you want to customize names for the generation.
 When answering yes, the next few questions will ask you about names for the API.
 This can be useful if you want to adapt to a legacy API.
-When modifying names, assure that you use the same custom names for all generated components of the feature (search, details, create-update) for the data object name, and the api service name as these ones are shared.
+When modifying names, assure that you use the same custom names for all generated components of the feature (search, details, create-update, delete) for the data object name, and the api service name as these ones are shared.
 
 *Options*:
 

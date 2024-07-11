@@ -1,0 +1,10 @@
+{
+  "<%= featureConstantName %>_DELETE": {
+    "HEADER": "<%= featureClassName %> löschen",
+    "MESSAGE": "Bitte bestätigen, dass diese <%= featureClassName %> gelöscht werden soll.",
+    "CONFIRM": "Bestätigen",
+    "CANCEL": "Abbrechen",
+    "SUCCESS": "<%= featureClassName %> erfolgreich gelöscht",
+    "ERROR": "Konnte <%= featureClassName %> nicht löschen"
+  }
+}
