@@ -1,3 +1,10 @@
+## [1.7.0](https://github.com/onecx/onecx-nx-plugins/compare/v1.6.0...v1.7.0) (2024-07-11)
+
+
+### Features
+
+* generate delete functionality ([#109](https://github.com/onecx/onecx-nx-plugins/issues/109)) ([e50ab5a](https://github.com/onecx/onecx-nx-plugins/commit/e50ab5a4045e2abdaed639f7328d513fbb7e88e0))
+
 ## [1.6.0](https://github.com/onecx/onecx-nx-plugins/compare/v1.5.0...v1.6.0) (2024-07-09)
 
 
