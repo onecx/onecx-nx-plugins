@@ -57,7 +57,7 @@ const PARAMETERS: GeneratorParameter<DeleteGeneratorSchema>[] = [
   },
 ];
 
-export async function createUpdateGenerator(
+export async function deleteGenerator(
   tree: Tree,
   options: DeleteGeneratorSchema
 ): Promise<GeneratorCallback> {
@@ -458,4 +458,4 @@ function addFunctionToOpenApi(tree: Tree, options: DeleteGeneratorSchema) {
   );
 }
 
-export default createUpdateGenerator;
+export default deleteGenerator;
