@@ -7,7 +7,7 @@ const config = withModuleFederationPlugin({
   filename: 'remoteEntry.js',
   exposes: {
     './<%= remoteModuleName %>Module':
-      './src/app/<%= remoteModuleFileName %>-app.remote.module.ts',
+      './src/bootstrap.ts',
   },
   shared: share({
     '@angular/core': {
@@ -55,4 +55,21 @@ const config = withModuleFederationPlugin({
   sharedMappings: ['@onecx/portal-integration-angular'],
 });
 
-module.exports = config;
+const plugins = config.plugins.filter((plugin) => !(plugin instanceof ModifyEntryPlugin))
+
+module.exports = {
+  ...config,
+  plugins,
+  output: {
+    uniqueName: '<%= featureFileName %>-ui',
+    publicPath: 'auto'
+  },
+  experiments: {  
+    ...config.experiments,
+    topLevelAwait: true
+  },
+  optimization: {
+    runtimeChunk: false,
+    splitChunks: false
+  }
+}

@@ -51,7 +51,7 @@ export async function featureGenerator(
       featureFileName: names(options.name).fileName,
       featurePropertyName: names(options.name).propertyName,
       featureClassName: names(options.name).className,
-      standalone: options.standalone
+      standalone: options.standalone,
     }
   );
 
@@ -82,16 +82,18 @@ function adaptAppRoutingModule(tree: Tree, options: FeatureGeneratorSchema) {
   const className = names(options.name).className;
   const moduleFilePath = 'src/app/app-routing.module.ts';
   let moduleContent = tree.read(moduleFilePath, 'utf8');
-  moduleContent = moduleContent.replace(
-    'routes: Routes = [',
-    `routes: Routes = [ {
-      path: '${fileName}',
+  moduleContent =
+    `import { startsWith } from '@onecx/angular-webcomponents'` +
+    moduleContent.replace(
+      'routes: Routes = [',
+      `routes: Routes = [ {
+      matcher: startsWith('${fileName}'),
       loadChildren: () =>
         import('./${fileName}/${fileName}.module').then(
           (mod) => mod.${className}Module
         ),
     },`
-  );
+    );
 
   tree.write(moduleFilePath, moduleContent);
 }

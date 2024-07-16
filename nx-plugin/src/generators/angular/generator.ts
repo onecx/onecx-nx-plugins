@@ -87,7 +87,7 @@ export async function angularGenerator(
     tree.delete(`${directory}/scripts/load-permissions.sh`);
   }
 
-  const oneCXLibVersion = '^4.40.2';
+  const oneCXLibVersion = '^4.41.0';
   addDependenciesToPackageJson(
     tree,
     {
@@ -98,13 +98,17 @@ export async function angularGenerator(
       '@onecx/portal-integration-angular': oneCXLibVersion,
       '@onecx/portal-layout-styles': oneCXLibVersion,
       '@onecx/accelerator': oneCXLibVersion,
-      "@onecx/angular-accelerator": oneCXLibVersion,
+      '@onecx/angular-accelerator': oneCXLibVersion,
       '@onecx/integration-interface': oneCXLibVersion,
+      '@onecx/angular-remote-components': oneCXLibVersion,
+      '@onecx/angular-webcomponents': oneCXLibVersion,
       '@ngx-translate/core': '^14.0.0',
       '@ngx-translate/http-loader': '^7.0.0',
       '@angular-architects/module-federation': '^15.0.0',
       '@angular/cdk': '^15.2.7',
+      '@angular/elements': '15.2.7',
       'keycloak-angular': '^13.1.0',
+      '@webcomponents/webcomponentsjs': '^2.8.0',
     },
     {
       '@openapitools/openapi-generator-cli': '^2.5.2',
@@ -265,6 +269,9 @@ function adaptAngularPrefixConfig(tree: Tree) {
   updateJson(tree, 'project.json', (json) => {
     json.prefix = 'app';
     json.targets.test.options.coverage = true;
+    json.targets.build.options.scripts = [
+      'node_modules/@webcomponents/webcomponentsjs/webcomponents-bundle.js',
+    ];
     return json;
   });
 }

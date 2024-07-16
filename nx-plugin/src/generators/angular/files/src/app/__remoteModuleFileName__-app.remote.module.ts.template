@@ -23,6 +23,12 @@ import { Configuration } from './shared/generated';
 import { SharedModule } from './shared/shared.module';
 import { EffectSources, EffectsRunner, Actions  } from '@ngrx/effects';
 import { apiConfigProvider } from './shared/utils/apiConfigProvider.utils';
+import { DoBootstrap, Injector } from '@angular/core'
+import { createCustomElement } from '@angular/elements'
+import { Router } from '@angular/router'
+import { APP_INITIALIZER } from '@angular/core'
+import { initializeRouter } from '@onecx/angular-webcomponents'
+import { AppStateService } from '@onecx/angular-integration-interface'
 
 // Workaround for the following issue:
 // https://github.com/ngrx/platform/issues/3700
@@ -34,10 +40,13 @@ const effectProvidersForWorkaround = [
 effectProvidersForWorkaround.forEach(p => p.ɵprov.providedIn = null);
 
 @NgModule({
+  declarations: [
+    AppEntrypointComponent
+  ],
   imports: [
     ...commonImports,
     PortalCoreModule.forMicroFrontend(),
-    RouterModule.forChild(addInitializeModuleGuard(routes)),
+    RouterModule.forRoot(addInitializeModuleGuard(routes)),
     TranslateModule.forRoot({
       extend: true,
       isolate: false,
@@ -66,6 +75,21 @@ effectProvidersForWorkaround.forEach(p => p.ɵprov.providedIn = null);
       useFactory: apiConfigProvider,
       deps: [ConfigurationService, AppStateService],
     },
+    {
+      provide: APP_INITIALIZER,
+      useFactory: initializeRouter,
+      multi: true,
+      deps: [Router, AppStateService]
+    },
   ],
 })
-export class <%= remoteModuleName %>Module {}
+export class <%= remoteModuleName %>Module implements DoBootstrap {
+  constructor(private injector: Injector) {}
+
+  ngDoBootstrap(): void {
+    const appEntrypoint = createCustomElement(AppEntrypointComponent, {
+      injector: this.injector
+    })
+    customElements.define('<%= remoteModuleFileName %>-webcomponent', appEntrypoint)
+  }
+}
