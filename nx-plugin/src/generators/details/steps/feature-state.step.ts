@@ -21,7 +21,7 @@ export class FeatureStateStep implements GeneratorStep<DetailsGeneratorSchema> {
       fileContent;
     tree.write(filePath, fileContent);
   }
-  getName(): string {
+  getTitle(): string {
     return "Adapting Feature State"
   }
 }

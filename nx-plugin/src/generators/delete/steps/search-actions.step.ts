@@ -24,7 +24,7 @@ export class SearchActionsStep implements GeneratorStep<DeleteGeneratorSchema> {
     );
     tree.write(filePath, content);
   }
-  getName(): string {
+  getTitle(): string {
     return 'Adapting Search Actions';
   }
 }

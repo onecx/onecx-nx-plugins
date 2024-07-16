@@ -159,7 +159,7 @@ export class GeneralOpenAPIStep implements GeneratorStep<DetailsGeneratorSchema>
       apiUtil.finalize()
     );
   }
-  getName(): string {
+  getTitle(): string {
     return "Adapting OpenAPI"
   }
 }

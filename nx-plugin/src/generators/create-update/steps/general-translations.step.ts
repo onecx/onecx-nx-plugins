@@ -43,7 +43,7 @@ export class GeneralTranslationsStep
     });
   });
   }
-  getName(): string {
+  getTitle(): string {
     return 'Adapting Translations';
   }
 }

@@ -19,7 +19,7 @@ export class SearchHTMLStep
     );
     tree.write(htmlSearchFilePath, htmlContent);
   }
-  getName(): string {
+  getTitle(): string {
     return 'Adapting Search HTML';
   }
 }

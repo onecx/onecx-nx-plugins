@@ -41,7 +41,7 @@ export class GeneralTranslationsStep implements GeneratorStep<DetailsGeneratorSc
       });
     });
   }
-  getName(): string {
+  getTitle(): string {
     return "Adapting Translations"
   }
 }

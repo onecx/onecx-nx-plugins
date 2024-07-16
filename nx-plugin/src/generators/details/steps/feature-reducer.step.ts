@@ -21,7 +21,7 @@ export class FeatureReducerStep implements GeneratorStep<DetailsGeneratorSchema>
       fileContent;
     tree.write(filePath, fileContent);
   }
-  getName(): string {
+  getTitle(): string {
     return "Adapting Feature Reducer"
   }
 }

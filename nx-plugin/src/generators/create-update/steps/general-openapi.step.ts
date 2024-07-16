@@ -165,7 +165,7 @@ export class GeneralOpenAPIStep
       apiUtil.finalize()
     );
   }
-  getName(): string {
+  getTitle(): string {
     return 'Adapting OpenAPI';
   }
 }

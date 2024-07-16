@@ -65,7 +65,7 @@ export class SearchTestsStep implements GeneratorStep<DeleteGeneratorSchema> {
       );
     tree.write(filePath, htmlContent);
   }
-  getName(): string {
+  getTitle(): string {
     return 'Adapting Search Tests';
   }
 }

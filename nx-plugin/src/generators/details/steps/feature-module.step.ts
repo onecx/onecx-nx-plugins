@@ -33,7 +33,7 @@ export class FeatureModuleStep implements GeneratorStep<DetailsGeneratorSchema> 
 
     tree.write(moduleFilePath, moduleContent);
   }
-  getName(): string {
+  getTitle(): string {
     return "Adapting Feature Module"
   }
 }

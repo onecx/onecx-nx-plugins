@@ -48,7 +48,7 @@ export class GeneralPermissionsStep implements GeneratorStep<SearchGeneratorSche
       });
     }
   }
-  getName(): string {
+  getTitle(): string {
     return "Adapting Permissions"
   }
 }

@@ -16,7 +16,7 @@ export class SearchHTMLStep implements GeneratorStep<SearchGeneratorSchema> {
     );
     tree.write(htmlSearchFilePath, htmlContent);
   }
-  getName(): string {
+  getTitle(): string {
     return 'Adapting Search HTML';
   }
 }

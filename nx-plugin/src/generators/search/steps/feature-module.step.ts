@@ -37,7 +37,7 @@ export class FeatureModuleStep implements GeneratorStep<SearchGeneratorSchema> {
 
     tree.write(moduleFilePath, moduleContent);
   }
-  getName(): string {
+  getTitle(): string {
     return 'Adapting Feature Module';
   }
 }

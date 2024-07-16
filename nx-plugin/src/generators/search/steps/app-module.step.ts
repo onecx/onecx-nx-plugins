@@ -27,7 +27,7 @@ export class AppModuleStep implements GeneratorStep<SearchGeneratorSchema> {
     tree.write(moduleFilePath, moduleContent);
   }
 
-  getName(): string {
+  getTitle(): string {
     return 'Adapting App Module';
   }
 }

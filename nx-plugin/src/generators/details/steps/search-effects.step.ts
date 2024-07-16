@@ -32,7 +32,7 @@ export class SearchEffectsStep implements GeneratorStep<SearchGeneratorSchema> {
       );
     tree.write(filePath, htmlContent);
   }
-  getName(): string {
+  getTitle(): string {
     return "Adapting Search Effects"
   }
 }

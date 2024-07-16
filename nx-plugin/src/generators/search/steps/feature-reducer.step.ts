@@ -23,7 +23,7 @@ export class FeatureReducerStep
       fileContent;
     tree.write(filePath, fileContent);
   }
-  getName(): string {
+  getTitle(): string {
     return 'Adapting Feature Reducer';
   }
 }

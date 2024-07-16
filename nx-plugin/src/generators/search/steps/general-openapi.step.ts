@@ -95,7 +95,7 @@ export class GeneralOpenAPIStep implements GeneratorStep<SearchGeneratorSchema> 
 
     tree.write(joinPathFragments(openApiFolderPath, bffOpenApiPath), res);
   }
-  getName(): string {
+  getTitle(): string {
     return "Adapting OpenAPI"
   }
 }

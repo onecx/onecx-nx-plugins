@@ -22,7 +22,7 @@ export class FeatureStateStep implements GeneratorStep<SearchGeneratorSchema> {
       fileContent;
     tree.write(filePath, fileContent);
   }
-  getName(): string {
+  getTitle(): string {
     return "Adapting Feature State"
   }
 }

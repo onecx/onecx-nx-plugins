@@ -22,7 +22,7 @@ export class FeatureRoutesStep implements GeneratorStep<SearchGeneratorSchema> {
       moduleContent;
     tree.write(routesFilePath, moduleContent);
   }
-  getName(): string {
+  getTitle(): string {
     return 'Adapting Feature Routes';
   }
 }

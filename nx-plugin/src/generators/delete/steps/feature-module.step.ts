@@ -27,7 +27,7 @@ export class FeatureModuleStep implements GeneratorStep<DeleteGeneratorSchema> {
     }
     tree.write(moduleFilePath, moduleContent);
   }
-  getName(): string {
+  getTitle(): string {
     return 'Adapting Feature Module';
   }
 }

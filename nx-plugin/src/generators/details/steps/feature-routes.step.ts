@@ -18,7 +18,7 @@ export class FeatureRoutesStep implements GeneratorStep<DetailsGeneratorSchema> 
       moduleContent;
     tree.write(routesFilePath, moduleContent);
   }
-  getName(): string {
+  getTitle(): string {
     return "Adapting Feature Routes"
   }
 }

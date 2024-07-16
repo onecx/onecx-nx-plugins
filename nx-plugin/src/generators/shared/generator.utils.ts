@@ -3,7 +3,7 @@ import ora = require('ora');
 
 export interface GeneratorStep<T> {
   process(tree: Tree, options: T): void;
-  getName(): string;
+  getTitle(): string;
 }
 
 export class GeneratorProcessor<T> {
@@ -16,7 +16,7 @@ export class GeneratorProcessor<T> {
   async run(tree: Tree, options: T, ora?: ora.Ora) {
     for (const step of this.steps) {
       if (ora) {
-        ora.text = step.getName();
+        ora.text = step.getTitle();
       }
       step.process(tree, options);
     }

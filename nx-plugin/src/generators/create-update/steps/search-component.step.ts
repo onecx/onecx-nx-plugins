@@ -42,7 +42,7 @@ export class SearchComponentStep
     );
     tree.write(filePath, content);
   }
-  getName(): string {
+  getTitle(): string {
     return 'Adapting Search Component';
   }
 }

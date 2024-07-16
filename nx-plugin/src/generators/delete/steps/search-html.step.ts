@@ -17,7 +17,7 @@ export class SearchHTMLStep implements GeneratorStep<DeleteGeneratorSchema> {
     );
     tree.write(htmlSearchFilePath, htmlContent);
   }
-  getName(): string {
+  getTitle(): string {
     return 'Adapting Search HTML';
   }
 }
