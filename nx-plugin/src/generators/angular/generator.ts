@@ -40,18 +40,6 @@ export async function angularGenerator(
   const spinner = ora('Adding angular').start();
   const directory = '.';
 
-  //This is forcing angular 15. An easier way would be to downgrade nx to the correct version
-  //(15.9.7) but this is not working because of a bug in this nx version
-  addDependenciesToPackageJson(
-    tree,
-    { '@angular/core': '^15.2.7' },
-    {
-      '@angular-devkit/build-angular': '^15.2.7',
-      typescript: '~4.9.4',
-      'js-yaml': '^4.1.0',
-    }
-  );
-
   const applicationGeneratorCallback = await applicationGenerator(tree, {
     name: options.name,
     directory: directory,
@@ -87,28 +75,28 @@ export async function angularGenerator(
     tree.delete(`${directory}/scripts/load-permissions.sh`);
   }
 
-  const oneCXLibVersion = '^4.40.2';
+  const oneCXLibVersion = '^5.0.0';
   addDependenciesToPackageJson(
     tree,
     {
-      primeflex: '^3.3.0',
-      primeicons: '^6.0.1',
-      primeng: '15.2.1', // 15.2.1 is the last version where the tests are running!!!
+      primeflex: '^3.3.1',
+      primeicons: '^7.0.0',
+      primeng: '17.18.4', // 15.2.1 is the last version where the tests are running!!!
       '@onecx/keycloak-auth': oneCXLibVersion,
       '@onecx/portal-integration-angular': oneCXLibVersion,
       '@onecx/portal-layout-styles': oneCXLibVersion,
       '@onecx/accelerator': oneCXLibVersion,
       "@onecx/angular-accelerator": oneCXLibVersion,
       '@onecx/integration-interface': oneCXLibVersion,
-      '@ngx-translate/core': '^14.0.0',
-      '@ngx-translate/http-loader': '^7.0.0',
-      '@angular-architects/module-federation': '^15.0.0',
-      '@angular/cdk': '^15.2.7',
-      'keycloak-angular': '^13.1.0',
+      '@ngx-translate/core': '^15.0.0',
+      '@ngx-translate/http-loader': '^8.0.0',
+      '@angular-architects/module-federation': '^18.0.4',
+      '@angular/cdk': '^18.1.0',
+      'keycloak-angular': '^16.0.1',
     },
     {
       '@openapitools/openapi-generator-cli': '^2.5.2',
-      'ngx-translate-testing': '^6.1.0',
+      'ngx-translate-testing': '^7.0.0',
     }
   );
 
