@@ -11,11 +11,11 @@ app:
     microfrontend:
       enabled: true
       specs:
-        exposedModule: "./<%= remoteModuleName %>Module"
-        description: "OneCX <%= remoteModuleName %> Module"
-        note: "OneCX <%= remoteModuleName %> UI module auto import via MF operator"
-        type: MODULE
-        main:          
+        main:
+          exposedModule: './<%= remoteModuleName %>Module'        
+          description: 'OneCX <%= remoteModuleName %> Module'
+          note: 'OneCX <%= remoteModuleName %> UI module auto import via MF operator'
+          type: MODULE
           technology: WEBCOMPONENTMODULE
           remoteName: <%= remoteModuleFileName %>
           tagName: <%= remoteModuleFileName %>-webcomponent
