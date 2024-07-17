@@ -11,10 +11,9 @@ export class FeatureRoutesStep
     const routesFilePath = `src/app/${fileName}/${fileName}.routes.ts`;
     let moduleContent = tree.read(routesFilePath, 'utf8');
     moduleContent =
-      `import { startsWith } from '@onecx/angular-webcomponents'` +
       moduleContent.replace(
         'routes: Routes = [',
-        `routes: Routes = [ { matcher: startsWith('details/:id'), component: ${className}DetailsComponent, pathMatch: 'full' },`
+        `routes: Routes = [ { path: 'details/:id', component: ${className}DetailsComponent, pathMatch: 'full' },`
       );
 
     moduleContent =

@@ -27,9 +27,11 @@ import { DoBootstrap, Injector } from '@angular/core'
 import { createCustomElement } from '@angular/elements'
 import { Router } from '@angular/router'
 import { APP_INITIALIZER } from '@angular/core'
-import { initializeRouter } from '@onecx/angular-webcomponents'
+import { initializeRouter, createAppEntrypoint } from '@onecx/angular-webcomponents'
 import { AppStateService } from '@onecx/angular-integration-interface'
 import { AppEntrypointComponent } from './app-entrypoint.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
+import { AngularAuthModule } from '@onecx/angular-auth'
 
 // Workaround for the following issue:
 // https://github.com/ngrx/platform/issues/3700
@@ -57,7 +59,11 @@ effectProvidersForWorkaround.forEach(p => p.ɵprov.providedIn = null);
         deps: [HttpClient, AppStateService],
       }
     }),
-    SharedModule,
+    SharedModule,    
+    BrowserModule,
+    HttpClientModule,
+    BrowserAnimationsModule,
+    AngularAuthModule,
     StoreModule.forRoot(reducers, { metaReducers }),
     EffectsModule.forRoot(effectProvidersForWorkaround),
     StoreRouterConnectingModule.forRoot(),
@@ -88,9 +94,6 @@ export class <%= remoteModuleName %>Module implements DoBootstrap {
   constructor(private injector: Injector) {}
 
   ngDoBootstrap(): void {
-    const appEntrypoint = createCustomElement(AppEntrypointComponent, {
-      injector: this.injector
-    })
-    customElements.define('<%= remoteModuleFileName %>-webcomponent', appEntrypoint)
+    createAppEntrypoint(AppEntrypointComponent, '<%= remoteModuleFileName %>-webcomponent', this.injector);
   }
 }
