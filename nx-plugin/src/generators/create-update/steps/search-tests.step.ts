@@ -2,18 +2,22 @@ import { Tree, names } from '@nx/devkit';
 import { GeneratorStep } from '../../shared/generator.utils';
 import { CreateUpdateGeneratorSchema } from '../schema';
 
-export class SearchTestsStep implements GeneratorStep<CreateUpdateGeneratorSchema> {
+export class SearchTestsStep
+  implements GeneratorStep<CreateUpdateGeneratorSchema>
+{
   process(tree: Tree, options: CreateUpdateGeneratorSchema): void {
     const fileName = names(options.featureName).fileName;
-  const className = names(options.featureName).className;
-  const propertyName = names(options.featureName).propertyName;
-  const filePath = `src/app/${fileName}/pages/${fileName}-search/${fileName}-search.component.spec.ts`;
+    const className = names(options.featureName).className;
+    const propertyName = names(options.featureName).propertyName;
+    const filePath = `src/app/${fileName}/pages/${fileName}-search/${fileName}-search.component.spec.ts`;
 
-  let htmlContent = tree.read(filePath, 'utf8');
+    let htmlContent = tree.read(filePath, 'utf8');
 
-  htmlContent =
-    `import { PrimeIcons } from 'primeng/api';` +
-    htmlContent.replace(
+    if (!htmlContent.includes(`import { PrimeIcons } from 'primeng/api';`)) {
+      htmlContent = `import { PrimeIcons } from 'primeng/api';` + htmlContent;
+    }
+
+    htmlContent = htmlContent.replace(
       "it('should dispatch export csv data on export action click'",
       `
     it('should dispatch edit${className}ButtonClicked action on item edit click', async () => {
@@ -79,7 +83,7 @@ export class SearchTestsStep implements GeneratorStep<CreateUpdateGeneratorSchem
 
     it('should export csv data on export action click'`
     );
-  tree.write(filePath, htmlContent);
+    tree.write(filePath, htmlContent);
   }
   getTitle(): string {
     return 'Adapting Search Tests';

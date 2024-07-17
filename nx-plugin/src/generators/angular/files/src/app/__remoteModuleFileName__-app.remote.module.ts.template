@@ -29,6 +29,7 @@ import { Router } from '@angular/router'
 import { APP_INITIALIZER } from '@angular/core'
 import { initializeRouter } from '@onecx/angular-webcomponents'
 import { AppStateService } from '@onecx/angular-integration-interface'
+import { AppEntrypointComponent } from './app-entrypoint.component';
 
 // Workaround for the following issue:
 // https://github.com/ngrx/platform/issues/3700

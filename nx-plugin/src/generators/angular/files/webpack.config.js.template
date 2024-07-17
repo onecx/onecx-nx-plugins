@@ -1,3 +1,4 @@
+const { ModifyEntryPlugin } = require('@angular-architects/module-federation/src/utils/modify-entry-plugin')
 const {
   share,
   withModuleFederationPlugin,
@@ -61,7 +62,7 @@ module.exports = {
   ...config,
   plugins,
   output: {
-    uniqueName: '<%= featureFileName %>-ui',
+    uniqueName: '<%= fileName %>-ui',
     publicPath: 'auto'
   },
   experiments: {  
