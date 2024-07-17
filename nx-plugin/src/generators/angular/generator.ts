@@ -75,7 +75,7 @@ export async function angularGenerator(
       className: names(options.name).className,
       remoteModuleName: names(options.name).className,
       remoteModuleFileName: names(options.name).fileName,
-      fileName: names(options.name).fileName,      
+      fileName: names(options.name).fileName,
       constantName: names(options.name).constantName,
       propertyName: names(options.name).propertyName,
       standalone: options.standalone,
