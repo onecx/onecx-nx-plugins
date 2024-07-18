@@ -11,11 +11,11 @@ export class SearchTestsStep implements GeneratorStep<DeleteGeneratorSchema> {
 
     let htmlContent = tree.read(filePath, 'utf8');
 
-    htmlContent =
-      `import { PrimeIcons } from 'primeng/api';` +
-      htmlContent.replace(
-        "it('should dispatch export csv data on export action click'",
-        `
+    htmlContent = `import { PrimeIcons } from 'primeng/api';` + htmlContent;
+
+    htmlContent = htmlContent.replace(
+      "it('should dispatch export csv data on export action click'",
+      `
       it('should dispatch delete${className}ButtonClicked action on item delete click', async () => {
         jest.spyOn(store, 'dispatch');
     
@@ -62,7 +62,7 @@ export class SearchTestsStep implements GeneratorStep<DeleteGeneratorSchema> {
       });
   
       it('should export csv data on export action click'`
-      );
+    );
     tree.write(filePath, htmlContent);
   }
   getTitle(): string {
