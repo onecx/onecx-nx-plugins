@@ -6,7 +6,9 @@ import {
   createTranslateLoader,
   PortalCoreModule,
   addInitializeModuleGuard,
-  AppStateService
+  AppStateService,
+  AlwaysGrantPermissionChecker,
+  HAS_PERMISSION_CHECKER,
 } from '@onecx/portal-integration-angular';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CalendarModule } from 'primeng/calendar';
@@ -40,5 +42,12 @@ import { EffectsModule } from '@ngrx/effects';
     EffectsModule.forFeature(),
     TranslateModule
   ],
+  <%_ if(standalone){ _%>providers: [
+    {
+      provide: HAS_PERMISSION_CHECKER,
+      useValue: AlwaysGrantPermissionChecker,
+    },
+  ],
+  <%_ } _%>
 })
 export class <%= featureClassName %>Module {}
