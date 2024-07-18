@@ -1,3 +1,11 @@
+## [1.8.0](https://github.com/onecx/onecx-nx-plugins/compare/v1.7.1...v1.8.0) (2024-07-18)
+
+
+### Features
+
+* migrate to webcomponents ([fe0fdd6](https://github.com/onecx/onecx-nx-plugins/commit/fe0fdd609c14aec8a292e5c20a6b4682cedb30e8))
+* restructure generators ([930009e](https://github.com/onecx/onecx-nx-plugins/commit/930009ebb03a96cef8b7dfbd2fc7670961551bdb))
+
 ## [1.7.1](https://github.com/onecx/onecx-nx-plugins/compare/v1.7.0...v1.7.1) (2024-07-11)
 
 
