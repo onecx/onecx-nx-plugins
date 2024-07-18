@@ -11,9 +11,7 @@ export class SearchTestsStep implements GeneratorStep<DeleteGeneratorSchema> {
 
     let htmlContent = tree.read(filePath, 'utf8');
 
-    if (!htmlContent.includes(`import { PrimeIcons } from 'primeng/api';`)) {
-      htmlContent = `import { PrimeIcons } from 'primeng/api';` + htmlContent;
-    }
+    htmlContent = `import { PrimeIcons } from 'primeng/api';` + htmlContent;
 
     htmlContent = htmlContent.replace(
       "it('should dispatch export csv data on export action click'",

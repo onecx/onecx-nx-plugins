@@ -50,6 +50,10 @@ const config = withModuleFederationPlugin({
       requiredVersion: 'auto',
       includeSecondaries: true,
     },
+    '@onecx/angular-webcomponents': {
+      requiredVersion: 'auto',
+      includeSecondaries: true,
+    },
     '@ngx-translate/core': {
       singleton: true,
       strictVersion: false,
