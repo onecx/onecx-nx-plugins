@@ -1,3 +1,10 @@
+## [1.8.1](https://github.com/onecx/onecx-nx-plugins/compare/v1.8.0...v1.8.1) (2024-07-18)
+
+
+### Bug Fixes
+
+* fix angular callback being optional ([#117](https://github.com/onecx/onecx-nx-plugins/issues/117)) ([85ee569](https://github.com/onecx/onecx-nx-plugins/commit/85ee569dc6cbc0d464d7f953ec35a2f9da519677))
+
 ## [1.8.0](https://github.com/onecx/onecx-nx-plugins/compare/v1.7.1...v1.8.0) (2024-07-18)
 
 
