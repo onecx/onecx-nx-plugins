@@ -14,7 +14,7 @@
 *** xref:getting_started/search/updatePermissions.adoc[Update permissions]
 *** xref:getting_started/search/checkForFurtherActions.adoc[Check for further actions]
 *** xref:getting_started/search/commitTheChanges.adoc[Commit the changes]
-** xref:getting_started/createCreateUpdateDialog.adoc[Create create-update Dialog]
+** xref:getting_started/createCreateUpdateDialog.adoc[Create create-update dialog]
 *** xref:getting_started/create-update/extendFormFields.adoc[Extend form fields]
 *** xref:getting_started/create-update/commitTheChanges.adoc[Commit the changes]
 ** xref:getting_started/createDeleteDialog.adoc[Create delete dialog]
