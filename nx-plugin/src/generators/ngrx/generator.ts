@@ -56,7 +56,9 @@ export async function ngrxGenerator(
   spinner.succeed();
 
   return async () => {
-    await angularGeneratorCallback();
+    if (angularGeneratorCallback) {
+      await angularGeneratorCallback();
+    }
 
     installPackagesTask(tree, true);
 
