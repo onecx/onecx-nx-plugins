@@ -34,7 +34,11 @@ describe('<%= featureClassName %>SearchComponent', () => {
   let formBuilder: FormBuilder;
   let <%= featurePropertyName %>Search: <%= featureClassName %>SearchHarness;
   
-  const mockActivatedRoute = {};
+  const mockActivatedRoute = {
+    snapshot: {
+      data: {},
+    },
+  };
   const base<%= featureClassName %>SearchViewModel: <%= featureClassName %>SearchViewModel = {
     columns: <%= featurePropertyName %>SearchColumns,
     searchCriteria: { changeMe: '0' },

@@ -28,7 +28,11 @@ describe('<%= featureClassName %>DetailsComponent', () => {
   let breadcrumbService: BreadcrumbService;
   let <%= featurePropertyName %>Details: <%= featureClassName %>DetailsHarness;
 
-  const mockActivatedRoute = {};
+  const mockActivatedRoute = {
+    snapshot: {
+      data: {},
+    },
+  };
   const base<%= featureClassName %>DetaulsViewModel: <%= featureClassName %>DetailsViewModel = {
     details: undefined,
   };
