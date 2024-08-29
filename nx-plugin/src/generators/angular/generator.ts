@@ -197,7 +197,7 @@ function adaptProjectConfiguration(
   tree: Tree,
   options: AngularGeneratorSchema
 ) {
-  const config = readProjectConfiguration(tree, names(options.name).fileName);
+  const config = readProjectConfiguration(tree, options.name);
   config.targets['serve'].executor = '@nx/angular:dev-server';
   config.targets['serve'].options = {
     ...(config.targets['serve'].options ?? {}),
