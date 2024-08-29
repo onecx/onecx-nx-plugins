@@ -75,34 +75,59 @@ export async function angularGenerator(
     tree.delete(`${directory}/scripts/load-permissions.sh`);
   }
 
-  const oneCXLibVersion = '^5.0.0';
+  const oneCXLibVersion = '^5.5.0';
   addDependenciesToPackageJson(
     tree,
     {
       primeflex: '^3.3.1',
       primeicons: '^7.0.0',
-      primeng: '17.18.4', // 15.2.1 is the last version where the tests are running!!!
+      primeng: '17.18.8', // 15.2.1 is the last version where the tests are running!!!
+      '@onecx/accelerator': oneCXLibVersion,
+      '@onecx/angular-accelerator': oneCXLibVersion,
+      '@onecx/angular-auth': oneCXLibVersion,
+      '@onecx/angular-remote-components': oneCXLibVersion,
+      '@onecx/angular-webcomponents': oneCXLibVersion,
+      '@onecx/integration-interface': oneCXLibVersion,
       '@onecx/keycloak-auth': oneCXLibVersion,
       '@onecx/portal-integration-angular': oneCXLibVersion,
       '@onecx/portal-layout-styles': oneCXLibVersion,
-      '@onecx/accelerator': oneCXLibVersion,
-      '@onecx/angular-accelerator': oneCXLibVersion,
-      '@onecx/integration-interface': oneCXLibVersion,
       '@ngx-translate/core': '^15.0.0',
       '@ngx-translate/http-loader': '^8.0.0',
       '@angular-architects/module-federation': '^18.0.4',
-      '@angular/cdk': '^18.1.0',
       'keycloak-angular': '^16.0.1',
-      '@onecx/angular-remote-components': oneCXLibVersion,
-      '@onecx/angular-webcomponents': oneCXLibVersion,
-      '@onecx/angular-auth': oneCXLibVersion,
-      '@angular/elements': '^15.2.7',
-      "@angular/animations": "^15.2.7",
+      '@angular/animations': '^18.1.4',
+      '@angular/cdk': '^18.1.4',
+      '@angular/common': '^18.1.4',
+      '@angular/compiler': '^18.1.4',
+      '@angular/core': '^18.1.4',
+      '@angular/elements': '^18.1.4',
+      '@angular/forms': '^18.1.4',
+      '@angular/platform-browser': '^18.1.4',
+      '@angular/platform-browser-dynamic': '^18.1.4',
+      '@angular/router': '^18.1.4',
+      '@ngrx/component': '^18.0.2',
+      '@ngrx/effects': '^18.0.2',
+      '@ngrx/router-store': '^18.0.2',
+      '@ngrx/store': '^18.0.2',
+      '@ngrx/store-devtools': '^18.0.2',
+      '@nx/angular': '^19.5.7',
+      '@nx/devkit': '19.5.7',
+      '@nx/plugin': '^19.5.7',
       '@webcomponents/webcomponentsjs': '^2.8.0',
     },
     {
       '@openapitools/openapi-generator-cli': '^2.5.2',
       'ngx-translate-testing': '^7.0.0',
+      '@angular-devkit/build-angular': '^18.1.4',
+      '@angular-devkit/core': '^18.1.4',
+      '@angular-devkit/schematics': '^18.1.4',
+      '@angular/cli': '~18.1.4',
+      '@angular/compiler-cli': '^18.1.4',
+      '@angular/language-service': '^18.1.4',
+      typescript: '~5.5.4',
+      jest: '^29.7.0',
+      'jest-environment-jsdom': '^29.7.0',
+      'jest-preset-angular': '~14.2.2',
     }
   );
 
