@@ -27,7 +27,7 @@ print_warning() {
 get_or_save_token() {
     # I decided to save the token to a temporary directory to make it a little more convenient if you have to execute the script multiple times
     # The folder should be ignored by git and therefore not publish your key to the project
-    local token_dir="scripts/.idea"
+    local token_dir="scripts/.project"
     local token_file="$token_dir/token.txt"
     
     # Create .local directory if it doesn't exist
@@ -59,9 +59,6 @@ extract_app_id_and_product_name() {
     app_name=$(sed -n '4 s/description: //p' "$chart_file")
     product_name=$(echo "$app_id" | sed 's/-ui$//')
     
-    # Add current date and time to app_id for uniqueness (I used this only for testing purposes)
-    # You could delte this line if you don't need to debug the script
-    timestamp=$(date +"%Y%m%d_%H%M%S")
     app_id="${app_id}"
     
     print_success "=> app id: $app_id"
@@ -205,7 +202,7 @@ if [ ! -f "$values_file" ] || [ ! -f "$chart_file" ]; then
     exit 1
 fi
 
-print_warning "For a tutorial about this script please visit: https://e-3d-dc1.capgemini.com/confluence/display/P002271/V3-OA-3-3-1+Permission+Script"
+print_warning "For a tutorial on how to use this script please refer to the OneCX Onboarding Guide in Confluence (V3-OA-3-3-1 Permission Script)"
 
 get_or_save_token
 extract_app_id_and_product_name
