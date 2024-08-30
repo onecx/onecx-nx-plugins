@@ -42,7 +42,7 @@ export class SearchTestsStep implements GeneratorStep<DeleteGeneratorSchema> {
           await ${propertyName}Search.getSearchResults();
         const dataView = await interactiveDataView.getDataView();
         const dataTable = await dataView.getDataTable();
-        const rowActionButtons = await dataTable.getActionButtons();
+        const rowActionButtons = await dataTable!.getActionButtons();
     
         expect(rowActionButtons.length).toBeGreaterThan(0);
         let deleteButton;

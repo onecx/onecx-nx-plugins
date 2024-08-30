@@ -39,7 +39,7 @@ export class SearchTestsStep implements GeneratorStep<SearchGeneratorSchema> {
         await ${propertyName}Search.getSearchResults();
       const dataView = await interactiveDataView.getDataView();
       const dataTable = await dataView.getDataTable();
-      const rowActionButtons = await dataTable.getActionButtons();
+      const rowActionButtons = await dataTable!.getActionButtons();
   
       expect(rowActionButtons.length).toEqual(1);
       expect(await rowActionButtons[0].getAttribute('ng-reflect-icon')).toEqual(

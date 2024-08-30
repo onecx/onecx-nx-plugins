@@ -284,6 +284,8 @@ function adaptAngularPrefixConfig(tree: Tree) {
   updateJson(tree, 'project.json', (json) => {
     json.prefix = 'app';
     json.targets.test.options.coverage = true;
+    json.targets.build.options.main = json.targets.build.options.browser;
+    delete json.targets.build.options.browser;
     json.targets.build.options.scripts = [
       'node_modules/@webcomponents/webcomponentsjs/webcomponents-bundle.js',
     ];

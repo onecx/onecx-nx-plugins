@@ -4,7 +4,7 @@ import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { LetModule } from '@ngrx/component';
+import { LetDirective } from '@ngrx/component';
 import { Store, StoreModule } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { ofType } from '@ngrx/effects';
@@ -27,6 +27,35 @@ import { select<%= featureClassName %>SearchViewModel } from './<%= featureFileN
 import { initialState } from './<%= featureFileName %>-search.reducers';
 
 describe('<%= featureClassName %>SearchComponent', () => {
+  const origAddEventListener = window.addEventListener;
+  const origPostMessage = window.postMessage;
+
+  let listeners: any[] = [];
+  window.addEventListener = (_type: any, listener: any) => {
+    listeners.push(listener);
+  };
+
+  window.removeEventListener = (_type: any, listener: any) => {
+    listeners = listeners.filter((l) => l !== listener);
+  };
+
+  window.postMessage = (m: any) => {
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
+    listeners.forEach((l) =>
+      l({
+        data: m,
+        stopImmediatePropagation: () => {},
+        stopPropagation: () => {},
+      })
+    );
+  };
+
+  afterAll(() => {
+    window.addEventListener = origAddEventListener;
+    window.postMessage = origPostMessage;
+  });
+
+
   HTMLCanvasElement.prototype.getContext = jest.fn();
   let component: <%= featureClassName %>SearchComponent;
   let fixture: ComponentFixture<<%= featureClassName %>SearchComponent>;
@@ -65,7 +94,7 @@ describe('<%= featureClassName %>SearchComponent', () => {
       declarations: [<%= featureClassName %>SearchComponent],
       imports: [
         PortalCoreModule,
-        LetModule,
+        LetDirective,
         ReactiveFormsModule,
         StoreModule.forRoot({}),
         TranslateTestingModule.withTranslations(
@@ -423,7 +452,7 @@ describe('<%= featureClassName %>SearchComponent', () => {
       await <%= featurePropertyName %>Search.getSearchResults();
     const dataView = await interactiveDataView.getDataView();
     const dataTable = await dataView.getDataTable();
-    const rows = await dataTable.getRows();
+    const rows = await dataTable!.getRows();
     expect(rows.length).toBe(1);
 
     const rowData = await rows[0].getData();

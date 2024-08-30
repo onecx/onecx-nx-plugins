@@ -88,7 +88,7 @@ function addModulesToAppModule(tree: Tree) {
     'src/app/app.module.ts',
     'AppRoutingModule,',
     `AppRoutingModule, 
-     LetModule,
+     LetDirective,
      StoreRouterConnectingModule.forRoot(),
      StoreModule.forRoot(reducers, { metaReducers }),
      StoreDevtoolsModule.instrument({
@@ -111,7 +111,7 @@ function addImportsToAppModule(tree: Tree) {
     import { StoreModule } from '@ngrx/store';
     import { reducers, metaReducers } from './app.reducers';
     import { StoreDevtoolsModule } from '@ngrx/store-devtools';
-    import { LetModule } from '@ngrx/component';
+    import { LetDirective } from '@ngrx/component';
     import { EffectsModule } from '@ngrx/effects';
     import { StoreRouterConnectingModule } from '@ngrx/router-store';
     import { environment } from 'src/environments/environment';
