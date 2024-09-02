@@ -204,6 +204,11 @@ function adaptTsConfig(tree: Tree, options: AngularGeneratorSchema) {
     "src/polyfills.ts",
   `
   );
+  fileContent = fileContent.replace(
+    '"compilerOptions": {',
+    `"compilerOptions": {
+    "useDefineForClassFields": false,
+  `)
   tree.write(filePath, fileContent);
 }
 
