@@ -14,7 +14,7 @@ import {
   filterForNavigatedTo,
   filterOutOnlyQueryParamsChanged,
   filterOutQueryParamsHaveNotChanged,
-} from '@onecx/portal-integration-angular/ngrx';
+} from '@onecx/ngrx-accelerator';
 import {  
   <%= featurePropertyName %>SearchCriteriasSchema,
 } from './<%= featureFileName %>-search.parameters';

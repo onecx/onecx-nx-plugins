@@ -1,6 +1,6 @@
 import { createSelector } from '@ngrx/store';
 import { RowListGridData, DataTableColumn } from '@onecx/portal-integration-angular';
-import { createChildSelectors } from '@onecx/portal-integration-angular/ngrx';
+import { createChildSelectors } from '@onecx/ngrx-accelerator';
 import { selectQueryParams } from 'src/app/shared/selectors/router.selectors';
 import { <%= featurePropertyName %>Feature } from '../../<%= featureFileName %>.reducers';
 import {

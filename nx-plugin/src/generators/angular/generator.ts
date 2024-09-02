@@ -88,6 +88,7 @@ export async function angularGenerator(
       '@onecx/angular-remote-components': oneCXLibVersion,
       '@onecx/angular-webcomponents': oneCXLibVersion,
       '@onecx/integration-interface': oneCXLibVersion,
+      '@onecx/ngrx-accelerator': oneCXLibVersion,
       '@onecx/keycloak-auth': oneCXLibVersion,
       '@onecx/portal-integration-angular': oneCXLibVersion,
       '@onecx/portal-layout-styles': oneCXLibVersion,

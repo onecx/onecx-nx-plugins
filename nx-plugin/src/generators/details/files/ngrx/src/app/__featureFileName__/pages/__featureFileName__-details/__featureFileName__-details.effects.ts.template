@@ -9,7 +9,7 @@ import {
   switchMap,
   tap,
 } from 'rxjs';
-import { filterForNavigatedTo } from '@onecx/portal-integration-angular/ngrx';
+import { filterForNavigatedTo } from '@onecx/ngrx-accelerator';
 import { Injectable } from '@angular/core';
 import { <%= featureClassName %>DetailsActions } from './<%= featureFileName %>-details.actions';
 import { <%= featureClassName %>DetailsComponent } from './<%= featureFileName %>-details.component';
