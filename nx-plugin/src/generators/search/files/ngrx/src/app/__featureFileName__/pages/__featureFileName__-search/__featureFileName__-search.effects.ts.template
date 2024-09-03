@@ -1,4 +1,4 @@
-import { ActivatedRoute, Router, RoutesRecognized } from '@angular/router';
+import { ActivatedRoute, ROUTER_INITIALIZER, Router, RoutesRecognized } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { concatLatestFrom } from '@ngrx/operators'
 import { routerNavigatedAction } from '@ngrx/router-store';
@@ -25,6 +25,8 @@ import {
   selectSearchCriteria 
 } from './<%= featureFileName %>-search.selectors';
 import { Action, Store } from '@ngrx/store';
+import equal from 'fast-deep-equal';
+
 @Injectable()
 export class <%= featureClassName %>SearchEffects {
   constructor(
@@ -37,39 +39,65 @@ export class <%= featureClassName %>SearchEffects {
     private readonly exportDataService: ExportDataService
   ) {}
 
-  resetButtonClicked$ = createQueryParamsEffect(
-    this.actions$,
-    <%= featureClassName %>SearchActions.resetButtonClicked,
-    this.router,
-    this.route,
-    () => ({})
-  );
-  
-  searchButtonClicked$ = createQueryParamsEffect(
-    this.actions$,
-    <%= featureClassName %>SearchActions.searchButtonClicked,
-    this.router,
-    this.route,
-    (state, action) => ({
-      ...state,
-      ...action.searchCriteria,
-      //TODO: Move to docs to explain how to only put the date part in the URL in case you have date and not datetime
-      //exampleDate: action.searchCriteria.exampleDate?.slice(0, 10) 
-    })
+  syncParamsToUrl$ = createEffect(
+    () => {
+      return this.actions$.pipe(
+        ofType(
+          <%= featureClassName %>SearchActions.searchButtonClicked,
+          <%= featureClassName %>SearchActions.resetButtonClicked,
+        ),
+        concatLatestFrom(() => [
+          this.store.select(<%= featurePropertyName %>SearchSelectors.selectCriteria),
+          this.route.queryParams,
+        ]),
+        tap(([, criteria, queryParams]) => {
+          const results =
+            <%= featurePropertyName %>SearchCriteriasSchema.safeParse(queryParams);
+          if (!results.success || !equal(criteria, results.data)) {
+            const params = {
+              ...criteria,
+              //TODO: Move to docs to explain how to only put the date part in the URL in case you have date and not datetime
+              //exampleDate: criteria.exampleDate?.toISOString()?.slice(0, 10)
+              end: criteria.end?.toISOString().slice(0, 10),
+              begin: criteria.begin?.toISOString().slice(0, 10),
+            };
+            this.router.navigate([], {
+              relativeTo: this.route,
+              queryParams: params,
+              replaceUrl: true,
+              onSameUrlNavigation: 'ignore',
+            });
+          }
+        }),
+      );
+    },
+    { dispatch: false },
   );
 
   searchByUrl$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(routerNavigatedAction),
       filterForNavigatedTo(this.router, <%= featureClassName %>SearchComponent),
-      filterOutQueryParamsHaveNotChanged(this.router, <%= featurePropertyName %>SearchCriteriasSchema, false),
-      concatLatestFrom(() => this.store.select(selectSearchCriteria)),
+      filterOutQueryParamsHaveNotChanged(this.router, <%= featurePropertyName %>SearchCriteriasSchema, false),      
+      concatLatestFrom(() =>
+        this.store.select(<%= featurePropertyName %>SearchSelectors.selectCriteria),
+      ),
       switchMap(([,searchCriteria]) => this.performSearch(searchCriteria))
     );
   });
 
   performSearch(searchCriteria: Record<string, any>) {
-    return this.<%= featurePropertyName %>Service.search<%= dataObjectName %>s(searchCriteria).pipe(
+    return this.<%= featurePropertyName %>Service.search<%= dataObjectName %>s(
+      {
+        ...Object.entries(searchCriteria).reduce(
+          (acc, [key, value]) => ({
+            ...acc,
+            [key]: value instanceof Date ? value.toISOString() : value,
+          }),
+          {},
+        ),
+      }
+    ).pipe(
           map(({ results, totalNumberOfResults }) =>
             <%= featureClassName %>SearchActions.<%= featurePropertyName %>SearchResultsReceived(
               {

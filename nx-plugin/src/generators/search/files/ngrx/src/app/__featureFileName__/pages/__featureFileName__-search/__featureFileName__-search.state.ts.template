@@ -3,11 +3,13 @@ import {
 } from '@onecx/portal-integration-angular';
 import { <%= dataObjectName %> } from 'src/app/shared/generated';
 import { <%= featureClassName %>SearchCriteria } from './<%= featureFileName %>-search.parameters';
+import { <%= featureClassName %>SearchCriteria } from './timeslot-group-search.parameters';
 
 export interface <%= featureClassName %>SearchState {
   columns: DataTableColumn[];
   results: <%= dataObjectName %>[];
   displayedColumns: string[] | null;
   viewMode: 'basic' | 'advanced';
-  chartVisible: boolean,  
+  chartVisible: boolean;
+  criteria: TimeslotGroupSearchCriteria;  
 }

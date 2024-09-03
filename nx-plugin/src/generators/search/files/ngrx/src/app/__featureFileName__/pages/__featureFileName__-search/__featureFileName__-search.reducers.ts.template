@@ -3,23 +3,59 @@ import { <%= featureClassName %>SearchActions } from './<%= featureFileName %>-s
 import { <%= featureClassName %>SearchState } from './<%= featureFileName %>-search.state';
 import { <%= featureClassName %>SearchCriteria } from './<%= featureFileName %>-search.parameters';
 import { <%= featurePropertyName %>SearchColumns } from './<%= featureFileName %>-search.columns';
+import {
+  routerNavigatedAction,
+  RouterNavigatedAction,
+} from '@ngrx/router-store';
+import { <%= featurePropertyName %>SearchCriteriasSchema } from './timeslot-group-search.parameters';
 
 export const initialState: <%= featureClassName %>SearchState = {
   columns: <%= featurePropertyName %>SearchColumns,
   results: [],    
   displayedColumns: null,
   viewMode: 'basic',
-  chartVisible: false,  
+  chartVisible: false,
+  criteria: {},
 };
 
 export const <%= featurePropertyName %>SearchReducer = createReducer(
   initialState,
   on(
+    routerNavigatedAction,
+    (state: <%= featureClassName %>SearchState, action: RouterNavigatedAction) => {
+      const results = <%= featurePropertyName %>SearchCriteriasSchema.safeParse(
+        action.payload.routerState.root.queryParams,
+      );
+      if (results.success) {
+        return {
+          ...state,
+          criteria: results.data,
+          searchLoadingIndicator:
+            Object.keys(action.payload.routerState.root.queryParams).length !=
+            0,
+        };
+      }
+      return state;
+    },
+  ),
+  on(
     <%= featureClassName %>SearchActions.resetButtonClicked,
     (state: <%= featureClassName %>SearchState): <%= featureClassName %>SearchState => ({
       ...state,
-      results: initialState.results,      
+      results: initialState.results,
+      criteria: {},
     })
+  ),
+  on(
+     <%= featureClassName %>SearchActions.searchButtonClicked,    
+    (
+      state:  <%= featureClassName %>SearchState,
+      { searchCriteria },
+    ):  <%= featureClassName %>SearchState => ({
+      ...state,
+      searchLoadingIndicator: true,
+      criteria: searchCriteria,
+    }),
   ),
   on(
     <%= featureClassName %>SearchActions.<%= featurePropertyName %>SearchResultsReceived,
