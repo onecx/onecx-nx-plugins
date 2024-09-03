@@ -7,7 +7,6 @@ import {
   DataTableColumn,
   ExportDataService,
   PortalDialogService,
-  isValidDate,
 } from '@onecx/portal-integration-angular';
 import { <%= featureClassName %>SearchActions } from './<%= featureFileName %>-search.actions';
 import {
@@ -18,6 +17,7 @@ import { select<%= featureClassName %>SearchViewModel } from './<%= featureFileN
 import { <%= featureClassName %>SearchViewModel } from './<%= featureFileName %>-search.viewmodel';
 import { first, Observable, map } from 'rxjs';
 import { PrimeIcons } from 'primeng/api';
+import { isValidDate } from '@onecx/accelerator';
 
 @Component({
   selector: 'app-<%= featureFileName %>-search',

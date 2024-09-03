@@ -1,5 +1,6 @@
 import { ActivatedRoute, Router, RoutesRecognized } from '@angular/router';
-import { Actions, createEffect, ofType, concatLatestFrom } from '@ngrx/effects';
+import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { concatLatestFrom } from '@ngrx/operators'
 import { routerNavigatedAction } from '@ngrx/router-store';
 import { catchError, map, mergeMap, of, switchMap, tap, filter, mergeMap } from 'rxjs';
 import {  
@@ -13,7 +14,7 @@ import {
   filterForNavigatedTo,
   filterOutOnlyQueryParamsChanged,
   filterOutQueryParamsHaveNotChanged,
-} from '@onecx/portal-integration-angular/ngrx';
+} from '@onecx/ngrx-accelerator';
 import {  
   <%= featurePropertyName %>SearchCriteriasSchema,
 } from './<%= featureFileName %>-search.parameters';

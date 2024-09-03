@@ -75,9 +75,7 @@ const config = withModuleFederationPlugin({
       includeSecondaries: true,
     },
     '@ngx-translate/core': {
-      singleton: true,
-      strictVersion: false,
-      requiredVersion: '^14.0.0',
+      requiredVersion: 'auto',
     },
   }),
 
