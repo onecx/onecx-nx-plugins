@@ -3,7 +3,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed, tick } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { LetModule } from '@ngrx/component';
+import { LetDirective } from '@ngrx/component';
 import {
   BreadcrumbService,
   PortalCoreModule,
@@ -39,7 +39,7 @@ describe('<%= featureClassName%>CreateUpdateComponent', () => {
         PortalCoreModule,
         FormsModule,
         ReactiveFormsModule,
-        LetModule,
+        LetDirective,
         TranslateTestingModule.withTranslations(
           'en',
           require('./../../../../../../assets/i18n/en.json')
