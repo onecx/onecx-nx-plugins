@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
-import { LetModule } from '@ngrx/component';
+import { LetDirective } from '@ngrx/component';
 import { HttpClientTestingModule } from '@angular/common/http/testing'
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
@@ -22,6 +22,35 @@ import { <%= featureClassName %>DetailsViewModel } from './<%= featureFileName %
 import { select<%= featureClassName %>DetailsViewModel } from './<%= featureFileName %>-details.selectors';
 
 describe('<%= featureClassName %>DetailsComponent', () => {
+  const origAddEventListener = window.addEventListener;
+  const origPostMessage = window.postMessage;
+
+  let listeners: any[] = [];
+  window.addEventListener = (_type: any, listener: any) => {
+    listeners.push(listener);
+  };
+
+  window.removeEventListener = (_type: any, listener: any) => {
+    listeners = listeners.filter((l) => l !== listener);
+  };
+
+  window.postMessage = (m: any) => {
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
+    listeners.forEach((l) =>
+      l({
+        data: m,
+        stopImmediatePropagation: () => {},
+        stopPropagation: () => {},
+      })
+    );
+  };
+
+  afterAll(() => {
+    window.addEventListener = origAddEventListener;
+    window.postMessage = origPostMessage;
+  });
+
+
   let component: <%= featureClassName %>DetailsComponent;
   let fixture: ComponentFixture<<%= featureClassName %>DetailsComponent>;
   let store: MockStore<Store>;
@@ -38,7 +67,7 @@ describe('<%= featureClassName %>DetailsComponent', () => {
       declarations: [<%= featureClassName %>DetailsComponent],
       imports: [
         PortalCoreModule,
-        LetModule,
+        LetDirective,
         TranslateTestingModule.withTranslations('en', require('./../../../../assets/i18n/en.json'))
           .withTranslations('de', require('./../../../../assets/i18n/de.json')),
         HttpClientTestingModule

@@ -18,7 +18,7 @@ import {
   TranslateModule
 } from '@ngx-translate/core';
 import { HttpClient } from '@angular/common/http';
-import { LetModule } from '@ngrx/component';
+import { LetDirective } from '@ngrx/component';
 import { StoreModule } from '@ngrx/store';
 import { routes } from './<%= featureFileName %>.routes';
 import { <%= featurePropertyName %>Feature } from './<%= featureFileName %>.reducers';
@@ -32,7 +32,7 @@ import { EffectsModule } from '@ngrx/effects';
   imports: [
     CommonModule,
     SharedModule,
-    LetModule,
+    LetDirective,
     PortalCoreModule.forMicroFrontend(),
     RouterModule.forChild(<% if(!standalone){ %>addInitializeModuleGuard(routes)<% }else{ %>routes<% } %>),
     FormsModule,
