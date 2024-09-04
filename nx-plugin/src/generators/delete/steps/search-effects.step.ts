@@ -36,7 +36,7 @@ export class SearchEffectsStep implements GeneratorStep<DeleteGeneratorSchema> {
           ofType(
             ${className}SearchActions.delete${className}Succeeded,
           ),
-          concatLatestFrom(() => this.store.select(selectSearchCriteria)),
+          concatLatestFrom(() => this.store.select(${propertyName}SearchSelectors.selectCriteria)),
           switchMap(([, searchCriteria]) => this.performSearch(searchCriteria))
         );
       });

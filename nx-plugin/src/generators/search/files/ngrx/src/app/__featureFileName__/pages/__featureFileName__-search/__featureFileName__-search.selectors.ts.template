@@ -14,17 +14,6 @@ export const <%= featurePropertyName %>SearchSelectors = createChildSelectors(
   <%= featurePropertyName %>Feature.selectSearch,
   initialState
 );
-export const selectSearchCriteria = createSelector(
-  selectQueryParams,
-  (queryParams): <%= featureClassName %>SearchCriteria => {
-    const results =
-      <%= featurePropertyName %>SearchCriteriasSchema.safeParse(queryParams);
-    if (results.success) {
-      return results.data as <%= featureClassName %>SearchCriteria;
-    }
-    return {};
-  }
-);
 
 export const selectResults = createSelector(
   <%= featurePropertyName %>SearchSelectors.selectResults,
@@ -49,7 +38,7 @@ export const selectDisplayedColumns = createSelector(
 
 export const select<%= featureClassName %>SearchViewModel = createSelector(
   <%= featurePropertyName %>SearchSelectors.selectColumns,
-  selectSearchCriteria,
+  <%= featurePropertyName %>SearchSelectors.selectCriteria,
   selectResults,  
   selectDisplayedColumns,
   <%= featurePropertyName %>SearchSelectors.selectViewMode,

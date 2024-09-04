@@ -85,6 +85,9 @@ export class <%= featureClassName %>SearchComponent implements OnInit {
         routerLink: '/<%= featureFileName %>',
       },
     ]);
+    this.viewModel$.subscribe((vm) =>
+      this.<%= featurePropertyName %>SearchFormGroup.patchValue(vm.searchCriteria),
+    );
   }
 
   search(formValue: FormGroup) {
@@ -96,12 +99,12 @@ export class <%= featureClassName %>SearchComponent implements OnInit {
               Date.UTC(
                 value.getFullYear(),
                 value.getMonth(),
-                value.getDay(),
+                value.getDate(),
                 value.getHours(),
                 value.getMinutes(),
                 value.getSeconds()
               )
-            ).toISOString()
+            )
           : value || undefined,
       }),
       {}
