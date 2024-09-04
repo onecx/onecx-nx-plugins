@@ -1,4 +1,4 @@
-import { ActivatedRoute, ROUTER_INITIALIZER, Router, RoutesRecognized } from '@angular/router';
+import { ActivatedRoute, Router, RoutesRecognized } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { concatLatestFrom } from '@ngrx/operators'
 import { routerNavigatedAction } from '@ngrx/router-store';
