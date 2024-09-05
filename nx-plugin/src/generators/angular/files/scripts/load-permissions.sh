@@ -25,8 +25,8 @@ print_warning() {
 
 # Function to get or save the token
 get_or_save_token() {
-    # I decided to save the token to a temporary directory to make it a little more convenient if you have to execute the script multiple times
-    # The folder should be ignored by git and therefore not publish your key to the project
+    # The token gets saved to a temporary directory to make it more convenient if you have to execute the script multiple times
+    # The folder should be ignored by git and therefore not publish your key to github
     local token_dir="scripts/.project"
     local token_file="$token_dir/token.txt"
     
@@ -47,8 +47,8 @@ get_or_save_token() {
             print_error "Error: apm-principal-token cannot be empty."
             exit 1
         fi
-        echo "$apm_principal_token" > "$token_file"
-        print_success "Token saved to $token_file"
+        # echo "$apm_principal_token" > "$token_file"
+        # print_success "Token saved to $token_file"
     fi
     print_success "apm-principal-token received."
 }
@@ -202,7 +202,7 @@ if [ ! -f "$values_file" ] || [ ! -f "$chart_file" ]; then
     exit 1
 fi
 
-print_warning "For a tutorial on how to use this script please refer to the OneCX Onboarding Guide in Confluence (V3-OA-3-3-1 Permission Script)"
+print_warning "For a tutorial on how to use this script please refer to the OneCX Onboarding Guide in Confluence"
 
 get_or_save_token
 extract_app_id_and_product_name
@@ -245,4 +245,4 @@ else
     print_success "\nAll permissions and assignments were created successfully."
 fi
 
-print_success "Test script completed"
+print_success "Script completed"
