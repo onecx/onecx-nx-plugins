@@ -240,7 +240,7 @@ if [ ${#skipped_entries[@]} -gt 0 ]; then
     for entry in "${skipped_entries[@]}"; do
         echo "- $entry"
     done
-    echo -e "\n${YELLOW}Note: If these entries are already in the database and you didn't change them, you can ignore the errors and warnings for these classes.${NC}"
+    echo -e "\n${YELLOW}Note: If these entries are already in the database and you didn't change them, you can ignore the errors and warnings for these assignments/permissions.${NC}"
 else
     print_success "\nAll permissions and assignments were created successfully."
 fi
