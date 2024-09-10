@@ -81,7 +81,7 @@ export async function angularGenerator(
     {
       primeflex: '^3.3.1',
       primeicons: '^7.0.0',
-      primeng: '17.18.8',
+      primeng: '^17.18.8',
       '@onecx/accelerator': oneCXLibVersion,
       '@onecx/angular-accelerator': oneCXLibVersion,
       '@onecx/angular-auth': oneCXLibVersion,
