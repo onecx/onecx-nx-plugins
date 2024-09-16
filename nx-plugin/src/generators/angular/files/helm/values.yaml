@@ -1,7 +1,7 @@
 app:
   name: ui
   image:
-    repository: 'onecx<% if(standalone){ %>-standalone<% } %>/<%= fileName %>-ui'
+    repository: 'onecx<% if(standalone){ %>-standalone<% } %>/<%= fileName %>'
   routing:
     enabled: true
     path: /mfe/<%= propertyName %>/
@@ -30,7 +30,7 @@ app:
         enabled: true
         spec:
           kcConfig:
-            clientId: "<%= fileName %>-ui"
+            clientId: "<%= fileName %>"
 
 # PIPE Config
 <% } %>

@@ -1,12 +1,12 @@
 apiVersion: v2
-name: <%= fileName %>-ui
+name: <%= fileName %>
 version: 0.0.0
 description: <%= fileName %> UI
-home: https://github.com/onecx/<%= fileName %>-ui
+home: https://github.com/onecx/<%= fileName %>
 keywords:
   - <%= fileName %>
 sources:
-  - https://github.com/onecx/<%= fileName %>-ui
+  - https://github.com/onecx/<%= fileName %>
 maintainers:
   - name: # ACTION: add name of maintainer
     email: # ACTION: add email of maintainer
