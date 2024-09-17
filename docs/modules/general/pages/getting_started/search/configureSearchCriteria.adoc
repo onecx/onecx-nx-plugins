@@ -16,6 +16,8 @@ _Adapt in File:_ `+<feature>-bff.yaml+`
 
 ---
 
+IMPORTANT: Run the command `npm run apigen` after adapting the OpenAPI to transform the changes into typescript code.
+
 ==== ACTION S2: Please define the members for your `+<%= featurePropertyName %>SearchCriteriasSchema+` here
 _Adapt in File:_ `+<feature>-search.parameters.ts+`
 

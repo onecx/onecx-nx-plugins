@@ -28,6 +28,8 @@ Search<Feature>Request:
 ----
 Here you can add additional properties which you need for your `+<SearchFeatureRequest>+` / `+<SearchFeatureResult>+`, e.g. `+status+`, `+creationDate+` ...
 
+IMPORTANT: Run the command `npm run apigen` after adapting the OpenAPI to transform the changes into typescript code.
+
 IMPORTANT: Remove the "ACTION" comment after solving this issue
 
 ---
