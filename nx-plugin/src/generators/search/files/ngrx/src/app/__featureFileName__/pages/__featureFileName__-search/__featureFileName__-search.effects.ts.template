@@ -12,15 +12,13 @@ import { ExportDataService, PortalMessageService } from '@onecx/portal-integrati
 import {
   createQueryParamsEffect,
   filterForNavigatedTo,
-  filterOutOnlyQueryParamsChanged,
-  filterOutQueryParamsHaveNotChanged,
+  filterOutQueryParamsHaveNotChanged
 } from '@onecx/ngrx-accelerator';
 import {  
   <%= featurePropertyName %>SearchCriteriasSchema,
 } from './<%= featureFileName %>-search.parameters';
 import { Injectable, SkipSelf } from '@angular/core';
 import { 
-  <%= featurePropertyName %>SearchSelectors, 
   select<%= featureClassName %>SearchViewModel,
 } from './<%= featureFileName %>-search.selectors';
 import { Action, Store } from '@ngrx/store';
@@ -115,28 +113,6 @@ export class <%= featureClassName %>SearchEffects {
         )
   }
 
-  rehydrateChartVisibility$ = createEffect(() => {
-    return this.actions$.pipe(
-      ofType(routerNavigatedAction),
-      filterForNavigatedTo(this.router, <%= featureClassName %>SearchComponent),
-      filterOutOnlyQueryParamsChanged(this.router),
-      map(() => <%= featureClassName %>SearchActions.chartVisibilityRehydrated({
-          visible: localStorage.getItem('<%= featurePropertyName %>ChartVisibility') === 'true',
-        })
-      )
-    )
-  });
-
-  saveChartVisibility$ = createEffect(() => {
-    return this.actions$.pipe(
-      ofType(<%= featureClassName %>SearchActions.chartVisibilityToggled),
-      concatLatestFrom(() => this.store.select(<%= featurePropertyName %>SearchSelectors.selectChartVisible)),
-      tap(([,chartVisible]) => {
-          localStorage.setItem('<%= featurePropertyName %>ChartVisibility',String(chartVisible));
-      })
-    )
-  }, {dispatch: false});
-
   exportData$ = createEffect(
     () => {
       return this.actions$.pipe(
@@ -147,6 +123,7 @@ export class <%= featureClassName %>SearchEffects {
         map(([, viewModel]) => {
           this.exportDataService.exportCsv(
             viewModel.displayedColumns,
+            viewModel.resultComponentState?.displayedColumns ?? [],
             viewModel.results,
             '<%= featureClassName %>.csv'
           );

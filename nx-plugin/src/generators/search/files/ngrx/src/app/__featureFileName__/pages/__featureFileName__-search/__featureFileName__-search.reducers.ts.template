@@ -12,9 +12,10 @@ import { <%= featurePropertyName %>SearchCriteriasSchema } from './<%= featureFi
 export const initialState: <%= featureClassName %>SearchState = {
   columns: <%= featurePropertyName %>SearchColumns,
   results: [],    
-  displayedColumns: null,
-  viewMode: 'basic',
   chartVisible: false,
+  resultComponentState: null,
+  searchHeaderComponentState: null,
+  diagramComponentState: null
   searchLoadingIndicator: false,
   criteria: {},
 };
@@ -76,39 +77,37 @@ export const <%= featurePropertyName %>SearchReducer = createReducer(
     })
   ), 
   on(
-    <%= featureClassName %>SearchActions.chartVisibilityRehydrated,
-    (
-      state: <%= featureClassName %>SearchState,
-      { visible }
-    ): <%= featureClassName %>SearchState => ({
-      ...state,
-      chartVisible: visible,
-    })
-  ),
-  on(
     <%= featureClassName %>SearchActions.chartVisibilityToggled,
     (
-      state: <%= featureClassName %>SearchState,
-    ): <%= featureClassName %>SearchState => ({
+      (state: <%= featureClassName %>SearchState): <%= featureClassName %>SearchState => ({
       ...state,
-      chartVisible: !state.chartVisible,
+      chartVisible: !state.chartVisible
     })
   ),
   on(
-    <%= featureClassName %>SearchActions.viewModeChanged,
+    <%= featureClassName %>SearchActions.resultComponentStateChanged,
+    (
+      state: <%= featureClassName %>SearchState, resultComponentState
+    ): <%= featureClassName %>SearchState => ({
+      ...state,
+      resultComponentState,
+    })
+  ),
+  on(
+    <%= featureClassName %>SearchActions.searchHeaderComponentStateChanged,
     (
       state: <%= featureClassName %>SearchState,
       { viewMode }
     ): <%= featureClassName %>SearchState => ({
       ...state,
-      viewMode: viewMode,
+      searchHeaderComponentState,
     })
   ),
   on(
-    <%= featureClassName %>SearchActions.displayedColumnsChanged,
-    (state: <%= featureClassName %>SearchState, { displayedColumns }): <%= featureClassName %>SearchState => ({
+    <%= featureClassName %>SearchActions.diagramComponentStateChanged,
+    (state: <%= featureClassName %>SearchState, diagramComponentState): <%= featureClassName %>SearchState => ({
       ...state,
-      displayedColumns: displayedColumns.map((v) => v.id),
+      diagramComponentState,
     })
   )
 );

@@ -10,7 +10,8 @@
     (resetted)="resetSearch()"
     [manualBreadcrumbs]="true"
     [actions]="(headerActions$ | async) ?? []"        
-    (viewModeChanged)="viewModeChanged($event)"
+    (componentStateChanged)="searchHeaderComponentStateChanged($event)"
+    [viewMode]="vm.searchHeaderComponentState?.activeViewMode ?? 'basic'"
   >
     <form [formGroup]="<%= featurePropertyName %>SearchFormGroup">
       // ACTION S3: Please specify here your desired search criterias, link to documentation; TODO: add info how to handle dates in p-calendar -> https://primeng.org/calendar#api.calendar.props.dateFormat
@@ -25,8 +26,19 @@
         [emptyResultsMessage]="
           '<%= featureConstantName %>_SEARCH.EMPTY_RESULTS' | translate
         "
-        [supportedViewLayouts]="['table']"
-        (displayedColumnsChange)="onDisplayedColumnsChange($event)"
+        (componentStateChanged)="resultComponentStateChanged($event)"
+        [layout]="vm.resultComponentState?.layout ?? 'list'"
+        [displayedColumns]="vm.resultComponentState?.displayedColumns ?? []"
+        [supportedViewLayouts]="['list', 'table']"
+        [page]="vm.resultComponentState?.activePage ?? 0"
+        [pageSize]="vm.resultComponentState?.pageSize"
+        [filters]="vm.resultComponentState?.filters ?? []"
+        [sortField]="vm.resultComponentState?.sorting?.sortColumn"
+        [sortDirection]="vm.resultComponentState?.sorting?.sortDirection ?? defaultDataSortDirection"
+        [selectedRows]="vm.resultComponentState?.selectedRows?? []"
+        [defaultGroupKey]="vm.resultComponentState?.activeColumnGroupKey ?? ''"
+        [actionColumnPosition]="vm.resultComponentState?.actionColumnConfig?.position?? 'right'"
+        [frozenActionColumn]="vm.resultComponentState?.actionColumnConfig?.frozen ?? false">
       >
       </ocx-interactive-data-view>      
     </ocx-content>
@@ -44,6 +56,8 @@
             [data]="vm.results"
             [column]="diagramColumn"
             sumKey="<%= featureConstantName %>_SEARCH.DIAGRAM.SUM"
+            [diagramType]="vm.diagramComponentState?.activeDiagramType ?? defaultDiagramType"
+          (componentStateChanged)="diagramComponentStateChanged($event)"
           ></ocx-group-by-count-diagram>
         </div>
     </ocx-content>

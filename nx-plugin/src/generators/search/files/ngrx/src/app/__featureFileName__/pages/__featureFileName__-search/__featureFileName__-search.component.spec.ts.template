@@ -72,9 +72,10 @@ describe('<%= featureClassName %>SearchComponent', () => {
     columns: <%= featurePropertyName %>SearchColumns,
     searchCriteria: { changeMe: '0' },
     results: [],
-    displayedColumns: [],
-    viewMode: 'basic',
     chartVisible: false,
+    resultComponentState: null,
+    searchHeaderComponentState: null,
+    diagramComponentState: null
   };
 
   beforeAll(() => {
@@ -328,81 +329,6 @@ describe('<%= featureClassName %>SearchComponent', () => {
       <%= featureClassName %>SearchActions.exportButtonClicked()
     );
   });
-  
-  it('should dispatch viewModeChanged action on view mode changes', async () => {
-    jest.spyOn(store, 'dispatch');
-
-    component.viewModeChanged('advanced');
-
-    expect(store.dispatch).toHaveBeenCalledWith(
-      <%= featureClassName %>SearchActions.viewModeChanged({ viewMode: 'advanced' })
-    );
-  });
-
-  it('should dispatch displayedColumnsChanged on data view column change', async () => {
-    jest.spyOn(store, 'dispatch');
-
-    fixture = TestBed.createComponent(<%= featureClassName %>SearchComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-    <%= featurePropertyName %>Search = await TestbedHarnessEnvironment.harnessForFixture(
-      fixture,
-      <%= featureClassName %>SearchHarness
-    );
-
-    expect(store.dispatch).toHaveBeenCalledWith(
-      <%= featureClassName %>SearchActions.displayedColumnsChanged({ displayedColumns: [] })
-    );
-
-    jest.clearAllMocks();
-
-    store.overrideSelector(select<%= featureClassName %>SearchViewModel, {
-      ...base<%= featureClassName %>SearchViewModel,
-      columns: [
-        {
-          columnType: ColumnType.STRING,
-          nameKey: 'COLUMN_KEY',
-          id: 'column_1',
-        },
-        {
-          columnType: ColumnType.STRING,
-          nameKey: 'SECOND_COLUMN_KEY',
-          id: 'column_2',
-        },
-      ],
-    });
-    store.refreshState();
-
-    const interactiveDataView =
-      await <%= featurePropertyName %>Search.getSearchResults();
-    const columnGroupSelector =
-      await interactiveDataView.getCustomGroupColumnSelector();
-    await columnGroupSelector.openCustomGroupColumnSelectorDialog();
-    const pickList = await columnGroupSelector.getPicklist();
-    const transferControlButtons = await pickList.getTransferControlsButtons();
-    expect(transferControlButtons.length).toBe(4);
-    const activateAllColumnsButton = transferControlButtons[3];
-    await activateAllColumnsButton.click();
-    const saveButton = await columnGroupSelector.getSaveButton();
-    await saveButton.click();
-
-    expect(store.dispatch).toHaveBeenCalledWith(
-      <%= featureClassName %>SearchActions.displayedColumnsChanged({
-        displayedColumns: [
-          {
-            columnType: ColumnType.STRING,
-            nameKey: 'COLUMN_KEY',
-            id: 'column_1',
-          },
-          {
-            columnType: ColumnType.STRING,
-            nameKey: 'SECOND_COLUMN_KEY',
-            id: 'column_2',
-          },
-        ],
-      })
-    );
-  });
 
   it('should dispatch chartVisibilityToggled on show/hide chart header', async () => {
     jest.spyOn(store, 'dispatch');
@@ -423,7 +349,7 @@ describe('<%= featureClassName %>SearchComponent', () => {
     );
     await showChartActionItem!.selectItem();
     expect(store.dispatch).toHaveBeenCalledWith(
-      <%= featureClassName %>SearchActions.chartVisibilityToggled()
+      <%= featureClassName %>SearchActions.chartVisibilityStateChanged({visible: true}),
     );
   });  
 
