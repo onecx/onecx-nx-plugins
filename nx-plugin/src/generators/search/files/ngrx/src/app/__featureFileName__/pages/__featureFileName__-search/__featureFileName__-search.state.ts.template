@@ -11,4 +11,5 @@ export interface <%= featureClassName %>SearchState {
   diagramComponentState: DiagramComponentState | null;
   searchLoadingIndicator: boolean;
   criteria: <%= featureClassName %>SearchCriteria;  
+  searchExecuted: boolean;
 }

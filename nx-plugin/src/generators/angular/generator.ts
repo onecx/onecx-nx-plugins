@@ -75,7 +75,7 @@ export async function angularGenerator(
     tree.delete(`${directory}/scripts/load-permissions.sh`);
   }
 
-  const oneCXLibVersion = '^5.5.0';
+  const oneCXLibVersion = '^5.12.2';
   addDependenciesToPackageJson(
     tree,
     {
@@ -88,6 +88,7 @@ export async function angularGenerator(
       '@onecx/angular-remote-components': oneCXLibVersion,
       '@onecx/angular-webcomponents': oneCXLibVersion,
       '@onecx/integration-interface': oneCXLibVersion,
+      '@onecx/angular-integration-interface': oneCXLibVersion,
       '@onecx/ngrx-accelerator': oneCXLibVersion,
       '@onecx/keycloak-auth': oneCXLibVersion,
       '@onecx/portal-integration-angular': oneCXLibVersion,
@@ -208,7 +209,8 @@ function adaptTsConfig(tree: Tree, options: AngularGeneratorSchema) {
     '"compilerOptions": {',
     `"compilerOptions": {
     "useDefineForClassFields": false,
-  `)
+  `
+  );
   tree.write(filePath, fileContent);
 }
 

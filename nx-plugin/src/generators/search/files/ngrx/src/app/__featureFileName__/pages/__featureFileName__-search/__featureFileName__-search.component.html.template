@@ -22,7 +22,6 @@
       <ocx-interactive-data-view
         [data]="vm.results"
         [columns]="vm.columns"
-        [listGridPaginator]="false"
         [emptyResultsMessage]="
           '<%= featureConstantName %>_SEARCH.EMPTY_RESULTS' | translate
         "

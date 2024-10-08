@@ -18,6 +18,7 @@ export const initialState: <%= featureClassName %>SearchState = {
   diagramComponentState: null
   searchLoadingIndicator: false,
   criteria: {},
+  searchExecuted: false,
 };
 
 export const <%= featurePropertyName %>SearchReducer = createReducer(
@@ -38,7 +39,7 @@ export const <%= featurePropertyName %>SearchReducer = createReducer(
         };
       }
       return state;
-    },
+    }
   ),
   on(
     <%= featureClassName %>SearchActions.resetButtonClicked,
@@ -46,6 +47,7 @@ export const <%= featurePropertyName %>SearchReducer = createReducer(
       ...state,
       results: initialState.results,
       criteria: {},
+      searchExecuted: false,
     })
   ),
   on(
@@ -55,7 +57,6 @@ export const <%= featurePropertyName %>SearchReducer = createReducer(
       { searchCriteria },
     ):  <%= featureClassName %>SearchState => ({
       ...state,
-      searchLoadingIndicator: true,
       criteria: searchCriteria,
     }),
   ),
@@ -67,6 +68,8 @@ export const <%= featurePropertyName %>SearchReducer = createReducer(
     ): <%= featureClassName %>SearchState => ({
       ...state,
       results,
+      searchLoadingIndicator: false,
+      searchExecuted: true,
     })
   ),
   on(
@@ -74,6 +77,7 @@ export const <%= featurePropertyName %>SearchReducer = createReducer(
     (state: <%= featureClassName %>SearchState): <%= featureClassName %>SearchState => ({
       ...state,
       results: [],
+      searchLoadingIndicator: false,
     })
   ), 
   on(
@@ -97,7 +101,7 @@ export const <%= featurePropertyName %>SearchReducer = createReducer(
     <%= featureClassName %>SearchActions.searchHeaderComponentStateChanged,
     (
       state: <%= featureClassName %>SearchState,
-      { viewMode }
+      searchHeaderComponentState
     ): <%= featureClassName %>SearchState => ({
       ...state,
       searchHeaderComponentState,

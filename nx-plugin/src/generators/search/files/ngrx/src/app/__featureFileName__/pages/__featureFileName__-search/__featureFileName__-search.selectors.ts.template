@@ -33,7 +33,9 @@ export const select<%= featureClassName %>SearchViewModel = createSelector(
   <%= featurePropertyName %>SearchSelectors.selectResultComponentState,
   <%= featurePropertyName %>SearchSelectors.selectSearchHeaderComponentState,
   <%= featurePropertyName %>SearchSelectors.selectDiagramComponentState,
-  <%= featurePropertyName %>SearchSelectors.selectChartVisible,   
+  <%= featurePropertyName %>SearchSelectors.selectChartVisible,  
+  <%= featurePropertyName %>SearchSelectors.selectSearchLoadingIndicator,
+  <%= featurePropertyName %>SearchSelectors.selectSearchExecuted, 
   (
     columns,
     searchCriteria, 
@@ -42,6 +44,8 @@ export const select<%= featureClassName %>SearchViewModel = createSelector(
     searchHeaderComponentState,
     diagramComponentState,
     chartVisible,
+    searchLoadingIndicator,
+    searchExecuted
     ): <%= featureClassName %>SearchViewModel => ({
     columns,
     searchCriteria,
@@ -49,6 +53,8 @@ export const select<%= featureClassName %>SearchViewModel = createSelector(
     resultComponentState,
     searchHeaderComponentState,
     diagramComponentState,
-    chartVisible
+    chartVisible,
+    searchLoadingIndicator,
+    searchExecuted
   })
 );

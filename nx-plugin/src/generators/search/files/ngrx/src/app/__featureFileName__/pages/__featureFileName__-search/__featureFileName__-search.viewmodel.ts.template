@@ -9,5 +9,7 @@ export interface <%= featureClassName %>SearchViewModel {
     resultComponentState: InteractiveDataViewComponentState | null;
     searchHeaderComponentState: SearchHeaderComponentState | null;
     diagramComponentState: DiagramComponentState | null;   
-    chartVisible: boolean;    
+    chartVisible: boolean;   
+    searchLoadingIndicator: boolean;
+    searchExecuted: boolean; 
 }
