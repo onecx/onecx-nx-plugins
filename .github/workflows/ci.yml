@@ -27,3 +27,5 @@ jobs:
         run: npx nx affected -t test --configuration=ci
       - name: Build affected
         run: npx nx affected -t build
+      - name: E2E Tests
+        run: npm run test

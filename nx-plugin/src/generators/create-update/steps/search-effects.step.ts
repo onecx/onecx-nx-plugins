@@ -41,7 +41,7 @@ export class SearchEffectsStep
             ${className}SearchActions.create${className}Succeeded,
             ${className}SearchActions.update${className}Succeeded
           ),
-          concatLatestFrom(() => this.store.select(selectSearchCriteria)),
+          concatLatestFrom(() => this.store.select(${propertyName}SearchSelectors.selectCriteria)),
           switchMap(([, searchCriteria]) => this.performSearch(searchCriteria))
         );
       });

@@ -40,18 +40,6 @@ export async function angularGenerator(
   const spinner = ora('Adding angular').start();
   const directory = '.';
 
-  //This is forcing angular 15. An easier way would be to downgrade nx to the correct version
-  //(15.9.7) but this is not working because of a bug in this nx version
-  addDependenciesToPackageJson(
-    tree,
-    { '@angular/core': '^15.2.7' },
-    {
-      '@angular-devkit/build-angular': '^15.2.7',
-      typescript: '~4.9.4',
-      'js-yaml': '^4.1.0',
-    }
-  );
-
   const applicationGeneratorCallback = await applicationGenerator(tree, {
     name: options.name,
     directory: directory,
@@ -91,30 +79,56 @@ export async function angularGenerator(
   addDependenciesToPackageJson(
     tree,
     {
-      primeflex: '^3.3.0',
-      primeicons: '^6.0.1',
-      primeng: '15.2.1', // 15.2.1 is the last version where the tests are running!!!
+      primeflex: '^3.3.1',
+      primeicons: '^7.0.0',
+      primeng: '^17.18.8',
+      '@onecx/accelerator': oneCXLibVersion,
+      '@onecx/angular-accelerator': oneCXLibVersion,
+      '@onecx/angular-auth': oneCXLibVersion,
+      '@onecx/angular-remote-components': oneCXLibVersion,
+      '@onecx/angular-webcomponents': oneCXLibVersion,
+      '@onecx/integration-interface': oneCXLibVersion,
+      '@onecx/ngrx-accelerator': oneCXLibVersion,
       '@onecx/keycloak-auth': oneCXLibVersion,
       '@onecx/portal-integration-angular': oneCXLibVersion,
       '@onecx/portal-layout-styles': oneCXLibVersion,
-      '@onecx/accelerator': oneCXLibVersion,
-      '@onecx/angular-accelerator': oneCXLibVersion,
-      '@onecx/integration-interface': oneCXLibVersion,
-      '@onecx/angular-remote-components': oneCXLibVersion,
-      '@onecx/angular-webcomponents': oneCXLibVersion,
-      '@onecx/angular-auth': oneCXLibVersion,
-      '@ngx-translate/core': '^14.0.0',
-      '@ngx-translate/http-loader': '^7.0.0',
-      '@angular-architects/module-federation': '^15.0.0',
-      '@angular/cdk': '^15.2.7',
-      '@angular/elements': '^15.2.7',
-      "@angular/animations": "^15.2.7",
-      'keycloak-angular': '^13.1.0',
+      '@ngx-translate/core': '^15.0.0',
+      '@ngx-translate/http-loader': '^8.0.0',
+      '@angular-architects/module-federation': '^18.0.4',
+      'keycloak-angular': '^16.0.1',
+      '@angular/animations': '^18.1.4',
+      '@angular/cdk': '^18.1.4',
+      '@angular/common': '^18.1.4',
+      '@angular/compiler': '^18.1.4',
+      '@angular/core': '^18.1.4',
+      '@angular/elements': '^18.1.4',
+      '@angular/forms': '^18.1.4',
+      '@angular/platform-browser': '^18.1.4',
+      '@angular/platform-browser-dynamic': '^18.1.4',
+      '@angular/router': '^18.1.4',
+      '@ngrx/component': '^18.0.2',
+      '@ngrx/effects': '^18.0.2',
+      '@ngrx/router-store': '^18.0.2',
+      '@ngrx/store': '^18.0.2',
+      '@ngrx/store-devtools': '^18.0.2',
+      '@nx/angular': '^19.5.7',
+      '@nx/devkit': '19.5.7',
+      '@nx/plugin': '^19.5.7',
       '@webcomponents/webcomponentsjs': '^2.8.0',
     },
     {
       '@openapitools/openapi-generator-cli': '^2.5.2',
-      'ngx-translate-testing': '^6.1.0',
+      'ngx-translate-testing': '^7.0.0',
+      '@angular-devkit/build-angular': '^18.1.4',
+      '@angular-devkit/core': '^18.1.4',
+      '@angular-devkit/schematics': '^18.1.4',
+      '@angular/cli': '~18.1.4',
+      '@angular/compiler-cli': '^18.1.4',
+      '@angular/language-service': '^18.1.4',
+      typescript: '~5.5.4',
+      jest: '^29.7.0',
+      'jest-environment-jsdom': '^29.7.0',
+      'jest-preset-angular': '~14.2.2',
     }
   );
 
@@ -190,6 +204,11 @@ function adaptTsConfig(tree: Tree, options: AngularGeneratorSchema) {
     "src/polyfills.ts",
   `
   );
+  fileContent = fileContent.replace(
+    '"compilerOptions": {',
+    `"compilerOptions": {
+    "useDefineForClassFields": false,
+  `)
   tree.write(filePath, fileContent);
 }
 
@@ -197,7 +216,7 @@ function adaptProjectConfiguration(
   tree: Tree,
   options: AngularGeneratorSchema
 ) {
-  const config = readProjectConfiguration(tree, names(options.name).fileName);
+  const config = readProjectConfiguration(tree, options.name);
   config.targets['serve'].executor = '@nx/angular:dev-server';
   config.targets['serve'].options = {
     ...(config.targets['serve'].options ?? {}),
@@ -271,6 +290,8 @@ function adaptAngularPrefixConfig(tree: Tree) {
   updateJson(tree, 'project.json', (json) => {
     json.prefix = 'app';
     json.targets.test.options.coverage = true;
+    json.targets.build.options.main = json.targets.build.options.browser;
+    delete json.targets.build.options.browser;
     json.targets.build.options.scripts = [
       'node_modules/@webcomponents/webcomponentsjs/webcomponents-bundle.js',
     ];

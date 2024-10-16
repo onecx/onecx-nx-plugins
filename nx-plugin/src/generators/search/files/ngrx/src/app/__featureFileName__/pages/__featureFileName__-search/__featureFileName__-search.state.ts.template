@@ -9,5 +9,7 @@ export interface <%= featureClassName %>SearchState {
   results: <%= dataObjectName %>[];
   displayedColumns: string[] | null;
   viewMode: 'basic' | 'advanced';
-  chartVisible: boolean,  
+  chartVisible: boolean;
+  searchLoadingIndicator: boolean;
+  criteria: <%= featureClassName %>SearchCriteria;  
 }

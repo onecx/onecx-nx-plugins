@@ -69,7 +69,8 @@ export const commonImports = [CommonModule];
       provide: APP_INITIALIZER,
       useFactory: (
         appStateService: AppStateService,
-        translateService: TranslateService
+        translateService: TranslateService,
+        userService: UserService
       ) => {
         return async () => {
           const standaloneMfeInfo: MfeInfo = {
@@ -84,10 +85,11 @@ export const commonImports = [CommonModule];
           await appStateService.currentMfe$.publish(standaloneMfeInfo);
           await appStateService.globalLoading$.publish(false);
           await firstValueFrom(translateService.use('en'));
+          userService.lang$.next('en');
         };
       },
       multi: true,
-      deps: [AppStateService, TranslateService],
+      deps: [AppStateService, TranslateService, UserService],
     }
     <%_ } _%>
   ],
