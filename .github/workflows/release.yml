@@ -18,6 +18,8 @@ jobs:
         run: npx nx run-many -t lint
       - name: Test
         run: npx nx run-many -t test --configuration=ci
+      - name: Build affected
+        run: npx nx run-many -t build
       - name: E2E Tests
         run: npm run test
       - name: Release
