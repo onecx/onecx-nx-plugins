@@ -13,7 +13,7 @@ describe('nx-plugin', () => {
 
     // The plugin has been built and published to a local registry in the jest globalSetup
     // Install the plugin built with the latest source code into the test repo
-    execSync(`npm install @onecx/nx-plugin@e2e --foreground-scripts`, {
+    execSync(`npm install @onecx/nx-plugin@e2e`, {
       cwd: projectDirectory,
       stdio: 'inherit',
       env: process.env,
