@@ -13,7 +13,7 @@ describe('nx-plugin', () => {
 
     // The plugin has been built and published to a local registry in the jest globalSetup
     // Install the plugin built with the latest source code into the test repo
-    execSync(`npm install @onecx/nx-plugin@e2e`, {
+    execSync(`npm install @onecx/nx-plugin@e2e --foreground-scripts`, {
       cwd: projectDirectory,
       stdio: 'inherit',
       env: process.env,
@@ -455,7 +455,7 @@ function createTestProject(flavor) {
   });
 
   execSync(
-    `npm exec --yes --foreground-scripts --package=@onecx/create-workspace@e2e ${flavor} ${projectName} --nxCloud skip --no-interactive --verbose --`,
+    `npx --yes @onecx/create-workspace@e2e ${flavor} ${projectName} --nxCloud skip --no-interactive --verbose`,
     {
       cwd: dirname(projectDirectory),
       stdio: 'inherit',
