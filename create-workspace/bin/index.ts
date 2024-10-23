@@ -24,6 +24,8 @@ async function main() {
     nxCloud: 'skip',
     packageManager: 'npm',
     verbose: true,
+    interactive: false,
+    
   });
 
   console.log(`Successfully created the workspace.`);
