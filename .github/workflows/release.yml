@@ -8,9 +8,9 @@ jobs:
         with:
           persist-credentials: false
           fetch-depth: 0
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v3
         with:
-          node-version: 20
+          node-version: 18
       - uses: nrwl/nx-set-shas@v4
       - name: Install deps
         run: npm ci
@@ -18,7 +18,7 @@ jobs:
         run: npx nx run-many -t lint
       - name: Test
         run: npx nx run-many -t test --configuration=ci
-      - name: Build affected
+      - name: Build
         run: npx nx run-many -t build
       - name: E2E Tests
         run: npm run test
