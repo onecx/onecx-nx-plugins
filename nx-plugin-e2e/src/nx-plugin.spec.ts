@@ -455,7 +455,7 @@ function createTestProject(flavor) {
   });
 
   execSync(
-    `npx --yes @onecx/create-workspace@e2e ${flavor} ${projectName} --nxCloud skip --no-interactive --verbose`,
+    `npm exec --yes --foreground-scripts --package=@onecx/create-workspace@e2e ${flavor} ${projectName} --nxCloud skip --no-interactive --verbose --`,
     {
       cwd: dirname(projectDirectory),
       stdio: 'inherit',
