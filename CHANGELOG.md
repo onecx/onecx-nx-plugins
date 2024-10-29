@@ -1,3 +1,13 @@
+## [1.9.1](https://github.com/onecx/onecx-nx-plugins/compare/v1.9.0...v1.9.1) (2024-10-29)
+
+### Bug Fixes
+
+* add timeout to local registry start ([36112c7](https://github.com/onecx/onecx-nx-plugins/commit/36112c7f9804725176269d3d06e74e145501536c))
+* fix ci condition ([57d600f](https://github.com/onecx/onecx-nx-plugins/commit/57d600f8ffb8d0cfc503196178bd56e346a97c3f))
+* sync package-lock ([1152f10](https://github.com/onecx/onecx-nx-plugins/commit/1152f10184e19f867a17fc3c67909917fc9d6f7c))
+* trying to make ci less flaky ([5d9a6d7](https://github.com/onecx/onecx-nx-plugins/commit/5d9a6d7ed69b4028472a32795c2fb816988c515e))
+* use correct working dir ([bb153b1](https://github.com/onecx/onecx-nx-plugins/commit/bb153b15bf6fb6911c9eb643445d28dbc8066775))
+
 ## [1.9.0](https://github.com/onecx/onecx-nx-plugins/compare/v1.8.1...v1.9.0) (2024-10-29)
 
 ### Features
