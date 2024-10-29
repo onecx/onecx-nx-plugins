@@ -1,6 +1,7 @@
 import { execSync } from 'child_process';
 import { join, dirname } from 'path';
 import { mkdirSync, rmSync } from 'fs';
+import * as os from 'os';
 const NON_INTERACTIVE_KEY = 'non-interactive';
 const projectName = 'test-project';
 const featureName = 'test-feature';
@@ -443,7 +444,8 @@ describe('nx-plugin', () => {
  * @returns The directory where the test project was created
  */
 function createTestProject(flavor) {
-  const projectDirectory = join(process.cwd(), 'tmp', projectName);
+  const workingDir = process.env.WORKING_DIR ?? os.tmpdir()
+  const projectDirectory = join(workingDir, 'nx-plugin-out', projectName);
 
   // Ensure projectDirectory is empty
   rmSync(projectDirectory, {

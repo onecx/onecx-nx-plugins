@@ -208,7 +208,8 @@ function adaptTsConfig(tree: Tree, options: AngularGeneratorSchema) {
     '"compilerOptions": {',
     `"compilerOptions": {
     "useDefineForClassFields": false,
-  `)
+  `
+  );
   tree.write(filePath, fileContent);
 }
 
@@ -279,14 +280,16 @@ function adaptJestConfig(tree: Tree) {
 }
 
 function adaptAngularPrefixConfig(tree: Tree) {
-  updateJson(tree, '.eslintrc.json', (json) => {
-    const override = json['overrides'].find(
-      (o) => !!o.rules['@angular-eslint/directive-selector']
-    );
-    override.rules['@angular-eslint/directive-selector'][1].prefix = 'app';
-    override.rules['@angular-eslint/component-selector'][1].prefix = 'app';
-    return json;
-  });
+  if (tree.exists('.eslintrc.json')) {
+    updateJson(tree, '.eslintrc.json', (json) => {
+      const override = json['overrides'].find(
+        (o) => !!o.rules['@angular-eslint/directive-selector']
+      );
+      override.rules['@angular-eslint/directive-selector'][1].prefix = 'app';
+      override.rules['@angular-eslint/component-selector'][1].prefix = 'app';
+      return json;
+    });
+  }
   updateJson(tree, 'project.json', (json) => {
     json.prefix = 'app';
     json.targets.test.options.coverage = true;
