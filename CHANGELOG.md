@@ -1,3 +1,34 @@
+## [1.9.0](https://github.com/onecx/onecx-nx-plugins/compare/v1.8.1...v1.9.0) (2024-10-29)
+
+### Features
+
+*  no permission check in standalone ([#119](https://github.com/onecx/onecx-nx-plugins/issues/119)) ([f051815](https://github.com/onecx/onecx-nx-plugins/commit/f051815e6fe7a7e43285d4d338fa502561724461))
+* add primelocale loading to app entrypoint ([24a8ef7](https://github.com/onecx/onecx-nx-plugins/commit/24a8ef75193ee51e73fc780ce482a74c3ab900b2))
+* conform to libs 4.44.3+ ([#120](https://github.com/onecx/onecx-nx-plugins/issues/120)) ([0f1b89a](https://github.com/onecx/onecx-nx-plugins/commit/0f1b89a11a9a726c7dd1d089091667fded071991))
+* data for activated route in tests ([#122](https://github.com/onecx/onecx-nx-plugins/issues/122)) ([3c7235a](https://github.com/onecx/onecx-nx-plugins/commit/3c7235a50758dd084ec274d90c48a6e2b520ec2e))
+* migrate to angular 18 ([#126](https://github.com/onecx/onecx-nx-plugins/issues/126)) ([8be0a0c](https://github.com/onecx/onecx-nx-plugins/commit/8be0a0cbae3ef201646b63b1ab058b2310241cd5))
+* run e2e tests ([#125](https://github.com/onecx/onecx-nx-plugins/issues/125)) ([608b75f](https://github.com/onecx/onecx-nx-plugins/commit/608b75f2361493e5ab825dae71e85082de6c8f6f))
+
+### Bug Fixes
+
+* add build step to release workflow ([0b859c4](https://github.com/onecx/onecx-nx-plugins/commit/0b859c425f1fc39a5acda660373853dc744a974f))
+* added all onecx libraries to webpack shared ([#118](https://github.com/onecx/onecx-nx-plugins/issues/118)) ([4450c87](https://github.com/onecx/onecx-nx-plugins/commit/4450c87eb36a435ae11957b77fd24e029abea25d))
+* fixed wrong name used when adapting project configuration ([#123](https://github.com/onecx/onecx-nx-plugins/issues/123)) ([9d7e5b1](https://github.com/onecx/onecx-nx-plugins/commit/9d7e5b189b58a0d27c57d1d3dcebd42eb65464f7))
+* increase conventional-changelog-conventionalcommits version ([54a8001](https://github.com/onecx/onecx-nx-plugins/commit/54a800151084c93fd789c133b59e9fe967147d93))
+* set requiredVersion to auto for ngx-translate ([#121](https://github.com/onecx/onecx-nx-plugins/issues/121)) ([c1ddc2b](https://github.com/onecx/onecx-nx-plugins/commit/c1ddc2b0309ded2edc4ae15dd91c37f08ea366ea))
+* several small fixes to resolve test errors ([#187](https://github.com/onecx/onecx-nx-plugins/issues/187)) ([127c55d](https://github.com/onecx/onecx-nx-plugins/commit/127c55d3f32bb838e1dd6b52033dc49638616724))
+* update package-lock ([5525385](https://github.com/onecx/onecx-nx-plugins/commit/55253859a2cf4f42cc24a2120b7ea8bf24d7591b))
+* update semver deps + release workflow ([6a503db](https://github.com/onecx/onecx-nx-plugins/commit/6a503db6658533eee910cd2dd2b8c844b9f57d28))
+* will use primeng instance of shell if primeng version of shell i… ([#139](https://github.com/onecx/onecx-nx-plugins/issues/139)) ([9fe3c49](https://github.com/onecx/onecx-nx-plugins/commit/9fe3c49f060b044f03200271fbb8aa7806fa7b6c))
+
+### Chores
+
+* bumped deps ([#127](https://github.com/onecx/onecx-nx-plugins/issues/127)) ([8cea193](https://github.com/onecx/onecx-nx-plugins/commit/8cea193989484ed6abc1bd48689732d6403d5884))
+
+### Refactoring
+
+* increase oneCXLibVersion ([44ab199](https://github.com/onecx/onecx-nx-plugins/commit/44ab199144ac085e4cf85d7b2a5ad41d38422c89))
+
 ## [1.8.1](https://github.com/onecx/onecx-nx-plugins/compare/v1.8.0...v1.8.1) (2024-07-18)
 
 
