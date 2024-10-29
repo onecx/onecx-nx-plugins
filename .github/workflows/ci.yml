@@ -8,6 +8,8 @@ on:
   pull_request:
     branches:
       - main
+  schedule:
+    - cron: "0 1 * * *"
 jobs:
   main:
     runs-on: ubuntu-latest
@@ -15,17 +17,46 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - uses: actions/setup-node@v3
+          path: repo
+
+      - run: cd repo
+
+      - uses: actions/setup-node@v4
         with:
-          node-version: 18
-      - uses: nrwl/nx-set-shas@v3
+          node-version: 20
+
+      - uses: nrwl/nx-set-shas@v4
+
       - name: Install deps
         run: npm ci
-      - name: Lint affected
-        run: npx nx affected -t lint
-      - name: Test affected
-        run: npx nx affected -t test --configuration=ci
-      - name: Build affected
-        run: npx nx affected -t build
+  
+      - name: Lint
+        run: npx nx run-many -t lint
+
+      - name: Test
+        run: npx nx run-many -t test --configuration=ci
+
+      - name: Build
+        run: npx nx run-many -t build
+
       - name: E2E Tests
         run: npm run test
+        env: 
+          WORKING_DIR: ${{github.workspace}}/test-output
+
+      - name: Upload logs
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: logs
+          path: |
+            "**/*.log"
+            "/tmp/**/*.log
+
+      - name: Upload test output
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-output
+          path: |
+            ${{github.workspace}}/test-output
