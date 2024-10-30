@@ -15,7 +15,7 @@ export const initialState: <%= featureClassName %>SearchState = {
   chartVisible: false,
   resultComponentState: null,
   searchHeaderComponentState: null,
-  diagramComponentState: null
+  diagramComponentState: null,
   searchLoadingIndicator: false,
   criteria: {},
   searchExecuted: false,
