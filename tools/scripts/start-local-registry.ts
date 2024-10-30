@@ -22,4 +22,5 @@ export default async () => {
     ['run-many', '--targets', 'publish', '--ver', '0.0.0-e2e', '--tag', 'e2e'],
     { env: process.env, stdio: 'inherit' }
   );
+  await new Promise(resolve => setTimeout(() => resolve(true), 2000));
 };

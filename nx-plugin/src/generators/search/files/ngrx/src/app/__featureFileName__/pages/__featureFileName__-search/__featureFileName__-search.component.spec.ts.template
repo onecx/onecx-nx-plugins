@@ -376,14 +376,15 @@ describe('<%= featureClassName %>SearchComponent', () => {
     const interactiveDataView =
       await <%= featurePropertyName %>Search.getSearchResults();
     const columnGroupSelector =
-      await interactiveDataView.getCustomGroupColumnSelector();
-    await columnGroupSelector.openCustomGroupColumnSelectorDialog();
-    const pickList = await columnGroupSelector.getPicklist();
+      await interactiveDataView?.getCustomGroupColumnSelector();
+    expect(columnGroupSelector).toBeTruthy();
+    await columnGroupSelector!.openCustomGroupColumnSelectorDialog();
+    const pickList = await columnGroupSelector!.getPicklist();
     const transferControlButtons = await pickList.getTransferControlsButtons();
     expect(transferControlButtons.length).toBe(4);
     const activateAllColumnsButton = transferControlButtons[3];
     await activateAllColumnsButton.click();
-    const saveButton = await columnGroupSelector.getSaveButton();
+    const saveButton = await columnGroupSelector!.getSaveButton();
     await saveButton.click();
 
     expect(store.dispatch).toHaveBeenCalledWith(

@@ -4,23 +4,60 @@ jobs:
   main:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
         with:
+          persist-credentials: false
           fetch-depth: 0
-      - uses: actions/setup-node@v3
+          path: repo
+
+      - uses: actions/setup-node@v4
         with:
-          node-version: 20          
-      - uses: nrwl/nx-set-shas@v3
+          node-version: 20
+
+      - uses: nrwl/nx-set-shas@v4
+
       - name: Install deps
         run: npm ci
+        working-directory: repo
+
       - name: Lint
         run: npx nx run-many -t lint
+        working-directory: repo
+
       - name: Test
         run: npx nx run-many -t test --configuration=ci
+        working-directory: repo
+
+      - name: Build
+        run: npx nx run-many -t build
+        working-directory: repo
+
       - name: E2E Tests
         run: npm run test
+        working-directory: repo
+        env: 
+          WORKING_DIR: ${{github.workspace}}/test-output
+
       - name: Release
         run: npx semantic-release
+        working-directory: repo
         env:
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.CI_PAT }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Upload logs
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: logs
+          path: |
+            "repo/**/*.log"
+            "/tmp/**/*.log
+
+      - name: Upload test output
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-output
+          path: |
+            ${{github.workspace}}/test-output

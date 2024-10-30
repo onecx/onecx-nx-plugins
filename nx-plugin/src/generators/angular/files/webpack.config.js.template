@@ -15,6 +15,10 @@ const config = withModuleFederationPlugin({
       requiredVersion: 'auto',
       includeSecondaries: true,
     },
+    '@angular/platform-browser': { 
+      requiredVersion: 'auto',
+      includeSecondaries: true 
+    },
     '@angular/forms': {
       requiredVersion: 'auto',
       includeSecondaries: true,

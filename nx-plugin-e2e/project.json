@@ -18,5 +18,5 @@
       "outputs": ["{options.outputFile}"]
     }
   },
-  "implicitDependencies": ["nx-plugin"]
+  "implicitDependencies": ["nx-plugin", "create-workspace"]
 }
