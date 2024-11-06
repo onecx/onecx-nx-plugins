@@ -87,6 +87,7 @@ export const <%= featurePropertyName %>SearchReducer = createReducer(
       ...state,
       chartVisible: !state.chartVisible
     })
+    )
   ),
   on(
     <%= featureClassName %>SearchActions.resultComponentStateChanged,

@@ -24,15 +24,15 @@ import { Configuration } from './shared/generated';
 import { SharedModule } from './shared/shared.module';
 import { EffectSources, EffectsRunner, Actions  } from '@ngrx/effects';
 import { apiConfigProvider } from './shared/utils/apiConfigProvider.utils';
-import { DoBootstrap, Injector } from '@angular/core'
-import { createCustomElement } from '@angular/elements'
-import { Router } from '@angular/router'
-import { APP_INITIALIZER } from '@angular/core'
-import { initializeRouter, createAppEntrypoint } from '@onecx/angular-webcomponents'
-import { AppStateService } from '@onecx/angular-integration-interface'
+import { DoBootstrap, Injector } from '@angular/core';
+import { createCustomElement } from '@angular/elements';
+import { Router } from '@angular/router';
+import { APP_INITIALIZER } from '@angular/core';
+import { initializeRouter, createAppEntrypoint } from '@onecx/angular-webcomponents';
+import { AppStateService } from '@onecx/angular-integration-interface';
 import { AppEntrypointComponent } from './app-entrypoint.component';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
-import { AngularAuthModule } from '@onecx/angular-auth'
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { AngularAuthModule } from '@onecx/angular-auth';
 
 // Workaround for the following issue:
 // https://github.com/ngrx/platform/issues/3700
