@@ -3,8 +3,8 @@ import { join, dirname } from 'path';
 import { mkdirSync, rmSync } from 'fs';
 import * as os from 'os';
 const NON_INTERACTIVE_KEY = 'non-interactive';
-const projectName = 'test-project';
-const featureName = 'test-feature';
+const projectName = 'ibt-tsg-mgmt-page';
+const featureName = 'timeslot-group';
 const featureNameCustom = 'test-custom-feature';
 describe('nx-plugin', () => {
   let projectDirectory: string;
@@ -27,7 +27,7 @@ describe('nx-plugin', () => {
     //   recursive: true,
     //   force: true,
     // });
-    return;
+    //return;
     //Delete files to make it easier to compare with original
     rmSync(join(projectDirectory, 'node_modules'), {
       recursive: true,
@@ -444,7 +444,7 @@ describe('nx-plugin', () => {
  * @returns The directory where the test project was created
  */
 function createTestProject(flavor) {
-  const workingDir = process.env.WORKING_DIR ?? os.tmpdir()
+  const workingDir = process.env.WORKING_DIR ?? os.tmpdir();
   const projectDirectory = join(workingDir, 'nx-plugin-out', projectName);
 
   // Ensure projectDirectory is empty
