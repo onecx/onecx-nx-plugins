@@ -1,3 +1,13 @@
+## [1.10.0](https://github.com/onecx/onecx-nx-plugins/compare/v1.9.1...v1.10.0) (2024-11-14)
+
+### Features
+
+* removed -ui suffix from generator ([#149](https://github.com/onecx/onecx-nx-plugins/issues/149)) ([653b7db](https://github.com/onecx/onecx-nx-plugins/commit/653b7db355c0beb5b1ae163fca2b7415d66de801))
+
+### Bug Fixes
+
+* add webpack to package json ([#220](https://github.com/onecx/onecx-nx-plugins/issues/220)) ([180a4fc](https://github.com/onecx/onecx-nx-plugins/commit/180a4fcd40f480c4cf74af62eba57fc51e5af7bb))
+
 ## [1.9.1](https://github.com/onecx/onecx-nx-plugins/compare/v1.9.0...v1.9.1) (2024-10-29)
 
 ### Bug Fixes
