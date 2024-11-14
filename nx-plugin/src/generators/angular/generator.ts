@@ -129,6 +129,7 @@ export async function angularGenerator(
       jest: '^29.7.0',
       'jest-environment-jsdom': '^29.7.0',
       'jest-preset-angular': '~14.2.2',
+      webpack: '5.94.0',
     }
   );
 
