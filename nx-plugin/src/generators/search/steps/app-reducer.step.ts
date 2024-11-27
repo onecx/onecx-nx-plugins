@@ -1,4 +1,4 @@
-import { Tree, joinPathFragments } from '@nx/devkit';
+import { Tree, joinPathFragments, names } from '@nx/devkit';
 import { GeneratorStep } from '../../shared/generator.utils';
 import { SearchGeneratorSchema } from '../schema';
 
@@ -6,6 +6,7 @@ export class AppReducerStep implements GeneratorStep<SearchGeneratorSchema> {
   //@ts-eslint:ignore @typescript-eslint/no-unused-var
   process(tree: Tree, _options: SearchGeneratorSchema): void {
     const reducerFilePath = joinPathFragments('src/app/app.reducers.ts');
+    const propertyName = names(_options.featureName).propertyName;
     let reducerContent = tree.read(reducerFilePath, 'utf8');
 
     if (
@@ -45,7 +46,7 @@ export class AppReducerStep implements GeneratorStep<SearchGeneratorSchema> {
             return localStorageSync({
               keys: [
                 {
-                  timeslotGroup: [
+                  ${propertyName}: [
                     {
                       search: [
                         'chartVisible',

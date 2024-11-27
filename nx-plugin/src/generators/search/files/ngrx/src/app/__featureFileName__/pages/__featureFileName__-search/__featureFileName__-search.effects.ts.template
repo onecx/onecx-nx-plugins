@@ -20,6 +20,7 @@ import {
 import { Injectable, SkipSelf } from '@angular/core';
 import { 
   select<%= featureClassName %>SearchViewModel,
+<%= featurePropertyName %>SearchSelectors,
 } from './<%= featureFileName %>-search.selectors';
 import { Action, Store } from '@ngrx/store';
 import equal from 'fast-deep-equal';

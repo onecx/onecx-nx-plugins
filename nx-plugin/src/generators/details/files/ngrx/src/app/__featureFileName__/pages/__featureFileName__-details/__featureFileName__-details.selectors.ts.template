@@ -17,7 +17,9 @@ export const <%= featurePropertyName %>DetailsSelectors = createChildSelectors(
 
 export const select<%= featureClassName %>DetailsViewModel = createSelector(
   <%= featurePropertyName %>DetailsSelectors.selectDetails,
+  <%= featurePropertyName %>DetailsSelectors.selectDetailsLoadingIndicator,
   selectBackNavigationPossible,
+  <%= featurePropertyName %>DetailsSelectors.selectDetailsLoaded,
   (details: <%= dataObjectName %> | undefined,
   detailsLoadingIndicator: boolean,
   backNavigationPossible: boolean,

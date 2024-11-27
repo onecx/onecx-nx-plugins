@@ -1,4 +1,4 @@
-import { createActionGroup, props } from '@ngrx/store';
+import { createActionGroup, emptyProps, props } from '@ngrx/store';
 import { <%= dataObjectName %> } from '../../../shared/generated';
 
 export const <%= featureClassName %>DetailsActions = createActionGroup({
@@ -10,6 +10,14 @@ export const <%= featureClassName %>DetailsActions = createActionGroup({
     '<%= featureFileName.replaceAll("-"," ") %> details received': props<{
       details: <%= dataObjectName %>;
     }>(),
+    '<%= featureFileName.replaceAll("-"," ") %> reloaded details received': props<{
+      details: <%= dataObjectName %>;
+    }>(),
     '<%= featureFileName.replaceAll("-"," ") %> details loading failed': props<{ error: string | null }>(),
+    'navigate back button clicked': emptyProps(),
+    'back navigation started': emptyProps(),
+    'back navigation failed': emptyProps(),
+    'navigation to search started': emptyProps(),
+    'navigation to search not started': emptyProps(),
   },
 });
