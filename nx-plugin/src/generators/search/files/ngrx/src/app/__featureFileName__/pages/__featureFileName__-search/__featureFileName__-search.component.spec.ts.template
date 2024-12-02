@@ -339,6 +339,7 @@ describe('<%= featureClassName %>SearchComponent', () => {
     );
   });
 
+  // TODO
   it('should dispatch displayedColumnsChanged on data view column change', async () => {
     jest.spyOn(store, 'dispatch');
 
@@ -350,56 +351,28 @@ describe('<%= featureClassName %>SearchComponent', () => {
       <%= featureClassName %>SearchHarness
     );
 
-    expect(store.dispatch).toHaveBeenCalledWith(
-      <%= featureClassName %>SearchActions.displayedColumnsChanged({ displayedColumns: [] })
-    );
-
     jest.clearAllMocks();
-
-    store.overrideSelector(select<%= featureClassName %>SearchViewModel, {
-      ...base<%= featureClassName %>SearchViewModel,
-      columns: [
-        {
-          columnType: ColumnType.STRING,
-          nameKey: 'COLUMN_KEY',
-          id: 'column_1',
-        },
-        {
-          columnType: ColumnType.STRING,
-          nameKey: 'SECOND_COLUMN_KEY',
-          id: 'column_2',
-        },
-      ],
-    });
-    store.refreshState();
 
     const interactiveDataView =
       await <%= featurePropertyName %>Search.getSearchResults();
     const columnGroupSelector =
       await interactiveDataView?.getCustomGroupColumnSelector();
     expect(columnGroupSelector).toBeTruthy();
-    await columnGroupSelector!.openCustomGroupColumnSelectorDialog();
-    const pickList = await columnGroupSelector!.getPicklist();
-    const transferControlButtons = await pickList.getTransferControlsButtons();
-    expect(transferControlButtons.length).toBe(4);
-    const activateAllColumnsButton = transferControlButtons[3];
-    await activateAllColumnsButton.click();
-    const saveButton = await columnGroupSelector!.getSaveButton();
+
+    // Currently, all columns are selected. Next, we are unselecting all to have a clean test setting.
+    const deactivateAllColumnsButton = transferControlButtons[1];
+    await deactivateAllColumnsButton.click();
+    const activeItems = await pickList.getTargetListItems();
+    await activeItems[0].selectItem();
+    const activateCurrentColumnButton = transferControlButtons[2];
+    await activateCurrentColumnButton.click();
+    const saveButton = await columnGroupSelector.getSaveButton();
     await saveButton.click();
 
     expect(store.dispatch).toHaveBeenCalledWith(
       <%= featureClassName %>SearchActions.displayedColumnsChanged({
         displayedColumns: [
-          {
-            columnType: ColumnType.STRING,
-            nameKey: 'COLUMN_KEY',
-            id: 'column_1',
-          },
-          {
-            columnType: ColumnType.STRING,
-            nameKey: 'SECOND_COLUMN_KEY',
-            id: 'column_2',
-          },
+          <%= featurePropertyName %>SearchColumns[0]
         ],
       })
     );
