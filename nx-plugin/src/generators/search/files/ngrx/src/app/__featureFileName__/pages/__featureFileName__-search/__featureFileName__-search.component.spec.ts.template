@@ -361,8 +361,8 @@ describe('<%= featureClassName %>SearchComponent', () => {
     // Currently, all columns are selected. Next, we are unselecting all to have a clean test setting.
     const deactivateAllColumnsButton = transferControlButtons[1];
     await deactivateAllColumnsButton.click();
-    const activeItems = await pickList.getTargetListItems();
-    await activeItems[0].selectItem();
+    const inactiveItems = await pickList.getTargetListItems();
+    await inactiveItems[0].selectItem();
     const activateCurrentColumnButton = transferControlButtons[2];
     await activateCurrentColumnButton.click();
     const saveButton = await columnGroupSelector.getSaveButton();
