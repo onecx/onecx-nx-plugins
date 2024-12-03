@@ -8,7 +8,7 @@ const config = withModuleFederationPlugin({
   filename: 'remoteEntry.js',
   exposes: {
     './<%= remoteModuleName %>Module':
-      './src/bootstrap.ts',
+      './src/main.ts',
   },
   shared: share({
     '@angular/core': {
