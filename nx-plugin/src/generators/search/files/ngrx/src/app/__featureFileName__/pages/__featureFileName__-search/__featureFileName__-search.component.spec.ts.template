@@ -358,6 +358,11 @@ describe('<%= featureClassName %>SearchComponent', () => {
       await interactiveDataView?.getCustomGroupColumnSelector();
     expect(columnGroupSelector).toBeTruthy();
 
+    await columnGroupSelector!.openCustomGroupColumnSelectorDialog();
+    const pickList = await columnGroupSelector!.getPicklist();
+    const transferControlButtons = await pickList.getTransferControlsButtons();
+    expect(transferControlButtons.length).toBe(4);
+
     // Currently, all columns are selected. Next, we are unselecting all to have a clean test setting.
     const deactivateAllColumnsButton = transferControlButtons[1];
     await deactivateAllColumnsButton.click();
@@ -365,7 +370,7 @@ describe('<%= featureClassName %>SearchComponent', () => {
     await inactiveItems[0].selectItem();
     const activateCurrentColumnButton = transferControlButtons[2];
     await activateCurrentColumnButton.click();
-    const saveButton = await columnGroupSelector.getSaveButton();
+    const saveButton = await columnGroupSelector!.getSaveButton();
     await saveButton.click();
 
     expect(store.dispatch).toHaveBeenCalledWith(
