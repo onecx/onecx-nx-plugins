@@ -12,11 +12,26 @@ _Adapt in File:_ `+<feature>-bff.yaml+`
 
 * The `+<FeatureName>SearchRequest+` data structure in the BFF yaml must be adapted. 
 
-** All the data that should be displayed in the request must be in that data structure either on top-level or in sub data structures. 
+** All the data that should be used in the request must be in that data structure either on top-level or in sub data structures. 
 
----
+[source, yml]
+----
+<Feature>SearchRequest:
+      type: object
+      properties:
+        limit:
+          type: integer
+          maximum: 2600
+        id:
+          type: string
+        changeMe:
+          type: string
+        # ACTION S1: Add additional properties to the <feature>-bff.yaml
+----
 
 IMPORTANT: Run the command `npm run apigen` after adapting the OpenAPI to transform the changes into typescript code.
+
+IMPORTANT: Remove the "ACTION" comment after solving this issue
 
 ==== ACTION S2: Please define the members for your `+<%= featurePropertyName %>SearchCriteriasSchema+` here
 _Adapt in File:_ `+<feature>-search.parameters.ts+`
@@ -141,3 +156,6 @@ _Adapt in File:_  `+de.json+` / `+en.json+`
 
 * Please add the missing translations
 // TODO: Specify for what the translation will be added
+
+---
+Now you can continue with the next section xref:getting_started/search/configureSearchResults.adoc[Configure search results]
