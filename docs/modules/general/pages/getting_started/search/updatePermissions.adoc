@@ -13,14 +13,14 @@ permission:
     spec:
         permissions:
             FEATURE:
-                CREATE: Create example
-                EDIT: Edit example
-                DELETE: Delete example
-                SAVE: Update and save example
-                IMPORT: Import example
-                EXPORT: Export example
-                VIEW: View mode for example
-                SEARCH: Search example
+                CREATE: Create feature
+                EDIT: Edit feature
+                DELETE: Delete feature
+                SAVE: Update and save feature
+                IMPORT: Import feature
+                EXPORT: Export feature
+                VIEW: View mode for feature
+                SEARCH: Search feature
 ----
 
 
