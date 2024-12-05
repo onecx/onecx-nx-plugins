@@ -12,7 +12,7 @@ permission:
     enabled: true
     spec:
         permissions:
-            EXAMPLE:
+            FEATURE:
                 CREATE: Create example
                 EDIT: Edit example
                 DELETE: Delete example
