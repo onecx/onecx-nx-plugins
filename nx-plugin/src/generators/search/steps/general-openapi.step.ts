@@ -52,7 +52,7 @@ export class GeneralOpenAPIStep implements GeneratorStep<SearchGeneratorSchema> 
           id: {
             type: 'string',
           },
-          [COMMENT_KEY]: 'ACTION S1: add additional properties here',
+          [COMMENT_KEY]: 'ACTION S5: add additional properties here',
         },
       })
       .set(`${searchRequestName}`, {
