@@ -341,16 +341,20 @@ describe('<%= featureClassName %>SearchComponent', () => {
 
   it('should dispatch displayedColumnsChanged on data view column change', async () => {
     jest.spyOn(store, 'dispatch');
-
-    fixture = TestBed.createComponent(<%= featureClassName %>SearchComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-    <%= featurePropertyName %>Search = await TestbedHarnessEnvironment.harnessForFixture(
-      fixture,
-      <%= featureClassName %>SearchHarness
-    );
-
-    jest.clearAllMocks();
+    const columns = [
+      {
+        columnType: ColumnType.STRING,
+        nameKey: 'COLUMN_KEY',
+        id: 'column_1',
+      },
+    ];
+    store.overrideSelector(selectTestFeatureSearchViewModel, {
+      ...baseTestFeatureSearchViewModel,
+      results: [],
+      columns: columns,
+      displayedColumns: columns,
+    });
+    store.refreshState();
 
     const interactiveDataView =
       await <%= featurePropertyName %>Search.getSearchResults();
@@ -376,7 +380,7 @@ describe('<%= featureClassName %>SearchComponent', () => {
     expect(store.dispatch).toHaveBeenCalledWith(
       <%= featureClassName %>SearchActions.displayedColumnsChanged({
         displayedColumns: [
-          <%= featurePropertyName %>SearchColumns[0]
+          columns[0]
         ],
       })
     );
