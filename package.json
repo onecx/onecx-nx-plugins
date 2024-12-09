@@ -4,7 +4,7 @@
   "license": "MIT",
   "scripts": {
     "build": "nx run nx-plugin:build && nx run create-workspace:build",
-    "test": "nx run nx-plugin-e2e:e2e",
+    "test": "export LANG=en_US.UTF-8 && nx run nx-plugin-e2e:e2e",
     "lint": "npx nx affected -t lint"
   },
   "private": true,
