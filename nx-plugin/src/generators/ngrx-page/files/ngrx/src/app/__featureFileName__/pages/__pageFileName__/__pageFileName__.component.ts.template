@@ -8,9 +8,9 @@ import {
   ExportDataService,
   PortalDialogService,
 } from '@onecx/portal-integration-angular';
-import { <%= pageClassName %>Actions } from './<%= pageFileName %>-search.actions';
-import { select<%= pageClassName %>ViewModel } from './<%= pageFileName %>-search.selectors';
-import { <%= pageClassName %>ViewModel } from './<%= pageFileName %>-search.viewmodel';
+import { <%= pageClassName %>Actions } from './<%= pageFileName %>.actions';
+import { select<%= pageClassName %>ViewModel } from './<%= pageFileName %>.selectors';
+import { <%= pageClassName %>ViewModel } from './<%= pageFileName %>.viewmodel';
 import { first, Observable, map } from 'rxjs';
 import { PrimeIcons } from 'primeng/api';
 import { isValidDate } from '@onecx/accelerator';
@@ -21,7 +21,7 @@ import { isValidDate } from '@onecx/accelerator';
   styleUrls: ['./<%= pageFileName %>.component.scss'],
 })
 
-export class <%= pageClassName %>Component implements OnInit {
+export class <%= pageClassName %>Component {
   viewModel$: Observable<<%= pageClassName %>ViewModel>  = this.store.select(select<%= pageClassName %>ViewModel);
 
   constructor(

@@ -6,8 +6,9 @@ export class FeatureRoutesStep implements GeneratorStep<PageGeneratorSchema> {
   process(tree: Tree, options: PageGeneratorSchema): void {
     const fileName = names(options.featureName).fileName;
     
-    const pageClassName = names(options.pageName).constantName;
-    const pageFileName = names(options.pageName).propertyName;
+    const pageClassName = names(options.pageName).className;
+    const pagePropertyName = names(options.pageName).propertyName;
+    const pageFileName = names(options.pageName).fileName;
 
     const routesFilePath = joinPathFragments(
       'src/app',
@@ -17,7 +18,7 @@ export class FeatureRoutesStep implements GeneratorStep<PageGeneratorSchema> {
     let moduleContent = tree.read(routesFilePath, 'utf8');
     moduleContent = moduleContent.replace(
       'routes: Routes = [',
-      `routes: Routes = [ { path: '', component: ${pageClassName}Component, pathMatch: 'full' },`
+      `routes: Routes = [ { path: '${pagePropertyName}', component: ${pageClassName}Component, pathMatch: 'full' },`
     );
 
     moduleContent =

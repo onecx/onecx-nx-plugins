@@ -18,8 +18,8 @@ export class GeneralTranslationsStep
 
     const masterJsonContent = renderJsonFile(masterJsonPath, {
       ...options,
-      featureConstantName: names(options.pageName).constantName,
-      featureClassName: names(options.pageName).className,
+      pageConstantName: names(options.pageName).constantName,
+      pageClassName: names(options.pageName).className,
     });
 
     tree.children(folderPath).forEach((file) => {
@@ -32,8 +32,8 @@ export class GeneralTranslationsStep
         if (fs.existsSync(jsonPath)) {
           jsonContent = renderJsonFile(jsonPath, {
             ...options,
-            featureConstantName: names(options.pageName).constantName,
-            featureClassName: names(options.pageName).className,
+            pageConstantName: names(options.pageName).constantName,
+            pageClassName: names(options.pageName).className,
           });
         }
 

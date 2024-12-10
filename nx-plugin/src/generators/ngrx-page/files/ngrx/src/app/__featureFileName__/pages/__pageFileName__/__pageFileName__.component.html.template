@@ -1,6 +1,6 @@
 <ocx-portal-page 
-  <% if(!standalone){ %> permission="<%= pageConstantName %>#SEARCH" <% } %>
-  [helpArticleId]="'<%= pageConstantName %>_SEARCH.HELP_ARTICLE_ID' | translate" 
+  <% if(!standalone){ %> permission="<%= pageConstantName %>#VIEW" <% } %>
+  [helpArticleId]="'<%= pageConstantName %>_VIEW.HELP_ARTICLE_ID' | translate" 
   *ngrxLet="viewModel$; let vm"
 >
 </ocx-portal-page>

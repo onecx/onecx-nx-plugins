@@ -1,21 +1,12 @@
-import { ActivatedRoute, Router, RoutesRecognized } from '@angular/router';
-import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { concatLatestFrom } from '@ngrx/operators'
-import { routerNavigatedAction } from '@ngrx/router-store';
-import { catchError, map, mergeMap, of, switchMap, tap, filter, mergeMap } from 'rxjs';
-import {
-  createQueryParamsEffect,
-  filterForNavigatedTo,
-  filterOutOnlyQueryParamsChanged,
-  filterOutQueryParamsHaveNotChanged,
-} from '@onecx/ngrx-accelerator';
 import { Injectable, SkipSelf } from '@angular/core';
-import { 
-  <%= pagePropertyName %>Selectors, 
-  select<%= pageClassName %>ViewModel,
-} from './<%= pageFileName %>-search.selectors';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Actions, createEffect } from '@ngrx/effects';
 import { Action, Store } from '@ngrx/store';
-import equal from 'fast-deep-equal';
+import { PortalMessageService } from '@onecx/portal-integration-angular';
+import {
+  tap
+} from 'rxjs';
+
 
 @Injectable()
 export class <%= pageClassName %>Effects {

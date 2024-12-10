@@ -1,2 +1,2 @@
-export interface <%= featureClassName %>ViewModel {
+export interface <%= pageClassName %>ViewModel {
 }

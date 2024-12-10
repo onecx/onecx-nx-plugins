@@ -1,11 +1,11 @@
 import { createSelector } from '@ngrx/store';
 import { createChildSelectors } from '@onecx/ngrx-accelerator';
-import { <%= pagePropertyName %>Feature } from '../../<%= pageFileName %>.reducers';
-import { initialState } from './<%= pageFileName %>-search.reducers';
-import { <%= pageClassName %>ViewModel } from './<%= pageFileName %>-search.viewmodel';
+import { <%= featurePropertyName %>Feature } from '../../<%= featureFileName %>.reducers';
+import { initialState } from './<%= pageFileName %>.reducers';
+import { <%= pageClassName %>ViewModel } from './<%= pageFileName %>.viewmodel';
 
 export const <%= pagePropertyName %>Selectors = createChildSelectors(
-  <%= pagePropertyName %>Feature.select,
+  <%= featurePropertyName %>Feature.select<%= pageClassName %>,
   initialState
 );
 

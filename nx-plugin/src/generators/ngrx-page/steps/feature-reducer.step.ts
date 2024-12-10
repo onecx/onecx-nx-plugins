@@ -7,20 +7,19 @@ export class FeatureReducerStep implements GeneratorStep<PageGeneratorSchema> {
     const fileName = names(options.featureName).fileName;
     const filePath = `src/app/${fileName}/${fileName}.reducers.ts`;
 
-    const pageClassName = names(options.pageName).constantName;
     const pagePropertyName = names(options.pageName).propertyName;
-    const pageFileName = names(options.pageName).propertyName;
+    const pageFileName = names(options.pageName).fileName;
 
     let fileContent = tree.read(filePath, 'utf8');
 
     fileContent = fileContent.replace(
       '>({',
       `>({
-      ${pagePropertyName}: ${pageClassName}Reducer,`
+      ${pagePropertyName}: ${pagePropertyName}Reducer,`
     );
 
     fileContent =
-      `import { ${pageClassName}Reducer } from './pages/${pageFileName}/${pageFileName}.reducers';` +
+      `import { ${pagePropertyName}Reducer } from './pages/${pageFileName}/${pageFileName}.reducers';` +
       fileContent;
     tree.write(filePath, fileContent);
   }

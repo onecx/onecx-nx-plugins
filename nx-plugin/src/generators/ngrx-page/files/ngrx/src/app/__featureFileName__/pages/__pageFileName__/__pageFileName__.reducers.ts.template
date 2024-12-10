@@ -1,6 +1,6 @@
 import { createReducer, on } from '@ngrx/store';
-import { <%= pageClassName %>SearchActions } from './<%= pageFileName %>-search.actions';
-import { <%= pageClassName %>SearchState } from './<%= pageFileName %>-search.state';
+import { <%= pageClassName %>Actions } from './<%= pageFileName %>.actions';
+import { <%= pageClassName %>State } from './<%= pageFileName %>.state';
 import {
   routerNavigatedAction,
   RouterNavigatedAction,

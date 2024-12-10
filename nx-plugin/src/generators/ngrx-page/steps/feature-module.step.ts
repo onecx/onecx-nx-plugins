@@ -6,8 +6,8 @@ export class FeatureModuleStep implements GeneratorStep<PageGeneratorSchema> {
   process(tree: Tree, options: PageGeneratorSchema): void {
     const fileName = names(options.featureName).fileName;
 
-    const pageClassName = names(options.pageName).constantName;
-    const pageFileName = names(options.pageName).propertyName;
+    const pageClassName = names(options.pageName).className;
+    const pageFileName = names(options.pageName).fileName;
 
     const moduleFilePath = joinPathFragments(
       'src/app',

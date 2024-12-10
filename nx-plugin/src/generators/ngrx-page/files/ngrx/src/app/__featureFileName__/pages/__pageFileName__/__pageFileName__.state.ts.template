@@ -1,3 +1,2 @@
-import { <%= dataObjectName %> } from 'src/app/shared/generated';
-export interface <%= featureClassName %>State {
+export interface <%= pageClassName %>State {
 }

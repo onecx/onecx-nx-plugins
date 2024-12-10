@@ -77,9 +77,9 @@ export async function componentGenerator(
       featureClassName: names(options.featureName).className,
       featureConstantName: names(options.featureName).constantName,
       pageConstantName: names(options.pageName).constantName,
-      pageClassName: names(options.pageName).constantName,
+      pageClassName: names(options.pageName).className,
       pagePropertyName: names(options.pageName).propertyName,
-      pageFileName: names(options.pageName).propertyName,
+      pageFileName: names(options.pageName).fileName,
       pageName: options.pageName,
       standalone: options.standalone,
     }
@@ -100,11 +100,7 @@ export async function componentGenerator(
   spinner.succeed();
 
   return () => {
-    installPackagesTask(tree);
-    execSync('npm run apigen', {
-      cwd: tree.root,
-      stdio: 'inherit',
-    });
+    installPackagesTask(tree);   
     const files = tree
       .listChanges()
       .map((c) => c.path)
