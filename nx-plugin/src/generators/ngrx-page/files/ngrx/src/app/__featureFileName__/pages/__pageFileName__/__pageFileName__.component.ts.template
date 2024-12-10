@@ -1,0 +1,32 @@
+import { Component, Inject, OnInit, LOCALE_ID } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { Store } from '@ngrx/store';
+import {
+  Action,
+  BreadcrumbService,
+  DataTableColumn,
+  ExportDataService,
+  PortalDialogService,
+} from '@onecx/portal-integration-angular';
+import { <%= pageClassName %>Actions } from './<%= pageFileName %>-search.actions';
+import { select<%= pageClassName %>ViewModel } from './<%= pageFileName %>-search.selectors';
+import { <%= pageClassName %>ViewModel } from './<%= pageFileName %>-search.viewmodel';
+import { first, Observable, map } from 'rxjs';
+import { PrimeIcons } from 'primeng/api';
+import { isValidDate } from '@onecx/accelerator';
+
+@Component({
+  selector: 'app-<%= pageFileName %>',
+  templateUrl: './<%= pageFileName %>.component.html',
+  styleUrls: ['./<%= pageFileName %>.component.scss'],
+})
+
+export class <%= pageClassName %>Component implements OnInit {
+  viewModel$: Observable<<%= pageClassName %>ViewModel>  = this.store.select(select<%= pageClassName %>ViewModel);
+
+  constructor(
+    private readonly store: Store,
+  ) {
+  }
+
+}

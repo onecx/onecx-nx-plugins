@@ -1,0 +1,65 @@
+import { ActivatedRoute, Router, RoutesRecognized } from '@angular/router';
+import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { concatLatestFrom } from '@ngrx/operators'
+import { routerNavigatedAction } from '@ngrx/router-store';
+import { catchError, map, mergeMap, of, switchMap, tap, filter, mergeMap } from 'rxjs';
+import {
+  createQueryParamsEffect,
+  filterForNavigatedTo,
+  filterOutOnlyQueryParamsChanged,
+  filterOutQueryParamsHaveNotChanged,
+} from '@onecx/ngrx-accelerator';
+import { Injectable, SkipSelf } from '@angular/core';
+import { 
+  <%= pagePropertyName %>Selectors, 
+  select<%= pageClassName %>ViewModel,
+} from './<%= pageFileName %>-search.selectors';
+import { Action, Store } from '@ngrx/store';
+import equal from 'fast-deep-equal';
+
+@Injectable()
+export class <%= pageClassName %>Effects {
+  constructor(
+    private actions$: Actions,
+    @SkipSelf() private route: ActivatedRoute,
+    private router: Router,
+    private store: Store,
+    private messageService: PortalMessageService,  
+  ) {}
+
+  errorMessages: { action: Action; key: string }[] = [];
+  
+  successMessages: { action: Action; key: string }[] = [];
+
+  displayError$ = createEffect(
+    () => {
+      return this.actions$.pipe(
+        tap((action) => {
+          const e = this.errorMessages.find(
+            (e) => e.action.type === action.type
+          );
+          if (e) {
+            this.messageService.error({ summaryKey: e.key });
+          }
+        })
+      );
+    },
+    { dispatch: false }
+  );
+   
+  displaySuccess$ = createEffect(
+     () => {
+       return this.actions$.pipe(
+         tap((action) => {
+           const e = this.successMessages.find(
+             (e) => e.action.type === action.type
+           );
+           if (e) {
+             this.messageService.success({ summaryKey: e.key });
+           }
+         })
+       );
+     },
+     { dispatch: false }
+   );
+}

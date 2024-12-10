@@ -1,0 +1,15 @@
+import { createReducer, on } from '@ngrx/store';
+import { <%= pageClassName %>SearchActions } from './<%= pageFileName %>-search.actions';
+import { <%= pageClassName %>SearchState } from './<%= pageFileName %>-search.state';
+import {
+  routerNavigatedAction,
+  RouterNavigatedAction,
+} from '@ngrx/router-store';
+
+export const initialState: <%= pageClassName %>State = {
+};
+
+export const <%= pagePropertyName %>Reducer = createReducer(
+  initialState,
+);
+ 
