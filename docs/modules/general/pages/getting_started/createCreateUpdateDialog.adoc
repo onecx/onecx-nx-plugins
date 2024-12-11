@@ -12,7 +12,7 @@ nx generate <namespaceOfTheGenerator>/nx-plugin:create-update <nameOfTheFeature>
 
 * _<namespaceOfTheGenerator>_: For the OneCX generator use @onecx. For a project specific generator, ask for the namespace of the generators. 
 
-* _<nameOfTheFeature>_: The name the feature the details page should be created in e.g., theme 
+* _<nameOfTheFeature>_: The name the feature the create-update dialog should be created in e.g., theme 
 
 TIP: Next, the CLI will ask you whether you want to customize names for the generation.
 When answering yes, the next few questions will ask you about names for the API.

@@ -25,8 +25,8 @@ const PARAMETERS: GeneratorParameter<PageGeneratorSchema>[] = [
     key: 'pageName',
     type: 'text',
     required: 'always',
-    default: false,
-    prompt: 'Provide a name for your page (e.g., "Book" for a BookPage): ',
+    default: 'Page',
+    prompt: 'Provide a name for your page (e.g., "Book" for BookComponent): ',
     showInSummary: true,
   },
   {
@@ -34,14 +34,6 @@ const PARAMETERS: GeneratorParameter<PageGeneratorSchema>[] = [
     type: 'boolean',
     required: 'never',
     default: false,
-  },
-  {
-    key: 'targetDirectory',
-    type: 'text',
-    required: 'never',
-    default: () => {
-      return process.cwd();
-    },
   },
 ];
 
