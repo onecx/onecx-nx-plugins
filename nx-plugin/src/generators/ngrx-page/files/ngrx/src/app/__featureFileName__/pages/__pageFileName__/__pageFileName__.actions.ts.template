@@ -1,5 +1,4 @@
-import { createActionGroup, emptyProps, props } from '@ngrx/store';
-import { DataTableColumn } from '@onecx/angular-accelerator';
+import { createActionGroup, emptyProps } from '@ngrx/store';
 
 export const <%= pageClassName %>Actions = createActionGroup({
   source: '<%= pageClassName %>',

@@ -1,26 +1,14 @@
-import { Component, Inject, OnInit, LOCALE_ID } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
-import {
-  Action,
-  BreadcrumbService,
-  DataTableColumn,
-  ExportDataService,
-  PortalDialogService,
-} from '@onecx/portal-integration-angular';
-import { <%= pageClassName %>Actions } from './<%= pageFileName %>.actions';
 import { select<%= pageClassName %>ViewModel } from './<%= pageFileName %>.selectors';
 import { <%= pageClassName %>ViewModel } from './<%= pageFileName %>.viewmodel';
-import { first, Observable, map } from 'rxjs';
-import { PrimeIcons } from 'primeng/api';
-import { isValidDate } from '@onecx/accelerator';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-<%= pageFileName %>',
   templateUrl: './<%= pageFileName %>.component.html',
   styleUrls: ['./<%= pageFileName %>.component.scss'],
 })
-
 export class <%= pageClassName %>Component {
   viewModel$: Observable<<%= pageClassName %>ViewModel>  = this.store.select(select<%= pageClassName %>ViewModel);
 

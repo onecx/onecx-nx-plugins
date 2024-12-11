@@ -1,10 +1,5 @@
-import { createReducer, on } from '@ngrx/store';
-import { <%= pageClassName %>Actions } from './<%= pageFileName %>.actions';
+import { createReducer } from '@ngrx/store';
 import { <%= pageClassName %>State } from './<%= pageFileName %>.state';
-import {
-  routerNavigatedAction,
-  RouterNavigatedAction,
-} from '@ngrx/router-store';
 
 export const initialState: <%= pageClassName %>State = {
 };
