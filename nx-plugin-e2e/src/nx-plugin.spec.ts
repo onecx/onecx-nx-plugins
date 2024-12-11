@@ -220,6 +220,39 @@ describe('nx-plugin', () => {
     });
   });
 
+  it('should add an empty ngrx-page', () => {
+    // Add all required parameters to this array with a value.
+    // As tests are non-interactive, not-added but required items will block the test
+    const requiredParameters = [
+      {
+        key: NON_INTERACTIVE_KEY,
+        value: true,
+      },
+      {
+        key: 'pageName',
+        value: "Test"
+      }
+    ];
+
+    const parameterString = requiredParameters
+      .map((o) => `--${o.key} ${o.value}`)
+      .join(' ');
+
+    execSync(
+      `nx generate @onecx/nx-plugin:ngrx-page ${featureName} ${parameterString} --verbose`,
+      {
+        cwd: projectDirectory,
+        stdio: 'inherit',
+        env: process.env,
+      }
+    );
+    execSync(`nx run build --skip-nx-cache`, {
+      cwd: projectDirectory,
+      stdio: 'inherit',
+      env: process.env,
+    });
+  });
+
   it('should add a custom named feature', () => {
     execSync(
       `nx generate @onecx/nx-plugin:feature ${featureNameCustom} --verbose`,
