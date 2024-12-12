@@ -1,0 +1,20 @@
+import { Component } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { select<%= pageClassName %>ViewModel } from './<%= pageFileName %>.selectors';
+import { <%= pageClassName %>ViewModel } from './<%= pageFileName %>.viewmodel';
+import { Observable } from 'rxjs';
+
+@Component({
+  selector: 'app-<%= pageFileName %>',
+  templateUrl: './<%= pageFileName %>.component.html',
+  styleUrls: ['./<%= pageFileName %>.component.scss'],
+})
+export class <%= pageClassName %>Component {
+  viewModel$: Observable<<%= pageClassName %>ViewModel>  = this.store.select(select<%= pageClassName %>ViewModel);
+
+  constructor(
+    private readonly store: Store,
+  ) {
+  }
+
+}

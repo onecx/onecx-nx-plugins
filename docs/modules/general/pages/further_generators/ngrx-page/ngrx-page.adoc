@@ -1,0 +1,26 @@
+=== Create an empty NGRX-Page
+The fastest way to create an empty ngrx-page is to use the OneCX generator. Some projects have their own generator based on the OneCX generator. It should be clarified before starting if this is the case for the project the app is generated for. 
+
+******
+To run the generator, execute the following command: 
+
+----
+nx generate <namespaceOfTheGenerator>/nx-plugin:ngrx-page <nameOfTheFeature> [--standalone]
+----
+
+*Placeholder*: 
+
+* _<namespaceOfTheGenerator>_: For the OneCX generator use @onecx. For a project specific generator, ask for the namespace of the generators. 
+
+* _<nameOfTheFeature>_: The name the feature the empty ngrx-page should be created in e.g., theme 
+
+TIP: Next, the CLI will ask you for the name of your page. Use a name without spaces and the "Component"-suffix, as this suffix will be added automatically.
+So if you want to create a BookDetailsComponent, only put in "BookDetails".
+
+*Options*:
+
+* --standalone: if you want to develop an application that does not depend on onecx-services
+
+******
+
+After running the generator, you can modify all files to your needs.

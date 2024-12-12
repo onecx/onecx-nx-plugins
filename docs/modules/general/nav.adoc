@@ -24,3 +24,5 @@
 *** xref:getting_started/details/addRestOfTheDataToBody.adoc[Add rest of the data to body]
 *** xref:getting_started/details/checkForFurtherActions.adoc[Check for further actions]
 *** xref:getting_started/details/commitTheChanges.adoc[Commit the changes]
+* Further generators
+** xref:further_generators/ngrx-page/ngrx-page.adoc[NGRX-Page Generator]

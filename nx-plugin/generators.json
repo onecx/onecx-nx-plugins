@@ -16,6 +16,11 @@
       "schema": "./src/generators/ngrx/schema.json",
       "description": "ngrx generator"
     },
+    "ngrx-page": {
+      "factory": "./src/generators/ngrx-page/generator",
+      "schema": "./src/generators/ngrx-page/schema.json",
+      "description": "ngrx-page generator"
+    },
     "details": {
       "factory": "./src/generators/details/generator",
       "schema": "./src/generators/details/schema.json",
