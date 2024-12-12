@@ -3,8 +3,8 @@ import { join, dirname } from 'path';
 import { mkdirSync, rmSync } from 'fs';
 import * as os from 'os';
 const NON_INTERACTIVE_KEY = 'non-interactive';
-const projectName = 'ibt-tsg-mgmt-page';
-const featureName = 'timeslot-group';
+const projectName = 'test-project';
+const featureName = 'test-feature';
 const featureNameCustom = 'test-custom-feature';
 describe('nx-plugin', () => {
   let projectDirectory: string;
