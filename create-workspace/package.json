@@ -1,6 +1,6 @@
 {
   "name": "@onecx/create-workspace",
-  "version": "0.0.1-local",
+  "version": "0.0.1",
   "dependencies": {
     "create-nx-workspace": "19.6.4",
     "tslib": "^2.3.0"

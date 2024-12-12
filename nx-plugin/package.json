@@ -1,6 +1,6 @@
 {
   "name": "@onecx/nx-plugin",
-  "version": "0.0.1-local",
+  "version": "0.0.1",
   "dependencies": {
     "@nx/angular": "^19.6.4",
     "@nx/devkit": "^19.6.4",

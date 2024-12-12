@@ -27,7 +27,7 @@ describe('nx-plugin', () => {
     //   recursive: true,
     //   force: true,
     // });
-    //return;
+    return;
     //Delete files to make it easier to compare with original
     rmSync(join(projectDirectory, 'node_modules'), {
       recursive: true,
