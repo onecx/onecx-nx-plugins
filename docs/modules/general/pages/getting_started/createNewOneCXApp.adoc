@@ -7,7 +7,6 @@ The generator supports three flavors of projects: angular, with and without NgRx
 *****
 To run the generator, execute the following commands: 
 
-// TODO: Is npm install needed?
 ----
 npx <namespaceOfTheGenerator>/create-workspace <flavor> <nameOfTheProduct> 
 npm install
