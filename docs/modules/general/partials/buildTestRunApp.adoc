@@ -1,0 +1,36 @@
+[IMPORTANT] 
+ifeval::["{type}" == "build-test"]
+.Build & test your application
+====
+Please run the following commands to make sure that the application builds and that the tests are running:
+----
+npm run build
+----
+----
+npm run test
+----
+====
+endif::[]
+ifeval::["{type}" == "build-test-run"]
+.Build & test & run your application
+====
+Please run the following commands to make sure that the application builds, that the tests are running and that the application starts:
+----
+npm run build
+----
+----
+npm run test
+----
+----
+npm start
+----
+====
+
+[TIP]
+.Run your application on another port if needed (4211 is an example)
+====
+----
+nx serve --port=4211
+----
+====
+endif::[]

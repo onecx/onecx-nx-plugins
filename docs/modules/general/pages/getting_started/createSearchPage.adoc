@@ -1,5 +1,6 @@
 === Create a search page
-The fastest way to create a new search page in a feature module is to use the OneCX generator. Some projects have their own generator based on the OneCX generator. It should be clarified before starting if this is the case for the project the app is generated for. 
+The fastest way to create a new search page in a feature module is to use the OneCX generator.
+include::partial$generatorCheck.adoc[]
 
 ******
 To run the generator, execute the following command: 
@@ -7,20 +8,18 @@ To run the generator, execute the following command:
 nx generate <namespaceOfTheGenerator>/nx-plugin:search <nameOfTheFeature> [--standalone]
 ----
 
-*Placeholder*: 
+include::partial$nameOfTheGeneratorItem.adoc[]
 
-* _<namespaceOfTheGenerator>_: For the OneCX generator use @onecx. For a project specific generator, ask for the namespace of the generators. 
-
-* _<nameOfTheFeature>_: The name the feature the search page should be created in e.g., theme 
+* _<nameOfTheFeature>_: The name of the feature the search page should be created in, e.g., theme 
 
 TIP: Next, the CLI will ask you whether you want to customize names for the generation.
 When answering yes, the next few questions will ask you about names for the API.
 This can be useful if you want to adapt to a legacy API.
-When modifying names, assure that you use the same custom names for all generated components of the feature (search, details, create-update, delete) for the data object name, and the api service name as these ones are shared.
+When modifying names, assure that you use the same custom names for all generated components of the feature (search, details, create-update, delete) for the data object name, and the api service name as these are shared.
 
 *Options*:
 
-* --standalone: if you want to develop an application that does not depend on onecx-services
+* --standalone: if you want to develop an application that does not depend on onecx-services.
 
 ******
 

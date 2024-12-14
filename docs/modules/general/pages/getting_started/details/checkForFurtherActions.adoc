@@ -1,9 +1,4 @@
 === Check for further ACTIONS
-[TIP] 
-.Check for further ACTIONS
-==== 
-Check if you can find the string ACTION somewhere in the output folder and take the action described there. It is not necessarily the case that there is an action to take.
-====
+include::partial$actionsCheck.adoc[]
 
-
-
+//TODO: ACTION D1 is to be completed

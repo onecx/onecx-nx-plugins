@@ -1,2 +1,5 @@
 === Check for further ACTIONS
-Please check if the string 'ACTION' is present in any of the files within the output folder, and if it is, follow the instructions described therein. Note that there may not necessarily be an action required.
+include::partial$actionsCheck.adoc[]
+
+// TODO: ACTION: Add name of the maintainer of the repository
+// TODO: ACTION: Add email of the maintainer of the repository
