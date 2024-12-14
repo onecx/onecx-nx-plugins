@@ -13,7 +13,7 @@ npx <namespaceOfTheGenerator>/create-workspace <flavor> <nameOfTheProduct>
 npm install
 ----
 
-include::partial$nameOfTheGeneratorItem.adoc[]
+include::partial$namespaceOfTheGeneratorItem.adoc[]
 
 * _<flavor>_: `+ngrx+`, `+ngrx-standalone+` or `+angular+`.
 

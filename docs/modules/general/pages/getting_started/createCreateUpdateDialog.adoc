@@ -9,7 +9,7 @@ To run the generator, execute the following command:
 nx generate <namespaceOfTheGenerator>/nx-plugin:create-update <nameOfTheFeature> [--standalone]
 ----
 
-include::partial$nameOfTheGeneratorItem.adoc[]
+include::partial$namespaceOfTheGeneratorItem.adoc[]
 
 * _<nameOfTheFeature>_: The name the feature the create-update dialog should be created in e.g., theme.
 
