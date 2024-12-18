@@ -7,7 +7,7 @@
   </ocx-loading-indicator>
   <ocx-data-loading-error *ngIf="!vm.detailsLoaded && !vm.detailsLoadingIndicator">
   </ocx-data-loading-error>
-  <!--<div *ngIf="vm.detailsLoaded && !vm.detailsLoadingIndicator">-->
+  <!-- TODO <div *ngIf="vm.detailsLoaded && !vm.detailsLoadingIndicator">-->
   <ocx-page-header
     [header]="'<%= featureConstantName %>_DETAILS.HEADER' | translate"
     [subheader]="'<%= featureConstantName %>_DETAILS.SUB_HEADER' | translate"
@@ -15,7 +15,6 @@
     [actions]="(headerActions$ | async) ?? []"
     [disableDefaultActions]="true"
     [manualBreadcrumbs]="true"
-    [loading]="vm.detailsLoadingIndicator"
   >
   </ocx-page-header>
   <!--</div>-->
