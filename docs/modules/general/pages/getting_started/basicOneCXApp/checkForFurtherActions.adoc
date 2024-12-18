@@ -1,5 +1,2 @@
 === Check for further ACTIONS
 include::partial$actionsCheck.adoc[]
-
-// TODO: ACTION: Add name of the maintainer of the repository
-// TODO: ACTION: Add email of the maintainer of the repository

@@ -1,4 +1,2 @@
 === Check for further ACTIONS
 include::partial$actionsCheck.adoc[]
-
-//TODO: ACTION D1 is to be completed

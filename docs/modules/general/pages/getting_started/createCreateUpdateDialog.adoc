@@ -26,6 +26,7 @@ When modifying names, assure that you use the same custom names for all generate
 
 After running the generator, the following actions must be taken: 
 
+
 [start=1]
 . xref:getting_started/create-update/extendFormFields.adoc[Extend schema and form fields]
 . xref:getting_started/create-update/commitTheChanges.adoc[Commit the changes]
