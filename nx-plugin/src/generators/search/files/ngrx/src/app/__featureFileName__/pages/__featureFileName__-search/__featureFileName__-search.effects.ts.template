@@ -95,11 +95,14 @@ export class <%= featureClassName %>SearchEffects {
         ),
       }
     ).pipe(
-          map(({ results, totalNumberOfResults }) =>
+          map(({ stream, size, number, totalElements, totalPages}) =>
             <%= featureClassName %>SearchActions.<%= featurePropertyName %>SearchResultsReceived(
               {
-                results,
-                totalNumberOfResults,
+                stream,
+                size,
+                number,
+                totalElements,
+                totalPages
               }
             )
           ),

@@ -10,18 +10,26 @@ _Adapt in File:_ `+<feature>-bff.yaml+`
 
 ===== Todos:
 
-* The `+<FeatureName>SearchRequest+` data structure in the BFF yaml must be adapted. 
+* The `+Search<FeatureName>Request+` data structure in the BFF yaml must be adapted. 
 
 ** All the data that should be used in the request must be in that data structure either on top-level or in sub data structures. 
 
 [source, yml]
 ----
-<Feature>SearchRequest:
+Search<Feature>Request:
       type: object
       properties:
-        limit:
-          type: integer
-          maximum: 2600
+        pageNumber: 
+            type: 'integer'
+            format: 'int32'
+            default: 0
+            description: 'The number of the page'          
+        pageSize:
+          type: 'integer'
+          format: 'int32'
+          default: 100
+          maximum: 1000
+          description: 'The size of the page.'      
         id:
           type: string
         changeMe:

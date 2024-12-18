@@ -30,7 +30,7 @@ _Adapt in File:_ `+<feature>-bff.yaml+`
           format: int64
         # ACTION S5: add additional properties here
 ----
-Here you can add additional properties which you need for your `+<FeatureSearchResponse>+`, e.g. `+status+`, `+creationDate+` ...
+Here you can add additional properties which you need for your `+<SearchFeatureResponse>+`, e.g. `+status+`, `+creationDate+` ...
 
 IMPORTANT: Run the command `npm run apigen` after adapting the OpenAPI to transform the changes into typescript code.
 
