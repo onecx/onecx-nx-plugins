@@ -66,7 +66,7 @@ describe('<%= featureClassName %>DetailsComponent', () => {
   const base<%= featureClassName %>DetailsViewModel: <%= featureClassName %>DetailsViewModel = {
     details: undefined,
     detailsLoadingIndicator: false,
-    detailsLoaded: false,
+    detailsLoaded: true,
     backNavigationPossible: true
   };
 
