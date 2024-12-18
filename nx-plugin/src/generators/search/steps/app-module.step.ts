@@ -21,7 +21,7 @@ export class AppModuleStep implements GeneratorStep<SearchGeneratorSchema> {
     ) {
       moduleContent = moduleContent.replace(
         `} from '@onecx/portal-integration-angular'`,
-        ` providePortalDialogService } from '@onecx/portal-integration-angular'`
+        `, providePortalDialogService } from '@onecx/portal-integration-angular'`
       );
     }
     tree.write(moduleFilePath, moduleContent);

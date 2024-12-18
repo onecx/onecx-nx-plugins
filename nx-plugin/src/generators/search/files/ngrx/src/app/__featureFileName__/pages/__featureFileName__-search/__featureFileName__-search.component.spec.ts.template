@@ -292,46 +292,6 @@ describe('<%= featureClassName %>SearchComponent', () => {
 
     component.search(formValue);
   });
-
-  //it('should dispatch export csv data on export action click', async () => {
-  //  jest.spyOn(store, 'dispatch');
-  //
-  //  const results = [
-  //    {
-  //      id: '1',
-  //      imagePath: '',
-  //      column_1: 'val_1',
-  //    },
-  //  ];
-  //  const columns = [
-  //    {
-  //      columnType: ColumnType.STRING,
-  //      nameKey: 'COLUMN_KEY',
-  //      id: 'column_1',
-  //    },
-  //  ];
-  //  store.overrideSelector(select<%= featureClassName %>SearchViewModel, {
-  //    ...base<%= featureClassName %>SearchViewModel,
-  //    results: results,
-  //    columns: columns,
-  //    displayedColumns: columns,
-  //  });
-  //  store.refreshState();
-  //
-  //  const searchHeader = await <%= featurePropertyName %>Search.getHeader();
-  //  const pageHeader = await searchHeader.getPageHeader();
-  //  const overflowActionButton = await pageHeader.getOverflowActionMenuButton();
-  //  await overflowActionButton?.click();
-  //
-  //  const exportAllActionItem = await pageHeader.getOverFlowMenuItem(
-  //    'Export all'
-  //  );
-  //  await exportAllActionItem!.selectItem();
-
-  //  expect(store.dispatch).toHaveBeenCalledWith(
-  //    <%= featureClassName %>SearchActions.exportButtonClicked()
-  //  );
-  //});
   
   //it('should dispatch viewModeChanged action on view mode changes', async () => {
   //  jest.spyOn(store, 'dispatch');
@@ -510,5 +470,45 @@ describe('<%= featureClassName %>SearchComponent', () => {
 
     diagram = await <%= featurePropertyName %>Search.getDiagram();
     expect(diagram).toBeTruthy();
+  });
+
+  it('should dispatch export csv data on export action click', async () => {
+    jest.spyOn(store, 'dispatch');
+  
+    const results = [
+      {
+        id: '1',
+        imagePath: '',
+        column_1: 'val_1',
+      },
+    ];
+    const columns = [
+      {
+        columnType: ColumnType.STRING,
+        nameKey: 'COLUMN_KEY',
+        id: 'column_1',
+      },
+    ];
+    store.overrideSelector(select<%= featureClassName %>SearchViewModel, {
+      ...base<%= featureClassName %>SearchViewModel,
+      results: results,
+      columns: columns,
+      displayedColumns: columns,
+    });
+    store.refreshState();
+  
+    const searchHeader = await <%= featurePropertyName %>Search.getHeader();
+    const pageHeader = await searchHeader.getPageHeader();
+    const overflowActionButton = await pageHeader.getOverflowActionMenuButton();
+    await overflowActionButton?.click();
+  
+    const exportAllActionItem = await pageHeader.getOverFlowMenuItem(
+      'Export all'
+    );
+    await exportAllActionItem!.selectItem();
+
+    expect(store.dispatch).toHaveBeenCalledWith(
+      <%= featureClassName %>SearchActions.exportButtonClicked()
+    );
   });
 });
