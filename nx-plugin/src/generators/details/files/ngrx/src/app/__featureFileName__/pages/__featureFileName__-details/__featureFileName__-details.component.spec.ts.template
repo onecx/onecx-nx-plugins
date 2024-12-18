@@ -21,6 +21,8 @@ import { initialState } from './<%= featureFileName %>-details.reducers';
 import { <%= featureClassName %>DetailsHarness } from './<%= featureFileName %>-details.harness';
 import { <%= featureClassName %>DetailsViewModel } from './<%= featureFileName %>-details.viewmodel';
 import { select<%= featureClassName %>DetailsViewModel } from './<%= featureFileName %>-details.selectors';
+import { <%= featureClassName %>DetailsActions } from './<%= featureFileName %>-details.actions';
+import { ofType } from '@ngrx/effects';
 
 describe('<%= featureClassName %>DetailsComponent', () => {
   const origAddEventListener = window.addEventListener;
@@ -149,16 +151,19 @@ describe('<%= featureClassName %>DetailsComponent', () => {
     expect(moreAction).toBeTruthy();
   });
 
-  it('should navigate back on back button click', async () => {
+  it('should dispatch navigateBackButtonClicked action on back button click', async () => {
     jest.spyOn(window.history, 'back');
+    const doneFn = jest.fn();
 
     const pageHeader = await <%= featurePropertyName %>Details.getHeader();
     const backAction = await pageHeader.getInlineActionButtonByLabel('Back');
+    store.scannedActions$
+      .pipe(ofType(<%= featureClassName %>DetailsActions.navigateBackButtonClicked))
+      .subscribe(() => {
+        doneFn();
+      });
     await backAction?.click();
-
-    //TODO
-    //expect(window.history.back).toHaveBeenCalledTimes(1);
-    expect(true);
+    expect(doneFn).toHaveBeenCalledTimes(1);
   });
 
   it('should display item details in page header', async () => {
