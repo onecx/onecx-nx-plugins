@@ -20,10 +20,10 @@ Search<Feature>Request:
       type: object
       properties:
         pageNumber: 
-            type: 'integer'
-            format: 'int32'
-            default: 0
-            description: 'The number of the page'          
+          type: 'integer'
+          format: 'int32'
+          default: 0
+          description: 'The number of the page'          
         pageSize:
           type: 'integer'
           format: 'int32'
