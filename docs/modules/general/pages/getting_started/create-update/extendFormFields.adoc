@@ -10,7 +10,7 @@ Create and Update-Responses are not used yet for anything, you can modify them t
 
 IMPORTANT: Run the command `npm run apigen` after adapting the OpenAPI to transform the changes into typescript code.
 
-IMPORTANT: Remove the "ACTION" comment after solving this issue
+include::partial$removeAction.adoc[]
 
 ==== ACTION C2: Add form fields to html component
 _Adapt in File:_  `+<feature>-create-update.component.html+`
@@ -18,7 +18,7 @@ _Adapt in File:_  `+<feature>-create-update.component.html+`
 Add new form fields similar to the example one. Key match to your OpenAPI components.
 The formControlName must match the form control names in the `+...component.ts+` file.
 
-IMPORTANT: Remove the "ACTION" comment after solving this issue
+include::partial$removeAction.adoc[]
 
 ==== ACTION C3: Add form fields to ts component
 _Adapt in File:_  `+<feature>-create-update.component.ts+`
@@ -26,4 +26,4 @@ _Adapt in File:_  `+<feature>-create-update.component.ts+`
 Add the corresponding form fields into the formGroup. Key match to your OpenAPI components.
 Use appropriate validators.
 
-IMPORTANT: Remove the "ACTION" comment after solving this issue
+include::partial$removeAction.adoc[]
