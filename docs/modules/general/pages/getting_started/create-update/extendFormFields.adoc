@@ -1,29 +1,108 @@
 === Extend form fields
+
+:portal_dialog_service_url: xref:latest@guides:angular:cookbook/service/portal-dialog-service/index.adoc
+
 The form fields of the dialog need to be adapted
 
 ==== ACTION C1: Extend schemas inside OpenAPI
 _Adapt in File:_  `+<feature>-bff.yaml+`
 
-Extend the 4 generated components to your needs.
-Create and Update-Requests need to match your form field values, as they will be key matched. Assure that keys are absolutely equal (upper / lower case, etc.).
-Create and Update-Responses are not used yet for anything, you can modify them to your needs and then use them in the corresponding effect.
+The generator creates 4 new component objects in the OpenAPI specification for Create/Update Requests and Responses.
 
-IMPORTANT: Run the command `npm run apigen` after adapting the OpenAPI to transform the changes into typescript code.
+[NOTE]
+====
+The Request objects are referencing the data object to be Created/Updated. Please, adjust the data object if not prepared already. Data object properties will be used for extending the form.
+
+*Be cautious while making changes to the data object*, it is used for the other features like search and details pages.
+
+If extending the data object is not an option, instead please consider modifying the Create/Update Request component objects to use flat field list instead of the data object and adjust them based on the needs. Such modification also requires changes to the preparation of the request.
+
+Changes to Response component objects require a modification in response handling. By default response properties are not used by the generated code.
+==== 
+
+[IMPORTANT]
+====
+Run the command *npm run apigen* after adapting the OpenAPI to transform the changes into typescript code.
+====
 
 include::partial$removeAction.adoc[]
 
 ==== ACTION C2: Add form fields to html component
 _Adapt in File:_  `+<feature>-create-update.component.html+`
 
-Add new form fields similar to the example one. Key match to your OpenAPI components.
-The formControlName must match the form control names in the `+...component.ts+` file.
+Add new form fields similar to the generated example. Please, ensure that form control names match the data object properties.
+
+.Example data object
+[source,yaml]
+----
+Example:
+type: object
+required:
+    - id
+properties:
+    modificationCount:
+        type: integer
+        format: int32
+    id:
+        type: string
+    property:
+        type: string
+----
+
+.Example form field
+[source,html]
+----
+<div [title]="'EXAMPLE_CREATE_UPDATE.FORM.PROPERTY' | translate">
+    <span class="p-float-label" controlErrorAnchor>
+    <input
+        pInputText
+        type="text"
+        id="example_detail_form_property"
+        class="w-full pt-3 pb-2"
+        formControlName="property"
+    />
+    <label class="ocx-required-label" for="example_detail_form_property">
+        {{ 'EXAMPLE_CREATE_UPDATE.FORM.PROPERTY' | translate }}</label
+    >
+    </span>
+</div>
+----
 
 include::partial$removeAction.adoc[]
 
 ==== ACTION C3: Add form fields to ts component
 _Adapt in File:_  `+<feature>-create-update.component.ts+`
 
-Add the corresponding form fields into the formGroup. Key match to your OpenAPI components.
-Use appropriate validators.
+Add the corresponding form controls into the formGroup. Please, ensure that form control names match the data object properties.
+
+Use appropriate validators if required.
+
+.Example data object
+[source,yaml]
+----
+Example:
+type: object
+required:
+    - id
+properties:
+    modificationCount:
+        type: integer
+        format: int32
+    id:
+        type: string
+    property:
+        type: string
+----
+
+.Example form control
+[source,js]
+----
+this.formGroup = new FormGroup({
+    property: new FormControl(null, [Validators.maxLength(255)]),
+    ...
+});
+----
 
 include::partial$removeAction.adoc[]
+
+NOTE: To configure the dialog or modify its contents, please refer to the {portal_dialog_service_url}[PortalDialogService docs].

@@ -4,6 +4,6 @@
 include::partial$buildTestRunApp.adoc[]
 
 :message: feat: basic OneCX application added for <nameOfTheProduct>
-:comment: pass:quotes[Please replace `+_<nameOfTheProduct>_+` with the real name of your product.]
+:comment: pass:quotes[Please replace `_nameOfTheProduct_` with the real name of your product.]
 include::partial$commitChanges.adoc[]
 

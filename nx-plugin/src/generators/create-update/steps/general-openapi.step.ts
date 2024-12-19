@@ -74,7 +74,6 @@ export class GeneralOpenAPIStep
             type: 'object',
             $ref: dataObjectName,
           },
-          [COMMENT_KEY]: 'ACTION C1: add additional properties here',
         },
       })
       .set(`${options.updateRequestName}`, {
@@ -84,7 +83,6 @@ export class GeneralOpenAPIStep
             type: 'object',
             $ref: dataObjectName,
           },
-          [COMMENT_KEY]: ' ACTION C1: add additional properties here',
         },
       })
       .set(`${options.createResponseName}`, {

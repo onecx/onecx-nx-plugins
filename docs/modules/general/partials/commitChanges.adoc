@@ -7,8 +7,8 @@ Please commit your changes with the following commit message if the build and th
 ----
 {message}
 ----
-
-====
 {comment}
+====
+
 
 To ensure clarity and consistency, please follow the naming schema for commit messages. For further details and guidelines, please refer to link:https://www.conventionalcommits.org[Conventional Commits].
