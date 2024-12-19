@@ -3,6 +3,13 @@
 :type: build-test-run
 include::partial$buildTestRunApp.adoc[]
 
-:message: feat: details added for <nameOfTheProduct>
+[NOTE]
+====
+After the Application is started, make sure:
+
+* items in the data view have an delete icon that opens the delete dialog.
+====
+
+:message: feat: delete added for <nameOfTheProduct>
 :comment: pass:quotes[Please replace `_nameOfTheProduct_` with the real name of your product.]
 include::partial$commitChanges.adoc[]
