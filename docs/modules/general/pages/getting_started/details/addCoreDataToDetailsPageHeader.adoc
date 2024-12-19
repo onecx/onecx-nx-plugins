@@ -11,5 +11,5 @@ _Adapt in File:_  `+<feature>-details.component+`
     ];
 ----
 
-IMPORTANT: Remove the "ACTION" comment after solving this issue
+include::partial$removeAction.adoc[]
 

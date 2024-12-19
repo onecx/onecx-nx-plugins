@@ -1,0 +1,1 @@
+Please check if the string 'ACTION' is present in any of the files within the output folder, and if it is, follow the instructions described therein.

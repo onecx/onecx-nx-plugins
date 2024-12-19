@@ -39,7 +39,7 @@ Search<Feature>Request:
 
 IMPORTANT: Run the command `npm run apigen` after adapting the OpenAPI to transform the changes into typescript code.
 
-IMPORTANT: Remove the "ACTION" comment after solving this issue
+include::partial$removeAction.adoc[]
 
 ==== ACTION S2: Please define the members for your `+<%= featurePropertyName %>SearchCriteriasSchema+` here
 _Adapt in File:_ `+<feature>-search.parameters.ts+`
@@ -68,7 +68,7 @@ _Adapt in File:_ `+<feature>-search.parameters.ts+`
     )
 ----
 
-IMPORTANT: Remove the "ACTION" comment after solving this issue
+include::partial$removeAction.adoc[]
 
 ---
 
@@ -153,7 +153,7 @@ The directive `+*ocxAdvanced+` will be added to the div.
 ----
 The information if a field belongs to the basic or advanced view will be added to the `+<%= featureClassName %>SearchViewModel+` and the information is saved in the member `+viewMode+`
 
-IMPORTANT: Remove the "ACTION" comment after solving this issue
+include::partial$removeAction.adoc[]
 
 ---
 
