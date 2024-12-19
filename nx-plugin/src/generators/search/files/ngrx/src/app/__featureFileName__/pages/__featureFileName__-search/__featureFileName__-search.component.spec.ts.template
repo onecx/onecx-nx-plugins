@@ -348,8 +348,8 @@ describe('<%= featureClassName %>SearchComponent', () => {
         id: 'column_1',
       },
     ];
-    store.overrideSelector(selectTestFeatureSearchViewModel, {
-      ...baseTestFeatureSearchViewModel,
+    store.overrideSelector(select<%= featureClassName %>SearchViewModel, {
+      ...base<%= featureClassName %>SearchViewModel,
       results: [],
       columns: columns,
       displayedColumns: columns,
