@@ -1,8 +1,11 @@
 === Commit your changes
 
+:idprefix:
+:idseparator: -
+
 :type: build-test
-include::partial$buildTestRunApp.adoc[]
+include::partial$build-test-run.adoc[]
 
 :message: feat: feature added for <nameOfTheProduct>
 :comment: pass:quotes[Please replace `_nameOfTheProduct_` with the real name of your product.]
-include::partial$commitChanges.adoc[]
+include::partial$commit-changes.adoc[]

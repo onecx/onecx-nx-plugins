@@ -62,10 +62,10 @@ const PARAMETERS: GeneratorParameter<SearchGeneratorSchema>[] = [
     type: 'text',
     required: 'interactive',
     default: (values) => {
-      return `${names(values.featureName).className}SearchRequest`;
+      return `Search${names(values.featureName).className}Request`;
     },
     prompt:
-      'Provide a name for your Search Request (e.g., BookSearchRequest): ',
+      'Provide a name for your Search Request (e.g., SearchBookRequest): ',
     showInSummary: true,
     showRules: [{ showIf: (values) => values.customizeNamingForAPI }],
   },
@@ -74,10 +74,10 @@ const PARAMETERS: GeneratorParameter<SearchGeneratorSchema>[] = [
     type: 'text',
     required: 'interactive',
     default: (values) => {
-      return `${names(values.featureName).className}SearchResponse`;
+      return `Search${names(values.featureName).className}Response`;
     },
     prompt:
-      'Provide a name for your Search Response (e.g., BookSearchResponse): ',
+      'Provide a name for your Search Response (e.g., SearchBookResponse): ',
     showInSummary: true,
     showRules: [{ showIf: (values) => values.customizeNamingForAPI }],
   },

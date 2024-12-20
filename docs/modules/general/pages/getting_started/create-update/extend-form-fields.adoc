@@ -1,9 +1,12 @@
 === Extend form fields
 
 :portal_dialog_service_url: xref:latest@guides:angular:cookbook/service/portal-dialog-service/index.adoc
+:idprefix:
+:idseparator: -
 
 The form fields of the dialog need to be adapted
 
+[#action-1]
 ==== ACTION C1: Extend schemas inside OpenAPI
 _Adapt in File:_  `+<feature>-bff.yaml+`
 
@@ -25,8 +28,9 @@ Changes to Response component objects require a modification in response handlin
 Run the command *npm run apigen* after adapting the OpenAPI to transform the changes into typescript code.
 ====
 
-include::partial$removeAction.adoc[]
+include::partial$remove-action.adoc[]
 
+[#action-2]
 ==== ACTION C2: Add form fields to html component
 _Adapt in File:_  `+<feature>-create-update.component.html+`
 
@@ -68,8 +72,9 @@ properties:
 </div>
 ----
 
-include::partial$removeAction.adoc[]
+include::partial$remove-action.adoc[]
 
+[#action-3]
 ==== ACTION C3: Add form fields to ts component
 _Adapt in File:_  `+<feature>-create-update.component.ts+`
 
@@ -103,6 +108,6 @@ this.formGroup = new FormGroup({
 });
 ----
 
-include::partial$removeAction.adoc[]
+include::partial$remove-action.adoc[]
 
 NOTE: To configure the dialog or modify its contents, please refer to the {portal_dialog_service_url}[PortalDialogService docs].

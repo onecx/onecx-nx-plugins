@@ -1,9 +1,11 @@
 === Create Delete Dialog
 
 :portal_dialog_service_url: xref:latest@guides:angular:cookbook/service/portal-dialog-service/index.adoc
+:idprefix:
+:idseparator: -
 
 The fastest way to create a delete dialog in a feature module is to use the OneCX generator.
-include::partial$generatorCheck.adoc[]
+include::partial$generator-check.adoc[]
 
 ******
 To run the generator, execute the following command: 
@@ -12,7 +14,7 @@ To run the generator, execute the following command:
 nx generate <namespaceOfTheGenerator>/nx-plugin:delete <nameOfTheFeature> [--standalone]
 ----
 
-include::partial$namespaceOfTheGeneratorItem.adoc[]
+include::partial$generator-namespace-item.adoc[]
 
 * _<nameOfTheFeature>_: The name the feature the delete-dialog should be created in e.g., theme.
 
@@ -28,6 +30,6 @@ When modifying names, assure that you use the same custom names for all generate
 ******
 
 [start=1]
-. xref:getting_started/delete/commitTheChanges.adoc[Commit the changes]
+. xref:getting_started/delete/commit-changes.adoc[Commit the changes]
 
 NOTE: To modify the behavior of the dialogs, please refer to {portal_dialog_service_url}[PortalDialogService docs].

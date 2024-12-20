@@ -1,9 +1,11 @@
 === Create Create/Update Dialogs
 
 :portal_dialog_service_url: xref:latest@guides:angular:cookbook/service/portal-dialog-service/index.adoc
+:idprefix:
+:idseparator: -
 
 The fastest way to create a create and update dialogs in a feature module is to use the OneCX generator.
-include::partial$generatorCheck.adoc[]
+include::partial$generator-check.adoc[]
 
 ******
 To run the generator, execute the following command: 
@@ -12,7 +14,7 @@ To run the generator, execute the following command:
 nx generate <namespaceOfTheGenerator>/nx-plugin:create-update <nameOfTheFeature> [--standalone]
 ----
 
-include::partial$namespaceOfTheGeneratorItem.adoc[]
+include::partial$generator-namespace-item.adoc[]
 
 * _<nameOfTheFeature>_: The name the feature the create-update dialog should be created in e.g., theme.
 
@@ -31,7 +33,7 @@ After running the generator, the following actions must be taken:
 
 
 [start=1]
-. xref:getting_started/create-update/extendFormFields.adoc[Extend schema and form fields]
-. xref:getting_started/create-update/commitTheChanges.adoc[Commit the changes]
+. xref:getting_started/create-update/extend-form-fields.adoc[Extend schema and form fields]
+. xref:getting_started/create-update/commit-changes.adoc[Commit the changes]
 
 NOTE: To modify the behavior of the dialogs, please refer to {portal_dialog_service_url}[PortalDialogService docs].

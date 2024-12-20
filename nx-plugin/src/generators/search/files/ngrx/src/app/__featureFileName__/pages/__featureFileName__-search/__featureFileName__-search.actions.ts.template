@@ -12,8 +12,11 @@ export const <%= featureClassName %>SearchActions = createActionGroup({
     }>(),
     'Reset button clicked': emptyProps(),
     '<%= featureFileName.replaceAll("-"," ") %> search results received': props<{
-      results: <%= dataObjectName %>[];
-      totalNumberOfResults: number;
+      stream: <%= dataObjectName %>[];
+      size: number;
+      number: number;
+      totalElements: number;
+      totalPages: number;
     }>(),
     '<%= featureFileName.replaceAll("-"," ") %> search results loading failed': props<{ error: string | null }>(),    
     'Displayed columns changed': props<{
