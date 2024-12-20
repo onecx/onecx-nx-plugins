@@ -63,8 +63,6 @@ _Adapt in File:_ `+<feature>-search.columns.ts+`
 Explanation of the properties:
 
 *	The `+columnType+` defines the type of the column. The following column types are available:
-[subs=+macros]
-
 [source, javascript]
 ----
   export const enum ColumnType {
@@ -91,7 +89,6 @@ Here you can create a mapping of the items and their corresponding translation k
 
 _Adapt in File:_ <feature>-search.selectors.ts
 .Example:
-[subs=+macros]
 [source, javascript]
 ----
   export const selectResults = createSelector(
