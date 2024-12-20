@@ -20,6 +20,7 @@ app:
           remoteName: <%= remoteModuleFileName %>
           tagName: <%= remoteModuleFileName %>-webcomponent
     # Permission
+    # ACTION S11 Update permissions and roles: https://onecx.github.io/docs/nx-plugins/current/general/getting_started/search/updatePermissions.html#_action_s11_update_permissions_and_roles
     permission:
       enabled: true
       spec:
