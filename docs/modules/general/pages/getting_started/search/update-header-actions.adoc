@@ -1,5 +1,9 @@
 === Update the header actions
 
+:idprefix:
+:idseparator: -
+
+[#action-10]
 ==== ACTION S10: Update header actions
 _Adapt in File:_ `+<feature>.component.ts+`
 
@@ -44,4 +48,4 @@ const actions: Action[] = [
       ];
 ----
 
-include::partial$removeAction.adoc[]
+include::partial$remove-action.adoc[]

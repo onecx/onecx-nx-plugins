@@ -1,13 +1,19 @@
 === Configure the search criteria and parameters
+
+:idprefix:
+:idseparator: -
+
 To configure the search results, the following actions must be taken.
 // TODO: Provide explanation about: The mapping of the URL parameters must be configured. 
 
 :toc:
 
 
+[#action-1]
 ==== ACTION S1: Add additional properties to the `+<feature>-bff.yaml+`
 _Adapt in File:_ `+<feature>-bff.yaml+`
 
+[#action-1-todos]
 ===== Todos:
 
 * The `+Search<FeatureName>Request+` data structure in the BFF yaml must be adapted. 
@@ -39,11 +45,13 @@ Search<Feature>Request:
 
 IMPORTANT: Run the command `npm run apigen` after adapting the OpenAPI to transform the changes into typescript code.
 
-include::partial$removeAction.adoc[]
+include::partial$remove-action.adoc[]
 
+[#action-2]
 ==== ACTION S2: Please define the members for your `+<%= featurePropertyName %>SearchCriteriasSchema+` here
 _Adapt in File:_ `+<feature>-search.parameters.ts+`
 
+[#action-2-todos]
 ===== Todos:
 * Adapt search parameters
 ** keys need to match the keys from your OpenAPIs SearchCriteria Object
@@ -68,13 +76,15 @@ _Adapt in File:_ `+<feature>-search.parameters.ts+`
     )
 ----
 
-include::partial$removeAction.adoc[]
+include::partial$remove-action.adoc[]
 
 ---
 
+[#action-3]
 ==== ACTION S3: Please specify here your desired search criterias, link to documentation
 _Adapt in File:_ `+<feature>-search.component.html+`
 
+[#action-3-todos]
 ===== Todos:
 // TODO: add info how to handle dates in p-calendar -> https://primeng.org/calendar#api.calendar.props.dateFormat
 
@@ -153,17 +163,19 @@ The directive `+*ocxAdvanced+` will be added to the div.
 ----
 The information if a field belongs to the basic or advanced view will be added to the `+<%= featureClassName %>SearchViewModel+` and the information is saved in the member `+viewMode+`
 
-include::partial$removeAction.adoc[]
+include::partial$remove-action.adoc[]
 
 ---
 
+[#action-4]
 ==== ACTION S4: ADD TRANSLATION for your input fields
 _Adapt in File:_  `+de.json+` / `+en.json+`
 
+[#action-4-todos]
 ===== Todos:
 
 * Please add the missing translations
 // TODO: Specify for what the translation will be added
 
 ---
-Now you can continue with the next section xref:getting_started/search/configureSearchResults.adoc[Configure search results]
+Now you can continue with the next section xref:getting_started/search/configure-search-results.adoc[Configure search results]

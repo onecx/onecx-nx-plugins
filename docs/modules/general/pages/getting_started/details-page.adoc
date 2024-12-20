@@ -1,6 +1,10 @@
 === Create a details page
+
+:idprefix:
+:idseparator: -
+
 The fastest way to create a new details page in a feature module is to use the OneCX generator.
-include::partial$generatorCheck.adoc[]
+include::partial$generator-check.adoc[]
 
 ******
 To run the generator, execute the following command: 
@@ -9,7 +13,7 @@ To run the generator, execute the following command:
 nx generate <namespaceOfTheGenerator>/nx-plugin:details <nameOfTheFeature> [--standalone]
 ----
 
-include::partial$namespaceOfTheGeneratorItem.adoc[]
+include::partial$generator-namespace-item.adoc[]
 
 * _<nameOfTheFeature>_: The name the feature the details page should be created in e.g., theme.
 
@@ -27,8 +31,8 @@ When modifying names, assure that you use the same custom names for all generate
 After running the generator, the following actions must be taken: 
 
 [start=1]
-. xref:getting_started/details/addNotDynamicallyLoadedDataToResponse.adoc[Add not dynamically loaded data to response]
-. xref:getting_started/details/addCoreDataToDetailsPageHeader.adoc[Add core data to details page header]
-. xref:getting_started/details/addRestOfTheDataToBody.adoc[Add the rest of the data to the body]
-. xref:getting_started/details/checkForFurtherActions.adoc[Check for further actions]
-. xref:getting_started/details/commitTheChanges.adoc[Commit the changes]
+. xref:getting_started/details/not-dynamic-data.adoc[Add not dynamically loaded data to response]
+. xref:getting_started/details/core-data.adoc[Add core data to details page header]
+. xref:getting_started/details/rest-of-data.adoc[Add the rest of the data to the body]
+. xref:getting_started/details/further-actions.adoc[Check for further actions]
+. xref:getting_started/details/commit-changes.adoc[Commit the changes]

@@ -1,2 +1,0 @@
-=== Check for further ACTIONS
-include::partial$actionsCheck.adoc[]
