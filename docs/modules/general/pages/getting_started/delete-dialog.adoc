@@ -1,6 +1,10 @@
 === Create Delete Dialog
+
+:idprefix:
+:idseparator: -
+
 The fastest way to create a delete dialog in a feature module is to use the OneCX generator.
-include::partial$generatorCheck.adoc[]
+include::partial$generator-check.adoc[]
 
 ******
 To run the generator, execute the following command: 
@@ -9,7 +13,7 @@ To run the generator, execute the following command:
 nx generate <namespaceOfTheGenerator>/nx-plugin:delete <nameOfTheFeature> [--standalone]
 ----
 
-include::partial$namespaceOfTheGeneratorItem.adoc[]
+include::partial$generator-namespace-item.adoc[]
 
 * _<nameOfTheFeature>_: The name the feature the delete-dialog should be created in e.g., theme.
 
@@ -28,5 +32,5 @@ After running the generator, the following actions must be taken:
 
 // TODO: Duplicate docs for delete dialog?
 [start=1]
-. xref:getting_started/create-update/extendFormFields.adoc[Extend schema and form fields]
-. xref:getting_started/create-update/commitTheChanges.adoc[Commit the changes]
+. xref:getting_started/create-update/extend-form-fields.adoc[Extend schema and form fields]
+. xref:getting_started/create-update/commit-changes.adoc[Commit the changes]

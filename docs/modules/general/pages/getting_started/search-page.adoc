@@ -1,6 +1,10 @@
 === Create a search page
+
+:idprefix:
+:idseparator: -
+
 The fastest way to create a new search page in a feature module is to use the OneCX generator.
-include::partial$generatorCheck.adoc[]
+include::partial$generator-check.adoc[]
 
 ******
 To run the generator, execute the following command: 
@@ -8,7 +12,7 @@ To run the generator, execute the following command:
 nx generate <namespaceOfTheGenerator>/nx-plugin:search <nameOfTheFeature> [--standalone]
 ----
 
-include::partial$namespaceOfTheGeneratorItem.adoc[]
+include::partial$generator-namespace-item.adoc[]
 
 * _<nameOfTheFeature>_: The name of the feature the search page should be created in, e.g., theme 
 
@@ -26,10 +30,10 @@ When modifying names, assure that you use the same custom names for all generate
 After running the generator, the following actions must be taken: 
 
 [start=1]
-. xref:getting_started/search/configureSearchCriteria.adoc[Configure search criteria]
-. xref:getting_started/search/configureSearchResults.adoc[Configure search results]
-. xref:getting_started/search/configureResultDiagram.adoc[Configure result diagram]
-. xref:getting_started/search/updateHeaderActions.adoc[Update Header Actions]
-. xref:getting_started/search/updatePermissions.adoc[Update permissions]
-. xref:getting_started/search/checkForFurtherActions.adoc[Check for further actions]
-. xref:getting_started/search/commitTheChanges.adoc[Commit the changes]
+. xref:getting_started/search/configure-search-criteria.adoc[Configure search criteria]
+. xref:getting_started/search/configure-search-results.adoc[Configure search results]
+. xref:getting_started/search/configure-result-diagram.adoc[Configure result diagram]
+. xref:getting_started/search/update-header-actions.adoc[Update Header Actions]
+. xref:getting_started/search/update-permissions.adoc[Update permissions]
+. xref:getting_started/search/further-actions.adoc[Check for further actions]
+. xref:getting_started/search/commit-changes.adoc[Commit the changes]
