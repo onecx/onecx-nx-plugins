@@ -18,6 +18,7 @@
 *** xref:getting_started/create-update/extend-form-fields.adoc[Extend form fields]
 *** xref:getting_started/create-update/commit-changes.adoc[Commit the changes]
 ** xref:getting_started/delete-dialog.adoc[Create delete dialog]
+*** xref:getting_started/delete/commit-changes.adoc[Commit the changes]
 ** xref:getting_started/details-page.adoc[Create details page]
 *** xref:getting_started/details/core-data.adoc[Add core data to details page header]
 *** xref:getting_started/details/not-dynamic-data.adoc[Add not dynamically loaded data to response]

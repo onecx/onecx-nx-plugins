@@ -1,5 +1,6 @@
 === Create Delete Dialog
 
+:portal_dialog_service_url: xref:latest@guides:angular:cookbook/service/portal-dialog-service/index.adoc
 :idprefix:
 :idseparator: -
 
@@ -28,9 +29,7 @@ When modifying names, assure that you use the same custom names for all generate
 
 ******
 
-After running the generator, the following actions must be taken: 
-
-// TODO: Duplicate docs for delete dialog?
 [start=1]
-. xref:getting_started/create-update/extend-form-fields.adoc[Extend schema and form fields]
-. xref:getting_started/create-update/commit-changes.adoc[Commit the changes]
+. xref:getting_started/delete/commit-changes.adoc[Commit the changes]
+
+NOTE: To modify the behavior of the dialogs, please refer to {portal_dialog_service_url}[PortalDialogService docs].
