@@ -21,7 +21,8 @@ export const selectResults = createSelector(
     return results.map((item) => ({      
       imagePath: '',
       ...item,
-      // ACTION S7: Here you can create a mapping of the items and their corresponding translation strings
+      // ACTION S7: Create a mapping of the items and their corresponding translation keys
+      // https://onecx.github.io/docs/nx-plugins/current/general/getting_started/search/configureSearchResults.html#_action_s7_mapping_of_the_items_and_respective_translations
     }));
   }
 );

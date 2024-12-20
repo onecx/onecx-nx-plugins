@@ -1,169 +1,111 @@
-=== Configure the search criteria and parameters
-To configure the search results, the following actions must be taken.
-// TODO: Provide explanation about: The mapping of the URL parameters must be configured. 
+= Configure the search criteria and parameters
 
-:toc:
+== ACTION S1: Add additional properties
 
+The `+Search<FeatureName>Request+` data structure in the BFF yaml must be adapted. 
 
-==== ACTION S1: Add additional properties to the `+<feature>-bff.yaml+`
+All the data that should be used in the request must be in that data structure either on top-level or in sub data structures.
+
 _Adapt in File:_ `+<feature>-bff.yaml+`
-
-===== Todos:
-
-* The `+Search<FeatureName>Request+` data structure in the BFF yaml must be adapted. 
-
-** All the data that should be used in the request must be in that data structure either on top-level or in sub data structures. 
 
 [source, yml]
 ----
-Search<Feature>Request:
+SearchExampleFeatureRequest:
       type: object
       properties:
         pageNumber: 
-          type: 'integer'
-          format: 'int32'
+          type: integer
+          format: int32
           default: 0
-          description: 'The number of the page'          
+          description: 'The number of the page.'          
         pageSize:
-          type: 'integer'
-          format: 'int32'
+          type: integer
+          format: int32
           default: 100
           maximum: 1000
           description: 'The size of the page.'      
         id:
           type: string
-        changeMe:
+        exampleProperty:
           type: string
-        # ACTION S1: Add additional properties to the <feature>-bff.yaml
 ----
 
-IMPORTANT: Run the command `npm run apigen` after adapting the OpenAPI to transform the changes into typescript code.
+Please refer to the following cookbook for more information:
+https://onecx.github.io/docs/guides/current/angular/ngrx/cookbook/addingSearchCriteria/general.html
 
-IMPORTANT: Remove the "ACTION" comment after solving this issue
+IMPORTANT: After updating the OpenAPI specification, execute the command *npm run apigen* to generate the corresponding TypeScript code. Remove the "ACTION" comment after succesfully doing this step.
 
-==== ACTION S2: Please define the members for your `+<%= featurePropertyName %>SearchCriteriasSchema+` here
+== ACTION S2: Define the members
+Please define the members for your `+<%= featurePropertyName %>SearchCriteriasSchema+`
+
+Adapt search parameters:
+
+* keys *need* to match the keys from your OpenAPIs SearchCriteria Object
+* always start with `+z.string()+`
+* when required, you can use `+.transform()+` to extend the validation
+* dates are always mapped to strings (as JSON does not know DateTime)
+
 _Adapt in File:_ `+<feature>-search.parameters.ts+`
 
-===== Todos:
-* Adapt search parameters
-** keys need to match the keys from your OpenAPIs SearchCriteria Object
-** always start with `+z.string()+`
-** when required, you can use `+.transform()+` to extend the validation
-** dates are always mapped to strings (as JSON does not know DateTime)
-
+.Example:
 [source, javascript]
-----    
-  exampleDate: z.string().optional(),
-  exampleDateTime: z.string().optional(),
-  exampleEnum: z
-    .string()
-    .transform((v) => v as <%= featurePropertyName %>SearchRequestExampleEnum)
-    .optional(),
-  exampleArray: z
-    .union([z.string(), z.array(z.string())])
-    .transform((v: string | string[] | undefined): string[] | undefined =>
-      v instanceof Array || !v
-        ? (v as string[] | undefined)
-        : ([v] as string[])
-    )
+----
+    exampleString: z.string().optional(),
+    exampleNumber: z
+        .string()
+        .transform((v) => (v ? Number(v) : undefined))
+        .optional(),
 ----
 
-IMPORTANT: Remove the "ACTION" comment after solving this issue
+Refer to the following cookbook for more types:
+https://onecx.github.io/docs/guides/current/angular/ngrx/cookbook/addingSearchCriteria/general.html#_parameters
 
----
+== ACTION S3: Specify desired search criterias
+Please specify your desired search criterias by adding input fields.
 
-==== ACTION S3: Please specify here your desired search criterias, link to documentation
 _Adapt in File:_ `+<feature>-search.component.html+`
 
-===== Todos:
-// TODO: add info how to handle dates in p-calendar -> https://primeng.org/calendar#api.calendar.props.dateFormat
-
-* The input fields must be added
-** `+formControlName+` and `+ngModel+`-path must match to your SearchCriteria model
+.Example text input field:
 [subs=+macros]
-
 [source, html]
 ----
- <form [formGroup]="criteriaGroup">
+  <form [formGroup]="criteriaGroup">
       <div class="grid mt-0 p-fluid">
         <div class="col-12 md:col-3">
           <span class="p-float-label">
-           // PLACE YOUR INPUT FIELD HERE
+            <input
+              id="id"
+              pInputText
+              type="text"
+              formControlName="id"
+              class="p-inputtext p-component"
+            />
+            <label for="id">{{
+              'YOUR_PRODUCT.CRITERIA.ID' | translate
+              }}</label>
           </span>
         </div>
-        ...
+      </div>
+  </form>    
 ----
 
-* Examples for different fields
-** Example for text input field
-*** Remove `+// PLACE YOUR INPUT FIELD HERE+` and paste the following code
-*** Adapt `+id+`, `+formControlName+`, `+ngModel+` and `+for+` as well as the labels translation key
+Please refer to the following cookbook for more information:
+https://onecx.github.io/docs/guides/current/angular/ngrx/cookbook/addingSearchCriteria/general.html#_html
 
-[source, html]
-----
-    <input
-      id="id"
-      pInputText
-      type="number"
-      formControlName="id"
-      class="p-inputtext p-component"
-      [ngModel]="vm.searchCriteria.id"
-    />
-    <label for="id">{{
-      'YOUR_PRODUCT.CRITERIA.ID' | translate
-    }}</label>
-----
 
-** Example for calendar input field
-*** Remove `+// PLACE YOUR INPUT FIELD HERE+` and paste the following code
-*** Adapt `+id+`, `+formControlName+` and `+for+` as well as the labels translation key
+=== Examples for different input fields
+Depending on what kind of input fields you want to add, the implementation differs.
 
-[source, html]
-----
-    <p-calendar
-      id="endDate"
-      pInputDate
-      type="text"
-      appendTo="body"
-      formControlName="endDate"
-    ></p-calendar>
-    <label for="endDate">{{
-      'YOUR_PRODUCT.END_DATE' | translate
-    }}</label>
-----
+Refer to the following cookbook:
+https://onecx.github.io/docs/guides/current/angular/ngrx/cookbook/addingSearchCriteria/general.html#_examples_for_different_input_fields
 
-** Example for dropdown
-*** Remove `+// PLACE YOUR INPUT FIELD HERE+` and paste the following code
 
-[source, html]
-----
- <p-multiSelect [options]="dropdownOptions" formControlName="selectedOptions" optionLabel="name" placeholder="Select Options"></p-multiSelect>
-----
-** Directive `+*ocxAdvanced+`
-** The directive `+*ocxAdvanced+` indicates if a field belongs to the basic or the advanced mode. The mode can be toggled via a button in the search header.
-The directive `+*ocxAdvanced+` will be added to the div.
-
-[source, html]
-----
- <div *ocxAdvanced class="col-12 md:col-3">
-          <span class="p-float-label">
-          // INSERT your input field HERE
-          </span>
-  </div>
-----
-The information if a field belongs to the basic or advanced view will be added to the `+<%= featureClassName %>SearchViewModel+` and the information is saved in the member `+viewMode+`
-
-IMPORTANT: Remove the "ACTION" comment after solving this issue
-
----
-
-==== ACTION S4: ADD TRANSLATION for your input fields
+== ACTION S4: Add translations
 _Adapt in File:_  `+de.json+` / `+en.json+`
-
-===== Todos:
 
 * Please add the missing translations
 // TODO: Specify for what the translation will be added
+// TODO: reference to cookbook e.g.: angular/cookbook/translations
 
 ---
 Now you can continue with the next section xref:getting_started/search/configureSearchResults.adoc[Configure search results]
