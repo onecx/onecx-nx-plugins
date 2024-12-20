@@ -94,7 +94,7 @@ export class GeneralOpenAPIStep
           changeMe: {
             type: 'string',
           },
-          [COMMENT_KEY]: 'ACTION C1: add additional properties here',
+          [COMMENT_KEY]: 'ACTION C1: add additional properties here. https://onecx.github.io/docs/nx-plugins/current/general/getting_started/create-update/extend-form-fields.html#action-1',
         },
       })
       .set(`${options.updateResponseName}`, {
@@ -106,7 +106,7 @@ export class GeneralOpenAPIStep
           changeMe: {
             type: 'string',
           },
-          [COMMENT_KEY]: ' ACTION C1: add additional properties here',
+          [COMMENT_KEY]: ' ACTION C1: add additional properties here. https://onecx.github.io/docs/nx-plugins/current/general/getting_started/create-update/extend-form-fields.html#action-1',
         },
       });
 
