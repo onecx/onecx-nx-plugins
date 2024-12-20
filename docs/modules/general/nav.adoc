@@ -20,8 +20,6 @@
 ** xref:getting_started/delete-dialog.adoc[Create delete dialog]
 ** xref:getting_started/details-page.adoc[Create details page]
 *** xref:getting_started/details/core-data.adoc[Add core data to details page header]
-*** xref:getting_started/details/not-dynamic-data.adoc[Add not dynamically loaded data to response]
-*** xref:getting_started/details/rest-of-data.adoc[Add rest of the data to body]
 *** xref:getting_started/details/further-actions.adoc[Check for further actions]
 *** xref:getting_started/details/commit-changes.adoc[Commit the changes]
 * Further generators

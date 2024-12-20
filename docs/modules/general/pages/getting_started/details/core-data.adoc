@@ -3,7 +3,7 @@
 :idprefix:
 :idseparator: -
 
-The core data must be added to the header of the details page .
+The core data must be added to the header of the details page.
 
 [#action-1]
 ==== ACTION D1: Add header values here
