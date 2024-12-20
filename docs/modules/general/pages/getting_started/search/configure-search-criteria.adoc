@@ -1,0 +1,182 @@
+
+=== Configure the search criteria and parameters
+
+:idprefix:
+:idseparator: -
+
+To configure the search results, the following actions must be taken.
+// TODO: Provide explanation about: The mapping of the URL parameters must be configured. 
+
+:toc:
+
+
+[#action-1]
+==== ACTION S1: Add additional properties to the `+<feature>-bff.yaml+`
+_Adapt in File:_ `+<feature>-bff.yaml+`
+
+[#action-1-todos]
+===== Todos:
+
+* The `+Search<FeatureName>Request+` data structure in the BFF yaml must be adapted. 
+
+** All the data that should be used in the request must be in that data structure either on top-level or in sub data structures. 
+
+[source, yml]
+----
+Search<Feature>Request:
+      type: object
+      properties:
+        pageNumber: 
+          type: 'integer'
+          format: 'int32'
+          default: 0
+          description: 'The number of the page'          
+        pageSize:
+          type: 'integer'
+          format: 'int32'
+          default: 100
+          maximum: 1000
+          description: 'The size of the page.'      
+        id:
+          type: string
+        changeMe:
+          type: string
+        # ACTION S1: Add additional properties to the <feature>-bff.yaml
+----
+
+IMPORTANT: Run the command `npm run apigen` after adapting the OpenAPI to transform the changes into typescript code.
+
+include::partial$remove-action.adoc[]
+
+[#action-2]
+==== ACTION S2: Please define the members for your `+<%= featurePropertyName %>SearchCriteriasSchema+` here
+_Adapt in File:_ `+<feature>-search.parameters.ts+`
+
+[#action-2-todos]
+===== Todos:
+* Adapt search parameters
+** keys need to match the keys from your OpenAPIs SearchCriteria Object
+** always start with `+z.string()+`
+** when required, you can use `+.transform()+` to extend the validation
+** dates are always mapped to strings (as JSON does not know DateTime)
+
+[source, javascript]
+----    
+  exampleDate: z.string().optional(),
+  exampleDateTime: z.string().optional(),
+  exampleEnum: z
+    .string()
+    .transform((v) => v as <%= featurePropertyName %>SearchRequestExampleEnum)
+    .optional(),
+  exampleArray: z
+    .union([z.string(), z.array(z.string())])
+    .transform((v: string | string[] | undefined): string[] | undefined =>
+      v instanceof Array || !v
+        ? (v as string[] | undefined)
+        : ([v] as string[])
+    )
+----
+
+include::partial$remove-action.adoc[]
+
+---
+
+[#action-3]
+==== ACTION S3: Please specify here your desired search criterias, link to documentation
+_Adapt in File:_ `+<feature>-search.component.html+`
+
+[#action-3-todos]
+===== Todos:
+// TODO: add info how to handle dates in p-calendar -> https://primeng.org/calendar#api.calendar.props.dateFormat
+
+* The input fields must be added
+** `+formControlName+` and `+ngModel+`-path must match to your SearchCriteria model
+[subs=+macros]
+
+[source, html]
+----
+ <form [formGroup]="criteriaGroup">
+      <div class="grid mt-0 p-fluid">
+        <div class="col-12 md:col-3">
+          <span class="p-float-label">
+           // PLACE YOUR INPUT FIELD HERE
+          </span>
+        </div>
+        ...
+----
+
+* Examples for different fields
+** Example for text input field
+*** Remove `+// PLACE YOUR INPUT FIELD HERE+` and paste the following code
+*** Adapt `+id+`, `+formControlName+`, `+ngModel+` and `+for+` as well as the labels translation key
+
+[source, html]
+----
+    <input
+      id="id"
+      pInputText
+      type="number"
+      formControlName="id"
+      class="p-inputtext p-component"
+      [ngModel]="vm.searchCriteria.id"
+    />
+    <label for="id">{{
+      'YOUR_PRODUCT.CRITERIA.ID' | translate
+    }}</label>
+----
+
+** Example for calendar input field
+*** Remove `+// PLACE YOUR INPUT FIELD HERE+` and paste the following code
+*** Adapt `+id+`, `+formControlName+` and `+for+` as well as the labels translation key
+
+[source, html]
+----
+    <p-calendar
+      id="endDate"
+      pInputDate
+      type="text"
+      appendTo="body"
+      formControlName="endDate"
+    ></p-calendar>
+    <label for="endDate">{{
+      'YOUR_PRODUCT.END_DATE' | translate
+    }}</label>
+----
+
+** Example for dropdown
+*** Remove `+// PLACE YOUR INPUT FIELD HERE+` and paste the following code
+
+[source, html]
+----
+ <p-multiSelect [options]="dropdownOptions" formControlName="selectedOptions" optionLabel="name" placeholder="Select Options"></p-multiSelect>
+----
+** Directive `+*ocxAdvanced+`
+** The directive `+*ocxAdvanced+` indicates if a field belongs to the basic or the advanced mode. The mode can be toggled via a button in the search header.
+The directive `+*ocxAdvanced+` will be added to the div.
+
+[source, html]
+----
+ <div *ocxAdvanced class="col-12 md:col-3">
+          <span class="p-float-label">
+          // INSERT your input field HERE
+          </span>
+  </div>
+----
+The information if a field belongs to the basic or advanced view will be added to the `+<%= featureClassName %>SearchViewModel+` and the information is saved in the member `+viewMode+`
+
+include::partial$remove-action.adoc[]
+
+---
+
+[#action-4]
+==== ACTION S4: ADD TRANSLATION for your input fields
+_Adapt in File:_  `+de.json+` / `+en.json+`
+
+[#action-4-todos]
+===== Todos:
+
+* Please add the missing translations
+// TODO: Specify for what the translation will be added
+
+---
+Now you can continue with the next section xref:getting_started/search/configure-search-results.adoc[Configure search results]
