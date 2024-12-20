@@ -28,12 +28,15 @@ SearchExampleFeatureRequest:
           type: string
         exampleProperty:
           type: string
+        # ACTION S1: Add additional properties to the <feature>-bff.yaml
 ----
 
 Please refer to the following cookbook for more information:
 https://onecx.github.io/docs/guides/current/angular/ngrx/cookbook/addingSearchCriteria/general.html
 
-IMPORTANT: After updating the OpenAPI specification, execute the command *npm run apigen* to generate the corresponding TypeScript code. Remove the "ACTION" comment after succesfully doing this step.
+IMPORTANT: After updating the OpenAPI specification, execute the command *npm run apigen* to generate the corresponding TypeScript code.
+
+include::partial$removeAction.adoc[]
 
 == ACTION S2: Define the members
 Please define the members for your `+<%= featurePropertyName %>SearchCriteriasSchema+`
@@ -57,8 +60,9 @@ _Adapt in File:_ `+<feature>-search.parameters.ts+`
         .optional(),
 ----
 
-Refer to the following cookbook for more types:
-https://onecx.github.io/docs/guides/current/angular/ngrx/cookbook/addingSearchCriteria/general.html#_parameters
+Refer to the following cookbook for more types: https://onecx.github.io/docs/guides/current/angular/ngrx/cookbook/addingSearchCriteria/general.html#_parameters
+
+include::partial$removeAction.adoc[]
 
 == ACTION S3: Specify desired search criterias
 Please specify your desired search criterias by adding input fields.

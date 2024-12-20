@@ -16,4 +16,4 @@ _Adapt in File:_ `+<feature>-search.component.html+`
 
 Please refer to the following cookbook for more adaptations https://onecx.github.io/docs/guides/current/angular/cookbook/resultDiagram.html
 
-IMPORTANT: Remove the ACTION comment after working on this task
+include::partial$removeAction.adoc[]

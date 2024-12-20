@@ -32,7 +32,7 @@ _Adapt in File:_ `+<feature>-bff.yaml+`
 
 IMPORTANT: After updating the OpenAPI specification, execute the command *npm run apigen* to generate the corresponding TypeScript code.
 
-IMPORTANT: Remove the "ACTION" comment after solving this step
+include::partial$removeAction.adoc[]
 
 == ACTION S6: Define search results columns
 The column mappings must be defined. 
@@ -80,7 +80,7 @@ Explanation of the properties:
 * The property `+sortable+` indicates if the column is sortable.
 * The property `+predefinedGroupKeys+` defines in which group sets the following column is available. Furthermore, the predefinedGroups can be selected in a dropdown on top of the search results table. If you want that your searchColumn only belongs to your default column group, then only add `+FEATURE_SEARCH.PREDEFINED_GROUP.DEFAULT+`.
 
-IMPORTANT: Remove the "ACTION" comment after solving this step
+include::partial$removeAction.adoc[]
 
 == ACTION S7: Mapping of the items and respective translations
 
@@ -105,7 +105,7 @@ _Adapt in File:_ <feature>-search.selectors.ts
   );
 ----
 
-IMPORTANT: Remove the "ACTION" comment after solving this step
+include::partial$removeAction.adoc[]
 
 == ACTION S8: Add translation
 // TODO: Specify for what the translation is for : column headers and enums
@@ -114,4 +114,5 @@ _Adapt in File:_ `+de.json+` / `+en.json+`
 
 Please add the missing translations
 
-IMPORTANT: Remove the "ACTION" comment after solving this step
+
+include::partial$removeAction.adoc[]
