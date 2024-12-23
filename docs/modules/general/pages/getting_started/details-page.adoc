@@ -32,5 +32,4 @@ After running the generator, the following actions must be taken:
 
 [start=1]
 . xref:getting_started/details/core-data.adoc[Add core data to details page header]
-. xref:getting_started/details/further-actions.adoc[Check for further actions]
 . xref:getting_started/details/commit-changes.adoc[Commit the changes]

@@ -24,7 +24,7 @@ The details page will display the header with the title and subtitle. To customi
     ];
 ----
 
-For the details page, the generator also creates 2 actions for the header by default. Consider adding custom actions to available in the header. Please, reference the {page_header_url}[PageHeader docs] for more information on the `Action` usage.
+For the details page, the generator also creates 2 actions for the header by default. Consider adding custom actions to be available in the header via `headerActions$` property. Please, reference the {page_header_url}[PageHeader docs] for more information on the `Action` usage.
 
 include::partial$remove-action.adoc[]
 
