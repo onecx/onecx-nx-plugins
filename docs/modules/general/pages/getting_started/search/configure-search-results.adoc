@@ -1,8 +1,14 @@
-= Configure the search results. 
+=== Configure the search results. 
+
+:idprefix:
+:idseparator: -
+
+:data_table_column_properties_cookbook_url: xref:latest@guides:angular:ngrx/cookbook/search-results/data-table-column.adoc
+
 To configure the search results, the following actions must be taken. 
 
 [#action-5]
-== ACTION S5: Add additional properties
+==== ACTION S5: Add additional properties
 Here you can add additional properties which you need for your `+<SearchFeatureResponse>+`.
 
 * The `+<FeatureName>+` data object structure in the BFF yaml can be adapted. 
@@ -36,7 +42,7 @@ IMPORTANT: After updating the OpenAPI specification, execute the command *npm ru
 include::partial$remove-action.adoc[]
 
 [#action-6]
-== ACTION S6: Define search results columns
+==== ACTION S6: Define search results columns
 The column mappings must be defined. 
 
 _Adapt in File:_ `+<feature>-search.columns.ts+`
@@ -44,48 +50,30 @@ _Adapt in File:_ `+<feature>-search.columns.ts+`
 [subs=+macros]
 [source, javascript]
 ----
-  export const ExampleFeaturePropertySearchColumns: DataTableColumn[] = [
+  export const FeaturePropertySearchColumns: DataTableColumn[] = [
         {
         columnType: ColumnType.STRING,
         id: 'columnId',
-        nameKey: 'EXAMPLE_FEATUTRE_PROPERTY',
+        nameKey: 'FEATURE_PROPERTY_SEARCH.RESULTS.COLUMN_ID',
         filterable: true,
         sortable: true,
         predefinedGroupKeys: [
-          'EXAMPLE_FEATUTRE_PROPERTY_SEARCH.PREDEFINED_GROUP.DEFAULT',
-          'EXAMPLE_FEATUTRE_PROPERTY_SEARCH.PREDEFINED_GROUP.EXTENDED',
-          'EXAMPLE_FEATUTRE_PROPERTY_SEARCH.PREDEFINED_GROUP.FULL',
+          'FEATURE_PROPERTY_SEARCH.PREDEFINED_GROUP.DEFAULT',
+          'FEATURE_PROPERTY_SEARCH.PREDEFINED_GROUP.EXTENDED',
+          'FEATURE_PROPERTY_SEARCH.PREDEFINED_GROUP.FULL',
         ],
       },
   ]
 ----
 
-Explanation of the properties:
-
-*	The `+columnType+` defines the type of the column. The following column types are available:
-[source, javascript]
-----
-  export const enum ColumnType {
-    STRING = 'STRING',
-    NUMBER = 'NUMBER',
-    DATE = 'DATE',
-    RELATIVE_DATE = 'RELATIVE_DATE',
-    TRANSLATION_KEY = 'TRANSLATION_KEY',
-  }
-----
-
-* The property `+id+` provides the id of the column.
-* The property `+nameKey+` provides the translation string for the column header name. Furthermore, the translation needs to be added to the `+de.json+` and `+en.json+` file.
-* The property `+filterable+` indicates if the column is filterable.
-* The property `+sortable+` indicates if the column is sortable.
-* The property `+predefinedGroupKeys+` defines in which group sets the following column is available. Furthermore, the predefinedGroups can be selected in a dropdown on top of the search results table. If you want that your searchColumn only belongs to your default column group, then only add `+FEATURE_SEARCH.PREDEFINED_GROUP.DEFAULT+`.
+Refer to the {data_table_column_properties_cookbook_url}[DataTableColumn properties overview cookbook] for more information.
 
 include::partial$remove-action.adoc[]
 
 [#action-7]
-== ACTION S7: Mapping of the items and respective translations
+==== ACTION S7: Mapping of the items and respective translations
 
-Here you can create a mapping of the items and their corresponding translation keys and adapt the mapping as required.
+Here you can create a mapping of the items and their corresponding translation strings for columns with type `TRANSLATION_KEY` to translate the values in the talbe rows respective to the column.
 
 _Adapt in File:_ <feature>-search.selectors.ts
 .Example:
@@ -108,11 +96,11 @@ _Adapt in File:_ <feature>-search.selectors.ts
 include::partial$remove-action.adoc[]
 
 [#action-8]
-== ACTION S8: Add translation
-// TODO: Specify for what the translation is for : column headers and enums
+==== ACTION S8: Add translation
+// TODO: reference to cookbook e.g.: angular/cookbook/translations
 
 _Adapt in File:_ `+de.json+` / `+en.json+`
 
-Please add the missing translations
+Please ensure that all column headers and the values in columns with the type `TRANSLATION_KEY` have the necessary translations added.
 
 include::partial$remove-action.adoc[]

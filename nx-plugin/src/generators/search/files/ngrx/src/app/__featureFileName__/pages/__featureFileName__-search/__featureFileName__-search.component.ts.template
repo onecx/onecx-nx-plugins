@@ -28,7 +28,7 @@ import { isValidDate } from '@onecx/accelerator';
 export class <%= featureClassName %>SearchComponent implements OnInit {
   viewModel$: Observable<<%= featureClassName %>SearchViewModel>  = this.store.select(select<%= featureClassName %>SearchViewModel);
 
-// ACTION S10: Update header actions: https://onecx.github.io/docs/nx-plugins/current/general/getting_started/search/updateHeaderActions.html#_action_s10_update_header_actions
+// ACTION S10: Update header actions: https://onecx.github.io/docs/nx-plugins/current/general/getting_started/search/update-header-actions.html#_action-10
   headerActions$: Observable<Action[]> = this.viewModel$.pipe(map((vm) => {
       const actions: Action[] = [
         {
@@ -54,7 +54,7 @@ export class <%= featureClassName %>SearchComponent implements OnInit {
     })
   );
 
-  // ACTION S9: Select the column to be displayed in the diagram: https://onecx.github.io/docs/nx-plugins/current/general/getting_started/search/configureResultDiagram.html#_action_s9_select_the_column_to_be_displayed
+  // ACTION S9: Select the column to be displayed in the diagram: https://onecx.github.io/docs/nx-plugins/current/general/getting_started/search/configure-result-diagram.html#_action-3
   diagramColumnId = 'id';
   diagramColumn$ = this.viewModel$.pipe(map((vm) =>vm.columns.find((e) => e.id === this.diagramColumnId) as DataTableColumn));
 

@@ -1,4 +1,4 @@
 import { DataTableColumn } from '@onecx/angular-accelerator';
 
 export const <%= featurePropertyName %>SearchColumns: DataTableColumn[] = []
-// ACTION S6: Define search results columns: https://onecx.github.io/docs/nx-plugins/current/general/getting_started/search/configureSearchResults.html#_action_s6_define_search_results_columns
+// ACTION S6: Define search results columns: https://onecx.github.io/docs/nx-plugins/current/general/getting_started/search/configure-search-results.html#_action-6

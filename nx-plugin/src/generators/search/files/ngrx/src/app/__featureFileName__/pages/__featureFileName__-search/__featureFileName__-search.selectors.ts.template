@@ -22,7 +22,7 @@ export const selectResults = createSelector(
       imagePath: '',
       ...item,
       // ACTION S7: Create a mapping of the items and their corresponding translation keys
-      // https://onecx.github.io/docs/nx-plugins/current/general/getting_started/search/configureSearchResults.html#_action_s7_mapping_of_the_items_and_respective_translations
+      // https://onecx.github.io/docs/nx-plugins/current/general/getting_started/search/configure-search-results.html#_action-7
     }));
   }
 );
