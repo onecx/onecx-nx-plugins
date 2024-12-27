@@ -13,7 +13,7 @@
     (viewModeChanged)="viewModeChanged($event)"
   >
     <form [formGroup]="<%= featurePropertyName %>SearchFormGroup">
-      // ACTION S3: Specify here your desired search criterias: https://onecx.github.io/docs/nx-plugins/current/general/getting_started/search/configure-search-criteria.html#_action-3
+      // ACTION S3: Specify here your desired search criterias: https://onecx.github.io/docs/nx-plugins/current/general/getting_started/search/configure-search-criteria.html#action-3
     </form>
   </ocx-search-header>
   <ocx-content-container layout="horizontal">

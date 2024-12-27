@@ -3,7 +3,7 @@
 :idprefix:
 :idseparator: -
 
-:data_table_column_properties_cookbook_url: xref:latest@guides:angular:ngrx/cookbook/search-results/data-table-column.adoc
+:data_table_column_properties_cookbook_url: xref:latest@guides:angular/cookbook/components/interactive-data-view/data-table-column.adoc
 
 To configure the search results, the following actions must be taken. 
 
