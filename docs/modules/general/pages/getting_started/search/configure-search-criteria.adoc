@@ -110,7 +110,6 @@ Please refer to the {adding_search_criteria_general_html_url}[adding search crit
 Depending on what kind of input fields you want to add, the implementation differs.
 
 Refer to the {adding_search_criteria_general_html_examples_url}[adding search criteria examples for different input fields cookbook].
-https://onecx.github.io/docs/guides/current/angular/ngrx/cookbook/addingSearchCriteria/general.html#_examples_for_different_input_fields
 
 [#action-4]
 ==== ACTION S4: Add translations
