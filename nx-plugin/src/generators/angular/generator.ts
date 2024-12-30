@@ -297,6 +297,11 @@ function adaptAngularPrefixConfig(tree: Tree) {
     json.prefix = 'app';
     json.targets.test.options.coverage = true;
     json.targets.build.options.main = json.targets.build.options.browser;
+    json.targets.build.options.assets = [
+      'src/favicon.ico',
+      'src/assets',
+      ...json.targets.build.options.assets,
+    ];
     delete json.targets.build.options.browser;
     json.targets.build.options.scripts = [
       'node_modules/@webcomponents/webcomponentsjs/webcomponents-bundle.js',
