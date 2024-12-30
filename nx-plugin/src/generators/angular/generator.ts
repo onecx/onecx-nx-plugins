@@ -188,7 +188,7 @@ function addScriptsToPackageJson(tree: Tree, options: AngularGeneratorSchema) {
     pkgJson.scripts['lint:fix'] = 'nx lint --fix';
     pkgJson.scripts['test'] = 'nx test';
     pkgJson.scripts['test:ci'] =
-      'ng test --watch=false --browsers=ChromeHeadless --code-coverage';
+      'nx test --watch=false --browsers=ChromeHeadless --code-coverage';
 
     return pkgJson;
   });
