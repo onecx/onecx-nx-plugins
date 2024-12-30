@@ -301,7 +301,7 @@ describe('<%= featureClassName %>SearchComponent', () => {
     });
 
     expect(store.dispatch).toHaveBeenCalledWith(
-      TestFeatureSearchActions.searchHeaderComponentStateChanged({
+      <%= featureClassName %>SearchActions.searchHeaderComponentStateChanged({
         activeViewMode: 'advanced',
       })
     );
