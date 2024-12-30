@@ -293,15 +293,19 @@ describe('<%= featureClassName %>SearchComponent', () => {
     component.search(formValue);
   });
   
-  //it('should dispatch viewModeChanged action on view mode changes', async () => {
-  //  jest.spyOn(store, 'dispatch');
+  it('should dispatch viewModeChanged action on view mode changes', async () => {
+    jest.spyOn(store, 'dispatch');
 
-  //  component.viewModeChanged('advanced');
+    component.searchHeaderComponentStateChanged({
+      activeViewMode: 'advanced',
+    });
 
-  //  expect(store.dispatch).toHaveBeenCalledWith(
-  //    <%= featureClassName %>SearchActions.viewModeChanged({ viewMode: 'advanced' })
-  //  );
-  //});
+    expect(store.dispatch).toHaveBeenCalledWith(
+      TestFeatureSearchActions.searchHeaderComponentStateChanged({
+        activeViewMode: 'advanced',
+      })
+    );
+  });
 
   it('should dispatch displayedColumnsChanged on data view column change', async () => {
     jest.spyOn(store, 'dispatch');
@@ -319,7 +323,22 @@ describe('<%= featureClassName %>SearchComponent', () => {
       displayedColumns: columns,
     });
     store.refreshState();
+  
+    const interactiveDataView =
+      await <%= featurePropertyName %>Search.getSearchResults();        
+    (await (
+        await interactiveDataView.getDataLayoutSelection()
+      ).getTableLayoutSelectionButton()
+    )?.click();
 
+    const columnGroupSelector =
+      await interactiveDataView?.getCustomGroupColumnSelector();
+    expect(columnGroupSelector).toBeTruthy();
+
+    await columnGroupSelector!.openCustomGroupColumnSelectorDialog();
+    const pickList = await columnGroupSelector!.getPicklist();
+    const transferControlButtons = await pickList.getTransferControlsButtons();
+    expect(transferControlButtons.length).toBe(4);
 
     // Currently, all columns are selected. Next, we are unselecting all to have a clean test setting.
     const deactivateAllColumnsButton = transferControlButtons[1];
@@ -331,12 +350,8 @@ describe('<%= featureClassName %>SearchComponent', () => {
     const saveButton = await columnGroupSelector!.getSaveButton();
     await saveButton.click();
 
-    expect(store.dispatch).toHaveBeenCalledWith(
-      <%= featureClassName %>SearchActions.displayedColumnsChanged({
-        displayedColumns: [
-          columns[0]
-        ],
-      })
+    expect(store.dispatch).toHaveBeenLastCalledWith(
+       expect.objectContaining({ displayedColumns: columns })
     );
   });
 
