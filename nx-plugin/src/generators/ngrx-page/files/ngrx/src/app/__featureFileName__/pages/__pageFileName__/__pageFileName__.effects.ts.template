@@ -1,0 +1,56 @@
+import { Injectable, SkipSelf } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Actions, createEffect } from '@ngrx/effects';
+import { Action, Store } from '@ngrx/store';
+import { PortalMessageService } from '@onecx/portal-integration-angular';
+import {
+  tap
+} from 'rxjs';
+
+
+@Injectable()
+export class <%= pageClassName %>Effects {
+  constructor(
+    private actions$: Actions,
+    @SkipSelf() private route: ActivatedRoute,
+    private router: Router,
+    private store: Store,
+    private messageService: PortalMessageService,  
+  ) {}
+
+  errorMessages: { action: Action; key: string }[] = [];
+  
+  successMessages: { action: Action; key: string }[] = [];
+
+  displayError$ = createEffect(
+    () => {
+      return this.actions$.pipe(
+        tap((action) => {
+          const e = this.errorMessages.find(
+            (e) => e.action.type === action.type
+          );
+          if (e) {
+            this.messageService.error({ summaryKey: e.key });
+          }
+        })
+      );
+    },
+    { dispatch: false }
+  );
+   
+  displaySuccess$ = createEffect(
+     () => {
+       return this.actions$.pipe(
+         tap((action) => {
+           const e = this.successMessages.find(
+             (e) => e.action.type === action.type
+           );
+           if (e) {
+             this.messageService.success({ summaryKey: e.key });
+           }
+         })
+       );
+     },
+     { dispatch: false }
+   );
+}

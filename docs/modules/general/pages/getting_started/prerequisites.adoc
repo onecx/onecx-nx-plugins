@@ -1,5 +1,8 @@
 === Check your technical setup 
 
+:idprefix:
+:idseparator: -
+
 [IMPORTANT] 
 .Check your npm version and please update if necessary
 ==== 

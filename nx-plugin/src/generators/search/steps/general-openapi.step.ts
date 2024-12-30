@@ -52,19 +52,28 @@ export class GeneralOpenAPIStep implements GeneratorStep<SearchGeneratorSchema> 
           id: {
             type: 'string',
           },
-          [COMMENT_KEY]: 'ACTION S1: add additional properties here',
+          [COMMENT_KEY]: 'ACTION S5: add additional properties here',
         },
       })
       .set(`${searchRequestName}`, {
         type: 'object',
         properties: {
-          limit: {
-            type: 'integer',
-            maximum: 2500,
-          },
           id: {
             type: 'integer',
             format: 'int32',
+          },
+          pageNumber: {
+            type: 'integer',
+            format: 'int32',
+            default: 0,
+            description: 'The number of the page',
+          },
+          pageSize: {
+            type: 'integer',
+            format: 'int32',
+            default: 100,
+            maximum: 1000,
+            description: 'The size of the page.'
           },
           changeMe: {
             type: 'string',
@@ -75,18 +84,33 @@ export class GeneralOpenAPIStep implements GeneratorStep<SearchGeneratorSchema> 
       })
       .set(`${searchResponseName}`, {
         type: 'object',
-        required: ['results', 'totalNumberOfResults'],
+        required: ['stream', 'size', 'number', 'totalPages', 'totalElements'],
         properties: {
-          results: {
+          stream: {
             type: 'array',
             items: {
               $ref: `#/components/schemas/${dataObjectName}`,
             },
           },
-          totalNumberOfResults: {
+          size: {
             type: 'integer',
             format: 'int32',
+            description: 'Current page size.',
+          },
+          number: {
+            type: 'integer',
+            format: 'int32',
+            description: 'Current page number.',
+          },
+          totalElements: {
+            type: 'integer',
+            format: 'int64',
             description: 'Total number of results on the server.',
+          },
+          totalPages: {
+            type: 'integer',
+            format: 'int64',
+            description: 'Total pages.',
           },
         },
       })

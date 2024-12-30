@@ -1,0 +1,28 @@
+=== Create a feature module 
+
+:idprefix:
+:idseparator: -
+
+The fastest way to create a new feature module that works with OneCX you can use the OneCX generator.
+include::partial$generator-check.adoc[]
+
+******
+To run the generator, execute the following command:
+----
+nx generate <namespaceOfTheGenerator>/nx-plugin:feature <nameOfTheFeature> [--standalone]
+----
+ 
+include::partial$generator-namespace-item.adoc[]
+
+* _<nameOfTheFeature>_: The name of the feature to create e.g., theme.
+
+*Options*:
+
+* --standalone: if you want to develop an application that does not depend on onecx-services.
+
+******
+
+After running the generator, the following actions must be taken: 
+[start=1]
+. xref:getting_started/feature/further-actions.adoc[Check for further actions]
+. xref:getting_started/feature/commit-changes.adoc[Commit the changes]

@@ -1,0 +1,8 @@
+import { createActionGroup, emptyProps } from '@ngrx/store';
+
+export const <%= pageClassName %>Actions = createActionGroup({
+  source: '<%= pageClassName %>',
+  events: {
+    'sample action': emptyProps(),
+  },
+});

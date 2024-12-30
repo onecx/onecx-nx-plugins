@@ -1,0 +1,140 @@
+=== Configure the search results. 
+
+:idprefix:
+:idseparator: -
+
+To configure the search results, the following actions must be taken. 
+
+[#action-5]
+==== ACTION S5: Add additional properties to the `+<feature>-bff.yaml+`
+_Adapt in File:_ `+<feature>-bff.yaml+`
+
+[#action-5-todos]
+===== Todos:
+* The `+<FeatureName>+` data object structure in the BFF yaml can be adapted. 
+
+** If you have chosen a custom DataObjectName in the generation, the schema entry will be named accordingly
+
+** All the data that should be displayed in the results must be in that data structure either on top-level or in sub data structures. 
+
+** The data should be as minimal as possible to not create too much load to the backend and the DB. 
+
+
+[source, yml]
+----
+<Feature>:
+      type: object
+      required:
+        - 'modificationCount'
+        - 'id'
+      properties:
+        modificationCount:
+          type: integer
+          format: int32
+        id:
+          type: integer
+          format: int64
+        # ACTION S5: add additional properties here
+----
+Here you can add additional properties which you need for your `+<SearchFeatureResponse>+`, e.g. `+status+`, `+creationDate+` ...
+
+IMPORTANT: Run the command `npm run apigen` after adapting the OpenAPI to transform the changes into typescript code.
+
+include::partial$remove-action.adoc[]
+
+---
+
+[#action-6]
+==== ACTION S6: Define search results columns
+_Adapt in File:_ `+<feature>-search.columns.ts+`
+
+[#action-6-todos]
+===== Todos:
+* The column mappings must be defined. 
+
+[subs=+macros]
+
+[source, javascript]
+----
+export const <%= featurePropertyName %>SearchColumns = [
+      {
+      columnType: ColumnType.STANDARD,
+      id: 'id',
+      nameKey: 'TRANSLATION_STRING',
+      filterable: true,
+      sortable: true,
+      predefinedGroupKeys: [
+        // Please replace FEATURE with the name of your feature 
+        'FEATURE_SEARCH.PREDEFINED_GROUP.DEFAULT',
+        'FEATURE_SEARCH.PREDEFINED_GROUP.EXTENDED',
+        'FEATURE_SEARCH.PREDEFINED_GROUP.FULL',
+      ],
+    },
+]
+----
+Explanation of the properties:
+
+**	The `+columnType+` defines the type of the column. The following column types are available:
+[subs=+macros]
+
+[source, javascript]
+----
+export const enum ColumnType {
+  STRING = 'STRING',
+  NUMBER = 'NUMBER',
+  DATE = 'DATE',
+  RELATIVE_DATE = 'RELATIVE_DATE',
+  TRANSLATION_KEY = 'TRANSLATION_KEY',
+}
+----
+** The property `+id+` provides the property of the column
+* The property `+nameKey+` provides the translation string. Furthermore, the translation needs to be added to the `+de.json+` and `+en.json+` file.
+* The property `+filterable+` indicates if the column is filterable
+* The property `+sortable+` indicates if the column is sortable
+* The property `+predefinedGroupKeys+` defines in which group sets the following column is available. Furthermore, the predefinedGroups can be selected in a dropdown on top of the search results table. If you want that your searchColumn only belongs to your default column group, then only add  `+FEATURE_SEARCH.PREDEFINED_GROUP.DEFAULT+`
+
+
+include::partial$remove-action.adoc[]
+
+---
+
+[#action-7]
+==== ACTION S7: Here you can create a mapping of the items and their corresponding translation strings
+_Adapt in File:_ <feature>-search.selectors.ts
+
+[#action-7-todos]
+===== Todos:
+* Adapt the mapping as required
+
+[subs=+macros]
+
+[source, javascript]
+----
+export const selectResults = createSelector(
+  <%= featurePropertyName %>SearchSelectors.selectResults,
+  (results): RowListGridData[] => {
+    return results.map((item) => ({      
+      imagePath: '',
+      ...item,
+      // ACTION S7: Here you can create a mapping of the items and their corresponding translation strings
+    }));
+  }
+);
+----
+
+include::partial$remove-action.adoc[]
+
+---
+
+[#action-8]
+==== ACTION S8: ADD TRANSLATION
+// TODO: Specify for what the translation is for : column headers and enums
+
+_Adapt in File:_ `+de.json+` / `+en.json+`
+
+[#action-8-todos]
+===== Todos: 
+* Please add the missing translations
+
+
+include::partial$remove-action.adoc[]

@@ -1,0 +1,12 @@
+=== Commit your changes
+
+:idprefix:
+:idseparator: -
+
+:type: build-test
+include::partial$build-test-run.adoc[]
+
+:message: feat: basic OneCX application added for <nameOfTheProduct>
+:comment: pass:quotes[Please replace `+_<nameOfTheProduct>_+` with the real name of your product.]
+include::partial$commit-changes.adoc[]
+

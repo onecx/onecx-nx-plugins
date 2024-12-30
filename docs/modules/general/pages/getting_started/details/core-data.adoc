@@ -1,0 +1,20 @@
+=== Add core data to the details page header
+
+:idprefix:
+:idseparator: -
+
+The core data must be added to the header of the details page .
+
+[#action-1]
+==== ACTION D1: Add header values here
+_Adapt in File:_  `+<feature>-details.component+`
+
+[source, javascript]
+----
+  headerLabels: ObjectDetailItem[] = [
+      //ACTION D1: Add header values here
+    ];
+----
+
+include::partial$remove-action.adoc[]
+

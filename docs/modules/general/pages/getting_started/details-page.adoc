@@ -1,0 +1,38 @@
+=== Create a details page
+
+:idprefix:
+:idseparator: -
+
+The fastest way to create a new details page in a feature module is to use the OneCX generator.
+include::partial$generator-check.adoc[]
+
+******
+To run the generator, execute the following command: 
+
+----
+nx generate <namespaceOfTheGenerator>/nx-plugin:details <nameOfTheFeature> [--standalone]
+----
+
+include::partial$generator-namespace-item.adoc[]
+
+* _<nameOfTheFeature>_: The name the feature the details page should be created in e.g., theme.
+
+TIP: Next, the CLI will ask you whether you want to customize names for the generation.
+When answering yes, the next few questions will ask you about names for the API.
+This can be useful if you want to adapt to a legacy API.
+When modifying names, assure that you use the same custom names for all generated components of the feature (search, details, create-update, delete) for the data object name, and the api service name as these ones are shared.
+
+*Options*:
+
+* --standalone: if you want to develop an application that does not depend on onecx-services.
+
+******
+
+After running the generator, the following actions must be taken: 
+
+[start=1]
+. xref:getting_started/details/not-dynamic-data.adoc[Add not dynamically loaded data to response]
+. xref:getting_started/details/core-data.adoc[Add core data to details page header]
+. xref:getting_started/details/rest-of-data.adoc[Add the rest of the data to the body]
+. xref:getting_started/details/further-actions.adoc[Check for further actions]
+. xref:getting_started/details/commit-changes.adoc[Commit the changes]

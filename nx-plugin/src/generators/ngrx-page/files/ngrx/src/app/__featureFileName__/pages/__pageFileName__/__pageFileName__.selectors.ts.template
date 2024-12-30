@@ -1,0 +1,14 @@
+import { createSelector } from '@ngrx/store';
+import { createChildSelectors } from '@onecx/ngrx-accelerator';
+import { <%= featurePropertyName %>Feature } from '../../<%= featureFileName %>.reducers';
+import { initialState } from './<%= pageFileName %>.reducers';
+import { <%= pageClassName %>ViewModel } from './<%= pageFileName %>.viewmodel';
+
+export const <%= pagePropertyName %>Selectors = createChildSelectors(
+  <%= featurePropertyName %>Feature.select<%= pageClassName %>,
+  initialState
+);
+
+export const select<%= pageClassName %>ViewModel = createSelector( 
+  (): <%= pageClassName %>ViewModel => ({})
+);

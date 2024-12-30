@@ -4,6 +4,7 @@
   "license": "MIT",
   "scripts": {
     "build": "nx run nx-plugin:build && nx run create-workspace:build",
+    "build-copy": "npm run build && node copy-build.js",
     "test": "nx run nx-plugin-e2e:e2e",
     "lint": "npx nx affected -t lint"
   },

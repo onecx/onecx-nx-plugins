@@ -64,10 +64,10 @@ export const <%= featurePropertyName %>SearchReducer = createReducer(
     <%= featureClassName %>SearchActions.<%= featurePropertyName %>SearchResultsReceived,
     (
       state: <%= featureClassName %>SearchState,
-      { results }
+      { stream }
     ): <%= featureClassName %>SearchState => ({
       ...state,
-      results,
+      results: stream,
       searchLoadingIndicator: false,
       searchExecuted: true,
     })

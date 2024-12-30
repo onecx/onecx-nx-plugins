@@ -303,48 +303,42 @@ describe('<%= featureClassName %>SearchComponent', () => {
   //  );
   //});
 
-  //it('should dispatch displayedColumnsChanged on data view column change', async () => {
-  //  jest.spyOn(store, 'dispatch');
+  it('should dispatch displayedColumnsChanged on data view column change', async () => {
+    jest.spyOn(store, 'dispatch');
+    const columns = [
+      {
+        columnType: ColumnType.STRING,
+        nameKey: 'COLUMN_KEY',
+        id: 'column_1',
+      },
+    ];
+    store.overrideSelector(select<%= featureClassName %>SearchViewModel, {
+      ...base<%= featureClassName %>SearchViewModel,
+      results: [],
+      columns: columns,
+      displayedColumns: columns,
+    });
+    store.refreshState();
 
-  //  fixture = TestBed.createComponent(<%= featureClassName %>SearchComponent);
-  //  component = fixture.componentInstance;
-  //  fixture.detectChanges();
-  //  <%= featurePropertyName %>Search = await TestbedHarnessEnvironment.harnessForFixture(
-  //    fixture,
-  //    <%= featureClassName %>SearchHarness
-  //  );
-
-  //  jest.clearAllMocks();
-
-  //  const interactiveDataView =
-  //    await <%= featurePropertyName %>Search.getSearchResults();
-  //  const columnGroupSelector =
-  //    await interactiveDataView?.getCustomGroupColumnSelector();
-  //  expect(columnGroupSelector).toBeTruthy();
-
-  //  await columnGroupSelector!.openCustomGroupColumnSelectorDialog();
-  //  const pickList = await columnGroupSelector!.getPicklist();
-  //  const transferControlButtons = await pickList.getTransferControlsButtons();
-  //  expect(transferControlButtons.length).toBe(4);
 
     // Currently, all columns are selected. Next, we are unselecting all to have a clean test setting.
-  //  const deactivateAllColumnsButton = transferControlButtons[1];
-  //  await deactivateAllColumnsButton.click();
-  //  const inactiveItems = await pickList.getTargetListItems();
-  //  await inactiveItems[0].selectItem();
-  //  const activateCurrentColumnButton = transferControlButtons[2];
-  //  await activateCurrentColumnButton.click();
-  //  const saveButton = await columnGroupSelector!.getSaveButton();
-  //  await saveButton.click();
+    const deactivateAllColumnsButton = transferControlButtons[1];
+    await deactivateAllColumnsButton.click();
+    const inactiveItems = await pickList.getTargetListItems();
+    await inactiveItems[0].selectItem();
+    const activateCurrentColumnButton = transferControlButtons[2];
+    await activateCurrentColumnButton.click();
+    const saveButton = await columnGroupSelector!.getSaveButton();
+    await saveButton.click();
 
-  //  expect(store.dispatch).toHaveBeenCalledWith(
-  //    <%= featureClassName %>SearchActions.displayedColumnsChanged({
-  //      displayedColumns: [
-  //        <%= featurePropertyName %>SearchColumns[0]
-  //      ],
-  //    })
-  //  );
-  //});
+    expect(store.dispatch).toHaveBeenCalledWith(
+      <%= featureClassName %>SearchActions.displayedColumnsChanged({
+        displayedColumns: [
+          columns[0]
+        ],
+      })
+    );
+  });
 
   it('should dispatch chartVisibilityToggled on show/hide chart header', async () => {
     jest.spyOn(store, 'dispatch');

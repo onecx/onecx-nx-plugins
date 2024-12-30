@@ -1,0 +1,10 @@
+import { createReducer } from '@ngrx/store';
+import { <%= pageClassName %>State } from './<%= pageFileName %>.state';
+
+export const initialState: <%= pageClassName %>State = {
+};
+
+export const <%= pagePropertyName %>Reducer = createReducer(
+  initialState,
+);
+ 
