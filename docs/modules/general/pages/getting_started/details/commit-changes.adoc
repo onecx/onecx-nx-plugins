@@ -7,5 +7,5 @@
 include::partial$build-test-run.adoc[]
 
 :message: feat: details added for <nameOfTheProduct>
-:comment: pass:quotes[Please replace `+_<nameOfTheProduct>_+` with the real name of your product.]
+:comment: pass:quotes[Please replace `_nameOfTheProduct_` with the real name of your product.]
 include::partial$commit-changes.adoc[]
