@@ -13,7 +13,7 @@
     (viewModeChanged)="viewModeChanged($event)"
   >
     <form [formGroup]="<%= featurePropertyName %>SearchFormGroup">
-      // ACTION S3: Please specify here your desired search criterias, link to documentation; TODO: add info how to handle dates in p-calendar -> https://primeng.org/calendar#api.calendar.props.dateFormat
+      // ACTION S3: Specify here your desired search criterias: https://onecx.github.io/docs/nx-plugins/current/general/getting_started/search/configure-search-criteria.html#action-3
     </form>
   </ocx-search-header>
   <ocx-content-container layout="horizontal">

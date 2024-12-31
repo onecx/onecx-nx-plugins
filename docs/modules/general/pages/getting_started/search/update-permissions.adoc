@@ -28,7 +28,6 @@ permission:
                 SEARCH: Search feature
 ----
 
-
 [TIP] 
 .Import the permissions into your environment
 You can use `scripts/load-permission.sh` to upload permissions.
@@ -41,6 +40,4 @@ When in doubt about the setup contact your technical lead.
 2. Delete permissions that you do not need.
 ====
 
-
-
-
+include::partial$remove-action.adoc[]

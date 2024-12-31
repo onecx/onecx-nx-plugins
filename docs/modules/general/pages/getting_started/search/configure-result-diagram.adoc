@@ -3,37 +3,46 @@
 :idprefix:
 :idseparator: -
 
+:result_diagram_cookbook_url: xref:latest@guides:angular:cookbook/components/result-diagram.adoc
+
 By default, a diagram is created which counts the different values in a column and shows the results. To use this diagram, the column which should be displayed needs to be selected first. The member 'columnId' holds the column id of the column.
 
 [#action-9]
-==== ACTION S9: Please select the column to be displayed
-_Adapt in File:_ `+<feature>-search.component.html+`
+==== ACTION S9: Select the column to be displayed
 
-[#action-9-todos]
-===== Todos:
-* Uncomment and adapt as required
-** `+columnId+` is the key for the diagram which shows the distribution of data of the selected column
+*Adapt as required where the `+columnId+` is the key for the diagram which shows the distribution of data of the selected column.
+
+_Adapt in File:_ `+<feature>-search.component.ts+`
 
 [source, javascript]
 ----
-    // ACTION: Please select the column to be displayed
+    // Please select the column to be displayed
     columnId = 'id';
-    column = this.columns.find((e) => e.id === this.columnId);        
+    column = this.columns.find((e) => e.id === this.columnId); 
 ----
 
+*Adjust the position of the result diagram
 
-[TIP] 
-.Adjust the position of the result diagram
-==== 
 If you want to change the position of the result diagram, you can change the layout of the ocx-content-container.
 
+_Adapt in File:_ `+<feature>-search.component.html+`
+
+.vertical layout
+[source, html]
 ----
-<ocx-content-container layout="vertical">
+    <ocx-content-container layout="vertical">
+        ...
+    </ocx-content-container>
 ----
-or
+
+.horizontal layout
+[source, html]
 ----
-<ocx-content-container layout="horizontal">
+    <ocx-content-container layout="horizontal">
+        ...
+    </ocx-content-container>
 ----
-====
+
+Please refer to the {result_diagram_cookbook_url}[result diagram cookbook] for more adaptations.
 
 include::partial$remove-action.adoc[]
