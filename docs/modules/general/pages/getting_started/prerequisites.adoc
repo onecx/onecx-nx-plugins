@@ -28,9 +28,9 @@ node  --version
 ==== 
 Nx version should be 
 
- - Local: v17.3.0 
+ - Local: v19.6.4
 
- - Global: v18.0.4 
+ - Global: v20.0.6
 
 ====
 [subs=+macros]

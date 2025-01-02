@@ -3,18 +3,28 @@
 :idprefix:
 :idseparator: -
 
-The core data must be added to the header of the details page .
+:page_header_url: xref:latest@guides:angular:cookbook/components/page-header/index.adoc
+
+The core data must be added to the header of the details page.
 
 [#action-1]
 ==== ACTION D1: Add header values here
 _Adapt in File:_  `+<feature>-details.component+`
 
+The details page will display the header with the title and subtitle. To customize the header, extend the `headerLabels` property. Configure the items based on the details item. Please, reference the {page_header_url}[PageHeader docs] for more information on the `ObjectDetailItem` usage.
+
+.Example extended header items
 [source, javascript]
 ----
   headerLabels: ObjectDetailItem[] = [
-      //ACTION D1: Add header values here
+      {
+        label: 'Name',
+        value: vm.details?.name
+      }
     ];
 ----
+
+For the details page, the generator also creates 2 actions for the header by default. Consider adding custom actions to be available in the header via `headerActions$` property. Please, reference the {page_header_url}[PageHeader docs] for more information on the `Action` usage.
 
 include::partial$remove-action.adoc[]
 
