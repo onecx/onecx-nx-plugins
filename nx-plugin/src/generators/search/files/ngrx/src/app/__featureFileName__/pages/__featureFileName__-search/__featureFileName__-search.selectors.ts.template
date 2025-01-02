@@ -27,36 +27,35 @@ export const selectResults = createSelector(
   }
 );
 
-export const selectDisplayedColumns = createSelector(
-  <%= featurePropertyName %>SearchSelectors.selectColumns,
-  <%= featurePropertyName %>SearchSelectors.selectDisplayedColumns,
-  (columns, displayedColumns): DataTableColumn[] => {
-    return (displayedColumns
-          ?.map((d) => columns.find((c) => c.id === d))
-          .filter((d) => d) as DataTableColumn[]) ?? [];
-  }
-);
-
 export const select<%= featureClassName %>SearchViewModel = createSelector(
   <%= featurePropertyName %>SearchSelectors.selectColumns,
   <%= featurePropertyName %>SearchSelectors.selectCriteria,
   selectResults,  
-  selectDisplayedColumns,
-  <%= featurePropertyName %>SearchSelectors.selectViewMode,
-  <%= featurePropertyName %>SearchSelectors.selectChartVisible,   
+  <%= featurePropertyName %>SearchSelectors.selectResultComponentState,
+  <%= featurePropertyName %>SearchSelectors.selectSearchHeaderComponentState,
+  <%= featurePropertyName %>SearchSelectors.selectDiagramComponentState,
+  <%= featurePropertyName %>SearchSelectors.selectChartVisible,  
+  <%= featurePropertyName %>SearchSelectors.selectSearchLoadingIndicator,
+  <%= featurePropertyName %>SearchSelectors.selectSearchExecuted, 
   (
     columns,
     searchCriteria, 
     results,
-    displayedColumns,
-    viewMode,
+    resultComponentState,
+    searchHeaderComponentState,
+    diagramComponentState,
     chartVisible,
+    searchLoadingIndicator,
+    searchExecuted
     ): <%= featureClassName %>SearchViewModel => ({
     columns,
     searchCriteria,
     results,
-    displayedColumns,
-    viewMode,
-    chartVisible
+    resultComponentState,
+    searchHeaderComponentState,
+    diagramComponentState,
+    chartVisible,
+    searchLoadingIndicator,
+    searchExecuted
   })
 );

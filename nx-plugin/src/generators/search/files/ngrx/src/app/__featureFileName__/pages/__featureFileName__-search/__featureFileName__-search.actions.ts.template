@@ -1,5 +1,5 @@
 import { createActionGroup, emptyProps, props } from '@ngrx/store';
-import { DataTableColumn } from '@onecx/angular-accelerator';
+import { DataTableColumn, GroupByCountDiagramComponentState, InteractiveDataViewComponentState, SearchHeaderComponentState } from '@onecx/portal-integration-angular';
 import { <%= featureClassName %>SearchCriteria } from './<%= featureFileName %>-search.parameters';
 import { <%= dataObjectName %> } from '../../../shared/generated';
 
@@ -19,16 +19,10 @@ export const <%= featureClassName %>SearchActions = createActionGroup({
       totalPages: number;
     }>(),
     '<%= featureFileName.replaceAll("-"," ") %> search results loading failed': props<{ error: string | null }>(),    
-    'Displayed columns changed': props<{
-      displayedColumns: DataTableColumn[];
-    }>(),
-    'Chart visibility rehydrated': props<{
-      visible: boolean;
-    }>(),
-    'Chart visibility toggled': emptyProps(),
-    'View mode changed': props<{
-      viewMode: 'basic' | 'advanced';
-    }>(),
     'Export button clicked': emptyProps(),
+    'Result component state changed': props<InteractiveDataViewComponentState>(),
+    'Search header component state changed': props<SearchHeaderComponentState>(),
+    'Diagram component state changed': props<GroupByCountDiagramComponentState>(),
+    'Chart visibility toggled': emptyProps(),
   },
 });

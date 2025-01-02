@@ -11,6 +11,7 @@ import {
 } from 'rxjs';
 import { filterForNavigatedTo } from '@onecx/ngrx-accelerator';
 import { Injectable } from '@angular/core';
+import { selectBackNavigationPossible } from 'src/app/shared/selectors/onecx.selectors';
 import { <%= featureClassName %>DetailsActions } from './<%= featureFileName %>-details.actions';
 import { <%= featureClassName %>DetailsComponent } from './<%= featureFileName %>-details.component';
 import { Action, Store } from '@ngrx/store';
@@ -86,4 +87,18 @@ export class <%= featureClassName %>DetailsEffects {
     },
     { dispatch: false }
   );
+
+  navigateBack$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(<%= featureClassName %>DetailsActions.navigateBackButtonClicked),
+      concatLatestFrom(() => [this.store.select(selectBackNavigationPossible)]),
+      switchMap(([, backNavigationPossible]) => {
+        if (!backNavigationPossible) {
+          return of(<%= featureClassName %>DetailsActions.backNavigationFailed());
+        }
+        window.history.back();
+        return of(<%= featureClassName %>DetailsActions.backNavigationStarted());
+      }),
+    );
+  });
 }

@@ -4,9 +4,14 @@ import { Store } from '@ngrx/store';
 import {
   Action,
   BreadcrumbService,
+  DataSortDirection,
   DataTableColumn,
+  DiagramComponentState,
+  DiagramType,
   ExportDataService,
   PortalDialogService,
+  InteractiveDataViewComponentState,
+  SearchHeaderComponentState,
 } from '@onecx/portal-integration-angular';
 import { <%= featureClassName %>SearchActions } from './<%= featureFileName %>-search.actions';
 import {
@@ -28,7 +33,10 @@ import { isValidDate } from '@onecx/accelerator';
 export class <%= featureClassName %>SearchComponent implements OnInit {
   viewModel$: Observable<<%= featureClassName %>SearchViewModel>  = this.store.select(select<%= featureClassName %>SearchViewModel);
 
-// ACTION S10: Update header actions: https://onecx.github.io/docs/nx-plugins/current/general/getting_started/search/update-header-actions.html#action-10
+  defaultDataSortDirection = DataSortDirection.NONE
+  defaultDiagramType = DiagramType.PIE
+
+  // ACTION S10: Update header actions: https://onecx.github.io/docs/nx-plugins/current/general/getting_started/search/update-header-actions.html#action-10
   headerActions$: Observable<Action[]> = this.viewModel$.pipe(map((vm) => {
       const actions: Action[] = [
         {
@@ -90,6 +98,18 @@ export class <%= featureClassName %>SearchComponent implements OnInit {
     );
   }
 
+  resultComponentStateChanged(state: InteractiveDataViewComponentState) {    
+    this.store.dispatch(<%= featureClassName %>SearchActions.resultComponentStateChanged(state))
+  }
+
+  searchHeaderComponentStateChanged(state: SearchHeaderComponentState) {
+    this.store.dispatch(<%= featureClassName %>SearchActions.searchHeaderComponentStateChanged(state))
+  }
+
+  diagramComponentStateChanged(state: DiagramComponentState) {
+    this.store.dispatch(<%= featureClassName %>SearchActions.diagramComponentStateChanged(state))
+  }
+
   search(formValue: FormGroup) {
     const searchCriteria = Object.entries(formValue.getRawValue()).reduce(
       (acc: Partial<<%= featureClassName %>SearchCriteria>, [key, value]) => ({
@@ -122,18 +142,6 @@ export class <%= featureClassName %>SearchComponent implements OnInit {
   exportItems() {
     this.store.dispatch(<%= featureClassName %>SearchActions.exportButtonClicked());
   }   
-
-   viewModeChanged(viewMode: 'basic' | 'advanced') {
-    this.store.dispatch(
-      <%= featureClassName %>SearchActions.viewModeChanged({
-        viewMode: viewMode,
-      })
-    );
-   }
-
-  onDisplayedColumnsChange(displayedColumns: DataTableColumn[]) {
-    this.store.dispatch(<%= featureClassName %>SearchActions.displayedColumnsChanged({displayedColumns}))
-  }
 
   toggleChartVisibility() {
     this.store.dispatch(<%= featureClassName %>SearchActions.chartVisibilityToggled());

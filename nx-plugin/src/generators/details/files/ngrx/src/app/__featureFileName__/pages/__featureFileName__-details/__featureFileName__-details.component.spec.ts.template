@@ -4,6 +4,7 @@ import { LetDirective } from '@ngrx/component';
 import { HttpClientTestingModule } from '@angular/common/http/testing'
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { By } from '@angular/platform-browser';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { Store, StoreModule } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
@@ -20,6 +21,8 @@ import { initialState } from './<%= featureFileName %>-details.reducers';
 import { <%= featureClassName %>DetailsHarness } from './<%= featureFileName %>-details.harness';
 import { <%= featureClassName %>DetailsViewModel } from './<%= featureFileName %>-details.viewmodel';
 import { select<%= featureClassName %>DetailsViewModel } from './<%= featureFileName %>-details.selectors';
+import { <%= featureClassName %>DetailsActions } from './<%= featureFileName %>-details.actions';
+import { ofType } from '@ngrx/effects';
 
 describe('<%= featureClassName %>DetailsComponent', () => {
   const origAddEventListener = window.addEventListener;
@@ -62,8 +65,11 @@ describe('<%= featureClassName %>DetailsComponent', () => {
       data: {},
     },
   };
-  const base<%= featureClassName %>DetaulsViewModel: <%= featureClassName %>DetailsViewModel = {
+  const base<%= featureClassName %>DetailsViewModel: <%= featureClassName %>DetailsViewModel = {
     details: undefined,
+    detailsLoadingIndicator: false,
+    detailsLoaded: true,
+    backNavigationPossible: true
   };
 
   beforeEach(async () => {
@@ -93,7 +99,7 @@ describe('<%= featureClassName %>DetailsComponent', () => {
     store = TestBed.inject(MockStore);
     store.overrideSelector(
       select<%= featureClassName %>DetailsViewModel,
-      base<%= featureClassName %>DetaulsViewModel
+      base<%= featureClassName %>DetailsViewModel
     );
     store.refreshState();
 
@@ -145,14 +151,19 @@ describe('<%= featureClassName %>DetailsComponent', () => {
     expect(moreAction).toBeTruthy();
   });
 
-  it('should navigate back on back button click', async () => {
+  it('should dispatch navigateBackButtonClicked action on back button click', async () => {
     jest.spyOn(window.history, 'back');
+    const doneFn = jest.fn();
 
     const pageHeader = await <%= featurePropertyName %>Details.getHeader();
     const backAction = await pageHeader.getInlineActionButtonByLabel('Back');
+    store.scannedActions$
+      .pipe(ofType(<%= featureClassName %>DetailsActions.navigateBackButtonClicked))
+      .subscribe(() => {
+        doneFn();
+      });
     await backAction?.click();
-
-    expect(window.history.back).toHaveBeenCalledTimes(1);
+    expect(doneFn).toHaveBeenCalledTimes(1);
   });
 
   it('should display item details in page header', async () => {

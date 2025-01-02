@@ -12,11 +12,13 @@ import { <%= featurePropertyName %>SearchCriteriasSchema } from './<%= featureFi
 export const initialState: <%= featureClassName %>SearchState = {
   columns: <%= featurePropertyName %>SearchColumns,
   results: [],    
-  displayedColumns: null,
-  viewMode: 'basic',
   chartVisible: false,
+  resultComponentState: null,
+  searchHeaderComponentState: null,
+  diagramComponentState: null,
   searchLoadingIndicator: false,
   criteria: {},
+  searchExecuted: false,
 };
 
 export const <%= featurePropertyName %>SearchReducer = createReducer(
@@ -37,7 +39,7 @@ export const <%= featurePropertyName %>SearchReducer = createReducer(
         };
       }
       return state;
-    },
+    }
   ),
   on(
     <%= featureClassName %>SearchActions.resetButtonClicked,
@@ -45,6 +47,7 @@ export const <%= featurePropertyName %>SearchReducer = createReducer(
       ...state,
       results: initialState.results,
       criteria: {},
+      searchExecuted: false,
     })
   ),
   on(
@@ -54,7 +57,6 @@ export const <%= featurePropertyName %>SearchReducer = createReducer(
       { searchCriteria },
     ):  <%= featureClassName %>SearchState => ({
       ...state,
-      searchLoadingIndicator: true,
       criteria: searchCriteria,
     }),
   ),
@@ -66,6 +68,8 @@ export const <%= featurePropertyName %>SearchReducer = createReducer(
     ): <%= featureClassName %>SearchState => ({
       ...state,
       results: stream,
+      searchLoadingIndicator: false,
+      searchExecuted: true,
     })
   ),
   on(
@@ -73,42 +77,42 @@ export const <%= featurePropertyName %>SearchReducer = createReducer(
     (state: <%= featureClassName %>SearchState): <%= featureClassName %>SearchState => ({
       ...state,
       results: [],
+      searchLoadingIndicator: false,
     })
   ), 
   on(
-    <%= featureClassName %>SearchActions.chartVisibilityRehydrated,
-    (
-      state: <%= featureClassName %>SearchState,
-      { visible }
-    ): <%= featureClassName %>SearchState => ({
-      ...state,
-      chartVisible: visible,
-    })
-  ),
-  on(
     <%= featureClassName %>SearchActions.chartVisibilityToggled,
     (
-      state: <%= featureClassName %>SearchState,
+      (state: <%= featureClassName %>SearchState): <%= featureClassName %>SearchState => ({
+      ...state,
+      chartVisible: !state.chartVisible
+    })
+    )
+  ),
+  on(
+    <%= featureClassName %>SearchActions.resultComponentStateChanged,
+    (
+      state: <%= featureClassName %>SearchState, resultComponentState
     ): <%= featureClassName %>SearchState => ({
       ...state,
-      chartVisible: !state.chartVisible,
+      resultComponentState,
     })
   ),
   on(
-    <%= featureClassName %>SearchActions.viewModeChanged,
+    <%= featureClassName %>SearchActions.searchHeaderComponentStateChanged,
     (
       state: <%= featureClassName %>SearchState,
-      { viewMode }
+      searchHeaderComponentState
     ): <%= featureClassName %>SearchState => ({
       ...state,
-      viewMode: viewMode,
+      searchHeaderComponentState,
     })
   ),
   on(
-    <%= featureClassName %>SearchActions.displayedColumnsChanged,
-    (state: <%= featureClassName %>SearchState, { displayedColumns }): <%= featureClassName %>SearchState => ({
+    <%= featureClassName %>SearchActions.diagramComponentStateChanged,
+    (state: <%= featureClassName %>SearchState, diagramComponentState): <%= featureClassName %>SearchState => ({
       ...state,
-      displayedColumns: displayedColumns.map((v) => v.id),
+      diagramComponentState,
     })
   )
 );

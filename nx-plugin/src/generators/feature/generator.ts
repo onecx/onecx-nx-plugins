@@ -83,7 +83,7 @@ function adaptAppRoutingModule(tree: Tree, options: FeatureGeneratorSchema) {
   const moduleFilePath = 'src/app/app-routing.module.ts';
   let moduleContent = tree.read(moduleFilePath, 'utf8');
   moduleContent =
-    `import { startsWith } from '@onecx/angular-webcomponents'` +
+    `import { startsWith } from '@onecx/angular-webcomponents';` +
     moduleContent.replace(
       'routes: Routes = [',
       `routes: Routes = [ {

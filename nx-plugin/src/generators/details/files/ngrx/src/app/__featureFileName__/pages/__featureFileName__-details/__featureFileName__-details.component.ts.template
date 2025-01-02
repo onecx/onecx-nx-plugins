@@ -39,8 +39,12 @@ export class <%= featureClassName %>DetailsComponent implements OnInit {
           titleKey: '<%= featureConstantName %>_DETAILS.GENERAL.BACK',
           labelKey: '<%= featureConstantName %>_DETAILS.GENERAL.BACK',
           show: 'always',
+          disabled: !vm.backNavigationPossible,
+          permission: '<%= featureConstantName %>#BACK',
           actionCallback: () => {
-            window.history.back();
+            this.store.dispatch(
+              <%= featureClassName %>DetailsActions.navigateBackButtonClicked(),
+            );
           },
         },
         {

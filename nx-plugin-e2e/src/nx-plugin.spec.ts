@@ -477,7 +477,7 @@ describe('nx-plugin', () => {
  * @returns The directory where the test project was created
  */
 function createTestProject(flavor) {
-  const workingDir = process.env.WORKING_DIR ?? os.tmpdir()
+  const workingDir = process.env.WORKING_DIR ?? os.tmpdir();
   const projectDirectory = join(workingDir, 'nx-plugin-out', projectName);
 
   // Ensure projectDirectory is empty

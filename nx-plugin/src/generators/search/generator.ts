@@ -19,6 +19,7 @@ import { GeneratorProcessor } from '../shared/generator.utils';
 import processParams, { GeneratorParameter } from '../shared/parameters.utils';
 import { SearchGeneratorSchema } from './schema';
 import { AppModuleStep } from './steps/app-module.step';
+import { AppReducerStep } from './steps/app-reducer.step';
 import { FeatureModuleStep } from './steps/feature-module.step';
 import { FeatureReducerStep } from './steps/feature-reducer.step';
 import { FeatureRoutesStep } from './steps/feature-routes.step';
@@ -130,6 +131,7 @@ export async function searchGenerator(
 
   const generatorProcessor = new GeneratorProcessor();
   generatorProcessor.addStep(new AppModuleStep());
+  generatorProcessor.addStep(new AppReducerStep());
   generatorProcessor.addStep(new FeatureModuleStep());
   generatorProcessor.addStep(new FeatureRoutesStep());
   generatorProcessor.addStep(new FeatureStateStep());

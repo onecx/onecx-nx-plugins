@@ -88,6 +88,7 @@ export async function angularGenerator(
       '@onecx/angular-remote-components': oneCXLibVersion,
       '@onecx/angular-webcomponents': oneCXLibVersion,
       '@onecx/integration-interface': oneCXLibVersion,
+      '@onecx/angular-integration-interface': oneCXLibVersion,
       '@onecx/ngrx-accelerator': oneCXLibVersion,
       '@onecx/keycloak-auth': oneCXLibVersion,
       '@onecx/portal-integration-angular': oneCXLibVersion,
@@ -96,6 +97,7 @@ export async function angularGenerator(
       '@ngx-translate/http-loader': '^8.0.0',
       '@angular-architects/module-federation': '^18.0.4',
       'keycloak-angular': '^16.0.1',
+      'ngrx-store-localstorage': '^18.0.0',
       '@angular/animations': '^18.1.4',
       '@angular/cdk': '^18.1.4',
       '@angular/common': '^18.1.4',
@@ -186,7 +188,7 @@ function addScriptsToPackageJson(tree: Tree, options: AngularGeneratorSchema) {
     pkgJson.scripts['lint:fix'] = 'nx lint --fix';
     pkgJson.scripts['test'] = 'nx test';
     pkgJson.scripts['test:ci'] =
-      'ng test --watch=false --browsers=ChromeHeadless --code-coverage';
+      'nx test --watch=false --browsers=ChromeHeadless --code-coverage';
 
     return pkgJson;
   });
@@ -295,6 +297,11 @@ function adaptAngularPrefixConfig(tree: Tree) {
     json.prefix = 'app';
     json.targets.test.options.coverage = true;
     json.targets.build.options.main = json.targets.build.options.browser;
+    json.targets.build.options.assets = [
+      'src/favicon.ico',
+      'src/assets',
+      ...json.targets.build.options.assets,
+    ];
     delete json.targets.build.options.browser;
     json.targets.build.options.scripts = [
       'node_modules/@webcomponents/webcomponentsjs/webcomponents-bundle.js',

@@ -18,7 +18,7 @@ export class SearchTestsStep implements GeneratorStep<DeleteGeneratorSchema> {
       `
       it('should dispatch delete${className}ButtonClicked action on item delete click', async () => {
         jest.spyOn(store, 'dispatch');
-    
+
         store.overrideSelector(select${className}SearchViewModel, {
           ...base${className}SearchViewModel,
           results: [
@@ -37,13 +37,13 @@ export class SearchTestsStep implements GeneratorStep<DeleteGeneratorSchema> {
           ],
         });
         store.refreshState();
-    
+
         const interactiveDataView =
           await ${propertyName}Search.getSearchResults();
         const dataView = await interactiveDataView.getDataView();
-        const dataTable = await dataView.getDataTable();
-        const rowActionButtons = await dataTable?.getActionButtons();
-    
+        const dataTable = await dataView.getDataListGrid();
+        const rowActionButtons = await dataTable?.getActionButtons('list');
+
         expect(rowActionButtons?.length).toBeGreaterThan(0);
         let deleteButton;
         for (const actionButton of rowActionButtons ?? []) {
@@ -55,12 +55,12 @@ export class SearchTestsStep implements GeneratorStep<DeleteGeneratorSchema> {
         }
         expect(deleteButton).toBeTruthy();
         deleteButton?.click();
-    
+
         expect(store.dispatch).toHaveBeenCalledWith(
           ${className}SearchActions.delete${className}ButtonClicked({ id: '1' })
         );
       });
-  
+      //needs to be the last test in this class
       it('should export csv data on export action click'`
     );
     tree.write(filePath, htmlContent);

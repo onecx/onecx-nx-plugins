@@ -4,6 +4,7 @@ import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { By } from '@angular/platform-browser';
 import { LetDirective } from '@ngrx/component';
 import { Store, StoreModule } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
@@ -11,7 +12,7 @@ import { ofType } from '@ngrx/effects';
 import { TranslateService } from '@ngx-translate/core';
 import { TranslateTestingModule } from 'ngx-translate-testing';
 import { DialogService } from 'primeng/dynamicdialog';
-import {
+import { 
   BreadcrumbService,
   ColumnType,
   ExportDataService,
@@ -71,9 +72,12 @@ describe('<%= featureClassName %>SearchComponent', () => {
   const base<%= featureClassName %>SearchViewModel: <%= featureClassName %>SearchViewModel = {
     columns: <%= featurePropertyName %>SearchColumns,
     searchCriteria: { changeMe: '0' },
+    searchExecuted: true,
     results: [],
-    displayedColumns: [],
-    viewMode: 'basic',
+    searchLoadingIndicator: false,
+    diagramComponentState: null,
+    resultComponentState: null,
+    searchHeaderComponentState: null,
     chartVisible: false,
   };
 
@@ -288,54 +292,18 @@ describe('<%= featureClassName %>SearchComponent', () => {
 
     component.search(formValue);
   });
-
-  it('should dispatch export csv data on export action click', async () => {
-    jest.spyOn(store, 'dispatch');
-
-    const results = [
-      {
-        id: '1',
-        imagePath: '',
-        column_1: 'val_1',
-      },
-    ];
-    const columns = [
-      {
-        columnType: ColumnType.STRING,
-        nameKey: 'COLUMN_KEY',
-        id: 'column_1',
-      },
-    ];
-    store.overrideSelector(select<%= featureClassName %>SearchViewModel, {
-      ...base<%= featureClassName %>SearchViewModel,
-      results: results,
-      columns: columns,
-      displayedColumns: columns,
-    });
-    store.refreshState();
-
-    const searchHeader = await <%= featurePropertyName %>Search.getHeader();
-    const pageHeader = await searchHeader.getPageHeader();
-    const overflowActionButton = await pageHeader.getOverflowActionMenuButton();
-    await overflowActionButton?.click();
-
-    const exportAllActionItem = await pageHeader.getOverFlowMenuItem(
-      'Export all'
-    );
-    await exportAllActionItem!.selectItem();
-
-    expect(store.dispatch).toHaveBeenCalledWith(
-      <%= featureClassName %>SearchActions.exportButtonClicked()
-    );
-  });
   
   it('should dispatch viewModeChanged action on view mode changes', async () => {
     jest.spyOn(store, 'dispatch');
 
-    component.viewModeChanged('advanced');
+    component.searchHeaderComponentStateChanged({
+      activeViewMode: 'advanced',
+    });
 
     expect(store.dispatch).toHaveBeenCalledWith(
-      <%= featureClassName %>SearchActions.viewModeChanged({ viewMode: 'advanced' })
+      <%= featureClassName %>SearchActions.searchHeaderComponentStateChanged({
+        activeViewMode: 'advanced',
+      })
     );
   });
 
@@ -355,9 +323,14 @@ describe('<%= featureClassName %>SearchComponent', () => {
       displayedColumns: columns,
     });
     store.refreshState();
-
+  
     const interactiveDataView =
-      await <%= featurePropertyName %>Search.getSearchResults();
+      await <%= featurePropertyName %>Search.getSearchResults();        
+    (await (
+        await interactiveDataView.getDataLayoutSelection()
+      ).getTableLayoutSelectionButton()
+    )?.click();
+
     const columnGroupSelector =
       await interactiveDataView?.getCustomGroupColumnSelector();
     expect(columnGroupSelector).toBeTruthy();
@@ -377,12 +350,8 @@ describe('<%= featureClassName %>SearchComponent', () => {
     const saveButton = await columnGroupSelector!.getSaveButton();
     await saveButton.click();
 
-    expect(store.dispatch).toHaveBeenCalledWith(
-      <%= featureClassName %>SearchActions.displayedColumnsChanged({
-        displayedColumns: [
-          columns[0]
-        ],
-      })
+    expect(store.dispatch).toHaveBeenLastCalledWith(
+       expect.objectContaining({ displayedColumns: columns })
     );
   });
 
@@ -437,13 +406,12 @@ describe('<%= featureClassName %>SearchComponent', () => {
     const interactiveDataView =
       await <%= featurePropertyName %>Search.getSearchResults();
     const dataView = await interactiveDataView.getDataView();
-    const dataTable = await dataView.getDataTable();
-    const rows = await dataTable?.getRows();
-    expect(rows?.length).toBe(1);
-
-    const rowData = await rows?.at(0)?.getData();
-    expect(rowData?.length).toBe(1);
-    expect(rowData?.at(0)).toEqual('No results.');
+    const dataTable = await dataView.getDataListGrid();
+    const rows = await dataTable!.getActionButtons('list');
+    expect(rows.length).toBe(0);
+    expect(
+      fixture.debugElement.query(By.css('.p-dataview-emptymessage')),
+    ).toBeDefined();
   });
 
   it('should not display chart when no results or toggled to not visible', async () => {
@@ -511,5 +479,45 @@ describe('<%= featureClassName %>SearchComponent', () => {
 
     diagram = await <%= featurePropertyName %>Search.getDiagram();
     expect(diagram).toBeTruthy();
+  });
+
+  it('should dispatch export csv data on export action click', async () => {
+    jest.spyOn(store, 'dispatch');
+  
+    const results = [
+      {
+        id: '1',
+        imagePath: '',
+        column_1: 'val_1',
+      },
+    ];
+    const columns = [
+      {
+        columnType: ColumnType.STRING,
+        nameKey: 'COLUMN_KEY',
+        id: 'column_1',
+      },
+    ];
+    store.overrideSelector(select<%= featureClassName %>SearchViewModel, {
+      ...base<%= featureClassName %>SearchViewModel,
+      results: results,
+      columns: columns,
+      displayedColumns: columns,
+    });
+    store.refreshState();
+  
+    const searchHeader = await <%= featurePropertyName %>Search.getHeader();
+    const pageHeader = await searchHeader.getPageHeader();
+    const overflowActionButton = await pageHeader.getOverflowActionMenuButton();
+    await overflowActionButton?.click();
+  
+    const exportAllActionItem = await pageHeader.getOverFlowMenuItem(
+      'Export all'
+    );
+    await exportAllActionItem!.selectItem();
+
+    expect(store.dispatch).toHaveBeenCalledWith(
+      <%= featureClassName %>SearchActions.exportButtonClicked()
+    );
   });
 });

@@ -3,7 +3,9 @@ import { <%= featureClassName %>DetailsActions } from './<%= featureFileName %>-
 import { <%= featureClassName %>DetailsState } from './<%= featureFileName %>-details.state';
 
 export const initialState: <%= featureClassName %>DetailsState = {
-  details: undefined
+  details: undefined,
+  detailsLoadingIndicator: true,
+  detailsLoaded: false,
 };
 
 export const <%= featurePropertyName %>DetailsReducer = createReducer(
@@ -13,6 +15,8 @@ export const <%= featurePropertyName %>DetailsReducer = createReducer(
     (state: <%= featureClassName %>DetailsState, { details }): <%= featureClassName %>DetailsState => ({
       ...state,
       details,
+      detailsLoadingIndicator: false,
+      detailsLoaded: true,
     })
   ),
   on(
@@ -20,6 +24,8 @@ export const <%= featurePropertyName %>DetailsReducer = createReducer(
     (state: <%= featureClassName %>DetailsState): <%= featureClassName %>DetailsState => ({
       ...state,
       details: undefined,
+      detailsLoadingIndicator: false,
+      detailsLoaded: false,
     })
   ),
   on(

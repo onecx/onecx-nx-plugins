@@ -1,5 +1,7 @@
 import { <%= dataObjectName %> } from '../../../shared/generated';
 
 export interface <%= featureClassName %>DetailsState {
-    details: <%= dataObjectName %> | undefined
+    details: <%= dataObjectName %> | undefined;
+    detailsLoadingIndicator: boolean;
+    detailsLoaded: boolean;
 }

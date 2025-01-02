@@ -20,7 +20,7 @@ export class SearchTestsStep
       `
     it('should dispatch edit${className}ButtonClicked action on item edit click', async () => {
       jest.spyOn(store, 'dispatch');
-  
+
       store.overrideSelector(select${className}SearchViewModel, {
         ...base${className}SearchViewModel,
         results: [
@@ -39,13 +39,14 @@ export class SearchTestsStep
         ],
       });
       store.refreshState();
-  
+
       const interactiveDataView =
         await ${propertyName}Search.getSearchResults();
       const dataView = await interactiveDataView.getDataView();
-      const dataTable = await dataView.getDataTable();
-      const rowActionButtons = await dataTable?.getActionButtons();
-  
+      const dataTable = await dataView.getDataListGrid();
+      const rowActionButtons = await dataTable?.getActionButtons('list');
+      
+
       expect(rowActionButtons?.length).toBeGreaterThan(0);
       let editButton;
       for (const actionButton of rowActionButtons ?? []) {
@@ -57,7 +58,7 @@ export class SearchTestsStep
       }
       expect(editButton).toBeTruthy();
       editButton?.click();
-  
+
       expect(store.dispatch).toHaveBeenCalledWith(
         ${className}SearchActions.edit${className}ButtonClicked({ id: '1' })
       );
@@ -78,7 +79,7 @@ export class SearchTestsStep
         ${className}SearchActions.create${className}ButtonClicked()
       );
     });
-
+    //needs to be the last test in this class
     it('should export csv data on export action click'`
     );
     tree.write(filePath, htmlContent);
