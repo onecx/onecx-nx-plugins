@@ -20,6 +20,7 @@ import { SearchComponentStep } from './steps/search-component.step';
 import { SearchEffectsStep } from './steps/search-effects.step';
 import { SearchHTMLStep } from './steps/search-html.step';
 import { SearchTestsStep } from './steps/search-tests.step';
+import { ValidateFeatureModuleStep } from '../shared/steps/validate-feature-module.step';
 
 const PARAMETERS: GeneratorParameter<DeleteGeneratorSchema>[] = [
   {
@@ -77,6 +78,18 @@ export async function deleteGenerator(
   if (!isNgRx) {
     spinner.fail('Currently only NgRx projects are supported.');
     throw new Error('Currently only NgRx projects are supported.');
+  }
+
+  // Run validator processor
+  let validator = await GeneratorProcessor.runBatch(
+    tree,
+    options,
+    [new ValidateFeatureModuleStep()],
+    spinner,
+    true
+  );
+  if (validator.hasStoppedExecution()) {
+    return () => {};
   }
 
   const generatorProcessor = new GeneratorProcessor();
