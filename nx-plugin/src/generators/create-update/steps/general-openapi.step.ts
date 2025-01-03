@@ -87,15 +87,25 @@ export class GeneralOpenAPIStep
       })
       .set(`${options.createResponseName}`, {
         type: 'object',
-        $ref: `#/components/schemas/${dataObjectName}`,
-        [COMMENT_KEY]:
-          'ACTION C1: modify data object or use flat list here. https://onecx.github.io/docs/nx-plugins/current/general/getting_started/create-update/extend-form-fields.html#action-1',
+        properties: {
+          dataObject: {
+            type: 'object',
+            $ref: `#/components/schemas/${dataObjectName}`,
+          },
+          [COMMENT_KEY]:
+            'ACTION C1: modify data object or use flat list here. https://onecx.github.io/docs/nx-plugins/current/general/getting_started/create-update/extend-form-fields.html#action-1',
+        },
       })
       .set(`${options.updateResponseName}`, {
         type: 'object',
-        $ref: `#/components/schemas/${dataObjectName}`,
-        [COMMENT_KEY]:
-          'ACTION C1: modify data object or use flat list here. https://onecx.github.io/docs/nx-plugins/current/general/getting_started/create-update/extend-form-fields.html#action-1',
+        properties: {
+          dataObject: {
+            type: 'object',
+            $ref: `#/components/schemas/${dataObjectName}`,
+          },
+          [COMMENT_KEY]:
+            'ACTION C1: modify data object or use flat list here. https://onecx.github.io/docs/nx-plugins/current/general/getting_started/create-update/extend-form-fields.html#action-1',
+        },
       });
 
     apiUtil.schemas().set('ProblemDetailResponse', {
