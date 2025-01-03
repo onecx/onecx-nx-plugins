@@ -72,7 +72,9 @@ export class OpenAPIUtil {
   }
 
   finalize(): string {
-    let asString = stringify(this.yamlContent);
+    let asString = stringify(this.yamlContent, {
+      lineWidth: 0,
+    });
     // Replace comments
     asString = asString.replaceAll(`~comment~:`, '#');
     return asString;
@@ -99,7 +101,7 @@ export class OpenAPIObjectSectionUtil {
    * @param key key of the entry object
    * @param value value of the entry object
    * @param comment comment for the entry (added last)
-   * @param options configure existStrategy and comment 
+   * @param options configure existStrategy and comment
    * @returns
    */
   set(key: string, value: object, options?: ObjectSetOptions) {
