@@ -59,7 +59,6 @@ export async function componentGenerator(
     throw new Error('Currently only NgRx projects are supported.');
   }
 
-  // Run validator processor
   let validator = await GeneratorProcessor.runBatch(
     tree,
     options,

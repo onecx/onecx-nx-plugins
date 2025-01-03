@@ -79,8 +79,7 @@ export async function deleteGenerator(
     spinner.fail('Currently only NgRx projects are supported.');
     throw new Error('Currently only NgRx projects are supported.');
   }
-
-  // Run validator processor
+  
   let validator = await GeneratorProcessor.runBatch(
     tree,
     options,
