@@ -72,7 +72,7 @@ export class GeneralOpenAPIStep
         properties: {
           dataObject: {
             type: 'object',
-            $ref: dataObjectName,
+            $ref: `#/components/schemas/${dataObjectName}`,
           },
         },
       })
@@ -81,32 +81,30 @@ export class GeneralOpenAPIStep
         properties: {
           dataObject: {
             type: 'object',
-            $ref: dataObjectName,
+            $ref: `#/components/schemas/${dataObjectName}`,
           },
         },
       })
       .set(`${options.createResponseName}`, {
         type: 'object',
         properties: {
-          id: {
-            type: 'string',
+          dataObject: {
+            type: 'object',
+            $ref: `#/components/schemas/${dataObjectName}`,
           },
-          changeMe: {
-            type: 'string',
-          },
-          [COMMENT_KEY]: 'ACTION C1: add additional properties here. https://onecx.github.io/docs/nx-plugins/current/general/getting_started/create-update/extend-form-fields.html#action-1',
+          [COMMENT_KEY]:
+            'ACTION C1: modify data object or use flat list here. https://onecx.github.io/docs/nx-plugins/current/general/getting_started/create-update/extend-form-fields.html#action-1',
         },
       })
       .set(`${options.updateResponseName}`, {
         type: 'object',
         properties: {
-          id: {
-            type: 'string',
+          dataObject: {
+            type: 'object',
+            $ref: `#/components/schemas/${dataObjectName}`,
           },
-          changeMe: {
-            type: 'string',
-          },
-          [COMMENT_KEY]: ' ACTION C1: add additional properties here. https://onecx.github.io/docs/nx-plugins/current/general/getting_started/create-update/extend-form-fields.html#action-1',
+          [COMMENT_KEY]:
+            'ACTION C1: modify data object or use flat list here. https://onecx.github.io/docs/nx-plugins/current/general/getting_started/create-update/extend-form-fields.html#action-1',
         },
       });
 

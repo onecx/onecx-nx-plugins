@@ -120,7 +120,7 @@ export class <%= featureClassName %>SearchEffects {
   exportData$ = createEffect(
     () => {
       return this.actions$.pipe(
-        ofType(<%= featureClassName %>SearchActions.chartVisibilityToggled),
+        ofType(<%= featureClassName %>SearchActions.exportButtonClicked),
         concatLatestFrom(() =>
           this.store.select(select<%= featureClassName %>SearchViewModel)
         ),
