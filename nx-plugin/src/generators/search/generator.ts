@@ -27,6 +27,7 @@ import { FeatureStateStep } from './steps/feature-state.step';
 import { GeneralOpenAPIStep } from './steps/general-openapi.step';
 import { GeneralPermissionsStep } from './steps/general-permissions.step';
 import { GeneralTranslationsStep } from './steps/general-translations.step';
+import { ValidateFeatureModuleStep } from '../shared/steps/validate-feature-module.step';
 
 const PARAMETERS: GeneratorParameter<SearchGeneratorSchema>[] = [
   {
@@ -111,6 +112,17 @@ export async function searchGenerator(
     throw new Error('Currently only NgRx projects are supported.');
   }
 
+  let validator = await GeneratorProcessor.runBatch(
+    tree,
+    options,
+    [new ValidateFeatureModuleStep()],
+    spinner,
+    true
+  );
+  if (validator.hasStoppedExecution()) {
+    return () => {};
+  }
+
   generateFiles(
     tree,
     joinPathFragments(__dirname, './files/ngrx'),
@@ -176,6 +188,7 @@ export async function searchGenerator(
       cwd: tree.root,
       stdio: 'inherit',
     });
+    generatorProcessor.printErrors();
   };
 }
 

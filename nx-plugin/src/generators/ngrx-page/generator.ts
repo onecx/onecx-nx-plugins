@@ -19,6 +19,7 @@ import { FeatureRoutesStep } from './steps/feature-routes.step';
 import { FeatureStateStep } from './steps/feature-state.step';
 import { GeneralPermissionsStep } from './steps/general-permissions.step';
 import { GeneralTranslationsStep } from './steps/general-translations.step';
+import { ValidateFeatureModuleStep } from '../shared/steps/validate-feature-module.step';
 
 const PARAMETERS: GeneratorParameter<PageGeneratorSchema>[] = [
   {
@@ -58,6 +59,17 @@ export async function componentGenerator(
     throw new Error('Currently only NgRx projects are supported.');
   }
 
+  let validator = await GeneratorProcessor.runBatch(
+    tree,
+    options,
+    [new ValidateFeatureModuleStep()],
+    spinner,
+    true
+  );
+  if (validator.hasStoppedExecution()) {
+    return () => {};
+  }
+
   generateFiles(
     tree,
     joinPathFragments(__dirname, './files/ngrx'),
@@ -92,7 +104,7 @@ export async function componentGenerator(
   spinner.succeed();
 
   return () => {
-    installPackagesTask(tree);   
+    installPackagesTask(tree);
     const files = tree
       .listChanges()
       .map((c) => c.path)
