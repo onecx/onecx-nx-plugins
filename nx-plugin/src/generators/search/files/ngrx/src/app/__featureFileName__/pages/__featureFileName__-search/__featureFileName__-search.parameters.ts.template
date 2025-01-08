@@ -1,4 +1,3 @@
-import { <%= featurePropertyName %>SearchRequestExampleEnumEnum } from 'src/app/shared/generated';
 import { z, ZodTypeAny } from 'zod';
 import { <%= searchRequestName %> } from 'src/app/shared/generated'
 

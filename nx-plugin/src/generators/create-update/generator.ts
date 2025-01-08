@@ -59,9 +59,9 @@ const PARAMETERS: GeneratorParameter<CreateUpdateGeneratorSchema>[] = [
     type: 'text',
     required: 'interactive',
     default: (values) => {
-      return `Create${names(values.featureName).className}`;
+      return `Create${names(values.featureName).className}Request`;
     },
-    prompt: 'Provide a name for your create request (e.g., CreateBook): ',
+    prompt: 'Provide a name for your create request (e.g., CreateBookRequest): ',
     showInSummary: true,
     showRules: [{ showIf: (values) => values.customizeNamingForAPI }],
   },
@@ -70,10 +70,10 @@ const PARAMETERS: GeneratorParameter<CreateUpdateGeneratorSchema>[] = [
     type: 'text',
     required: 'interactive',
     default: (values) => {
-      return `${names(values.featureName).className}CreateResponse`;
+      return `Create${names(values.featureName).className}Response`;
     },
     prompt:
-      'Provide a name for your create response (e.g., BookCreateResponse): ',
+      'Provide a name for your create response (e.g., CreateBookResponse): ',
     showInSummary: true,
     showRules: [{ showIf: (values) => values.customizeNamingForAPI }],
   },
@@ -82,9 +82,9 @@ const PARAMETERS: GeneratorParameter<CreateUpdateGeneratorSchema>[] = [
     type: 'text',
     required: 'interactive',
     default: (values) => {
-      return `Update${names(values.featureName).className}`;
+      return `Update${names(values.featureName).className}Request`;
     },
-    prompt: 'Provide a name for your update request (e.g., UpdateBook): ',
+    prompt: 'Provide a name for your update request (e.g., UpdateBookRequest): ',
     showInSummary: true,
     showRules: [{ showIf: (values) => values.customizeNamingForAPI }],
   },
@@ -93,10 +93,10 @@ const PARAMETERS: GeneratorParameter<CreateUpdateGeneratorSchema>[] = [
     type: 'text',
     required: 'interactive',
     default: (values) => {
-      return `${names(values.featureName).className}UpdateResponse`;
+      return `Update${names(values.featureName).className}Response`;
     },
     prompt:
-      'Provide a name for your update response (e.g., BookUpdateResponse): ',
+      'Provide a name for your update response (e.g., UpdateBookResponse): ',
     showInSummary: true,
     showRules: [{ showIf: (values) => values.customizeNamingForAPI }],
   },
