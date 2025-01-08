@@ -23,7 +23,7 @@ export class ValidateFeatureModuleStep
     );
     if (!tree.exists(moduleFilePath)) {
       return {
-        error: `Feature module not found at ${moduleFilePath}, please generate feature first!`,
+        error: `Feature module not found at ${moduleFilePath}, please generate the feature first!`,
         stopExecution: true,
       };
     }

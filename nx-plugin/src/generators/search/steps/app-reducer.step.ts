@@ -29,7 +29,7 @@ export class AppReducerStep implements GeneratorStep<SearchGeneratorSchema> {
     } else {
       return {
         error:
-          'Could not modify imports for app.reducers.ts, please investigate if already present!',
+          'Could not modify imports for app.reducers.ts, please investigate if the imports are already present!',
         stopExecution: false,
       };
     }
@@ -72,7 +72,7 @@ export class AppReducerStep implements GeneratorStep<SearchGeneratorSchema> {
     } else {
       return {
         error:
-          'Could not add localStorageSyncReducer for app.reducers.ts, please investigate if already present!',
+          'Could not add localStorageSyncReducer for app.reducers.ts, please investigate if it is already present!',
         stopExecution: false,
       };
     }
