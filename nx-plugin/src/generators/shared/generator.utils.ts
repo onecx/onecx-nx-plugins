@@ -1,13 +1,28 @@
 import { Tree } from '@nx/devkit';
 import ora = require('ora');
 
-export interface GeneratorStepError {
-  error: string;
+interface GeneratorStepErrorParameters {
   stopExecution: boolean;
 }
 
+const DEFAULT_ERROR_PARAMETERS: GeneratorStepErrorParameters = {
+  stopExecution: false,
+};
+
+export class GeneratorStepError extends Error {
+  errorParameters: GeneratorStepErrorParameters;
+
+  constructor(message: string, parameters?: GeneratorStepErrorParameters) {
+    super(message);
+    this.errorParameters = {
+      ...DEFAULT_ERROR_PARAMETERS,
+      ...parameters,
+    };
+  }
+}
+
 export interface GeneratorStep<T> {
-  process(tree: Tree, options: T): void | GeneratorStepError;
+  process(tree: Tree, options: T): void;
   getTitle(): string;
 }
 
@@ -25,17 +40,25 @@ export class GeneratorProcessor<T> {
       if (ora) {
         ora.text = step.getTitle();
       }
-      let res = step.process(tree, options);
-      if (res && (res as GeneratorStepError).error !== undefined) {
-        let gsf = res as GeneratorStepError;
-        this.errors.push(gsf);
-        if (gsf.stopExecution) {
-          break;
+      try {
+        step.process(tree, options);
+      } catch (error) {
+        if (error instanceof GeneratorStepError) {
+          let gsf = error as GeneratorStepError;
+          this.errors.push(gsf);
+          if (gsf.errorParameters.stopExecution) {
+            break;
+          }
         }
       }
     }
     if (this.errors.length > 0 && printErrors) {
       this.printErrors(ora);
+      if (this.hasStoppedExecution()) {
+        console.error(
+          'One of the errors above stopped the generation, check for possible issues.'
+        );
+      }
     }
   }
 
@@ -44,7 +67,8 @@ export class GeneratorProcessor<T> {
   }
 
   hasStoppedExecution(): boolean {
-    return this.errors.find((e) => e.stopExecution)?.stopExecution;
+    return this.errors.find((e) => e.errorParameters.stopExecution)
+      ?.errorParameters.stopExecution;
   }
 
   printErrors(ora?: ora.Ora) {
@@ -54,7 +78,7 @@ export class GeneratorProcessor<T> {
       console.error('Some errors occurred during generation:');
     }
     this.errors.forEach((e) => {
-      console.error(e.error);
+      console.error(e.message);
     });
   }
 

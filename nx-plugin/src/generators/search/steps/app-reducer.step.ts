@@ -7,10 +7,7 @@ import { SearchGeneratorSchema } from '../schema';
 
 export class AppReducerStep implements GeneratorStep<SearchGeneratorSchema> {
   //@ts-eslint:ignore @typescript-eslint/no-unused-var
-  process(
-    tree: Tree,
-    _options: SearchGeneratorSchema
-  ): void | GeneratorStepError {
+  process(tree: Tree, _options: SearchGeneratorSchema) {
     const reducerFilePath = joinPathFragments('src/app/app.reducers.ts');
     const propertyName = names(_options.featureName).propertyName;
     let reducerContent = tree.read(reducerFilePath, 'utf8');
@@ -27,11 +24,9 @@ export class AppReducerStep implements GeneratorStep<SearchGeneratorSchema> {
          import { lazyLoadingMergeReducer } from '@onecx/ngrx-accelerator';`
       );
     } else {
-      return {
-        error:
-          'Could not modify imports for app.reducers.ts, please investigate if the imports are already present!',
-        stopExecution: false,
-      };
+      throw new GeneratorStepError(
+        'Could not modify imports for app.reducers.ts, please investigate if the imports are already present!'
+      );
     }
 
     if (
@@ -70,11 +65,9 @@ export class AppReducerStep implements GeneratorStep<SearchGeneratorSchema> {
             : [localStorageSyncReducer];`
       );
     } else {
-      return {
-        error:
-          'Could not add localStorageSyncReducer for app.reducers.ts, please investigate if it is already present!',
-        stopExecution: false,
-      };
+      throw new GeneratorStepError(
+        'Could not add localStorageSyncReducer for app.reducers.ts, please investigate if it is already present!'
+      );
     }
     tree.write(reducerFilePath, reducerContent);
   }

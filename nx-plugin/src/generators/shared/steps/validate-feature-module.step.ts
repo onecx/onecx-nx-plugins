@@ -8,13 +8,8 @@ interface FeatureSchema {
   featureName: string;
 }
 
-export class ValidateFeatureModuleStep
-  implements GeneratorStep<FeatureSchema>
-{
-  process(
-    tree: Tree,
-    options: FeatureSchema
-  ): void | GeneratorStepError {
+export class ValidateFeatureModuleStep implements GeneratorStep<FeatureSchema> {
+  process(tree: Tree, options: FeatureSchema) {
     const fileName = names(options.featureName).fileName;
     const moduleFilePath = joinPathFragments(
       'src/app',
@@ -22,10 +17,12 @@ export class ValidateFeatureModuleStep
       fileName + '.module.ts'
     );
     if (!tree.exists(moduleFilePath)) {
-      return {
-        error: `Feature module not found at ${moduleFilePath}, please generate the feature first!`,
-        stopExecution: true,
-      };
+      throw new GeneratorStepError(
+        `Feature module not found at ${moduleFilePath}, please generate the feature first!`,
+        {
+          stopExecution: true,
+        }
+      );
     }
   }
   getTitle(): string {
