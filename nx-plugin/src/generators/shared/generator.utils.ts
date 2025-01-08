@@ -1,6 +1,26 @@
 import { Tree } from '@nx/devkit';
 import ora = require('ora');
 
+interface GeneratorStepErrorParameters {
+  stopExecution: boolean;
+}
+
+const DEFAULT_ERROR_PARAMETERS: GeneratorStepErrorParameters = {
+  stopExecution: false,
+};
+
+export class GeneratorStepError extends Error {
+  errorParameters: GeneratorStepErrorParameters;
+
+  constructor(message: string, parameters?: GeneratorStepErrorParameters) {
+    super(message);
+    this.errorParameters = {
+      ...DEFAULT_ERROR_PARAMETERS,
+      ...parameters,
+    };
+  }
+}
+
 export interface GeneratorStep<T> {
   process(tree: Tree, options: T): void;
   getTitle(): string;
@@ -8,17 +28,70 @@ export interface GeneratorStep<T> {
 
 export class GeneratorProcessor<T> {
   private steps: GeneratorStep<T>[] = [];
+  private errors: GeneratorStepError[] = [];
 
   addStep(step: GeneratorStep<T>) {
     this.steps.push(step);
   }
 
-  async run(tree: Tree, options: T, ora?: ora.Ora) {
+  async run(tree: Tree, options: T, ora?: ora.Ora, printErrors = false) {
+    this.errors = [];
     for (const step of this.steps) {
       if (ora) {
         ora.text = step.getTitle();
       }
-      step.process(tree, options);
+      try {
+        step.process(tree, options);
+      } catch (error) {
+        if (error instanceof GeneratorStepError) {
+          let gsf = error as GeneratorStepError;
+          this.errors.push(gsf);
+          if (gsf.errorParameters.stopExecution) {
+            break;
+          }
+        }
+      }
     }
+    if (this.errors.length > 0 && printErrors) {
+      this.printErrors(ora);
+      if (this.hasStoppedExecution()) {
+        console.error(
+          'One of the errors above stopped the generation, check for possible issues.'
+        );
+      }
+    }
+  }
+
+  getErrors(): GeneratorStepError[] {
+    return this.errors;
+  }
+
+  hasStoppedExecution(): boolean {
+    return this.errors.find((e) => e.errorParameters.stopExecution)
+      ?.errorParameters.stopExecution;
+  }
+
+  printErrors(ora?: ora.Ora) {
+    if (ora) {
+      ora.fail('Some errors occurred during generation:');
+    } else {
+      console.error('Some errors occurred during generation:');
+    }
+    this.errors.forEach((e) => {
+      console.error(e.message);
+    });
+  }
+
+  static async runBatch<T>(
+    tree: Tree,
+    options: T,
+    steps: GeneratorStep<T>[],
+    ora?: ora.Ora,
+    printErrors = false
+  ): Promise<GeneratorProcessor<T>> {
+    let genProc = new GeneratorProcessor();
+    steps.forEach((s) => genProc.addStep(s));
+    await genProc.run(tree, options, ora, printErrors);
+    return genProc;
   }
 }

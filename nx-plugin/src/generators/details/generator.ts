@@ -25,6 +25,7 @@ import { SearchComponentStep } from './steps/search-component.step';
 import { SearchEffectsStep } from './steps/search-effects.step';
 import { SearchHTMLStep } from './steps/search-html.step';
 import { SearchTestsStep } from './steps/search-tests.step';
+import { ValidateFeatureModuleStep } from '../shared/steps/validate-feature-module.step';
 
 const PARAMETERS: GeneratorParameter<DetailsGeneratorSchema>[] = [
   {
@@ -92,6 +93,17 @@ export async function detailsGenerator(
   if (!isNgRx) {
     spinner.fail('Currently only NgRx projects are supported.');
     throw new Error('Currently only NgRx projects are supported.');
+  }
+
+  let validator = await GeneratorProcessor.runBatch(
+    tree,
+    options,
+    [new ValidateFeatureModuleStep()],
+    spinner,
+    true
+  );
+  if (validator.hasStoppedExecution()) {
+    return () => {};
   }
 
   generateFiles(

@@ -1,10 +1,13 @@
 import { Tree, joinPathFragments, names } from '@nx/devkit';
-import { GeneratorStep } from '../../shared/generator.utils';
+import {
+  GeneratorStep,
+  GeneratorStepError,
+} from '../../shared/generator.utils';
 import { SearchGeneratorSchema } from '../schema';
 
 export class AppReducerStep implements GeneratorStep<SearchGeneratorSchema> {
   //@ts-eslint:ignore @typescript-eslint/no-unused-var
-  process(tree: Tree, _options: SearchGeneratorSchema): void {
+  process(tree: Tree, _options: SearchGeneratorSchema) {
     const reducerFilePath = joinPathFragments('src/app/app.reducers.ts');
     const propertyName = names(_options.featureName).propertyName;
     let reducerContent = tree.read(reducerFilePath, 'utf8');
@@ -16,20 +19,13 @@ export class AppReducerStep implements GeneratorStep<SearchGeneratorSchema> {
     ) {
       reducerContent = reducerContent.replace(
         `import { ActionReducerMap, MetaReducer } from '@ngrx/store';`,
-        `import { ActionReducerMap, MetaReducer, ActionReducer } from '@ngrx/store';`
+        `import { ActionReducerMap, MetaReducer, ActionReducer } from '@ngrx/store';
+         import { localStorageSync } from 'ngrx-store-localstorage';
+         import { lazyLoadingMergeReducer } from '@onecx/ngrx-accelerator';`
       );
-    }
-
-    if (
-      !reducerContent.includes(
-        `import { localStorageSync } from 'ngrx-store-localstorage';`
-      )
-    ) {
-      reducerContent = reducerContent.replace(
-        `import { State } from './app.state';`,
-        `import { State } from './app.state';
-          import { localStorageSync } from 'ngrx-store-localstorage';
-          import { lazyLoadingMergeReducer } from '@onecx/ngrx-accelerator';`
+    } else {
+      throw new GeneratorStepError(
+        'Could not modify imports for app.reducers.ts, please investigate if the imports are already present!'
       );
     }
 
@@ -67,6 +63,10 @@ export class AppReducerStep implements GeneratorStep<SearchGeneratorSchema> {
           export const metaReducers: MetaReducer<State>[] = isDevMode()
             ? [localStorageSyncReducer]
             : [localStorageSyncReducer];`
+      );
+    } else {
+      throw new GeneratorStepError(
+        'Could not add localStorageSyncReducer for app.reducers.ts, please investigate if it is already present!'
       );
     }
     tree.write(reducerFilePath, reducerContent);
