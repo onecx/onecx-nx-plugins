@@ -44,7 +44,7 @@ export class GeneratorProcessor<T> {
         step.process(tree, options);
       } catch (error) {
         if (error instanceof GeneratorStepError) {
-          let gsf = error as GeneratorStepError;
+          const gsf = error as GeneratorStepError;
           this.errors.push(gsf);
           if (gsf.errorParameters.stopExecution) {
             break;
@@ -89,7 +89,7 @@ export class GeneratorProcessor<T> {
     ora?: ora.Ora,
     printErrors = false
   ): Promise<GeneratorProcessor<T>> {
-    let genProc = new GeneratorProcessor();
+    const genProc = new GeneratorProcessor();
     steps.forEach((s) => genProc.addStep(s));
     await genProc.run(tree, options, ora, printErrors);
     return genProc;
