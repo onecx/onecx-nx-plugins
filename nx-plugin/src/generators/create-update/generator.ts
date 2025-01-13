@@ -61,7 +61,8 @@ const PARAMETERS: GeneratorParameter<CreateUpdateGeneratorSchema>[] = [
     default: (values) => {
       return `Create${names(values.featureName).className}Request`;
     },
-    prompt: 'Provide a name for your create request (e.g., CreateBookRequest): ',
+    prompt:
+      'Provide a name for your create request (e.g., CreateBookRequest): ',
     showInSummary: true,
     showRules: [{ showIf: (values) => values.customizeNamingForAPI }],
   },
@@ -84,7 +85,8 @@ const PARAMETERS: GeneratorParameter<CreateUpdateGeneratorSchema>[] = [
     default: (values) => {
       return `Update${names(values.featureName).className}Request`;
     },
-    prompt: 'Provide a name for your update request (e.g., UpdateBookRequest): ',
+    prompt:
+      'Provide a name for your update request (e.g., UpdateBookRequest): ',
     showInSummary: true,
     showRules: [{ showIf: (values) => values.customizeNamingForAPI }],
   },
@@ -128,8 +130,8 @@ export async function createUpdateGenerator(
     spinner.fail('Currently only NgRx projects are supported.');
     throw new Error('Currently only NgRx projects are supported.');
   }
-  
-  let validator = await GeneratorProcessor.runBatch(
+
+  const validator = await GeneratorProcessor.runBatch(
     tree,
     options,
     [new ValidateFeatureModuleStep()],
@@ -137,7 +139,9 @@ export async function createUpdateGenerator(
     true
   );
   if (validator.hasStoppedExecution()) {
-    return () => {};
+    return () => {
+      // Intentionally left blank
+    };
   }
 
   generateFiles(

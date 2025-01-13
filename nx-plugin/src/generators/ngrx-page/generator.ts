@@ -59,7 +59,7 @@ export async function componentGenerator(
     throw new Error('Currently only NgRx projects are supported.');
   }
 
-  let validator = await GeneratorProcessor.runBatch(
+  const validator = await GeneratorProcessor.runBatch(
     tree,
     options,
     [new ValidateFeatureModuleStep()],
@@ -67,7 +67,9 @@ export async function componentGenerator(
     true
   );
   if (validator.hasStoppedExecution()) {
-    return () => {};
+    return () => {
+      // Intentionally left blank
+    };
   }
 
   generateFiles(

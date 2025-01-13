@@ -79,8 +79,8 @@ export async function deleteGenerator(
     spinner.fail('Currently only NgRx projects are supported.');
     throw new Error('Currently only NgRx projects are supported.');
   }
-  
-  let validator = await GeneratorProcessor.runBatch(
+
+  const validator = await GeneratorProcessor.runBatch(
     tree,
     options,
     [new ValidateFeatureModuleStep()],
@@ -88,7 +88,9 @@ export async function deleteGenerator(
     true
   );
   if (validator.hasStoppedExecution()) {
-    return () => {};
+    return () => {
+      // Intentionally left blank
+    };
   }
 
   const generatorProcessor = new GeneratorProcessor();
