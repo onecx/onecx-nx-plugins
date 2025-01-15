@@ -57,7 +57,7 @@ get_or_save_token() {
 extract_app_id_and_product_name() {
     app_id=$(sed -n '2 s/^name: \([^ ]*\).*/\1/p' "$chart_file")
     app_name=$(sed -n '4 s/description: //p' "$chart_file")
-    product_name=$(echo "$app_id" | sed 's/-ui$//')
+    product_name=$(echo "$app_id")
     
     app_id="${app_id}"
     
