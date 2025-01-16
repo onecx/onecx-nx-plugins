@@ -11,14 +11,14 @@ export const <%= featureClassName %>SearchActions = createActionGroup({
       searchCriteria: <%= featureClassName %>SearchCriteria;
     }>(),
     'Reset button clicked': emptyProps(),
-    '<%= featureFileName.replaceAll("-"," ") %> search results received': props<{
+    '<%= featurePropertyName.replaceAll("-"," ") %> search results received': props<{
       stream: <%= dataObjectName %>[];
       size: number;
       number: number;
       totalElements: number;
       totalPages: number;
     }>(),
-    '<%= featureFileName.replaceAll("-"," ") %> search results loading failed': props<{ error: string | null }>(),    
+    '<%= featurePropertyName.replaceAll("-"," ") %> search results loading failed': props<{ error: string | null }>(),    
     'Export button clicked': emptyProps(),
     'Result component state changed': props<InteractiveDataViewComponentState>(),
     'Search header component state changed': props<SearchHeaderComponentState>(),
