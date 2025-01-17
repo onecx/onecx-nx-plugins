@@ -87,19 +87,19 @@ export class SearchEffectsStep implements GeneratorStep<DeleteGeneratorSchema> {
                   summaryKey: '${constantName}_DELETE.SUCCESS',
                 });
                 return ${className}SearchActions.delete${className}Succeeded();
+              }),
+              catchError((error) => {
+                this.messageService.error({
+                  summaryKey: '${constantName}_DELETE.ERROR',
+                });
+                return of(
+                  ${className}SearchActions.delete${className}Failed({
+                    error,
+                  })
+                );
               })
             );
-        }),
-        catchError((error) => {
-          this.messageService.error({
-            summaryKey: '${constantName}_DELETE.ERROR',
-          });
-          return of(
-            ${className}SearchActions.delete${className}Failed({
-              error,
-            })
-          );
-        })
+        })        
       );
     });
   
