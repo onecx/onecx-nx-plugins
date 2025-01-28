@@ -19,7 +19,8 @@ All the data that should be used in the search request must be in that OpenAPI d
 Please refer to the {adding_search_criteria_general_cookbook_url}["Adding search criteria" cookbook] for more information.
 
 After updating the OpenAPI specification, execute the command *npm run apigen* to generate the corresponding TypeScript code.
-Remove "ACTION S1" comment after working on this task.
+
+_Remove "ACTION S1" comment after working on this task._
 
 [#action-2]
 ==== ACTION S2: Define the members
@@ -34,7 +35,8 @@ While defining search parameters note that:
 * dates are always mapped to strings (as JSON does not know DateTime)
 
 Refer to the {adding_search_criteria_general_parameters_cookbook_url}["Parameters" section of "Adding search criteria" cookbook].
-Remove "ACTION S2" comment after working on this task.
+
+_Remove "ACTION S2" comment after working on this task._
 
 [#action-3]
 ==== ACTION S3: Specify desired search criterias
@@ -43,7 +45,8 @@ Please specify your desired search criterias by adding HTML input fields. You ca
 `+MultiSelect+` or `+AutoComplete+`.
 
 Please refer to the {adding_search_criteria_general_html_url}["HTML" section of "Adding search criteria" cookbook].
-Remove "ACTION S3" comment after working on this task.
+
+_Remove "ACTION S3" comment after working on this task._
 
 
 [#action-4]
@@ -53,7 +56,7 @@ The translations in German and English languages should be defined in correspond
 Please ensure that all input field labels have the necessary translations added.
 Refer to the {adding_translations_cookbook_url}[cookbook describing translations].
 
-Remove "ACTION S4" comment after working on this task.
+_Remove "ACTION S4" comment after working on this task._
 
 ---
 Now you can continue with the next section xref:getting_started/search/configure-search-results.adoc[Configure search results]
