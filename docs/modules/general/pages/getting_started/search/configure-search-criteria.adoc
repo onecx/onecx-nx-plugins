@@ -7,126 +7,53 @@
 :adding_search_criteria_general_parameters_cookbook_url: xref:latest@guides:angular:ngrx/cookbook/adding-search-criteria/general.adoc#parameters
 :adding_search_criteria_general_html_url: xref:latest@guides:angular:ngrx/cookbook/adding-search-criteria/general.adoc#html
 :adding_search_criteria_general_html_examples_url: xref:latest@guides:angular:ngrx/cookbook/adding-search-criteria/general.adoc#examples-for-different-input-fields
+:adding_translations_cookbook_url: xref:latest@guides:angular/pages/cookbook/translations.adoc
 
 [#action-1]
 ==== ACTION S1: Add additional properties
 
-The `+Search<FeatureName>Request+` data structure in the BFF yaml must be adapted. 
+You should have a `+Search<Feature>Request+` defined in the OpenAPI specification, which should be in file `+<feature>-bff.yaml+`. 
+Where `feature` is the name of your entity. By modifying `+<feature>-bff.yaml+` file you can add additional parameters to your search request.
+All the data that should be used in the search request must be in that OpenAPI data structure either on top-level or in sub data structures.
 
-All the data that should be used in the request must be in that data structure either on top-level or in sub data structures.
+Please refer to the {adding_search_criteria_general_cookbook_url}["Adding search criteria" cookbook] for more information.
 
-_Adapt in File:_ `+<feature>-bff.yaml+`
-
-.Example:
-[source, yml]
-----
-Search<Feature>Request:
-      type: object
-      properties:
-        pageNumber: 
-          type: integer
-          format: int32
-          default: 0
-          description: 'The number of the page.'          
-        pageSize:
-          type: integer
-          format: int32
-          default: 100
-          maximum: 1000
-          description: 'The size of the page.'      
-        id:
-          type: string
-        exampleProperty:
-          type: string
-----
-
-Please refer to the {adding_search_criteria_general_cookbook_url}[adding search criteria general cookbook] for more information.
-
-IMPORTANT: After updating the OpenAPI specification, execute the command *npm run apigen* to generate the corresponding TypeScript code.
-
-include::partial$remove-action.adoc[]
+After updating the OpenAPI specification, execute the command *npm run apigen* to generate the corresponding TypeScript code.
+Remove "ACTION S1" comment after working on this task.
 
 [#action-2]
 ==== ACTION S2: Define the members
-Please define the members for your `+<%= featurePropertyName %>SearchCriteriasSchema+`
+In order to use search criteria, which you just defined in "ACTION S1", you need to modify the file, containing typescript representation of the search parameters. 
+Such file should be called `+<feature>-search.parameters.ts+`. There you need to define the members for your `+<Feature>SearchCriteriasSchema+`. Where `feature` is again the name of your entity.
 
-Adapt search parameters:
+While defining search parameters note that:
 
 * keys *need* to match the keys from your OpenAPIs SearchCriteria Object
 * always start with `+z.string()+`
 * when required, you can use `+.transform()+` to extend the validation
 * dates are always mapped to strings (as JSON does not know DateTime)
 
-_Adapt in File:_ `+<feature>-search.parameters.ts+`
-
-.Example:
-[source, javascript]
-----
-    exampleString: z.string().optional(),
-    exampleNumber: z
-        .string()
-        .transform((v) => (v ? Number(v) : undefined))
-        .optional(),
-----
-
-Refer to the {adding_search_criteria_general_parameters_cookbook_url}[adding search criteria parameters cookbook] for more types.
-
-include::partial$remove-action.adoc[]
+Refer to the {adding_search_criteria_general_parameters_cookbook_url}["Parameters" section of "Adding search criteria" cookbook].
+Remove "ACTION S2" comment after working on this task.
 
 [#action-3]
 ==== ACTION S3: Specify desired search criterias
-Please specify your desired search criterias by adding input fields.
+In order to make the search criteria visible to the end user, you need to modify HTML view, located in the file called `+<feature>-search.component.html+`.
+Please specify your desired search criterias by adding HTML input fields. You can add different types of input fields, like `+Text+`, `+Calendar+`, `+Dropdown+`,
+`+MultiSelect+` or `+AutoComplete+`.
 
-_Adapt in File:_ `+<feature>-search.component.html+`
+Please refer to the {adding_search_criteria_general_html_url}["HTML" section of "Adding search criteria" cookbook].
+Remove "ACTION S3" comment after working on this task.
 
-.Example text input field:
-[subs=+macros]
-[source, html]
-----
-  <form [formGroup]="criteriaGroup">
-      <div class="grid mt-0 p-fluid">
-        <div class="col-12 md:col-3">
-          <span class="p-float-label">
-            <input
-              id="id"
-              pInputText
-              type="text"
-              formControlName="id"
-              class="p-inputtext p-component"
-            />
-            <label for="id">{{
-              'EXAMPLE_FEATURE_SEARCH.CRITERIA.ID' | translate
-              }}</label>
-          </span>
-        </div>
-      </div>
-  </form>    
-----
-
-Please refer to the {adding_search_criteria_general_html_url}[adding search criteria html cookbook] for more information.
-
-[#examples-for-different-input-fields]
-=== Examples for different input fields
-Depending on what kind of input fields you want to add, the implementation differs.
-
-Refer to the {adding_search_criteria_general_html_examples_url}[adding search criteria examples for different input fields cookbook].
 
 [#action-4]
 ==== ACTION S4: Add translations
-_Adapt in File:_  `+de.json+` / `+en.json+`
+The translations in German and English languages should be defined in corresponding files: `+de.json+` / `+en.json+`
 
 Please ensure that all input field labels have the necessary translations added.
+Refer to the {adding_translations_cookbook_url}[cookbook describing translations].
 
-.Example
-[source, json]
-----
-  {
-    "EXAMPLE_FEATURE_SEARCH.CRITERIA.ID": "Example input field label"
-  } 
-----
-
-// TODO: Specify for what the translation will be added
-// TODO: reference to cookbook e.g.: angular/cookbook/translations
+Remove "ACTION S4" comment after working on this task.
 
 ---
 Now you can continue with the next section xref:getting_started/search/configure-search-results.adoc[Configure search results]
