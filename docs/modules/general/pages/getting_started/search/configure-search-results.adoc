@@ -1,106 +1,56 @@
-=== Configure the search results. 
+== Configure the search results. 
 
 :idprefix:
 :idseparator: -
 
-:data_table_column_properties_cookbook_url: xref:latest@guides:angular/cookbook/components/interactive-data-view/data-table-column.adoc
+:adding_results_cookbook_url: xref:latest@guides:angular:ngrx/cookbook/adding-search-results/results.adoc
+:adding_results_columns_cookbook_url: xref:latest@guides:angular:ngrx/cookbook/adding-search-results/results.adoc#columns
+:adding_results_translations_cookbook_url: xref:latest@guides:angular:ngrx/cookbook/adding-search-results/results.adoc#translations
+:adding_translations_cookbook_url: xref:latest@guides:angular/pages/cookbook/translations.adoc
 
 To configure the search results, the following actions must be taken. 
 
 [#action-5]
-==== ACTION S5: Add additional properties
-Here you can add additional properties which you need for your `+<SearchFeatureResponse>+`.
+=== ACTION S5: Add additional properties
 
-* The `+<FeatureName>+` data object structure in the BFF yaml can be adapted. 
-** If you have chosen a custom DataObjectName in the generation, the schema entry will be named accordingly.
-** All the data that should be displayed in the results must be in that data structure either on top-level or in sub data structures. 
-** The data should be as minimal as possible to not create too much load to the backend and the DB. 
+If you need to add additional properties to your response object `+Search<Feature>Response+`, you can do that by modifying OpenAPI specification file `+<feature>-bff.yaml+`.
+There the `+<Feature>+` data object structure can be adapted. Here `feature` is the name of your entity, for which you are building the search functionality.
 
-_Adapt in File:_ `+<feature>-bff.yaml+`
+Note that:
 
-.Example:
-[source, yml]
-----
-  <Feature>:
-        type: object
-        required:
-          - 'modificationCount'
-          - 'id'
-        properties:
-          modificationCount:
-            type: integer
-            format: int32
-          id:
-            type: integer
-            format: int64
-          exampleProperty:
-            type: string
-----
+* If you have chosen a custom DataObjectName in the generation, the schema entry will be named accordingly.
+* All the data that should be displayed in the results must be in that data structure either on top-level or in sub data structures. 
+* The data should be as minimal as possible to not create too much load to the backend and the DB. 
 
-IMPORTANT: After updating the OpenAPI specification, execute the command *npm run apigen* to generate the corresponding TypeScript code.
+Please refer to the {adding_results_cookbook_url}["Adding search results" cookbook] for more information.
 
-include::partial$remove-action.adoc[]
+After updating the OpenAPI specification, execute the command *npm run apigen* to generate the corresponding TypeScript code.
+
+_Remove "ACTION S5" comment after working on this task._
 
 [#action-6]
-==== ACTION S6: Define search results columns
-The column mappings must be defined. 
+=== ACTION S6: Define search results columns
+In order to use the fields of search results, defined in OpenAPI specification, you need to modify the file, containing typescript representation of the search result columns. 
+Such file should be called `+<feature>-search.columns.ts+`. There you need to define the members for your `+<Feature>SearchColumns+`.
 
-_Adapt in File:_ `+<feature>-search.columns.ts+`
-.Example:
-[subs=+macros]
-[source, javascript]
-----
-  export const FeaturePropertySearchColumns: DataTableColumn[] = [
-        {
-        columnType: ColumnType.STRING,
-        id: 'columnId',
-        nameKey: 'FEATURE_PROPERTY_SEARCH.RESULTS.COLUMN_ID',
-        filterable: true,
-        sortable: true,
-        predefinedGroupKeys: [
-          'FEATURE_PROPERTY_SEARCH.PREDEFINED_GROUP.DEFAULT',
-          'FEATURE_PROPERTY_SEARCH.PREDEFINED_GROUP.EXTENDED',
-          'FEATURE_PROPERTY_SEARCH.PREDEFINED_GROUP.FULL',
-        ],
-      },
-  ]
-----
+Refer to the {adding_results_columns_cookbook_url}[cookbook regarding "Columns of Result Data Table"] for more information.
 
-Refer to the {data_table_column_properties_cookbook_url}[DataTableColumn properties overview cookbook] for more information.
-
-include::partial$remove-action.adoc[]
+_Remove "ACTION S6" comment after working on this task._
 
 [#action-7]
-==== ACTION S7: Mapping of the items and respective translations
+=== ACTION S7: Mapping of the items and respective translations
 
-Here you can create a mapping of the items and their corresponding translation strings for columns with type `TRANSLATION_KEY` to translate the values in the talbe rows respective to the column.
+Here you can create a mapping of the items and their corresponding translation strings for columns with type `TRANSLATION_KEY` to translate the values in the talbe rows respective to the column. You can do that with help of selectors.
 
-_Adapt in File:_ <feature>-search.selectors.ts
-.Example:
-[source, javascript]
-----
-  export const selectResults = createSelector(
-    ExampleFeaturePropertySearchSelectors.selectResults,
-    (results): RowListGridData[] => {
-      return results.map((item) => ({      
-        imagePath: '',
-        ...item,
-        columnId1: item.columnId1
-          ? `EXAMPLE_FEATUTRE_PROPERTY_SEARCH.RESULTS.COLUMNID1.${item.columnId1}`
-          : '',
-      }));
-    }
-  );
-----
+Refer to the {adding_results_translations_cookbook_url}[cookbook regarding "Translations for Columns with Type TRANSLATION_KEY"] for more information.
 
-include::partial$remove-action.adoc[]
+_Remove "ACTION S7" comment after working on this task._
 
 [#action-8]
-==== ACTION S8: Add translation
-// TODO: reference to cookbook e.g.: angular/cookbook/translations
+=== ACTION S8: Add translation
 
-_Adapt in File:_ `+de.json+` / `+en.json+`
+Please ensure that all column headers and the values in columns with the type `TRANSLATION_KEY` have the necessary translations added to corresponding files `+de.json+` / `+en.json+` for German and English translations.
 
-Please ensure that all column headers and the values in columns with the type `TRANSLATION_KEY` have the necessary translations added.
+Refer to the {adding_translations_cookbook_url}[cookbook for more information regarding translations].
 
-include::partial$remove-action.adoc[]
+_Remove "ACTION S8" comment after working on this task._
