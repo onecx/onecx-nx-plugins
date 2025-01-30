@@ -32,7 +32,6 @@ After running the generator, the following actions must be taken:
 [start=1]
 . xref:getting_started/search/configure-search-criteria.adoc[Configure search criteria]
 . xref:getting_started/search/configure-search-results.adoc[Configure search results]
-. xref:getting_started/search/configure-result-diagram.adoc[Configure result diagram]
 . xref:getting_started/search/update-header-actions.adoc[Update Header Actions]
 . xref:getting_started/search/update-permissions.adoc[Update permissions]
 . xref:getting_started/search/further-actions.adoc[Check for further actions]
