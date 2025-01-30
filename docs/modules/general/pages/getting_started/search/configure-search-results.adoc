@@ -6,6 +6,7 @@
 :adding_results_cookbook_url: xref:latest@guides:angular:ngrx/cookbook/adding-search-results/results.adoc
 :adding_results_columns_cookbook_url: xref:latest@guides:angular:ngrx/cookbook/adding-search-results/results.adoc#columns
 :adding_results_translations_cookbook_url: xref:latest@guides:angular:ngrx/cookbook/adding-search-results/results.adoc#translations
+:adding_results_diagram_cookbook_url: xref:latest@guides:angular:ngrx/cookbook/adding-search-results/results.adoc#diagram
 :adding_translations_cookbook_url: xref:latest@guides:angular/pages/cookbook/translations.adoc
 
 To configure the search results, the following actions must be taken. 
@@ -54,3 +55,15 @@ Please ensure that all column headers and the values in columns with the type `T
 Refer to the {adding_translations_cookbook_url}[cookbook for more information regarding translations].
 
 _Remove "ACTION S8" comment after working on this task._
+
+
+[#action-9]
+=== ACTION S9: Select the column to be displayed
+
+By default, a diagram is created which counts the different values in a column and shows the results. To use this diagram, the column which should be displayed needs to be selected first. You need to provide the id of the column for which the diagram should be displayed in the typescript component. Diagram then shows the distribution of data of the selected column.
+In the HTML view the diagram and results data table can either placed after one another, by selecting vertical layout, or they can be placed next to each other, side by side, by selecting horizontal layout.
+
+Please refer to the {adding_results_diagram_cookbook_url}[cookbook] for more details.
+
+_Remove "ACTION S9" comment after working on this task._
+
