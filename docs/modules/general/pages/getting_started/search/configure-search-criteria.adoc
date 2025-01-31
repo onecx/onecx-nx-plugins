@@ -1,4 +1,4 @@
-=== Configure the search criteria and parameters
+== Configure the search criteria and parameters
 
 :idprefix:
 :idseparator: -
@@ -10,7 +10,7 @@
 :adding_translations_cookbook_url: xref:latest@guides:angular/pages/cookbook/translations.adoc
 
 [#action-1]
-==== ACTION S1: Add additional properties
+=== ACTION S1: Add additional properties
 
 You should have a `+Search<Feature>Request+` defined in the OpenAPI specification, which should be in file `+<feature>-bff.yaml+`. 
 Where `feature` is the name of your entity. By modifying `+<feature>-bff.yaml+` file you can add additional parameters to your search request.
@@ -23,7 +23,7 @@ After updating the OpenAPI specification, execute the command *npm run apigen* t
 _Remove "ACTION S1" comment after working on this task._
 
 [#action-2]
-==== ACTION S2: Define the members
+=== ACTION S2: Define the members
 In order to use search criteria, which you just defined in "ACTION S1", you need to modify the file, containing typescript representation of the search parameters. 
 Such file should be called `+<feature>-search.parameters.ts+`. There you need to define the members for your `+<Feature>SearchCriteriasSchema+`. Where `feature` is again the name of your entity.
 
@@ -39,7 +39,7 @@ Refer to the {adding_search_criteria_general_parameters_cookbook_url}["Parameter
 _Remove "ACTION S2" comment after working on this task._
 
 [#action-3]
-==== ACTION S3: Specify desired search criterias
+=== ACTION S3: Specify desired search criterias
 In order to make the search criteria visible to the end user, you need to modify HTML view, located in the file called `+<feature>-search.component.html+`.
 Please specify your desired search criterias by adding HTML input fields. You can add different types of input fields, like `+Text+`, `+Calendar+`, `+Dropdown+`,
 `+MultiSelect+` or `+AutoComplete+`.
@@ -50,7 +50,7 @@ _Remove "ACTION S3" comment after working on this task._
 
 
 [#action-4]
-==== ACTION S4: Add translations
+=== ACTION S4: Add translations
 The translations in German and English languages should be defined in corresponding files: `+de.json+` / `+en.json+`
 
 Please ensure that all input field labels have the necessary translations added.
