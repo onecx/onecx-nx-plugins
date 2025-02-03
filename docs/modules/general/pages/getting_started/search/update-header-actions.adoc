@@ -8,7 +8,7 @@
 [#action-10]
 ==== ACTION S10: Update header actions
 
-You can add desirable actions to your search or details page. On the top right corner of the page, it will be possible to trigger the actions. If you will have just a few actions there be corresponding buttons visible in the designated area in the top right corner. If there will be not enough space for all actions, there will be a button with three dots displayed. By clicking this button the dropdown with actions will be visible. From this dropdown any action can be selected and triggered.
+You can add desirable actions to your search page. On the top right corner of the page, it will be possible to trigger the actions. If you will have just a few actions there be corresponding buttons visible in the designated area in the top right corner. If there will be not enough space for all actions, there will be a button with three dots displayed. By clicking this button the dropdown with actions will be visible. From this dropdown any action can be selected and triggered.
 
 Please refer to the {adding_header_actions_cookbook_url}["Adding header actions" cookbook] for details.
 
