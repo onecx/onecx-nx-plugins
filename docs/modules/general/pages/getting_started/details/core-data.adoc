@@ -1,30 +1,30 @@
-=== Add core data to the details page header
+== Add the data to the details page
 
 :idprefix:
 :idseparator: -
 
-:page_header_url: xref:latest@guides:angular:cookbook/components/page-header/index.adoc
+:adding_details_cookbook_url: xref:latest@guides:angular:ngrx/cookbook/adding-details-page/details-page.adoc
+:adding_details_tab_cookbook_url: xref:latest@guides:angular:ngrx/cookbook/adding-details-page/details-page.adoc#tab
+:adding_header_actions_cookbook_url: xref:latest@guides:angular:ngrx/cookbook/adding-header-actions/actions.adoc
 
-The core data must be added to the header of the details page.
+On details page you can display the data in the the header, by defining the label and value pairs. Below the header a `tabView` component with desired number tabs can be displayed. The content of each tab can be defined in separate components.
 
 [#action-1]
-==== ACTION D1: Add header values here
-_Adapt in File:_  `+<feature>-details.component+`
+=== ACTION D1: Define values to be shown in the header
 
-The details page will display the header with the title and subtitle. To customize the header, extend the `headerLabels` property. Configure the items based on the details item. Please, reference the {page_header_url}[PageHeader docs] for more information on the `ObjectDetailItem` usage.
+The details page will display the header with the title and subtitle. You can modify those values in `+<feature>-details.component+`. In order to customize the header, extend the `headerLabels` property of type `ObjectDetailItem`.  Please, reference the {adding_details_cookbook_url}[cookbook] for more information.
 
-.Example extended header items
-[source, javascript]
-----
-  headerLabels: ObjectDetailItem[] = [
-      {
-        label: 'Name',
-        value: vm.details?.name
-      }
-    ];
-----
+_Remove "ACTION D1" comment after working on this task._
 
-For the details page, the generator also creates 2 actions for the header by default. Consider adding custom actions to be available in the header via `headerActions$` property. Please, reference the {page_header_url}[PageHeader docs] for more information on the `Action` usage.
 
-include::partial$remove-action.adoc[]
+=== ACTION D2: Update header actions
+
+Similary like for the search page you can add desirable actions to your details page. And it will be possible to trigger them from designated area on the top right corner of the page. 
+For the details page, the generator creates 2 actions for the header by default. Consider adding custom actions to be available in the header via `headerActions$` property. 
+Please refer to the {adding_header_actions_cookbook_url}["Adding header actions" cookbook] for details.
+
+=== ACTION D3: Define tab component
+
+For the tab component you should implement a function handling tab change in `+<feature>-details.component+` and you need to define `+<p-tabView></p-tabView>+` in the html. Check the {adding_details_tab_cookbook_url}[cookbook] for examples.
+
 
