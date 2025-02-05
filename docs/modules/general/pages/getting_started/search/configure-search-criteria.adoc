@@ -1,4 +1,6 @@
-== Configure the search criteria and parameters
+== Configure the search criteria 
+Once you have generated the search page now you can add the criteria, by which the user can filter the search results. In order to pass the desired criteria to the backend (BFF), they should be specified in OpenAPI specification of BFF endpoint. In order to use those criteria in the UI, the typescript representation of same criteria needs to be specified.  The search criteria can be entered through HTML input fields, which will be placed on the top of the page.
+
 
 :idprefix:
 :idseparator: -
@@ -10,41 +12,31 @@
 :adding_translations_cookbook_url: xref:latest@guides:angular/pages/cookbook/translations.adoc
 
 [#action-1]
-=== ACTION S1: Add additional properties
+=== ACTION S1: OpenAPI specification of search criteria in BFF endpoint
 
 You should have a `+Search<Feature>Request+` defined in the OpenAPI specification, which should be in file `+<feature>-bff.yaml+`. 
 Where `feature` is the name of your entity. By modifying `+<feature>-bff.yaml+` file you can add additional parameters to your search request.
-All the data that should be used in the search request must be in that OpenAPI data structure either on top-level or in sub data structures.
 
-Please refer to the {adding_search_criteria_general_cookbook_url}["Adding search criteria" cookbook] for more information.
+For each seach criteria there should be a specification in OpenAPI file (either on top-level or in sub data structures) as described in the section {adding_search_criteria_general_cookbook_url}[ "OpenAPI specification of search criteria in BFF endpoint" of the cookbook].
 
 After updating the OpenAPI specification, execute the command *npm run apigen* to generate the corresponding TypeScript code.
 
 _Remove "ACTION S1" comment after working on this task._
 
 [#action-2]
-=== ACTION S2: Define the members
+=== ACTION S2: Search criteria representation in typescript
 In order to use search criteria, which you just defined in "ACTION S1", you need to modify the file, containing typescript representation of the search parameters. 
 Such file should be called `+<feature>-search.parameters.ts+`. There you need to define the members for your `+<Feature>SearchCriteriasSchema+`. Where `feature` is again the name of your entity.
 
-While defining search parameters note that:
-
-* keys *need* to match the keys from your OpenAPIs SearchCriteria Object
-* always start with `+z.string()+`
-* when required, you can use `+.transform()+` to extend the validation
-* dates are always mapped to strings (as JSON does not know DateTime)
-
-Refer to the {adding_search_criteria_general_parameters_cookbook_url}["Parameters" section of "Adding search criteria" cookbook].
+For each search criteria refer to the {adding_search_criteria_general_parameters_cookbook_url}["Search criteria representation in typescript" section of "Adding search criteria" cookbook].
 
 _Remove "ACTION S2" comment after working on this task._
 
 [#action-3]
-=== ACTION S3: Specify desired search criterias
+=== ACTION S3: HTML input fields for search criteria
 In order to make the search criteria visible to the end user, you need to modify HTML view, located in the file called `+<feature>-search.component.html+`.
 Please specify your desired search criterias by adding HTML input fields. You can add different types of input fields, like `+Text+`, `+Calendar+`, `+Dropdown+`,
-`+MultiSelect+` or `+AutoComplete+`.
-
-Please refer to the {adding_search_criteria_general_html_url}["HTML" section of "Adding search criteria" cookbook].
+`+MultiSelect+`, `+AutoComplete+` etc. For each search criteria go through the {adding_search_criteria_general_html_url}["HTML input fields for search criteria" section of "Adding search criteria" cookbook].
 
 _Remove "ACTION S3" comment after working on this task._
 
