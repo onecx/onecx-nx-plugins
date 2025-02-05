@@ -24,11 +24,11 @@ After updating the OpenAPI specification, execute the command *npm run apigen* t
 _Remove "ACTION S1" comment after working on this task._
 
 [#action-2]
-=== ACTION S2: Search criteria representation in typescript
+=== ACTION S2: Search criteria representation in typescript parameters
 In order to use search criteria, which you just defined in "ACTION S1", you need to modify the file, containing typescript representation of the search parameters. 
 Such file should be called `+<feature>-search.parameters.ts+`. There you need to define the members for your `+<Feature>SearchCriteriasSchema+`. Where `feature` is again the name of your entity.
 
-For each search criteria refer to the {adding_search_criteria_general_parameters_cookbook_url}["Search criteria representation in typescript" section of "Adding search criteria" cookbook].
+For each search criteria refer to the {adding_search_criteria_general_parameters_cookbook_url}["Search criteria representation in typescript parameters" section of "Adding search criteria" cookbook].
 
 _Remove "ACTION S2" comment after working on this task._
 
