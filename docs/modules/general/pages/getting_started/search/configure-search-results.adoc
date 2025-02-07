@@ -9,10 +9,11 @@
 :adding_results_diagram_cookbook_url: xref:latest@guides:angular:ngrx/cookbook/adding-search-results/results.adoc#diagram
 :adding_translations_cookbook_url: xref:latest@guides:angular/pages/cookbook/translations.adoc
 
-To configure the search results, the following actions must be taken. 
+You can configure what columns will be shown in the result table after entering the search criteria clicking search button. 
+For that you need to make sure that desired result fields are included into OpneApi specification of result object. Also you should provide representation of the results for fields specified in openAPI. The information in the result table should be properly translated. There is a possibility to display a diagram of statistical values for particular column. For that you need to provide the identifier of desired column.   
 
 [#action-5]
-=== ACTION S5: Add additional properties
+=== ACTION S5: OpenAPI specification of result object in BFF endpoint
 
 If you need to add additional properties to your response object `+Search<Feature>Response+`, you can do that by modifying OpenAPI specification file `+<feature>-bff.yaml+`.
 There the `+<Feature>+` data object structure can be adapted. Here `feature` is the name of your entity, for which you are building the search functionality.
@@ -30,7 +31,7 @@ After updating the OpenAPI specification, execute the command *npm run apigen* t
 _Remove "ACTION S5" comment after working on this task._
 
 [#action-6]
-=== ACTION S6: Define search results columns
+=== ACTION S6: Results representation in typescript
 In order to use the fields of search results, defined in OpenAPI specification, you need to modify the file, containing typescript representation of the search result columns. 
 Such file should be called `+<feature>-search.columns.ts+`. There you need to define the members for your `+<Feature>SearchColumns+`.
 
@@ -58,7 +59,7 @@ _Remove "ACTION S8" comment after working on this task._
 
 
 [#action-9]
-=== ACTION S9: Select the column to be displayed
+=== ACTION S9: Select the column to be displayed in the diagram
 
 By default, a diagram is created which counts the different values in a column and shows the results. To use this diagram, the column which should be displayed needs to be selected first. You need to provide the id of the column for which the diagram should be displayed in the typescript component. Diagram then shows the distribution of data of the selected column.
 In the HTML view the diagram and results data table can either placed after one another, by selecting vertical layout, or they can be placed next to each other, side by side, by selecting horizontal layout.
