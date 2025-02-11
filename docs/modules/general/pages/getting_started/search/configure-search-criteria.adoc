@@ -1,5 +1,5 @@
 == Configure the search criteria 
-Once you have generated the search page now you can add the criteria, by which the user can filter the search results. In order to pass the desired criteria to the backend (BFF), they should be specified in OpenAPI specification of BFF endpoint. In order to use those criteria in the UI, the typescript representation of same criteria needs to be specified.  The search criteria can be entered through HTML input fields, which will be placed on the top of the page.
+Once you have generated the search page now you can add the criteria, by which the user can filter the search results. In order to pass the desired criteria to the backend (BFF), they should be specified in OpenAPI specification of BFF endpoint. In order to use those criteria in the UI, the typescript representation of same criteria needs to be specified.  The search criteria can be entered through HTML input fields, which will be placed on the top part of the page.
 
 
 :idprefix:
