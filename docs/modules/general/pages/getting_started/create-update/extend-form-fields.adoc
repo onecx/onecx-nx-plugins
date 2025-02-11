@@ -1,27 +1,20 @@
-=== Extend form fields
+=== Define input fields
 
 :portal_dialog_service_url: xref:latest@guides:angular:cookbook/service/portal-dialog-service/index.adoc
+:header_actions_url: xref:docs/modules/general/pages/getting_started/search/update-header-actions.adoc
+
 :idprefix:
 :idseparator: -
 
-The form fields of the dialog need to be adapted
+In order to implement a dialog for creating/updating an entity, first you should provide OpenAPI specification of BFF endpoint, which performs desired action in the database. You also need to add typescript representation of the input fields into typescript component. Next you need to add an action button, as described in {header_actions_url}["Update header actions" section]. The button should invoke a pop-up dialog. The HTML input fields can be placed inside the dialog. The values from the input fields would be passed to typescript component and then to bff endpoint.
+
 
 [#action-1]
-==== ACTION C1: Extend schemas inside OpenAPI
+==== ACTION C1: OpenAPI specification of the objects in BFF endpoint
 _Adapt in File:_  `+<feature>-bff.yaml+`
 
 The generator creates 4 new component objects in the OpenAPI specification for Create/Update Requests and Responses.
 
-[NOTE]
-====
-The Request objects are referencing the data object to be Created/Updated. Please, adjust the data object if not prepared already. Data object properties will be used for extending the form.
-
-*Be cautious while making changes to the data object*, it is used for the other features like search and details pages.
-
-If extending the data object is not an option, instead please consider modifying the Create/Update Request component objects to use flat field list instead of the data object and adjust them based on the needs. Such modification also requires changes to the preparation of the request.
-
-Changes to Response component objects require a modification in response handling. By default response properties are not used by the generated code.
-==== 
 
 [IMPORTANT]
 ====
@@ -31,7 +24,7 @@ Run the command *npm run apigen* after adapting the OpenAPI to transform the cha
 include::partial$remove-action.adoc[]
 
 [#action-2]
-==== ACTION C2: Add form fields to html component
+==== ACTION C2: HTML input fields for create/update
 _Adapt in File:_  `+<feature>-create-update.component.html+`
 
 Add new form fields similar to the generated example. Please, ensure that form control names match the data object properties.
