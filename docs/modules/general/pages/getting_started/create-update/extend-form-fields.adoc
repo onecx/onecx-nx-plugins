@@ -1,106 +1,39 @@
-=== Define input fields
+== Define input fields
 
-:portal_dialog_service_url: xref:latest@guides:angular:cookbook/service/portal-dialog-service/index.adoc
+
 :header_actions_url: xref:docs/modules/general/pages/getting_started/search/update-header-actions.adoc
+:adding_create_update_dialog_cookbook_url: xref:latest@guides:angular:ngrx/cookbook/create-or-update-dialog/create-update.adoc#bff
+:adding_create_update_html_cookbook_url: xref:latest@guides:angular:ngrx/cookbook/create-or-update-dialog/create-update.adoc#html
+:adding_create_update_parameters_cookbook_url: xref:latest@guides:angular:ngrx/cookbook/create-or-update-dialog/create-update.adoc#parameters
+:adding_create_update_header_action_cookbook_url: xref:latest@guides:angular:ngrx/cookbook/create-or-update-dialog/create-update.adoc#action
 
 :idprefix:
 :idseparator: -
 
-In order to implement a dialog for creating/updating an entity, first you should provide OpenAPI specification of BFF endpoint, which performs desired action in the database. You also need to add typescript representation of the input fields into typescript component. Next you need to add an action button, as described in {header_actions_url}["Update header actions" section]. The button should invoke a pop-up dialog. The HTML input fields can be placed inside the dialog. The values from the input fields would be passed to typescript component and then to bff endpoint.
+In order to implement a dialog for creating/updating an entity, first you should provide OpenAPI specification of BFF endpoint, which performs desired action in the database. You also need to add typescript representation of the input fields into typescript component. Next you need to add a header action button, which would invoke a pop-up dialog. The HTML input fields can be placed inside the dialog. The values from the input fields would be passed to typescript component and then to bff endpoint.
 
 
 [#action-1]
-==== ACTION C1: OpenAPI specification of the objects in BFF endpoint
-_Adapt in File:_  `+<feature>-bff.yaml+`
+=== ACTION C1: OpenAPI specification of the objects in BFF endpoint
+Each input parameter needs to be added to creat/update requests in `+<feature>-bff.yaml+` file as described in the section {adding_create_update_dialog_cookbook_url}[ "OpenAPI specification of the objects in BFF endpoint" of the cookbook].
 
-The generator creates 4 new component objects in the OpenAPI specification for Create/Update Requests and Responses.
-
-
-[IMPORTANT]
-====
 Run the command *npm run apigen* after adapting the OpenAPI to transform the changes into typescript code.
-====
 
-include::partial$remove-action.adoc[]
+_Remove "ACTION C1" comment after working on this task._
 
 [#action-2]
-==== ACTION C2: HTML input fields for create/update
-_Adapt in File:_  `+<feature>-create-update.component.html+`
+=== ACTION C2: HTML input fields for create/update
+For each create/update property adapt `+<feature>-create-update.component.html+` file as described in the section {adding_create_update_html_cookbook_url}[ "HTML input fields for create/update" of the cookbook].
 
-Add new form fields similar to the generated example. Please, ensure that form control names match the data object properties.
-
-.Example data object
-[source,yaml]
-----
-Example:
-type: object
-required:
-    - id
-properties:
-    modificationCount:
-        type: integer
-        format: int32
-    id:
-        type: string
-    property:
-        type: string
-----
-
-.Example form field
-[source,html]
-----
-<div [title]="'EXAMPLE_CREATE_UPDATE.FORM.PROPERTY' | translate">
-    <span class="p-float-label" controlErrorAnchor>
-    <input
-        pInputText
-        type="text"
-        id="example_detail_form_property"
-        class="w-full pt-3 pb-2"
-        formControlName="property"
-    />
-    <label class="ocx-required-label" for="example_detail_form_property">
-        {{ 'EXAMPLE_CREATE_UPDATE.FORM.PROPERTY' | translate }}</label
-    >
-    </span>
-</div>
-----
-
-include::partial$remove-action.adoc[]
+_Remove "ACTION C2" comment after working on this task._
 
 [#action-3]
-==== ACTION C3: Add form fields to ts component
-_Adapt in File:_  `+<feature>-create-update.component.ts+`
+=== ACTION C3: Add form fields to typescript component
+For each create/update property adapt `+<feature>-create-update.component.html+` file as described in the section {adding_create_update_parameters_cookbook_url}[ " Add form fields to typescript component" of the cookbook].
 
-Add the corresponding form controls into the formGroup. Please, ensure that form control names match the data object properties.
+_Remove "ACTION C3" comment after working on this task._
 
-Use appropriate validators if required.
+[#action-4]
+=== ACTION C4 Add header action for "create" button
 
-.Example data object
-[source,yaml]
-----
-Example:
-type: object
-required:
-    - id
-properties:
-    modificationCount:
-        type: integer
-        format: int32
-    id:
-        type: string
-    property:
-        type: string
-----
-
-.Example form control
-[source,js]
-----
-this.formGroup = new FormGroup({
-    property: new FormControl(null, [Validators.maxLength(255)]),
-    ...
-});
-----
-
-include::partial$remove-action.adoc[]
-
-NOTE: To configure the dialog or modify its contents, please refer to the {portal_dialog_service_url}[PortalDialogService docs].
+After you add a header action as described in {header_actions_url}["Update header actions" section], checkout the example for the effect triggering pop-up dialog in the section {adding_create_update_header_action_cookbook_url}[ "Add header action for "create" button" of the cookbook].
