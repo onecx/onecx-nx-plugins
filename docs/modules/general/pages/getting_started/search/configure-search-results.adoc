@@ -7,7 +7,7 @@
 :adding_results_columns_cookbook_url: xref:latest@guides:angular:ngrx/cookbook/adding-search-results/results.adoc#columns
 :adding_results_translations_cookbook_url: xref:latest@guides:angular:ngrx/cookbook/adding-search-results/results.adoc#translations
 :adding_results_diagram_cookbook_url: xref:latest@guides:angular:ngrx/cookbook/adding-search-results/results.adoc#diagram
-:adding_translations_cookbook_url: xref:latest@guides:angular/pages/cookbook/translations.adoc
+:adding_translations_cookbook_url: xref:latest@guides:angular:cookbook/translations.adoc
 
 You can configure what columns will be shown in the result table after entering the search criteria clicking search button. 
 For that you need to make sure that desired result fields are included into OpneApi specification of result object. Also you should provide representation of the results for fields specified in openAPI. The information in the result table should be properly translated. There is a possibility to display a diagram of statistical values for particular column. For that you need to provide the identifier of desired column.   
