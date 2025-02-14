@@ -4,7 +4,7 @@
 :header_actions_url: xref:docs/modules/general/pages/getting_started/search/update-header-actions.adoc
 :adding_create_update_dialog_cookbook_url: xref:latest@guides:angular:ngrx/cookbook/create-or-update-dialog/create-update.adoc#bff
 :adding_create_update_html_cookbook_url: xref:latest@guides:angular:ngrx/cookbook/create-or-update-dialog/create-update.adoc#html
-:adding_create_update_parameters_cookbook_url: xref:latest@guides:angular:ngrx/cookbook/create-or-update-dialog/create-update.adoc#parameters
+:adding_create_update_parameters_cookbook_url: xref:latest@guides:angular:ngrx/cookbook/create-or-update-dialog/create-update.adoc#fields
 :adding_create_update_header_action_cookbook_url: xref:latest@guides:angular:ngrx/cookbook/create-or-update-dialog/create-update.adoc#action
 
 :idprefix:
