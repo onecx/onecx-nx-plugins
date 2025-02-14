@@ -9,7 +9,7 @@ Once you have generated the search page now you can add the criteria, by which t
 :adding_search_criteria_general_parameters_cookbook_url: xref:latest@guides:angular:ngrx/cookbook/adding-search-criteria/general.adoc#parameters
 :adding_search_criteria_general_html_url: xref:latest@guides:angular:ngrx/cookbook/adding-search-criteria/general.adoc#html
 :adding_search_criteria_general_html_examples_url: xref:latest@guides:angular:ngrx/cookbook/adding-search-criteria/general.adoc#examples-for-different-input-fields
-:adding_translations_cookbook_url: xref:latest@guides:angular/pages/cookbook/translations.adoc
+:adding_translations_cookbook_url: xref:latest@guides:angular:cookbook/translations.adoc
 
 [#action-1]
 === ACTION S1: OpenAPI specification of search criteria in BFF endpoint
