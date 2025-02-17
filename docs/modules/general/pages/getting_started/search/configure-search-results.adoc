@@ -15,8 +15,8 @@ For that you need to make sure that desired result fields are included into Opne
 [#action-5]
 === ACTION S5: OpenAPI specification of result object in BFF endpoint
 
-If you need to add additional properties to your response object `+Search<Feature>Response+`, you can do that by modifying OpenAPI specification file `+<feature>-bff.yaml+`.
-There the `+<Feature>+` data object structure can be adapted. Here `feature` is the name of your entity, for which you are building the search functionality.
+If you need to add additional properties to your response object xref:getting_started/explanations.adoc#feature[`+Search<Feature>Response+`], you can do that by modifying OpenAPI specification file xref:getting_started/explanations.adoc#feature[`+<feature>-bff.yaml+`].
+There the xref:getting_started/explanations.adoc#feature[`+<Feature>+`] data object structure can be adapted.
 
 Note that:
 
@@ -33,7 +33,7 @@ _Remove "ACTION S5" comment after working on this task._
 [#action-6]
 === ACTION S6: Results representation in typescript
 In order to use the fields of search results, defined in OpenAPI specification, you need to modify the file, containing typescript representation of the search result columns. 
-Such file should be called `+<feature>-search.columns.ts+`. There you need to define the members for your `+<Feature>SearchColumns+`.
+Such file should be called xref:getting_started/explanations.adoc#feature[`+<feature>-search.columns.ts+`]. There you need to define the members for your xref:getting_started/explanations.adoc#feature[`+<Feature>SearchColumns+`].
 
 Refer to the {adding_results_columns_cookbook_url}[cookbook regarding "Columns of Result Data Table"] for more information.
 
