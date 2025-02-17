@@ -15,7 +15,7 @@ In order to implement a dialog for creating/updating an entity, first you should
 
 [#action-1]
 === ACTION C1: OpenAPI specification of the objects in BFF endpoint
-Each input parameter needs to be added to creat/update requests in `+<feature>-bff.yaml+` file as described in the section {adding_create_update_dialog_cookbook_url}[ "OpenAPI specification of the objects in BFF endpoint" of the cookbook].
+Each input parameter needs to be added to creat/update requests in xref:getting_started/explanations.adoc#feature[`+<feature>-bff.yaml+`] file as described in the section {adding_create_update_dialog_cookbook_url}[ "OpenAPI specification of the objects in BFF endpoint" of the cookbook].
 
 Run the command *npm run apigen* after adapting the OpenAPI to transform the changes into typescript code.
 
@@ -23,13 +23,13 @@ _Remove "ACTION C1" comment after working on this task._
 
 [#action-2]
 === ACTION C2: HTML input fields for create/update
-For each create/update property adapt `+<feature>-create-update.component.html+` file as described in the section {adding_create_update_html_cookbook_url}[ "HTML input fields for create/update" of the cookbook].
+For each create/update property adapt xref:getting_started/explanations.adoc#feature[`+<feature>-create-update.component.html+`] file as described in the section {adding_create_update_html_cookbook_url}[ "HTML input fields for create/update" of the cookbook].
 
 _Remove "ACTION C2" comment after working on this task._
 
 [#action-3]
 === ACTION C3: Add form fields to typescript component
-For each create/update property adapt `+<feature>-create-update.component.html+` file as described in the section {adding_create_update_parameters_cookbook_url}[ " Add form fields to typescript component" of the cookbook].
+For each create/update property adapt xref:getting_started/explanations.adoc#feature[`+<feature>-create-update.component.html+`] file as described in the section {adding_create_update_parameters_cookbook_url}[ " Add form fields to typescript component" of the cookbook].
 
 _Remove "ACTION C3" comment after working on this task._
 
