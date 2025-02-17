@@ -14,8 +14,9 @@ Once you have generated the search page now you can add the criteria, by which t
 [#action-1]
 === ACTION S1: OpenAPI specification of search criteria in BFF endpoint
 
-You should have a `+Search<Feature>Request+` defined in the OpenAPI specification, which should be in file `+<feature>-bff.yaml+`. 
-Where `feature` is the name of your entity. By modifying `+<feature>-bff.yaml+` file you can add additional parameters to your search request.
+
+You should have a xref:getting_started/explanations.adoc#feature[`+Search<Feature>Request+`]  defined in the OpenAPI specification, which should be in file xref:getting_started/explanations.adoc#feature[`+<feature>-bff.yaml+`]. 
+By modifying xref:getting_started/explanations.adoc#feature[`+<feature>-bff.yaml+`] file, you can add additional parameters to your search request.
 
 For each seach criteria there should be a specification in OpenAPI file (either on top-level or in sub data structures) as described in the section {adding_search_criteria_general_cookbook_url}[ "OpenAPI specification of search criteria in BFF endpoint" of the cookbook].
 
@@ -26,7 +27,7 @@ _Remove "ACTION S1" comment after working on this task._
 [#action-2]
 === ACTION S2: Search criteria representation in typescript parameters
 In order to use search criteria, which you just defined in "ACTION S1", you need to modify the file, containing typescript representation of the search parameters. 
-Such file should be called `+<feature>-search.parameters.ts+`. There you need to define the members for your `+<Feature>SearchCriteriasSchema+`. Where `feature` is again the name of your entity.
+Such file should be called xref:getting_started/explanations.adoc#feature[`+<feature>-search.parameters.ts+`]. There you need to define the members for your xref:getting_started/explanations.adoc#feature[`+<Feature>SearchCriteriasSchema+`].
 
 For each search criteria refer to the {adding_search_criteria_general_parameters_cookbook_url}["Search criteria representation in typescript parameters" section of "Adding search criteria" cookbook].
 
@@ -34,7 +35,7 @@ _Remove "ACTION S2" comment after working on this task._
 
 [#action-3]
 === ACTION S3: HTML input fields for search criteria
-In order to make the search criteria visible to the end user, you need to modify HTML view, located in the file called `+<feature>-search.component.html+`.
+In order to make the search criteria visible to the end user, you need to modify HTML view, located in the file called xref:getting_started/explanations.adoc#feature[`+<feature>-search.component.html+`].
 Please specify your desired search criterias by adding HTML input fields. You can add different types of input fields, like `+Text+`, `+Calendar+`, `+Dropdown+`,
 `+MultiSelect+`, `+AutoComplete+` etc. For each search criteria go through the {adding_search_criteria_general_html_url}["HTML input fields for search criteria" section of "Adding search criteria" cookbook].
 
