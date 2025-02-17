@@ -10,7 +10,7 @@ In this page you can find explanations for relevant terms.
 
 should be replaced by the name of your entity, for which you are building the search or details page, create/update dialog or any other functionality. 
 
-Examples for `+<feature>`:
+Examples for `+<feature>+`:
 
 * property
 * timeslot
