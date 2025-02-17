@@ -11,12 +11,12 @@ include::partial$generator-check.adoc[]
 To run the generator, execute the following command: 
 
 ----
-nx generate <namespaceOfTheGenerator>/nx-plugin:delete <nameOfTheFeature> [--standalone]
+nx generate <namespaceOfTheGenerator>/nx-plugin:delete <feature> [--standalone]
 ----
 
 include::partial$generator-namespace-item.adoc[]
 
-* _<nameOfTheFeature>_: The name the feature the delete-dialog should be created in e.g., theme.
+* <feature> should be replaced as described xref:getting_started/explanations.adoc#feature[here].
 
 TIP: Next, the CLI will ask you whether you want to customize names for the generation.
 When answering yes, the next few questions will ask you about names for the API.
