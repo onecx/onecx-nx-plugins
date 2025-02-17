@@ -32,6 +32,11 @@
             "input": "./nx-plugin",
             "glob": "executors.json",
             "output": "."
+          },
+          {
+            "input": "./nx-plugin",
+            "glob": "migrations.json",
+            "output": "."
           }
         ]
       }

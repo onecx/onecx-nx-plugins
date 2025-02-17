@@ -1,0 +1,31 @@
+=== Running Migrations
+Nx provides a migration system to keep projects up-to-date with relevant changes. This system automates the process of updating dependencies and code when upgrading to newer versions of the OneCX generator.
+
+******
+To install the migration, execute the following command: 
+
+----
+nx migrate <namespaceOfTheGenerator>/nx-plugin@<version>
+----
+
+*Placeholder*: 
+
+* _<namespaceOfTheGenerator>_: For the OneCX generator use `+@onecx+`. For a project specific generator, ask for the namespace of the generators. 
+
+* _<version>_: The new desired version that should be installed, e.g. `+latest+`
+
+******
+
+After installing the migration changes were made to the `+package.json+`. Use `+npm install+` to apply the changes. In the project directory a `+migrations.json+` file  has also been added, containing a list of the migration steps that need to be executed.
+
+
+******
+To run the migration, execute the following command: 
+
+----
+nx migrate --run-migrations
+----
+
+******
+
+Finally remove the `+migrations.json+` file from the directory if everything has been migrated correctly. 
