@@ -19,7 +19,7 @@ _Remove "ACTION D1" comment after working on this task._
 
 === ACTION D2: Update header actions
 
-Similary like for the search page you can add desirable actions to your details page. And it will be possible to trigger them from designated area on the top right corner of the page. 
+You can add desirable actions to your details page. And it will be possible to trigger them from designated area on the top right corner of the page. 
 For the details page, the generator creates 2 actions for the header by default. Consider adding custom actions to be available in the header via `headerActions$` property. 
 Please refer to the {adding_header_actions_cookbook_url}["Adding header actions" cookbook] for details.
 
