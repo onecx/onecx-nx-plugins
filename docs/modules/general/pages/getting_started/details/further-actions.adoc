@@ -1,0 +1,6 @@
+=== Check for further ACTIONS
+
+:idprefix:
+:idseparator: -
+
+include::partial$actions-check.adoc[]

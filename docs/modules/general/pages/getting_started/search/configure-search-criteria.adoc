@@ -1,4 +1,6 @@
-=== Configure the search criteria and parameters
+== Configure the search criteria 
+Once you have generated the search page now you can add the criteria, by which the user can filter the search results. In order to pass the desired criteria to the backend (BFF), they should be specified in OpenAPI specification of BFF endpoint. In order to use those criteria in the UI, the typescript representation of same criteria needs to be specified.  The search criteria can be entered through HTML input fields, which will be placed on the top part of the page.
+
 
 :idprefix:
 :idseparator: -
@@ -7,126 +9,47 @@
 :adding_search_criteria_general_parameters_cookbook_url: xref:latest@guides:angular:ngrx/cookbook/adding-search-criteria/general.adoc#parameters
 :adding_search_criteria_general_html_url: xref:latest@guides:angular:ngrx/cookbook/adding-search-criteria/general.adoc#html
 :adding_search_criteria_general_html_examples_url: xref:latest@guides:angular:ngrx/cookbook/adding-search-criteria/general.adoc#examples-for-different-input-fields
+:adding_translations_cookbook_url: xref:latest@guides:angular:cookbook/translations.adoc
 
 [#action-1]
-==== ACTION S1: Add additional properties
+=== ACTION S1: OpenAPI specification of search criteria in BFF endpoint
 
-The `+Search<FeatureName>Request+` data structure in the BFF yaml must be adapted. 
 
-All the data that should be used in the request must be in that data structure either on top-level or in sub data structures.
+You should have a xref:getting_started/explanations.adoc#feature[`+Search<Feature>Request+`]  defined in the OpenAPI specification, which should be in file xref:getting_started/explanations.adoc#feature[`+<feature>-bff.yaml+`]. 
+By modifying xref:getting_started/explanations.adoc#feature[`+<feature>-bff.yaml+`] file, you can add additional parameters to your search request.
 
-_Adapt in File:_ `+<feature>-bff.yaml+`
+For each seach criteria there should be a specification in OpenAPI file (either on top-level or in sub data structures) as described in the section {adding_search_criteria_general_cookbook_url}[ "OpenAPI specification of search criteria in BFF endpoint" of the cookbook].
 
-.Example:
-[source, yml]
-----
-Search<Feature>Request:
-      type: object
-      properties:
-        pageNumber: 
-          type: integer
-          format: int32
-          default: 0
-          description: 'The number of the page.'          
-        pageSize:
-          type: integer
-          format: int32
-          default: 100
-          maximum: 1000
-          description: 'The size of the page.'      
-        id:
-          type: string
-        exampleProperty:
-          type: string
-----
+After updating the OpenAPI specification, execute the command *npm run apigen* to generate the corresponding TypeScript code.
 
-Please refer to the {adding_search_criteria_general_cookbook_url}[adding search criteria general cookbook] for more information.
-
-IMPORTANT: After updating the OpenAPI specification, execute the command *npm run apigen* to generate the corresponding TypeScript code.
-
-include::partial$remove-action.adoc[]
+_Remove "ACTION S1" comment after working on this task._
 
 [#action-2]
-==== ACTION S2: Define the members
-Please define the members for your `+<%= featurePropertyName %>SearchCriteriasSchema+`
+=== ACTION S2: Search criteria representation in typescript parameters
+In order to use search criteria, which you just defined in "ACTION S1", you need to modify the file, containing typescript representation of the search parameters. 
+Such file should be called xref:getting_started/explanations.adoc#feature[`+<feature>-search.parameters.ts+`]. There you need to define the members for your xref:getting_started/explanations.adoc#feature[`+<Feature>SearchCriteriasSchema+`].
 
-Adapt search parameters:
+For each search criteria refer to the {adding_search_criteria_general_parameters_cookbook_url}["Search criteria representation in typescript parameters" section of "Adding search criteria" cookbook].
 
-* keys *need* to match the keys from your OpenAPIs SearchCriteria Object
-* always start with `+z.string()+`
-* when required, you can use `+.transform()+` to extend the validation
-* dates are always mapped to strings (as JSON does not know DateTime)
-
-_Adapt in File:_ `+<feature>-search.parameters.ts+`
-
-.Example:
-[source, javascript]
-----
-    exampleString: z.string().optional(),
-    exampleNumber: z
-        .string()
-        .transform((v) => (v ? Number(v) : undefined))
-        .optional(),
-----
-
-Refer to the {adding_search_criteria_general_parameters_cookbook_url}[adding search criteria parameters cookbook] for more types.
-
-include::partial$remove-action.adoc[]
+_Remove "ACTION S2" comment after working on this task._
 
 [#action-3]
-==== ACTION S3: Specify desired search criterias
-Please specify your desired search criterias by adding input fields.
+=== ACTION S3: HTML input fields for search criteria
+In order to make the search criteria visible to the end user, you need to modify HTML view, located in the file called xref:getting_started/explanations.adoc#feature[`+<feature>-search.component.html+`].
+Please specify your desired search criterias by adding HTML input fields. You can add different types of input fields, like `+Text+`, `+Calendar+`, `+Dropdown+`,
+`+MultiSelect+`, `+AutoComplete+` etc. For each search criteria go through the {adding_search_criteria_general_html_url}["HTML input fields for search criteria" section of "Adding search criteria" cookbook].
 
-_Adapt in File:_ `+<feature>-search.component.html+`
+_Remove "ACTION S3" comment after working on this task._
 
-.Example text input field:
-[subs=+macros]
-[source, html]
-----
-  <form [formGroup]="criteriaGroup">
-      <div class="grid mt-0 p-fluid">
-        <div class="col-12 md:col-3">
-          <span class="p-float-label">
-            <input
-              id="id"
-              pInputText
-              type="text"
-              formControlName="id"
-              class="p-inputtext p-component"
-            />
-            <label for="id">{{
-              'EXAMPLE_FEATURE_SEARCH.CRITERIA.ID' | translate
-              }}</label>
-          </span>
-        </div>
-      </div>
-  </form>    
-----
-
-Please refer to the {adding_search_criteria_general_html_url}[adding search criteria html cookbook] for more information.
-
-[#examples-for-different-input-fields]
-=== Examples for different input fields
-Depending on what kind of input fields you want to add, the implementation differs.
-
-Refer to the {adding_search_criteria_general_html_examples_url}[adding search criteria examples for different input fields cookbook].
 
 [#action-4]
-==== ACTION S4: Add translations
-_Adapt in File:_  `+de.json+` / `+en.json+`
+=== ACTION S4: Add translations
+The translations in German and English languages should be defined in corresponding files: `+de.json+` / `+en.json+`
 
 Please ensure that all input field labels have the necessary translations added.
+Refer to the {adding_translations_cookbook_url}[cookbook describing translations].
 
-.Example
-[source, json]
-----
-  {
-    "EXAMPLE_FEATURE_SEARCH.CRITERIA.ID": "Example input field label"
-  } 
-----
-
-// TODO: Specify for what the translation will be added
-// TODO: reference to cookbook e.g.: angular/cookbook/translations
+_Remove "ACTION S4" comment after working on this task._
 
 ---
 Now you can continue with the next section xref:getting_started/search/configure-search-results.adoc[Configure search results]

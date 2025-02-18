@@ -1,43 +1,18 @@
-=== Update permissions
+== Update permissions
 
 :idprefix:
 :idseparator: -
 
-To configure the search results, the following actions must be taken. 
+:adding_permissions_cookbook_url: xref:latest@guides:angular:ngrx/cookbook/adding-permissions/permissions.adoc
+
+In order to restrict certain users with certain roles from perfoming certain actions, permissions needs to be introduced.
+To configure the permissions, the following actions must be taken. 
 
 [#action-11]
-==== ACTION S11: Update permissions and roles
+=== ACTION S11: Update definition of permissions and roles
 
-If you want to adapt the permissions, adapt the `+values.yml+` in the helm folder.
+If you want to adapt the permissions, you should adapt the `+values.yml+` file.
 
-.Helm's values.yml
-[source, yml]
-----
-permission:
-    enabled: true
-    spec:
-        permissions:
-            FEATURE:
-                CREATE: Create feature
-                EDIT: Edit feature
-                DELETE: Delete feature
-                SAVE: Update and save feature
-                IMPORT: Import feature
-                EXPORT: Export feature
-                VIEW: View mode for feature
-                SEARCH: Search feature
-----
+Refer to the {adding_permissions_cookbook_url}[permissions cookbook] for more information.
 
-[TIP] 
-.Import the permissions into your environment
-You can use `scripts/load-permission.sh` to upload permissions.
-When in doubt about the setup contact your technical lead.
-
-[IMPORTANT] 
-.Clarify the permission-role concept
-==== 
-1. Please clarify the permission-role concept with your business analyst or your solution designer.
-2. Delete permissions that you do not need.
-====
-
-include::partial$remove-action.adoc[]
+_Remove "ACTION S11" comment after working on this task._
