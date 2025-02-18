@@ -42,7 +42,7 @@ _Remove "ACTION S6" comment after working on this task._
 [#action-7]
 === ACTION S7: Mapping of the items and respective translations
 
-Here you can create a mapping of the items and their corresponding translation strings for columns with type `TRANSLATION_KEY` to translate the values in the talbe rows respective to the column. You can do that with help of selectors.
+In `+<feature>-search.selectors.ts+` file you can create a mapping of the items and their corresponding translation strings for columns with type `TRANSLATION_KEY` to translate the values in the talbe rows respective to the column. You can do that with help of selectors.
 
 Refer to the {adding_results_translations_cookbook_url}[cookbook regarding "Translations for Columns with Type TRANSLATION_KEY"] for more information.
 
@@ -61,7 +61,7 @@ _Remove "ACTION S8" comment after working on this task._
 [#action-9]
 === ACTION S9: Select the column to be displayed in the diagram
 
-By default, a diagram is created which counts the different values in a column and shows the results. To use this diagram, the column which should be displayed needs to be selected first. You need to provide the id of the column for which the diagram should be displayed in the typescript component. Diagram then shows the distribution of data of the selected column.
+By default, a diagram is created which counts the different values in a column and shows the results. To use this diagram, the column which should be displayed needs to be selected first. You need to provide the id of the column for which the diagram should be displayed in the typescript component located in file `+<feature>-search.component.ts+`. Diagram then shows the distribution of data of the selected column.
 In the HTML view the diagram and results data table can either placed after one another, by selecting vertical layout, or they can be placed next to each other, side by side, by selecting horizontal layout.
 
 Please refer to the {adding_results_diagram_cookbook_url}[cookbook] for more details.
