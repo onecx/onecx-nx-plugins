@@ -1,5 +1,6 @@
 import { Tree, joinPathFragments, names } from '@nx/devkit';
 import { GeneratorStep } from '../../shared/generator.utils';
+import { safeReplace } from '../../shared/safeReplace';
 import { CreateUpdateGeneratorSchema } from '../schema';
 
 export class FeatureModuleStep
@@ -13,29 +14,17 @@ export class FeatureModuleStep
       fileName,
       fileName + '.module.ts'
     );
-    let moduleContent = tree.read(moduleFilePath, 'utf8');
-    moduleContent = moduleContent.replace(
-      'declarations: [',
-      `declarations: [${className}CreateUpdateComponent,`
-    );
-
-    if (!moduleContent.includes('providePortalDialogService()')) {
-      moduleContent = moduleContent.replace(
-        'declarations:',
-        `
-    providers: [providePortalDialogService()],
-    declarations:`
-      );
-    }
-    
-    moduleContent = moduleContent.replace(
-      `from '@ngrx/effects';`,
-      `from '@ngrx/effects';  
+    let contentToReplace = ['declarations: [',`from '@ngrx/effects';`,'declarations:']
+    const replaceWith = [
+    `declarations: [${className}CreateUpdateComponent,`,
+    `from '@ngrx/effects';
      import { ${className}CreateUpdateComponent } from './pages/${fileName}-search/dialogs/${fileName}-create-update/${fileName}-create-update.component';
-     import { providePortalDialogService } from '@onecx/portal-integration-angular';`
-    );
+     import { providePortalDialogService } from '@onecx/portal-integration-angular';`,
+     `
+    providers: [providePortalDialogService()],
+    declarations:`]
 
-    tree.write(moduleFilePath, moduleContent);
+    safeReplace(`Feature Module Step replace declarations in ${fileName}`,moduleFilePath,contentToReplace,replaceWith,tree)
   }
   getTitle(): string {
     return 'Adapting Feature Module';

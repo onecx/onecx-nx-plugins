@@ -1,5 +1,6 @@
 import { Tree, names } from '@nx/devkit';
 import { GeneratorStep } from '../../shared/generator.utils';
+import { safeReplace } from '../../shared/safeReplace';
 import { DeleteGeneratorSchema } from '../schema';
 
 export class SearchEffectsStep implements GeneratorStep<DeleteGeneratorSchema> {
@@ -10,27 +11,13 @@ export class SearchEffectsStep implements GeneratorStep<DeleteGeneratorSchema> {
     const constantName = names(options.featureName).constantName;
     const filePath = `src/app/${fileName}/pages/${fileName}-search/${fileName}-search.effects.ts`;
 
-    let content = tree.read(filePath, 'utf8');
-    content =
-      `import { PortalDialogService, DialogState } from '@onecx/portal-integration-angular';` +
+    let contentToReplace = [/^/, 'searchByUrl$','constructor('];
+    let replaceWith = [`import { PortalDialogService, DialogState } from '@onecx/portal-integration-angular';` +
       `import { mergeMap } from 'rxjs';` +
       `import {
         ${options.dataObjectName},
       } from 'src/app/shared/generated';` +
-      `import { PrimeIcons } from 'primeng/api';` +
-      content;
-
-    if (!content.includes('private portalDialogService: PortalDialogService')) {
-      content = content.replace(
-        'constructor(',
-        `constructor(
-        private portalDialogService: PortalDialogService,`
-      );
-    }
-
-    content = content.replace(
-      'searchByUrl$',
-      `
+      `import { PrimeIcons } from 'primeng/api';`,`
       refreshSearchAfterDelete$ = createEffect(() => {
         return this.actions$.pipe(
           ofType(
@@ -40,7 +27,7 @@ export class SearchEffectsStep implements GeneratorStep<DeleteGeneratorSchema> {
           switchMap(([, searchCriteria]) => this.performSearch(searchCriteria))
         );
       });
-      
+
       deleteButtonClicked$ = createEffect(() => {
       return this.actions$.pipe(
         ofType(${className}SearchActions.delete${className}ButtonClicked),
@@ -78,7 +65,7 @@ export class SearchEffectsStep implements GeneratorStep<DeleteGeneratorSchema> {
           if (!itemToDelete) {
             throw new Error('Item to delete not found!');
           }
-          
+
           return this.${propertyName}Service
             .delete${options.dataObjectName}(itemToDelete.id)
             .pipe(
@@ -99,13 +86,14 @@ export class SearchEffectsStep implements GeneratorStep<DeleteGeneratorSchema> {
                 );
               })
             );
-        })        
+        })
       );
     });
-  
-      searchByUrl$`
-    );
-    tree.write(filePath, content);
+
+      searchByUrl$`,`constructor(
+        private portalDialogService: PortalDialogService,`];
+
+    safeReplace(`Search Effect replace searchByUrl in ${fileName}`,filePath,contentToReplace,replaceWith,tree)
   }
   getTitle(): string {
     return 'Adapting Search Effects';
