@@ -12,10 +12,6 @@ export class SearchTestsStep
     const propertyName = names(options.featureName).propertyName;
     const filePath = `src/app/${fileName}/pages/${fileName}-search/${fileName}-search.component.spec.ts`;
 
-    let htmlContent = tree.read(filePath, 'utf8');
-
-    htmlContent = `import { PrimeIcons } from 'primeng/api';` + htmlContent;
-    tree.write(filePath, htmlContent);
     const find = [/^/,"it('should dispatch export csv data on export action click'"];
     const replaceWith = [`import { PrimeIcons } from 'primeng/api';`,`
     it('should dispatch edit${className}ButtonClicked action on item edit click', async () => {
