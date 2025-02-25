@@ -13,8 +13,8 @@ export class SearchEffectsStep
     const constantName = names(options.featureName).constantName;
     const filePath = `src/app/${fileName}/pages/${fileName}-search/${fileName}-search.effects.ts`;
 
-    let find = [/^/, 'searchByUrl$', 'constructor('];
-    let replaceWith = [`import { PortalDialogService } from '@onecx/portal-integration-angular';` +
+    const find = [/^/, 'searchByUrl$', 'constructor('];
+    const replaceWith = [`import { PortalDialogService } from '@onecx/portal-integration-angular';` +
       `import { mergeMap } from 'rxjs';` +
       `import {
         ${options.dataObjectName},

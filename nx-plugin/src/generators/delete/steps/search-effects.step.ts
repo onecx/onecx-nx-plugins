@@ -11,8 +11,8 @@ export class SearchEffectsStep implements GeneratorStep<DeleteGeneratorSchema> {
     const constantName = names(options.featureName).constantName;
     const filePath = `src/app/${fileName}/pages/${fileName}-search/${fileName}-search.effects.ts`;
 
-    let contentToReplace = [/^/, 'searchByUrl$','constructor('];
-    let replaceWith = [`import { PortalDialogService, DialogState } from '@onecx/portal-integration-angular';` +
+    const contentToReplace = [/^/, 'searchByUrl$','constructor('];
+    const replaceWith = [`import { PortalDialogService, DialogState } from '@onecx/portal-integration-angular';` +
       `import { mergeMap } from 'rxjs';` +
       `import {
         ${options.dataObjectName},
