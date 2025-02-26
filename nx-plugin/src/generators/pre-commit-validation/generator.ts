@@ -17,21 +17,21 @@ const PARAMETERS: GeneratorParameter<PreCommitValidationGeneratorSchema>[] = [
     type: 'boolean',
     required: 'interactive',
     default: true,
-    prompt: 'Do you want to enable eslint check?',
+    prompt: 'Do you want to enable eslint check before committing?',
   },
   {
     key: 'enableConventionalCommits',
     type: 'boolean',
     required: 'interactive',
     default: true,
-    prompt: 'Do you want to enable conventional commits check?',
+    prompt: 'Do you want to enable conventional commits check before committing?',
   },
   {
     key: 'enableDetectSecrets',
     type: 'boolean',
     required: 'interactive',
     default: true,
-    prompt: 'Do you want to enable detect secrets check?',
+    prompt: 'Do you want to enable detect secrets check before committing?',
   },
 ]
 
@@ -39,9 +39,13 @@ function checkHuskyInstallation() {
   try {
     execSync('npx husky --version', { stdio: 'ignore' });
   } catch {
-    console.log('📦 Installing Husky...');
+    console.log('Installing Husky...');
     execSync('npm install husky --save-dev', { stdio: 'inherit' });
   }
+}
+
+function checkDetectSecretsInstallation() {
+  // TODO
 }
 
   // function makeHookExecutable(hookPath: string) {
@@ -91,6 +95,5 @@ export async function preCommitValidationGenerator(
     await formatFiles(tree);
     return () => installPackagesTask(tree);
   }
-}
 
 export default preCommitValidationGenerator;

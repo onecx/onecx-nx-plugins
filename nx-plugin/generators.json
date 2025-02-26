@@ -51,7 +51,7 @@
       "schema": "./src/generators/delete/schema.json",
       "description": "delete generator"
     },
-    "nx-plugin/src/generators/pre-commit-validation": {
+    "pre-commit-validation": {
       "factory": "./src/generators/pre-commit-validation/generator",
       "schema": "./src/generators/pre-commit-validation/schema.json",
       "description": "pre-commit-validation generator"
