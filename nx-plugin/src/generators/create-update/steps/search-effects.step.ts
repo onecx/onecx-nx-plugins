@@ -13,7 +13,7 @@ export class SearchEffectsStep
     const constantName = names(options.featureName).constantName;
     const filePath = `src/app/${fileName}/pages/${fileName}-search/${fileName}-search.effects.ts`;
 
-    const find = [/^/, 'searchByUrl$', 'constructor('];
+    const find = [/^/, 'searchByUrl$'];
     const replaceWith = [`import { PortalDialogService } from '@onecx/portal-integration-angular';` +
       `import { mergeMap } from 'rxjs';` +
       `import {
@@ -150,9 +150,13 @@ export class SearchEffectsStep
       }
     );
 
-      searchByUrl$`, `constructor(
-          private portalDialogService: PortalDialogService,`];
-
+      searchByUrl$`];
+    const content = tree.read(filePath, 'utf8');
+    if (!content.includes('private portalDialogService: PortalDialogService')) {
+      find.push('constructor(');
+      replaceWith.push(`constructor(
+          private portalDialogService: PortalDialogService,`)
+    }
     safeReplace(`Search Effects replace in ${fileName}`,filePath, find, replaceWith, tree)
 
   }
