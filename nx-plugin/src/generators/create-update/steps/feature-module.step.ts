@@ -14,8 +14,8 @@ export class FeatureModuleStep
       fileName,
       fileName + '.module.ts'
     );
-    const contentToReplace = ['declarations: [',`from '@ngrx/effects';`,'declarations:']
-    const replaceWith = [
+    let contentToReplace = ['declarations: [',`from '@ngrx/effects';`]
+    let replaceWith = [
     `declarations: [${className}CreateUpdateComponent,`,
     `from '@ngrx/effects';
      import { ${className}CreateUpdateComponent } from './pages/${fileName}-search/dialogs/${fileName}-create-update/${fileName}-create-update.component';
@@ -23,7 +23,13 @@ export class FeatureModuleStep
      `
     providers: [providePortalDialogService()],
     declarations:`]
-
+    const moduleContent = tree.read(moduleFilePath, 'utf8');
+    if (!moduleContent.includes('providePortalDialogService()')) {
+      contentToReplace.push('declarations:')
+      replaceWith.push(`
+    providers: [providePortalDialogService()],
+    declarations:`)
+    }
     safeReplace(`Feature Module Step replace declarations in ${fileName}`,moduleFilePath,contentToReplace,replaceWith,tree)
   }
   getTitle(): string {
