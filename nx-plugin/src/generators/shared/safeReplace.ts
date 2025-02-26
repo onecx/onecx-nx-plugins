@@ -31,6 +31,10 @@ function performReplacements(
 
     try {
       if (typeof currentFind === 'string' || currentFind instanceof RegExp) {
+        if (newContent.includes(currentReplaceWith)) {
+          throw new GeneratorStepError(`Text already exists in the document: ${currentReplaceWith}`);
+        }
+
         if (typeof currentFind === 'string' && !newContent.includes(currentFind)) {
           throw new GeneratorStepError(`Pattern not found: ${currentFind}`);
         }
