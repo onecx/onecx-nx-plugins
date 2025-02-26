@@ -11,6 +11,7 @@ import { FeatureGeneratorSchema } from './schema';
 import * as ora from 'ora';
 import { execSync } from 'child_process';
 import processParams, { GeneratorParameter } from '../shared/parameters.utils';
+import { safeReplace } from '../shared/safeReplace';
 
 const PARAMETERS: GeneratorParameter<FeatureGeneratorSchema>[] = [
   {
@@ -81,21 +82,16 @@ function adaptAppRoutingModule(tree: Tree, options: FeatureGeneratorSchema) {
   const fileName = names(options.name).fileName;
   const className = names(options.name).className;
   const moduleFilePath = 'src/app/app-routing.module.ts';
-  let moduleContent = tree.read(moduleFilePath, 'utf8');
-  moduleContent =
-    `import { startsWith } from '@onecx/angular-webcomponents';` +
-    moduleContent.replace(
-      'routes: Routes = [',
-      `routes: Routes = [ {
-      matcher: startsWith('${fileName}'),
-      loadChildren: () =>
-        import('./${fileName}/${fileName}.module').then(
-          (mod) => mod.${className}Module
-        ),
-    },`
-    );
-
-  tree.write(moduleFilePath, moduleContent);
+  const find = [/^/,'routes: Routes = ['];
+  const replaceWith = [`import { startsWith } from '@onecx/angular-webcomponents';`,`routes: Routes = [ {
+    matcher: startsWith('${fileName}'),
+    loadChildren: () =>
+      import('./${fileName}/${fileName}.module').then(
+        (mod) => mod.${className}Module
+      ),
+  },`];
+    safeReplace(
+    'Adapt App routing module', moduleFilePath, find, replaceWith, tree);
 }
 
 export default featureGenerator;

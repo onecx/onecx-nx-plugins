@@ -1,5 +1,6 @@
 import { Tree, names } from '@nx/devkit';
 import { GeneratorStep } from '../../shared/generator.utils';
+import { safeReplace } from '../../shared/safeReplace';
 import { DeleteGeneratorSchema } from '../schema';
 
 export class SearchTestsStep implements GeneratorStep<DeleteGeneratorSchema> {
@@ -9,13 +10,8 @@ export class SearchTestsStep implements GeneratorStep<DeleteGeneratorSchema> {
     const propertyName = names(options.featureName).propertyName;
     const filePath = `src/app/${fileName}/pages/${fileName}-search/${fileName}-search.component.spec.ts`;
 
-    let htmlContent = tree.read(filePath, 'utf8');
-
-    htmlContent = `import { PrimeIcons } from 'primeng/api';` + htmlContent;
-
-    htmlContent = htmlContent.replace(
-      "it('should dispatch export csv data on export action click'",
-      `
+    const find = [/^/,"it('should dispatch export csv data on export action click'"];
+    const replaceWith = [`import { PrimeIcons } from 'primeng/api';`, `
       it('should dispatch delete${className}ButtonClicked action on item delete click', async () => {
         jest.spyOn(store, 'dispatch');
 
@@ -61,9 +57,9 @@ export class SearchTestsStep implements GeneratorStep<DeleteGeneratorSchema> {
         );
       });
       //needs to be the last test in this class
-      it('should export csv data on export action click'`
-    );
-    tree.write(filePath, htmlContent);
+      it('should export csv data on export action click'`];
+    safeReplace(`SearchTests replace test in ${fileName}`,filePath, find, replaceWith, tree)
+
   }
   getTitle(): string {
     return 'Adapting Search Tests';

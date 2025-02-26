@@ -1,5 +1,6 @@
 import { Tree, names } from '@nx/devkit';
 import { GeneratorStep } from '../../shared/generator.utils';
+import { safeReplace } from '../../shared/safeReplace';
 import { DetailsGeneratorSchema } from '../schema';
 
 export class FeatureStateStep implements GeneratorStep<DetailsGeneratorSchema> {
@@ -8,18 +9,12 @@ export class FeatureStateStep implements GeneratorStep<DetailsGeneratorSchema> {
     const className = names(options.featureName).className;
     const filePath = `src/app/${fileName}/${fileName}.state.ts`;
 
-    let fileContent = tree.read(filePath, 'utf8');
-    fileContent = fileContent.replace(
-      'State {',
-      `State {
+    const find = [/^/,'State {'];
+    const replaceWith = [`import { ${className}DetailsState } from './pages/${fileName}-details/${fileName}-details.state';`,`State {
     details: ${className}DetailsState;
-  `
-    );
+  `];
+    safeReplace(`Feature State replace import and state in ${fileName}`, filePath, find,replaceWith, tree)
 
-    fileContent =
-      `import { ${className}DetailsState } from './pages/${fileName}-details/${fileName}-details.state';` +
-      fileContent;
-    tree.write(filePath, fileContent);
   }
   getTitle(): string {
     return "Adapting Feature State"

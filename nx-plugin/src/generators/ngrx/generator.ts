@@ -12,6 +12,7 @@ import {
 import { execSync } from 'child_process';
 import * as ora from 'ora';
 import angularGenerator from '../angular/generator';
+import { safeReplace } from '../shared/safeReplace';
 import { NgrxGeneratorSchema } from './schema';
 
 export async function ngrxGenerator(
@@ -82,12 +83,7 @@ export async function ngrxGenerator(
 
 function addModulesToAppModule(tree: Tree) {
   addImportsToAppModule(tree);
-
-  replaceInFile(
-    tree,
-    'src/app/app.module.ts',
-    'AppRoutingModule,',
-    `AppRoutingModule, 
+  safeReplace(`Ngrx Generator add modules in app.module.ts`,'src/app/app.module.ts','AppRoutingModule,',`AppRoutingModule,
      LetDirective,
      StoreRouterConnectingModule.forRoot(),
      StoreModule.forRoot(reducers, { metaReducers }),
@@ -98,16 +94,13 @@ function addModulesToAppModule(tree: Tree) {
        trace: false,
        traceLimit: 75,
      }),
-     EffectsModule.forRoot([]),`
-  );
+     EffectsModule.forRoot([]),`, tree)
+
 }
 
 function addImportsToAppModule(tree: Tree) {
-  replaceInFile(
-    tree,
-    'src/app/app.module.ts',
-    `from '@angular/common';`,
-    `from '@angular/common';
+  const contentToReplace = [`from '@angular/common';`,`PortalCoreModule,`, `NgModule`];
+  const replaceWith = [`from '@angular/common';
     import { StoreModule } from '@ngrx/store';
     import { reducers, metaReducers } from './app.reducers';
     import { StoreDevtoolsModule } from '@ngrx/store-devtools';
@@ -115,27 +108,12 @@ function addImportsToAppModule(tree: Tree) {
     import { EffectsModule } from '@ngrx/effects';
     import { StoreRouterConnectingModule } from '@ngrx/router-store';
     import { environment } from 'src/environments/environment';
-    `
-  );
-  replaceInFile(
-    tree,
-    'src/app/app.module.ts',
-    `PortalCoreModule,`,
-    `PortalCoreModule,
-     APP_CONFIG,`
-  );
-  replaceInFile(
-    tree,
-    'src/app/app.module.ts',
-    `NgModule`,
-    `NgModule, isDevMode`
-  );
+    `, `PortalCoreModule,
+     APP_CONFIG,`, `NgModule, isDevMode`];
+  safeReplace(`Ngrx Generator add Imports replace in app.module.ts`,'src/app/app.module.ts', contentToReplace, replaceWith, tree)
+
 }
 
-function replaceInFile(tree, filePath, oldString, newString) {
-  const contents = tree.read(filePath).toString();
-  const newContents = contents.replace(oldString, newString);
-  tree.write(filePath, newContents);
-}
+
 
 export default ngrxGenerator;

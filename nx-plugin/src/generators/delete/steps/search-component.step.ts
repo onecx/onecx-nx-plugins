@@ -1,5 +1,6 @@
 import { Tree, names } from '@nx/devkit';
 import { GeneratorStep } from '../../shared/generator.utils';
+import { safeReplace } from '../../shared/safeReplace';
 import { DeleteGeneratorSchema } from '../schema';
 
 export class SearchComponentStep
@@ -10,23 +11,17 @@ export class SearchComponentStep
     const className = names(options.featureName).className;
     const filePath = `src/app/${fileName}/pages/${fileName}-search/${fileName}-search.component.ts`;
 
-    let content = tree.read(filePath, 'utf8');
-    content = content.replace(
-      `} from '@onecx/portal-integration-angular';`,
-      `RowListGridData
-    } from '@onecx/portal-integration-angular';`
-    );
-
-    content = content.replace(
-      'resetSearch',
-      `  
+    const contentToReplace= [`} from '@onecx/portal-integration-angular';`,'resetSearch'];
+    const replaceWith= [`RowListGridData
+    } from '@onecx/portal-integration-angular';`,`
     delete({ id }: RowListGridData) {
       this.store.dispatch(${className}SearchActions.delete${className}ButtonClicked({ id }));
     }
 
-    resetSearch`
-    );
-    tree.write(filePath, content);
+    resetSearch`];
+
+    safeReplace(`Search Component replace imports and resetSearch in ${fileName}`,filePath,contentToReplace,replaceWith,tree)
+
   }
   getTitle(): string {
     return 'Adapting Search Component';

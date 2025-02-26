@@ -1,6 +1,7 @@
 import { Tree, names } from '@nx/devkit';
 import { GeneratorStep } from '../../shared/generator.utils';
 import { SearchGeneratorSchema } from '../../search/schema';
+import { safeReplace } from '../../shared/safeReplace';
 
 export class SearchTestsStep implements GeneratorStep<SearchGeneratorSchema> {
   process(tree: Tree, options: SearchGeneratorSchema): void {
@@ -9,13 +10,12 @@ export class SearchTestsStep implements GeneratorStep<SearchGeneratorSchema> {
     const propertyName = names(options.featureName).propertyName;
     const filePath = `src/app/${fileName}/pages/${fileName}-search/${fileName}-search.component.spec.ts`;
 
-    let htmlContent = tree.read(filePath, 'utf8');
-    htmlContent = htmlContent.replace(
+    safeReplace(`Search Tests replace test in ${fileName}`, filePath,
       "it('should export csv data on export action click'",
       `
     it('should dispatch detailsButtonClicked action on item details click', async () => {
       jest.spyOn(store, 'dispatch');
-  
+
       store.overrideSelector(select${className}SearchViewModel, {
         ...base${className}SearchViewModel,
         results: [
@@ -34,27 +34,26 @@ export class SearchTestsStep implements GeneratorStep<SearchGeneratorSchema> {
         ],
       });
       store.refreshState();
-  
+
       const interactiveDataView =
         await ${propertyName}Search.getSearchResults();
       const dataView = await interactiveDataView.getDataView();
       const dataTable = await dataView.getDataTable();
       const rowActionButtons = await dataTable?.getActionButtons();
-  
+
       expect(rowActionButtons?.length).toEqual(1);
       expect(await rowActionButtons?.at(0)?.getAttribute('ng-reflect-icon')).toEqual(
         'pi pi-eye'
       );
       await rowActionButtons?.at(0)?.click();
-  
+
       expect(store.dispatch).toHaveBeenCalledWith(
         ${className}SearchActions.detailsButtonClicked({ id: '1' })
       );
     });
 
-    it('should export csv data on export action click'`
-    );
-    tree.write(filePath, htmlContent);
+    it('should export csv data on export action click'`,
+    tree);
   }
   getTitle(): string {
     return 'Adapting Search Tests';

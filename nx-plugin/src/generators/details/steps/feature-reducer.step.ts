@@ -1,5 +1,6 @@
 import { Tree, names } from '@nx/devkit';
 import { GeneratorStep } from '../../shared/generator.utils';
+import { safeReplace } from '../../shared/safeReplace';
 import { DetailsGeneratorSchema } from '../schema';
 
 export class FeatureReducerStep implements GeneratorStep<DetailsGeneratorSchema> {
@@ -7,19 +8,10 @@ export class FeatureReducerStep implements GeneratorStep<DetailsGeneratorSchema>
     const fileName = names(options.featureName).fileName;
     const propertyName = names(options.featureName).propertyName;
     const filePath = `src/app/${fileName}/${fileName}.reducers.ts`;
-
-    let fileContent = tree.read(filePath, 'utf8');
-
-    fileContent = fileContent.replace(
-      '>({',
-      `>({
-    details: ${propertyName}DetailsReducer,`
-    );
-
-    fileContent =
-      `import { ${propertyName}DetailsReducer } from './pages/${fileName}-details/${fileName}-details.reducers';` +
-      fileContent;
-    tree.write(filePath, fileContent);
+    const find = [/^/,'>({'];
+    const replaceWith = [`import { ${propertyName}DetailsReducer } from './pages/${fileName}-details/${fileName}-details.reducers';`,`>({
+    details: ${propertyName}DetailsReducer,`];
+    safeReplace(`FeatureReducer replace with details in ${fileName}`, filePath, find, replaceWith, tree);
   }
   getTitle(): string {
     return "Adapting Feature Reducer"
