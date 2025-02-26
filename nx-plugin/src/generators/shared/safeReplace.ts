@@ -36,11 +36,11 @@ function performReplacements(
         }
 
         if (typeof currentFind === 'string' && !newContent.includes(currentFind)) {
-          throw new GeneratorStepError(`Pattern not found: ${currentFind}`);
+          console.info(`Pattern not found: ${currentFind}`);
         }
 
         if (currentFind instanceof RegExp && !currentFind.test(newContent)) {
-          throw new GeneratorStepError(`Pattern not found: ${currentFind}`);
+          console.info(`Pattern not found: ${currentFind}`);
         }
 
         newContent = newContent.replace(currentFind, currentReplaceWith);
@@ -70,13 +70,10 @@ export function safeReplace(
   tree: Tree
 ): void {
   if (!tree.exists(file)) {
-    throw new GeneratorStepError(`File not found: ${file}`);
+    console.info(`File not found: ${file}`);
   }
 
   const content = tree.read(file, 'utf8');
-  if (!content) {
-    throw new GeneratorStepError(`File is empty: ${file}`);
-  }
 
   const result = performReplacements(content, find, replaceWith);
 
