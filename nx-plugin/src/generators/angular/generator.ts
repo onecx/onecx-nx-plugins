@@ -17,6 +17,7 @@ import { execSync } from 'child_process';
 
 import * as ora from 'ora';
 import processParams, { GeneratorParameter } from '../shared/parameters.utils';
+import { safeReplace } from '../shared/safeReplace';
 
 const PARAMETERS: GeneratorParameter<AngularGeneratorSchema>[] = [
   {
@@ -197,23 +198,24 @@ function addScriptsToPackageJson(tree: Tree, options: AngularGeneratorSchema) {
 function adaptTsConfig(tree: Tree, options: AngularGeneratorSchema) {
   const fileName = names(options.name).fileName;
   const filePath = 'tsconfig.app.json';
-
-  let fileContent = tree.read(filePath, 'utf8');
-
-  fileContent = fileContent.replace(
-    '"files": [',
+  const contentToReplace = ['"files": [', '"compilerOptions": {'];
+  const replaceWith = [
     `"files": [
     "src/app/${fileName}-app.remote.module.ts",
     "src/polyfills.ts",
-  `
-  );
-  fileContent = fileContent.replace(
-    '"compilerOptions": {',
+  `,
     `"compilerOptions": {
     "useDefineForClassFields": false,
-  `
+  `,
+  ];
+
+  safeReplace(
+    "Adapt Typescript Config",
+    filePath,
+    contentToReplace,
+    replaceWith,
+    tree
   );
-  tree.write(filePath, fileContent);
 }
 
 function adaptProjectConfiguration(
@@ -272,14 +274,13 @@ function adaptProjectConfiguration(
 
 function adaptJestConfig(tree: Tree) {
   const filePath = 'jest.config.ts';
-
-  let fileContent = tree.read(filePath, 'utf8');
-
-  fileContent = fileContent.replace(
+  safeReplace(
+    "Adapt Jest Config",
+    filePath,
     /transformIgnorePatterns: .+?,/,
-    `transformIgnorePatterns: ['node_modules/(?!@ngrx|(?!deck.gl)|d3-scale|(?!.*\\.mjs$))'],`
+    `transformIgnorePatterns: ['node_modules/(?!@ngrx|(?!deck.gl)|d3-scale|(?!.*\\.mjs$))'],`,
+    tree
   );
-  tree.write(filePath, fileContent);
 }
 
 function adaptAngularPrefixConfig(tree: Tree) {

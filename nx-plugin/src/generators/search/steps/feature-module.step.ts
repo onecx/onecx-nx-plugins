@@ -1,5 +1,6 @@
 import { Tree, joinPathFragments, names } from '@nx/devkit';
 import { GeneratorStep } from '../../shared/generator.utils';
+import { safeReplace } from '../../shared/safeReplace';
 import { SearchGeneratorSchema } from '../schema';
 
 export class FeatureModuleStep implements GeneratorStep<SearchGeneratorSchema> {
@@ -11,31 +12,25 @@ export class FeatureModuleStep implements GeneratorStep<SearchGeneratorSchema> {
       fileName,
       fileName + '.module.ts'
     );
-    let moduleContent = tree.read(moduleFilePath, 'utf8');
-    moduleContent = moduleContent.replace(
+    const find = [
       'declarations: [',
-      `declarations: [${className}SearchComponent,`
-    );
-    moduleContent = moduleContent.replace(
       `} from '@onecx/portal-integration-angular'`,
-      `InitializeModuleGuard, } from '@onecx/portal-integration-angular'`
-    );
-    moduleContent = moduleContent.replace(
       'EffectsModule.forFeature()',
-      `EffectsModule.forFeature([])`
-    );
-    moduleContent = moduleContent.replace(
       'EffectsModule.forFeature([',
-      `EffectsModule.forFeature([${className}SearchEffects,`
-    );
-    moduleContent = moduleContent.replace(
-      `from '@ngrx/effects';`,
+      `from '@ngrx/effects';`
+    ];
+    const replaceWith = [
+      `declarations: [${className}SearchComponent,`,
+      `InitializeModuleGuard, } from '@onecx/portal-integration-angular'`,
+      `EffectsModule.forFeature([])`,
+      `EffectsModule.forFeature([${className}SearchEffects,`,
       `from '@ngrx/effects';
     import { ${className}SearchEffects } from './pages/${fileName}-search/${fileName}-search.effects';
     import { ${className}SearchComponent } from './pages/${fileName}-search/${fileName}-search.component';`
-    );
+    ];
 
-    tree.write(moduleFilePath, moduleContent);
+    safeReplace(`Feature Module replace in ${fileName}`, moduleFilePath, find, replaceWith, tree);
+
   }
   getTitle(): string {
     return 'Adapting Feature Module';

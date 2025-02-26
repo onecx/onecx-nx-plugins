@@ -1,5 +1,6 @@
 import { Tree, names } from '@nx/devkit';
 import { GeneratorStep } from '../../shared/generator.utils';
+import { safeReplace } from '../../shared/safeReplace';
 import { CreateUpdateGeneratorSchema } from '../schema';
 
 export class SearchComponentStep
@@ -11,36 +12,26 @@ export class SearchComponentStep
     const constantName = names(options.featureName).constantName;
     const filePath = `src/app/${fileName}/pages/${fileName}-search/${fileName}-search.component.ts`;
 
-    let content = tree.read(filePath, 'utf8');
-    content = content.replace(
-      `} from '@onecx/portal-integration-angular';`,
-      `RowListGridData
-      } from '@onecx/portal-integration-angular';`
-    );
-    content = content.replace(
-      'const actions: Action[] = [',
-      `const actions: Action[] = [
+    const contentToReplace = [`} from '@onecx/portal-integration-angular';`, 'const actions: Action[] = [','resetSearch'];
+    const replaceWith =[`RowListGridData
+      } from '@onecx/portal-integration-angular';`,`const actions: Action[] = [
       {
        labelKey: '${constantName}_CREATE_UPDATE.ACTION.CREATE',
        icon: PrimeIcons.PLUS,
        show: 'always',
        actionCallback: () => this.create(),
-      },`
-    );
-    content = content.replace(
-      'resetSearch',
-      `
+      },`, `
       create() {
         this.store.dispatch(${className}SearchActions.create${className}ButtonClicked());
       }
-  
+
       edit({ id }: RowListGridData) {
         this.store.dispatch(${className}SearchActions.edit${className}ButtonClicked({ id }));
       }
-  
-      resetSearch`
-    );
-    tree.write(filePath, content);
+
+      resetSearch`];
+    safeReplace(`Search Components Step replace in ${fileName}`, filePath, contentToReplace, replaceWith, tree)
+
   }
   getTitle(): string {
     return 'Adapting Search Component';
