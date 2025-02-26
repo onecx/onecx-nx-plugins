@@ -206,7 +206,7 @@ function adaptTsConfig(tree: Tree, options: AngularGeneratorSchema) {
   `,
     `"compilerOptions": {
     "useDefineForClassFields": false,
-  `,
+  `
   ];
 
   safeReplace(

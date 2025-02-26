@@ -19,11 +19,6 @@ function performReplacements(
   const findArray = Array.isArray(find) ? find : [find];
   const replaceWithArray = Array.isArray(replaceWith) ? replaceWith : [replaceWith];
 
-  if (findArray.length !== replaceWithArray.length) {
-    throw new GeneratorStepError(
-      `The length of 'find' and 'replaceWith' must be the same`
-    );
-  }
 
   for (let i = 0; i < findArray.length; i++) {
     const currentFind = findArray[i];
@@ -32,22 +27,18 @@ function performReplacements(
     try {
       if (typeof currentFind === 'string' || currentFind instanceof RegExp) {
         if (newContent.includes(currentReplaceWith)) {
-          console.info(`Text already exists in the document: ${currentReplaceWith}`);
+          replacementErrors.push(`Text already exists in the document: ${currentReplaceWith}`);
         }
 
         if (typeof currentFind === 'string' && !newContent.includes(currentFind)) {
-          console.info(`Pattern not found: ${currentFind}`);
+          replacementErrors.push(`Pattern not found: ${currentFind}`);
         }
 
         if (currentFind instanceof RegExp && !currentFind.test(newContent)) {
-          console.info(`Pattern not found: ${currentFind}`);
+          replacementErrors.push(`Pattern not found: ${currentFind}`);
         }
 
         newContent = newContent.replace(currentFind, currentReplaceWith);
-      } else {
-        throw new GeneratorStepError(
-          `Unsupported type for 'find': ${typeof currentFind}`
-        );
       }
     } catch (error) {
       allReplacementsSuccessful = false;
@@ -70,7 +61,7 @@ export function safeReplace(
   tree: Tree
 ): void {
   if (!tree.exists(file)) {
-    console.info(`File not found: ${file}`);
+    throw new GeneratorStepError(`File not found: ${file}`);
   }
 
   const content = tree.read(file, 'utf8');
