@@ -11,17 +11,17 @@ export class FeatureModuleStep implements GeneratorStep<DeleteGeneratorSchema> {
       fileName,
       fileName + '.module.ts'
     );
-      let contentToReplace = [`from '@ngrx/effects';`];
-      let replaceWith = [`from '@ngrx/effects';
+    const contentToReplace = [`from '@ngrx/effects';`];
+    const replaceWith = [`from '@ngrx/effects';
          import { providePortalDialogService } from '@onecx/portal-integration-angular';`];
-      const moduleContent = tree.read(moduleFilePath, 'utf8');
-      if (!moduleContent.includes('providePortalDialogService()')) {
-        contentToReplace.push('declarations:')
-        replaceWith.push(`
+    const moduleContent = tree.read(moduleFilePath, 'utf8');
+    if (!moduleContent.includes('providePortalDialogService()')) {
+      contentToReplace.push('declarations:')
+      replaceWith.push(`
     providers: [providePortalDialogService()],
     declarations:`)
       }
-      safeReplace(`Feature Module replace declarations and ngrx in ${fileName}`,moduleFilePath,contentToReplace, replaceWith, tree)
+    safeReplace(`Feature Module replace declarations and ngrx in ${fileName}`,moduleFilePath,contentToReplace, replaceWith, tree)
 
 
   }

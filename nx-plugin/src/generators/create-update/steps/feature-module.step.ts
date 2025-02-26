@@ -14,8 +14,8 @@ export class FeatureModuleStep
       fileName,
       fileName + '.module.ts'
     );
-    let contentToReplace = ['declarations: [',`from '@ngrx/effects';`]
-    let replaceWith = [
+    const contentToReplace = ['declarations: [',`from '@ngrx/effects';`]
+    const replaceWith = [
     `declarations: [${className}CreateUpdateComponent,`,
     `from '@ngrx/effects';
      import { ${className}CreateUpdateComponent } from './pages/${fileName}-search/dialogs/${fileName}-create-update/${fileName}-create-update.component';
