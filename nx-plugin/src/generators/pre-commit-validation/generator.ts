@@ -8,7 +8,6 @@ import {
 import * as path from 'path';
 import { PreCommitValidationGeneratorSchema } from './schema';
 import { execSync } from 'child_process';
-import { loadEnvFile } from 'process';
 import processParams, { GeneratorParameter } from '../shared/parameters.utils';
 
 const PARAMETERS: GeneratorParameter<PreCommitValidationGeneratorSchema>[] = [
@@ -37,7 +36,7 @@ const PARAMETERS: GeneratorParameter<PreCommitValidationGeneratorSchema>[] = [
 
 function checkHuskyInstallation() {
   try {
-    execSync('npx husky --version', { stdio: 'ignore' });
+    execSync('npm ls husky', { stdio: 'ignore' });
   } catch {
     console.log('Installing Husky...');
     execSync('npm install husky --save-dev', { stdio: 'inherit' });
@@ -45,14 +44,13 @@ function checkHuskyInstallation() {
 }
 
 function checkDetectSecretsInstallation() {
-  // TODO
+  try {
+    execSync('npm ls detect-secrets', { stdio: 'ignore' });
+  } catch {
+    console.log('Installing detect-secrets...');
+    execSync('npm install detect-secrets --save-dev', { stdio: 'inherit' });
+  }
 }
-
-  // function makeHookExecutable(hookPath: string) {
-  //   if (fs.existsSync(hookPath)) {
-  //     execSync(`chmod +x ${hookPath}`, { stdio: 'inherit' });
-  //   }
-  // }
 
 export async function preCommitValidationGenerator(
   tree: Tree,
@@ -63,31 +61,34 @@ export async function preCommitValidationGenerator(
     options
   );
   Object.assign(options, parameters);
-    checkHuskyInstallation();
-  
-    const templatePath = path.join(__dirname, 'files', 'src', '.husky');
+    
+    const templatePathHusky = path.join(__dirname, 'files', 'src', 'husky-commits');
   
     if (options.enableEslint) {
+      checkHuskyInstallation();
       console.log('Setting up ESLint check..')
-      generateFiles(tree, path.join(templatePath, 'husky'), '.husky', { tmpl: '', filename: 'pre-commit' });
+      generateFiles(tree, path.join(templatePathHusky, 'eslint'), '.husky', { tmpl: '', filename: 'pre-commit' });
       console.log('ESLint pre-commit hook created.');
     } else {
       console.log('Skipped ESLint pre-commit hook.');
     }
   
     if (options.enableConventionalCommits) {
+      checkHuskyInstallation();
       console.log('Setting up ConventionalCommits check..')
-      generateFiles(tree, path.join(templatePath, 'husky'), '.husky', { tmpl: '', filename: 'commit-msg' });
+      generateFiles(tree, path.join(templatePathHusky, 'conventional-commits'), '.husky', { tmpl: '', filename: 'commit-msg' });
       console.log('ConventionalCommits pre-commit hook created.');
     } else {
       console.log('Skipped ConventionalCommits pre-commit hook.');
     }
   
     if (options.enableDetectSecrets) {
-      // checkDetectSecretsInstallation()
+      checkHuskyInstallation();
+      checkDetectSecretsInstallation()
       console.log('Setting up detect secrets check..')
-      generateFiles(tree, path.join(templatePath, 'husky'), '.husky', { tmpl: '', filename: 'commit-msg' });
-      console.log('detect secrets pre-commit hook created.');
+      generateFiles(tree, path.join(__dirname, 'files', 'src', 'detect-secrets'), '.husky', { tmpl: '', filename: 'pre-commit' });
+      generateFiles(tree, path.join(__dirname, 'files', 'src', 'detect-secrets-plugin'), 'scripts', { tmpl: '', filename: 'detect-secrets-plugin.ts' });
+      console.log('Detect secrets pre-commit hook created.');
     } else {
       console.log('Skipped detect secrets pre-commit hook.');
     }
