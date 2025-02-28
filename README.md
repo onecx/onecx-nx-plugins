@@ -188,4 +188,5 @@ safeReplace(
 
 #### Using Regular Expressions
 find: [/^/] → This regex matches the beginning of the file, allowing you to prepend content.
+
 find: [/somePattern/] → Searches for a specific pattern in the file content.
