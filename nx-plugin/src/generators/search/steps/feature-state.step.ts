@@ -1,5 +1,6 @@
 import { Tree, names } from '@nx/devkit';
 import { GeneratorStep } from '../../shared/generator.utils';
+import { safeReplace } from '../../shared/safeReplace';
 import { SearchGeneratorSchema } from '../schema';
 
 export class FeatureStateStep implements GeneratorStep<SearchGeneratorSchema> {
@@ -7,22 +8,23 @@ export class FeatureStateStep implements GeneratorStep<SearchGeneratorSchema> {
     const fileName = names(options.featureName).fileName;
     const className = names(options.featureName).className;
     const filePath = `src/app/${fileName}/${fileName}.state.ts`;
-
-    let fileContent = tree.read(filePath, 'utf8');
-
-    fileContent = fileContent.replace(
-      '{',
+    const find = ['{', /^/];
+    const replaceWith = [
       `{
     search: ${className}SearchState;
-  `
-    );
+  `,
+      `import { ${className}SearchState } from './pages/${fileName}-search/${fileName}-search.state';`,
+    ];
 
-    fileContent =
-      `import { ${className}SearchState } from './pages/${fileName}-search/${fileName}-search.state';` +
-      fileContent;
-    tree.write(filePath, fileContent);
+    safeReplace(
+      `Injecting search state into ${fileName} feature`,
+      filePath,
+      find,
+      replaceWith,
+      tree
+    );
   }
   getTitle(): string {
-    return "Adapting Feature State"
+    return 'Adapting Feature State';
   }
 }
