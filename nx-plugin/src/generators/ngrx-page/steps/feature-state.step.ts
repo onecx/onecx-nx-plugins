@@ -12,11 +12,20 @@ export class FeatureStateStep implements GeneratorStep<PageGeneratorSchema> {
     const pagePropertyName = names(options.pageName).propertyName;
     const pageFileName = names(options.pageName).fileName;
 
-    const find = [/^/,'State {'];
-    const replaceWith = [`import { ${pageClassName}State } from './pages/${pageFileName}/${pageFileName}.state';`,`State {
-    ${pagePropertyName}: ${pageClassName}State;`];
+    const find = [/^/, 'State {'];
+    const replaceWith = [
+      `import { ${pageClassName}State } from './pages/${pageFileName}/${pageFileName}.state';`,
+      `State {
+    ${pagePropertyName}: ${pageClassName}State;`,
+    ];
 
-    safeReplace(`Feature State replace state and import in ${fileName}`, filePath, find,replaceWith, tree);
+    safeReplace(
+      `Add page state to ${fileName}State`,
+      filePath,
+      find,
+      replaceWith,
+      tree
+    );
   }
   getTitle(): string {
     return 'Adapting Feature State';

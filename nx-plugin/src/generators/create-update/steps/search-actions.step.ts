@@ -11,7 +11,11 @@ export class SearchActionsStep
     const filePath = `src/app/${fileName}/pages/${fileName}-search/${fileName}-search.actions.ts`;
     const actionName = names(options.featureName).fileName.replaceAll('-', ' ');
 
-    safeReplace(`Search Actions step replace events in ${fileName}`,filePath,'events: {',`events: {
+    safeReplace(
+      `Add ${actionName} event handlers for create, edit, and error scenarios`,
+      filePath,
+      'events: {',
+      `events: {
         'Create ${actionName} button clicked': emptyProps(),
         'Edit ${actionName} button clicked': props<{
           id: number | string;
@@ -26,7 +30,9 @@ export class SearchActionsStep
         'Update ${actionName} failed': props<{
           error: string | null;
         }>(),
-      `,tree)
+      `,
+      tree
+    );
   }
   getTitle(): string {
     return 'Adapting Search Actions';

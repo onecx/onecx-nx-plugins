@@ -17,7 +17,7 @@ export class SearchActionsStep implements GeneratorStep<SearchGeneratorSchema> {
     `;
 
     safeReplace(
-      `Replace 'events: {' in ${filePath}`,
+      `Add details button event to ${fileName}SearchActions`,
       filePath,
       find,
       replaceWith,
@@ -25,6 +25,6 @@ export class SearchActionsStep implements GeneratorStep<SearchGeneratorSchema> {
     );
   }
   getTitle(): string {
-    return "Adapting Search Actions"
+    return 'Adapting Search Actions';
   }
 }

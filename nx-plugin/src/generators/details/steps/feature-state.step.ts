@@ -9,14 +9,22 @@ export class FeatureStateStep implements GeneratorStep<DetailsGeneratorSchema> {
     const className = names(options.featureName).className;
     const filePath = `src/app/${fileName}/${fileName}.state.ts`;
 
-    const find = [/^/,'State {'];
-    const replaceWith = [`import { ${className}DetailsState } from './pages/${fileName}-details/${fileName}-details.state';`,`State {
+    const find = [/^/, 'State {'];
+    const replaceWith = [
+      `import { ${className}DetailsState } from './pages/${fileName}-details/${fileName}-details.state';`,
+      `State {
     details: ${className}DetailsState;
-  `];
-    safeReplace(`Feature State replace import and state in ${fileName}`, filePath, find,replaceWith, tree)
-
+  `,
+    ];
+    safeReplace(
+      `Add details state to ${fileName}State`,
+      filePath,
+      find,
+      replaceWith,
+      tree
+    );
   }
   getTitle(): string {
-    return "Adapting Feature State"
+    return 'Adapting Feature State';
   }
 }

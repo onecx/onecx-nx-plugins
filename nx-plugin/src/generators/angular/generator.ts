@@ -198,7 +198,7 @@ function addScriptsToPackageJson(tree: Tree, options: AngularGeneratorSchema) {
 function adaptTsConfig(tree: Tree, options: AngularGeneratorSchema) {
   const fileName = names(options.name).fileName;
   const filePath = 'tsconfig.app.json';
-  const contentToReplace = ['"files": [', '"compilerOptions": {'];
+  const find = ['"files": [', '"compilerOptions": {'];
   const replaceWith = [
     `"files": [
     "src/app/${fileName}-app.remote.module.ts",
@@ -206,13 +206,13 @@ function adaptTsConfig(tree: Tree, options: AngularGeneratorSchema) {
   `,
     `"compilerOptions": {
     "useDefineForClassFields": false,
-  `
+  `,
   ];
 
   safeReplace(
-    "Adapt Typescript Config",
+    'Adapt files and compilerOptions Typescript Config',
     filePath,
-    contentToReplace,
+    find,
     replaceWith,
     tree
   );
@@ -275,7 +275,7 @@ function adaptProjectConfiguration(
 function adaptJestConfig(tree: Tree) {
   const filePath = 'jest.config.ts';
   safeReplace(
-    "Adapt Jest Config",
+    'Adapt transformIgnorePatterns in Jest Config',
     filePath,
     /transformIgnorePatterns: .+?,/,
     `transformIgnorePatterns: ['node_modules/(?!@ngrx|(?!deck.gl)|d3-scale|(?!.*\\.mjs$))'],`,

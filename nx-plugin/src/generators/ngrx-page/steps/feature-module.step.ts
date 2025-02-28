@@ -21,7 +21,7 @@ export class FeatureModuleStep implements GeneratorStep<PageGeneratorSchema> {
       `} from '@onecx/portal-integration-angular'`,
       'EffectsModule.forFeature()',
       'EffectsModule.forFeature([',
-      `from '@ngrx/effects';`
+      `from '@ngrx/effects';`,
     ];
 
     const replaceWith = [
@@ -31,11 +31,16 @@ export class FeatureModuleStep implements GeneratorStep<PageGeneratorSchema> {
       `EffectsModule.forFeature([${pageClassName}Effects,`,
       `from '@ngrx/effects';
     import { ${pageClassName}Effects } from './pages/${pageFileName}/${pageFileName}.effects';
-    import { ${pageClassName}Component } from './pages/${pageFileName}/${pageFileName}.component';`
+    import { ${pageClassName}Component } from './pages/${pageFileName}/${pageFileName}.component';`,
     ];
 
-    safeReplace(`Feature Module replace in ${fileName}`, moduleFilePath, find, replaceWith, tree);
-
+    safeReplace(
+      `Add page component and effects to ${fileName}Module`,
+      moduleFilePath,
+      find,
+      replaceWith,
+      tree
+    );
   }
   getTitle(): string {
     return 'Adapting Feature Module';

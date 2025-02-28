@@ -17,7 +17,7 @@ export class FeatureModuleStep implements GeneratorStep<SearchGeneratorSchema> {
       `} from '@onecx/portal-integration-angular'`,
       'EffectsModule.forFeature()',
       'EffectsModule.forFeature([',
-      `from '@ngrx/effects';`
+      `from '@ngrx/effects';`,
     ];
     const replaceWith = [
       `declarations: [${className}SearchComponent,`,
@@ -26,11 +26,16 @@ export class FeatureModuleStep implements GeneratorStep<SearchGeneratorSchema> {
       `EffectsModule.forFeature([${className}SearchEffects,`,
       `from '@ngrx/effects';
     import { ${className}SearchEffects } from './pages/${fileName}-search/${fileName}-search.effects';
-    import { ${className}SearchComponent } from './pages/${fileName}-search/${fileName}-search.component';`
+    import { ${className}SearchComponent } from './pages/${fileName}-search/${fileName}-search.component';`,
     ];
 
-    safeReplace(`Feature Module replace in ${fileName}`, moduleFilePath, find, replaceWith, tree);
-
+    safeReplace(
+      `Integrating ${className}SearchComponent into ${fileName} module"`,
+      moduleFilePath,
+      find,
+      replaceWith,
+      tree
+    );
   }
   getTitle(): string {
     return 'Adapting Feature Module';

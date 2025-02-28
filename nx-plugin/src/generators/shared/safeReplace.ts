@@ -1,5 +1,5 @@
-import { Tree } from "@nx/devkit";
-import { GeneratorStepError } from "./generator.utils";
+import { Tree } from '@nx/devkit';
+import { GeneratorStepError } from './generator.utils';
 
 interface ReplacementResult {
   success: boolean;
@@ -7,6 +7,14 @@ interface ReplacementResult {
   content?: string;
 }
 
+/**
+ * Performs replacements in a given string content based on the provided patterns and replacements.
+ *
+ * @param content - The original content in which replacements will be performed.
+ * @param find - The pattern(s) to search for. Can be a string, regex, or an array of strings/regexes.
+ * @param replaceWith - The replacement string(s) for the pattern(s). Can be a string or an array of strings.
+ * @returns A `ReplacementResult` object containing the success status, errors (if any), and the modified content.
+ */
 function performReplacements(
   content: string,
   find: string | RegExp | (string | RegExp)[],
@@ -17,8 +25,9 @@ function performReplacements(
   let newContent = content;
 
   const findArray = Array.isArray(find) ? find : [find];
-  const replaceWithArray = Array.isArray(replaceWith) ? replaceWith : [replaceWith];
-
+  const replaceWithArray = Array.isArray(replaceWith)
+    ? replaceWith
+    : [replaceWith];
 
   for (let i = 0; i < findArray.length; i++) {
     const currentFind = findArray[i];
@@ -27,10 +36,15 @@ function performReplacements(
     try {
       if (typeof currentFind === 'string' || currentFind instanceof RegExp) {
         if (newContent.includes(currentReplaceWith)) {
-          replacementErrors.push(`Text already exists in the document: ${currentReplaceWith}`);
+          replacementErrors.push(
+            `Text already exists in the document: ${currentReplaceWith}`
+          );
         }
 
-        if (typeof currentFind === 'string' && !newContent.includes(currentFind)) {
+        if (
+          typeof currentFind === 'string' &&
+          !newContent.includes(currentFind)
+        ) {
           replacementErrors.push(`Pattern not found: ${currentFind}`);
         }
 
@@ -53,6 +67,17 @@ function performReplacements(
   };
 }
 
+/**
+ * Safely performs replacements in a file within an Nx workspace.
+ * If replacements fail, it appends detailed error messages to the file and logs the errors to the console.
+ *
+ * @param goal - A description of the goal of the replacement (e.g., "Add new feature X").
+ * @param file - The path to the file in which replacements should be performed.
+ * @param find - The pattern(s) to search for. Can be a string, regex, or an array of strings/regexes.
+ * @param replaceWith - The replacement string(s) for the pattern(s). Can be a string or an array of strings.
+ * @param tree - The Nx `Tree` object representing the file system.
+ * @throws {GeneratorStepError} If the file does not exist.
+ */
 export function safeReplace(
   goal: string,
   file: string,
@@ -83,7 +108,9 @@ ${result.errors!.map((error) => `// ${error}`).join('\n')}
     const newContent = `${comment}\n${result.content}`;
     tree.write(file, newContent);
 
-    console.error(`Some replacements failed in file: ${file}`);
+    console.error(
+      `Error: Some replacements could not be completed. Review the file for more information: ${file}`
+    );
     console.error(`Errors: ${result.errors!.join('\n')}`);
   }
 }

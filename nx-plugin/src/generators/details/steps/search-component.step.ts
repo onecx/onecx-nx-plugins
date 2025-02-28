@@ -11,7 +11,7 @@ export class SearchComponentStep
     const className = names(options.featureName).className;
     const filePath = `src/app/${fileName}/pages/${fileName}-search/${fileName}-search.component.ts`;
 
-    const find = [/^/,'resetSearch'];
+    const find = [/^/, 'resetSearch'];
     const replaceWith = [
       `import {RowListGridData} from '@onecx/portal-integration-angular';\n`,
       `
@@ -23,14 +23,14 @@ export class SearchComponentStep
     ];
 
     safeReplace(
-      `Add import and replace 'resetSearch' in ${filePath}`,
+      `Add details method to ${className}SearchComponent`,
       filePath,
       find,
       replaceWith,
-      tree,
+      tree
     );
   }
   getTitle(): string {
-    return "Adapting Search Component"
+    return 'Adapting Search Component';
   }
 }

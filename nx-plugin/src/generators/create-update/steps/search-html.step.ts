@@ -11,10 +11,15 @@ export class SearchHTMLStep
     const constantName = names(options.featureName).constantName;
     const htmlSearchFilePath = `src/app/${fileName}/pages/${fileName}-search/${fileName}-search.component.html`;
 
-    safeReplace("Search HTML Step replace <ocx-interactive-data-view", htmlSearchFilePath,'<ocx-interactive-data-view',`<ocx-interactive-data-view
+    safeReplace(
+      `Add edit event and permissions to <ocx-interactive-data-view> in ${fileName}SearchComponent`,
+      htmlSearchFilePath,
+      '<ocx-interactive-data-view',
+      `<ocx-interactive-data-view
       (editItem)="edit($event)"
-      ${options.standalone ? '' : `editPermission="${constantName}#EDIT"`}`,tree)
-
+      ${options.standalone ? '' : `editPermission="${constantName}#EDIT"`}`,
+      tree
+    );
   }
   getTitle(): string {
     return 'Adapting Search HTML';

@@ -12,12 +12,19 @@ export class FeatureReducerStep implements GeneratorStep<PageGeneratorSchema> {
     const pageFileName = names(options.pageName).fileName;
 
     const find = [/^/, '>({'];
-    const replaceWith = [`import { ${pagePropertyName}Reducer } from './pages/${pageFileName}/${pageFileName}.reducers';`,`>({
-      ${pagePropertyName}: ${pagePropertyName}Reducer,`];
+    const replaceWith = [
+      `import { ${pagePropertyName}Reducer } from './pages/${pageFileName}/${pageFileName}.reducers';`,
+      `>({
+      ${pagePropertyName}: ${pagePropertyName}Reducer,`,
+    ];
 
-    safeReplace(`Feature Reducer replace reducer and import in ${fileName}`, filePath, find,replaceWith, tree);
-
-
+    safeReplace(
+      `Add page reducer to ${fileName}Reducer`,
+      filePath,
+      find,
+      replaceWith,
+      tree
+    );
   }
   getTitle(): string {
     return 'Adapting Feature Reducer';

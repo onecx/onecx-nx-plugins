@@ -10,11 +10,20 @@ export class FeatureReducerStep
     const fileName = names(options.featureName).fileName;
     const propertyName = names(options.featureName).propertyName;
     const filePath = `src/app/${fileName}/${fileName}.reducers.ts`;
-    const find = [/^/,'>({'];
-    const replaceWith = [ `import { ${propertyName}SearchReducer } from './pages/${fileName}-search/${fileName}-search.reducers';`, `>({
-      search: ${propertyName}SearchReducer,`];
+    const find = [/^/, '>({'];
+    const replaceWith = [
+      `import { ${propertyName}SearchReducer } from './pages/${fileName}-search/${fileName}-search.reducers';`,
+      `>({
+      search: ${propertyName}SearchReducer,`,
+    ];
 
-    safeReplace(`Feature Reducer replace in ${fileName}`, filePath, find, replaceWith,tree)
+    safeReplace(
+      `Adding search reducer to ${fileName}`,
+      filePath,
+      find,
+      replaceWith,
+      tree
+    );
   }
   getTitle(): string {
     return 'Adapting Feature Reducer';

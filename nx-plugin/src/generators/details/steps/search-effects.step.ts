@@ -9,7 +9,7 @@ export class SearchEffectsStep implements GeneratorStep<SearchGeneratorSchema> {
     const className = names(options.featureName).className;
     const filePath = `src/app/${fileName}/pages/${fileName}-search/${fileName}-search.effects.ts`;
 
-    const find = [/^/,'searchByUrl$']
+    const find = [/^/, 'searchByUrl$'];
 
     const replaceWith = [
       `import { selectUrl } from 'src/app/shared/selectors/router.selectors';\n`,
@@ -28,18 +28,18 @@ export class SearchEffectsStep implements GeneratorStep<SearchGeneratorSchema> {
           { dispatch: false }
         );
 
-        searchByUrl$`
+        searchByUrl$`,
     ];
 
     safeReplace(
-      `Add import and replace 'searchByUrl$' in ${filePath}`,
+      `Add details navigation effect to ${className}SearchEffects`,
       filePath,
       find,
       replaceWith,
-      tree,
+      tree
     );
   }
   getTitle(): string {
-    return "Adapting Search Effects"
+    return 'Adapting Search Effects';
   }
 }

@@ -14,14 +14,16 @@ export class SearchEffectsStep
     const filePath = `src/app/${fileName}/pages/${fileName}-search/${fileName}-search.effects.ts`;
 
     const find = [/^/, 'searchByUrl$'];
-    const replaceWith = [`import { PortalDialogService } from '@onecx/portal-integration-angular';` +
-      `import { mergeMap } from 'rxjs';` +
-      `import {
+    const replaceWith = [
+      `import { PortalDialogService } from '@onecx/portal-integration-angular';` +
+        `import { mergeMap } from 'rxjs';` +
+        `import {
         ${options.dataObjectName},
         ${options.createRequestName},
         ${options.updateRequestName},
       } from 'src/app/shared/generated';` +
-      `import { ${className}CreateUpdateComponent } from './dialogs/${options.featureName}-create-update/${options.featureName}-create-update.component';`,`
+        `import { ${className}CreateUpdateComponent } from './dialogs/${options.featureName}-create-update/${options.featureName}-create-update.component';`,
+      `
       refreshSearchAfterCreateUpdate$ = createEffect(() => {
         return this.actions$.pipe(
           ofType(
@@ -150,15 +152,21 @@ export class SearchEffectsStep
       }
     );
 
-      searchByUrl$`];
+      searchByUrl$`,
+    ];
     const content = tree.read(filePath, 'utf8');
     if (!content.includes('private portalDialogService: PortalDialogService')) {
       find.push('constructor(');
       replaceWith.push(`constructor(
-          private portalDialogService: PortalDialogService,`)
+          private portalDialogService: PortalDialogService,`);
     }
-    safeReplace(`Search Effects replace in ${fileName}`,filePath, find, replaceWith, tree)
-
+    safeReplace(
+      `Add create and edit effects with dialog handling to ${className}SearchEffects`,
+      filePath,
+      find,
+      replaceWith,
+      tree
+    );
   }
   getTitle(): string {
     return 'Adapting Search Effects';

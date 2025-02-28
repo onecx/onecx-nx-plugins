@@ -16,12 +16,19 @@ export class FeatureRoutesStep implements GeneratorStep<PageGeneratorSchema> {
       fileName,
       fileName + '.routes.ts'
     );
-    const find = [/^/,'routes: Routes = ['];
-    const replaceWith = [ `import { ${pageClassName}Component } from './pages/${pageFileName}/${pageFileName}.component';`
-      ,`routes: Routes = [ { path: '${pagePropertyName}', component: ${pageClassName}Component, pathMatch: 'full' },`];
+    const find = [/^/, 'routes: Routes = ['];
+    const replaceWith = [
+      `import { ${pageClassName}Component } from './pages/${pageFileName}/${pageFileName}.component';`,
+      `routes: Routes = [ { path: '${pagePropertyName}', component: ${pageClassName}Component, pathMatch: 'full' },`,
+    ];
 
-    safeReplace(`Feature Routes replace routes and import in ${fileName}`, routesFilePath, find,replaceWith, tree);
-
+    safeReplace(
+      `Add page route to ${fileName}Routes`,
+      routesFilePath,
+      find,
+      replaceWith,
+      tree
+    );
   }
   getTitle(): string {
     return 'Adapting Feature Routes';

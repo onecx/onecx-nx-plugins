@@ -12,11 +12,19 @@ export class FeatureRoutesStep implements GeneratorStep<SearchGeneratorSchema> {
       fileName,
       fileName + '.routes.ts'
     );
-    const find = [/^/,'routes: Routes = ['];
-    const replaceWith = [`import { ${className}SearchComponent } from './pages/${fileName}-search/${fileName}-search.component';`,
-    `routes: Routes = [ { path: '', component: ${className}SearchComponent, pathMatch: 'full' },`];
+    const find = [/^/, 'routes: Routes = ['];
+    const replaceWith = [
+      `import { ${className}SearchComponent } from './pages/${fileName}-search/${fileName}-search.component';`,
+      `routes: Routes = [ { path: '', component: ${className}SearchComponent, pathMatch: 'full' },`,
+    ];
 
-    safeReplace(`Feature Routes replace routes in ${fileName}`,routesFilePath, find, replaceWith, tree)
+    safeReplace(
+      `Updating feature routes in ${fileName}`,
+      routesFilePath,
+      find,
+      replaceWith,
+      tree
+    );
   }
   getTitle(): string {
     return 'Adapting Feature Routes';

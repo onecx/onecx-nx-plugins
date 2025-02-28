@@ -11,13 +11,15 @@ export class SearchEffectsStep implements GeneratorStep<DeleteGeneratorSchema> {
     const constantName = names(options.featureName).constantName;
     const filePath = `src/app/${fileName}/pages/${fileName}-search/${fileName}-search.effects.ts`;
 
-    const contentToReplace = [/^/, 'searchByUrl$'];
-    const replaceWith = [`import { PortalDialogService, DialogState } from '@onecx/portal-integration-angular';` +
-      `import { mergeMap } from 'rxjs';` +
-      `import {
+    const find = [/^/, 'searchByUrl$'];
+    const replaceWith = [
+      `import { PortalDialogService, DialogState } from '@onecx/portal-integration-angular';` +
+        `import { mergeMap } from 'rxjs';` +
+        `import {
         ${options.dataObjectName},
       } from 'src/app/shared/generated';` +
-      `import { PrimeIcons } from 'primeng/api';`,`
+        `import { PrimeIcons } from 'primeng/api';`,
+      `
       refreshSearchAfterDelete$ = createEffect(() => {
         return this.actions$.pipe(
           ofType(
@@ -90,14 +92,21 @@ export class SearchEffectsStep implements GeneratorStep<DeleteGeneratorSchema> {
       );
     });
 
-      searchByUrl$`];
+      searchByUrl$`,
+    ];
     const content = tree.read(filePath, 'utf8');
     if (!content.includes('private portalDialogService: PortalDialogService')) {
-      contentToReplace.push('constructor(');
+      find.push('constructor(');
       replaceWith.push(`constructor(
-          private portalDialogService: PortalDialogService,`)
+          private portalDialogService: PortalDialogService,`);
     }
-    safeReplace(`Search Effect replace searchByUrl in ${fileName}`,filePath,contentToReplace,replaceWith,tree)
+    safeReplace(
+      `Modify ${className}SearchEffects to include delete effects`,
+      filePath,
+      find,
+      replaceWith,
+      tree
+    );
   }
   getTitle(): string {
     return 'Adapting Search Effects';

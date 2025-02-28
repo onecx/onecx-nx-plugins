@@ -10,7 +10,9 @@ export class SearchTestsStep implements GeneratorStep<SearchGeneratorSchema> {
     const propertyName = names(options.featureName).propertyName;
     const filePath = `src/app/${fileName}/pages/${fileName}-search/${fileName}-search.component.spec.ts`;
 
-    safeReplace(`Search Tests replace test in ${fileName}`, filePath,
+    safeReplace(
+      `Add details button test to ${className}SearchComponent`,
+      filePath,
       "it('should export csv data on export action click'",
       `
     it('should dispatch detailsButtonClicked action on item details click', async () => {
@@ -53,7 +55,8 @@ export class SearchTestsStep implements GeneratorStep<SearchGeneratorSchema> {
     });
 
     it('should export csv data on export action click'`,
-    tree);
+      tree
+    );
   }
   getTitle(): string {
     return 'Adapting Search Tests';

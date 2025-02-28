@@ -9,10 +9,15 @@ export class SearchHTMLStep implements GeneratorStep<DeleteGeneratorSchema> {
     const constantName = names(options.featureName).constantName;
     const htmlSearchFilePath = `src/app/${fileName}/pages/${fileName}-search/${fileName}-search.component.html`;
 
-    safeReplace(`SearchHTML replace ocx-interactive-data-view in ${fileName}`,htmlSearchFilePath,'<ocx-interactive-data-view',`<ocx-interactive-data-view
+    safeReplace(
+      `Modify ${fileName}SearchComponent HTML to include delete event`,
+      htmlSearchFilePath,
+      '<ocx-interactive-data-view',
+      `<ocx-interactive-data-view
       (deleteItem)="delete($event)"
-      ${options.standalone ? '' : `deletePermission="${constantName}#DELETE"`}`,tree)
-
+      ${options.standalone ? '' : `deletePermission="${constantName}#DELETE"`}`,
+      tree
+    );
   }
   getTitle(): string {
     return 'Adapting Search HTML';

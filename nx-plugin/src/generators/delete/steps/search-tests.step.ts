@@ -10,8 +10,13 @@ export class SearchTestsStep implements GeneratorStep<DeleteGeneratorSchema> {
     const propertyName = names(options.featureName).propertyName;
     const filePath = `src/app/${fileName}/pages/${fileName}-search/${fileName}-search.component.spec.ts`;
 
-    const find = [/^/,"it('should dispatch export csv data on export action click'"];
-    const replaceWith = [`import { PrimeIcons } from 'primeng/api';`, `
+    const find = [
+      /^/,
+      "it('should dispatch export csv data on export action click'",
+    ];
+    const replaceWith = [
+      `import { PrimeIcons } from 'primeng/api';`,
+      `
       it('should dispatch delete${className}ButtonClicked action on item delete click', async () => {
         jest.spyOn(store, 'dispatch');
 
@@ -57,9 +62,15 @@ export class SearchTestsStep implements GeneratorStep<DeleteGeneratorSchema> {
         );
       });
       //needs to be the last test in this class
-      it('should export csv data on export action click'`];
-    safeReplace(`SearchTests replace test in ${fileName}`,filePath, find, replaceWith, tree)
-
+      it('should export csv data on export action click'`,
+    ];
+    safeReplace(
+      `Add delete action test to ${className}SearchComponent`,
+      filePath,
+      find,
+      replaceWith,
+      tree
+    );
   }
   getTitle(): string {
     return 'Adapting Search Tests';

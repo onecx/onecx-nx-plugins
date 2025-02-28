@@ -82,16 +82,24 @@ function adaptAppRoutingModule(tree: Tree, options: FeatureGeneratorSchema) {
   const fileName = names(options.name).fileName;
   const className = names(options.name).className;
   const moduleFilePath = 'src/app/app-routing.module.ts';
-  const find = [/^/,'routes: Routes = ['];
-  const replaceWith = [`import { startsWith } from '@onecx/angular-webcomponents';`,`routes: Routes = [ {
+  const find = [/^/, 'routes: Routes = ['];
+  const replaceWith = [
+    `import { startsWith } from '@onecx/angular-webcomponents';`,
+    `routes: Routes = [ {
     matcher: startsWith('${fileName}'),
     loadChildren: () =>
       import('./${fileName}/${fileName}.module').then(
         (mod) => mod.${className}Module
       ),
-  },`];
-    safeReplace(
-    'Adapt App routing module', moduleFilePath, find, replaceWith, tree);
+  },`,
+  ];
+  safeReplace(
+    'Add feature module to AppRoutingModule',
+    moduleFilePath,
+    find,
+    replaceWith,
+    tree
+  );
 }
 
 export default featureGenerator;

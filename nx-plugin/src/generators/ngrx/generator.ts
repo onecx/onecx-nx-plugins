@@ -83,7 +83,11 @@ export async function ngrxGenerator(
 
 function addModulesToAppModule(tree: Tree) {
   addImportsToAppModule(tree);
-  safeReplace(`Ngrx Generator add modules in app.module.ts`,'src/app/app.module.ts','AppRoutingModule,',`AppRoutingModule,
+  safeReplace(
+    `Update AppModule with NgRx setup`,
+    'src/app/app.module.ts',
+    'AppRoutingModule,',
+    `AppRoutingModule,
      LetDirective,
      StoreRouterConnectingModule.forRoot(),
      StoreModule.forRoot(reducers, { metaReducers }),
@@ -94,13 +98,15 @@ function addModulesToAppModule(tree: Tree) {
        trace: false,
        traceLimit: 75,
      }),
-     EffectsModule.forRoot([]),`, tree)
-
+     EffectsModule.forRoot([]),`,
+    tree
+  );
 }
 
 function addImportsToAppModule(tree: Tree) {
-  const contentToReplace = [`from '@angular/common';`,`PortalCoreModule,`, `NgModule`];
-  const replaceWith = [`from '@angular/common';
+  const find = [`from '@angular/common';`, `PortalCoreModule,`, `NgModule`];
+  const replaceWith = [
+    `from '@angular/common';
     import { StoreModule } from '@ngrx/store';
     import { reducers, metaReducers } from './app.reducers';
     import { StoreDevtoolsModule } from '@ngrx/store-devtools';
@@ -108,12 +114,18 @@ function addImportsToAppModule(tree: Tree) {
     import { EffectsModule } from '@ngrx/effects';
     import { StoreRouterConnectingModule } from '@ngrx/router-store';
     import { environment } from 'src/environments/environment';
-    `, `PortalCoreModule,
-     APP_CONFIG,`, `NgModule, isDevMode`];
-  safeReplace(`Ngrx Generator add Imports replace in app.module.ts`,'src/app/app.module.ts', contentToReplace, replaceWith, tree)
-
+    `,
+    `PortalCoreModule,
+     APP_CONFIG,`,
+    `NgModule, isDevMode`,
+  ];
+  safeReplace(
+    `Add NgRx imports to AppModule`,
+    'src/app/app.module.ts',
+    find,
+    replaceWith,
+    tree
+  );
 }
-
-
 
 export default ngrxGenerator;

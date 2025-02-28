@@ -15,7 +15,7 @@ export class SearchHTMLStep implements GeneratorStep<SearchGeneratorSchema> {
       ${options.standalone ? '' : `viewPermission="${constantName}#VIEW"`}`;
 
     safeReplace(
-      `Replace '<ocx-interactive-data-view' in ${htmlSearchFilePath}`,
+      `Add view event and permission to ${fileName}SearchComponent HTML`,
       htmlSearchFilePath,
       find,
       replaceWith,

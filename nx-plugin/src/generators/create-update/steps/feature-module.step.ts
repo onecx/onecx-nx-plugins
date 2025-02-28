@@ -14,23 +14,30 @@ export class FeatureModuleStep
       fileName,
       fileName + '.module.ts'
     );
-    const contentToReplace = ['declarations: [',`from '@ngrx/effects';`]
+    const find = ['declarations: [', `from '@ngrx/effects';`];
     const replaceWith = [
-    `declarations: [${className}CreateUpdateComponent,`,
-    `from '@ngrx/effects';
+      `declarations: [${className}CreateUpdateComponent,`,
+      `from '@ngrx/effects';
      import { ${className}CreateUpdateComponent } from './pages/${fileName}-search/dialogs/${fileName}-create-update/${fileName}-create-update.component';
      import { providePortalDialogService } from '@onecx/portal-integration-angular';`,
-     `
+      `
     providers: [providePortalDialogService()],
-    declarations:`]
+    declarations:`,
+    ];
     const moduleContent = tree.read(moduleFilePath, 'utf8');
     if (!moduleContent.includes('providePortalDialogService()')) {
-      contentToReplace.push('declarations:')
+      find.push('declarations:');
       replaceWith.push(`
     providers: [providePortalDialogService()],
-    declarations:`)
+    declarations:`);
     }
-    safeReplace(`Feature Module Step replace declarations in ${fileName}`,moduleFilePath,contentToReplace,replaceWith,tree)
+    safeReplace(
+      `Add Component to feature module declarations and dialog service to providers`,
+      moduleFilePath,
+      find,
+      replaceWith,
+      tree
+    );
   }
   getTitle(): string {
     return 'Adapting Feature Module';
