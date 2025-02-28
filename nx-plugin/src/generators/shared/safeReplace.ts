@@ -45,11 +45,15 @@ function performReplacements(
           typeof currentFind === 'string' &&
           !newContent.includes(currentFind)
         ) {
-          replacementErrors.push(`Pattern not found: ${currentFind}`);
+          replacementErrors.push(
+            `Pattern not found: ${currentFind}. Attempted to replace with: ${currentReplaceWith}`
+          );
         }
 
         if (currentFind instanceof RegExp && !currentFind.test(newContent)) {
-          replacementErrors.push(`Pattern not found: ${currentFind}`);
+          replacementErrors.push(
+            `Pattern not found: ${currentFind}. Attempted to replace with: ${currentReplaceWith}`
+          );
         }
 
         newContent = newContent.replace(currentFind, currentReplaceWith);
