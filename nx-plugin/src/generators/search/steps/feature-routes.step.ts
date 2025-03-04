@@ -1,5 +1,6 @@
 import { Tree, joinPathFragments, names } from '@nx/devkit';
 import { GeneratorStep } from '../../shared/generator.utils';
+import { safeReplace } from '../../shared/safeReplace';
 import { SearchGeneratorSchema } from '../schema';
 
 export class FeatureRoutesStep implements GeneratorStep<SearchGeneratorSchema> {
@@ -11,16 +12,19 @@ export class FeatureRoutesStep implements GeneratorStep<SearchGeneratorSchema> {
       fileName,
       fileName + '.routes.ts'
     );
-    let moduleContent = tree.read(routesFilePath, 'utf8');
-    moduleContent = moduleContent.replace(
-      'routes: Routes = [',
-      `routes: Routes = [ { path: '', component: ${className}SearchComponent, pathMatch: 'full' },`
-    );
+    const find = [/^/, 'routes: Routes = ['];
+    const replaceWith = [
+      `import { ${className}SearchComponent } from './pages/${fileName}-search/${fileName}-search.component';`,
+      `routes: Routes = [ { path: '', component: ${className}SearchComponent, pathMatch: 'full' },`,
+    ];
 
-    moduleContent =
-      `import { ${className}SearchComponent } from './pages/${fileName}-search/${fileName}-search.component';` +
-      moduleContent;
-    tree.write(routesFilePath, moduleContent);
+    safeReplace(
+      `Update ${fileName}Routes to add a new route for ${className}SearchComponent and extend import statements to include the component`,
+      routesFilePath,
+      find,
+      replaceWith,
+      tree
+    );
   }
   getTitle(): string {
     return 'Adapting Feature Routes';

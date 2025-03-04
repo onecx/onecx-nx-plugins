@@ -1,5 +1,6 @@
 import { Tree, names } from '@nx/devkit';
 import { GeneratorStep } from '../../shared/generator.utils';
+import { safeReplace } from '../../shared/safeReplace';
 import { CreateUpdateGeneratorSchema } from '../schema';
 
 export class SearchActionsStep
@@ -10,8 +11,9 @@ export class SearchActionsStep
     const filePath = `src/app/${fileName}/pages/${fileName}-search/${fileName}-search.actions.ts`;
     const actionName = names(options.featureName).fileName.replaceAll('-', ' ');
 
-    let content = tree.read(filePath, 'utf8');
-    content = content.replace(
+    safeReplace(
+      `Add ${actionName} event handlers for create, edit, and error scenarios`,
+      filePath,
       'events: {',
       `events: {
         'Create ${actionName} button clicked': emptyProps(),
@@ -27,10 +29,10 @@ export class SearchActionsStep
         }>(),
         'Update ${actionName} failed': props<{
           error: string | null;
-        }>(),      
-      `
+        }>(),
+      `,
+      tree
     );
-    tree.write(filePath, content);
   }
   getTitle(): string {
     return 'Adapting Search Actions';

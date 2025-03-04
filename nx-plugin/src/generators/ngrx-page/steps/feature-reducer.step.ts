@@ -1,5 +1,6 @@
 import { Tree, names } from '@nx/devkit';
 import { GeneratorStep } from '../../shared/generator.utils';
+import { safeReplace } from '../../shared/safeReplace';
 import { PageGeneratorSchema } from '../schema';
 
 export class FeatureReducerStep implements GeneratorStep<PageGeneratorSchema> {
@@ -10,18 +11,20 @@ export class FeatureReducerStep implements GeneratorStep<PageGeneratorSchema> {
     const pagePropertyName = names(options.pageName).propertyName;
     const pageFileName = names(options.pageName).fileName;
 
-    let fileContent = tree.read(filePath, 'utf8');
-
-    fileContent = fileContent.replace(
-      '>({',
+    const find = [/^/, '>({'];
+    const replaceWith = [
+      `import { ${pagePropertyName}Reducer } from './pages/${pageFileName}/${pageFileName}.reducers';`,
       `>({
-      ${pagePropertyName}: ${pagePropertyName}Reducer,`
-    );
+      ${pagePropertyName}: ${pagePropertyName}Reducer,`,
+    ];
 
-    fileContent =
-      `import { ${pagePropertyName}Reducer } from './pages/${pageFileName}/${pageFileName}.reducers';` +
-      fileContent;
-    tree.write(filePath, fileContent);
+    safeReplace(
+      `Update ${fileName}Reducer to include ${pagePropertyName}Reducer in the state object and extend import statements to include the new reducer`,
+      filePath,
+      find,
+      replaceWith,
+      tree
+    );
   }
   getTitle(): string {
     return 'Adapting Feature Reducer';

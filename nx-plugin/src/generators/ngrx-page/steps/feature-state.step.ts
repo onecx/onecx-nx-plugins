@@ -1,5 +1,6 @@
 import { Tree, names } from '@nx/devkit';
 import { GeneratorStep } from '../../shared/generator.utils';
+import { safeReplace } from '../../shared/safeReplace';
 import { PageGeneratorSchema } from '../schema';
 
 export class FeatureStateStep implements GeneratorStep<PageGeneratorSchema> {
@@ -11,18 +12,20 @@ export class FeatureStateStep implements GeneratorStep<PageGeneratorSchema> {
     const pagePropertyName = names(options.pageName).propertyName;
     const pageFileName = names(options.pageName).fileName;
 
-    let fileContent = tree.read(filePath, 'utf8');
-
-    fileContent = fileContent.replace(
-      'State {',
+    const find = [/^/, 'State {'];
+    const replaceWith = [
+      `import { ${pageClassName}State } from './pages/${pageFileName}/${pageFileName}.state';`,
       `State {
-    ${pagePropertyName}: ${pageClassName}State;`
-    );
+    ${pagePropertyName}: ${pageClassName}State;`,
+    ];
 
-    fileContent =
-      `import { ${pageClassName}State } from './pages/${pageFileName}/${pageFileName}.state';` +
-      fileContent;
-    tree.write(filePath, fileContent);
+    safeReplace(
+      `Update ${fileName}State to include ${pagePropertyName} state, map it to ${pageClassName}State, and extend import statements to include the new state`,
+      filePath,
+      find,
+      replaceWith,
+      tree
+    );
   }
   getTitle(): string {
     return 'Adapting Feature State';

@@ -1,5 +1,6 @@
 import { Tree, names } from '@nx/devkit';
 import { GeneratorStep } from '../../shared/generator.utils';
+import { safeReplace } from '../../shared/safeReplace';
 import { CreateUpdateGeneratorSchema } from '../schema';
 
 export class SearchTestsStep
@@ -10,13 +11,12 @@ export class SearchTestsStep
     const className = names(options.featureName).className;
     const propertyName = names(options.featureName).propertyName;
     const filePath = `src/app/${fileName}/pages/${fileName}-search/${fileName}-search.component.spec.ts`;
-
-    let htmlContent = tree.read(filePath, 'utf8');
-
-    htmlContent = `import { PrimeIcons } from 'primeng/api';` + htmlContent;
-
-    htmlContent = htmlContent.replace(
+    const find = [
+      /^/,
       "it('should dispatch export csv data on export action click'",
+    ];
+    const replaceWith = [
+      `import { PrimeIcons } from 'primeng/api';`,
       `
     it('should dispatch edit${className}ButtonClicked action on item edit click', async () => {
       jest.spyOn(store, 'dispatch');
@@ -45,7 +45,7 @@ export class SearchTestsStep
       const dataView = await interactiveDataView.getDataView();
       const dataTable = await dataView.getDataListGrid();
       const rowActionButtons = await dataTable?.getActionButtons('list');
-      
+
 
       expect(rowActionButtons?.length).toBeGreaterThan(0);
       let editButton;
@@ -80,9 +80,15 @@ export class SearchTestsStep
       );
     });
     //needs to be the last test in this class
-    it('should export csv data on export action click'`
+    it('should export csv data on export action click'`,
+    ];
+    safeReplace(
+      `Add create and edit action tests to ${className}SearchComponent`,
+      filePath,
+      find,
+      replaceWith,
+      tree
     );
-    tree.write(filePath, htmlContent);
   }
   getTitle(): string {
     return 'Adapting Search Tests';
