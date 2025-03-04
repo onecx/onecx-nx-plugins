@@ -19,7 +19,7 @@ export class FeatureReducerStep implements GeneratorStep<PageGeneratorSchema> {
     ];
 
     safeReplace(
-      `Add page reducer to ${fileName}Reducer`,
+      `Update ${fileName}Reducer to include ${pagePropertyName}Reducer in the state object and extend import statements to include the new reducer`,
       filePath,
       find,
       replaceWith,

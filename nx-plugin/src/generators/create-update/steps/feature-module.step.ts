@@ -32,7 +32,7 @@ export class FeatureModuleStep
     declarations:`);
     }
     safeReplace(
-      `Add Component to feature module declarations and dialog service to providers`,
+      `Update feature module to include ${className}CreateUpdateComponent in declarations, add providePortalDialogService to providers, and extend import statements to include necessary dependencies`,
       moduleFilePath,
       find,
       replaceWith,

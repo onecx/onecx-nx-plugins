@@ -17,7 +17,7 @@ export class AppModuleStep implements GeneratorStep<SearchGeneratorSchema> {
       replaceWith.push(`providers: [providePortalDialogService(),`);
     }
     safeReplace(
-      `Add providePortalDialogService to AppModule`,
+      `Update AppModule to include providePortalDialogService in the providers array and extend import statements to include the service`,
       moduleFilePath,
       find,
       replaceWith,

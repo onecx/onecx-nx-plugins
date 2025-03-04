@@ -161,7 +161,7 @@ export class SearchEffectsStep
           private portalDialogService: PortalDialogService,`);
     }
     safeReplace(
-      `Add create and edit effects with dialog handling to ${className}SearchEffects`,
+      `Enhance ${className}SearchEffects by adding create and edit effects, integrating PortalDialogService for dialog management, and updating imports to include necessary modules and services`,
       filePath,
       find,
       replaceWith,

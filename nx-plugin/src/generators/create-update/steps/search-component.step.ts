@@ -38,7 +38,7 @@ export class SearchComponentStep
       resetSearch`,
     ];
     safeReplace(
-      `Update ${className}SearchComponent to add create and edit actions, and modify imports`,
+      `Modify ${className}SearchComponent to implement create and edit actions, extend the actions array with a new create button, and update import statements to include RowListGridData`,
       filePath,
       find,
       replaceWith,

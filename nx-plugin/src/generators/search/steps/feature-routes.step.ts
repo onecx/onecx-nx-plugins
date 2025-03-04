@@ -19,7 +19,7 @@ export class FeatureRoutesStep implements GeneratorStep<SearchGeneratorSchema> {
     ];
 
     safeReplace(
-      `Updating feature routes in ${fileName}`,
+      `Update ${fileName}Routes to add a new route for ${className}SearchComponent and extend import statements to include the component`,
       routesFilePath,
       find,
       replaceWith,

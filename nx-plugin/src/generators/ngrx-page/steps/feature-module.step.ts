@@ -35,7 +35,7 @@ export class FeatureModuleStep implements GeneratorStep<PageGeneratorSchema> {
     ];
 
     safeReplace(
-      `Add page component and effects to ${fileName}Module`,
+      `Update ${fileName}Module to declare ${pageClassName}Component, add ${pageClassName}Effects to EffectsModule.forFeature, and extend import statements to include necessary dependencies`,
       moduleFilePath,
       find,
       replaceWith,

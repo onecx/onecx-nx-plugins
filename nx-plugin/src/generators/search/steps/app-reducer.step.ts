@@ -44,7 +44,7 @@ export class AppReducerStep implements GeneratorStep<SearchGeneratorSchema> {
             : [localStorageSyncReducer];`,
     ];
     safeReplace(
-      `Add localStorageSyncReducer to AppReducer`,
+      `Update AppReducer to include localStorageSyncReducer in metaReducers, implement state synchronization with localStorage, and extend import statements to include necessary dependencies`,
       reducerFilePath,
       find,
       replaceWith,

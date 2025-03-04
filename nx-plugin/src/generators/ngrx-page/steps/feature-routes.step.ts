@@ -23,7 +23,7 @@ export class FeatureRoutesStep implements GeneratorStep<PageGeneratorSchema> {
     ];
 
     safeReplace(
-      `Add page route to ${fileName}Routes`,
+      `Update ${fileName}Routes to add a new route for ${pagePropertyName}, map it to ${pageClassName}Component, and extend import statements to include the component`,
       routesFilePath,
       find,
       replaceWith,

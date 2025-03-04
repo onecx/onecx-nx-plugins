@@ -94,7 +94,7 @@ function adaptAppRoutingModule(tree: Tree, options: FeatureGeneratorSchema) {
   },`,
   ];
   safeReplace(
-    'Add feature module to AppRoutingModule',
+    `Update AppRoutingModule to add a new route for the ${className}Module using startsWith matcher, dynamically load the module, and extend import statements to include necessary dependencies`,
     moduleFilePath,
     find,
     replaceWith,

@@ -20,7 +20,7 @@ export class FeatureStateStep implements GeneratorStep<PageGeneratorSchema> {
     ];
 
     safeReplace(
-      `Add page state to ${fileName}State`,
+      `Update ${fileName}State to include ${pagePropertyName} state, map it to ${pageClassName}State, and extend import statements to include the new state`,
       filePath,
       find,
       replaceWith,
