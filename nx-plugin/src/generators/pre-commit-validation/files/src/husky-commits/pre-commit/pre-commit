@@ -1,0 +1,36 @@
+<% if (lint) { %>
+# lint
+echo "[Husky] Running lint check on staged files:"
+npx lint-staged
+<% } %>
+<% if (secrets) { %>
+# detect-secrets 
+echo "[Husky] Running detect-secrets on staged files:"
+
+BLACKLIST_FILE=${BLACKLIST_FILE:-"$HOME/blacklist.txt"}
+PLUGIN_PATH="scripts/detect-secrets-plugin.js"
+
+if [ ! -f "$BLACKLIST_FILE" ]; then
+  echo "Blacklist file not found. Please create a new blacklist.txt in your home directory $HOME/blacklist.txt"
+  exit 1
+fi
+
+STAGED_FILES=$(git diff --name-only --cached)
+
+if [ -z "$STAGED_FILES" ]; then
+  echo "No staged files detected. Skipping detect-secrets check."
+  exit 0
+fi
+
+for file in $STAGED_FILES; do
+  if [ -f "$file" ]; then
+    npx ts-node "$PLUGIN_PATH" "$file" "$BLACKLIST_FILE"
+    if [ $? -ne 0 ]; then
+      echo "Secret words detected in $file."
+      exit 1
+    fi
+  fi
+done
+
+echo "No secrets found."
+<% } %>
