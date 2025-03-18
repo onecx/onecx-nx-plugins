@@ -1,5 +1,6 @@
 import { Tree, joinPathFragments, names } from '@nx/devkit';
 import { GeneratorStep } from '../../shared/generator.utils';
+import { safeReplace } from '../../shared/safeReplace';
 import { PageGeneratorSchema } from '../schema';
 
 export class FeatureModuleStep implements GeneratorStep<PageGeneratorSchema> {
@@ -15,31 +16,31 @@ export class FeatureModuleStep implements GeneratorStep<PageGeneratorSchema> {
       fileName + '.module.ts'
     );
 
-    let moduleContent = tree.read(moduleFilePath, 'utf8');
-    moduleContent = moduleContent.replace(
+    const find = [
       'declarations: [',
-      `declarations: [${pageClassName}Component,`
-    );
-    moduleContent = moduleContent.replace(
       `} from '@onecx/portal-integration-angular'`,
-      `InitializeModuleGuard, } from '@onecx/portal-integration-angular'`
-    );
-    moduleContent = moduleContent.replace(
       'EffectsModule.forFeature()',
-      `EffectsModule.forFeature([])`
-    );
-    moduleContent = moduleContent.replace(
       'EffectsModule.forFeature([',
-      `EffectsModule.forFeature([${pageClassName}Effects,`
-    );
-    moduleContent = moduleContent.replace(
       `from '@ngrx/effects';`,
+    ];
+
+    const replaceWith = [
+      `declarations: [${pageClassName}Component,`,
+      `InitializeModuleGuard, } from '@onecx/portal-integration-angular'`,
+      `EffectsModule.forFeature([])`,
+      `EffectsModule.forFeature([${pageClassName}Effects,`,
       `from '@ngrx/effects';
     import { ${pageClassName}Effects } from './pages/${pageFileName}/${pageFileName}.effects';
-    import { ${pageClassName}Component } from './pages/${pageFileName}/${pageFileName}.component';`
-    );
+    import { ${pageClassName}Component } from './pages/${pageFileName}/${pageFileName}.component';`,
+    ];
 
-    tree.write(moduleFilePath, moduleContent);
+    safeReplace(
+      `Update ${fileName}Module to declare ${pageClassName}Component, add ${pageClassName}Effects to EffectsModule.forFeature, and extend import statements to include necessary dependencies`,
+      moduleFilePath,
+      find,
+      replaceWith,
+      tree
+    );
   }
   getTitle(): string {
     return 'Adapting Feature Module';

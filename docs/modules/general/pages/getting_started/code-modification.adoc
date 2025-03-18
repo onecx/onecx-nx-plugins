@@ -1,0 +1,34 @@
+=== Automated Code Modification in Your Application
+
+==== Overview
+During code generation and updates, the system may automatically modify existing files to insert new components, routes, or configurations. The `safeReplace` mechanism ensures these modifications are applied safely and provides feedback in case of any issues.
+
+==== How It Works
+1. When a new feature is generated, existing files are scanned for known patterns.
+2. If a matching pattern is found, it is updated with the new content.
+3. If an issue occurs (e.g., pattern not found), the system:
+   * Leaves a comment in the affected file describing the issue.
+   * Logs the error for developers to manually resolve.
+
+==== What This Means for You
+* You might notice auto-generated comments in certain files indicating that a modification attempt was unsuccessful.
+* These comments will contain specific instructions for resolving the issue manually.
+* If everything works as expected, you won't see any errors, and your application will seamlessly integrate new features.
+
+==== Example of an Error Message
+If a replacement fails, you may find a comment like this in your code:
+[source,typescript]
+----
+// Generator Failure occurred!
+// The goal of the generation was to: Add new feature X
+//
+// The following replacements failed:
+// - Pattern not found: routes: Routes = [
+//
+// Please perform the replacements manually.
+----
+
+==== What to Do If You See This
+1. Open the affected file.
+2. Follow the instructions in the comment to manually apply the required change.
+3. If unsure, consult the development team or refer to the feature documentation.
