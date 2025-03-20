@@ -23,7 +23,7 @@ If a replacement fails, you may find a comment like this in your code:
 // The goal of the generation was to: Add new feature X
 //
 // The following replacements failed:
-// - Pattern not found: routes: Routes = [
+// Could not find the pattern: routes: Routes = [. Attempted to replace with: routes: Routes = [ { path: 'details/:id', component: ${className}DetailsComponent, pathMatch: 'full' },
 //
 // Please perform the replacements manually.
 ----
