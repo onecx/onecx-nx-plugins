@@ -1,0 +1,21 @@
+=== Set up pre-commit-validation
+
+:idprefix:
+:idseparator: -
+
+The fastest way to validate code changes for linting issues, conventional commits messages, and potential secrets in the code is by using the OneCX generator.
+include::partial$generator-check.adoc[]
+
+******
+To run the generator, execute the following command: 
+----
+nx generate <namespaceOfTheGenerator>/nx-plugin:pre-commit-validation
+----
+
+include::partial$generator-namespace-item.adoc[]
+
+TIP: Next, the CLI will ask if you want to enable validation checks with three questions: Lint-check, Conventional Commit message check and scanning for blacklisted words in the code.
+For each check, you can choose "yes" or "no". If "yes" is selected, the CLI installs the necessary dependencies and generates the required configuration files for the enabled validation checks.
+Now the enabled checks are automatically performed before the changes can be committed.
+
+******
