@@ -1,7 +1,19 @@
+= OneCX Generator
+
 With the OneCX generator, you can develop a new application. And in this generated application, a feature module, a search page and a details page can be added.
 
 This generator does generate OpenAPI code for its corresponding UI.
 By using the generated OpenAPI code as a basis, you can develop your BFF (and SVC).
+
+== How to use the Generator(s)
+To generate a full application you need to run several generators in a specific order, as some depend on others:
+. OneCX App
+. Feature Module
+.. Search Page
+... Create-Update Dialog
+... Delete Dialog
+.. Details Page
+.. NGRX Page
 
 To get started, we recommend you to visit the following pages:
 
