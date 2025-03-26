@@ -7,13 +7,15 @@ By using the generated OpenAPI code as a basis, you can develop your BFF (and SV
 
 == How to use the Generator(s)
 To generate a full application you need to run several generators in a specific order, as some depend on others:
-. OneCX App
-. Feature Module
-.. Search Page
-... Create-Update Dialog
-... Delete Dialog
-.. Details Page
-.. NGRX Page
+
+* OneCX App
+* Feature Module
+** Search Page
+*** Create-Update Dialog
+*** Delete Dialog
+** Details Page
+** Empty NGRX Page
+* Pre Commit Validation
 
 To get started, we recommend you to visit the following pages:
 
