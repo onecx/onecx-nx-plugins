@@ -42,4 +42,4 @@ To get started, we recommend you to visit the following pages:
 ** xref:getting_started/details/core-data.adoc[Add core data to details page header]
 ** xref:getting_started/details/commit-changes.adoc[Commit the changes]
 * xref:getting_started/code-modification.adoc[Code Modification]
-* xref:getting_started/pre-commit-validation.adoc[Set up pre-commit-validation]
+* xref:further_generators/pre-commit-validation.adoc[Set up pre-commit-validation]
