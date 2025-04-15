@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/schema",
+  "$id": "PreCommitValidation",
+  "title": "",
+  "type": "object",
+  "properties": {
+    "enableEslintCheck": {
+      "type": "boolean",
+      "description": "",
+      "default": true
+    },
+    "enableConventionalCommitsCheck": {
+      "type": "boolean",
+      "description": "",
+      "default": true
+    },
+    "enableDetectSecretsCheck": {
+      "type": "boolean",
+      "description": "",
+      "default": true
+    }
+  },
+  "required": ["enableEslintCheck", "enableConventionalCommitsCheck", "enableDetectSecretsCheck"]
+}

@@ -137,7 +137,7 @@ The properties for the parameter are:
 - `type`: text, boolean, number and select are supported for now
 - `required`: always: needs to provided via cli-parameter or interactive (no default used), interactive: in CLI either via cli-parameter or default used and asked in interactive
 - `default`: a default value (if required == interactive and not provided via cli-parameter, default will be used), can be static value or callback provided with current values set
-- `prompt`: if not provided via cli-parameter and required is true, this will be prompted to the user 
+- `prompt`: if not provided via cli-parameter and required is true, this will be prompted to the user
 - `showInSummary`: if set to true, the respective option will be shown in a summary and can be edited again if required
 - `showRules`: if set to true, the respective option will only be shown if all provided rules apply (see more in the section about rules)
 
@@ -146,3 +146,47 @@ For each option, you can define rules that configure if an option is displayed o
 - `showIf(values)`: a callback that needs to return whether the respective option should be shown or not. Values or all inputs that were provided before
 
 All cli-parameters can be provided via `--<key> <value>`.
+
+### `safeReplace` - Safe Content Replacement
+The `safeReplace` function enables safe and controlled text replacements within files in an Nx workspace. It ensures that modifications are applied correctly, prevents unintended duplicate replacements, and logs failures when they occur.
+
+#### Function Signature
+```typescript
+function safeReplace(
+  goal: string,
+  file: string,
+  find: string | RegExp | (string | RegExp)[],
+  replaceWith: string | string[],
+  tree: Tree
+): void;
+```
+
+#### Parameters
+
+| Parameter    | Type                                      | Description                                                                 |
+|--------------|-------------------------------------------|-----------------------------------------------------------------------------|
+| `goal`       | `string`                                  | A description of the purpose of the replacement (e.g., "Adapt feature reducer"). |
+| `file`       | `string`                                  | The path to the file where replacements should be performed.                |
+| `find`       | `string` \| `RegExp` \| (`string` \| `RegExp`)[] | The pattern(s) to search for (can be a string, regex, or an array of strings/regexes). |
+| `replaceWith`| `string` \| `string[]`                    | The replacement string(s) (can be a single string or an array).             |
+| `tree`       | `Tree`                                    | The Nx Tree object representing the file system.                            |
+
+#### Example Usage
+```typescript
+safeReplace(
+  "Adapt feature reducer",
+  "src/app/example/example.reducers.ts",
+  [/^/, ">({"],
+  [
+    "import { ExampleDetailsReducer } from './pages/example-details/example-details.reducers';",
+    ">({
+      details: ExampleDetailsReducer,"
+  ],
+  tree
+);
+```
+
+#### Using Regular Expressions
+find: [/^/] → This regex matches the beginning of the file, allowing you to prepend content.
+
+find: [/somePattern/] → Searches for a specific pattern in the file content.

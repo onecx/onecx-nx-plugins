@@ -230,8 +230,8 @@ describe('nx-plugin', () => {
       },
       {
         key: 'pageName',
-        value: "Test"
-      }
+        value: 'Test',
+      },
     ];
 
     const parameterString = requiredParameters
@@ -453,6 +453,52 @@ describe('nx-plugin', () => {
 
     execSync(
       `nx generate @onecx/nx-plugin:delete ${featureNameCustom} ${parameterString} --verbose`,
+      {
+        cwd: projectDirectory,
+        stdio: 'inherit',
+        env: process.env,
+      }
+    );
+    execSync(`nx run build --skip-nx-cache`, {
+      cwd: projectDirectory,
+      stdio: 'inherit',
+      env: process.env,
+    });
+    execSync(`nx run test --skip-nx-cache --coverage`, {
+      cwd: projectDirectory,
+      stdio: 'inherit',
+      env: process.env,
+    });
+  });
+
+  it('should add pre commit validation', () => {
+    // Add all required parameters to this array with a value.
+    // As tests are non-interactive, not-added but required items will block the test
+    const requiredParameters = [
+      {
+        key: NON_INTERACTIVE_KEY,
+        value: true,
+      },
+      {
+        key: 'enableEslint',
+        value: true,
+      },
+      {
+        key: 'enableConventionalCommits',
+        value: true,
+      },
+      {
+        key: 'enableDetectSecrets',
+        value: true,
+      },
+    ];
+
+    const parameterString = requiredParameters
+      .map((o) => `--${o.key} ${o.value}`)
+      .join(' ');
+
+    execSync(
+      `nx generate @onecx/nx-plugin:pre-commit-validation ${parameterString} --verbose`,
       {
         cwd: projectDirectory,
         stdio: 'inherit',
