@@ -14,6 +14,7 @@ import {
   <%= featureClassName %>DetailsViewModel
 } from './<%= featureFileName %>-details.viewmodel';
 import { PrimeIcons } from 'primeng/api';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-<%= featureFileName %>-details',
@@ -41,12 +42,68 @@ export class <%= featureClassName %>DetailsComponent implements OnInit {
           show: 'always',
           disabled: !vm.backNavigationPossible,
           permission: '<%= featureConstantName %>#BACK',
+          <%_ if(editMode){ _%> 
+          showCondition: !vm.editMode,
+          <%_ } _%>
           actionCallback: () => {
             this.store.dispatch(
               <%= featureClassName %>DetailsActions.navigateBackButtonClicked(),
             );
           },
         },
+        <%_ if(editMode){ _%> 
+        {
+          titleKey: '<%= featureConstantName %>_DETAILS.GENERAL.EDIT',
+          labelKey: '<%= featureConstantName %>_DETAILS.GENERAL.EDIT',
+          show: 'always',
+          icon: PrimeIcons.PENCIL,
+          conditional: true,
+          showCondition: !vm.editMode,
+          actionCallback: () => {
+            this.edit()
+          }
+        },
+        {
+          titleKey: '<%= featureConstantName %>_DETAILS.GENERAL.CANCEL',
+          labelKey: '<%= featureConstantName %>_DETAILS.GENERAL.CANCEL',
+          show: 'always',
+          icon: PrimeIcons.TIMES,
+          conditional: true,
+          showCondition: vm.editMode,
+          disabled: vm.isSubmitting,
+          actionCallback: () => {
+            this.cancel()
+          }
+        },
+        {
+          titleKey: '<%= featureConstantName %>_DETAILS.GENERAL.SAVE',
+          labelKey: '<%= featureConstantName %>_DETAILS.GENERAL.SAVE',
+          show: 'always',
+          icon: PrimeIcons.SAVE,
+          conditional: true,
+          disabled: vm.isSubmitting,
+          showCondition: vm.editMode,
+          actionCallback: () => {
+            this.save()
+          }
+        },        
+        <%_ } _%>
+        <%_ if(allowDelete){ _%> 
+        {
+            titleKey: '<%= featureConstantName %>_DETAILS.GENERAL.DELETE',
+            labelKey: '<%= featureConstantName %>_DETAILS.GENERAL.DELETE',
+            icon: PrimeIcons.TRASH,
+            show: 'asOverflow',
+            btnClass: '',
+            conditional: true,
+            <%_ if(editMode){ _%>
+            showCondition: !vm.editMode,
+            <%_ } _%> 
+            actionCallback: () => {
+              this.delete()
+            },
+          },
+        <%_ } _%>
         {
           titleKey: '<%= featureConstantName %>_DETAILS.GENERAL.MORE',
           icon: PrimeIcons.ELLIPSIS_V,
@@ -61,10 +118,35 @@ export class <%= featureClassName %>DetailsComponent implements OnInit {
     })
   );
 
+  <%_ if(editMode){ _%>
+  public formGroup: FormGroup
+  <%_ } _%>
+
   constructor(
     private store: Store,
     private breadcrumbService: BreadcrumbService
   ) {
+    <%_ if(editMode){ _%>
+     this.formGroup = new FormGroup({
+      id: new FormControl(null, [Validators.maxLength(255)]),
+    })
+    this.formGroup.disable();
+
+    this.viewModel$.subscribe((vm) => {
+      if (!vm.editMode) {
+        this.formGroup.setValue({
+          id: vm.details?.id
+        })
+        this.formGroup.markAsPristine();
+      }
+
+      if (vm.editMode) {
+        this.formGroup.enable()
+      } else {
+        this.formGroup.disable()
+      }
+    })
+    <%_ } _%>
   }
 
   ngOnInit(): void {
@@ -76,4 +158,30 @@ export class <%= featureClassName %>DetailsComponent implements OnInit {
       },
     ]);
   }
+
+  <%_ if(editMode){ _%> 
+  edit() {
+    this.store.dispatch(<%= featureClassName %>DetailsActions.editButtonClicked())
+  }
+
+  cancel() {
+    this.store.dispatch(<%= featureClassName %>DetailsActions.cancelButtonClicked(
+      { dirty: this.formGroup.dirty }
+    ))
+  }
+
+  save() {
+    this.store.dispatch(<%= featureClassName %>DetailsActions.saveButtonClicked(
+      {
+        details: this.formGroup.value
+      }
+    ))
+  }
+  <%_ } _%>
+  
+  <%_ if(allowDelete){ _%> 
+  delete() {
+      this.store.dispatch(<%= featureClassName %>DetailsActions.deleteButtonClicked())
+  }
+  <%_ } _%>  
 }

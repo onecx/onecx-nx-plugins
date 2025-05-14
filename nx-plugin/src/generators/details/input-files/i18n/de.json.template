@@ -9,7 +9,32 @@
     },
     "GENERAL": {
       "BACK": "Zurück",
-      "MORE": "Mehr"
+      "MORE": "Mehr",
+      "EDIT": "Bearbeiten",
+      "DELETE": "Löschen",
+      "CANCEL": "Abbrechen",
+      "SAVE": "Speichern"
+    },
+    "FORM": {
+      "ID": "ID"
+    },
+    "CANCEL": {
+      "HEADER": "Abbruch bestätigen",
+      "MESSAGE": "Bitte bestätigen Sie, dass Sie die Bearbeitung abbrechen und die Änderungen zurücksetzen möchten.",
+      "CONFIRM": "Bestätigen"
+    },      
+    UPDATE": {
+      "SUCCESS": "Speichern erfolgreich",
+      "FAILED": "AKTION: Übersetzung hinzufügen",
+      "ERROR": "Speichern fehlgeschlagen",
+    },
+    "DELETE": {
+      "HEADER": "<%= featureClassName %> löschen",
+      "MESSAGE": "Bitte bestätigen Sie, dass Sie dieses <%= featureClassName %> löschen möchten.",
+      "CONFIRM": "Bestätigen",
+      "CANCEL": "Abbrechen",
+      "SUCCESS": "<%= featureClassName %> erfolgreich gelöscht",
+      "ERROR": "Konnte <%= featureClassName %> nicht löschen"
     }
   }
 }

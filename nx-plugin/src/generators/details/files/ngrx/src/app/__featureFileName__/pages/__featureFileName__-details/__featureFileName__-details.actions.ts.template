@@ -14,6 +14,32 @@ export const <%= featureClassName %>DetailsActions = createActionGroup({
       details: <%= dataObjectName %>;
     }>(),
     '<%= featureFileName.replaceAll("-"," ") %> details loading failed': props<{ error: string | null }>(),
+    <%_ if(editMode){ _%> 
+    'edit mode set': props<{ editMode: boolean }>(),    
+    'Update <%= featureFileName.replaceAll("-"," ") %> cancelled': emptyProps(),
+    'Update <%= featureFileName.replaceAll("-"," ") %> succeeded': emptyProps(),
+    'Update <%= featureFileName.replaceAll("-"," ") %> failed': props<{
+      error: string | null;
+    }>(),
+    'Delete <%= featureFileName.replaceAll("-"," ") %> cancelled': emptyProps(),
+    'Delete <%= featureFileName.replaceAll("-"," ") %> succeeded': emptyProps(),
+    'Delete <%= featureFileName.replaceAll("-"," ") %> failed': props<{
+      error: string | null;
+    }>(),
+    'cancel edit back clicked': emptyProps(),
+    'cancel edit confirm clicked': emptyProps(),
+    'cancel edit not dirty': emptyProps(),
+    'edit button clicked': emptyProps(),
+    'save button clicked': props<{
+      details: World;
+    }>(),
+    'cancel button clicked': props<{
+      dirty: boolean;
+    }>(),
+    <%_ } _%>
+    <%_ if(allowDelete){ _%>     
+    'delete button clicked': emptyProps(),
+    <%_ } _%>
     'navigate back button clicked': emptyProps(),
     'back navigation started': emptyProps(),
     'back navigation failed': emptyProps(),

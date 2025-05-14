@@ -17,5 +17,27 @@
     [manualBreadcrumbs]="true"
   >
   </ocx-page-header>
+   <%_ if(editMode){ _%>
+    <ocx-page-content>
+      <div class="surface-section mt-3 mb-1 mx-3">
+        <form [formGroup]="formGroup" errorTailor>
+          <div class="mt-3 mb-1">
+            <span class="p-float-label mb-1" controlErrorAnchor>
+              <input
+                pInputText
+                type="text"
+                id="id"
+                class="w-full pt-3 pb-2 text-responsive"
+                formControlName="id"
+              />
+              <label class="ocx-required-label" for="id">
+                {{ '<%= featureConstantName %>_DETAILS.FORM.ID' | translate }}
+              </label>
+            </span>
+          </div>          
+        </form>
+      </div>
+    </ocx-page-content>
+   <%_ } _%> 
   </div>
 </ocx-portal-page>

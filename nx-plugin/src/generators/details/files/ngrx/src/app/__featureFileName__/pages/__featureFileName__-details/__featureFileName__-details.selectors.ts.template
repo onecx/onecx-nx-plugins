@@ -20,13 +20,25 @@ export const select<%= featureClassName %>DetailsViewModel = createSelector(
   <%= featurePropertyName %>DetailsSelectors.selectDetailsLoadingIndicator,
   selectBackNavigationPossible,
   <%= featurePropertyName %>DetailsSelectors.selectDetailsLoaded,
+  <%_ if(editMode){ _%>
+  <%= featurePropertyName %>DetailsSelectors.selectEditMode,
+  <%= featurePropertyName %>DetailsSelectors.selectIsSubmitting,
+  <%_ } _%>
   (details: <%= dataObjectName %> | undefined,
   detailsLoadingIndicator: boolean,
   backNavigationPossible: boolean,
-  detailsLoaded: boolean,): <%= featureClassName %>DetailsViewModel => ({
+  detailsLoaded: boolean,
+  <%_ if(editMode){ _%>
+  editMode: boolean,
+  isSubmitting: boolean
+  <%_ } _%>): <%= featureClassName %>DetailsViewModel => ({
     details,
     detailsLoadingIndicator,
     backNavigationPossible,
     detailsLoaded,
+    <%_ if(editMode){ _%>
+     editMode,
+    isSubmitting
+    <%_ } _%>
   })
 );

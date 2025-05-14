@@ -4,8 +4,7 @@ import { safeReplace } from '../../shared/safeReplace';
 import { DetailsGeneratorSchema } from '../schema';
 
 export class FeatureModuleStep
-  implements GeneratorStep<DetailsGeneratorSchema>
-{
+  implements GeneratorStep<DetailsGeneratorSchema> {
   process(tree: Tree, options: DetailsGeneratorSchema): void {
     const fileName = names(options.featureName).fileName;
     const className = names(options.featureName).className;
@@ -24,7 +23,9 @@ export class FeatureModuleStep
       `EffectsModule.forFeature([${className}DetailsEffects,`,
       `from '@ngrx/effects';
   import { ${className}DetailsEffects } from './pages/${fileName}-details/${fileName}-details.effects';
-  import { ${className}DetailsComponent } from './pages/${fileName}-details/${fileName}-details.component';`,
+  import { ${className}DetailsComponent } from './pages/${fileName}-details/${fileName}-details.component';
+  import { providePortalDialogService } from '@onecx/portal-integration-angular';
+  `,
     ];
     safeReplace(
       `Enhance ${fileName}Module with details component and effects`,
@@ -33,6 +34,23 @@ export class FeatureModuleStep
       replaceWith,
       tree
     );
+
+    if (options.editMode || options.allowDelete) {
+      const moduleContent = tree.read(moduleFilePath, 'utf8');
+      if (!moduleContent.includes('providePortalDialogService()')) {
+        find.push('declarations:');
+        replaceWith.push(`
+    providers: [providePortalDialogService()],
+    declarations:`);
+      }
+      safeReplace(
+        `Add providePortalDialogService()`,
+        moduleFilePath,
+        find,
+        replaceWith,
+        tree
+      );
+    }
   }
   getTitle(): string {
     return 'Adapting Feature Module';
