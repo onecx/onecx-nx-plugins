@@ -97,7 +97,7 @@ export class <%= featureClassName %>DetailsEffects {
     return this.actions$.pipe(
       ofType(<%= featureClassName %>DetailsActions.saveButtonClicked),
       concatLatestFrom(() =>
-        this.store.select(worldDetailsSelectors.selectDetails)
+        this.store.select(<%= featurePropertyName %>DetailsSelectors.selectDetails)
       ),
       switchMap(([action, details]) => {
         const itemToEditId = details?.id;
@@ -112,7 +112,7 @@ export class <%= featureClassName %>DetailsEffects {
         const itemToEdit = {
           dataObject: updatedItem,
         } as Update<%= featureClassName %>Request;
-        return this.worldService.update<%= featureClassName %>(itemToEditId, itemToEdit).pipe(
+        return this.<%= featurePropertyName %>Service.update<%= featureClassName %>(itemToEditId, itemToEdit).pipe(
           map(() => {
             this.messageService.success({
               summaryKey: '<%= featureConstantName%>_DETAILS.UPDATE.SUCCESS',
@@ -139,7 +139,7 @@ export class <%= featureClassName %>DetailsEffects {
     return this.actions$.pipe(
       ofType(<%= featureClassName %>DetailsActions.deleteButtonClicked),
       concatLatestFrom(() =>
-        this.store.select(worldDetailsSelectors.selectDetails)
+        this.store.select(<%= featurePropertyName %>DetailsSelectors.selectDetails)
       ),
       mergeMap(([, itemToDelete]) => {
         return this.portalDialogService
@@ -169,7 +169,7 @@ export class <%= featureClassName %>DetailsEffects {
           throw new Error('Item to delete not found!');
         }
 
-        return this.worldService.delete<%= featureClassName %>(itemToDelete.id).pipe(
+        return this.<%= featurePropertyName %>Service.delete<%= featureClassName %>(itemToDelete.id).pipe(
           map(() => {
             this.messageService.success({
               summaryKey: '<%= featureConstantName%>_DETAILS.DELETE.SUCCESS',

@@ -31,7 +31,7 @@ export const <%= featureClassName %>DetailsActions = createActionGroup({
     'cancel edit not dirty': emptyProps(),
     'edit button clicked': emptyProps(),
     'save button clicked': props<{
-      details: World;
+      details: <%= dataObjectName %>;
     }>(),
     'cancel button clicked': props<{
       dirty: boolean;
