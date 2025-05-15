@@ -20,23 +20,38 @@ export class GeneralTranslationsStep implements GeneratorStep<DetailsGeneratorSc
       featureClassName: names(options.featureName).className,
     });
 
+    console.log("Files:", tree.children(folderPath));
+
     tree.children(folderPath).forEach((file) => {
       updateJson(tree, joinPathFragments(folderPath, file), (json) => {
-        const jsonPath = joinPathFragments(
-          path.resolve(__dirname, '../input-files/i18n/'),
-          file + '.template'
-        );
-        let jsonContent = {};
-        if (fs.existsSync(jsonPath)) {
-          jsonContent = renderJsonFile(jsonPath, {
-            ...options,
-            featureConstantName: names(options.featureName).constantName,
-            featureClassName: names(options.featureName).className,
-          });
+        console.log("\nUpdateJson ", file);
+        try {
+          const jsonPath = joinPathFragments(
+            path.resolve(__dirname, '../input-files/i18n/'),
+            file + '.template'
+          );
+
+          console.log("json path", jsonPath);
+
+          let jsonContent = {};
+          if (fs.existsSync(jsonPath)) {
+            console.log("file exists");
+
+            jsonContent = renderJsonFile(jsonPath, {
+              ...options,
+              featureConstantName: names(options.featureName).constantName,
+              featureClassName: names(options.featureName).className,
+            });
+            console.log("json content", jsonContent);
+
+          }
+
+          json = deepMerge(masterJsonContent, jsonContent, json);
+
+          console.log("Replacing in", file, " to ", json);
+        } catch (error) {
+          console.error(error)
         }
-
-        json = deepMerge(masterJsonContent, jsonContent, json);
-
         return json;
       });
     });

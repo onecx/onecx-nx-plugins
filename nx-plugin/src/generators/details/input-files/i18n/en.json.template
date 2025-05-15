@@ -24,8 +24,7 @@
       "CONFIRM": "Confirm"
     },
     "UPDATE": {
-      "SUCCESS": "Update successful",
-      "FAILED": "ACTION: Add Translation",
+      "SUCCESS": "Update successful",      
       "ERROR": "Update failed",
       "FORM": {
         "SAVE": "Save",
