@@ -44,5 +44,5 @@ After running the generator, the following actions must be taken:
 
 [start=1]
 . xref:getting_started/details/core-data.adoc[Add core data to details page header]
-. xref:getting_started/details/extend-form-fields.adoc[(Edit) Extend form fields]
+. xref:getting_started/details/extend-form-fields.adoc[Extend form fields (for Edit Mode) ]
 . xref:getting_started/details/commit-changes.adoc[Commit the changes]
