@@ -5,4 +5,8 @@ export interface <%= featureClassName %>DetailsViewModel {
     detailsLoadingIndicator: boolean;
     backNavigationPossible: boolean;
     detailsLoaded: boolean;
+    <%_ if(editMode){ _%>
+    editMode: boolean;
+    isSubmitting: boolean;
+    <%_ } _%>
 }

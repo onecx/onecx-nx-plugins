@@ -2,22 +2,18 @@ import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { routerNavigatedAction } from '@ngrx/router-store';
 import { concatLatestFrom } from '@ngrx/operators'
-import {
-  catchError,
-  map,  
-  of,
-  switchMap,
-  tap,
-} from 'rxjs';
+import { PrimeIcons } from 'primeng/api';
+import { catchError, filter, map, mergeMap, of, switchMap, tap } from 'rxjs';
 import { filterForNavigatedTo } from '@onecx/ngrx-accelerator';
 import { Injectable } from '@angular/core';
 import { selectBackNavigationPossible } from 'src/app/shared/selectors/onecx.selectors';
 import { <%= featureClassName %>DetailsActions } from './<%= featureFileName %>-details.actions';
 import { <%= featureClassName %>DetailsComponent } from './<%= featureFileName %>-details.component';
 import { Action, Store } from '@ngrx/store';
-import { selectRouteParam } from 'src/app/shared/selectors/router.selectors';
-import { PortalMessageService } from '@onecx/portal-integration-angular';
-import { <%= serviceName %> } from '../../../shared/generated';
+import { selectRouteParam, selectUrl } from 'src/app/shared/selectors/router.selectors';
+import { DialogState, PortalDialogService, PortalMessageService } from '@onecx/portal-integration-angular';
+import { <%= updateRequestName%>, <%= dataObjectName %>, <%= serviceName %> } from '../../../shared/generated';
+import { <%= featureFileName %>DetailsSelectors } from './<%= featureFileName %>-details.selectors';
 
 @Injectable()
 export class <%= featureClassName %>DetailsEffects {
@@ -26,7 +22,9 @@ export class <%= featureClassName %>DetailsEffects {
     private <%= featurePropertyName %>Service: <%= serviceName %>,
     private router: Router,
     private store: Store,
-    private messageService: PortalMessageService
+    private messageService: PortalMessageService <%_ if(editMode){ _%> ,
+    private portalDialogService: PortalDialogService
+     <%_ } _%> 
   ) {}
 
   navigatedToDetailsPage$ = createEffect(() => {
@@ -63,6 +61,159 @@ export class <%= featureClassName %>DetailsEffects {
       )
     );
   });
+
+  <%_ if(editMode){ _%> 
+  cancelButtonNotDirty$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(<%= featureClassName %>DetailsActions.cancelButtonClicked),
+      filter((action) => !action.dirty),
+      map(() => {
+        return <%= featureClassName %>DetailsActions.cancelEditNotDirty();
+      })
+    );
+  });
+
+  cancelButtonClickedDirty$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(<%= featureClassName %>DetailsActions.cancelButtonClicked),
+      filter((action) => action.dirty),
+      switchMap(() => {
+        return this.portalDialogService.openDialog<<%= dataObjectName %> | undefined>(
+          '<%= featureConstantName%>_DETAILS.CANCEL.HEADER',
+          '<%= featureConstantName%>_DETAILS.CANCEL.MESSAGE',
+          '<%= featureConstantName%>_DETAILS.CANCEL.CONFIRM',
+        );
+      }),
+      switchMap((dialogResult) => {
+        if (!dialogResult || dialogResult.button == 'secondary') {
+          return of(<%= featureClassName %>DetailsActions.cancelEditBackClicked());
+        }
+        return of(<%= featureClassName %>DetailsActions.cancelEditConfirmClicked());
+      })
+    );
+  });
+
+  saveButtonClicked$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(<%= featureClassName %>DetailsActions.saveButtonClicked),
+      concatLatestFrom(() =>
+        this.store.select(<%= featurePropertyName %>DetailsSelectors.selectDetails)
+      ),
+      switchMap(([action, details]) => {
+        const itemToEditId = details?.id;
+        const updatedItem = {
+          ...details,
+          ...action.details
+        }
+
+        if (!itemToEditId) {
+          return of(<%= featureClassName %>DetailsActions.update<%= featureClassName %>Cancelled());
+        }
+        const itemToEdit = {
+          dataObject: updatedItem,
+        } as Update<%= featureClassName %>Request;
+        return this.<%= featurePropertyName %>Service.update<%= featureClassName %>(itemToEditId, itemToEdit).pipe(
+          map(() => {
+            this.messageService.success({
+              summaryKey: '<%= featureConstantName%>_DETAILS.UPDATE.SUCCESS',
+            });
+            return <%= featureClassName %>DetailsActions.update<%= featureClassName %>Succeeded();
+          }),
+          catchError((error) => {
+            this.messageService.error({
+              summaryKey: '<%= featureConstantName%>_DETAILS.UPDATE.ERROR',
+            });
+            return of(
+              <%= featureClassName %>DetailsActions.update<%= featureClassName %>Failed({
+                error,
+              })
+            );
+          })
+        );
+      },
+      ))
+  })
+  <%_ } _%> 
+  <%_ if(allowDelete){ _%> 
+  deleteButtonClicked$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(<%= featureClassName %>DetailsActions.deleteButtonClicked),
+      concatLatestFrom(() =>
+        this.store.select(<%= featurePropertyName %>DetailsSelectors.selectDetails)
+      ),
+      mergeMap(([, itemToDelete]) => {
+        return this.portalDialogService
+          .openDialog<unknown>(
+            '<%= featureConstantName%>_DETAILS.DELETE.HEADER',
+            '<%= featureConstantName%>_DETAILS.DELETE.MESSAGE',
+            {
+              key: '<%= featureConstantName%>_DETAILS.DELETE.CONFIRM',
+              icon: PrimeIcons.CHECK,
+            },
+            {
+              key: '<%= featureConstantName%>_DETAILS.DELETE.CANCEL',
+              icon: PrimeIcons.TIMES,
+            }
+          )
+          .pipe(
+            map((state): [DialogState<unknown>, <%= dataObjectName %> | undefined] => {
+              return [state, itemToDelete];
+            })
+          );
+      }),
+      switchMap(([dialogResult, itemToDelete]) => {
+        if (!dialogResult || dialogResult.button == 'secondary') {
+          return of(<%= featureClassName %>DetailsActions.delete<%= featureClassName %>Cancelled());
+        }
+        if (!itemToDelete) {
+          throw new Error('Item to delete not found!');
+        }
+
+        return this.<%= featurePropertyName %>Service.delete<%= featureClassName %>(itemToDelete.id).pipe(
+          map(() => {
+            this.messageService.success({
+              summaryKey: '<%= featureConstantName%>_DETAILS.DELETE.SUCCESS',
+            });
+            return <%= featureClassName %>DetailsActions.delete<%= featureClassName %>Succeeded();
+          }),
+          catchError((error) => {
+            this.messageService.error({
+              summaryKey: '<%= featureConstantName%>_DETAILS.DELETE.ERROR',
+            });
+            return of(
+              <%= featureClassName %>DetailsActions.delete<%= featureClassName %>Failed({
+                error,
+              })
+            );
+          })
+        );
+      })
+    );
+  });
+
+  delete<%= featureClassName %>Succeeded$ = createEffect(
+    () => {
+      return this.actions$.pipe(
+        ofType(<%= featureClassName %>DetailsActions.delete<%= featureClassName %>Succeeded),
+        concatLatestFrom(() => this.store.select(selectUrl)),
+        tap(([, currentUrl]) => {
+          const urlTree = this.router.parseUrl(currentUrl);
+          urlTree.queryParams = {};
+          urlTree.fragment = null;
+
+          const targetUrl = urlTree
+            .toString()
+            .split("/")
+            .slice(0, -2)
+            .join("/");
+          this.router.navigate([targetUrl]);
+        })
+      );
+    },
+    { dispatch: false }
+  );
+
+  <%_ } _%> 
 
   errorMessages: { action: Action; key: string }[] = [
     {

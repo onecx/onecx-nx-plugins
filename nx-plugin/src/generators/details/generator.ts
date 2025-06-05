@@ -70,6 +70,48 @@ const PARAMETERS: GeneratorParameter<DetailsGeneratorSchema>[] = [
     showRules: [{ showIf: (values) => values.customizeNamingForAPI }],
   },
   {
+    key: 'editMode',
+    type: 'boolean',
+    required: 'interactive',
+    prompt:
+      'Do you want to have an Edit/Save Mode for this page?',
+    showInSummary: true,
+    default: false,
+  },
+  {
+    key: 'updateRequestName',
+    type: 'text',
+    required: 'interactive',
+    default: (values) => {
+      return `Update${names(values.featureName).className}Request`;
+    },
+    prompt:
+      'Provide a name for your update request (e.g., UpdateBookRequest): ',
+    showInSummary: true,
+    showRules: [{ showIf: (values) => values.customizeNamingForAPI && values.editMode }],
+  },
+  {
+    key: 'updateResponseName',
+    type: 'text',
+    required: 'interactive',
+    default: (values) => {
+      return `Update${names(values.featureName).className}Response`;
+    },
+    prompt:
+      'Provide a name for your update response (e.g., UpdateBookResponse): ',
+    showInSummary: true,
+    showRules: [{ showIf: (values) => values.customizeNamingForAPI && values.editMode }],
+  },
+  {
+    key: 'allowDelete',
+    type: 'boolean',
+    required: 'interactive',
+    prompt:
+      'Do you want to have an Delete Button on this page?',
+    showInSummary: true,
+    default: false,
+  },
+  {
     key: 'standalone',
     type: 'boolean',
     required: 'never',
@@ -120,6 +162,8 @@ export async function detailsGenerator(
       featureConstantName: names(options.featureName).constantName,
       dataObjectName: options.dataObjectName,
       serviceName: options.apiServiceName,
+      editMode: options.editMode,
+      allowDelete: options.allowDelete
     }
   );
 

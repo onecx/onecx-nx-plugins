@@ -35,7 +35,7 @@ export class AppReducerStep implements GeneratorStep<SearchGeneratorSchema> {
               ],
               mergeReducer: lazyLoadingMergeReducer,
               rehydrate: true,
-              storageKeySerializer: (key) => 'ibt-tsg-mgmt-page.\${key}',
+              storageKeySerializer: (key) => '${propertyName}.\${key}',
             })(reducer);
           }
 
