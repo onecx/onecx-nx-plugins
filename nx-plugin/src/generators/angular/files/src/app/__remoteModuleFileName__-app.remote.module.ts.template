@@ -33,6 +33,9 @@ import { AppStateService } from '@onecx/angular-integration-interface';
 import { AppEntrypointComponent } from './app-entrypoint.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AngularAuthModule } from '@onecx/angular-auth';
+import {  
+  provideNavigatedEventStoreConnector,
+} from '@onecx/ngrx-accelerator';
 
 // Workaround for the following issue:
 // https://github.com/ngrx/platform/issues/3700
@@ -89,6 +92,7 @@ effectProvidersForWorkaround.forEach(p => p.ɵprov.providedIn = null);
       multi: true,
       deps: [Router, AppStateService]
     },
+    provideNavigatedEventStoreConnector(),
   ],
 })
 export class <%= remoteModuleName %>Module implements DoBootstrap {
