@@ -115,7 +115,7 @@ export async function angularGenerator(
       '@ngrx/store': '^18.0.2',
       '@ngrx/store-devtools': '^18.0.2',
       '@nx/angular': '^19.5.7',
-      '@nx/devkit': '19.5.7',
+      '@nx/devkit': '^19.5.7',
       '@nx/plugin': '^19.5.7',
       '@webcomponents/webcomponentsjs': '^2.8.0',
     },
