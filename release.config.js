@@ -1,5 +1,12 @@
 module.exports = {
-  branches: ['main'],
+  branches: [
+    'main',
+    {
+      name: 'v5',
+      range: '5.x.x',
+      channel: '5.x.x',
+    },
+  ],
   preset: 'conventionalcommits',
   presetConfig: {
     types: [
@@ -33,8 +40,9 @@ module.exports = {
       '@semantic-release/git',
       {
         assets: [`libs/**/package.json`, `package.json`, `CHANGELOG.md`],
-        message: 'chore(release): -v${nextRelease.version} [skip ci]\n\n${nextRelease.notes}',
+        message:
+          'chore(release): -v${nextRelease.version} [skip ci]\n\n${nextRelease.notes}',
       },
     ],
   ],
-}
+};
