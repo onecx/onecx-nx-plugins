@@ -54,6 +54,7 @@ export class GeneratorProcessor<T> {
         }
       }
     }
+    this.printErrors(ora);
   }
 
   getErrors(): GeneratorStepError[] {
