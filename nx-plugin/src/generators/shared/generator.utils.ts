@@ -29,12 +29,14 @@ export interface GeneratorStep<T> {
 export class GeneratorProcessor<T> {
   private steps: GeneratorStep<T>[] = [];
   private errors: GeneratorStepError[] = [];
+  private _printErrors = false;
 
   addStep(step: GeneratorStep<T>) {
     this.steps.push(step);
   }
 
   async run(tree: Tree, options: T, ora?: ora.Ora, printErrors = false) {
+    this._printErrors = printErrors;
     this.errors = [];
     for (const step of this.steps) {
       if (ora) {
@@ -52,14 +54,6 @@ export class GeneratorProcessor<T> {
         }
       }
     }
-    if (this.errors.length > 0 && printErrors) {
-      this.printErrors(ora);
-      if (this.hasStoppedExecution()) {
-        console.error(
-          'One of the errors above stopped the generation, check for possible issues.'
-        );
-      }
-    }
   }
 
   getErrors(): GeneratorStepError[] {
@@ -72,14 +66,21 @@ export class GeneratorProcessor<T> {
   }
 
   printErrors(ora?: ora.Ora) {
-    if (ora) {
-      ora.fail('Some errors occurred during generation:');
-    } else {
-      console.error('Some errors occurred during generation:');
+    if (this.errors.length > 0 && this._printErrors) {
+      if (ora) {
+        ora.fail('Some errors occurred during generation:');
+      } else {
+        console.error('Some errors occurred during generation:');
+      }
+      this.errors.forEach((e) => {
+        console.error(e.message);
+      });
+      if (this.hasStoppedExecution()) {
+        console.error(
+          'One of the errors above stopped the generation, check for possible issues.'
+        );
+      }
     }
-    this.errors.forEach((e) => {
-      console.error(e.message);
-    });
   }
 
   static async runBatch<T>(
