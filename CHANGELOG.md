@@ -1,3 +1,21 @@
+## [1.12.0](https://github.com/onecx/onecx-nx-plugins/compare/v1.11.0...v1.12.0) (2025-08-21)
+
+### Features
+
+* add editmode and delete option to details generator ([#262](https://github.com/onecx/onecx-nx-plugins/issues/262)) ([28c4c4f](https://github.com/onecx/onecx-nx-plugins/commit/28c4c4f6d194b3c6ab066b179df74c52cfad620f))
+* add v5 branch support and expand CI workflow triggers ([#266](https://github.com/onecx/onecx-nx-plugins/issues/266)) ([d79ddfa](https://github.com/onecx/onecx-nx-plugins/commit/d79ddfaa0f09fa2bd63352c389546c2749fec857))
+* Added safeReplace function ([#255](https://github.com/onecx/onecx-nx-plugins/issues/255)) ([292b76d](https://github.com/onecx/onecx-nx-plugins/commit/292b76da2b97d5bf8dabaa80e5757ff467b9fe1d))
+* adjusted docs regarding safeReplace ([#258](https://github.com/onecx/onecx-nx-plugins/issues/258)) ([512cecd](https://github.com/onecx/onecx-nx-plugins/commit/512cecdd71719ab7aa635da11ffcbe436d6a2037))
+
+### Bug Fixes
+
+* add caret to nx/devkit package ([#265](https://github.com/onecx/onecx-nx-plugins/issues/265)) ([c74db05](https://github.com/onecx/onecx-nx-plugins/commit/c74db059299acfbf8065b970ecb7a24671f70aec))
+* added missing provider ([#263](https://github.com/onecx/onecx-nx-plugins/issues/263)) ([5674666](https://github.com/onecx/onecx-nx-plugins/commit/56746663b5adf618df7b38ea5b12586d6243303e))
+* print errors at correct time ([#267](https://github.com/onecx/onecx-nx-plugins/issues/267)) ([6e438ee](https://github.com/onecx/onecx-nx-plugins/commit/6e438eefc6ea9e4443c123e11f44444b4033aa38))
+* removed permission script in favor of local-env-cli ([#254](https://github.com/onecx/onecx-nx-plugins/issues/254)) ([3cf04d4](https://github.com/onecx/onecx-nx-plugins/commit/3cf04d4592b49d4c2278730f4e9fc97f218f4973))
+* updated nx version ([#268](https://github.com/onecx/onecx-nx-plugins/issues/268)) ([952cc78](https://github.com/onecx/onecx-nx-plugins/commit/952cc78211fbadb314d1c4e67de54046b36f73b4))
+* wrong variable used ([#270](https://github.com/onecx/onecx-nx-plugins/issues/270)) ([f95d9ee](https://github.com/onecx/onecx-nx-plugins/commit/f95d9eeea00a46bbb75dd0a55895cdef0930b2ff))
+
 ## [1.11.0](https://github.com/onecx/onecx-nx-plugins/compare/v1.10.0...v1.11.0) (2025-01-22)
 
 ### Features
