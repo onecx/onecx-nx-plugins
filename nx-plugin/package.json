@@ -2,8 +2,8 @@
   "name": "@onecx/nx-plugin",
   "version": "0.0.1",
   "dependencies": {
-    "@nx/devkit": "^19.6.4",
-    "@nx/angular": "^19.6.4",
+    "@nx/devkit": "^19.8.14",
+    "@nx/angular": "^19.8.14",
     "ejs": "^3.1.9",
     "enquirer": "^2.3.6",
     "ora": "^5.3.0",
