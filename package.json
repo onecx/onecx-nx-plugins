@@ -10,6 +10,10 @@
   },
   "private": true,
   "dependencies": {
+    "@ngrx/effects": "^18.1.1",
+    "@ngrx/entity": "^18.1.1",
+    "@ngrx/router-store": "^18.1.1",
+    "@ngrx/store": "^18.1.1",
     "@nx/angular": "^19.8.14",
     "@nx/devkit": "^19.8.14",
     "@nx/plugin": "^19.8.14",

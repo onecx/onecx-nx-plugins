@@ -1,28 +1,44 @@
-import { createActionGroup, emptyProps, props } from '@ngrx/store';
-import { DataTableColumn, GroupByCountDiagramComponentState, InteractiveDataViewComponentState, SearchHeaderComponentState } from '@onecx/portal-integration-angular';
-import { <%= featureClassName %>SearchCriteria } from './<%= featureFileName %>-search.parameters';
-import { <%= dataObjectName %> } from '../../../shared/generated';
-
+import { createActionGroup, emptyProps, props } from '@ngrx/store'
+import {
+  GroupByCountDiagramComponentState,
+  InteractiveDataViewComponentState,
+  SearchHeaderComponentState
+} from '@onecx/portal-integration-angular'
+import { <%= dataObjectName %> } from '../../../shared/generated'
+import { <%= featureClassName %>SearchCriteria } from './<%= featureFileName %>-search.parameters'
 
 export const <%= featureClassName %>SearchActions = createActionGroup({
   source: '<%= featureClassName %>Search',
   events: {
-    'Search button clicked': props<{
-      searchCriteria: <%= featureClassName %>SearchCriteria;
-    }>(),
-    'Reset button clicked': emptyProps(),
-    '<%= featurePropertyName.replaceAll("-"," ") %> search results received': props<{
+    searchButtonClicked: props<{ searchCriteria: <%= featureClassName %>SearchCriteria }>(),
+    resetButtonClicked: emptyProps(),
+    <%= featurePropertyName %>SearchResultsReceived: props<{
       stream: <%= dataObjectName %>[];
-      size: number;
-      number: number;
-      totalElements: number;
-      totalPages: number;
+      size: number
+      number: number
+      totalElements: number
+      totalPages: number
     }>(),
-    '<%= featurePropertyName.replaceAll("-"," ") %> search results loading failed': props<{ error: string | null }>(),    
-    'Export button clicked': emptyProps(),
-    'Result component state changed': props<InteractiveDataViewComponentState>(),
-    'Search header component state changed': props<SearchHeaderComponentState>(),
-    'Diagram component state changed': props<GroupByCountDiagramComponentState>(),
-    'Chart visibility toggled': emptyProps(),
-  },
-});
+    <%= featurePropertyName %>SearchResultsLoadingFailed: props<{ error: string | null }>(),
+    exportButtonClicked: emptyProps(),
+    resultComponentStateChanged: props<InteractiveDataViewComponentState>(),
+    searchHeaderComponentStateChanged: props<SearchHeaderComponentState>(),
+    diagramComponentStateChanged: props<GroupByCountDiagramComponentState>(),
+    chartVisibilityToggled: emptyProps(),
+    detailsButtonClicked: props<{ id: string }>(),
+    viewModeChanged: props<{ viewMode: 'basic' | 'advanced' }>(),
+    displayedColumnsChanged: props<{ displayedColumns: string[] }>(),
+    editButtonClicked: props<{ id: string }>(),
+    createButtonClicked: emptyProps(),
+    createSucceeded: emptyProps(),
+    createCancelled: emptyProps(),
+    createFailed: props<{ error: any }>(),
+    updateCancelled: emptyProps(),
+    updateSucceeded: emptyProps(),
+    updateFailed: props<{ error: any }>(),
+    deleteButtonClicked: props<{ id: string }>(),
+    deleteSucceeded: emptyProps(),
+    deleteCancelled: emptyProps(),
+    deleteFailed: props<{ error: any }>(),
+  }
+})

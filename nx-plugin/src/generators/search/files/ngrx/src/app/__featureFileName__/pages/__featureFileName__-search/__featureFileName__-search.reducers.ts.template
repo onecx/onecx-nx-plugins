@@ -1,17 +1,13 @@
-import { createReducer, on } from '@ngrx/store';
-import { <%= featureClassName %>SearchActions } from './<%= featureFileName %>-search.actions';
-import { <%= featureClassName %>SearchState } from './<%= featureFileName %>-search.state';
-import { <%= featureClassName %>SearchCriteria } from './<%= featureFileName %>-search.parameters';
-import { <%= featurePropertyName %>SearchColumns } from './<%= featureFileName %>-search.columns';
-import {
-  routerNavigatedAction,
-  RouterNavigatedAction,
-} from '@ngrx/router-store';
-import { <%= featurePropertyName %>SearchCriteriasSchema } from './<%= featureFileName %>-search.parameters';
+import { routerNavigatedAction, RouterNavigatedAction } from '@ngrx/router-store'
+import { createReducer, on } from '@ngrx/store'
+import { <%= featureClassName %>SearchActions } from './<%= featureFileName %>-search.actions'
+import { <%= featurePropertyName %>SearchColumns } from './<%= featureFileName %>-search.columns'
+import { <%= featurePropertyName %>SearchCriteriasSchema } from './<%= featureFileName %>-search.parameters'
+import { <%= featureClassName %>SearchState } from './<%= featureFileName %>-search.state'
 
 export const initialState: <%= featureClassName %>SearchState = {
   columns: <%= featurePropertyName %>SearchColumns,
-  results: [],    
+  results: [],
   chartVisible: false,
   resultComponentState: null,
   searchHeaderComponentState: null,
@@ -19,57 +15,47 @@ export const initialState: <%= featureClassName %>SearchState = {
   searchLoadingIndicator: false,
   criteria: {},
   searchExecuted: false,
-};
+  displayedColumns: [],
+  viewMode: null
+}
 
 export const <%= featurePropertyName %>SearchReducer = createReducer(
   initialState,
-  on(
-    routerNavigatedAction,
-    (state: <%= featureClassName %>SearchState, action: RouterNavigatedAction) => {
-      const results = <%= featurePropertyName %>SearchCriteriasSchema.safeParse(
-        action.payload.routerState.root.queryParams,
-      );
-      if (results.success) {
-        return {
-          ...state,
-          criteria: results.data,
-          searchLoadingIndicator:
-            Object.keys(action.payload.routerState.root.queryParams).length !=
-            0,
-        };
+  on(routerNavigatedAction, (state: <%= featureClassName %>SearchState, action: RouterNavigatedAction) => {
+    const results = <%= featurePropertyName %>SearchCriteriasSchema.safeParse(action.payload.routerState.root.queryParams)
+    if (results.success) {
+      return {
+        ...state,
+        criteria: results.data,
+        searchLoadingIndicator: Object.keys(action.payload.routerState.root.queryParams).length != 0
       }
-      return state;
     }
-  ),
+    return state
+  }),
   on(
     <%= featureClassName %>SearchActions.resetButtonClicked,
     (state: <%= featureClassName %>SearchState): <%= featureClassName %>SearchState => ({
       ...state,
       results: initialState.results,
       criteria: {},
-      searchExecuted: false,
+      searchExecuted: false
     })
   ),
   on(
-     <%= featureClassName %>SearchActions.searchButtonClicked,    
-    (
-      state:  <%= featureClassName %>SearchState,
-      { searchCriteria },
-    ):  <%= featureClassName %>SearchState => ({
+    <%= featureClassName %>SearchActions.searchButtonClicked,
+    (state: <%= featureClassName %>SearchState, { searchCriteria }): <%= featureClassName %>SearchState => ({
       ...state,
-      criteria: searchCriteria,
-    }),
+      searchLoadingIndicator: true,
+      criteria: searchCriteria
+    })
   ),
   on(
     <%= featureClassName %>SearchActions.<%= featurePropertyName %>SearchResultsReceived,
-    (
-      state: <%= featureClassName %>SearchState,
-      { stream }
-    ): <%= featureClassName %>SearchState => ({
+    (state: <%= featureClassName %>SearchState, { stream }): <%= featureClassName %>SearchState => ({
       ...state,
       results: stream,
       searchLoadingIndicator: false,
-      searchExecuted: true,
+      searchExecuted: true
     })
   ),
   on(
@@ -77,42 +63,49 @@ export const <%= featurePropertyName %>SearchReducer = createReducer(
     (state: <%= featureClassName %>SearchState): <%= featureClassName %>SearchState => ({
       ...state,
       results: [],
-      searchLoadingIndicator: false,
+      searchLoadingIndicator: false
     })
-  ), 
+  ),
   on(
     <%= featureClassName %>SearchActions.chartVisibilityToggled,
-    (
-      (state: <%= featureClassName %>SearchState): <%= featureClassName %>SearchState => ({
+    (state: <%= featureClassName %>SearchState): <%= featureClassName %>SearchState => ({
       ...state,
       chartVisible: !state.chartVisible
     })
-    )
   ),
   on(
     <%= featureClassName %>SearchActions.resultComponentStateChanged,
-    (
-      state: <%= featureClassName %>SearchState, resultComponentState
-    ): <%= featureClassName %>SearchState => ({
+    (state: <%= featureClassName %>SearchState, resultComponentState): <%= featureClassName %>SearchState => ({
       ...state,
-      resultComponentState,
+      resultComponentState
     })
   ),
   on(
     <%= featureClassName %>SearchActions.searchHeaderComponentStateChanged,
-    (
-      state: <%= featureClassName %>SearchState,
-      searchHeaderComponentState
-    ): <%= featureClassName %>SearchState => ({
+    (state: <%= featureClassName %>SearchState, searchHeaderComponentState): <%= featureClassName %>SearchState => ({
       ...state,
-      searchHeaderComponentState,
+      searchHeaderComponentState
     })
   ),
   on(
     <%= featureClassName %>SearchActions.diagramComponentStateChanged,
     (state: <%= featureClassName %>SearchState, diagramComponentState): <%= featureClassName %>SearchState => ({
       ...state,
-      diagramComponentState,
+      diagramComponentState
+    })
+  ),
+  on(
+    <%= featureClassName %>SearchActions.displayedColumnsChanged,
+    (state: <%= featureClassName %>SearchState, { displayedColumns }): <%= featureClassName %>SearchState => ({
+      ...state,
+      displayedColumns
+    })
+  ),
+  on(
+    <%= featureClassName %>SearchActions.viewModeChanged,
+    (state: <%= featureClassName %>SearchState, { viewMode }): <%= featureClassName %>SearchState => ({
+      ...state,
+      viewMode
     })
   )
-);
+)

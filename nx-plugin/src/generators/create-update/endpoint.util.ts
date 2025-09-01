@@ -132,3 +132,40 @@ export function createUpdateEndpoint(
   };
   return response;
 }
+
+interface DeleteEndpointParameter {
+  dataObjectName: string;
+}
+
+export function createDeleteEndpoint(
+  data: OpenAPIDefault,
+  parameter: DeleteEndpointParameter
+) {
+  const response = {};
+  response[data.type] = {
+    operationId: data.operationId,
+    tags: data.tags,
+    description: data.description,
+    parameters: [
+      {
+        name: 'id',
+        in: 'path',
+        required: true,
+        schema: { type: 'string' },
+      },
+    ],
+    responses: {
+      '204': { description: `${parameter.dataObjectName} deleted` },
+      '400': {
+        description: 'Bad request',
+        content: {
+          'application/json': {
+            schema: { $ref: '#/components/schemas/ProblemDetailResponse' },
+          },
+        },
+      },
+      '404': { description: `${parameter.dataObjectName} not found` },
+    },
+  };
+  return response;
+}

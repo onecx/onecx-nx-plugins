@@ -11,6 +11,7 @@ import {
   ExportDataService,
   PortalDialogService,
   InteractiveDataViewComponentState,
+  RowListGridData,
   SearchHeaderComponentState,
 } from '@onecx/portal-integration-angular';
 import { <%= featureClassName %>SearchActions } from './<%= featureFileName %>-search.actions';
@@ -40,6 +41,12 @@ export class <%= featureClassName %>SearchComponent implements OnInit {
   headerActions$: Observable<Action[]> = this.viewModel$.pipe(map((vm) => {
       const actions: Action[] = [
         {
+          labelKey: '<%= featureConstantName %>_CREATE_UPDATE.ACTION.CREATE',
+          icon: PrimeIcons.PLUS,
+          show: 'always',
+          actionCallback: () => this.create()
+        },
+        {
           labelKey: '<%= featureConstantName %>_SEARCH.HEADER_ACTIONS.EXPORT_ALL',
           icon: PrimeIcons.DOWNLOAD,
           titleKey: '<%= featureConstantName %>_SEARCH.HEADER_ACTIONS.EXPORT_ALL',
@@ -57,7 +64,7 @@ export class <%= featureClassName %>SearchComponent implements OnInit {
           show: 'asOverflow',
           actionCallback: () => this.toggleChartVisibility(),
         },
-      ]      
+      ]
       return actions
     })
   );
@@ -82,8 +89,7 @@ export class <%= featureClassName %>SearchComponent implements OnInit {
     private readonly formBuilder: FormBuilder,
     @Inject(LOCALE_ID) public readonly locale: string,
     private readonly exportDataService: ExportDataService,
-  ) {
-  }
+  ) {}
 
   ngOnInit() {
     this.breadcrumbService.setItems([
@@ -98,7 +104,7 @@ export class <%= featureClassName %>SearchComponent implements OnInit {
     );
   }
 
-  resultComponentStateChanged(state: InteractiveDataViewComponentState) {    
+  resultComponentStateChanged(state: InteractiveDataViewComponentState) {
     this.store.dispatch(<%= featureClassName %>SearchActions.resultComponentStateChanged(state))
   }
 
@@ -134,14 +140,45 @@ export class <%= featureClassName %>SearchComponent implements OnInit {
     );
   }
 
+  create() {
+    this.store.dispatch(<%= featureClassName %>SearchActions.createButtonClicked())
+  }
+
+  edit({ id }: RowListGridData) {
+    this.store.dispatch(<%= featureClassName %>SearchActions.editButtonClicked({ id: String(id) }))
+  }
+
+  delete({ id }: RowListGridData) {
+    this.store.dispatch(<%= featureClassName %>SearchActions.deleteButtonClicked({ id: String(id) }))
+  }
+
+  details({ id }: RowListGridData) {
+    this.store.dispatch(<%= featureClassName %>SearchActions.detailsButtonClicked({ id: String(id) }))
+  }
+
   resetSearch() {
     this.store.dispatch(<%= featureClassName %>SearchActions.resetButtonClicked());
   }
 
-
   exportItems() {
     this.store.dispatch(<%= featureClassName %>SearchActions.exportButtonClicked());
-  }   
+  }
+
+  viewModeChanged(viewMode: 'basic' | 'advanced') {
+    this.store.dispatch(
+      <%= featureClassName %>SearchActions.viewModeChanged({
+        viewMode: viewMode
+      })
+    )
+  }
+
+  onDisplayedColumnsChange(displayedColumns: DataTableColumn[]) {
+    this.store.dispatch(
+      <%= featureClassName %>SearchActions.displayedColumnsChanged({
+        displayedColumns: displayedColumns.map(col => col.id)
+      })
+    )
+  }
 
   toggleChartVisibility() {
     this.store.dispatch(<%= featureClassName %>SearchActions.chartVisibilityToggled());

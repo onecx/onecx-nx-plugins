@@ -23,6 +23,7 @@ import { SearchEffectsStep } from './steps/search-effects.step';
 import { SearchHTMLStep } from './steps/search-html.step';
 import { SearchTestsStep } from './steps/search-tests.step';
 import { ValidateFeatureModuleStep } from '../shared/steps/validate-feature-module.step';
+import * as yaml from 'js-yaml'
 
 const PARAMETERS: GeneratorParameter<CreateUpdateGeneratorSchema>[] = [
   {
@@ -179,6 +180,57 @@ export async function createUpdateGenerator(
     generatorProcessor.addStep(new SearchTestsStep());
   }
   generatorProcessor.run(tree, options, spinner);
+
+  // Ensure DELETE endpoint + normalize Create/Update schemas before apigen
+  const swaggerPath = 'src/assets/swagger/onecx-ai-management-ui-bff.yaml';
+  if (tree.exists(swaggerPath)) {
+    const doc = yaml.load(tree.read(swaggerPath)!.toString()) as any;
+
+    // DELETE /{feature}/{id}
+    doc.paths ||= {};
+    const featurePathName = names(options.featureName).fileName;     
+    const featureClassName = names(options.featureName).className;   
+    const pathKey = `/${featurePathName}/{id}`;
+    doc.paths[pathKey] = {
+      ...(doc.paths[pathKey] || {}),
+      delete: {
+        operationId: `delete${featureClassName}`,
+        tags: [`${featureClassName}BffService`],
+        description: `Delete ${featureClassName} by id`,
+        parameters: [{ name: 'id', in: 'path', required: true, schema: { type: 'string' } }],
+        responses: {
+          '204': { description: `${featureClassName} deleted` },
+          '400': {
+            description: 'Bad request',
+            content: { 'application/json': { schema: { $ref: '#/components/schemas/ProblemDetailResponse' } } }
+          },
+          '404': { description: `${featureClassName} not found` }
+        }
+      }
+    };
+
+   const ensureModelExists = (objName: string) => {
+     if (!doc.components.schemas[objName]) {
+       doc.components.schemas[objName] = {
+         type: 'object',
+         properties: { id: { type: 'string' } }
+       };
+     }
+   };
+
+   const makeRefSchema = (objName: string) => ({
+     type: 'object',
+     properties: { dataObject: { $ref: `#/components/schemas/${objName}` } }
+   });
+
+  ensureModelExists(featureClassName);
+   ['Create', 'Update'].forEach(prefix => {
+     doc.components.schemas[`${prefix}${featureClassName}Request`]  = makeRefSchema(featureClassName);
+     doc.components.schemas[`${prefix}${featureClassName}Response`] = makeRefSchema(featureClassName);
+   });
+  
+    tree.write(swaggerPath, yaml.dump(doc, { lineWidth: -1 }));
+  }
 
   await formatFiles(tree);
 

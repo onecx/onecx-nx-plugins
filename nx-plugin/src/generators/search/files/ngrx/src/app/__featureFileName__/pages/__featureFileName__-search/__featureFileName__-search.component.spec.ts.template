@@ -17,6 +17,7 @@ import {
   ColumnType,
   ExportDataService,
   PortalCoreModule,
+  RowListGridData,
   UserService,
 } from '@onecx/portal-integration-angular';
 import { <%= featureClassName %>SearchActions } from './<%= featureFileName %>-search.actions';
@@ -26,6 +27,7 @@ import { <%= featureClassName %>SearchViewModel } from './<%= featureFileName %>
 import { <%= featurePropertyName %>SearchColumns } from './<%= featureFileName %>-search.columns';
 import { select<%= featureClassName %>SearchViewModel } from './<%= featureFileName %>-search.selectors';
 import { initialState } from './<%= featureFileName %>-search.reducers';
+import { PrimeIcons } from 'primeng/api'
 
 describe('<%= featureClassName %>SearchComponent', () => {
   const origAddEventListener = window.addEventListener;
@@ -131,6 +133,7 @@ describe('<%= featureClassName %>SearchComponent', () => {
     formBuilder = TestBed.inject(FormBuilder);
 
     store = TestBed.inject(MockStore);
+    jest.spyOn(store, 'dispatch')
     store.overrideSelector(
       select<%= featureClassName %>SearchViewModel,
       base<%= featureClassName %>SearchViewModel
@@ -292,7 +295,7 @@ describe('<%= featureClassName %>SearchComponent', () => {
 
     component.search(formValue);
   });
-  
+
   it('should dispatch viewModeChanged action on view mode changes', async () => {
     jest.spyOn(store, 'dispatch');
 
@@ -518,6 +521,132 @@ describe('<%= featureClassName %>SearchComponent', () => {
 
     expect(store.dispatch).toHaveBeenCalledWith(
       <%= featureClassName %>SearchActions.exportButtonClicked()
+    );
+  });
+
+  it('should dispatch createButtonClicked action on create click', async () => {
+    jest.spyOn(store, 'dispatch');
+    const header = await <%= featurePropertyName %>Search.getHeader();
+    const createButton = await (await header.getPageHeader()).getInlineActionButtonByIcon(PrimeIcons.PLUS);
+
+    expect(createButton).toBeTruthy();
+    await createButton?.click();
+
+    expect(store.dispatch).toHaveBeenCalledWith(
+      <%= featureClassName %>SearchActions.createButtonClicked()
+    );
+  });
+
+  it('should dispatch detailsButtonClicked action on details', () => {
+    jest.spyOn(store, 'dispatch');
+    const row: RowListGridData = { id: 'test-id', imagePath: '' };
+    component.details(row);
+    expect(store.dispatch).toHaveBeenCalledWith(
+      <%= featureClassName %>SearchActions.detailsButtonClicked({ id: 'test-id' })
+    );
+  });
+
+  it('should dispatch editButtonClicked action on edit', () => {
+    jest.spyOn(store, 'dispatch');
+    const row: RowListGridData = { id: 'test-id', imagePath: '' };
+    component.edit(row);
+    expect(store.dispatch).toHaveBeenCalledWith(
+      <%= featureClassName %>SearchActions.editButtonClicked({ id: 'test-id' })
+    );
+  });
+
+  it('should dispatch deleteButtonClicked action on delete', () => {
+    jest.spyOn(store, 'dispatch');
+    const row: RowListGridData = { id: 'test-id', imagePath: '' };
+    component.delete(row);
+    expect(store.dispatch).toHaveBeenCalledWith(
+      <%= featureClassName %>SearchActions.deleteButtonClicked({ id: 'test-id' })
+    );
+  });
+
+  describe('searchCriteria mapping', () => {
+    const cases = [
+      {
+        desc: 'should convert Date values to UTC and dispatch searchButtonClicked',
+        formValue: { name: new Date(2024, 4, 15, 12, 30, 45) },
+        expected: { name: new Date(Date.UTC(2024, 4, 15, 12, 30, 45)).toISOString() }
+      },
+      {
+        desc: 'should pass through non-date, non-empty values unchanged',
+        formValue: { name: 'testName' },
+        expected: { name: 'testName' }
+      },
+      {
+        desc: 'should set searchCriteria property to undefined for falsy non-date values',
+        formValue: { name: '' },
+        expected: { name: undefined }
+      }
+    ];
+    cases.forEach(({ desc, formValue, expected }) => {
+      it(desc, () => {
+        jest.spyOn(store, 'dispatch');
+        component.<%= featurePropertyName %>SearchFormGroup = {
+          value: formValue,
+          getRawValue: () => formValue
+        } as any;
+        component.search(component.<%= featurePropertyName %>SearchFormGroup);
+
+        const calls = (store.dispatch as jest.Mock).mock.calls;
+        const found = calls.some(call => {
+          const action = call[0];
+          return (
+            action.type === '[<%= featureClassName %>Search] searchButtonClicked' &&
+            JSON.stringify(action.searchCriteria) === JSON.stringify(expected)
+          );
+        });
+        expect(found).toBe(true);
+      });
+    });
+  });
+
+  describe('actions dispatch', () => {
+    [
+      {
+        method: 'resultComponentStateChanged',
+        action: <%= featureClassName %>SearchActions.resultComponentStateChanged,
+        payload: { groupKey: 'test-group' }
+      },
+      {
+        method: 'searchHeaderComponentStateChanged',
+        action: <%= featureClassName %>SearchActions.searchHeaderComponentStateChanged,
+        payload: { activeViewMode: 'basic' as 'basic', selectedSearchConfig: 'config1' }
+      },
+      {
+        method: 'diagramComponentStateChanged',
+        action: <%= featureClassName %>SearchActions.diagramComponentStateChanged,
+        payload: { label: 'Test Diagram' }
+      }
+    ].forEach(({ method, action, payload }) => {
+      it(`should dispatch ${action.type} when ${method} is called`, () => {
+        jest.spyOn(store, 'dispatch');
+        (component as any)[method](payload);
+        expect(store.dispatch).toHaveBeenCalledWith(action(payload));
+      });
+    });
+  });
+
+  it('should dispatch viewModeChanged action when viewModeChanged is called', () => {
+    jest.spyOn(store, 'dispatch');
+    component.viewModeChanged('advanced');
+    expect(store.dispatch).toHaveBeenCalledWith(
+      <%= featureClassName %>SearchActions.viewModeChanged({ viewMode: 'advanced' })
+    );
+  });
+
+  it('should dispatch displayedColumnsChanged action when onDisplayedColumnsChange is called', () => {
+    jest.spyOn(store, 'dispatch');
+    const columns = [
+      { id: 'col1', columnType: ColumnType.STRING, nameKey: 'COL1' },
+      { id: 'col2', columnType: ColumnType.STRING, nameKey: 'COL2' }
+    ];
+    component.onDisplayedColumnsChange(columns);
+    expect(store.dispatch).toHaveBeenCalledWith(
+      <%= featureClassName %>SearchActions.displayedColumnsChanged({ displayedColumns: ['col1', 'col2'] })
     );
   });
 });

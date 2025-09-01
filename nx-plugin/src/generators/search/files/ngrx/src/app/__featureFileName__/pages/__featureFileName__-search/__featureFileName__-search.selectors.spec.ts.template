@@ -1,0 +1,88 @@
+import { ColumnType, DataTableColumn } from '@onecx/angular-accelerator'
+import * as selectors from './<%= featureFileName %>-search.selectors'
+
+describe('<%= featureClassName %>Search selectors', () => {
+  describe('selectResults projector', () => {
+    const cases = [
+      {
+        desc: 'should map results to RowListGridData[]',
+        input: [
+          { id: '1', name: 'A', description: 'desc', vdb: 'vdb1', vdbCollection: 'c1' },
+          { id: '2', name: 'B', description: 'desc2', vdb: 'vdb2', vdbCollection: 'c2' }
+        ],
+        expected: [
+          { imagePath: '', id: '1', name: 'A', description: 'desc', vdb: 'vdb1', vdbCollection: 'c1' },
+          { imagePath: '', id: '2', name: 'B', description: 'desc2', vdb: 'vdb2', vdbCollection: 'c2' }
+        ]
+      },
+      {
+        desc: 'should use empty string fallback when item.id is falsy',
+        input: [
+          { id: '', name: 'A', description: 'desc' },
+          { id: '', name: 'B', description: 'desc2' },
+          { id: '', name: 'C', description: 'desc3' }
+        ],
+        expected: [
+          { imagePath: '', id: '', name: 'A', description: 'desc' },
+          { imagePath: '', id: '', name: 'B', description: 'desc2' },
+          { imagePath: '', id: '', name: 'C', description: 'desc3' }
+        ]
+      }
+    ]
+    cases.forEach(({ desc, input, expected }) => {
+      it(desc, () => {
+        expect(selectors.selectResults.projector(input)).toEqual(expected)
+      })
+    })
+  })
+
+  describe('selectDisplayedColumns projector', () => {
+    it('should map displayedColumns ids to columns', () => {
+      const columns = [
+        { id: 'col1', nameKey: 'Col 1', columnType: ColumnType.STRING },
+        { id: 'col2', nameKey: 'Col 2', columnType: ColumnType.STRING }
+      ]
+      // dostosowane do selektora, który zwraca wszystkie kolumny
+      expect(selectors.selectDisplayedColumns.projector(columns)).toEqual(columns)
+    })
+
+    it('should return [] if columns is undefined', () => {
+      expect(selectors.selectDisplayedColumns.projector(undefined as unknown as DataTableColumn[])).toEqual([])
+    })
+  })
+
+  it('select<%= featureClassName %>SearchViewModel should combine all selector results', () => {
+    const columns = [{ id: 'col1', nameKey: 'Col 1', columnType: ColumnType.STRING }]
+    const searchCriteria = {
+      id: 1,
+      pageNumber: 1,
+      pageSize: 10,
+      changeMe: 'test'
+    }
+    const results = [{ imagePath: '', id: '1', name: 'A', description: 'desc', vdb: 'vdb1', vdbCollection: 'c1' }]
+    const chartVisible = true
+
+    const result = selectors.select<%= featureClassName %>SearchViewModel.projector(
+      columns,
+      searchCriteria,
+      results,
+      null,
+      null,
+      null,
+      chartVisible,
+      false,
+      true
+    )
+    expect(result).toEqual({
+      columns,
+      searchCriteria,
+      results,
+      resultComponentState: null,
+      searchHeaderComponentState: null,
+      diagramComponentState: null,
+      chartVisible,
+      searchLoadingIndicator: false,
+      searchExecuted: true
+   })
+  })
+})

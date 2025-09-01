@@ -1,0 +1,632 @@
+import { TestBed } from '@angular/core/testing'
+import { ActivatedRoute, Router } from '@angular/router'
+import { RouterTestingModule } from '@angular/router/testing'
+import { provideMockActions } from '@ngrx/effects/testing'
+import { Store } from '@ngrx/store'
+import { MockStore, provideMockStore } from '@ngrx/store/testing'
+import { ExportDataService, PortalDialogService, PortalMessageService } from '@onecx/portal-integration-angular'
+import { of, ReplaySubject, throwError } from 'rxjs'
+import { <%= serviceName %> } from '../../../shared/generated'
+import { <%= featureClassName %>SearchActions } from './<%= featureFileName %>-search.actions'
+import { <%= featureClassName %>SearchEffects } from './<%= featureFileName %>-search.effects'
+import { <%= featureClassName %>SearchCriteria } from './<%= featureFileName %>-search.parameters'
+import { initialState } from './<%= featureFileName %>-search.reducers'
+import { <%= featurePropertyName %>SearchSelectors, select<%= featureClassName %>SearchViewModel } from './<%= featureFileName %>-search.selectors'
+import { take } from 'rxjs/operators'
+
+describe('<%= featureClassName %>SearchEffects', () => {
+  let actions$: ReplaySubject<unknown>
+  let effects: <%= featureClassName %>SearchEffects
+  let store: MockStore<Store>
+  let router: jest.Mocked<Router>
+  let route: ActivatedRoute
+  let service: jest.Mocked<<%= serviceName %>>
+  let portalDialogService: jest.Mocked<PortalDialogService>
+  let messageService: jest.Mocked<PortalMessageService>
+  let exportDataService: jest.Mocked<ExportDataService>
+
+  const mockCriteria: <%= featureClassName %>SearchCriteria = { changeMe: 'test' } as any
+
+  beforeEach(async () => {
+    actions$ = new ReplaySubject(1)
+
+    service = {
+      create<%= featureClassName %>: jest.fn(),
+      update<%= featureClassName %>: jest.fn(),
+      delete<%= featureClassName %>: jest.fn(),
+      search<%= featureClassName %>s: jest.fn()
+    } as unknown as jest.Mocked<<%= serviceName %>>
+
+    router = {
+      navigate: jest.fn().mockReturnValue(Promise.resolve(true)),
+      parseUrl: jest.fn(),
+      events: of()
+    } as unknown as jest.Mocked<Router>
+
+    portalDialogService = {
+      openDialog: jest.fn()
+    } as unknown as jest.Mocked<PortalDialogService>
+
+    messageService = {
+      success: jest.fn(),
+      error: jest.fn()
+    } as unknown as jest.Mocked<PortalMessageService>
+
+    exportDataService = {
+      exportCsv: jest.fn()
+    } as unknown as jest.Mocked<ExportDataService>
+
+    route = {
+      queryParams: of({}),
+      snapshot: { queryParams: {} }
+    } as unknown as ActivatedRoute
+
+    await TestBed.configureTestingModule({
+      imports: [RouterTestingModule],
+      providers: [
+        <%= featureClassName %>SearchEffects,
+        provideMockStore({
+          initialState: { <%= featurePropertyName %>Search: initialState }
+        }),
+        provideMockActions(() => actions$),
+        { provide: ActivatedRoute, useValue: route },
+        { provide: Router, useValue: router },
+        { provide: <%= serviceName %>, useValue: service },
+        { provide: PortalDialogService, useValue: portalDialogService },
+        { provide: PortalMessageService, useValue: messageService },
+        { provide: ExportDataService, useValue: exportDataService }
+      ]
+    }).compileComponents()
+
+    effects = TestBed.inject(<%= featureClassName %>SearchEffects)
+    store = TestBed.inject(MockStore)
+  })
+
+  beforeEach(() => {
+    jest.resetAllMocks()
+    ;(router.parseUrl as jest.Mock).mockImplementation((url: string) => ({
+      toString: () => (url ? url.split('?')[0].split('#')[0] : '/search'),
+      queryParams: {},
+      fragment: null
+    }) as any)
+  })
+
+  describe('syncParamsToUrl$', () => {
+    beforeEach(() => {
+      store.overrideSelector(<%= featurePropertyName %>SearchSelectors.selectCriteria, mockCriteria as any)
+      store.refreshState()
+    })
+
+    it('should navigate to update URL when criteria differs from query params', (done) => {
+      const navigateSpy = jest.spyOn(router, 'navigate')
+      route.queryParams = of({ different: 'yes' }) as any
+
+      effects.syncParamsToUrl$.pipe(take(1)).subscribe(() => {
+        expect(navigateSpy).toHaveBeenCalled()
+        done()
+      })
+
+      actions$.next(<%= featureClassName %>SearchActions.searchButtonClicked({ searchCriteria: mockCriteria }))
+    })
+
+    it('should not navigate when criteria matches query params', (done) => {
+      const navigateSpy = jest.spyOn(router, 'navigate')
+      route.queryParams = of(mockCriteria as any) as any
+
+      effects.syncParamsToUrl$.pipe(take(1)).subscribe(() => {
+        expect(navigateSpy).not.toHaveBeenCalled()
+        done()
+      })
+
+      actions$.next(<%= featureClassName %>SearchActions.searchButtonClicked({ searchCriteria: mockCriteria }))
+    })
+
+    it('should navigate when resetButtonClicked action is triggered', (done) => {
+      const navigateSpy = jest.spyOn(router, 'navigate')
+      route.queryParams = of({ something: 'else' }) as any
+
+      effects.syncParamsToUrl$.pipe(take(1)).subscribe(() => {
+        expect(navigateSpy).toHaveBeenCalled()
+        done()
+      })
+
+      actions$.next(<%= featureClassName %>SearchActions.resetButtonClicked())
+    })
+  })
+
+  describe('detailsButtonClicked$', () => {
+    it('should navigate to details page with correct URL structure', (done) => {
+      const testId = 'test-123'
+      const navigateSpy = jest.spyOn(router, 'navigate')
+
+      effects.detailsButtonClicked$.pipe(take(1)).subscribe(() => {
+        expect(navigateSpy).toHaveBeenCalledWith(['/search', 'details', testId])
+        done()
+      })
+
+      actions$.next(<%= featureClassName %>SearchActions.detailsButtonClicked({ id: testId }))
+    })
+
+    it('should clear query params and fragment from URL', (done) => {
+      const testId = 'test-456'
+      const mockUrlTree: any = { toString: jest.fn(() => '/search'), queryParams: { a: 1 }, fragment: 'frag' }
+      jest.spyOn(router, 'parseUrl').mockReturnValue(mockUrlTree)
+
+      effects.detailsButtonClicked$.pipe(take(1)).subscribe(() => {
+        expect(mockUrlTree.queryParams).toEqual({})
+        expect(mockUrlTree.fragment).toBeNull()
+        done()
+      })
+
+      actions$.next(<%= featureClassName %>SearchActions.detailsButtonClicked({ id: testId }))
+    })
+  })
+
+  describe('searchByUrl$ / performSearch', () => {
+    beforeEach(() => {
+      store.overrideSelector(<%= featurePropertyName %>SearchSelectors.selectCriteria, mockCriteria as any)
+      store.refreshState()
+
+      service.search<%= featureClassName %>s.mockReturnValue(
+        of({
+          stream: [{ id: '1', name: 'Item 1', description: '', imagePath: '' } as any],
+          content: [{ id: '1', name: 'Item 1', description: '', imagePath: '' } as any],
+          size: 10,
+          number: 0,
+          totalElements: 1,
+          totalPages: 1
+        } as any) as any
+      )
+    })
+
+    it('should dispatch resultsLoadingFailed on search error', (done) => {
+      const mockError = 'Search failed'
+      service.search<%= featureClassName %>s.mockReturnValueOnce(throwError(() => mockError) as any)
+
+      effects.performSearch(mockCriteria as any).pipe(take(1)).subscribe((action) => {
+        expect(action.type).toEqual(<%= featureClassName %>SearchActions.<%= featurePropertyName %>SearchResultsLoadingFailed.type)
+        expect(action).toEqual(<%= featureClassName %>SearchActions.<%= featurePropertyName %>SearchResultsLoadingFailed({ error: mockError }))
+        done()
+      })
+    })
+
+    it('should convert Date objects in search criteria before calling service', (done) => {
+      const criteriaWithDate: any = { ...mockCriteria, startDate: new Date('2023-01-01'), endDate: new Date('2023-12-31') }
+      const searchSpy = jest.spyOn(service, 'search<%= featureClassName %>s')
+
+      effects.performSearch(criteriaWithDate).pipe(take(1)).subscribe(() => {
+        expect(searchSpy).toHaveBeenCalledWith(
+          expect.objectContaining({
+            startDate: '2023-01-01T00:00:00.000Z',
+            endDate: '2023-12-31T00:00:00.000Z'
+          })
+        )
+        done()
+      })
+    })
+  })
+
+  describe('exportData$', () => {
+    [
+      {
+        desc: 'should handle export with empty displayed columns',
+        viewModel: { results: [{ id: '1', name: 'Context 1', description: 'Description 1', imagePath: '' } as any], resultComponentState: { displayedColumns: undefined } }
+      },
+      {
+        desc: 'should handle export with null resultComponentState',
+        viewModel: { results: [{ id: '1', name: 'Context 1', description: 'Description 1', imagePath: '' } as any], resultComponentState: null }
+      }
+    ].forEach(({ desc, viewModel }) => {
+      it(desc, (done) => {
+        store.overrideSelector(select<%= featureClassName %>SearchViewModel, viewModel as any)
+
+        effects.exportData$.pipe(take(1)).subscribe(() => {
+          expect(exportDataService.exportCsv).toHaveBeenCalledWith([], viewModel.results, '<%= featureClassName %>.csv')
+          done()
+        })
+
+        actions$.next(<%= featureClassName %>SearchActions.exportButtonClicked())
+      })
+    })
+
+    it('should export CSV with correct parameters when export button is clicked', (done) => {
+      const mockColumns = [{ field: 'name', header: 'Name' }, { field: 'description', header: 'Description' }]
+      const mockResults = [{ id: '1', name: 'Context 1', description: 'Description 1' } as any, { id: '2', name: 'Context 2', description: 'Description 2' } as any]
+      const mockViewModel = { resultComponentState: { displayedColumns: mockColumns }, results: mockResults }
+      store.overrideSelector(select<%= featureClassName %>SearchViewModel, mockViewModel as any)
+
+      effects.exportData$.pipe(take(1)).subscribe(() => {
+        expect(exportDataService.exportCsv).toHaveBeenCalledWith(mockColumns, mockResults, '<%= featureClassName %>.csv')
+        done()
+      })
+
+      actions$.next(<%= featureClassName %>SearchActions.exportButtonClicked())
+    })
+
+    it('should handle export with empty results', (done) => {
+      const mockColumns = [{ field: 'name', header: 'Name' }, { field: 'description', header: 'Description' }]
+      const mockViewModel = { resultComponentState: { displayedColumns: mockColumns }, results: [] }
+      store.overrideSelector(select<%= featureClassName %>SearchViewModel, mockViewModel as any)
+
+      effects.exportData$.pipe(take(1)).subscribe(() => {
+        expect(exportDataService.exportCsv).toHaveBeenCalledWith(mockColumns, [], '<%= featureClassName %>.csv')
+        done()
+      })
+
+      actions$.next(<%= featureClassName %>SearchActions.exportButtonClicked())
+    })
+  })
+
+  describe('displayError$', () => {
+    it('should display error message when ResultsLoadingFailed action is dispatched', (done) => {
+      effects.displayError$.pipe(take(1)).subscribe(() => {
+        expect(messageService.error).toHaveBeenCalled()
+        done()
+      })
+
+      actions$.next(<%= featureClassName %>SearchActions.<%= featurePropertyName %>SearchResultsLoadingFailed({ error: 'Test error' }))
+    })
+  })
+
+  describe('refreshSearchAfterCreateUpdate$', () => {
+    beforeEach(() => {
+      store.overrideSelector(<%= featurePropertyName %>SearchSelectors.selectCriteria, mockCriteria as any)
+      store.refreshState()
+
+      service.search<%= featureClassName %>s.mockReturnValue(
+        of({
+          stream: [{ id: '1', name: 'Item 1', description: '', imagePath: '' } as any],
+          content: [{ id: '1', name: 'Item 1', description: '', imagePath: '' } as any],
+          size: 10,
+          number: 0,
+          totalElements: 1,
+          totalPages: 1
+        } as any) as any
+      )
+    })
+
+    it('should handle search errors properly', (done) => {
+      const mockError = 'Refresh search failed'
+      service.search<%= featureClassName %>s.mockReturnValueOnce(throwError(() => mockError) as any)
+
+      effects.refreshSearchAfterCreateUpdate$.pipe(take(1)).subscribe((action) => {
+        expect(action).toEqual(<%= featureClassName %>SearchActions.<%= featurePropertyName %>SearchResultsLoadingFailed({ error: mockError }))
+        done()
+      })
+
+      actions$.next(<%= featureClassName %>SearchActions.createSucceeded())
+    })
+  })
+
+  describe('editButtonClicked$', () => {
+    const mockItem = { id: 'test-123', name: 'Test Item', description: 'Test Description' } as any
+    const mockResults = [mockItem, { id: 'other-id', name: 'Other Item' }] as any[]
+
+    beforeEach(() => {
+      store.overrideSelector(<%= featurePropertyName %>SearchSelectors.selectResults, mockResults)
+      store.refreshState()
+    })
+
+    it('should open dialog and dispatch updateSucceeded on successful update', (done) => {
+      const mockDialogResult = { button: 'primary', result: { ...mockItem, name: 'Updated' } }
+      portalDialogService.openDialog.mockReturnValue(of(mockDialogResult) as never)
+      service.update<%= featureClassName %>.mockReturnValue(of({} as any) as any)
+
+      const messageSuccessSpy = jest.spyOn(messageService, 'success')
+
+      effects.editButtonClicked$.pipe(take(1)).subscribe((action) => {
+        expect(action.type).toEqual(<%= featureClassName %>SearchActions.updateSucceeded.type)
+        expect(messageSuccessSpy).toHaveBeenCalledWith({ summaryKey: '<%= featureClassName %>_CREATE_UPDATE.UPDATE.SUCCESS' })
+        expect(service.update<%= featureClassName %>).toHaveBeenCalled()
+        done()
+      })
+
+      actions$.next(<%= featureClassName %>SearchActions.editButtonClicked({ id: 'test-123' }))
+    });
+
+    [
+      { desc: 'should dispatch updateCancelled when dialog is cancelled', dialogResult: { button: 'secondary', result: null } },
+      { desc: 'should dispatch updateCancelled when dialog result is null', dialogResult: null }
+    ].forEach(({ desc, dialogResult }) => {
+      it(desc, (done) => {
+        portalDialogService.openDialog.mockReturnValue(of(dialogResult) as never)
+
+        effects.editButtonClicked$.pipe(take(1)).subscribe((action) => {
+          expect(action.type).toEqual(<%= featureClassName %>SearchActions.updateCancelled.type)
+          expect(service.update<%= featureClassName %>).not.toHaveBeenCalled()
+          done()
+        })
+
+        actions$.next(<%= featureClassName %>SearchActions.editButtonClicked({ id: 'test-123' }))
+      })
+    })
+
+    it('should dispatch updateFailed when API call fails', (done) => {
+      const mockDialogResult = { button: 'primary', result: { ...mockItem, name: 'Updated' } }
+      portalDialogService.openDialog.mockReturnValue(of(mockDialogResult) as never)
+      service.update<%= featureClassName %>.mockReturnValue(throwError(() => 'Update failed') as any)
+
+      const messageErrorSpy = jest.spyOn(messageService, 'error')
+
+      effects.editButtonClicked$.pipe(take(1)).subscribe((action) => {
+        expect(action).toEqual(<%= featureClassName %>SearchActions.updateFailed({ error: 'Update failed' }))
+        expect(messageErrorSpy).toHaveBeenCalledWith({ summaryKey: '<%= featureClassName %>_CREATE_UPDATE.UPDATE.ERROR' })
+        done()
+      })
+
+      actions$.next(<%= featureClassName %>SearchActions.editButtonClicked({ id: 'test-123' }))
+    })
+
+    it('should dispatch updateFailed when dialog result is missing', (done) => {
+      const mockDialogResult = { button: 'primary', result: null }
+      portalDialogService.openDialog.mockReturnValue(of(mockDialogResult) as never)
+
+      effects.editButtonClicked$.pipe(take(1)).subscribe((action) => {
+        expect(action.type).toEqual(<%= featureClassName %>SearchActions.updateFailed.type)
+        expect(service.update<%= featureClassName %>).not.toHaveBeenCalled()
+        done()
+      })
+
+      actions$.next(<%= featureClassName %>SearchActions.editButtonClicked({ id: 'test-123' }))
+    })
+
+    it('should pass correct item to dialog based on action id', (done) => {
+      const mockDialogResult = { button: 'secondary', result: null }
+      portalDialogService.openDialog.mockReturnValue(of(mockDialogResult) as never)
+
+      effects.editButtonClicked$.pipe(take(1)).subscribe(() => {
+        expect(portalDialogService.openDialog).toHaveBeenCalledWith(
+          '<%= featureClassName %>_CREATE_UPDATE.UPDATE.HEADER',
+          {
+            type: expect.anything(),
+            inputs: { vm: { itemToEdit: mockItem } }
+          },
+          '<%= featureClassName %>_CREATE_UPDATE.UPDATE.FORM.SAVE',
+          '<%= featureClassName %>_CREATE_UPDATE.UPDATE.FORM.CANCEL',
+          { baseZIndex: 100 }
+        )
+        done()
+      })
+
+      actions$.next(<%= featureClassName %>SearchActions.editButtonClicked({ id: 'test-123' }))
+    })
+    it('should dispatch updateFailed when item id is missing', (done) => {
+      const dialogResult = { button: 'primary', result: { ...mockItem, id: undefined } }
+      portalDialogService.openDialog.mockReturnValue(of(dialogResult) as never)
+
+      effects.editButtonClicked$.pipe(take(1)).subscribe((action) => {
+        expect(action).toEqual(
+          <%= featureClassName %>SearchActions.updateFailed({ error: 'Item ID is required for update!' })
+        )
+        expect(service.update<%= featureClassName %>).not.toHaveBeenCalled()
+        done()
+      })
+
+      actions$.next(<%= featureClassName %>SearchActions.editButtonClicked({ id: 'test-123' }))
+    })
+  })
+
+  describe('refreshSearchAfterDelete$', () => {
+    beforeEach(() => {
+      store.overrideSelector(<%= featurePropertyName %>SearchSelectors.selectCriteria, mockCriteria as any)
+      store.refreshState()
+
+      service.search<%= featureClassName %>s.mockReturnValue(
+        of({
+          stream: [{ id: '3', name: 'Remaining', description: '', imagePath: '' } as any],
+          content: [{ id: '3', name: 'Remaining', description: '', imagePath: '' } as any],
+          size: 10,
+          number: 0,
+          totalElements: 1,
+          totalPages: 1
+        } as any) as any
+      )
+    })
+
+    it('should handle search errors properly after delete', (done) => {
+      const mockError = 'Refresh search after delete failed'
+      service.search<%= featureClassName %>s.mockReturnValueOnce(throwError(() => mockError) as any)
+
+      effects.refreshSearchAfterDelete$.pipe(take(1)).subscribe((action) => {
+        expect(action).toEqual(<%= featureClassName %>SearchActions.<%= featurePropertyName %>SearchResultsLoadingFailed({ error: mockError }))
+        done()
+      })
+
+      actions$.next(<%= featureClassName %>SearchActions.deleteSucceeded())
+    })
+
+    it('should use current search criteria from store', (done) => {
+      const customCriteria: any = { changeMe: 'custom' }
+      store.overrideSelector(<%= featurePropertyName %>SearchSelectors.selectCriteria, customCriteria)
+      store.refreshState()
+      const searchSpy = jest.spyOn(service, 'search<%= featureClassName %>s')
+
+      effects.refreshSearchAfterDelete$.pipe(take(1)).subscribe(() => {
+        expect(searchSpy).toHaveBeenCalledWith(customCriteria)
+        done()
+      })
+
+      actions$.next(<%= featureClassName %>SearchActions.deleteSucceeded())
+    })
+  })
+
+  describe('deleteButtonClicked$', () => {
+    const mockItem = { id: 'test-123', name: 'Test Item', description: 'Test Description' } as any
+    const mockResults = [mockItem, { id: 'other-id', name: 'Other Item' }] as any[]
+
+    beforeEach(() => {
+      store.overrideSelector(<%= featurePropertyName %>SearchSelectors.selectResults, mockResults)
+      store.refreshState()
+    })
+
+    it('should open confirmation dialog and dispatch deleteSucceeded on successful delete', (done) => {
+      const mockDialogResult = { button: 'primary', result: null }
+      portalDialogService.openDialog.mockReturnValue(of(mockDialogResult) as never)
+      service.delete<%= featureClassName %>.mockReturnValue(of({} as any) as any)
+
+      const messageSuccessSpy = jest.spyOn(messageService, 'success')
+
+      effects.deleteButtonClicked$.pipe(take(1)).subscribe((action) => {
+        expect(action.type).toEqual(<%= featureClassName %>SearchActions.deleteSucceeded.type)
+        expect(service.delete<%= featureClassName %>).toHaveBeenCalled()
+        expect(messageSuccessSpy).toHaveBeenCalledWith({ summaryKey: '<%= featureClassName %>_DELETE.SUCCESS' })
+        done()
+      })
+
+      actions$.next(<%= featureClassName %>SearchActions.deleteButtonClicked({ id: 'test-123' }))
+    });
+
+    [
+      { desc: 'should dispatch deleteCancelled when dialog is cancelled', dialogResult: { button: 'secondary', result: null } },
+      { desc: 'should dispatch deleteCancelled when dialog result is null', dialogResult: null }
+    ].forEach(({ desc, dialogResult }) => {
+      it(desc, (done) => {
+        portalDialogService.openDialog.mockReturnValue(of(dialogResult) as never)
+
+        effects.deleteButtonClicked$.pipe(take(1)).subscribe((action) => {
+          expect(action.type).toEqual(<%= featureClassName %>SearchActions.deleteCancelled.type)
+          expect(service.delete<%= featureClassName %>).not.toHaveBeenCalled()
+          done()
+        })
+
+        actions$.next(<%= featureClassName %>SearchActions.deleteButtonClicked({ id: 'test-123' }))
+      })
+    })
+
+    it('should dispatch deleteFailed when API call fails', (done) => {
+      const mockDialogResult = { button: 'primary', result: null }
+      portalDialogService.openDialog.mockReturnValue(of(mockDialogResult) as never)
+      service.delete<%= featureClassName %>.mockReturnValue(throwError(() => 'Delete failed') as any)
+
+      const messageErrorSpy = jest.spyOn(messageService, 'error')
+
+      effects.deleteButtonClicked$.pipe(take(1)).subscribe((action) => {
+        expect(action).toEqual(<%= featureClassName %>SearchActions.deleteFailed({ error: 'Delete failed' }))
+        expect(messageErrorSpy).toHaveBeenCalledWith({ summaryKey: '<%= featureClassName %>_DELETE.ERROR' })
+        done()
+      })
+
+      actions$.next(<%= featureClassName %>SearchActions.deleteButtonClicked({ id: 'test-123' }))
+    })
+
+    it('should pass correct dialog parameters', (done) => {
+      const mockDialogResult = { button: 'secondary', result: null }
+      portalDialogService.openDialog.mockReturnValue(of(mockDialogResult) as never)
+
+      effects.deleteButtonClicked$.pipe(take(1)).subscribe(() => {
+        expect(portalDialogService.openDialog).toHaveBeenCalledWith(
+          '<%= featureClassName %>_DELETE.HEADER',
+          '<%= featureClassName %>_DELETE.MESSAGE',
+          { key: '<%= featureClassName %>_DELETE.CONFIRM', icon: expect.anything() },
+          { key: '<%= featureClassName %>_DELETE.CANCEL', icon: expect.anything() }
+        )
+        done()
+      })
+
+      actions$.next(<%= featureClassName %>SearchActions.deleteButtonClicked({ id: 'test-123' }))
+    })
+
+    it('should handle case when item to delete is not found', (done) => {
+      const mockDialogResult = { button: 'primary', result: null }
+      const emptyResults = [{ id: 'other-id', name: 'Other Item' }] as any[]
+      store.overrideSelector(<%= featurePropertyName %>SearchSelectors.selectResults, emptyResults)
+      store.refreshState()
+      portalDialogService.openDialog.mockReturnValue(of(mockDialogResult) as never)
+
+      const messageErrorSpy = jest.spyOn(messageService, 'error')
+
+      effects.deleteButtonClicked$.pipe(take(1)).subscribe((action) => {
+        expect(action.type).toEqual(<%= featureClassName %>SearchActions.deleteFailed.type)
+        expect(messageErrorSpy).toHaveBeenCalledWith({ summaryKey: '<%= featureClassName %>_DELETE.ERROR' })
+        done()
+      })
+
+      actions$.next(<%= featureClassName %>SearchActions.deleteButtonClicked({ id: 'non-existent-id' }))
+    })
+  })
+
+  describe('createButtonClicked$', () => {
+    it('should open create dialog with correct parameters', (done) => {
+      const mockDialogResult = { button: 'primary', result: { name: 'New', description: 'Desc' } }
+      portalDialogService.openDialog.mockReturnValue(of(mockDialogResult) as never)
+      service.create<%= featureClassName %>.mockReturnValue(of({} as any) as any)
+
+      effects.createButtonClicked$.pipe(take(1)).subscribe(() => {
+        expect(portalDialogService.openDialog).toHaveBeenCalledWith(
+          '<%= featureClassName %>_CREATE_UPDATE.CREATE.HEADER',
+          {
+            type: expect.anything(),
+            inputs: { vm: { itemToEdit: {} } }
+          },
+          '<%= featureClassName %>_CREATE_UPDATE.CREATE.FORM.SAVE',
+          '<%= featureClassName %>_CREATE_UPDATE.CREATE.FORM.CANCEL',
+          { baseZIndex: 100 }
+        )
+        done()
+      })
+
+      actions$.next(<%= featureClassName %>SearchActions.createButtonClicked())
+    })
+
+    it('should create item and dispatch createSucceeded on success', (done) => {
+      const formData = { name: 'New', description: 'Desc' }
+      const mockDialogResult = { button: 'primary', result: formData }
+      portalDialogService.openDialog.mockReturnValue(of(mockDialogResult) as never)
+      service.create<%= featureClassName %>.mockReturnValue(of({} as any) as any)
+
+      effects.createButtonClicked$.pipe(take(1)).subscribe((action) => {
+        expect(service.create<%= featureClassName %>).toHaveBeenCalled()
+        expect(messageService.success).toHaveBeenCalledWith({ summaryKey: '<%= featureClassName %>_CREATE_UPDATE.CREATE.SUCCESS' })
+        expect(action).toEqual(<%= featureClassName %>SearchActions.createSucceeded())
+        done()
+      })
+
+      actions$.next(<%= featureClassName %>SearchActions.createButtonClicked())
+    });
+
+    [
+      { desc: 'should dispatch createCancelled when dialog is closed without result', dialogResult: null },
+      { desc: 'should dispatch createCancelled when secondary button is clicked', dialogResult: { button: 'secondary', result: { name: 'X' } } }
+    ].forEach(({ desc, dialogResult }) => {
+      it(desc, (done) => {
+        portalDialogService.openDialog.mockReturnValue(of(dialogResult) as never)
+
+        effects.createButtonClicked$.pipe(take(1)).subscribe((action) => {
+          expect(action).toEqual(<%= featureClassName %>SearchActions.createCancelled())
+          expect(service.create<%= featureClassName %>).not.toHaveBeenCalled()
+          done()
+        })
+
+        actions$.next(<%= featureClassName %>SearchActions.createButtonClicked())
+      })
+    })
+
+    it('should handle error when dialog result is missing despite primary button', (done) => {
+      const mockDialogResult = { button: 'primary', result: undefined }
+      portalDialogService.openDialog.mockReturnValue(of(mockDialogResult) as never)
+
+      effects.createButtonClicked$.pipe(take(1)).subscribe((action) => {
+        expect(action.type).toBe(<%= featureClassName %>SearchActions.createFailed.type)
+        expect(service.create<%= featureClassName %>).not.toHaveBeenCalled()
+        done()
+      })
+
+      actions$.next(<%= featureClassName %>SearchActions.createButtonClicked())
+    })
+
+    it('should handle API error during creation', (done) => {
+      const formData = { name: 'New', description: 'Desc' }
+      const mockDialogResult = { button: 'primary', result: formData }
+      portalDialogService.openDialog.mockReturnValue(of(mockDialogResult) as never)
+      service.create<%= featureClassName %>.mockReturnValue(throwError(() => 'API Error') as any)
+
+      effects.createButtonClicked$.pipe(take(1)).subscribe((action) => {
+        expect(messageService.error).toHaveBeenCalledWith({ summaryKey: '<%= featureClassName %>_CREATE_UPDATE.CREATE.ERROR' })
+        expect(action).toEqual(<%= featureClassName %>SearchActions.createFailed({ error: 'API Error' }))
+        done()
+      })
+
+      actions$.next(<%= featureClassName %>SearchActions.createButtonClicked())
+    })
+  })
+})
