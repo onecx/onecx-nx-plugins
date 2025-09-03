@@ -14,7 +14,27 @@
     [viewMode]="vm.searchHeaderComponentState?.activeViewMode ?? 'basic'"
   >
     <form [formGroup]="<%= featurePropertyName %>SearchFormGroup">
-      // ACTION S3: Specify here your desired search criterias: https://onecx.github.io/docs/nx-plugins/current/general/getting_started/search/configure-search-criteria.html#action-3
+      <div class="grid mt-0 p-fluid">
+        <div class="col-12 md:col-3">
+          <span class="p-float-label">
+           <input
+              pInputText
+              id="hello"
+              type="text"
+              class="w-18rem"
+              formControlName="helloWorld"
+              [pTooltip]="'HELLO_SEARCH.CRITERIA.HELLO' | translate"
+              tooltipPosition="top"
+              tooltipEvent="hover"
+            />
+            <label for="hello" style="white-space: nowrap">
+              {{ 'HELLO_SEARCH.CRITERIA.HELLO' | translate }}</label
+            >
+            </span>
+        </div>
+      </div>
+      <!--// ACTION S3: Specify here your desired search criterias:
+      https://onecx.github.io/docs/nx-plugins/current/general/getting_started/search/configure-search-criteria.html#action-3-->
     </form>
   </ocx-search-header>
   <ocx-content-container layout="horizontal">
