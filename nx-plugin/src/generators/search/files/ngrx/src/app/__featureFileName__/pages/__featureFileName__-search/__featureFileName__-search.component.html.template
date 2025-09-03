@@ -19,15 +19,15 @@
           <span class="p-float-label">
            <input
               pInputText
-              id="hello"
+              id="changeMe"
               type="text"
               class="w-18rem"
-              formControlName="helloWorld"
+              formControlName="changeMe"
               [pTooltip]="'HELLO_SEARCH.CRITERIA.HELLO' | translate"
               tooltipPosition="top"
               tooltipEvent="hover"
             />
-            <label for="hello" style="white-space: nowrap">
+            <label for="changeMe" style="white-space: nowrap">
               {{ 'HELLO_SEARCH.CRITERIA.HELLO' | translate }}</label
             >
             </span>
