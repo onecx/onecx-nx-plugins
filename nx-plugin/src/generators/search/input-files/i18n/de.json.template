@@ -28,6 +28,12 @@
         "SEARCH_CONFIG_CREATION_FAILED": "Suchkonfiguration konnte nicht erstellt werden.",
         "SEARCH_CONFIG_UPDATE_FAILED": "Suchkonfiguration konnte nicht aktualisiert werden.",
         "SEARCH_CONFIGS_LOADING_FAILED": "Suchkonfigurationen konnten nicht geladen werden."
+    },
+    "RESULTS": {
+      "HELLO": "Hallo"
+    },
+    "CRITERIA": {
+      "HELLO": "Hallo"
     }
   }
 }

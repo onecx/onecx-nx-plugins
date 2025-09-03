@@ -28,6 +28,12 @@
         "SEARCH_CONFIG_CREATION_FAILED": "Create search configuration failed.",
         "SEARCH_CONFIG_UPDATE_FAILED": "Update search configuration failed.",
         "SEARCH_CONFIGS_LOADING_FAILED": "Loading search configurations failed."
+    },
+    "RESULTS": {
+      "HELLO": "Hello"
+    },
+    "CRITERIA": {
+      "HELLO": "Hello"
     }
   }
 }
