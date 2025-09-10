@@ -116,7 +116,7 @@ export class GeneralOpenAPIStep implements GeneratorStep<DetailsGeneratorSchema>
         .set(`${options.updateRequestName}`, {
           type: 'object',
           properties: {
-            dataObject: {
+            resource: {
               type: 'object',
               $ref: `#/components/schemas/${dataObjectName}`,
             },
@@ -125,7 +125,7 @@ export class GeneralOpenAPIStep implements GeneratorStep<DetailsGeneratorSchema>
         .set(`${options.updateResponseName}`, {
           type: 'object',
           properties: {
-            dataObject: {
+            resource: {
               type: 'object',
               $ref: `#/components/schemas/${dataObjectName}`,
             },
@@ -231,9 +231,9 @@ export class GeneralOpenAPIStep implements GeneratorStep<DetailsGeneratorSchema>
 
     apiUtil.schemas().set(getByIdResponseName, {
       type: 'object',
-      required: ['result'],
+      required: ['resource'],
       properties: {
-        result: {
+        resource: {
           $ref: `#/components/schemas/${dataObjectName}`,
         },
       },
