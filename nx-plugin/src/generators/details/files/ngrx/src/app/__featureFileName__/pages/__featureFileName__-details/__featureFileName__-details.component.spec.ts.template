@@ -13,6 +13,7 @@ import { PrimeIcons } from 'primeng/api';
 import { of } from 'rxjs';
 import {
   BreadcrumbService,
+  HAS_PERMISSION_CHECKER,
   PortalCoreModule,
   UserService,
 } from '@onecx/portal-integration-angular';
@@ -23,6 +24,7 @@ import { <%= featureClassName %>DetailsViewModel } from './<%= featureFileName %
 import { select<%= featureClassName %>DetailsViewModel } from './<%= featureFileName %>-details.selectors';
 import { <%= featureClassName %>DetailsActions } from './<%= featureFileName %>-details.actions';
 import { ofType } from '@ngrx/effects';
+import { provideUserServiceMock } from '@onecx/angular-integration-interface/mocks';
 
 describe('<%= featureClassName %>DetailsComponent', () => {
   const origAddEventListener = window.addEventListener;
@@ -88,11 +90,25 @@ describe('<%= featureClassName %>DetailsComponent', () => {
         }),
         BreadcrumbService,
         { provide: ActivatedRoute, useValue: mockActivatedRoute },
+        provideUserServiceMock(),
+        {
+            provide: HAS_PERMISSION_CHECKER,
+            useExisting: UserService,
+        },
       ],
     }).compileComponents();
 
     const userService = TestBed.inject(UserService);
-    userService.hasPermission = () => true;
+    userService.permissions$.next([
+      "<%= featureConstantName %>#CREATE",
+      "<%= featureConstantName %>#EDIT",
+      "<%= featureConstantName %>#DELETE",
+      "<%= featureConstantName %>#IMPORT",
+      "<%= featureConstantName %>#EXPORT",
+      "<%= featureConstantName %>#VIEW",
+      "<%= featureConstantName %>#SEARCH",
+      "<%= featureConstantName %>#BACK"
+    ])
     const translateService = TestBed.inject(TranslateService);
     translateService.use('en');
 
