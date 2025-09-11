@@ -25,6 +25,7 @@ import { select<%= featureClassName %>DetailsViewModel } from './<%= featureFile
 import { <%= featureClassName %>DetailsActions } from './<%= featureFileName %>-details.actions';
 import { ofType } from '@ngrx/effects';
 import { provideUserServiceMock } from '@onecx/angular-integration-interface/mocks';
+import { TranslatePipe } from '@ngx-translate/core';
 
 describe('<%= featureClassName %>DetailsComponent', () => {
   const origAddEventListener = window.addEventListener;
@@ -184,6 +185,11 @@ describe('<%= featureClassName %>DetailsComponent', () => {
 
   it('should display item details in page header', async () => {
     component.headerLabels$ = of([
+       {
+        label: 'HELLO_DETAILS.FORM.ID',
+        labelPipe: TranslatePipe,
+        value: 'test id',
+      },
       {
         label: 'first',
         value: 'first value',
@@ -205,7 +211,12 @@ describe('<%= featureClassName %>DetailsComponent', () => {
 
     const pageHeader = await <%= featurePropertyName %>Details.getHeader();
     const objectDetails = await pageHeader.getObjectInfos();
-    expect(objectDetails.length).toBe(4);
+    expect(objectDetails.length).toBe(5);
+
+    const testDetailItem = await pageHeader.getObjectInfoByLabel('HELLO_DETAILS.FORM.ID');
+    expect(await testDetailItem?.getLabel()).toEqual('HELLO_DETAILS.FORM.ID');
+    expect(await testDetailItem?.getValue()).toEqual('test id');
+    expect(await testDetailItem?.getIcon()).toBeUndefined();
 
     const firstDetailItem = await pageHeader.getObjectInfoByLabel('first');
     expect(await firstDetailItem?.getLabel()).toEqual('first');
