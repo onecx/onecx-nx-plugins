@@ -158,14 +158,21 @@ describe('<%= featureClassName %>SearchComponent', () => {
         {
           id: '1',
           imagePath: '',
-          column_1: 'val_1',
+          changeMe: 'val_1',
         },
       ],
       columns: [
         {
           columnType: ColumnType.STRING,
-          nameKey: 'COLUMN_KEY',
-          id: 'column_1',
+          id: 'changeMe',
+          nameKey: 'HELLO_SEARCH.RESULTS.HELLO',
+          filterable: true,
+          sortable: true,
+          predefinedGroupKeys: [
+            'HELLO_SEARCH.PREDEFINED_GROUP.DEFAULT',
+            'HELLO_SEARCH.PREDEFINED_GROUP.EXTENDED',
+            'HELLO_SEARCH.PREDEFINED_GROUP.FULL'
+          ],
         },
       ],
     });
@@ -224,7 +231,7 @@ describe('<%= featureClassName %>SearchComponent', () => {
   });
 
   it('should display chosen column in the diagram', async () => {
-    component.diagramColumnId = 'column_1';
+    component.diagramColumnId = 'changeMe';
     store.overrideSelector(select<%= featureClassName %>SearchViewModel, {
       ...base<%= featureClassName %>SearchViewModel,
       chartVisible: true,
@@ -232,24 +239,31 @@ describe('<%= featureClassName %>SearchComponent', () => {
         {
           id: '1',
           imagePath: '',
-          column_1: 'val_1',
+          changeMe: 'val_1',
         },
         {
           id: '2',
           imagePath: '',
-          column_1: 'val_2',
+          changeMe: 'val_2',
         },
         {
           id: '3',
           imagePath: '',
-          column_1: 'val_2',
+          changeMe: 'val_2',
         },
       ],
       columns: [
         {
           columnType: ColumnType.STRING,
-          nameKey: 'COLUMN_KEY',
-          id: 'column_1',
+          id: 'changeMe',
+          nameKey: 'HELLO_SEARCH.RESULTS.HELLO',
+          filterable: true,
+          sortable: true,
+          predefinedGroupKeys: [
+            'HELLO_SEARCH.PREDEFINED_GROUP.DEFAULT',
+            'HELLO_SEARCH.PREDEFINED_GROUP.EXTENDED',
+            'HELLO_SEARCH.PREDEFINED_GROUP.FULL'
+          ],
         },
       ],
     });
@@ -312,8 +326,15 @@ describe('<%= featureClassName %>SearchComponent', () => {
     const columns = [
       {
         columnType: ColumnType.STRING,
-        nameKey: 'COLUMN_KEY',
-        id: 'column_1',
+        id: 'changeMe',
+        nameKey: 'HELLO_SEARCH.RESULTS.HELLO',
+        filterable: true,
+        sortable: true,
+        predefinedGroupKeys: [
+          'HELLO_SEARCH.PREDEFINED_GROUP.DEFAULT',
+          'HELLO_SEARCH.PREDEFINED_GROUP.EXTENDED',
+          'HELLO_SEARCH.PREDEFINED_GROUP.FULL'
+        ],
       },
     ];
     store.overrideSelector(select<%= featureClassName %>SearchViewModel, {
@@ -391,8 +412,15 @@ describe('<%= featureClassName %>SearchComponent', () => {
     const columns = [
       {
         columnType: ColumnType.STRING,
-        nameKey: 'COLUMN_KEY',
-        id: 'column_1',
+        id: 'changeMe',
+        nameKey: 'HELLO_SEARCH.RESULTS.HELLO',
+        filterable: true,
+        sortable: true,
+        predefinedGroupKeys: [
+          'HELLO_SEARCH.PREDEFINED_GROUP.DEFAULT',
+          'HELLO_SEARCH.PREDEFINED_GROUP.EXTENDED',
+          'HELLO_SEARCH.PREDEFINED_GROUP.FULL'
+        ],
       },
     ];
     store.overrideSelector(select<%= featureClassName %>SearchViewModel, {
@@ -415,7 +443,7 @@ describe('<%= featureClassName %>SearchComponent', () => {
   });
 
   it('should not display chart when no results or toggled to not visible', async () => {
-    component.diagramColumnId = 'column_1';
+    component.diagramColumnId = 'changeMe';
 
     store.overrideSelector(select<%= featureClassName %>SearchViewModel, {
       ...base<%= featureClassName %>SearchViewModel,
@@ -423,10 +451,17 @@ describe('<%= featureClassName %>SearchComponent', () => {
       chartVisible: true,
       columns: [
         {
-          columnType: ColumnType.STRING,
-          nameKey: 'COLUMN_KEY',
-          id: 'column_1',
-        },
+        columnType: ColumnType.STRING,
+        id: 'changeMe',
+        nameKey: 'HELLO_SEARCH.RESULTS.HELLO',
+        filterable: true,
+        sortable: true,
+        predefinedGroupKeys: [
+          'HELLO_SEARCH.PREDEFINED_GROUP.DEFAULT',
+          'HELLO_SEARCH.PREDEFINED_GROUP.EXTENDED',
+          'HELLO_SEARCH.PREDEFINED_GROUP.FULL'
+        ],
+      },
       ],
     });
     store.refreshState();
@@ -440,15 +475,22 @@ describe('<%= featureClassName %>SearchComponent', () => {
         {
           id: '1',
           imagePath: '',
-          column_1: 'val_1',
+          changeMe: 'val_1',
         },
       ],
       chartVisible: false,
       columns: [
         {
           columnType: ColumnType.STRING,
-          nameKey: 'COLUMN_KEY',
-          id: 'column_1',
+          id: 'changeMe',
+          nameKey: 'HELLO_SEARCH.RESULTS.HELLO',
+          filterable: true,
+          sortable: true,
+          predefinedGroupKeys: [
+            'HELLO_SEARCH.PREDEFINED_GROUP.DEFAULT',
+            'HELLO_SEARCH.PREDEFINED_GROUP.EXTENDED',
+            'HELLO_SEARCH.PREDEFINED_GROUP.FULL'
+          ],
         },
       ],
     });
@@ -463,16 +505,23 @@ describe('<%= featureClassName %>SearchComponent', () => {
         {
           id: '1',
           imagePath: '',
-          column_1: 'val_1',
+          changeMe: 'val_1',
         },
       ],
       chartVisible: true,
       columns: [
         {
-          columnType: ColumnType.STRING,
-          nameKey: 'COLUMN_KEY',
-          id: 'column_1',
-        },
+        columnType: ColumnType.STRING,
+        id: 'changeMe',
+        nameKey: 'HELLO_SEARCH.RESULTS.HELLO',
+        filterable: true,
+        sortable: true,
+        predefinedGroupKeys: [
+          'HELLO_SEARCH.PREDEFINED_GROUP.DEFAULT',
+          'HELLO_SEARCH.PREDEFINED_GROUP.EXTENDED',
+          'HELLO_SEARCH.PREDEFINED_GROUP.FULL'
+        ],
+      },
       ],
     });
     store.refreshState();
@@ -488,14 +537,21 @@ describe('<%= featureClassName %>SearchComponent', () => {
       {
         id: '1',
         imagePath: '',
-        column_1: 'val_1',
+        changeMe: 'val_1',
       },
     ];
     const columns = [
       {
         columnType: ColumnType.STRING,
-        nameKey: 'COLUMN_KEY',
-        id: 'column_1',
+        id: 'changeMe',
+        nameKey: 'HELLO_SEARCH.RESULTS.HELLO',
+        filterable: true,
+        sortable: true,
+        predefinedGroupKeys: [
+          'HELLO_SEARCH.PREDEFINED_GROUP.DEFAULT',
+          'HELLO_SEARCH.PREDEFINED_GROUP.EXTENDED',
+          'HELLO_SEARCH.PREDEFINED_GROUP.FULL'
+        ],
       },
     ];
     store.overrideSelector(select<%= featureClassName %>SearchViewModel, {
