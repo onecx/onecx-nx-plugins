@@ -1,8 +1,8 @@
 import { Tree, joinPathFragments, names } from '@nx/devkit';
 import { GeneratorStep } from '../../shared/generator.utils';
-import { SearchGeneratorSchema } from '../schema';
 import { COMMENT_KEY, OpenAPIUtil } from '../../shared/openapi/openapi.utils';
 import { createSearchEndpoint } from '../endpoint.util';
+import { SearchGeneratorSchema } from '../schema';
 
 export class GeneralOpenAPIStep implements GeneratorStep<SearchGeneratorSchema> {
   process(tree: Tree, options: SearchGeneratorSchema): void {
@@ -18,10 +18,16 @@ export class GeneralOpenAPIStep implements GeneratorStep<SearchGeneratorSchema> 
     const propertyName = names(options.featureName).propertyName;
     const searchRequestName = options.searchRequestName;
     const searchResponseName = options.searchResponseName;
-    const apiServiceName = options.apiServiceName;
+    const apiServiceName = names(options.apiServiceName).propertyName;
 
     const apiUtil = new OpenAPIUtil(bffOpenApiContent);
     const res = apiUtil
+      .tags()
+      .add({
+        name: apiServiceName,
+        description: `${apiServiceName} related endpoints`,
+      })
+      .done()
       .paths()
       .set(
         `/${propertyName}/search`,
@@ -59,8 +65,7 @@ export class GeneralOpenAPIStep implements GeneratorStep<SearchGeneratorSchema> 
         type: 'object',
         properties: {
           id: {
-            type: 'integer',
-            format: 'int32',
+             type: 'string',
           },
           pageNumber: {
             type: 'integer',

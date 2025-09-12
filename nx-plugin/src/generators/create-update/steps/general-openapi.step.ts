@@ -22,7 +22,7 @@ export class GeneralOpenAPIStep
     const createResponseName = options.createResponseName;
     const updateRequestName = options.updateRequestName;
     const updateResponseName = options.updateResponseName;
-    const apiServiceName = options.apiServiceName;
+    const apiServiceName = names(options.apiServiceName).propertyName;
 
     const apiUtil = new OpenAPIUtil(bffOpenApiContent);
     // Paths
