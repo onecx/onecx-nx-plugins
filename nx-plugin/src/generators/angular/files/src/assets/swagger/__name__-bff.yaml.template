@@ -2,5 +2,8 @@
 openapi: 3.0.3
 info:
   title: <%= fileName %>-bff
-  version: "1.0"
+  description: Backend-For-Frontend (BFF) service for <%= fileName %>. This API provides endpoints to manage <%= fileName %>.
+  version: 1.0.0
+servers:
+  - url: "http://<%= fileName %>-bff:8080"
 paths: {}
