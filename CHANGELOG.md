@@ -1,3 +1,15 @@
+## [1.13.0](https://github.com/onecx/onecx-nx-plugins/compare/v1.12.0...v1.13.0) (2025-09-16)
+
+### Features
+
+* adapt api naming ([#275](https://github.com/onecx/onecx-nx-plugins/issues/275)) ([f77c5fa](https://github.com/onecx/onecx-nx-plugins/commit/f77c5fa235a25c08e4a00e40d8bcbfc57f9b9899))
+* adjust generator for hello world app ([#273](https://github.com/onecx/onecx-nx-plugins/issues/273)) ([15ba450](https://github.com/onecx/onecx-nx-plugins/commit/15ba450b4656237f18e3c0fc17d1452f07f2a857))
+
+### Bug Fixes
+
+* align tests with new onecx version ([#276](https://github.com/onecx/onecx-nx-plugins/issues/276)) ([14bffe9](https://github.com/onecx/onecx-nx-plugins/commit/14bffe988f2f423380b16d243cdb7af3da79ce23))
+* primeng is shared in webpack config ([#274](https://github.com/onecx/onecx-nx-plugins/issues/274)) ([dba90a2](https://github.com/onecx/onecx-nx-plugins/commit/dba90a2f669fe6cc82878e238bd65c200e5fed94))
+
 ## [1.12.0](https://github.com/onecx/onecx-nx-plugins/compare/v1.11.0...v1.12.0) (2025-08-21)
 
 ### Features
