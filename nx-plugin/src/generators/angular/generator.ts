@@ -17,6 +17,7 @@ import { execSync } from 'child_process';
 
 import * as ora from 'ora';
 import processParams, { GeneratorParameter } from '../shared/parameters.utils';
+import { safeReplace } from '../shared/safeReplace';
 
 const PARAMETERS: GeneratorParameter<AngularGeneratorSchema>[] = [
   {
@@ -75,7 +76,7 @@ export async function angularGenerator(
     tree.delete(`${directory}/scripts/load-permissions.sh`);
   }
 
-  const oneCXLibVersion = '^5.19.0';
+  const oneCXLibVersion = '^5.47.0';
   addDependenciesToPackageJson(
     tree,
     {
@@ -113,9 +114,9 @@ export async function angularGenerator(
       '@ngrx/router-store': '^18.0.2',
       '@ngrx/store': '^18.0.2',
       '@ngrx/store-devtools': '^18.0.2',
-      '@nx/angular': '^19.5.7',
-      '@nx/devkit': '19.5.7',
-      '@nx/plugin': '^19.5.7',
+      '@nx/angular': '^19.8.14',
+      '@nx/devkit': '^19.8.14',
+      '@nx/plugin': '^19.8.14',
       '@webcomponents/webcomponentsjs': '^2.8.0',
     },
     {
@@ -197,23 +198,24 @@ function addScriptsToPackageJson(tree: Tree, options: AngularGeneratorSchema) {
 function adaptTsConfig(tree: Tree, options: AngularGeneratorSchema) {
   const fileName = names(options.name).fileName;
   const filePath = 'tsconfig.app.json';
-
-  let fileContent = tree.read(filePath, 'utf8');
-
-  fileContent = fileContent.replace(
-    '"files": [',
+  const find = ['"files": [', '"compilerOptions": {'];
+  const replaceWith = [
     `"files": [
     "src/app/${fileName}-app.remote.module.ts",
     "src/polyfills.ts",
-  `
-  );
-  fileContent = fileContent.replace(
-    '"compilerOptions": {',
+  `,
     `"compilerOptions": {
     "useDefineForClassFields": false,
-  `
+  `,
+  ];
+
+  safeReplace(
+    'Adapt files and compilerOptions Typescript Config',
+    filePath,
+    find,
+    replaceWith,
+    tree
   );
-  tree.write(filePath, fileContent);
 }
 
 function adaptProjectConfiguration(
@@ -272,14 +274,13 @@ function adaptProjectConfiguration(
 
 function adaptJestConfig(tree: Tree) {
   const filePath = 'jest.config.ts';
-
-  let fileContent = tree.read(filePath, 'utf8');
-
-  fileContent = fileContent.replace(
+  safeReplace(
+    'Adapt transformIgnorePatterns in Jest Config',
+    filePath,
     /transformIgnorePatterns: .+?,/,
-    `transformIgnorePatterns: ['node_modules/(?!@ngrx|(?!deck.gl)|d3-scale|(?!.*\\.mjs$))'],`
+    `transformIgnorePatterns: ['node_modules/(?!@ngrx|(?!deck.gl)|d3-scale|(?!.*\\.mjs$))'],`,
+    tree
   );
-  tree.write(filePath, fileContent);
 }
 
 function adaptAngularPrefixConfig(tree: Tree) {

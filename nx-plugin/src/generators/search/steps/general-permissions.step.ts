@@ -44,6 +44,9 @@ export class GeneralPermissionsStep implements GeneratorStep<SearchGeneratorSche
         yaml['app']['operator']['permission']['spec']['permissions'][
           constantName
         ]['SEARCH'] ??= `Search ${propertyName}`;
+        yaml['app']['operator']['permission']['spec']['permissions'][
+          constantName
+        ]['BACK'] ??= `Navigate back in details of ${propertyName}`;
         return yaml;
       });
     }

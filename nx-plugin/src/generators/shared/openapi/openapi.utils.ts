@@ -8,6 +8,11 @@ interface OpenAPIRoute {
   pathMatch: string;
 }
 
+interface OpenAPITag{
+  name: string;
+  description?: string;
+}
+
 /**
  * This utility can be used to adapt OpenAPI YAML Files
  * It provides are builder-like interface to interact and bases
@@ -25,12 +30,23 @@ export class OpenAPIUtil {
   }
 
   /**
+   * Quick access to the tags section of the YAML
+   * @returns interface to add items to the section
+   */
+  tags(): OpenAPIArraySectionUtil<OpenAPITag> {
+    if (!this.yamlContent['tags']) {
+      this.yamlContent['tags'] = [];
+    }
+    return new OpenAPIArraySectionUtil(this, this.yamlContent['tags']);
+  }
+
+  /**
    * Quick access to the routes section of the YAML
    * @returns interface to add items to the section
    */
   routes(): OpenAPIArraySectionUtil<OpenAPIRoute> {
     if (!this.yamlContent['routes']) {
-      this.yamlContent['routes'] = {};
+      this.yamlContent['routes'] = [];
     }
     return new OpenAPIArraySectionUtil(this, this.yamlContent['routes']);
   }

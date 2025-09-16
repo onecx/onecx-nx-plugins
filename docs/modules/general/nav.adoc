@@ -24,3 +24,4 @@
 *** xref:getting_started/details/commit-changes.adoc[Commit the changes]
 * Further generators
 ** xref:further_generators/ngrx-page/ngrx-page.adoc[NGRX-Page Generator]
+** xref:further_generators/pre-commit-validation.adoc[Pre-Commit Validation Generator]

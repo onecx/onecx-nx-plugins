@@ -1,5 +1,6 @@
 import { Tree, joinPathFragments, names } from '@nx/devkit';
 import { GeneratorStep } from '../../shared/generator.utils';
+import { safeReplace } from '../../shared/safeReplace';
 import { CreateUpdateGeneratorSchema } from '../schema';
 
 export class FeatureModuleStep
@@ -13,29 +14,30 @@ export class FeatureModuleStep
       fileName,
       fileName + '.module.ts'
     );
-    let moduleContent = tree.read(moduleFilePath, 'utf8');
-    moduleContent = moduleContent.replace(
-      'declarations: [',
-      `declarations: [${className}CreateUpdateComponent,`
-    );
-
-    if (!moduleContent.includes('providePortalDialogService()')) {
-      moduleContent = moduleContent.replace(
-        'declarations:',
-        `
-    providers: [providePortalDialogService()],
-    declarations:`
-      );
-    }
-    
-    moduleContent = moduleContent.replace(
-      `from '@ngrx/effects';`,
-      `from '@ngrx/effects';  
+    const find = ['declarations: [', `from '@ngrx/effects';`];
+    const replaceWith = [
+      `declarations: [${className}CreateUpdateComponent,`,
+      `from '@ngrx/effects';
      import { ${className}CreateUpdateComponent } from './pages/${fileName}-search/dialogs/${fileName}-create-update/${fileName}-create-update.component';
-     import { providePortalDialogService } from '@onecx/portal-integration-angular';`
+     import { providePortalDialogService } from '@onecx/portal-integration-angular';`,
+      `
+    providers: [providePortalDialogService()],
+    declarations:`,
+    ];
+    const moduleContent = tree.read(moduleFilePath, 'utf8');
+    if (!moduleContent.includes('providePortalDialogService()')) {
+      find.push('declarations:');
+      replaceWith.push(`
+    providers: [providePortalDialogService()],
+    declarations:`);
+    }
+    safeReplace(
+      `Update feature module to include ${className}CreateUpdateComponent in declarations, add providePortalDialogService to providers, and extend import statements to include necessary dependencies`,
+      moduleFilePath,
+      find,
+      replaceWith,
+      tree
     );
-
-    tree.write(moduleFilePath, moduleContent);
   }
   getTitle(): string {
     return 'Adapting Feature Module';

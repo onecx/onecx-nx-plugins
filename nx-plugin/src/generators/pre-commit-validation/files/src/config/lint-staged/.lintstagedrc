@@ -1,0 +1,3 @@
+{
+  "*": ["nx lint --cache=true", "npx prettier -c --cache"]
+}

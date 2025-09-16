@@ -9,7 +9,36 @@
     },
     "GENERAL": {
       "BACK": "Back",
-      "MORE": "More"
+      "MORE": "More",
+      "EDIT": " Edit",
+      "DELETE": "Delete",
+      "CANCEL": "Cancel",
+      "SAVE": "Save"
+    },
+    "FORM": {
+      "ID": "ID"
+    },
+    "CANCEL": {
+      "HEADER": "Confirm cancel",
+      "MESSAGE": "Please confirm that you want to cancel editing and reset changes.",
+      "CONFIRM": "Confirm"
+    },
+    "UPDATE": {
+      "SUCCESS": "Update successful",      
+      "ERROR": "Update failed",
+      "FORM": {
+        "SAVE": "Save",
+        "CANCEL": "Cancel"
+      },
+      "HEADER": "Update <%= featureClassName %>"
+    },
+    "DELETE": {
+      "HEADER": "Delete <%= featureClassName %>",
+      "MESSAGE": "Please confirm that you want to delete this <%= featureClassName %>.",
+      "CONFIRM": "Confirm",
+      "CANCEL": "Cancel",
+      "SUCCESS": "<%= featureClassName %> deleted successfully",
+      "ERROR": "Could not delete <%= featureClassName %>"
     }
   }
 }

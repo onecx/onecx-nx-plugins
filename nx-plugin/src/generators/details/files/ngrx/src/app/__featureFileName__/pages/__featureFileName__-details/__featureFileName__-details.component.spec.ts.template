@@ -13,6 +13,7 @@ import { PrimeIcons } from 'primeng/api';
 import { of } from 'rxjs';
 import {
   BreadcrumbService,
+  HAS_PERMISSION_CHECKER,
   PortalCoreModule,
   UserService,
 } from '@onecx/portal-integration-angular';
@@ -23,6 +24,8 @@ import { <%= featureClassName %>DetailsViewModel } from './<%= featureFileName %
 import { select<%= featureClassName %>DetailsViewModel } from './<%= featureFileName %>-details.selectors';
 import { <%= featureClassName %>DetailsActions } from './<%= featureFileName %>-details.actions';
 import { ofType } from '@ngrx/effects';
+import { provideUserServiceMock } from '@onecx/angular-integration-interface/mocks';
+import { TranslatePipe } from '@ngx-translate/core';
 
 describe('<%= featureClassName %>DetailsComponent', () => {
   const origAddEventListener = window.addEventListener;
@@ -88,11 +91,25 @@ describe('<%= featureClassName %>DetailsComponent', () => {
         }),
         BreadcrumbService,
         { provide: ActivatedRoute, useValue: mockActivatedRoute },
+        provideUserServiceMock(),
+        {
+            provide: HAS_PERMISSION_CHECKER,
+            useExisting: UserService,
+        },
       ],
     }).compileComponents();
 
     const userService = TestBed.inject(UserService);
-    userService.hasPermission = () => true;
+    userService.permissions$.next([
+      "<%= featureConstantName %>#CREATE",
+      "<%= featureConstantName %>#EDIT",
+      "<%= featureConstantName %>#DELETE",
+      "<%= featureConstantName %>#IMPORT",
+      "<%= featureConstantName %>#EXPORT",
+      "<%= featureConstantName %>#VIEW",
+      "<%= featureConstantName %>#SEARCH",
+      "<%= featureConstantName %>#BACK"
+    ])
     const translateService = TestBed.inject(TranslateService);
     translateService.use('en');
 
@@ -168,6 +185,11 @@ describe('<%= featureClassName %>DetailsComponent', () => {
 
   it('should display item details in page header', async () => {
     component.headerLabels$ = of([
+       {
+        label: 'HELLO_DETAILS.FORM.ID',
+        labelPipe: TranslatePipe,
+        value: 'test id',
+      },
       {
         label: 'first',
         value: 'first value',
@@ -189,7 +211,12 @@ describe('<%= featureClassName %>DetailsComponent', () => {
 
     const pageHeader = await <%= featurePropertyName %>Details.getHeader();
     const objectDetails = await pageHeader.getObjectInfos();
-    expect(objectDetails.length).toBe(4);
+    expect(objectDetails.length).toBe(5);
+
+    const testDetailItem = await pageHeader.getObjectInfoByLabel('HELLO_DETAILS.FORM.ID');
+    expect(await testDetailItem?.getLabel()).toEqual('HELLO_DETAILS.FORM.ID');
+    expect(await testDetailItem?.getValue()).toEqual('test id');
+    expect(await testDetailItem?.getIcon()).toBeUndefined();
 
     const firstDetailItem = await pageHeader.getObjectInfoByLabel('first');
     expect(await firstDetailItem?.getLabel()).toEqual('first');

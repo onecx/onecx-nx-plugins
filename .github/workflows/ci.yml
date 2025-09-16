@@ -2,10 +2,14 @@ name: build
 on:
   push:
     branches:
-      - "main"
+      - '*'
+      - '*/*'
+      - '**'
   pull_request:
     branches:
       - main
+      - v5
+      - v*
   schedule:
     - cron: "0 1 * * *"
 jobs:
@@ -26,7 +30,7 @@ jobs:
       - name: Install deps
         run: npm ci
         working-directory: repo
-  
+
       - name: Lint
         run: npx nx run-many -t lint
         working-directory: repo
@@ -42,7 +46,7 @@ jobs:
       - name: E2E Tests
         run: npm run test
         working-directory: repo
-        env: 
+        env:
           WORKING_DIR: ${{github.workspace}}/test-output
 
       - name: Upload logs

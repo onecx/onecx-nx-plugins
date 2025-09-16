@@ -25,12 +25,24 @@ When modifying names, assure that you use the same custom names for all generate
 *Options*:
 
 * --standalone: if you want to develop an application that does not depend on onecx-services.
+* --editMode: if you want to generate an edit mode, see 
+* --allowDelete: if you want to generate a delete button in the page header
 
 ******
+
+=== Edit Mode
+When running the generator you can decide whether to have an editMode generated.
+The editMode consists of a new action in the details page header: "Edit".
+Once clicked the page will go into editMode, enabling a form (default content) and showing two buttons instead of "Edit": "Cancel" and "Save". If the form is dirty, cancel will ask for approval before resetting. Save will submit a request to the generated Update Endpoint with the form values as request content, adapt where necessary. It will handle errors and success (switch editMode accordingly).
+
+=== Allow Delete
+If you decide to allow delete, a new delete action will be added to the details page.
+Once clicked it will ask for confirmation and then beform a delete request on approval.
+If successfull it will redirect to the parent / search page, else show an error and stay.
 
 After running the generator, the following actions must be taken: 
 
 [start=1]
 . xref:getting_started/details/core-data.adoc[Add core data to details page header]
-. xref:getting_started/details/further-actions.adoc[Check for further actions]
+. xref:getting_started/details/extend-form-fields.adoc[Extend form fields (for Edit Mode) ]
 . xref:getting_started/details/commit-changes.adoc[Commit the changes]

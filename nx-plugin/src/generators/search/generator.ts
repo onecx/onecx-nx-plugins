@@ -190,7 +190,6 @@ export async function searchGenerator(
       cwd: tree.root,
       stdio: 'inherit',
     });
-    generatorProcessor.printErrors();
   };
 }
 

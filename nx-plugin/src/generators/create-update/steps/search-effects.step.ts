@@ -1,5 +1,6 @@
 import { Tree, names } from '@nx/devkit';
 import { GeneratorStep } from '../../shared/generator.utils';
+import { safeReplace } from '../../shared/safeReplace';
 import { CreateUpdateGeneratorSchema } from '../schema';
 
 export class SearchEffectsStep
@@ -12,28 +13,16 @@ export class SearchEffectsStep
     const constantName = names(options.featureName).constantName;
     const filePath = `src/app/${fileName}/pages/${fileName}-search/${fileName}-search.effects.ts`;
 
-    let content = tree.read(filePath, 'utf8');
-    content =
+    const find = [/^/, 'searchByUrl$'];
+    const replaceWith = [
       `import { PortalDialogService } from '@onecx/portal-integration-angular';` +
-      `import { mergeMap } from 'rxjs';` +
-      `import {
+        `import { mergeMap } from 'rxjs';` +
+        `import {
         ${options.dataObjectName},
         ${options.createRequestName},
         ${options.updateRequestName},
       } from 'src/app/shared/generated';` +
-      `import { ${className}CreateUpdateComponent } from './dialogs/${options.featureName}-create-update/${options.featureName}-create-update.component';` +
-      content;
-
-    if (!content.includes('private portalDialogService: PortalDialogService')) {
-      content = content.replace(
-        'constructor(',
-        `constructor(
-          private portalDialogService: PortalDialogService,`
-      );
-    }
-
-    content = content.replace(
-      'searchByUrl$',
+        `import { ${className}CreateUpdateComponent } from './dialogs/${options.featureName}-create-update/${options.featureName}-create-update.component';`,
       `
       refreshSearchAfterCreateUpdate$ = createEffect(() => {
         return this.actions$.pipe(
@@ -45,7 +34,7 @@ export class SearchEffectsStep
           switchMap(([, searchCriteria]) => this.performSearch(searchCriteria))
         );
       });
-      
+
       editButtonClicked$ = createEffect(() => {
       return this.actions$.pipe(
         ofType(${className}SearchActions.edit${className}ButtonClicked),
@@ -81,7 +70,7 @@ export class SearchEffectsStep
           }
           const itemToEditId = dialogResult.result.id;
           const itemToEdit = {
-              dataObject: dialogResult.result
+              resource: dialogResult.result
           } as ${options.updateRequestName};
           return this.${propertyName}Service
             .update${options.dataObjectName}(itemToEditId, itemToEdit)
@@ -106,7 +95,7 @@ export class SearchEffectsStep
         })
       );
     });
-  
+
     createButtonClicked$ = createEffect(
       () => {
         return this.actions$.pipe(
@@ -136,7 +125,7 @@ export class SearchEffectsStep
               throw new Error('DialogResult was not set as expected!');
             }
             const toCreateItem = {
-              dataObject: dialogResult.result
+              resource: dialogResult.result
             } as ${options.createRequestName};
             return this.${propertyName}Service
               .create${options.dataObjectName}(toCreateItem)
@@ -162,10 +151,22 @@ export class SearchEffectsStep
         );
       }
     );
-  
-      searchByUrl$`
+
+      searchByUrl$`,
+    ];
+    const content = tree.read(filePath, 'utf8');
+    if (!content.includes('private portalDialogService: PortalDialogService')) {
+      find.push('constructor(');
+      replaceWith.push(`constructor(
+          private portalDialogService: PortalDialogService,`);
+    }
+    safeReplace(
+      `Enhance ${className}SearchEffects by adding create and edit effects, integrating PortalDialogService for dialog management, and updating imports to include necessary modules and services`,
+      filePath,
+      find,
+      replaceWith,
+      tree
     );
-    tree.write(filePath, content);
   }
   getTitle(): string {
     return 'Adapting Search Effects';

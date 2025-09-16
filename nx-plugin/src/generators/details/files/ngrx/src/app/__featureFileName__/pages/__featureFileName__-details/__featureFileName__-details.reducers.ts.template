@@ -6,6 +6,10 @@ export const initialState: <%= featureClassName %>DetailsState = {
   details: undefined,
   detailsLoadingIndicator: true,
   detailsLoaded: false,
+  <%_ if(editMode){ _%> 
+  editMode: false,
+  isSubmitting: false,
+  <%_ } _%> 
 };
 
 export const <%= featurePropertyName %>DetailsReducer = createReducer(
@@ -33,5 +37,37 @@ export const <%= featurePropertyName %>DetailsReducer = createReducer(
     (): <%= featureClassName %>DetailsState => ({
       ...initialState,
     })
-  )
+  )<%_ if(editMode){ _%>,
+  on(
+    <%= featureClassName %>DetailsActions.editButtonClicked,
+    (state: <%= featureClassName %>DetailsState): <%= featureClassName %>DetailsState => ({
+      ...state,
+      editMode: true,
+    })
+  ),
+  on(
+    <%= featureClassName %>DetailsActions.saveButtonClicked,
+    (state: <%= featureClassName %>DetailsState): <%= featureClassName %>DetailsState => ({
+      ...state,
+      isSubmitting: true
+    })
+  ),
+  on(
+    <%= featureClassName %>DetailsActions.cancelEditConfirmClicked,
+    <%= featureClassName %>DetailsActions.cancelEditNotDirty,
+    <%= featureClassName %>DetailsActions.update<%= featureClassName %>Cancelled,
+    <%= featureClassName %>DetailsActions.update<%= featureClassName %>Succeeded,
+    (state: <%= featureClassName %>DetailsState): <%= featureClassName %>DetailsState => ({
+      ...state,
+      editMode: false,
+    })
+  ),
+  on(
+    <%= featureClassName %>DetailsActions.update<%= featureClassName %>Failed,
+    (state: <%= featureClassName %>DetailsState): <%= featureClassName %>DetailsState => ({
+      ...state,
+      isSubmitting: false
+    })
+  ),
+  <%_ } _%> 
 );

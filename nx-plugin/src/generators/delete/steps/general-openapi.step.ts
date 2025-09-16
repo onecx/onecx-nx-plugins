@@ -17,7 +17,7 @@ export class GeneralOpenAPIStep
 
     const dataObjectName = options.dataObjectName;
     const propertyName = names(options.featureName).propertyName;
-    const apiServiceName = options.apiServiceName;
+    const apiServiceName = names(options.apiServiceName).propertyName;
 
     const apiUtil = new OpenAPIUtil(bffOpenApiContent);
 
