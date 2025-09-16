@@ -37,3 +37,11 @@ After running the generator, the following actions must be taken:
 . xref:getting_started/search/update-permissions.adoc[Update permissions]
 . xref:getting_started/search/further-actions.adoc[Check for further actions]
 . xref:getting_started/search/commit-changes.adoc[Commit the changes]
+
+*Extension Search Page*
+******
+We use the marker: 
+----
+<<SPEC-EXTENSIONS-MARKER-!!!-DO-NOT-REMOVE-!!!>>
+----
+This is a marker used as a placeholder where extensions from newly generated components are inserted. Do not remove the marker from the code, as doing so will prevent the generated functions and tests from being added to the Search Page.
