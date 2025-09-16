@@ -38,10 +38,10 @@ After running the generator, the following actions must be taken:
 . xref:getting_started/search/further-actions.adoc[Check for further actions]
 . xref:getting_started/search/commit-changes.adoc[Commit the changes]
 
-*Extension Search Page*
+*Extension Marker in Search Page Spec File*
 ******
 We use the marker: 
 ----
 <<SPEC-EXTENSIONS-MARKER-!!!-DO-NOT-REMOVE-!!!>>
 ----
-This is a marker used as a placeholder where extensions from newly generated components are inserted. Do not remove the marker from the code, as doing so will prevent the generated functions and tests from being added to the Search Page.
+This marker is used as a placeholder for future extensions by newly generated components. Do not remove the marker from the code, as doing so will prevent these future generated functions and tests from being added to the Search Page Spec File.
