@@ -15,7 +15,7 @@ In order to implement a dialog for creating/updating an entity, first you should
 
 [#action-1]
 === ACTION C1: OpenAPI specification of the objects in BFF endpoint
-Each input parameter needs to be added to creat/update requests in xref:getting_started/explanations.adoc#feature[`+<feature>-bff.yaml+`] file as described in the section {adding_create_update_dialog_cookbook_url}[ "OpenAPI specification of the objects in BFF endpoint" of the cookbook].
+Each input parameter needs to be added to the create/update requests in xref:getting_started/explanations.adoc#feature[`+<feature>-bff.yaml+`] file as described in the section {adding_create_update_dialog_cookbook_url}[ "OpenAPI specification of the objects in BFF endpoint" of the cookbook].
 
 Run the command *npm run apigen* after adapting the OpenAPI to transform the changes into typescript code.
 
