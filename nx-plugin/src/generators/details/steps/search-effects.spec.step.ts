@@ -25,16 +25,25 @@ export class SearchEffectsSpecStep implements GeneratorStep<SearchGeneratorSchem
           actions$.next(${className}SearchActions.detailsButtonClicked({ id: testId }));
         });
 
-        it('should clear query params and fragment from URL', (done) => {
+        it('should dynamically clear query params and fragment from URL on detailsButtonClicked$', (done) => {
           const testId = 'test-456';
-          const mockUrlTree: any = { toString: jest.fn(() => '/search'), queryParams: { a: 1 }, fragment: 'frag' };
+          const mockUrlTree: any = { 
+            toString: jest.fn(() => '/search'), 
+            queryParams: { a: 1 }, 
+            fragment: 'frag' 
+          };
           (router.parseUrl as jest.Mock).mockReturnValue(mockUrlTree);
 
+          const emissions: Array<{ queryParams: any, fragment: any }> = [];
+          emissions.push({ queryParams: { ...mockUrlTree.queryParams }, fragment: mockUrlTree.fragment });
+
           effects.detailsButtonClicked$.pipe(take(1)).subscribe(() => {
-            if (router) {
-              expect(mockUrlTree.queryParams).toEqual({});
-              expect(mockUrlTree.fragment).toBeNull();
-            } 
+            emissions.push({ queryParams: { ...mockUrlTree.queryParams }, fragment: mockUrlTree.fragment });
+
+            expect(emissions).toEqual([
+              { queryParams: { a: 1 }, fragment: 'frag' },
+              { queryParams: {}, fragment: null }
+            ]);
             done();
           });
 
