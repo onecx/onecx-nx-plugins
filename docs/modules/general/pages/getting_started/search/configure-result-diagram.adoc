@@ -1,16 +1,16 @@
-=== Configure the result diagram
+== Configure the result diagram
 
 :idprefix:
 :idseparator: -
 
-:result_diagram_cookbook_url: xref:latest@guides:angular:cookbook/components/result-diagram.adoc
+:group_by_count_diagram: xref:latest@guides:angular:cookbook/components/group-by-count-diagram/index.adoc
 
-By default, a diagram is created which counts the different values in a column and shows the results. To use this diagram, the column which should be displayed needs to be selected first. The member 'columnId' holds the column id of the column.
+By default, a diagram is created which counts the different values in a column and shows the results. To use this diagram, the column which should be displayed needs to be selected first. The member 'columnId' holds the column id of the column to display.
 
 [#action-9]
-==== ACTION S9: Select the column to be displayed
+=== ACTION S9: Select the column to be displayed
 
-*Adapt as required where the `+columnId+` is the key for the diagram which shows the distribution of data of the selected column.
+The `+columnId+` is the key of the column to use for the result diagram. You can select any column you defined in the search results.
 
 _Adapt in File:_ `+<feature>-search.component.ts+`
 
@@ -21,28 +21,6 @@ _Adapt in File:_ `+<feature>-search.component.ts+`
     column = this.columns.find((e) => e.id === this.columnId); 
 ----
 
-*Adjust the position of the result diagram
-
-If you want to change the position of the result diagram, you can change the layout of the ocx-content-container.
-
-_Adapt in File:_ `+<feature>-search.component.html+`
-
-.vertical layout
-[source, html]
-----
-    <ocx-content-container layout="vertical">
-        ...
-    </ocx-content-container>
-----
-
-.horizontal layout
-[source, html]
-----
-    <ocx-content-container layout="horizontal">
-        ...
-    </ocx-content-container>
-----
-
-Please refer to the {result_diagram_cookbook_url}[result diagram cookbook] for more adaptations.
+Please refer to the {group_by_count_diagram}[GroupByCountDiagram Component] for more adaptations.
 
 include::partial$remove-action.adoc[]
