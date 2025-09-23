@@ -7,54 +7,35 @@ export class SearchTestsStep implements GeneratorStep<SearchGeneratorSchema> {
   process(tree: Tree, options: SearchGeneratorSchema): void {
     const fileName = names(options.featureName).fileName;
     const className = names(options.featureName).className;
-    const propertyName = names(options.featureName).propertyName;
     const filePath = `src/app/${fileName}/pages/${fileName}-search/${fileName}-search.component.spec.ts`;
 
-    safeReplace(
-      `Add details button test to ${className}SearchComponent`,
-      filePath,
-      "it('should export csv data on export action click'",
-      `
-    it('should dispatch detailsButtonClicked action on item details click', async () => {
-      jest.spyOn(store, 'dispatch');
+    const content = tree.exists(filePath) ? tree.read(filePath, 'utf8')! : '';
+    if (!content.includes(`import { RowListGridData } from '@onecx/portal-integration-angular'`)) {
+      safeReplace(
+        `Add RowListGridData import to ${className}SearchComponent spec`,
+        filePath,
+        [/^/],
+        [`import { RowListGridData } from '@onecx/portal-integration-angular';\n`],
+        tree
+      );
+    }
 
-      store.overrideSelector(select${className}SearchViewModel, {
-        ...base${className}SearchViewModel,
-        results: [
-          {
-            id: '1',
-            imagePath: '',
-            column_1: 'val_1',
-          },
-        ],
-        columns: [
-          {
-            columnType: ColumnType.STRING,
-            nameKey: 'COLUMN_KEY',
-            id: 'column_1',
-          },
-        ],
+    const snippet = `
+      it('should dispatch detailsButtonClicked action on details', () => {
+        jest.spyOn(store, 'dispatch');
+        const row: RowListGridData = { id: 'test-id', imagePath: '' } as any;
+        component.details(row);
+        expect(store.dispatch).toHaveBeenCalledWith(
+          ${className}SearchActions.detailsButtonClicked({ id: 'test-id' })
+        );
       });
-      store.refreshState();
+    `;
 
-      const interactiveDataView =
-        await ${propertyName}Search.getSearchResults();
-      const dataView = await interactiveDataView.getDataView();
-      const dataTable = await dataView.getDataTable();
-      const rowActionButtons = await dataTable?.getActionButtons();
-
-      expect(rowActionButtons?.length).toEqual(1);
-      expect(await rowActionButtons?.at(0)?.getAttribute('ng-reflect-icon')).toEqual(
-        'pi pi-eye'
-      );
-      await rowActionButtons?.at(0)?.click();
-
-      expect(store.dispatch).toHaveBeenCalledWith(
-        ${className}SearchActions.detailsButtonClicked({ id: '1' })
-      );
-    });
-
-    it('should export csv data on export action click'`,
+    safeReplace(
+      `Add details effect tests to search effects spec file. Look for the marker comment '// <<SPEC-EXTENSIONS-MARKER-!!!-DO-NOT-REMOVE-!!!>>' in ${filePath} and insert the test code above it.`,
+      filePath,
+      [ '// <<SPEC-EXTENSIONS-MARKER-!!!-DO-NOT-REMOVE-!!!>>' ],
+      [ snippet + '  // <<SPEC-EXTENSIONS-MARKER-!!!-DO-NOT-REMOVE-!!!>>' ],
       tree
     );
   }

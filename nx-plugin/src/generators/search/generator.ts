@@ -28,6 +28,7 @@ import { GeneralOpenAPIStep } from './steps/general-openapi.step';
 import { GeneralPermissionsStep } from './steps/general-permissions.step';
 import { GeneralTranslationsStep } from './steps/general-translations.step';
 import { ValidateFeatureModuleStep } from '../shared/steps/validate-feature-module.step';
+import { toPascalCase } from '../shared/naming.utils';
 
 const PARAMETERS: GeneratorParameter<SearchGeneratorSchema>[] = [
   {
@@ -104,6 +105,15 @@ export async function searchGenerator(
   const spinner = ora(`Adding search to ${options.featureName}`).start();
   const directory = '.';
 
+  const featureNames = names(options.featureName);
+  const rawDataObjectName = (options.dataObjectName || featureNames.className).trim();
+
+  const apiModelPascal = toPascalCase(rawDataObjectName);
+  const apiModelPlural = apiModelPascal.endsWith('s')
+    ? apiModelPascal
+    : apiModelPascal + 's';
+
+
   const isNgRx = !!Object.keys(
     readJson(tree, 'package.json').dependencies
   ).find((k) => k.includes('@ngrx/'));
@@ -140,6 +150,8 @@ export async function searchGenerator(
       searchRequestName: options.searchRequestName,
       searchResponseName: options.searchResponseName,
       standalone: options.standalone,
+      apiModelPascal,
+      apiModelPlural
     }
   );
 

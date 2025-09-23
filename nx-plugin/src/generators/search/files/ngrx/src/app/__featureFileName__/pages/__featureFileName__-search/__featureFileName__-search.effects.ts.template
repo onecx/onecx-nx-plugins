@@ -2,7 +2,7 @@ import { ActivatedRoute, Router, RoutesRecognized } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { concatLatestFrom } from '@ngrx/operators'
 import { routerNavigatedAction } from '@ngrx/router-store';
-import { catchError, map, mergeMap, of, switchMap, tap, filter, mergeMap } from 'rxjs';
+import { catchError, map, of, switchMap, tap, filter, mergeMap } from 'rxjs';
 import {  
   <%= serviceName %>, 
 } from '../../../shared/generated';
@@ -29,7 +29,7 @@ import equal from 'fast-deep-equal';
 export class <%= featureClassName %>SearchEffects {
   constructor(
     private actions$: Actions,
-    @SkipSelf() private route: ActivatedRoute,
+    private route: ActivatedRoute,
     private <%= featurePropertyName %>Service: <%= serviceName %>,    
     private router: Router,
     private store: Store,
