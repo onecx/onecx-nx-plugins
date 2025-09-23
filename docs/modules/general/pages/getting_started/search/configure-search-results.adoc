@@ -3,8 +3,8 @@
 :idprefix:
 :idseparator: -
 
-:data_table_column_properties_cookbook_url: xref:latest@guides:angular/cookbook/components/interactive-data-view/data-table-column.adoc
-:translation_cookbook_url: xref:latest@guides:angular/cookbook/multi-language/multi-language.adoc
+:data_table_column_properties_cookbook_url: xref:latest@guides:angular:cookbook/components/interactive-data-view/data-table-column.adoc
+:translation_cookbook_url: xref:latest@guides:angular:cookbook/multi-language/multi-language.adoc
 
 :api_scheme_url: xref:latest@guides:general/api_guidelines.adoc
 
