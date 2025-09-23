@@ -1,0 +1,19 @@
+== Explanations
+
+:idprefix:
+:idseparator: -
+
+In this page you can find explanations for relevant terms. 
+
+[#feature]
+=== Feature
+
+should be replaced by the name of your entity, for which you are generating the search or details page, create/update dialog or any other functionality. 
+
+Examples for `+<feature>+`:
+
+* property
+* user
+* house
+
+When it is defined as `+<Feature>+`, please start the name of your entity with a capital letter, in other cases defined as `+<feature>+` use lowercase.
