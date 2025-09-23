@@ -1,3 +1,9 @@
+## [1.13.1](https://github.com/onecx/onecx-nx-plugins/compare/v1.13.0...v1.13.1) (2025-09-23)
+
+### Bug Fixes
+
+* form handling of booleans/integers ([#279](https://github.com/onecx/onecx-nx-plugins/issues/279)) ([7f79825](https://github.com/onecx/onecx-nx-plugins/commit/7f79825f0ccdb387d66d914b51033353d3aee038))
+
 ## [1.13.0](https://github.com/onecx/onecx-nx-plugins/compare/v1.12.0...v1.13.0) (2025-09-16)
 
 ### Features
