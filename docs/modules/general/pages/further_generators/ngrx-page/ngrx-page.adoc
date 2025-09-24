@@ -17,10 +17,6 @@ nx generate <namespaceOfTheGenerator>/nx-plugin:ngrx-page <nameOfTheFeature> [--
 TIP: Next, the CLI will ask you for the name of your page. Use a name without spaces and the "Component"-suffix, as this suffix will be added automatically.
 So if you want to create a BookDetailsComponent, only put in "BookDetails".
 
-*Options*:
-
-* --standalone: if you want to develop an application that does not depend on onecx-services
-
 ******
 
 After running the generator, you can modify all files to your needs.

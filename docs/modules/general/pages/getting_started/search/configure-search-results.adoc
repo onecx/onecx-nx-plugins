@@ -93,7 +93,7 @@ include::partial$remove-action.adoc[]
 [#action-7]
 === ACTION S7: Mapping from Feature to Row Item
 
-Here you can create a mapping of your xref:getting_started/explanations.adoc#resource[`Resource`] to the row item used in the data table. This is also the place to add translation keys for columns with the type `TRANSLATION_KEY`.
+Here you can create a mapping of your xref:getting_started/glossary.adoc#resource[`Resource`] to the row item used in the data table. This is also the place to add translation keys for columns with the type `TRANSLATION_KEY`.
 
 _Adapt in File:_ <feature>-search.selectors.ts
 

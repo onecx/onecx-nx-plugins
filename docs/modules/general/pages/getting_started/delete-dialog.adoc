@@ -16,16 +16,12 @@ nx generate <namespaceOfTheGenerator>/nx-plugin:delete <feature> [--standalone]
 
 include::partial$generator-namespace-item.adoc[]
 
-* _<feature>_: see xref:getting_started/explanations.adoc#feature[here].
+* _<feature>_: see xref:getting_started/glossary.adoc#feature[here].
 
 TIP: Next, the CLI will ask you whether you want to customize names for the generation.
 When answering yes, the next few questions will ask you about names for the API.
 This can be useful if you want to adapt to a legacy API. 
 When modifying names, assure that you use the same custom names for all generated components of the feature (search, details, create-update, delete) for the data object name, and the api service name as these ones are shared.
-
-*Options*:
-
-* --standalone: if you want to develop an application that does not depend on onecx-services.
 
 ******
 

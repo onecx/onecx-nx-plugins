@@ -16,10 +16,6 @@ include::partial$generator-namespace-item.adoc[]
 
 * _<nameOfTheFeature>_: The name of the feature to create e.g., theme.
 
-*Options*:
-
-* --standalone: if you want to develop an application that does not depend on onecx-services.
-
 ******
 
 After running the generator, the following actions must be taken: 
