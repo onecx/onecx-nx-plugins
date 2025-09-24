@@ -1,4 +1,4 @@
-=== Extend form fields
+== Customize form fields
 
 :portal_dialog_service_url: xref:latest@guides:angular:cookbook/service/portal-dialog-service/index.adoc
 :idprefix:
@@ -7,36 +7,30 @@
 The form fields of the dialog need to be adapted
 
 [#action-1]
-==== ACTION C1: Extend schemas inside OpenAPI
+=== ACTION C1: Extend schemas inside OpenAPI
 _Adapt in File:_  `+<feature>-bff.yaml+`
 
-The generator creates 4 new component objects in the OpenAPI specification for Create/Update Requests and Responses.
+The generator creates **4 new components** in the OpenAPI specification for Create/Update Request & Response.
 
 [NOTE]
 ====
-The Request objects are referencing the data object to be Created/Updated. Please, adjust the data object if not prepared already. Data object properties will be used for extending the form.
+The Request objects are referencing the xref:getting_started/explanations.adoc#resource[`Resource`], its properties are used by the form.
+You can modify it, but check xref:getting_started/explanations.adoc#resource[`here`] for side effects.
 
-*Be cautious while making changes to the data object*, it is used for the other features like search and details pages.
-
-If extending the data object is not an option, instead please consider modifying the Create/Update Request component objects to use flat field list instead of the data object and adjust them based on the needs. Such modification also requires changes to the preparation of the request.
-
-Changes to Response component objects require a modification in response handling. By default response properties are not used by the generated code.
+Changes to the response object itself require modification in the response handling. By default other response properties (apart from resource) are ignored.
 ==== 
 
-[IMPORTANT]
-====
-Run the command *npm run apigen* after adapting the OpenAPI to transform the changes into typescript code.
-====
+include::partial$apigen-action.adoc[]
 
 include::partial$remove-action.adoc[]
 
 [#action-2]
-==== ACTION C2: Add form fields to html component
+=== ACTION C2: Add form fields to html component
 _Adapt in File:_  `+<feature>-create-update.component.html+`
 
-Add new form fields similar to the generated example. Please, ensure that form control names match the data object properties.
+Add new form fields similar to the generated example. Please, ensure that form control names match the xref:getting_started/explanations.adoc#resource[`Resource`] properties.
 
-.Example data object
+.Example resource
 [source,yaml]
 ----
 Example:
@@ -49,24 +43,24 @@ properties:
         format: int32
     id:
         type: string
-    property:
+    name:
         type: string
 ----
 
 .Example form field
 [source,html]
 ----
-<div [title]="'EXAMPLE_CREATE_UPDATE.FORM.PROPERTY' | translate">
+<div [title]="'EXAMPLE_CREATE_UPDATE.FORM.NAME' | translate">
     <span class="p-float-label" controlErrorAnchor>
     <input
         pInputText
         type="text"
-        id="example_detail_form_property"
+        id="example_detail_form_name"
         class="w-full pt-3 pb-2"
-        formControlName="property"
+        formControlName="name"
     />
-    <label class="ocx-required-label" for="example_detail_form_property">
-        {{ 'EXAMPLE_CREATE_UPDATE.FORM.PROPERTY' | translate }}</label
+    <label class="ocx-required-label" for="example_detail_form_name">
+        {{ 'EXAMPLE_CREATE_UPDATE.FORM.NAME' | translate }}</label
     >
     </span>
 </div>
@@ -75,14 +69,14 @@ properties:
 include::partial$remove-action.adoc[]
 
 [#action-3]
-==== ACTION C3: Add form fields to ts component
+=== ACTION C3: Add form fields to ts component
 _Adapt in File:_  `+<feature>-create-update.component.ts+`
 
-Add the corresponding form controls into the formGroup. Please, ensure that form control names match the data object properties.
+Add new form controls to the formGroup. Please, ensure that form control names match the properties of your xref:getting_started/explanations.adoc#resource[`Resource`].
 
 Use appropriate validators if required.
 
-.Example data object
+.Example resource
 [source,yaml]
 ----
 Example:
@@ -95,7 +89,7 @@ properties:
         format: int32
     id:
         type: string
-    property:
+    name:
         type: string
 ----
 
@@ -103,7 +97,7 @@ properties:
 [source,js]
 ----
 this.formGroup = new FormGroup({
-    property: new FormControl(null, [Validators.maxLength(255)]),
+    name: new FormControl(null, [Validators.maxLength(255)]),
     ...
 });
 ----

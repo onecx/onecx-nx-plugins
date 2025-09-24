@@ -17,3 +17,8 @@ Examples for `+<feature>+`:
 * house
 
 When it is defined as `+<Feature>+`, please start the name of your entity with a capital letter, in other cases defined as `+<feature>+` use lowercase.
+
+[#resource]
+=== Resource / Data Object
+
+The resource / data object is a schema definition in the OpenAPI specification. It defines the properties of your entity and is named equal to xref:getting_started/explanations.adoc#feature[`<Feature>`]. The resource is used in various places, e.g. for search results, details view, create and update requests. As it is shared, be cautious while making changes to it. If the resource differs for different use cases, you can define multiple resources in the OpenAPI specification and adjust the endpoints accordingly.

@@ -18,7 +18,7 @@ To understand the applied API Concept read the {api_scheme_url}[API Guidelines] 
 
 Note that:
 
-* If you have chosen a custom DataObjectName in the generation, the schema entry will be named accordingly
+* If you have chosen a custom resource name in the generation, the schema entry will be named accordingly
 * All data displayed in the results must be in that data structure
 * Stick to necessary properties only to keep the payload small
 
@@ -45,7 +45,7 @@ _Adapt in File:_ `+<feature>-bff.yaml+`
 ----
 Where `+houseType+` is an additional property added to the schema of the entity `+<Feature>+`.
 
-IMPORTANT: After updating the OpenAPI specification, execute the command *npm run apigen* to generate the corresponding TypeScript code.
+include::partial$apigen-action.adoc[]
 
 include::partial$remove-action.adoc[]
 
@@ -93,7 +93,7 @@ include::partial$remove-action.adoc[]
 [#action-7]
 === ACTION S7: Mapping from Feature to Row Item
 
-Here you can create a mapping of your xref:getting_started/explanations.adoc#feature[feature] to the row item used in the data table. This is also the place to add translation keys for columns with the type `TRANSLATION_KEY`.
+Here you can create a mapping of your xref:getting_started/explanations.adoc#resource[`Resource`] to the row item used in the data table. This is also the place to add translation keys for columns with the type `TRANSLATION_KEY`.
 
 _Adapt in File:_ <feature>-search.selectors.ts
 

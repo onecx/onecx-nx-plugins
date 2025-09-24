@@ -47,7 +47,7 @@ Search<Feature>Request:
 
 Please refer to the {adding_search_criteria_general_cookbook_url}[adding search criteria general cookbook] for more information.
 
-IMPORTANT: After updating the OpenAPI specification, execute the command *npm run apigen* to generate the corresponding TypeScript code.
+include::partial$apigen-action.adoc[]
 
 include::partial$remove-action.adoc[]
 
