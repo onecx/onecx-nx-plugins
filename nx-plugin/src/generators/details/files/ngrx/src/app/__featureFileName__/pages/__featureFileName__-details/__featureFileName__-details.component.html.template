@@ -3,11 +3,14 @@
   [helpArticleId]="'<%= featureConstantName %>_DETAILS.HELP_ARTICLE_ID' | translate" 
   *ngrxLet="viewModel$; let vm"
 >
-  <ocx-loading-indicator *ngIf="vm.detailsLoadingIndicator">
-  </ocx-loading-indicator>
-  <ocx-data-loading-error *ngIf="!vm.detailsLoaded && !vm.detailsLoadingIndicator">
-  </ocx-data-loading-error>
-  <div *ngIf="vm.detailsLoaded && !vm.detailsLoadingIndicator">
+  @if (vm.detailsLoadingIndicator) {
+    <ocx-loading-indicator> </ocx-loading-indicator>
+  }
+  @if (!vm.detailsLoaded && !vm.detailsLoadingIndicator) {
+    <ocx-error> </ocx-error>
+  }
+  @if (vm.detailsLoaded && !vm.detailsLoadingIndicator) {
+  <div>  
   <ocx-page-header
     [header]="'<%= featureConstantName %>_DETAILS.HEADER' | translate"
     [subheader]="'<%= featureConstantName %>_DETAILS.SUB_HEADER' | translate"
@@ -40,4 +43,5 @@
     </ocx-page-content>
    <%_ } _%> 
   </div>
+  }
 </ocx-portal-page>

@@ -1,4 +1,9 @@
-import { DataTableColumn, DiagramComponentState, InteractiveDataViewComponentState, SearchHeaderComponentState } from '@onecx/portal-integration-angular';
+import {
+  DataTableColumn,
+  InteractiveDataViewComponentState,
+  SearchHeaderComponentState,
+  DiagramComponentState,
+} from '@onecx/angular-accelerator';
 import { <%= dataObjectName %> } from 'src/app/shared/generated';
 import { <%= featureClassName %>SearchCriteria } from './<%= featureFileName %>-search.parameters';
 

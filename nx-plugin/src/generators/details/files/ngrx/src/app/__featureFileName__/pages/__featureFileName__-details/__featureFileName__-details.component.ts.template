@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable, map } from 'rxjs'
 import { TranslatePipe } from '@ngx-translate/core';
@@ -6,8 +6,7 @@ import {
   Action,
   BreadcrumbService,
   ObjectDetailItem,
-} from '@onecx/portal-integration-angular';
-
+} from '@onecx/angular-accelerator';
 import { select<%= featureClassName %>DetailsViewModel } from './<%= featureFileName %>-details.selectors';
 import { <%= featureClassName %>DetailsActions } from './<%= featureFileName %>-details.actions';
 import {
@@ -20,8 +19,12 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
   selector: 'app-<%= featureFileName %>-details',
   templateUrl: './<%= featureFileName %>-details.component.html',
   styleUrls: ['./<%= featureFileName %>-details.component.scss'],
+  standalone: false,
 })
 export class <%= featureClassName %>DetailsComponent implements OnInit {
+  private store = inject(Store);
+  private breadcrumbService = inject(BreadcrumbService);
+
   viewModel$: Observable<<%= featureClassName %>DetailsViewModel> = this.store.select(select<%= featureClassName %>DetailsViewModel);
   
   headerLabels$: Observable<ObjectDetailItem[]> = this.viewModel$.pipe(
@@ -123,8 +126,6 @@ export class <%= featureClassName %>DetailsComponent implements OnInit {
   <%_ } _%>
 
   constructor(
-    private store: Store,
-    private breadcrumbService: BreadcrumbService
   ) {
     <%_ if(editMode){ _%>
      this.formGroup = new FormGroup({

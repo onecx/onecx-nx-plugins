@@ -15,7 +15,7 @@ export class SearchEffectsStep
 
     const find = [/^/, 'searchByUrl$'];
     const replaceWith = [
-      `import { PortalDialogService } from '@onecx/portal-integration-angular';` +
+      `import { PortalDialogService } from '@onecx/angular-accelerator';` +
         `import { mergeMap } from 'rxjs';` +
         `import {
         ${options.dataObjectName},

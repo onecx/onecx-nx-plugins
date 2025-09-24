@@ -1,6 +1,17 @@
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import {
+  HttpClient,
+  provideHttpClient,
+  withInterceptorsFromDi,
+} from '@angular/common/http';
 import { BrowserModule } from '@angular/platform-browser'
-import { isDevMode, NgModule } from '@angular/core';
+import {
+  DoBootstrap,
+  Injector,
+  isDevMode,
+  NgModule,
+  inject,
+  provideAppInitializer,
+} from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreRouterConnectingModule } from '@ngrx/router-store';
@@ -11,12 +22,9 @@ import {
   TranslateModule
 } from '@ngx-translate/core';
 import {
-  addInitializeModuleGuard,
   AppStateService,
   ConfigurationService,
-  createTranslateLoader,
-  PortalCoreModule
-} from '@onecx/portal-integration-angular';
+} from '@onecx/angular-integration-interface';
 import { routes } from './app-routing.module';
 import { commonImports } from './app.module';
 import { metaReducers, reducers } from './app.reducers';
@@ -24,10 +32,8 @@ import { Configuration } from './shared/generated';
 import { SharedModule } from './shared/shared.module';
 import { EffectSources, EffectsRunner, Actions  } from '@ngrx/effects';
 import { apiConfigProvider } from './shared/utils/apiConfigProvider.utils';
-import { DoBootstrap, Injector } from '@angular/core';
 import { createCustomElement } from '@angular/elements';
 import { Router } from '@angular/router';
-import { APP_INITIALIZER } from '@angular/core';
 import { initializeRouter, createAppEntrypoint } from '@onecx/angular-webcomponents';
 import { AppStateService } from '@onecx/angular-integration-interface';
 import { AppEntrypointComponent } from './app-entrypoint.component';
@@ -36,6 +42,12 @@ import { AngularAuthModule } from '@onecx/angular-auth';
 import {  
   provideNavigatedEventStoreConnector,
 } from '@onecx/ngrx-accelerator';
+import { AngularAcceleratorModule } from '@onecx/angular-accelerator';
+import {
+  createTranslateLoader,
+  provideTranslationPathFromMeta,
+  provideThemeConfig
+} from '@onecx/angular-utils';
 
 // Workaround for the following issue:
 // https://github.com/ngrx/platform/issues/3700
@@ -52,8 +64,8 @@ effectProvidersForWorkaround.forEach(p => p.ɵprov.providedIn = null);
   ],
   imports: [
     ...commonImports,
-    PortalCoreModule.forMicroFrontend(),
-    RouterModule.forRoot(addInitializeModuleGuard(routes)),
+    AngularAcceleratorModule,
+    RouterModule.forRoot(routes),
     TranslateModule.forRoot({
       extend: true,
       isolate: false,
@@ -65,7 +77,6 @@ effectProvidersForWorkaround.forEach(p => p.ɵprov.providedIn = null);
     }),
     SharedModule,    
     BrowserModule,
-    HttpClientModule,
     BrowserAnimationsModule,
     AngularAuthModule,
     StoreModule.forRoot(reducers, { metaReducers }),
@@ -86,17 +97,21 @@ effectProvidersForWorkaround.forEach(p => p.ɵprov.providedIn = null);
       useFactory: apiConfigProvider,
       deps: [ConfigurationService, AppStateService],
     },
-    {
-      provide: APP_INITIALIZER,
-      useFactory: initializeRouter,
-      multi: true,
-      deps: [Router, AppStateService]
-    },
+    provideHttpClient(withInterceptorsFromDi()),
+    provideTranslationPathFromMeta(import.meta.url, 'assets/i18n/'),
+    provideAppInitializer(() => {
+      const initializerFn = initializeRouter(
+        inject(Router),
+        inject(AppStateService),
+      );
+      return initializerFn();
+    }),
     provideNavigatedEventStoreConnector(),
+    provideThemeConfig(),
   ],
 })
 export class <%= remoteModuleName %>Module implements DoBootstrap {
-  constructor(private injector: Injector) {}
+  private injector = inject(Injector);
 
   ngDoBootstrap(): void {
     createAppEntrypoint(AppEntrypointComponent, '<%= remoteModuleFileName %>-webcomponent', this.injector);

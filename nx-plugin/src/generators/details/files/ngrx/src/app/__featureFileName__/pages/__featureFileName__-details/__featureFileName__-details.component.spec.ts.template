@@ -11,11 +11,8 @@ import { TranslateService } from '@ngx-translate/core';
 import { TranslateTestingModule } from 'ngx-translate-testing'
 import { PrimeIcons } from 'primeng/api';
 import { of } from 'rxjs';
-import {
-  BreadcrumbService,
-  PortalCoreModule,
-  UserService,
-} from '@onecx/portal-integration-angular';
+import { UserService } from '@onecx/angular-integration-interface';
+import { AngularAcceleratorModule, BreadcrumbService } from '@onecx/angular-accelerator';
 import { <%= featureClassName %>DetailsComponent } from './<%= featureFileName %>-details.component';
 import { initialState } from './<%= featureFileName %>-details.reducers';
 import { <%= featureClassName %>DetailsHarness } from './<%= featureFileName %>-details.harness';
@@ -76,7 +73,7 @@ describe('<%= featureClassName %>DetailsComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [<%= featureClassName %>DetailsComponent],
       imports: [
-        PortalCoreModule,
+        AngularAcceleratorModule,
         LetDirective,
         TranslateTestingModule.withTranslations('en', require('./../../../../assets/i18n/en.json'))
           .withTranslations('de', require('./../../../../assets/i18n/de.json')),
@@ -92,7 +89,7 @@ describe('<%= featureClassName %>DetailsComponent', () => {
     }).compileComponents();
 
     const userService = TestBed.inject(UserService);
-    userService.hasPermission = () => true;
+    userService.hasPermission = async () => true;
     const translateService = TestBed.inject(TranslateService);
     translateService.use('en');
 

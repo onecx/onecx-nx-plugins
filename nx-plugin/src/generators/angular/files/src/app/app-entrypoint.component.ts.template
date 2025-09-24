@@ -5,13 +5,12 @@ import { merge, mergeMap } from 'rxjs'
 
 @Component({
   selector: 'app-root',
-  templateUrl: './app-entrypoint.component.html'
+  templateUrl: './app-entrypoint.component.html',
+  standalone: false
 })
 export class AppEntrypointComponent implements OnInit {
-  constructor(
-    private translateService: TranslateService,
-    private config: PrimeNGConfig
-  ) {}
+  private translateService = inject(TranslateService);
+  private config = inject(PrimeNG);
 
   ngOnInit(): void {
     merge(

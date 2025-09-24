@@ -18,7 +18,7 @@ export class FeatureModuleStep implements GeneratorStep<PageGeneratorSchema> {
 
     const find = [
       'declarations: [',
-      `} from '@onecx/portal-integration-angular'`,
+      `} from '@onecx/angular-accelerator'`,
       'EffectsModule.forFeature()',
       'EffectsModule.forFeature([',
       `from '@ngrx/effects';`,
@@ -26,7 +26,7 @@ export class FeatureModuleStep implements GeneratorStep<PageGeneratorSchema> {
 
     const replaceWith = [
       `declarations: [${pageClassName}Component,`,
-      `InitializeModuleGuard, } from '@onecx/portal-integration-angular'`,
+      `} from '@onecx/angular-accelerator'`,
       `EffectsModule.forFeature([])`,
       `EffectsModule.forFeature([${pageClassName}Effects,`,
       `from '@ngrx/effects';

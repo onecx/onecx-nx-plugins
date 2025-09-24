@@ -1,4 +1,4 @@
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
@@ -12,13 +12,12 @@ import { ofType } from '@ngrx/effects';
 import { TranslateService } from '@ngx-translate/core';
 import { TranslateTestingModule } from 'ngx-translate-testing';
 import { DialogService } from 'primeng/dynamicdialog';
-import { 
+import { UserService } from '@onecx/angular-integration-interface';
+import {
+  AngularAcceleratorModule,
   BreadcrumbService,
   ColumnType,
-  ExportDataService,
-  PortalCoreModule,
-  UserService,
-} from '@onecx/portal-integration-angular';
+} from '@onecx/angular-accelerator';
 import { <%= featureClassName %>SearchActions } from './<%= featureFileName %>-search.actions';
 import { <%= featureClassName %>SearchComponent } from './<%= featureFileName %>-search.component';
 import { <%= featureClassName %>SearchHarness } from './<%= featureFileName %>-search.harness';
@@ -101,7 +100,7 @@ describe('<%= featureClassName %>SearchComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [<%= featureClassName %>SearchComponent],
       imports: [
-        PortalCoreModule,
+        AngularAcceleratorModule,
         LetDirective,
         ReactiveFormsModule,
         StoreModule.forRoot({}),
@@ -109,10 +108,10 @@ describe('<%= featureClassName %>SearchComponent', () => {
           'en',
           require('./../../../../assets/i18n/en.json')
         ).withTranslations('de', require('./../../../../assets/i18n/de.json')),
-        HttpClientTestingModule,
         NoopAnimationsModule,
       ],
       providers: [
+        provideHttpClientTesting(),
         DialogService,
         provideMockStore({
           initialState: { <%= featurePropertyName %>: { search: initialState } },
@@ -125,7 +124,7 @@ describe('<%= featureClassName %>SearchComponent', () => {
 
   beforeEach(async () => {
     const userService = TestBed.inject(UserService);
-    userService.hasPermission = () => true;
+    userService.hasPermission = async () => true;
     const translateService = TestBed.inject(TranslateService);
     translateService.use('en');
     formBuilder = TestBed.inject(FormBuilder);
@@ -328,7 +327,7 @@ describe('<%= featureClassName %>SearchComponent', () => {
       await <%= featurePropertyName %>Search.getSearchResults();        
     (await (
         await interactiveDataView.getDataLayoutSelection()
-      ).getTableLayoutSelectionButton()
+      ).getTableLayoutSelectionToggleButton()
     )?.click();
 
     const columnGroupSelector =

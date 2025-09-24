@@ -1,13 +1,13 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed, tick } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { LetDirective } from '@ngrx/component';
 import {
+  AngularAcceleratorModule,
   BreadcrumbService,
-  PortalCoreModule,
-} from '@onecx/portal-integration-angular';
+} from '@onecx/angular-accelerator';
 import { TranslateTestingModule } from 'ngx-translate-testing';
 import { <%= featureClassName%>CreateUpdateComponent } from './<%= featureFileName%>-create-update.component';
 import { By } from '@angular/platform-browser';
@@ -36,7 +36,7 @@ describe('<%= featureClassName%>CreateUpdateComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [<%= featureClassName%>CreateUpdateComponent],
       imports: [
-        PortalCoreModule,
+        AngularAcceleratorModule,
         FormsModule,
         ReactiveFormsModule,
         LetDirective,
@@ -44,9 +44,9 @@ describe('<%= featureClassName%>CreateUpdateComponent', () => {
           'en',
           require('./../../../../../../assets/i18n/en.json')
         ).withTranslations('de', require('./../../../../../../assets/i18n/de.json')),
-        HttpClientTestingModule,
       ],
       providers: [
+        provideHttpClientTesting(),
         BreadcrumbService,
         { provide: ActivatedRoute, useValue: mockActivatedRoute },
       ],

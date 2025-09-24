@@ -5,27 +5,27 @@ import { concatLatestFrom } from '@ngrx/operators'
 import { PrimeIcons } from 'primeng/api';
 import { catchError, filter, map, mergeMap, of, switchMap, tap } from 'rxjs';
 import { filterForNavigatedTo } from '@onecx/ngrx-accelerator';
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { selectBackNavigationPossible } from 'src/app/shared/selectors/onecx.selectors';
 import { <%= featureClassName %>DetailsActions } from './<%= featureFileName %>-details.actions';
 import { <%= featureClassName %>DetailsComponent } from './<%= featureFileName %>-details.component';
 import { Action, Store } from '@ngrx/store';
 import { selectRouteParam, selectUrl } from 'src/app/shared/selectors/router.selectors';
-import { DialogState, PortalDialogService, PortalMessageService } from '@onecx/portal-integration-angular';
+import { PortalMessageService } from '@onecx/angular-integration-interface';
+import { PortalDialogService } from '@onecx/angular-accelerator';
 import { <%= updateRequestName%>, <%= dataObjectName %>, <%= serviceName %> } from '../../../shared/generated';
 import { <%= featureFileName %>DetailsSelectors } from './<%= featureFileName %>-details.selectors';
 
 @Injectable()
 export class <%= featureClassName %>DetailsEffects {
-  constructor(
-    private actions$: Actions,
-    private <%= featurePropertyName %>Service: <%= serviceName %>,
-    private router: Router,
-    private store: Store,
-    private messageService: PortalMessageService <%_ if(editMode){ _%> ,
-    private portalDialogService: PortalDialogService
-     <%_ } _%> 
-  ) {}
+  private actions$ = inject(Actions);
+  private <%= featurePropertyName %>Service = inject(<%= serviceName %>);
+  private router = inject(Router);
+  private store = inject(Store);
+  private messageService = inject(PortalMessageService);
+  <%_ if(editMode){ _%> ,
+  private portalDialogService: inject(PortalDialogService)
+  <%_ } _%> 
 
   navigatedToDetailsPage$ = createEffect(() => {
     return this.actions$.pipe(
