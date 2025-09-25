@@ -287,7 +287,7 @@ describe('nx-plugin', () => {
         value: 'CustomService',
       },
       {
-        key: 'dataObjectName',
+        key: 'resource',
         value: 'CustomDataObject',
       },
       {
@@ -338,7 +338,7 @@ describe('nx-plugin', () => {
         value: 'CustomService',
       },
       {
-        key: 'dataObjectName',
+        key: 'resource',
         value: 'CustomDataObject',
       },
       {
@@ -384,7 +384,7 @@ describe('nx-plugin', () => {
         value: 'CustomService',
       },
       {
-        key: 'dataObjectName',
+        key: 'resource',
         value: 'CustomDataObject',
       },
       {
@@ -442,7 +442,7 @@ describe('nx-plugin', () => {
         value: 'CustomService',
       },
       {
-        key: 'dataObjectName',
+        key: 'resource',
         value: 'CustomDataObject',
       },
     ];

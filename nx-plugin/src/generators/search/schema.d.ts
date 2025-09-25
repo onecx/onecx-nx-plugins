@@ -2,7 +2,7 @@ export interface SearchGeneratorSchema {
   featureName: string;
   customizeNamingForAPI: boolean;
   apiServiceName: string;
-  dataObjectName: string;
+  resource: string;
   searchRequestName: string;
   searchResponseName: string;
   standalone?: boolean;

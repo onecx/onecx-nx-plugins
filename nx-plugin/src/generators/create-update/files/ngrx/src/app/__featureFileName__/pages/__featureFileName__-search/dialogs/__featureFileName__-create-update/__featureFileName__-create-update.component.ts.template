@@ -19,7 +19,7 @@ import { Observable, map } from 'rxjs';
 import {
   <%= createRequestName%>,
   <%= updateRequestName%>,  
-  <%= dataObjectName%>,
+  <%= resource%>,
   <%= serviceName%>,
 } from 'src/app/shared/generated';
 
@@ -34,7 +34,7 @@ import { <%= featureClassName%>CreateUpdateViewModel } from './<%= featureFileNa
 export class <%= featureClassName%>CreateUpdateComponent 
   implements
     DialogPrimaryButtonDisabled,
-    DialogResult<<%= dataObjectName %> | undefined>,
+    DialogResult<<%= resource %> | undefined>,
     DialogButtonClicked<<%= featureClassName%>CreateUpdateComponent>,
     OnInit {
 
@@ -45,7 +45,7 @@ export class <%= featureClassName%>CreateUpdateComponent
   public formGroup: FormGroup;  
   
   primaryButtonEnabled: EventEmitter<boolean> = new EventEmitter();
-  dialogResult: <%= dataObjectName %> | undefined = undefined;;
+  dialogResult: <%= resource %> | undefined = undefined;;
 
   constructor() {
     this.formGroup = new FormGroup({

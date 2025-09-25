@@ -1,5 +1,5 @@
 import { createActionGroup, emptyProps, props } from '@ngrx/store';
-import { <%= dataObjectName %> } from '../../../shared/generated';
+import { <%= resource %> } from '../../../shared/generated';
 
 export const <%= featureClassName %>DetailsActions = createActionGroup({
   source: '<%= featureClassName %>Details',
@@ -8,10 +8,10 @@ export const <%= featureClassName %>DetailsActions = createActionGroup({
       id: string | undefined;
     }>(),
     '<%= featureFileName.replaceAll("-"," ") %> details received': props<{
-      details: <%= dataObjectName %>;
+      details: <%= resource %>;
     }>(),
     '<%= featureFileName.replaceAll("-"," ") %> reloaded details received': props<{
-      details: <%= dataObjectName %>;
+      details: <%= resource %>;
     }>(),
     '<%= featureFileName.replaceAll("-"," ") %> details loading failed': props<{ error: string | null }>(),
     <%_ if(editMode){ _%> 
@@ -31,7 +31,7 @@ export const <%= featureClassName %>DetailsActions = createActionGroup({
     'cancel edit not dirty': emptyProps(),
     'edit button clicked': emptyProps(),
     'save button clicked': props<{
-      details: <%= dataObjectName %>;
+      details: <%= resource %>;
     }>(),
     'cancel button clicked': props<{
       dirty: boolean;

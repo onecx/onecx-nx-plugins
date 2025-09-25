@@ -1,7 +1,7 @@
 import { OpenAPIDefault } from '../shared/openapi/models/openapi-default.model';
 
 interface SearchEndpointParameter {
-  dataObjectName: string;
+  resource: string;
   searchRequestName: string;
   searchResponseName: string;
 }

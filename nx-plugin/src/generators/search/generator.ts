@@ -49,7 +49,7 @@ const PARAMETERS: GeneratorParameter<SearchGeneratorSchema>[] = [
     showRules: [{ showIf: (values) => values.customizeNamingForAPI }],
   },
   {
-    key: 'dataObjectName',
+    key: 'resource',
     type: 'text',
     required: 'interactive',
     default: (values) => {
@@ -135,7 +135,7 @@ export async function searchGenerator(
       featurePropertyName: names(options.featureName).propertyName,
       featureClassName: names(options.featureName).className,
       featureConstantName: names(options.featureName).constantName,
-      dataObjectName: options.dataObjectName,
+      resource: options.resource,
       serviceName: options.apiServiceName,
       searchRequestName: options.searchRequestName,
       searchResponseName: options.searchResponseName,
