@@ -8,7 +8,7 @@ import {
 import {
   selectBackNavigationPossible
 } from 'src/app/shared/selectors/onecx.selectors';
-import { <%= dataObjectName %> } from '../../../shared/generated';
+import { <%= resource %> } from '../../../shared/generated';
 
 export const <%= featurePropertyName %>DetailsSelectors = createChildSelectors(
   <%= featurePropertyName %>Feature.selectDetails,
@@ -24,7 +24,7 @@ export const select<%= featureClassName %>DetailsViewModel = createSelector(
   <%= featurePropertyName %>DetailsSelectors.selectEditMode,
   <%= featurePropertyName %>DetailsSelectors.selectIsSubmitting,
   <%_ } _%>
-  (details: <%= dataObjectName %> | undefined,
+  (details: <%= resource %> | undefined,
   detailsLoadingIndicator: boolean,
   backNavigationPossible: boolean,
   detailsLoaded: boolean,

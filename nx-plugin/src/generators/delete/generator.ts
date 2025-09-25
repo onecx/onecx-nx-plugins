@@ -42,7 +42,7 @@ const PARAMETERS: GeneratorParameter<DeleteGeneratorSchema>[] = [
     showRules: [{ showIf: (values) => values.customizeNamingForAPI }],
   },
   {
-    key: 'dataObjectName',
+    key: 'resource',
     type: 'text',
     required: 'interactive',
     default: (values) => {

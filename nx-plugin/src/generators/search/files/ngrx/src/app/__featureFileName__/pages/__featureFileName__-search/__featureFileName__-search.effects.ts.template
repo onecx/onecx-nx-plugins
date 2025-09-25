@@ -83,7 +83,7 @@ export class <%= featureClassName %>SearchEffects {
   });
 
   performSearch(searchCriteria: Record<string, any>) {
-    return this.<%= featurePropertyName %>Service.search<%= dataObjectName %>s(
+    return this.<%= featurePropertyName %>Service.search<%= resource %>s(
       {
         ...Object.entries(searchCriteria).reduce(
           (acc, [key, value]) => ({

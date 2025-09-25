@@ -16,7 +16,7 @@ export class GeneralOpenAPIStep
       'utf8'
     );
 
-    const dataObjectName = options.dataObjectName;
+    const resource = options.resource;
     const propertyName = names(options.featureName).propertyName;
     const createRequestName = options.createRequestName;
     const createResponseName = options.createResponseName;
@@ -30,12 +30,12 @@ export class GeneralOpenAPIStep
       ...createCreateEndpoint(
         {
           type: 'post',
-          operationId: `create${dataObjectName}`,
+          operationId: `create${resource}`,
           tags: [apiServiceName],
           description: `This operation performs a create.`,
         },
         {
-          dataObjectName: dataObjectName,
+          resource: resource,
           createRequestName: createRequestName,
           createResponseName: createResponseName,
         }
@@ -48,12 +48,12 @@ export class GeneralOpenAPIStep
         ...createUpdateEndpoint(
           {
             type: 'put',
-            operationId: `update${dataObjectName}`,
+            operationId: `update${resource}`,
             tags: [apiServiceName],
             description: `This operation performs an update.`,
           },
           {
-            dataObjectName: dataObjectName,
+            resource: resource,
             updateRequestSchema: updateRequestName,
             updateResponseSchema: updateResponseName,
           }
@@ -72,7 +72,7 @@ export class GeneralOpenAPIStep
         properties: {
           resource: {
             type: 'object',
-            $ref: `#/components/schemas/${dataObjectName}`,
+            $ref: `#/components/schemas/${resource}`,
           },
         },
       })
@@ -81,7 +81,7 @@ export class GeneralOpenAPIStep
         properties: {
           resource: {
             type: 'object',
-            $ref: `#/components/schemas/${dataObjectName}`,
+            $ref: `#/components/schemas/${resource}`,
           },
         },
       })
@@ -90,7 +90,7 @@ export class GeneralOpenAPIStep
         properties: {
           resource: {
             type: 'object',
-            $ref: `#/components/schemas/${dataObjectName}`,
+            $ref: `#/components/schemas/${resource}`,
           },
           [COMMENT_KEY]:
             'ACTION C1: modify resource or use flat list here. https://onecx.github.io/docs/nx-plugins/current/general/getting_started/create-update/extend-form-fields.html#action-1',
@@ -101,7 +101,7 @@ export class GeneralOpenAPIStep
         properties: {
           resource: {
             type: 'object',
-            $ref: `#/components/schemas/${dataObjectName}`,
+            $ref: `#/components/schemas/${resource}`,
           },
           [COMMENT_KEY]:
             'ACTION C1: modify resource or use flat list here. https://onecx.github.io/docs/nx-plugins/current/general/getting_started/create-update/extend-form-fields.html#action-1',
