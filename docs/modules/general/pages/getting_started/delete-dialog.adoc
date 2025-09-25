@@ -11,7 +11,7 @@ include::partial$generator-check.adoc[]
 To run the generator, execute the following command: 
 
 ----
-nx generate <namespaceOfTheGenerator>/nx-plugin:delete <feature> [--standalone]
+nx generate <namespaceOfTheGenerator>/nx-plugin:delete <feature>
 ----
 
 include::partial$generator-namespace-item.adoc[]

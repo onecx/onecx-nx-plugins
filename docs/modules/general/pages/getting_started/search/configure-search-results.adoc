@@ -86,6 +86,10 @@ _Adapt in File:_ `+<feature>-search.columns.ts+`
 ----
 In this example, a column for the property `+houseType+` is added to the results table. The column is of type `+TRANSLATION_KEY+`, is filterable and sortable. Additionally, a column for the property `+city+` is added, which is of type `+STRING+`, filterable, sortable, and belongs to only two predefined groups.
 
+A predefined group allows users to quickly switch between different sets of columns in the UI using a dropdown.
+By configuring the `+predefinedGroupKeys+`, you can define which columns belong to which groups.
+The key is at the same time the translation key for the group name.
+
 Refer to the {data_table_column_properties_cookbook_url}[DataTableColumn overview] for more information.
 
 include::partial$remove-action.adoc[]

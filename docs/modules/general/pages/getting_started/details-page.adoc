@@ -10,7 +10,7 @@ include::partial$generator-check.adoc[]
 To run the generator, execute the following command: 
 
 ----
-nx generate <namespaceOfTheGenerator>/nx-plugin:details <feature> [--standalone]
+nx generate <namespaceOfTheGenerator>/nx-plugin:details <feature>
 ----
 
 include::partial$generator-namespace-item.adoc[]

@@ -9,12 +9,12 @@ include::partial$generator-check.adoc[]
 ******
 To run the generator, execute the following command:
 ----
-nx generate <namespaceOfTheGenerator>/nx-plugin:feature <nameOfTheFeature> [--standalone]
+nx generate <namespaceOfTheGenerator>/nx-plugin:feature <feature>
 ----
  
 include::partial$generator-namespace-item.adoc[]
 
-* _<nameOfTheFeature>_: The name of the feature to create e.g., theme.
+* _<feature>_: see xref:getting_started/glossary.adoc#feature[here].
 
 ******
 

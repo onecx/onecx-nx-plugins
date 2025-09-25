@@ -11,12 +11,12 @@ include::partial$generator-check.adoc[]
 To run the generator, execute the following command: 
 
 ----
-nx generate <namespaceOfTheGenerator>/nx-plugin:create-update <nameOfTheFeature> [--standalone]
+nx generate <namespaceOfTheGenerator>/nx-plugin:create-update <feature>
 ----
 
 include::partial$generator-namespace-item.adoc[]
 
-* _<nameOfTheFeature>_: The name the feature the create-update dialog should be created in e.g., theme.
+* _<feature>_: see xref:getting_started/glossary.adoc#feature[here].
 
 TIP: Next, the CLI will ask you whether you want to customize names for the generation.
 When answering yes, the next few questions will ask you about names for the API.

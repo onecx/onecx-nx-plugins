@@ -20,12 +20,19 @@ The details page will display a page header with a title and subtitle. To custom
 .Example extended header items
 [source, javascript]
 ----
-  headerLabels: ObjectDetailItem[] = [
-      {
-        label: 'City',
-        value: vm.details?.address?.city
-      }
-    ];
+  headerLabels$: Observable<ObjectDetailItem[]> = this.viewModel$.pipe(
+    map((vm) => {
+      const labels: ObjectDetailItem[] = [
+        //ACTION D1: Add header values here
+        {
+          label: 'HOUSE_DETAILS.FORM.CITY',
+          labelPipe: TranslatePipe,
+          value: vm.details?.address?.city,
+        },
+      ];
+      return labels;
+    })
+  );
 ----
 
 You can also add additional actions to the header using the `headerActions$` property. 
