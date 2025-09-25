@@ -5,21 +5,17 @@ The fastest way to create an empty ngrx-page is to use the OneCX generator. Some
 To run the generator, execute the following command: 
 
 ----
-nx generate <namespaceOfTheGenerator>/nx-plugin:ngrx-page <nameOfTheFeature> [--standalone]
+nx generate <namespaceOfTheGenerator>/nx-plugin:ngrx-page <feature>
 ----
 
 *Placeholder*: 
 
 * _<namespaceOfTheGenerator>_: For the OneCX generator use @onecx. For a project specific generator, ask for the namespace of the generators. 
 
-* _<nameOfTheFeature>_: The name the feature the empty ngrx-page should be created in e.g., theme 
+* _<feature>_: see xref:getting_started/glossary.adoc#feature[here].
 
 TIP: Next, the CLI will ask you for the name of your page. Use a name without spaces and the "Component"-suffix, as this suffix will be added automatically.
 So if you want to create a BookDetailsComponent, only put in "BookDetails".
-
-*Options*:
-
-* --standalone: if you want to develop an application that does not depend on onecx-services
 
 ******
 
