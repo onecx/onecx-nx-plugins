@@ -10,7 +10,7 @@ import {
 } from '@onecx/portal-integration-angular';
 import { TranslateTestingModule } from 'ngx-translate-testing';
 import { <%= featureClassName%>CreateUpdateComponent } from './<%= featureFileName%>-create-update.component';
-import { distinctUntilChanged, filter, take } from 'rxjs'
+import { distinctUntilChanged, filter, skip, take, toArray } from 'rxjs'
 
 Object.defineProperty(window, 'matchMedia', {
   writable: true,
@@ -62,16 +62,25 @@ describe('<%= featureClassName%>CreateUpdateComponent', () => {
   });
 
   it('should emit primaryButtonEnabled as true when form is valid', (done) => {
-    component.formGroup.setValue({ changeMe: 'x'.repeat(256) })
-    component.formGroup.updateValueAndValidity()
-
     component.primaryButtonEnabled
-      .pipe(filter((v) => v === true), take(1))
-      .subscribe((enabled) => {
-        expect(enabled).toBe(true)
+      .pipe(
+        // Skip initial emission to start fresh
+        skip(1),
+        // Only look at the first two emitted values after changes
+        take(2),
+        // Convert both emitted values into a single array
+        toArray()
+      ).subscribe((values) => {
+        // Expect button to be disabled for invalid form and enabled for valid form
+        expect(values).toEqual([false, true])
         done()
       })
 
+    // Start with invalid form
+    component.formGroup.setValue({ changeMe: 'x'.repeat(256) })
+    component.formGroup.updateValueAndValidity()
+
+    // Then make it valid
     component.formGroup.setValue({ changeMe: 'valid value' })
     component.formGroup.updateValueAndValidity()
   })
@@ -102,18 +111,6 @@ describe('<%= featureClassName%>CreateUpdateComponent', () => {
 
     expect(emissions).toEqual([true, false, true])
   }))
-
-  it('should emit primaryButtonEnabled as false when form is invalid', (done) => {
-    component.primaryButtonEnabled
-      .pipe(filter((v) => v === false), take(1))
-      .subscribe((enabled) => {
-        expect(enabled).toBe(false)
-        done()
-      })
-
-    component.formGroup.setValue({ changeMe: 'x'.repeat(256) })
-    component.formGroup.updateValueAndValidity()
-  })
 
   it('should set dialogResult with merged values on ocxDialogButtonClicked', () => {
     component.vm.itemToEdit = { appId: 'oldId', name: 'oldName', description: 'oldDesc' } as any

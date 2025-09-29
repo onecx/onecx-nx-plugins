@@ -31,11 +31,14 @@ export class SearchTestsStep implements GeneratorStep<SearchGeneratorSchema> {
       });
     `;
 
+    // No variable names with $ present, only ${className} template variable to interpolate
+    const snippetEscaped = snippet.replace(/\$/g, '$$$$');
+
     safeReplace(
       `Add details effect tests to search effects spec file. Look for the marker comment '// <<SPEC-EXTENSIONS-MARKER-!!!-DO-NOT-REMOVE-!!!>>' in ${filePath} and insert the test code above it.`,
       filePath,
       [ '// <<SPEC-EXTENSIONS-MARKER-!!!-DO-NOT-REMOVE-!!!>>' ],
-      [ snippet + '  // <<SPEC-EXTENSIONS-MARKER-!!!-DO-NOT-REMOVE-!!!>>' ],
+      [ snippetEscaped + '  // <<SPEC-EXTENSIONS-MARKER-!!!-DO-NOT-REMOVE-!!!>>' ],
       tree
     );
   }

@@ -52,8 +52,9 @@ export class SearchEffectsSpecStep implements GeneratorStep<SearchGeneratorSchem
       });
     `;
 
-    // Escape $ characters to prevent template literal interpolation during string replacement
-    // Each $ becomes $$$$ so ${variable} becomes literal ${variable} in the output file
+    // Escape $ characters to prevent unintended template literal interpolation during string replacement
+    // Variable names like 'actions$', 'effects.detailsButtonClicked$' need escaping to remain literal
+    // Template variables like ${className} are intentionally left unescaped for proper interpolation
     const specToAppendEscaped = specToAppend.replace(/\$/g, '$$$$');
 
     safeReplace(
