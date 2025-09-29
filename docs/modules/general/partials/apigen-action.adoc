@@ -1,0 +1,1 @@
+IMPORTANT: Run the command *npm run apigen* after adapting the OpenAPI to transform the changes into typescript code.
