@@ -91,6 +91,7 @@ export async function angularGenerator(
       '@onecx/angular-auth': oneCXLibVersion,
       '@onecx/angular-remote-components': oneCXLibVersion,
       '@onecx/angular-webcomponents': oneCXLibVersion,
+      '@onecx/angular-utils': oneCXLibVersion,
       '@onecx/angular-standalone-shell': oneCXLibVersion,
       '@onecx/integration-interface': oneCXLibVersion,
       '@onecx/angular-integration-interface': oneCXLibVersion,
@@ -298,7 +299,10 @@ function adaptJestConfig(tree: Tree) {
     'Adapt transformIgnorePatterns in Jest Config',
     filePath,
     /transformIgnorePatterns: .+?,/,
-    `transformIgnorePatterns: ['node_modules/(?!@ngrx|(?!deck.gl)|d3-scale|(?!.*\\.mjs$))'],`,
+    `transformIgnorePatterns: ['node_modules/(?!@ngrx|(?!deck.gl)|d3-scale|(?!.*\\.mjs$))'],
+    moduleNameMapper: {
+    '^@primeng/themes$': '<rootDir>/node_modules/@primeng/themes/index.mjs',
+  },`,
     tree
   );
 }

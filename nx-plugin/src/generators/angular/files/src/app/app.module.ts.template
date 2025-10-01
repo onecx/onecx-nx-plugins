@@ -23,6 +23,7 @@ import { Observable } from 'rxjs';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { CommonModule } from '@angular/common';
 import { apiConfigProvider } from './shared/utils/apiConfigProvider.utils';
+import { AngularAuthModule } from '@onecx/angular-auth';
 import { Configuration } from './shared/generated';
 import { createTranslateLoader } from '@onecx/angular-utils';
 import { ShellCoreModule } from '@onecx/shell-core';
@@ -40,9 +41,10 @@ export const commonImports = [CommonModule];
     BrowserAnimationsModule,
     AppRoutingModule,
     AngularAcceleratorModule,
+    AngularAuthModule,
     ShellCoreModule,
     TranslateModule.forRoot({
-      extend: true,
+      isolate: true,
       loader: {
         provide: TranslateLoader,
         useFactory: createTranslateLoader,
