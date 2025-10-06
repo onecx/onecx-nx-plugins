@@ -26,3 +26,6 @@
 * Further generators
 ** xref:further_generators/ngrx-page/ngrx-page.adoc[NGRX-Page Generator]
 ** xref:further_generators/pre-commit-validation.adoc[Pre-Commit Validation Generator]
+* Migrations
+** xref:migrations/migrate-to-v6.adoc[Migration to Generator v6]
+* xref:getting_started/glossary.adoc[Glossary]
