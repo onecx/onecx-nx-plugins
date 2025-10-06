@@ -1,30 +1,43 @@
-=== Add core data to the details page header
+== Add core data to the details page header
 
 :idprefix:
 :idseparator: -
 
 :page_header_url: xref:latest@guides:angular:cookbook/components/page-header/index.adoc
 
-The core data must be added to the header of the details page.
+On the details page you can display data in the the header and below there is a content pane. You can customize the content pane as needed.
+
+The details page will reuse the created xref:getting_started/glossary.adoc#resource[`Resource`]. If the search-result object differs from the details object, you can **define a separate xref:getting_started/glossary.adoc#feature[`<Feature>Details`] object in** the **OpenAPI** specification and modify the endpoints accordingly (get, put, delete). You also need to modify the used xref:getting_started/glossary.adoc#resource[`Resource`] in the state, viewmodel, etc. to use it.
+
+Similar to the create-update generation, you can **adapt the schema for update requests**, see xref:getting_started/create-update/extend-form-fields.adoc[Extend form fields].
 
 [#action-1]
-==== ACTION D1: Add header values here
-_Adapt in File:_  `+<feature>-details.component+`
+=== ACTION D1: Define values to be shown in the header
+_Adapt in File:_  `+<feature>-details.component.ts+`
 
-The details page will display the header with the title and subtitle. To customize the header, extend the `headerLabels` property. Configure the items based on the details item. Please, reference the {page_header_url}[PageHeader docs] for more information on the `ObjectDetailItem` usage.
+The details page will display a page header with a title and subtitle. To customize, you can modify the `headerLabels$` property.
 
 .Example extended header items
 [source, javascript]
 ----
-  headerLabels: ObjectDetailItem[] = [
-      {
-        label: 'Name',
-        value: vm.details?.name
-      }
-    ];
+  headerLabels$: Observable<ObjectDetailItem[]> = this.viewModel$.pipe(
+    map((vm) => {
+      const labels: ObjectDetailItem[] = [
+        //ACTION D1: Add header values here
+        {
+          label: 'HOUSE_DETAILS.FORM.CITY',
+          labelPipe: TranslatePipe,
+          value: vm.details?.address?.city,
+        },
+      ];
+      return labels;
+    })
+  );
 ----
 
-For the details page, the generator also creates 2 actions for the header by default. Consider adding custom actions to be available in the header via `headerActions$` property. Please, reference the {page_header_url}[PageHeader docs] for more information on the `Action` usage.
+You can also add additional actions to the header using the `headerActions$` property. 
+
+Check the {page_header_url}[PageHeader Component] for more information.
 
 include::partial$remove-action.adoc[]
 

@@ -110,7 +110,7 @@ export class GeneralOpenAPIStep implements GeneratorStep<DetailsGeneratorSchema>
               $ref: `#/components/schemas/${dataObjectName}`,
             },
             [COMMENT_KEY]:
-              'ACTION DE1: modify data object or use flat list here. https://onecx.github.io/docs/nx-plugins/current/general/getting_started/create-update/extend-form-fields.html#action-1',
+              'ACTION DE1: modify resource or use flat list here. https://onecx.github.io/docs/nx-plugins/current/general/getting_started/create-update/extend-form-fields.html#action-1',
           },
         });
     }

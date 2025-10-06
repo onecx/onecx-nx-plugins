@@ -53,7 +53,7 @@ const PARAMETERS: GeneratorParameter<DetailsGeneratorSchema>[] = [
     default: (values) => {
       return `${names(values.featureName).className}`;
     },
-    prompt: 'Provide a name for your Data Object (e.g., Book): ',
+    prompt: 'Provide a name for your Resource (e.g., Book): ',
     showInSummary: true,
     showRules: [{ showIf: (values) => values.customizeNamingForAPI }],
   },
