@@ -3,6 +3,8 @@ import { AppComponent } from './app.component';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { AngularAcceleratorModule } from '@onecx/angular-accelerator';
 import { TranslateTestingModule } from 'ngx-translate-testing';
+import { ShellCoreModule } from '@onecx/shell-core';
+import { provideHttpClient } from '@angular/common/http';
 
 describe('AppComponent', () => {
   beforeEach(async () => {
@@ -10,10 +12,11 @@ describe('AppComponent', () => {
       declarations:[AppComponent],
       imports: [
         AngularAcceleratorModule,
+        ShellCoreModule,
         TranslateTestingModule.withTranslations('en', require('./../assets/i18n/en.json'))
           .withTranslations('de', require('./../assets/i18n/de.json')),
       ],
-      <% if(!standalone){ %>providers: [provideHttpClientTesting()] <% } %>
+      <% if(!standalone){ %>providers: [provideHttpClient(), provideHttpClientTesting()] <% } %>
     }).compileComponents();
   });
 
