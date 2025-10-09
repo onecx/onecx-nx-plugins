@@ -45,9 +45,9 @@ export class <%= featureClassName %>DetailsEffects {
       ofType(<%= featureClassName %>DetailsActions.navigatedToDetailsPage),
       switchMap(({ id }) =>
         this.<%= featurePropertyName %>Service.get<%= dataObjectName %>ById(id ?? '').pipe(
-          map(({ resource }) =>
+          map(({ result }) =>
             <%= featureClassName %>DetailsActions.<%= featurePropertyName %>DetailsReceived({
-              details: resource,
+              details: result,
             })
           ),
           catchError((error) =>
@@ -110,7 +110,7 @@ export class <%= featureClassName %>DetailsEffects {
           return of(<%= featureClassName %>DetailsActions.update<%= featureClassName %>Cancelled());
         }
         const itemToEdit = {
-          resource: updatedItem,
+          dataObject: updatedItem,
         } as Update<%= featureClassName %>Request;
         return this.<%= featurePropertyName %>Service.update<%= featureClassName %>(itemToEditId, itemToEdit).pipe(
           map(() => {

@@ -38,6 +38,9 @@ export function createSearchEndpoint(
       '400': {
         description: 'Bad request',
       },
+      '500': {
+        description: 'Something went wrong',
+      },
     },
   };
   return response;

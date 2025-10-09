@@ -16,9 +16,9 @@ import {
   BreadcrumbService,
   HAS_PERMISSION_CHECKER,
   ColumnType,
-  ExportDataService,
   PortalCoreModule,
   UserService,
+  providePortalDialogService
 } from '@onecx/portal-integration-angular';
 import { <%= featureClassName %>SearchActions } from './<%= featureFileName %>-search.actions';
 import { <%= featureClassName %>SearchComponent } from './<%= featureFileName %>-search.component';
@@ -120,6 +120,7 @@ describe('<%= featureClassName %>SearchComponent', () => {
           initialState: { <%= featurePropertyName %>: { search: initialState } },
         }),
         FormBuilder,
+        providePortalDialogService(),
         { provide: ActivatedRoute, useValue: mockActivatedRoute },
         provideUserServiceMock(),
         {
@@ -148,6 +149,7 @@ describe('<%= featureClassName %>SearchComponent', () => {
     formBuilder = TestBed.inject(FormBuilder);
 
     store = TestBed.inject(MockStore);
+    jest.spyOn(store, 'dispatch')
     store.overrideSelector(
       select<%= featureClassName %>SearchViewModel,
       base<%= featureClassName %>SearchViewModel
@@ -306,36 +308,6 @@ describe('<%= featureClassName %>SearchComponent', () => {
     const searchBreadcrumbItem = await pageHeader.getBreadcrumbItem('Search');
 
     expect(await searchBreadcrumbItem!.getText()).toEqual('Search');
-  });
-
-  it('should dispatch searchButtonClicked action on search', (done) => {
-    const formValue = formBuilder.group({
-      changeMe: '123',
-    });
-    component.<%= featurePropertyName %>SearchFormGroup = formValue;
-
-    store.scannedActions$
-      .pipe(ofType(<%= featureClassName %>SearchActions.searchButtonClicked))
-      .subscribe((a) => {
-        expect(a.searchCriteria).toEqual({ changeMe: '123' });
-        done();
-      });
-
-    component.search(formValue);
-  });
-  
-  it('should dispatch viewModeChanged action on view mode changes', async () => {
-    jest.spyOn(store, 'dispatch');
-
-    component.searchHeaderComponentStateChanged({
-      activeViewMode: 'advanced',
-    });
-
-    expect(store.dispatch).toHaveBeenCalledWith(
-      <%= featureClassName %>SearchActions.searchHeaderComponentStateChanged({
-        activeViewMode: 'advanced',
-      })
-    );
   });
 
   it('should dispatch displayedColumnsChanged on data view column change', async () => {
@@ -547,7 +519,7 @@ describe('<%= featureClassName %>SearchComponent', () => {
     expect(diagram).toBeTruthy();
   });
 
-  it('should dispatch export csv data on export action click', async () => {
+  it('should export csv data on export action click', async () => {
     jest.spyOn(store, 'dispatch');
   
     const results = [
@@ -593,4 +565,73 @@ describe('<%= featureClassName %>SearchComponent', () => {
       <%= featureClassName %>SearchActions.exportButtonClicked()
     );
   });
+
+  describe('searchCriteria mapping', () => {
+    const cases = [
+      {
+        desc: 'should convert Date values to UTC and dispatch searchButtonClicked',
+        formValue: { changeMe: new Date(2024, 4, 15, 12, 30, 45) },
+        expected: { changeMe: new Date(Date.UTC(2024, 4, 15, 12, 30, 45)) }
+      },
+      {
+        desc: 'should pass through non-date, non-empty values unchanged',
+        formValue: { changeMe: 'testName' },
+        expected: { changeMe: 'testName' }
+      },
+      {
+        desc: 'should set searchCriteria property to undefined for falsy non-date values',
+        formValue: { changeMe: '' },
+        expected: { changeMe: undefined }
+      }
+    ]
+
+    cases.forEach(({ desc, formValue, expected }) => {
+      it(desc, () => {
+        jest.spyOn(store, 'dispatch')
+
+        component.<%= featurePropertyName %>SearchFormGroup = {
+          value: formValue,
+          getRawValue: () => formValue
+        } as any
+
+        component.search(component.<%= featurePropertyName %>SearchFormGroup)
+
+        const calls = (store.dispatch as jest.Mock).mock.calls
+        expect(calls.length).toBeGreaterThan(0)
+        const lastAction = calls[calls.length - 1][0]
+        expect(lastAction.type).toBe(<%= featureClassName %>SearchActions.searchButtonClicked.type)
+        expect(lastAction.searchCriteria).toEqual(expected)
+      })
+    })
+  })
+
+  describe('actions dispatch', () => {
+    const cases = [
+      {
+        method: 'resultComponentStateChanged',
+        action: <%= featureClassName %>SearchActions.resultComponentStateChanged,
+        payload: { groupKey: 'test-group' }
+      },
+      {
+        method: 'searchHeaderComponentStateChanged',
+        action: <%= featureClassName %>SearchActions.searchHeaderComponentStateChanged,
+        payload: { activeViewMode: 'basic' as 'basic', selectedSearchConfig: 'config1' }
+      },
+      {
+        method: 'diagramComponentStateChanged',
+        action: <%= featureClassName %>SearchActions.diagramComponentStateChanged,
+        payload: { label: 'Test Diagram' }
+      }
+    ];
+    
+    cases.forEach(({ method, action, payload }) => {
+      it(`should dispatch ${action.type} when ${method} is called`, () => {
+        jest.spyOn(store, 'dispatch');
+        (component as any)[method](payload);
+        expect(store.dispatch).toHaveBeenCalledWith(action(payload));
+      });
+    });
+  });
+
+// <<SPEC-EXTENSIONS-MARKER-!!!-DO-NOT-REMOVE-!!!>>
 });

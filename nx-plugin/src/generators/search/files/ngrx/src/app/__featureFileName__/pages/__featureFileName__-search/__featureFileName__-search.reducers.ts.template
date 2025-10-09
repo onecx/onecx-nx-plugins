@@ -57,6 +57,7 @@ export const <%= featurePropertyName %>SearchReducer = createReducer(
       { searchCriteria },
     ):  <%= featureClassName %>SearchState => ({
       ...state,
+      searchLoadingIndicator: true,
       criteria: searchCriteria,
     }),
   ),
