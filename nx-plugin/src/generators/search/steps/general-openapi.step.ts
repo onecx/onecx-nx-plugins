@@ -6,7 +6,7 @@ import { createSearchEndpoint } from '../endpoint.util';
 
 export class GeneralOpenAPIStep implements GeneratorStep<SearchGeneratorSchema> {
   process(tree: Tree, options: SearchGeneratorSchema): void {
-    const openApiFolderPath = 'src/assets/swagger';
+    const openApiFolderPath = 'src/assets/api';
     const openApiFiles = tree.children(openApiFolderPath);
     const bffOpenApiPath = openApiFiles.find((f) => f.endsWith('-bff.yaml'));
     const bffOpenApiContent = tree.read(

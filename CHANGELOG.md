@@ -1,3 +1,22 @@
+## [6.0.0] - TBD
+
+### BREAKING CHANGES
+
+* **API folder structure**: Renamed OpenAPI specification folder from `swagger` to `api`
+  - Changed from `src/assets/swagger/` to `src/assets/api/`
+  - Updated all generator templates and steps
+  - Updated package.json scripts to reference new path
+  - Manual migration required for existing projects (see migration guide)
+
+### Features
+
+* Updated folder naming convention to align with modern API standards
+* Improved consistency with industry practices for API documentation
+
+### Migration
+
+* See [Migration to Generator v6](./docs/modules/general/pages/migrations/migrate-to-v6.adoc) for detailed migration steps
+
 ## [1.13.1](https://github.com/onecx/onecx-nx-plugins/compare/v1.13.0...v1.13.1) (2025-09-23)
 
 ### Bug Fixes
