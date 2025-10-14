@@ -70,7 +70,7 @@ export class SearchEffectsStep
           }
           const itemToEditId = dialogResult.result.id;
           const itemToEdit = {
-              resource: dialogResult.result
+              dataObject: dialogResult.result
           } as ${options.updateRequestName};
           return this.${propertyName}Service
             .update${options.dataObjectName}(itemToEditId, itemToEdit)
@@ -125,7 +125,7 @@ export class SearchEffectsStep
               throw new Error('DialogResult was not set as expected!');
             }
             const toCreateItem = {
-              resource: dialogResult.result
+              dataObject: dialogResult.result
             } as ${options.createRequestName};
             return this.${propertyName}Service
               .create${options.dataObjectName}(toCreateItem)

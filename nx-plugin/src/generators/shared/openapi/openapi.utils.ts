@@ -1,16 +1,10 @@
 import { parse, stringify } from 'yaml';
-
 export const COMMENT_KEY = '~comment~';
 
 interface OpenAPIRoute {
   path: string;
   component: string;
   pathMatch: string;
-}
-
-interface OpenAPITag{
-  name: string;
-  description?: string;
 }
 
 /**
@@ -30,23 +24,12 @@ export class OpenAPIUtil {
   }
 
   /**
-   * Quick access to the tags section of the YAML
-   * @returns interface to add items to the section
-   */
-  tags(): OpenAPIArraySectionUtil<OpenAPITag> {
-    if (!this.yamlContent['tags']) {
-      this.yamlContent['tags'] = [];
-    }
-    return new OpenAPIArraySectionUtil(this, this.yamlContent['tags']);
-  }
-
-  /**
    * Quick access to the routes section of the YAML
    * @returns interface to add items to the section
    */
   routes(): OpenAPIArraySectionUtil<OpenAPIRoute> {
     if (!this.yamlContent['routes']) {
-      this.yamlContent['routes'] = [];
+      this.yamlContent['routes'] = {};
     }
     return new OpenAPIArraySectionUtil(this, this.yamlContent['routes']);
   }
