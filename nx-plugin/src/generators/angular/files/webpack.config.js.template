@@ -15,9 +15,9 @@ const config = withModuleFederationPlugin({
       requiredVersion: 'auto',
       includeSecondaries: true,
     },
-    '@angular/platform-browser': { 
+    '@angular/platform-browser': {
       requiredVersion: 'auto',
-      includeSecondaries: true 
+      includeSecondaries: true,
     },
     '@angular/forms': {
       requiredVersion: 'auto',
@@ -42,11 +42,23 @@ const config = withModuleFederationPlugin({
       requiredVersion: 'auto',
       includeSecondaries: true,
     },
+    primeng: {
+      requiredVersion: 'auto',
+      includeSecondaries: true,
+    },
     '@onecx/accelerator': {
       requiredVersion: 'auto',
       includeSecondaries: true,
     },
     '@onecx/angular-accelerator': {
+      requiredVersion: 'auto',
+      includeSecondaries: true,
+    },
+    '@onecx/angular-utils': {
+      requiredVersion: 'auto',
+      includeSecondaries: true,
+    },
+    '@onecx/shell-core': {
       requiredVersion: 'auto',
       includeSecondaries: true,
     },

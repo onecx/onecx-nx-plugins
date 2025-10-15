@@ -9,7 +9,6 @@ import { LetDirective } from '@ngrx/component';
 import { Store, StoreModule } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { ofType } from '@ngrx/effects';
-import { TranslateService } from '@ngx-translate/core';
 import { TranslateTestingModule } from 'ngx-translate-testing';
 import { DialogService } from 'primeng/dynamicdialog';
 import { UserService } from '@onecx/angular-integration-interface';
@@ -18,6 +17,13 @@ import {
   BreadcrumbService,
   ColumnType,
 } from '@onecx/angular-accelerator';
+import {
+  PermissionService,
+  PortalPageComponent,
+  TranslationConnectionService,
+} from '@onecx/angular-utils';
+import { provideHttpClient } from '@angular/common/http';
+import { of } from 'rxjs';
 import { <%= featureClassName %>SearchActions } from './<%= featureFileName %>-search.actions';
 import { <%= featureClassName %>SearchComponent } from './<%= featureFileName %>-search.component';
 import { <%= featureClassName %>SearchHarness } from './<%= featureFileName %>-search.harness';
@@ -101,34 +107,48 @@ describe('<%= featureClassName %>SearchComponent', () => {
       declarations: [<%= featureClassName %>SearchComponent],
       imports: [
         AngularAcceleratorModule,
+        PortalPageComponent,
         LetDirective,
         ReactiveFormsModule,
         StoreModule.forRoot({}),
         TranslateTestingModule.withTranslations(
           'en',
           require('./../../../../assets/i18n/en.json')
-        ).withTranslations('de', require('./../../../../assets/i18n/de.json')),
+        )
+          .withTranslations('de', require('./../../../../assets/i18n/de.json'))
+          .withDefaultLanguage('en'),
         NoopAnimationsModule,
       ],
       providers: [
+        provideHttpClient(),
         provideHttpClientTesting(),
         DialogService,
+        PermissionService,
         provideMockStore({
           initialState: { <%= featurePropertyName %>: { search: initialState } },
         }),
         FormBuilder,
         { provide: ActivatedRoute, useValue: mockActivatedRoute },
+         {
+          provide: UserService,
+          useValue: {
+            getPermissions: jest
+              .fn()
+              .mockReturnValue(of(['<%= pageConstantName %>#VIEW', '<%= pageConstantName %>#DELETE', '<%= pageConstantName %>#EDIT'])),
+            hasPermission: jest.fn().mockResolvedValue(true),
+          },
+        },
+        {
+          provide: TranslationConnectionService,
+          useValue: { init: jest.fn(), destroy: jest.fn() },
+        },
       ],
     }).compileComponents();
   });
 
   beforeEach(async () => {
-    const userService = TestBed.inject(UserService);
-    userService.hasPermission = async () => true;
-    const translateService = TestBed.inject(TranslateService);
-    translateService.use('en');
+    
     formBuilder = TestBed.inject(FormBuilder);
-
     store = TestBed.inject(MockStore);
     store.overrideSelector(
       select<%= featureClassName %>SearchViewModel,
@@ -150,7 +170,7 @@ describe('<%= featureClassName %>SearchComponent', () => {
   });
 
   it('should dispatch resetButtonClicked action on resetSearch', async () => {
-    var doneFn = jest.fn();
+    const doneFn = jest.fn();
     store.overrideSelector(select<%= featureClassName %>SearchViewModel, {
       ...base<%= featureClassName %>SearchViewModel,
       results: [
@@ -273,7 +293,7 @@ describe('<%= featureClassName %>SearchComponent', () => {
     const pageHeader = await searchHeader.getPageHeader();
     const searchBreadcrumbItem = await pageHeader.getBreadcrumbItem('Search');
 
-    expect(await searchBreadcrumbItem!.getText()).toEqual('Search');
+    expect(await searchBreadcrumbItem?.getText()).toEqual('Search');
   });
 
   it('should dispatch searchButtonClicked action on search', (done) => {

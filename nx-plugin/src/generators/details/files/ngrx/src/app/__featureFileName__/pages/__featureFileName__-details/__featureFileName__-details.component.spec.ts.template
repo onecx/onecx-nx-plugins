@@ -1,18 +1,23 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
 import { LetDirective } from '@ngrx/component';
-import { HttpClientTestingModule } from '@angular/common/http/testing'
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { By } from '@angular/platform-browser';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { Store, StoreModule } from '@ngrx/store';
-import { TranslateService } from '@ngx-translate/core';
 import { TranslateTestingModule } from 'ngx-translate-testing'
 import { PrimeIcons } from 'primeng/api';
 import { of } from 'rxjs';
 import { UserService } from '@onecx/angular-integration-interface';
 import { AngularAcceleratorModule, BreadcrumbService } from '@onecx/angular-accelerator';
+import { provideHttpClient } from '@angular/common/http';
+import {
+  PermissionService,
+  PortalPageComponent,
+  TranslationConnectionService,
+} from '@onecx/angular-utils';
 import { <%= featureClassName %>DetailsComponent } from './<%= featureFileName %>-details.component';
 import { initialState } from './<%= featureFileName %>-details.reducers';
 import { <%= featureClassName %>DetailsHarness } from './<%= featureFileName %>-details.harness';
@@ -74,24 +79,39 @@ describe('<%= featureClassName %>DetailsComponent', () => {
       declarations: [<%= featureClassName %>DetailsComponent],
       imports: [
         AngularAcceleratorModule,
+        PortalPageComponent,
         LetDirective,
-        TranslateTestingModule.withTranslations('en', require('./../../../../assets/i18n/en.json'))
-          .withTranslations('de', require('./../../../../assets/i18n/de.json')),
-        HttpClientTestingModule
+        TranslateTestingModule.withTranslations(
+          'en',
+          require('./../../../../assets/i18n/en.json')
+        )
+          .withTranslations('de', require('./../../../../assets/i18n/de.json'))
+          .withDefaultLanguage('en'),
       ],
       providers: [
+                provideHttpClient(),
+        provideHttpClientTesting(),
+        PermissionService,
         provideMockStore({
           initialState: { <%= featurePropertyName %>: { details: initialState } },
         }),
         BreadcrumbService,
         { provide: ActivatedRoute, useValue: mockActivatedRoute },
+        {
+          provide: UserService,
+          useValue: {
+            getPermissions: jest
+              .fn()
+              .mockReturnValue(of(['<%= pageConstantName %>#VIEW', '<%= pageConstantName %>#BACK'])),
+            hasPermission: jest.fn().mockResolvedValue(true),
+          },
+        },
+        {
+          provide: TranslationConnectionService,
+          useValue: { init: jest.fn(), destroy: jest.fn() },
+        },
       ],
     }).compileComponents();
-
-    const userService = TestBed.inject(UserService);
-    userService.hasPermission = async () => true;
-    const translateService = TestBed.inject(TranslateService);
-    translateService.use('en');
 
     store = TestBed.inject(MockStore);
     store.overrideSelector(
