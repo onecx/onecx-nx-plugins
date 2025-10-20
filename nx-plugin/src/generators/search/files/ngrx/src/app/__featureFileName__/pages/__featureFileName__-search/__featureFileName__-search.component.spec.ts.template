@@ -345,10 +345,9 @@ describe('<%= featureClassName %>SearchComponent', () => {
   
     const interactiveDataView =
       await <%= featurePropertyName %>Search.getSearchResults();        
-    (await (
-        await interactiveDataView.getDataLayoutSelection()
-      ).getTableLayoutSelectionToggleButton()
-    )?.click();
+    await (
+      await interactiveDataView.getDataLayoutSelection()
+    ).selectTableLayout();
 
     const columnGroupSelector =
       await interactiveDataView?.getCustomGroupColumnSelector();
