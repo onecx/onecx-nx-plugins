@@ -169,8 +169,7 @@ describe('<%= featureClassName %>SearchComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should dispatch resetButtonClicked action on resetSearch', async () => {
-    var doneFn = jest.fn();
+  it('should dispatch resetButtonClicked action on resetSearch', async () => {    
     store.overrideSelector(select<%= featureClassName %>SearchViewModel, {
       ...base<%= featureClassName %>SearchViewModel,
       results: [
@@ -197,15 +196,12 @@ describe('<%= featureClassName %>SearchComponent', () => {
     });
     store.refreshState();
 
-    store.scannedActions$
-      .pipe(ofType(<%= featureClassName %>SearchActions.resetButtonClicked))
-      .subscribe(() => {
-        doneFn();
-      });
-
     const searchHeader = await <%= featurePropertyName %>Search.getHeader();
     await searchHeader.clickResetButton();
-    expect(doneFn).toHaveBeenCalledTimes(1);
+
+    expect(store.dispatch).toHaveBeenCalledWith(
+      WorldSearchActions.resetButtonClicked()
+    );
   });
 
   it('should have 2 overFlow header actions when search config is disabled', async () => {
