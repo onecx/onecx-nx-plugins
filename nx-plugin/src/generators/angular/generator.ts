@@ -181,7 +181,7 @@ function addScriptsToPackageJson(tree: Tree, options: AngularGeneratorSchema) {
     pkgJson.scripts = pkgJson.scripts ?? {};
     pkgJson.scripts[
       'apigen'
-    ] = `openapi-generator-cli generate -i src/assets/api/${options['name']}-bff.yaml -c apigen.yaml -o src/app/shared/generated -g typescript-angular --type-mappings AnyType=object`;
+    ] = `openapi-generator-cli generate -i src/assets/swagger/${options['name']}-bff.yaml -c apigen.yaml -o src/app/shared/generated -g typescript-angular --type-mappings AnyType=object`;
     pkgJson.scripts['start'] = 'nx serve';
     pkgJson.scripts['build'] = 'nx build';
     pkgJson.scripts['format'] = 'nx format:write --uncommitted';

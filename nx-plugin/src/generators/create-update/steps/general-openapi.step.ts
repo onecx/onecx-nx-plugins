@@ -8,7 +8,7 @@ export class GeneralOpenAPIStep
   implements GeneratorStep<CreateUpdateGeneratorSchema>
 {
   process(tree: Tree, options: CreateUpdateGeneratorSchema): void {
-    const openApiFolderPath = 'src/assets/api';
+    const openApiFolderPath = 'src/assets/swagger';
     const openApiFiles = tree.children(openApiFolderPath);
     const bffOpenApiPath = openApiFiles.find((f) => f.endsWith('-bff.yaml'));
     const bffOpenApiContent = tree.read(
