@@ -157,9 +157,21 @@ async function processParams<T>(
           .map((p) => ({
             name: p.key,
             message: p.prompt,
-            initial: parameterValues[p.key],
+            initial: `${parameterValues[p.key]}`,
           })),
       });
+
+      // Map types again
+      for (const parameter of parameters.filter((p) => p.showInSummary)) {
+        if (parameter.type === 'boolean' && typeof result['data'][parameter.key] === 'string') {
+          const val = result['data'][parameter.key].toLowerCase();
+          if (val === 'true') result['data'][parameter.key] = true;
+          else if (val === 'false') result['data'][parameter.key] = false;
+        } else if (parameter.type === 'number' && typeof result['data'][parameter.key] === 'string') {
+          result['data'][parameter.key] = Number(result['data'][parameter.key]);
+        }
+      }
+
       Object.assign(parameterValues, result['data']);
     }
   }

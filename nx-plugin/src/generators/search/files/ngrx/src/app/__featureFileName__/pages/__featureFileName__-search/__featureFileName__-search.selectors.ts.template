@@ -1,14 +1,10 @@
 import { createSelector } from '@ngrx/store';
 import { RowListGridData } from '@onecx/angular-accelerator';
 import { createChildSelectors } from '@onecx/ngrx-accelerator';
-import { selectQueryParams } from 'src/app/shared/selectors/router.selectors';
 import { <%= featurePropertyName %>Feature } from '../../<%= featureFileName %>.reducers';
-import {
-  <%= featureClassName %>SearchCriteria,
-  <%= featurePropertyName %>SearchCriteriasSchema,
-} from './<%= featureFileName %>-search.parameters';
 import { initialState } from './<%= featureFileName %>-search.reducers';
 import { <%= featureClassName %>SearchViewModel } from './<%= featureFileName %>-search.viewmodel';
+import { <%= dataObjectName %> } from '../../../shared/generated';
 
 export const <%= featurePropertyName %>SearchSelectors = createChildSelectors(
   <%= featurePropertyName %>Feature.selectSearch,
@@ -17,7 +13,7 @@ export const <%= featurePropertyName %>SearchSelectors = createChildSelectors(
 
 export const selectResults = createSelector(
   <%= featurePropertyName %>SearchSelectors.selectResults,
-  (results): RowListGridData[] => {
+  (results: <%= dataObjectName %>[]): RowListGridData[] => {
     return results.map((item) => ({      
       imagePath: '',
       ...item,
@@ -26,6 +22,7 @@ export const selectResults = createSelector(
     }));
   }
 );
+
 
 export const select<%= featureClassName %>SearchViewModel = createSelector(
   <%= featurePropertyName %>SearchSelectors.selectColumns,

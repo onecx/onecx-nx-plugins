@@ -11,17 +11,10 @@ import {
 } from '@onecx/angular-accelerator';
 
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { TranslateService } from '@ngx-translate/core';
-import { Observable, map } from 'rxjs';
-import {
-  <%= createRequestName%>,
-  <%= updateRequestName%>,  
-  <%= dataObjectName%>,
-  <%= serviceName%>,
-} from 'src/app/shared/generated';
+import { map } from 'rxjs';
+import { <%= dataObjectName%> } from 'src/app/shared/generated';
 
 import { <%= featureClassName%>CreateUpdateViewModel } from './<%= featureFileName %>-create-update.viewmodel';
-
 
 @Component({
   selector: 'app-<%= featureFileName %>-create-update',

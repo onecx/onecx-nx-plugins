@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 import { provideHttpClientTesting } from '@angular/common/http/testing';
-import { ComponentFixture, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { LetDirective } from '@ngrx/component';
@@ -10,7 +10,7 @@ import {
 } from '@onecx/angular-accelerator';
 import { TranslateTestingModule } from 'ngx-translate-testing';
 import { <%= featureClassName%>CreateUpdateComponent } from './<%= featureFileName%>-create-update.component';
-import { By } from '@angular/platform-browser';
+import { distinctUntilChanged, filter, skip, take, toArray } from 'rxjs'
 
 Object.defineProperty(window, 'matchMedia', {
   writable: true,
@@ -61,4 +61,84 @@ describe('<%= featureClassName%>CreateUpdateComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should emit primaryButtonEnabled as true when form is valid', (done) => {
+    component.primaryButtonEnabled
+      .pipe(
+        // Skip initial emission to start fresh
+        skip(1),
+        // Only look at the first two emitted values after changes
+        take(2),
+        // Convert both emitted values into a single array
+        toArray()
+      ).subscribe((values) => {
+        // Expect button to be disabled for invalid form and enabled for valid form
+        expect(values).toEqual([false, true])
+        done()
+      })
+
+    // Start with invalid form
+    component.formGroup.setValue({ changeMe: 'x'.repeat(256) })
+    component.formGroup.updateValueAndValidity()
+
+    // Then make it valid
+    component.formGroup.setValue({ changeMe: 'valid value' })
+    component.formGroup.updateValueAndValidity()
+  })
+
+  it('should dynamically emit primaryButtonEnabled based on form validity changes', fakeAsync(() => {
+    const emissions: boolean[] = []
+    component.primaryButtonEnabled
+      .pipe(distinctUntilChanged())
+      .subscribe((enabled) => {
+        emissions.push(enabled)
+      })
+
+    tick()
+    
+    component.formGroup.setValue({ changeMe: 'initial valid' })
+    component.formGroup.updateValueAndValidity()
+    tick()
+
+    // Make invalid
+    component.formGroup.setValue({ changeMe: 'x'.repeat(256) })
+    component.formGroup.updateValueAndValidity()
+    tick()
+
+    // Make valid
+    component.formGroup.setValue({ changeMe: 'valid' })
+    component.formGroup.updateValueAndValidity()
+    tick()
+
+    expect(emissions).toEqual([true, false, true])
+  }))
+
+  it('should set dialogResult with merged values on ocxDialogButtonClicked', () => {
+    component.vm.itemToEdit = { appId: 'oldId', name: 'oldName', description: 'oldDesc' } as any
+    component.formGroup.setValue({ changeMe: 'newVal' })
+
+    component.ocxDialogButtonClicked()
+
+    expect(component.dialogResult).toEqual({
+      appId: 'oldId',
+      name: 'oldName',
+      description: 'oldDesc',
+      changeMe: 'newVal'
+    })
+  })
+
+  it('should patch formGroup values from vm.itemToEdit on ngOnInit', () => {
+    component.vm.itemToEdit = { changeMe: 'editVal' } as any
+    component.ngOnInit()
+    expect(component.formGroup.value).toEqual({ changeMe: 'editVal' })
+  })
+
+  it('should set dialogResult to form values when creating (no itemToEdit)', () => {
+    component.vm.itemToEdit = undefined as any
+    component.formGroup.setValue({ changeMe: 'createVal' })
+
+    component.ocxDialogButtonClicked()
+
+    expect(component.dialogResult).toEqual({ changeMe: 'createVal' })
+  })
 });

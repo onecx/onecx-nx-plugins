@@ -18,6 +18,7 @@ import { GeneralTranslationsStep } from './steps/general-translations.step';
 import { SearchActionsStep } from './steps/search-actions.step';
 import { SearchComponentStep } from './steps/search-component.step';
 import { SearchEffectsStep } from './steps/search-effects.step';
+import { SearchEffectsSpecStep } from './steps/search-effects.spec.step';
 import { SearchHTMLStep } from './steps/search-html.step';
 import { SearchTestsStep } from './steps/search-tests.step';
 import { ValidateFeatureModuleStep } from '../shared/steps/validate-feature-module.step';
@@ -48,7 +49,7 @@ const PARAMETERS: GeneratorParameter<DeleteGeneratorSchema>[] = [
     default: (values) => {
       return `${names(values.featureName).className}`;
     },
-    prompt: 'Provide a name for your Data Object (e.g., Book): ',
+    prompt: 'Provide a name for your Resource (e.g., Book): ',
     showInSummary: true,
     showRules: [{ showIf: (values) => values.customizeNamingForAPI }],
   },
@@ -99,6 +100,7 @@ export async function deleteGenerator(
   generatorProcessor.addStep(new SearchActionsStep());
   generatorProcessor.addStep(new SearchComponentStep());
   generatorProcessor.addStep(new SearchEffectsStep());
+  generatorProcessor.addStep(new SearchEffectsSpecStep());
   generatorProcessor.addStep(new SearchHTMLStep());
   generatorProcessor.addStep(new SearchTestsStep());
 

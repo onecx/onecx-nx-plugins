@@ -10,12 +10,12 @@ include::partial$generator-check.adoc[]
 To run the generator, execute the following command: 
 
 ----
-nx generate <namespaceOfTheGenerator>/nx-plugin:details <nameOfTheFeature> [--standalone]
+nx generate <namespaceOfTheGenerator>/nx-plugin:details <feature>
 ----
 
 include::partial$generator-namespace-item.adoc[]
 
-* _<nameOfTheFeature>_: The name the feature the details page should be created in e.g., theme.
+* _<feature>_: see xref:getting_started/glossary.adoc#feature[here].
 
 TIP: Next, the CLI will ask you whether you want to customize names for the generation.
 When answering yes, the next few questions will ask you about names for the API.
@@ -24,7 +24,6 @@ When modifying names, assure that you use the same custom names for all generate
 
 *Options*:
 
-* --standalone: if you want to develop an application that does not depend on onecx-services.
 * --editMode: if you want to generate an edit mode, see 
 * --allowDelete: if you want to generate a delete button in the page header
 

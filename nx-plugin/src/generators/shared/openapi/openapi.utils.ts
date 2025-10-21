@@ -1,5 +1,4 @@
 import { parse, stringify } from 'yaml';
-
 export const COMMENT_KEY = '~comment~';
 
 interface OpenAPIRoute {

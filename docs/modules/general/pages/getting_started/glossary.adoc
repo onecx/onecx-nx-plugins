@@ -1,0 +1,43 @@
+== Glossary
+
+:idprefix:
+:idseparator: -
+
+In this page you can find explanations for relevant terms. 
+
+[#feature]
+=== Feature
+
+Should be replaced by the name of your entity, for which you are generating the search or details page, create/update dialog or any other functionality. 
+
+Examples for `+<feature>+`:
+
+* property
+* user
+* house
+
+When it is defined as `+<Feature>+`, please start the name of your entity with a capital letter, in other cases defined as `+<feature>+` use lowercase.
+
+[#resource]
+=== Resource / Data Object
+
+The resource / data object is a schema definition in the OpenAPI specification. It defines the properties of your entity and is named equal to <<feature, <Feature> >>. The resource is used in various places, e.g. for search results, details view, create and update requests. As it is shared, be cautious while making changes to it. If the resource differs for different use cases, you can define multiple resources in the OpenAPI specification and adjust the endpoints accordingly.
+
+.Example Resource (in the OpenAPI specification)
+[source, yaml]
+----
+components:
+  schemas:
+    MyResource:
+      type: object
+      required:
+        - id
+      properties:
+        modificationCount:
+          type: integer
+          format: int32
+        id:
+          type: string
+        name:
+          type: string
+----

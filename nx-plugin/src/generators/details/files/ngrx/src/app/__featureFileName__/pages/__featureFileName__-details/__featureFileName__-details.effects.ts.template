@@ -14,7 +14,7 @@ import { selectRouteParam, selectUrl } from 'src/app/shared/selectors/router.sel
 import { PortalMessageService } from '@onecx/angular-integration-interface';
 import { PortalDialogService } from '@onecx/angular-accelerator';
 import { <%= updateRequestName%>, <%= dataObjectName %>, <%= serviceName %> } from '../../../shared/generated';
-import { <%= featureFileName %>DetailsSelectors } from './<%= featureFileName %>-details.selectors';
+import { <%= featurePropertyName %>DetailsSelectors } from './<%= featureFileName %>-details.selectors';
 
 @Injectable()
 export class <%= featureClassName %>DetailsEffects {
