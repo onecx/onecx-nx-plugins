@@ -37,6 +37,10 @@ export class <%= featureClassName %>SearchEffects {
     private readonly exportDataService: ExportDataService
   ) {}
 
+  /**
+   * Syncs the search criteria from the store to the URL query parameters
+   * whenever the search or reset button is clicked.
+   */
   syncParamsToUrl$ = createEffect(
     () => {
       return this.actions$.pipe(
@@ -70,11 +74,19 @@ export class <%= featureClassName %>SearchEffects {
     { dispatch: false },
   );
 
+  /**
+   * Performs a search whenever the user navigates to the Component or
+   * when the relevant query parameters change (e.g., after syncParamsToUrl$ effect has changed them).
+   */
   searchByUrl$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(routerNavigatedAction),
       filterForNavigatedTo(this.router, <%= featureClassName %>SearchComponent),
-      filterOutQueryParamsHaveNotChanged(this.router, <%= featurePropertyName %>SearchCriteriasSchema, false),      
+      filterOutQueryParamsHaveNotChanged(
+        this.router,
+        <%= featurePropertyName %>SearchCriteriasSchema,
+        false // allow a search to be triggered even if there are no query params
+      ),   
       concatLatestFrom(() =>
         this.store.select(<%= featurePropertyName %>SearchSelectors.selectCriteria),
       ),
@@ -82,6 +94,11 @@ export class <%= featureClassName %>SearchEffects {
     );
   });
 
+  /**
+   * Performs a search based on the provided search criteria.
+   * @param searchCriteria The criteria to use for the search.
+   * @returns An observable of the search results.
+   */
   performSearch(searchCriteria: Record<string, any>) {
     return this.<%= featurePropertyName %>Service.search<%= dataObjectName %>s(
       {
@@ -136,6 +153,10 @@ export class <%= featureClassName %>SearchEffects {
     { dispatch: false }
   );
 
+  /**
+   * Maps error actions to user-friendly error messages and displays them.
+   * Add new error actions and their corresponding message keys here.
+   */
   errorMessages: { action: Action; key: string }[] = [
     {
       action:
@@ -144,6 +165,9 @@ export class <%= featureClassName %>SearchEffects {
     }
   ];
 
+  /**
+   * Displays error messages to the user based on dispatched error actions.
+   */
   displayError$ = createEffect(
     () => {
       return this.actions$.pipe(
