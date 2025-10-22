@@ -21,7 +21,7 @@
   >
   </ocx-page-header>
    <%_ if(editMode){ _%>
-    <ocx-page-content>
+    <ocx-content>
       <div class="surface-section mt-3 mb-1 mx-3">
         <form [formGroup]="formGroup" errorTailor>
           <div class="mt-3 mb-1">
@@ -40,7 +40,7 @@
           </div>          
         </form>
       </div>
-    </ocx-page-content>
+    </ocx-content>
    <%_ } _%> 
   </div>
   }

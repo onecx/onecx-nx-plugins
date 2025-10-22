@@ -132,6 +132,7 @@ export async function angularGenerator(
       '@angular/build': angularVersion,
       '@angular-devkit/core': angularVersion,
       '@angular-devkit/schematics': angularVersion,
+      '@angular-devkit/build-angular': angularVersion,
       '@angular/cli': angularVersion,
       '@angular/compiler-cli': angularVersion,
       '@angular/language-service': angularVersion,
@@ -301,7 +302,7 @@ function adaptJestConfig(tree: Tree) {
     /transformIgnorePatterns: .+?,/,
     `transformIgnorePatterns: ['node_modules/(?!@ngrx|(?!deck.gl)|d3-scale|(?!.*\\.mjs$))'],
     moduleNameMapper: {
-    '^@primeng/themes$': '<rootDir>/node_modules/@primeng/themes/index.mjs',
+    '^@primeng/themes': '\<rootDir\>/node_modules/@primeng/themes/index.mjs',
   },`,
     tree
   );

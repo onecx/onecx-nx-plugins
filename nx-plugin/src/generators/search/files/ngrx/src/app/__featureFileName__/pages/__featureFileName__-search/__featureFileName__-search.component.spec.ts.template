@@ -17,12 +17,15 @@ import {
   BreadcrumbService,
   HAS_PERMISSION_CHECKER,
   ColumnType,
+  providePortalDialogService,
+  RowListGridData,
 } from '@onecx/angular-accelerator';
 import {
   PermissionService,
   PortalPageComponent,
   TranslationConnectionService,
 } from '@onecx/angular-utils';
+import { TooltipModule } from 'primeng/tooltip';
 import { provideHttpClient } from '@angular/common/http';
 import { of } from 'rxjs';
 import { <%= featureClassName %>SearchActions } from './<%= featureFileName %>-search.actions';
@@ -112,6 +115,7 @@ describe('<%= featureClassName %>SearchComponent', () => {
         PortalPageComponent,
         LetDirective,
         ReactiveFormsModule,
+        TooltipModule,
         StoreModule.forRoot({}),
         TranslateTestingModule.withTranslations(
           'en',
@@ -137,7 +141,7 @@ describe('<%= featureClassName %>SearchComponent', () => {
           useValue: {
             getPermissions: jest
               .fn()
-              .mockReturnValue(of(['
+              .mockReturnValue(of([
                 "<%= featureConstantName %>#CREATE",
                 "<%= featureConstantName %>#EDIT",
                 "<%= featureConstantName %>#DELETE",

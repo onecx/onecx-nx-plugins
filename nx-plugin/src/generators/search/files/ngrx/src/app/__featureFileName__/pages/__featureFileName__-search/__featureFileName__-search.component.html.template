@@ -47,7 +47,6 @@
         "
         (componentStateChanged)="resultComponentStateChanged($event)"
         [layout]="vm.resultComponentState?.layout ?? 'list'"
-        [displayedColumns]="vm.resultComponentState?.displayedColumns ?? []"
         [supportedViewLayouts]="['list', 'table']"
         [page]="vm.resultComponentState?.activePage ?? 0"
         [pageSize]="vm.resultComponentState?.pageSize"

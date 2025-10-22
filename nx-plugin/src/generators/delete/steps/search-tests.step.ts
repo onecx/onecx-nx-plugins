@@ -10,12 +10,16 @@ export class SearchTestsStep implements GeneratorStep<DeleteGeneratorSchema> {
     const filePath = `src/app/${fileName}/pages/${fileName}-search/${fileName}-search.component.spec.ts`;
 
     const content = tree.exists(filePath) ? tree.read(filePath, 'utf8')! : '';
-    if (!content.includes(`import { RowListGridData } from '@onecx/portal-integration-angular'`)) {
+    if (
+      !content.includes(
+        `import { RowListGridData } from '@onecx/angular-accelerator';`
+      )
+    ) {
       safeReplace(
         `Add RowListGridData import to ${className}SearchComponent spec`,
         filePath,
         [/^/],
-        [`import { RowListGridData } from '@onecx/portal-integration-angular';\n`],
+        [`import { RowListGridData } from '@onecx/angular-accelerator';\n`],
         tree
       );
     }
@@ -34,8 +38,8 @@ export class SearchTestsStep implements GeneratorStep<DeleteGeneratorSchema> {
     safeReplace(
       `Add details effect tests to search effects spec file. Look for the marker comment '// <<SPEC-EXTENSIONS-MARKER-!!!-DO-NOT-REMOVE-!!!>>' in ${filePath} and insert the test code above it.`,
       filePath,
-      [ '// <<SPEC-EXTENSIONS-MARKER-!!!-DO-NOT-REMOVE-!!!>>' ],
-      [ snippet + '  // <<SPEC-EXTENSIONS-MARKER-!!!-DO-NOT-REMOVE-!!!>>' ],
+      ['// <<SPEC-EXTENSIONS-MARKER-!!!-DO-NOT-REMOVE-!!!>>'],
+      [snippet + '  // <<SPEC-EXTENSIONS-MARKER-!!!-DO-NOT-REMOVE-!!!>>'],
       tree
     );
   }

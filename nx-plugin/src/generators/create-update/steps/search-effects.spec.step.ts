@@ -4,10 +4,12 @@ import { safeReplace } from '../../shared/safeReplace';
 import { CreateUpdateGeneratorSchema } from '../schema';
 import { toPascalCase, pluralize } from '../../shared/naming.utils';
 
-export class SearchEffectsSpecStep implements GeneratorStep<CreateUpdateGeneratorSchema> {
+export class SearchEffectsSpecStep
+  implements GeneratorStep<CreateUpdateGeneratorSchema>
+{
   process(tree: Tree, options: CreateUpdateGeneratorSchema): void {
     const n = names(options.featureName);
-    const className = n.className;              
+    const className = n.className;
     const propertyName = n.propertyName;
 
     const dataObjectPascal = toPascalCase(options.dataObjectName || className);
@@ -20,22 +22,30 @@ export class SearchEffectsSpecStep implements GeneratorStep<CreateUpdateGenerato
       return;
     }
 
-    if (!content.includes(`PortalDialogService`) || !content.includes(`from '@onecx/portal-integration-angular'`)) {
+    if (
+      !content.includes(`PortalDialogService`) ||
+      !content.includes(`from '@onecx/angular-accelerator'`)
+    ) {
       safeReplace(
         'Add PortalDialogService import',
         filePath,
         [/^/],
-        [`import { PortalDialogService } from '@onecx/portal-integration-angular';\n`],
+        [`import { PortalDialogService } from '@onecx/angular-accelerator';\n`],
         tree
       );
     }
 
-    if (content.includes('providers: [') && !content.includes('PortalDialogService')) {
+    if (
+      content.includes('providers: [') &&
+      !content.includes('PortalDialogService')
+    ) {
       safeReplace(
         'Add PortalDialogService provider',
         filePath,
         ['providers: ['],
-        [`providers: [\n        { provide: PortalDialogService, useValue: { openDialog: jest.fn() } },`],
+        [
+          `providers: [\n        { provide: PortalDialogService, useValue: { openDialog: jest.fn() } },`,
+        ],
         tree
       );
     }
@@ -187,7 +197,10 @@ export class SearchEffectsSpecStep implements GeneratorStep<CreateUpdateGenerato
       `Add create/update effect tests to search effects spec file. Look for the marker comment '// <<SPEC-EXTENSIONS-MARKER-!!!-DO-NOT-REMOVE-!!!>>' in ${filePath} and insert the test code above it.`,
       filePath,
       ['// <<SPEC-EXTENSIONS-MARKER-!!!-DO-NOT-REMOVE-!!!>>'],
-      [specToAppendEscaped + '\n  // <<SPEC-EXTENSIONS-MARKER-!!!-DO-NOT-REMOVE-!!!>>'],
+      [
+        specToAppendEscaped +
+          '\n  // <<SPEC-EXTENSIONS-MARKER-!!!-DO-NOT-REMOVE-!!!>>',
+      ],
       tree
     );
   }

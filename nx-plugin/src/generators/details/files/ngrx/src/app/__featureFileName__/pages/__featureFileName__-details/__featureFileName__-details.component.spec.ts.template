@@ -9,6 +9,7 @@ import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { Store, StoreModule } from '@ngrx/store';
 import { TranslateTestingModule } from 'ngx-translate-testing'
 import { PrimeIcons } from 'primeng/api';
+import { ReactiveFormsModule } from '@angular/forms';
 import { of } from 'rxjs';
 import { UserService } from '@onecx/angular-integration-interface';
 import { AngularAcceleratorModule, BreadcrumbService } from '@onecx/angular-accelerator';
@@ -73,7 +74,11 @@ describe('<%= featureClassName %>DetailsComponent', () => {
     details: undefined,
     detailsLoadingIndicator: false,
     detailsLoaded: true,
-    backNavigationPossible: true
+    backNavigationPossible: true,
+    <%_ if(editMode){ _%>
+    editMode: true,
+    isSubmitting: false,
+    <%_ } _%>
   };
 
   beforeEach(async () => {
@@ -83,6 +88,7 @@ describe('<%= featureClassName %>DetailsComponent', () => {
         AngularAcceleratorModule,
         PortalPageComponent,
         LetDirective,
+        ReactiveFormsModule,
         TranslateTestingModule.withTranslations(
           'en',
           require('./../../../../assets/i18n/en.json')
@@ -165,6 +171,21 @@ describe('<%= featureClassName %>DetailsComponent', () => {
     );
   });
 
+  <% if(editMode) { %>
+  it('should have 4 inline actions', async () => {
+    const pageHeader = await <%= featurePropertyName %>Details.getHeader();
+    const inlineActions = await pageHeader.getInlineActionButtons();
+    expect(inlineActions.length).toBe(4);
+
+    const backAction = await pageHeader.getInlineActionButtonByLabel('Back');
+    expect(backAction).toBeTruthy();
+
+    const moreAction = await pageHeader.getInlineActionButtonByIcon(
+      PrimeIcons.ELLIPSIS_V
+    );
+    expect(moreAction).toBeTruthy();  
+  });
+  <% }else{ %>
   it('should have 2 inline actions', async () => {
     const pageHeader = await <%= featurePropertyName %>Details.getHeader();
     const inlineActions = await pageHeader.getInlineActionButtons();
@@ -176,8 +197,9 @@ describe('<%= featureClassName %>DetailsComponent', () => {
     const moreAction = await pageHeader.getInlineActionButtonByIcon(
       PrimeIcons.ELLIPSIS_V
     );
-    expect(moreAction).toBeTruthy();
+    expect(moreAction).toBeTruthy();  
   });
+  <% } %>
 
   it('should dispatch navigateBackButtonClicked action on back button click', async () => {
     jest.spyOn(window.history, 'back');

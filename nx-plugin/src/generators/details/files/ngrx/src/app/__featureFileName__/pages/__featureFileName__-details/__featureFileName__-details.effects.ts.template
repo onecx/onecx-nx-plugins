@@ -23,8 +23,8 @@ export class <%= featureClassName %>DetailsEffects {
   private router = inject(Router);
   private store = inject(Store);
   private messageService = inject(PortalMessageService);
-  <%_ if(editMode){ _%> ,
-  private portalDialogService: inject(PortalDialogService)
+  <%_ if(editMode){ _%>
+  private portalDialogService = inject(PortalDialogService);
   <%_ } _%> 
 
   navigatedToDetailsPage$ = createEffect(() => {
