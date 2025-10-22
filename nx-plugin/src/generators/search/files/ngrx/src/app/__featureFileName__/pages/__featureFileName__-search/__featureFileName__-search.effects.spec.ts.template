@@ -212,29 +212,57 @@ describe('<%= featureClassName %>SearchEffects', () => {
   })
 
   describe('exportData$', () => {
-    const cases = [
-      {
-        desc: 'should handle export with empty displayed columns',
-        viewModel: { results: [{ id: '1', name: 'Context 1', description: 'Description 1', imagePath: '' } as any], resultComponentState: { displayedColumns: undefined } }
-      },
-      {
-        desc: 'should handle export with null resultComponentState',
-        viewModel: { results: [{ id: '1', name: 'Context 1', description: 'Description 1', imagePath: '' } as any], resultComponentState: null }
-      }
-    ];
-    
-    cases.forEach(({ desc, viewModel }) => {
-      it(desc, (done) => {
-        store.overrideSelector(select<%= featureClassName %>SearchViewModel, viewModel as any)
+    it('should handle export with empty displayed columns', (done) => {
+      const viewModel = {
+        results: [
+          {
+            id: '1',
+            name: 'Context 1',
+            description: 'Description 1',
+            imagePath: '',
+          } as any,
+        ],
+        resultComponentState: { displayedColumns: undefined },
+      };
+      store.overrideSelector(select<%= featureClassName %>SearchViewModel, viewModel as any);
 
-        effects.exportData$.pipe(take(1)).subscribe(() => {
-          expect(exportDataService.exportCsv).toHaveBeenCalledWith([], viewModel.results, '<%= featureClassName %>.csv')
-          done()
-        })
+      effects.exportData$.pipe(take(1)).subscribe(() => {
+        expect(exportDataService.exportCsv).toHaveBeenCalledWith(
+          [],
+          viewModel.results,
+          '<%= featureClassName %>.csv'
+        );
+        done();
+      });
 
-        actions$.next(<%= featureClassName %>SearchActions.exportButtonClicked())
-      })
-    })
+      actions$.next(<%= featureClassName %>SearchActions.exportButtonClicked());
+    });
+
+    it('should handle export with null resultComponentState', (done) => {
+      const viewModel = {
+        results: [
+          {
+            id: '1',
+            name: 'Context 1',
+            description: 'Description 1',
+            imagePath: '',
+          } as any,
+        ],
+        resultComponentState: null,
+      };
+      store.overrideSelector(select<%= featureClassName %>SearchViewModel, viewModel as any);
+
+      effects.exportData$.pipe(take(1)).subscribe(() => {
+        expect(exportDataService.exportCsv).toHaveBeenCalledWith(
+          [],
+          viewModel.results,
+          '<%= featureClassName %>.csv'
+        );
+        done();
+      });
+
+      actions$.next(<%= featureClassName %>SearchActions.exportButtonClicked());
+    });
 
     it('should export CSV with correct parameters when export button is clicked', (done) => {
       const mockColumns = [{ field: 'name', header: 'Name' }, { field: 'description', header: 'Description' }]
