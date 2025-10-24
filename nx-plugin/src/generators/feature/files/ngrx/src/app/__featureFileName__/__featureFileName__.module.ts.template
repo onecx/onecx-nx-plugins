@@ -2,14 +2,8 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 import { SharedModule } from '../shared/shared.module';
-import {
-  createTranslateLoader,
-  PortalCoreModule,
-  addInitializeModuleGuard,
-  AppStateService,
-  AlwaysGrantPermissionChecker,
-  HAS_PERMISSION_CHECKER,
-} from '@onecx/portal-integration-angular';
+import { PortalCoreModule } from '@onecx/portal-integration-angular'
+import { addInitializeModuleGuard } from '@onecx/angular-integration-interface'
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CalendarModule } from 'primeng/calendar';
 import {

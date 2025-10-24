@@ -22,7 +22,7 @@ export class GeneralOpenAPIStep
     const createResponseName = options.createResponseName;
     const updateRequestName = options.updateRequestName;
     const updateResponseName = options.updateResponseName;
-    const apiServiceName = names(options.apiServiceName).propertyName;
+    const apiServiceName = options.apiServiceName;
 
     const apiUtil = new OpenAPIUtil(bffOpenApiContent);
     // Paths
@@ -70,7 +70,7 @@ export class GeneralOpenAPIStep
       .set(`${options.createRequestName}`, {
         type: 'object',
         properties: {
-          resource: {
+          dataObject: {
             type: 'object',
             $ref: `#/components/schemas/${resource}`,
           },
@@ -79,7 +79,7 @@ export class GeneralOpenAPIStep
       .set(`${options.updateRequestName}`, {
         type: 'object',
         properties: {
-          resource: {
+          dataObject: {
             type: 'object',
             $ref: `#/components/schemas/${resource}`,
           },
@@ -88,7 +88,7 @@ export class GeneralOpenAPIStep
       .set(`${options.createResponseName}`, {
         type: 'object',
         properties: {
-          resource: {
+          dataObject: {
             type: 'object',
             $ref: `#/components/schemas/${resource}`,
           },
@@ -99,7 +99,7 @@ export class GeneralOpenAPIStep
       .set(`${options.updateResponseName}`, {
         type: 'object',
         properties: {
-          resource: {
+          dataObject: {
             type: 'object',
             $ref: `#/components/schemas/${resource}`,
           },

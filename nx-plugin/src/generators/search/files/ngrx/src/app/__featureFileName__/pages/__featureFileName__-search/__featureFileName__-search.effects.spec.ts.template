@@ -1,0 +1,279 @@
+import { TestBed } from '@angular/core/testing'
+import { ActivatedRoute, Router } from '@angular/router'
+import { RouterTestingModule } from '@angular/router/testing'
+import { provideMockActions } from '@ngrx/effects/testing'
+import { Action, Store } from '@ngrx/store'
+import { MockStore, provideMockStore } from '@ngrx/store/testing'
+import { ExportDataService, PortalDialogService, PortalMessageService } from '@onecx/portal-integration-angular'
+import { of, ReplaySubject, throwError } from 'rxjs'
+import { <%= serviceName %> } from '../../../shared/generated'
+import { <%= featureClassName %>SearchActions } from './<%= featureFileName %>-search.actions'
+import { <%= featureClassName %>SearchEffects } from './<%= featureFileName %>-search.effects'
+import { <%= featureClassName %>SearchCriteria } from './<%= featureFileName %>-search.parameters'
+import { initialState } from './<%= featureFileName %>-search.reducers'
+import { <%= featurePropertyName %>SearchSelectors, select<%= featureClassName %>SearchViewModel } from './<%= featureFileName %>-search.selectors'
+import { take } from 'rxjs/operators'
+import { routerNavigatedAction } from '@ngrx/router-store'
+
+jest.mock('@onecx/ngrx-accelerator', () => {
+  const actual = jest.requireActual('@onecx/ngrx-accelerator')
+  return {
+    ...actual,
+    filterForNavigatedTo: () => (source: any) => source,
+    filterOutQueryParamsHaveNotChanged: () => (source: any) => source
+  }
+})
+
+describe('<%= featureClassName %>SearchEffects', () => {
+  let actions$: ReplaySubject<Action>
+  let effects: <%= featureClassName %>SearchEffects
+  let store: MockStore<Store>
+  let router: jest.Mocked<Router>
+  let route: ActivatedRoute
+  let service: jest.Mocked<<%= serviceName %>>
+  let portalDialogService: jest.Mocked<PortalDialogService>
+  let messageService: jest.Mocked<PortalMessageService>
+  let exportDataService: jest.Mocked<ExportDataService>
+
+  const mockCriteria: <%= featureClassName %>SearchCriteria = { changeMe: 'test' } as any
+
+  beforeEach(async () => {
+    actions$ = new ReplaySubject(1)
+
+    service = {
+      create<%= apiModelPascal %>: jest.fn(),
+      update<%= apiModelPascal %>: jest.fn(),
+      delete<%= apiModelPascal %>: jest.fn(),
+      search<%= apiModelPascal %>s: jest.fn()
+    } as unknown as jest.Mocked<<%= serviceName %>>;
+
+    // compatibility aliases (featureName differs from dataObjectName)
+    (service as any).create<%= featureClassName %> = (service as any).create<%= apiModelPascal %>;
+    (service as any).update<%= featureClassName %> = (service as any).update<%= apiModelPascal %>;
+    (service as any).delete<%= featureClassName %> = (service as any).delete<%= apiModelPascal %>;
+    (service as any).search<%= featureClassName %>s = (service as any).search<%= apiModelPascal %>s;
+
+    router = {
+      navigate: jest.fn().mockReturnValue(Promise.resolve(true)),
+      parseUrl: jest.fn(),
+      events: of()
+    } as unknown as jest.Mocked<Router>
+
+    portalDialogService = {
+      openDialog: jest.fn()
+    } as unknown as jest.Mocked<PortalDialogService>
+
+    messageService = {
+      success: jest.fn(),
+      error: jest.fn()
+    } as unknown as jest.Mocked<PortalMessageService>
+
+    exportDataService = {
+      exportCsv: jest.fn()
+    } as unknown as jest.Mocked<ExportDataService>
+
+    route = {
+      queryParams: of({}),
+      snapshot: { queryParams: {} }
+    } as unknown as ActivatedRoute
+
+    await TestBed.configureTestingModule({
+      imports: [RouterTestingModule],
+      providers: [
+        <%= featureClassName %>SearchEffects,
+        provideMockStore({
+          initialState: { <%= featurePropertyName %>Search: initialState }
+        }),
+        provideMockActions(() => actions$),
+        { provide: ActivatedRoute, useValue: route },
+        { provide: Router, useValue: router },
+        { provide: <%= serviceName %>, useValue: service },
+        { provide: PortalDialogService, useValue: portalDialogService },
+        { provide: PortalMessageService, useValue: messageService },
+        { provide: ExportDataService, useValue: exportDataService }
+      ]
+    }).compileComponents()
+
+    store = TestBed.inject(MockStore)
+    effects = TestBed.inject(<%= featureClassName %>SearchEffects)
+  })
+
+  beforeEach(() => {
+    jest.resetAllMocks();
+    (router.parseUrl as jest.Mock).mockImplementation((url: string) => ({
+      toString: () => (url ? url.split('?')[0].split('#')[0] : '/search'),
+      queryParams: {},
+      fragment: null
+    }) as any)
+  })
+
+  describe('syncParamsToUrl$', () => {
+    beforeEach(() => {
+      store.overrideSelector(<%= featurePropertyName %>SearchSelectors.selectCriteria, mockCriteria as any)
+      store.refreshState()
+    })
+
+    it('should navigate to update URL when criteria differs from query params', (done) => {
+      const navigateSpy = jest.spyOn(router, 'navigate')
+      route.queryParams = of({ different: 'yes' }) as any
+
+      effects.syncParamsToUrl$.pipe(take(1)).subscribe(() => {
+        expect(navigateSpy).toHaveBeenCalled()
+        done()
+      })
+
+      actions$.next(<%= featureClassName %>SearchActions.searchButtonClicked({ searchCriteria: mockCriteria }))
+    })
+
+    it('should not navigate when criteria matches query params', (done) => {
+      const navigateSpy = jest.spyOn(router, 'navigate')
+      route.queryParams = of(mockCriteria as any) as any
+
+      effects.syncParamsToUrl$.pipe(take(1)).subscribe(() => {
+        expect(navigateSpy).not.toHaveBeenCalled()
+        done()
+      })
+
+      actions$.next(<%= featureClassName %>SearchActions.searchButtonClicked({ searchCriteria: mockCriteria }))
+    })
+
+    it('should navigate when resetButtonClicked action is triggered', (done) => {
+      const navigateSpy = jest.spyOn(router, 'navigate')
+      route.queryParams = of({ something: 'else' }) as any
+
+      effects.syncParamsToUrl$.pipe(take(1)).subscribe(() => {
+        expect(navigateSpy).toHaveBeenCalled()
+        done()
+      })
+
+      actions$.next(<%= featureClassName %>SearchActions.resetButtonClicked())
+    })
+  })
+
+  describe('searchByUrl$ / performSearch', () => {
+    beforeEach(() => {
+      store.overrideSelector(<%= featurePropertyName %>SearchSelectors.selectCriteria, mockCriteria as any)
+      store.refreshState()
+
+      service.search<%= apiModelPascal %>s.mockReturnValue(
+        of({
+          stream: [{ id: '1', name: 'Item 1', description: '', imagePath: '' } as any],
+          content: [{ id: '1', name: 'Item 1', description: '', imagePath: '' } as any],
+          size: 10,
+          number: 0,
+          totalElements: 1,
+          totalPages: 1
+        } as any) as any
+      )
+    })
+
+    it('should dispatch resultsLoadingFailed on search error', (done) => {
+      const mockError = 'Search failed'
+      service.search<%= apiModelPascal %>s.mockReturnValueOnce(throwError(() => mockError) as any)
+
+      effects.performSearch(mockCriteria as any).pipe(take(1)).subscribe((action) => {
+        expect(action.type).toEqual(<%= featureClassName %>SearchActions.<%= featurePropertyName %>SearchResultsLoadingFailed.type)
+        expect(action).toEqual(<%= featureClassName %>SearchActions.<%= featurePropertyName %>SearchResultsLoadingFailed({ error: mockError }))
+        done()
+      })
+    })
+
+    it('should convert Date objects in search criteria before calling service', (done) => {
+      const criteriaWithDate: any = { ...mockCriteria, startDate: new Date('2023-01-01'), endDate: new Date('2023-12-31') }
+      const searchSpy = jest.spyOn(service, 'search<%= apiModelPascal %>s')
+
+      effects.performSearch(criteriaWithDate).pipe(take(1)).subscribe(() => {
+        expect(searchSpy).toHaveBeenCalledWith(
+          expect.objectContaining({
+            startDate: '2023-01-01T00:00:00.000Z',
+            endDate: '2023-12-31T00:00:00.000Z'
+          })
+        )
+        done()
+      })
+    })
+    
+    it('should use latest criteria from store and call performSearch on routerNavigatedAction', (done) => {
+      const criteriaFromStore: any = { changeMe: 'fromStore' }
+      store.overrideSelector(<%= featurePropertyName %>SearchSelectors.selectCriteria, criteriaFromStore as any)
+      store.refreshState()
+
+      const markerAction = { type: 'MARKER_ACTION' } as any
+      const performSearchSpy = jest.spyOn(effects, 'performSearch').mockReturnValue(of(markerAction))
+
+      effects.searchByUrl$.pipe(take(1)).subscribe((action) => {
+        expect(performSearchSpy).toHaveBeenCalledWith(criteriaFromStore)
+        expect(action).toBe(markerAction)
+        done()
+      })
+
+      actions$.next({ type: routerNavigatedAction.type } as any)
+    })
+  })
+
+  describe('exportData$', () => {
+    const cases = [
+      {
+        desc: 'should handle export with empty displayed columns',
+        viewModel: { results: [{ id: '1', name: 'Context 1', description: 'Description 1', imagePath: '' } as any], resultComponentState: { displayedColumns: undefined } }
+      },
+      {
+        desc: 'should handle export with null resultComponentState',
+        viewModel: { results: [{ id: '1', name: 'Context 1', description: 'Description 1', imagePath: '' } as any], resultComponentState: null }
+      }
+    ];
+    
+    cases.forEach(({ desc, viewModel }) => {
+      it(desc, (done) => {
+        store.overrideSelector(select<%= featureClassName %>SearchViewModel, viewModel as any)
+
+        effects.exportData$.pipe(take(1)).subscribe(() => {
+          expect(exportDataService.exportCsv).toHaveBeenCalledWith([], viewModel.results, '<%= featureClassName %>.csv')
+          done()
+        })
+
+        actions$.next(<%= featureClassName %>SearchActions.exportButtonClicked())
+      })
+    })
+
+    it('should export CSV with correct parameters when export button is clicked', (done) => {
+      const mockColumns = [{ field: 'name', header: 'Name' }, { field: 'description', header: 'Description' }]
+      const mockResults = [{ id: '1', name: 'Context 1', description: 'Description 1' } as any, { id: '2', name: 'Context 2', description: 'Description 2' } as any]
+      const mockViewModel = { resultComponentState: { displayedColumns: mockColumns }, results: mockResults }
+      store.overrideSelector(select<%= featureClassName %>SearchViewModel, mockViewModel as any)
+
+      effects.exportData$.pipe(take(1)).subscribe(() => {
+        expect(exportDataService.exportCsv).toHaveBeenCalledWith(mockColumns, mockResults, '<%= featureClassName %>.csv')
+        done()
+      })
+
+      actions$.next(<%= featureClassName %>SearchActions.exportButtonClicked())
+    })
+
+    it('should handle export with empty results', (done) => {
+      const mockColumns = [{ field: 'name', header: 'Name' }, { field: 'description', header: 'Description' }]
+      const mockViewModel = { resultComponentState: { displayedColumns: mockColumns }, results: [] }
+      store.overrideSelector(select<%= featureClassName %>SearchViewModel, mockViewModel as any)
+
+      effects.exportData$.pipe(take(1)).subscribe(() => {
+        expect(exportDataService.exportCsv).toHaveBeenCalledWith(mockColumns, [], '<%= featureClassName %>.csv')
+        done()
+      })
+
+      actions$.next(<%= featureClassName %>SearchActions.exportButtonClicked())
+    })
+  })
+
+  describe('displayError$', () => {
+    it('should display error message when ResultsLoadingFailed action is dispatched', (done) => {
+      effects.displayError$.pipe(take(1)).subscribe(() => {
+        expect(messageService.error).toHaveBeenCalled()
+        done()
+      })
+
+      actions$.next(<%= featureClassName %>SearchActions.<%= featurePropertyName %>SearchResultsLoadingFailed({ error: 'Test error' }))
+    })
+  })
+
+// <<SPEC-EXTENSIONS-MARKER-!!!-DO-NOT-REMOVE-!!!>>
+})

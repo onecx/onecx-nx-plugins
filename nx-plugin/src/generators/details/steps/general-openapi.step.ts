@@ -16,7 +16,7 @@ export class GeneralOpenAPIStep implements GeneratorStep<DetailsGeneratorSchema>
 
     const resource = options.resource;
     const propertyName = names(options.featureName).propertyName;
-    const apiServiceName = names(options.apiServiceName).propertyName;
+    const apiServiceName = options.apiServiceName;
     const getByIdResponseName = options.getByIdResponseName;
     const apiUtil = new OpenAPIUtil(bffOpenApiContent);
 
@@ -54,10 +54,30 @@ export class GeneralOpenAPIStep implements GeneratorStep<DetailsGeneratorSchema>
                   },
                 },
               },
-            },            
+            },
+            '400': {
+              description: 'Bad request',
+              content: {
+                'application/json': {
+                  schema: {
+                    $ref: '#/components/schemas/ProblemDetailResponse',
+                  },
+                },
+              },
+            },
             '404': {
               description: 'Not Found',
-            }
+            },
+            '500': {
+              description: 'Internal Server Error',
+              content: {
+                'application/json': {
+                  schema: {
+                    $ref: '#/components/schemas/ProblemDetailResponse',
+                  },
+                },
+              },
+            },
           },
         },
       },
@@ -96,7 +116,7 @@ export class GeneralOpenAPIStep implements GeneratorStep<DetailsGeneratorSchema>
         .set(`${options.updateRequestName}`, {
           type: 'object',
           properties: {
-            resource: {
+            dataObject: {
               type: 'object',
               $ref: `#/components/schemas/${resource}`,
             },
@@ -105,7 +125,7 @@ export class GeneralOpenAPIStep implements GeneratorStep<DetailsGeneratorSchema>
         .set(`${options.updateResponseName}`, {
           type: 'object',
           properties: {
-            resource: {
+            dataObject: {
               type: 'object',
               $ref: `#/components/schemas/${resource}`,
             },
@@ -211,7 +231,7 @@ export class GeneralOpenAPIStep implements GeneratorStep<DetailsGeneratorSchema>
 
     apiUtil.schemas().set(getByIdResponseName, {
       type: 'object',
-      required: ['resource'],
+      required: ['result'],
       properties: {
         resource: {
           $ref: `#/components/schemas/${resource}`,

@@ -110,7 +110,7 @@ export class <%= featureClassName %>DetailsEffects {
           return of(<%= featureClassName %>DetailsActions.update<%= featureClassName %>Cancelled());
         }
         const itemToEdit = {
-          resource: updatedItem,
+          dataObject: updatedItem,
         } as Update<%= featureClassName %>Request;
         return this.<%= featurePropertyName %>Service.update<%= featureClassName %>(itemToEditId, itemToEdit).pipe(
           map(() => {

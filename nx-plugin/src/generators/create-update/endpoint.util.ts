@@ -96,8 +96,17 @@ export function createUpdateEndpoint(
       },
     },
     responses: {
-      '200': {
-        description: `${parameter.resource} updated`,        
+      '204': {
+        description: `${parameter.resource} updated`,
+        headers: {
+          Location: {
+            required: true,
+            schema: {
+              type: 'string',
+              format: 'url',
+            },
+          },
+        },
         content: {
           'application/json': {
             schema: {
