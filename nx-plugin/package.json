@@ -10,7 +10,9 @@
     "picocolors": "^1.0.0",
     "tslib": "^2.3.0",
     "yaml": "^2.3.4",
-    "yargs": "^17.7.2"
+    "yargs": "^17.7.2",
+    "@phenomnomnominal/tsquery": "^6.0.0",
+    "jest-extended": "^6.0.0"
   },
   "type": "commonjs",
   "main": "./src/index.js",
@@ -18,5 +20,8 @@
   "generators": "./generators.json",
   "publishConfig": {
     "access": "public"
+  },
+  "nx-migrations": {
+    "migrations": "./migrations.json"
   }
 }

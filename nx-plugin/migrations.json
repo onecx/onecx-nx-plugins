@@ -1,0 +1,9 @@
+{
+  "generators": {
+    "add-importMeta-flag": {
+      "version": "5.0.0",
+      "description": "Adds importMeta configuration to module.exports of the webpack config.",
+      "implementation": "./src/migrations/add-importMeta-flag/add-importMeta-flag"
+    }
+  }
+}

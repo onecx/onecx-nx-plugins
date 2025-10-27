@@ -3,6 +3,7 @@
   "$schema": "../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "nx-plugin/src",
   "projectType": "library",
+  "tags": [],
   "targets": {
     "build": {
       "executor": "@nx/js:tsc",
@@ -32,6 +33,11 @@
             "input": "./nx-plugin",
             "glob": "executors.json",
             "output": "."
+          },
+          {
+            "input": "./nx-plugin",
+            "glob": "migrations.json",
+            "output": "."
           }
         ]
       }
@@ -57,6 +63,5 @@
         "libName": "nx-plugin"
       }
     }
-  },
-  "tags": []
+  }
 }
