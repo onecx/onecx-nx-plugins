@@ -236,6 +236,7 @@ function adaptProjectConfiguration(
   config.targets['serve'].options = {
     ...(config.targets['serve'].options ?? {}),
     disableHostCheck: true,
+    host: '0.0.0.0',
     publicHost: 'http://localhost:4200',
     proxyConfig: 'proxy.conf.js',
   };
@@ -285,10 +286,6 @@ function adaptProjectConfiguration(
         path: 'webpack.prod.config.js',
       },
     },
-  };
-  config.targets['serve'].options = {
-    ...(config.targets['build'].options ?? {}),
-    host: '0.0.0.0',
   };
   config.targets['extract-i18n'].executor = '@angular/build:extract-i18n';
   updateProjectConfiguration(tree, names(options.name).fileName, config);
