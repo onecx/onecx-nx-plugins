@@ -1,6 +1,6 @@
 import { execSync } from 'child_process';
 import { join, dirname } from 'path';
-import { mkdirSync, rmSync } from 'fs';
+import { existsSync, mkdirSync, rmSync } from 'fs';
 import * as os from 'os';
 const NON_INTERACTIVE_KEY = 'non-interactive';
 const projectName = 'test-project';
@@ -11,6 +11,36 @@ describe('nx-plugin', () => {
 
   beforeAll(() => {
     projectDirectory = createTestProject('ngrx');
+
+    // Upgrade Nx to version 19.8.14 to match the plugin's peer dependencies
+    console.log('Upgrading Nx to version 19.8.14...');
+    execSync(`npx nx migrate 19.8.14`, {
+      cwd: projectDirectory,
+      stdio: 'inherit',
+      env: process.env,
+    });
+    
+    // Run migrations if migrations.json was created
+    if (existsSync(`${projectDirectory}/migrations.json`)) {
+      console.log('Installing dependencies for migration...');
+      execSync(`npm install`, {
+        cwd: projectDirectory,
+        stdio: 'inherit',
+        env: process.env,
+      });
+      console.log('Running migrations...');
+      execSync(`npx nx migrate --run-migrations`, {
+        cwd: projectDirectory,
+        stdio: 'inherit',
+        env: process.env,
+      });
+      console.log('Cleaning up migration artifacts...');
+      execSync(`rm migrations.json`, {
+        cwd: projectDirectory,
+        stdio: 'inherit',
+        env: process.env,
+      });
+    }
 
     // The plugin has been built and published to a local registry in the jest globalSetup
     // Install the plugin built with the latest source code into the test repo

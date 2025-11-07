@@ -47,7 +47,7 @@ export class <%= featureClassName %>DetailsEffects {
         this.<%= featurePropertyName %>Service.get<%= resource %>ById(id ?? '').pipe(
           map(({ resource }) =>
             <%= featureClassName %>DetailsActions.<%= featurePropertyName %>DetailsReceived({
-              details: resource,
+              details: resource!,
             })
           ),
           catchError((error) =>

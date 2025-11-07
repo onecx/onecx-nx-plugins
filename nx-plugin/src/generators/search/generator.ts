@@ -106,9 +106,9 @@ export async function searchGenerator(
   const directory = '.';
 
   const featureNames = names(options.featureName);
-  const rawDataObjectName = (options.dataObjectName || featureNames.className).trim();
+  const rawResource = (options.resource || featureNames.className).trim();
 
-  const apiModelPascal = toPascalCase(rawDataObjectName);
+  const apiModelPascal = toPascalCase(rawResource);
   const apiModelPlural = apiModelPascal.endsWith('s')
     ? apiModelPascal
     : apiModelPascal + 's';
