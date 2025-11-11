@@ -2,7 +2,7 @@ export interface DetailsGeneratorSchema {
   featureName: string;
   customizeNamingForAPI: boolean;
   apiServiceName: string;
-  dataObjectName: string;
+  resource: string;
   getByIdResponseName: string;
   editMode: boolean;
   allowDelete: boolean;

@@ -15,7 +15,7 @@ export class GeneralOpenAPIStep
       'utf8'
     );
 
-    const dataObjectName = options.dataObjectName;
+    const resource = options.resource;
     const propertyName = names(options.featureName).propertyName;
     const apiServiceName = options.apiServiceName;
 
@@ -26,8 +26,8 @@ export class GeneralOpenAPIStep
       {
         delete: {
           tags: [apiServiceName],
-          operationId: `delete${dataObjectName}`,
-          description: `Delete ${dataObjectName} by id`,
+          operationId: `delete${resource}`,
+          description: `Delete ${resource} by id`,
           parameters: [
             {
               name: 'id',
@@ -40,7 +40,7 @@ export class GeneralOpenAPIStep
           ],
           responses: {
             '204': {
-              description: `${dataObjectName} deleted`,
+              description: `${resource} deleted`,
             },
           },
         },

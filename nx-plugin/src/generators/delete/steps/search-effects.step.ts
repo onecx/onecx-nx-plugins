@@ -16,7 +16,7 @@ export class SearchEffectsStep implements GeneratorStep<DeleteGeneratorSchema> {
       `import { PortalDialogService, DialogState } from '@onecx/portal-integration-angular';` +
         `import { mergeMap } from 'rxjs';` +
         `import {
-        ${options.dataObjectName},
+        ${options.resource},
       } from 'src/app/shared/generated';` +
         `import { PrimeIcons } from 'primeng/api';`,
       `
@@ -54,7 +54,7 @@ export class SearchEffectsStep implements GeneratorStep<DeleteGeneratorSchema> {
           )
           .pipe(
             map(
-              (state): [DialogState<unknown>, ${options.dataObjectName} | undefined] => {
+              (state): [DialogState<unknown>, ${options.resource} | undefined] => {
                 return [state, itemToDelete];
               }
             )
@@ -69,7 +69,7 @@ export class SearchEffectsStep implements GeneratorStep<DeleteGeneratorSchema> {
           }
 
           return this.${propertyName}Service
-            .delete${options.dataObjectName}(itemToDelete.id)
+            .delete${options.resource}(itemToDelete.id)
             .pipe(
               map(() => {
                 this.messageService.success({

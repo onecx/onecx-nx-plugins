@@ -1,7 +1,7 @@
 import { createActionGroup, emptyProps, props } from '@ngrx/store';
 import { DataTableColumn, GroupByCountDiagramComponentState, InteractiveDataViewComponentState, SearchHeaderComponentState } from '@onecx/portal-integration-angular';
 import { <%= featureClassName %>SearchCriteria } from './<%= featureFileName %>-search.parameters';
-import { <%= dataObjectName %> } from '../../../shared/generated';
+import { <%= resource %> } from '../../../shared/generated';
 
 
 export const <%= featureClassName %>SearchActions = createActionGroup({
@@ -12,7 +12,7 @@ export const <%= featureClassName %>SearchActions = createActionGroup({
     }>(),
     'Reset button clicked': emptyProps(),
     '<%= featurePropertyName.replaceAll("-"," ") %> search results received': props<{
-      stream: <%= dataObjectName %>[];
+      stream: <%= resource %>[];
       size: number;
       number: number;
       totalElements: number;
