@@ -138,6 +138,8 @@ export async function angularGenerator(
 
   addScriptsToPackageJson(tree, options);
 
+  addJestOverridesToPackageJson(tree);
+
   adaptTsConfig(tree, options);
 
   adaptProjectConfiguration(tree, options);
@@ -192,6 +194,23 @@ function addScriptsToPackageJson(tree: Tree, options: AngularGeneratorSchema) {
       'nx test --watch=false --browsers=ChromeHeadless --code-coverage';
 
     return pkgJson;
+  });
+}
+
+function addJestOverridesToPackageJson(tree: Tree) {
+  const overrides = {
+    "jest-environment-jsdom": {
+      "jsdom": "26.0.0",
+      "rrweb-cssom": "0.8.0"
+    }
+  };
+
+  updateJson(tree, 'package.json', (json) => {
+    json['overrides'] = {
+      ...(json['overrides']),
+      ...overrides
+    };
+    return json;
   });
 }
 

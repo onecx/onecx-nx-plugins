@@ -3,38 +3,58 @@ import * as selectors from './<%= featureFileName %>-search.selectors'
 
 describe('<%= featureClassName %>Search selectors', () => {
   describe('selectResults projector', () => {
-    const cases = [
-      {
-        desc: 'should map results to RowListGridData[]',
-        input: [
-          { id: '1', name: 'A', description: 'desc', vdb: 'vdb1', vdbCollection: 'c1' },
-          { id: '2', name: 'B', description: 'desc2', vdb: 'vdb2', vdbCollection: 'c2' }
-        ],
-        expected: [
-          { imagePath: '', id: '1', name: 'A', description: 'desc', vdb: 'vdb1', vdbCollection: 'c1' },
-          { imagePath: '', id: '2', name: 'B', description: 'desc2', vdb: 'vdb2', vdbCollection: 'c2' }
-        ]
-      },
-      {
-        desc: 'should use empty string fallback when item.id is falsy',
-        input: [
-          { id: '', name: 'A', description: 'desc' },
-          { id: '', name: 'B', description: 'desc2' },
-          { id: '', name: 'C', description: 'desc3' }
-        ],
-        expected: [
-          { imagePath: '', id: '', name: 'A', description: 'desc' },
-          { imagePath: '', id: '', name: 'B', description: 'desc2' },
-          { imagePath: '', id: '', name: 'C', description: 'desc3' }
-        ]
-      }
-    ]
-    cases.forEach(({ desc, input, expected }) => {
-      it(desc, () => {
-        expect(selectors.selectResults.projector(input)).toEqual(expected)
-      })
-    })
-  })
+    it('should map results to RowListGridData[]', () => {
+      const input = [
+        {
+          id: '1',
+          name: 'A',
+          description: 'desc',
+          vdb: 'vdb1',
+          vdbCollection: 'c1',
+        },
+        {
+          id: '2',
+          name: 'B',
+          description: 'desc2',
+          vdb: 'vdb2',
+          vdbCollection: 'c2',
+        },
+      ];
+      const expected = [
+        {
+          imagePath: '',
+          id: '1',
+          name: 'A',
+          description: 'desc',
+          vdb: 'vdb1',
+          vdbCollection: 'c1',
+        },
+        {
+          imagePath: '',
+          id: '2',
+          name: 'B',
+          description: 'desc2',
+          vdb: 'vdb2',
+          vdbCollection: 'c2',
+        },
+      ];
+      expect(selectors.selectResults.projector(input)).toEqual(expected);
+    });
+
+    it('should use empty string fallback when item.id is falsy', () => {
+      const input = [
+        { id: '', name: 'A', description: 'desc' },
+        { id: '', name: 'B', description: 'desc2' },
+        { id: '', name: 'C', description: 'desc3' },
+      ];
+      const expected = [
+        { imagePath: '', id: '', name: 'A', description: 'desc' },
+        { imagePath: '', id: '', name: 'B', description: 'desc2' },
+        { imagePath: '', id: '', name: 'C', description: 'desc3' },
+      ];
+      expect(selectors.selectResults.projector(input)).toEqual(expected);
+    });
+  });
 
   it('select<%= featureClassName %>SearchViewModel should combine all selector results', () => {
     const columns = [{ id: 'col1', nameKey: 'Col 1', columnType: ColumnType.STRING }]
