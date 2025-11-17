@@ -50,7 +50,7 @@ const PARAMETERS: GeneratorParameter<SearchGeneratorSchema>[] = [
     showRules: [{ showIf: (values) => values.customizeNamingForAPI }],
   },
   {
-    key: 'dataObjectName',
+    key: 'resource',
     type: 'text',
     required: 'interactive',
     default: (values) => {
@@ -106,9 +106,9 @@ export async function searchGenerator(
   const directory = '.';
 
   const featureNames = names(options.featureName);
-  const rawDataObjectName = (options.dataObjectName || featureNames.className).trim();
+  const rawResource = (options.resource || featureNames.className).trim();
 
-  const apiModelPascal = toPascalCase(rawDataObjectName);
+  const apiModelPascal = toPascalCase(rawResource);
   const apiModelPlural = apiModelPascal.endsWith('s')
     ? apiModelPascal
     : apiModelPascal + 's';
@@ -145,7 +145,7 @@ export async function searchGenerator(
       featurePropertyName: names(options.featureName).propertyName,
       featureClassName: names(options.featureName).className,
       featureConstantName: names(options.featureName).constantName,
-      dataObjectName: options.dataObjectName,
+      resource: options.resource,
       serviceName: options.apiServiceName,
       searchRequestName: options.searchRequestName,
       searchResponseName: options.searchResponseName,

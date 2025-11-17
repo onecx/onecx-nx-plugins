@@ -2,7 +2,7 @@ export interface CreateUpdateGeneratorSchema {
   featureName: string;
   customizeNamingForAPI: boolean;
   apiServiceName: string;
-  dataObjectName: string;
+  resource: string;
   createRequestName: string;
   createResponseName: string;
   updateRequestName: string;

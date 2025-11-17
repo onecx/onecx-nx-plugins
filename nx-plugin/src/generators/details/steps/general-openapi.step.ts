@@ -14,7 +14,7 @@ export class GeneralOpenAPIStep implements GeneratorStep<DetailsGeneratorSchema>
       'utf8'
     );
 
-    const dataObjectName = options.dataObjectName;
+    const resource = options.resource;
     const propertyName = names(options.featureName).propertyName;
     const apiServiceName = options.apiServiceName;
     const getByIdResponseName = options.getByIdResponseName;
@@ -32,7 +32,7 @@ export class GeneralOpenAPIStep implements GeneratorStep<DetailsGeneratorSchema>
               [propertyName]: ['read'],
             },
           },
-          operationId: `get${dataObjectName}ById`,
+          operationId: `get${resource}ById`,
           tags: [apiServiceName],
           parameters: [
             {
@@ -94,12 +94,12 @@ export class GeneralOpenAPIStep implements GeneratorStep<DetailsGeneratorSchema>
           ...createUpdateEndpoint(
             {
               type: 'put',
-              operationId: `update${dataObjectName}`,
+              operationId: `update${resource}`,
               tags: [apiServiceName],
               description: `This operation performs an update.`,
             },
             {
-              dataObjectName: dataObjectName,
+              resource: resource,
               updateRequestSchema: updateRequestName,
               updateResponseSchema: updateResponseName,
             }
@@ -118,7 +118,7 @@ export class GeneralOpenAPIStep implements GeneratorStep<DetailsGeneratorSchema>
           properties: {
             dataObject: {
               type: 'object',
-              $ref: `#/components/schemas/${dataObjectName}`,
+              $ref: `#/components/schemas/${resource}`,
             },
           },
         })
@@ -127,7 +127,7 @@ export class GeneralOpenAPIStep implements GeneratorStep<DetailsGeneratorSchema>
           properties: {
             dataObject: {
               type: 'object',
-              $ref: `#/components/schemas/${dataObjectName}`,
+              $ref: `#/components/schemas/${resource}`,
             },
             [COMMENT_KEY]:
               'ACTION DE1: modify resource or use flat list here. https://onecx.github.io/docs/nx-plugins/current/general/getting_started/create-update/extend-form-fields.html#action-1',
@@ -141,8 +141,8 @@ export class GeneralOpenAPIStep implements GeneratorStep<DetailsGeneratorSchema>
         {
           delete: {
             tags: [apiServiceName],
-            operationId: `delete${dataObjectName}`,
-            description: `Delete ${dataObjectName} by id`,
+            operationId: `delete${resource}`,
+            description: `Delete ${resource} by id`,
             parameters: [
               {
                 name: 'id',
@@ -155,7 +155,7 @@ export class GeneralOpenAPIStep implements GeneratorStep<DetailsGeneratorSchema>
             ],
             responses: {
               '204': {
-                description: `${dataObjectName} deleted`,
+                description: `${resource} deleted`,
               },
             },
           },
@@ -166,7 +166,7 @@ export class GeneralOpenAPIStep implements GeneratorStep<DetailsGeneratorSchema>
       );
     }
 
-    apiUtil.schemas().set(dataObjectName, {
+    apiUtil.schemas().set(resource, {
       type: 'object',
       required: ['modificationCount', 'id'],
       properties: {
@@ -233,8 +233,8 @@ export class GeneralOpenAPIStep implements GeneratorStep<DetailsGeneratorSchema>
       type: 'object',
       required: ['result'],
       properties: {
-        result: {
-          $ref: `#/components/schemas/${dataObjectName}`,
+        resource: {
+          $ref: `#/components/schemas/${resource}`,
         },
       },
     });
