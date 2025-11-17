@@ -13,7 +13,7 @@ import { Action, Store } from '@ngrx/store';
 import { selectRouteParam, selectUrl } from 'src/app/shared/selectors/router.selectors';
 import { PortalMessageService } from '@onecx/angular-integration-interface';
 import { PortalDialogService } from '@onecx/angular-accelerator';
-import { <%= updateRequestName%>, <%= dataObjectName %>, <%= serviceName %> } from '../../../shared/generated';
+import { <%= updateRequestName%>, <%= resource %>, <%= serviceName %> } from '../../../shared/generated';
 import { <%= featurePropertyName %>DetailsSelectors } from './<%= featureFileName %>-details.selectors';
 
 @Injectable()
@@ -44,10 +44,10 @@ export class <%= featureClassName %>DetailsEffects {
     return this.actions$.pipe(
       ofType(<%= featureClassName %>DetailsActions.navigatedToDetailsPage),
       switchMap(({ id }) =>
-        this.<%= featurePropertyName %>Service.get<%= dataObjectName %>ById(id ?? '').pipe(
-          map(({ result }) =>
+        this.<%= featurePropertyName %>Service.get<%= resource %>ById(id ?? '').pipe(
+          map(({ resource }) =>
             <%= featureClassName %>DetailsActions.<%= featurePropertyName %>DetailsReceived({
-              details: result,
+              details: resource!,
             })
           ),
           catchError((error) =>
@@ -78,7 +78,7 @@ export class <%= featureClassName %>DetailsEffects {
       ofType(<%= featureClassName %>DetailsActions.cancelButtonClicked),
       filter((action) => action.dirty),
       switchMap(() => {
-        return this.portalDialogService.openDialog<<%= dataObjectName %> | undefined>(
+        return this.portalDialogService.openDialog<<%= resource %> | undefined>(
           '<%= featureConstantName%>_DETAILS.CANCEL.HEADER',
           '<%= featureConstantName%>_DETAILS.CANCEL.MESSAGE',
           '<%= featureConstantName%>_DETAILS.CANCEL.CONFIRM',
@@ -156,7 +156,7 @@ export class <%= featureClassName %>DetailsEffects {
             }
           )
           .pipe(
-            map((state): [DialogState<unknown>, <%= dataObjectName %> | undefined] => {
+            map((state): [DialogState<unknown>, <%= resource %> | undefined] => {
               return [state, itemToDelete];
             })
           );

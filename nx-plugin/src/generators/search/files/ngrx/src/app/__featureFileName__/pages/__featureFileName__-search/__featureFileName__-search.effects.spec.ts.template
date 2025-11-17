@@ -50,7 +50,7 @@ describe('<%= featureClassName %>SearchEffects', () => {
       search<%= apiModelPascal %>s: jest.fn()
     } as unknown as jest.Mocked<<%= serviceName %>>;
 
-    // compatibility aliases (featureName differs from dataObjectName)
+    // compatibility aliases (featureName differs from resource)
     (service as any).create<%= featureClassName %> = (service as any).create<%= apiModelPascal %>;
     (service as any).update<%= featureClassName %> = (service as any).update<%= apiModelPascal %>;
     (service as any).delete<%= featureClassName %> = (service as any).delete<%= apiModelPascal %>;

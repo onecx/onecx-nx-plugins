@@ -12,7 +12,7 @@ export class SearchEffectsSpecStep
     const className = n.className;
     const propertyName = n.propertyName;
 
-    const dataObjectPascal = toPascalCase(options.dataObjectName || className);
+    const dataObjectPascal = toPascalCase(options.resource || className);
     const dataObjectPlural = pluralize(dataObjectPascal);
 
     const filePath = `src/app/${n.fileName}/pages/${n.fileName}-search/${n.fileName}-search.effects.spec.ts`;

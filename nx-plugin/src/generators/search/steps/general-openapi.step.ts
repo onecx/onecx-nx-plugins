@@ -14,7 +14,7 @@ export class GeneralOpenAPIStep implements GeneratorStep<SearchGeneratorSchema> 
       'utf8'
     );
 
-    const dataObjectName = options.dataObjectName;
+    const resource = options.resource;
     const propertyName = names(options.featureName).propertyName;
     const searchRequestName = options.searchRequestName;
     const searchResponseName = options.searchResponseName;
@@ -28,12 +28,12 @@ export class GeneralOpenAPIStep implements GeneratorStep<SearchGeneratorSchema> 
         createSearchEndpoint(
           {
             type: 'post',
-            operationId: `search${dataObjectName}s`,
+            operationId: `search${resource}s`,
             tags: [apiServiceName],
             description: `This operation performs a search based on provided search criteria. Search for ${propertyName} results.`,
           },
           {
-            dataObjectName: dataObjectName,
+            resource: resource,
             searchRequestName: searchRequestName,
             searchResponseName: searchResponseName,
           }
@@ -41,7 +41,7 @@ export class GeneralOpenAPIStep implements GeneratorStep<SearchGeneratorSchema> 
       )
       .done()
       .schemas()
-      .set(`${dataObjectName}`, {
+      .set(`${resource}`, {
         type: 'object',
         required: ['id'],
         properties: {
@@ -89,7 +89,7 @@ export class GeneralOpenAPIStep implements GeneratorStep<SearchGeneratorSchema> 
           stream: {
             type: 'array',
             items: {
-              $ref: `#/components/schemas/${dataObjectName}`,
+              $ref: `#/components/schemas/${resource}`,
             },
           },
           size: {

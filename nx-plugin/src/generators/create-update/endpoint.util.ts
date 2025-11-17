@@ -1,7 +1,7 @@
 import { OpenAPIDefault } from '../shared/openapi/models/openapi-default.model';
 
 interface CreateEndpointParameter {
-  dataObjectName: string;
+  resource: string;
   createRequestName: string;
   createResponseName: string;
 }
@@ -27,7 +27,7 @@ export function createCreateEndpoint(
     },
     responses: {
       '201': {
-        description: `New ${parameter.dataObjectName} created`,
+        description: `New ${parameter.resource} created`,
         headers: {
           Location: {
             required: true,
@@ -61,7 +61,7 @@ export function createCreateEndpoint(
 }
 
 interface UpdateEndpointParameter {
-  dataObjectName: string;
+  resource: string;
   updateRequestSchema: string;
   updateResponseSchema: string;
 }
@@ -97,7 +97,7 @@ export function createUpdateEndpoint(
     },
     responses: {
       '204': {
-        description: `${parameter.dataObjectName} updated`,
+        description: `${parameter.resource} updated`,
         headers: {
           Location: {
             required: true,
@@ -126,7 +126,7 @@ export function createUpdateEndpoint(
         },
       },
       '404': {
-        description: `${parameter.dataObjectName} not found`,
+        description: `${parameter.resource} not found`,
       },
     },
   };

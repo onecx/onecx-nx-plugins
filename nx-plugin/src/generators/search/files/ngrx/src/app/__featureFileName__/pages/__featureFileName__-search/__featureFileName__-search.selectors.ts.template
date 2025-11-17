@@ -4,7 +4,7 @@ import { createChildSelectors } from '@onecx/ngrx-accelerator';
 import { <%= featurePropertyName %>Feature } from '../../<%= featureFileName %>.reducers';
 import { initialState } from './<%= featureFileName %>-search.reducers';
 import { <%= featureClassName %>SearchViewModel } from './<%= featureFileName %>-search.viewmodel';
-import { <%= dataObjectName %> } from '../../../shared/generated';
+import { <%= resource %> } from '../../../shared/generated';
 
 export const <%= featurePropertyName %>SearchSelectors = createChildSelectors(
   <%= featurePropertyName %>Feature.selectSearch,
@@ -13,7 +13,7 @@ export const <%= featurePropertyName %>SearchSelectors = createChildSelectors(
 
 export const selectResults = createSelector(
   <%= featurePropertyName %>SearchSelectors.selectResults,
-  (results: <%= dataObjectName %>[]): RowListGridData[] => {
+  (results: <%= resource %>[]): RowListGridData[] => {
     return results.map((item) => ({      
       imagePath: '',
       ...item,
