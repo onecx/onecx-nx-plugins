@@ -1,0 +1,110 @@
+import { <%= featureClassName %>DetailsActions } from './<%= featureFileName %>-details.actions';
+import { <%= featurePropertyName %>DetailsReducer, initialState } from './<%= featureFileName %>-details.reducers';
+
+describe('<%= featureClassName %>DetailsReducer', () => {
+  it('should set details on <%= featurePropertyName %>DetailsReceived', () => {
+    const details = { id: '1' };
+    const action = <%= featureClassName %>DetailsActions.<%= featurePropertyName %>DetailsReceived({
+      details,
+    });
+    const state = <%= featurePropertyName %>DetailsReducer(initialState, action);
+    expect(state).toEqual({
+      ...initialState,
+      details,
+      detailsLoaded: true,
+      detailsLoadingIndicator: false,
+    });
+  });
+
+  it('should handle <%= featurePropertyName %>DetailsLoadingFailed action', () => {
+    const action = <%= featureClassName %>DetailsActions.<%= featurePropertyName %>DetailsLoadingFailed({
+      error: null,
+    });
+    const state = <%= featurePropertyName %>DetailsReducer(initialState, action);
+    expect(state).toEqual({
+      ...initialState,
+      details: undefined,
+      detailsLoaded: false,
+      detailsLoadingIndicator: false,
+    });
+  });
+
+  it('should handle navigatedToDetailsPage action', () => {
+    const action = <%= featureClassName %>DetailsActions.navigatedToDetailsPage({ id: '1' });
+    const state = <%= featurePropertyName %>DetailsReducer(initialState, action);
+    expect(state).toEqual({
+      ...initialState,
+    });
+  });
+
+  it('should set editMode true on editButtonClicked', () => {
+    const action = <%= featureClassName %>DetailsActions.editButtonClicked();
+    const state = <%= featurePropertyName %>DetailsReducer(initialState, action);
+    expect(state).toEqual({
+      ...initialState,
+      editMode: true,
+    });
+  });
+
+  it('should set isSubmitting true on saveButtonClicked', () => {
+    const details = { id: '1' };
+    const action = <%= featureClassName %>DetailsActions.saveButtonClicked({ details });
+    const state = <%= featurePropertyName %>DetailsReducer(initialState, action);
+    expect(state).toEqual({
+      ...initialState,
+      isSubmitting: true,
+    });
+  });
+
+  it('should set editMode false on cancelEditConfirmClicked', () => {
+    const newState = { ...initialState, editMode: true };
+    const action = <%= featureClassName %>DetailsActions.cancelEditConfirmClicked();
+    const state = <%= featurePropertyName %>DetailsReducer(newState, action);
+    expect(state).toEqual({
+      ...initialState,
+      editMode: false,
+    });
+  });
+
+  it('should set editMode false on cancelEditNotDirty', () => {
+    const newState = { ...initialState, editMode: true };
+    const action = <%= featureClassName %>DetailsActions.cancelEditNotDirty();
+    const state = <%= featurePropertyName %>DetailsReducer(newState, action);
+    expect(state).toEqual({
+      ...initialState,
+      editMode: false,
+    });
+  });
+
+  it('should set editMode false on update<%= featureClassName %>Cancelled', () => {
+    const newState = { ...initialState, editMode: true };
+    const action = <%= featureClassName %>DetailsActions.update<%= featureClassName %>Cancelled();
+    const state = <%= featurePropertyName %>DetailsReducer(newState, action);
+    expect(state).toEqual({
+      ...initialState,
+      editMode: false,
+    });
+  });
+
+  it('should set editMode false on update<%= featureClassName %>Succeeded', () => {
+    const newState = { ...initialState, editMode: true };
+    const action = <%= featureClassName %>DetailsActions.update<%= featureClassName %>Succeeded();
+    const state = <%= featurePropertyName %>DetailsReducer(newState, action);
+    expect(state).toEqual({
+      ...initialState,
+      editMode: false,
+    });
+  });
+
+  it('should handle update<%= featureClassName %>Failed action', () => {
+    const newState = { ...initialState, isSubmitting: true };
+    const action = <%= featureClassName %>DetailsActions.update<%= featureClassName %>Failed({
+      error: null,
+    });
+    const state = <%= featurePropertyName %>DetailsReducer(newState, action);
+    expect(state).toEqual({
+      ...initialState,
+      isSubmitting: false,
+    });
+  });
+});

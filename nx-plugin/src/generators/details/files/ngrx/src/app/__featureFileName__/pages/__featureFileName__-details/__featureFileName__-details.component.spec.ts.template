@@ -1,31 +1,33 @@
+import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { LetDirective } from '@ngrx/component';
-import { HttpClientTestingModule } from '@angular/common/http/testing'
-import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { By } from '@angular/platform-browser';
+import { ofType } from '@ngrx/effects';
+import { Store } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
-import { Store, StoreModule } from '@ngrx/store';
-import { TranslateService } from '@ngx-translate/core';
-import { TranslateTestingModule } from 'ngx-translate-testing'
+import { TranslatePipe } from '@ngx-translate/core';
+import {
+  AngularAcceleratorModule,
+  BreadcrumbService,
+} from '@onecx/angular-accelerator';
+import { UserService } from '@onecx/angular-integration-interface';
+import {
+  PermissionService,
+  PortalPageComponent,
+  TranslationConnectionService,
+} from '@onecx/angular-utils';
+import { TranslateTestingModule } from 'ngx-translate-testing';
 import { PrimeIcons } from 'primeng/api';
 import { of } from 'rxjs';
-import {
-  BreadcrumbService,
-  HAS_PERMISSION_CHECKER,
-  PortalCoreModule,
-  UserService,
-} from '@onecx/portal-integration-angular';
-import { <%= featureClassName %>DetailsComponent } from './<%= featureFileName %>-details.component';
-import { initialState } from './<%= featureFileName %>-details.reducers';
-import { <%= featureClassName %>DetailsHarness } from './<%= featureFileName %>-details.harness';
-import { <%= featureClassName %>DetailsViewModel } from './<%= featureFileName %>-details.viewmodel';
-import { select<%= featureClassName %>DetailsViewModel } from './<%= featureFileName %>-details.selectors';
 import { <%= featureClassName %>DetailsActions } from './<%= featureFileName %>-details.actions';
-import { ofType } from '@ngrx/effects';
-import { provideUserServiceMock } from '@onecx/angular-integration-interface/mocks';
-import { TranslatePipe } from '@ngx-translate/core';
+import { <%= featureClassName %>DetailsComponent } from './<%= featureFileName %>-details.component';
+import { <%= featureClassName %>DetailsHarness } from './<%= featureFileName %>-details.harness';
+import { initialState } from './<%= featureFileName %>-details.reducers';
+import { select<%= featureClassName %>DetailsViewModel } from './<%= featureFileName %>-details.selectors';
+import { <%= featureClassName %>DetailsViewModel } from './<%= featureFileName %>-details.viewmodel';
 
 describe('<%= featureClassName %>DetailsComponent', () => {
   const origAddEventListener = window.addEventListener;
@@ -41,7 +43,6 @@ describe('<%= featureClassName %>DetailsComponent', () => {
   };
 
   window.postMessage = (m: any) => {
-    // eslint-disable-next-line @typescript-eslint/no-empty-function
     listeners.forEach((l) =>
       l({
         data: m,
@@ -55,7 +56,6 @@ describe('<%= featureClassName %>DetailsComponent', () => {
     window.addEventListener = origAddEventListener;
     window.postMessage = origPostMessage;
   });
-
 
   let component: <%= featureClassName %>DetailsComponent;
   let fixture: ComponentFixture<<%= featureClassName %>DetailsComponent>;
@@ -73,45 +73,62 @@ describe('<%= featureClassName %>DetailsComponent', () => {
     detailsLoadingIndicator: false,
     detailsLoaded: true,
     backNavigationPossible: true
+    backNavigationPossible: true,
+    <%_ if(editMode){ _%>
+    editMode: true,
+    isSubmitting: false,
+    <%_ } _%>
   };
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [<%= featureClassName %>DetailsComponent],
       imports: [
-        PortalCoreModule,
+        AngularAcceleratorModule,
+        PortalPageComponent,
         LetDirective,
-        TranslateTestingModule.withTranslations('en', require('./../../../../assets/i18n/en.json'))
-          .withTranslations('de', require('./../../../../assets/i18n/de.json')),
-        HttpClientTestingModule
+        ReactiveFormsModule,
+        TranslateTestingModule.withTranslations(
+          'en',
+          require('./../../../../assets/i18n/en.json')
+        )
+          .withTranslations('de', require('./../../../../assets/i18n/de.json'))
+          .withDefaultLanguage('en'),
       ],
       providers: [
+        provideHttpClient(),
+        provideHttpClientTesting(),
+        PermissionService,
         provideMockStore({
           initialState: { <%= featurePropertyName %>: { details: initialState } },
         }),
         BreadcrumbService,
         { provide: ActivatedRoute, useValue: mockActivatedRoute },
-        provideUserServiceMock(),
         {
-            provide: HAS_PERMISSION_CHECKER,
-            useExisting: UserService,
+          provide: UserService,
+          useValue: {
+            getPermissions: jest
+              .fn()
+               .mockReturnValue(of([
+                "<%= featureConstantName %>#CREATE",
+                "<%= featureConstantName %>#EDIT",
+                "<%= featureConstantName %>#DELETE",
+                "<%= featureConstantName %>#IMPORT",
+                "<%= featureConstantName %>#EXPORT",
+                "<%= featureConstantName %>#VIEW",
+                "<%= featureConstantName %>#SEARCH",
+                "<%= featureConstantName %>#BACK"
+              ])
+            ),
+            hasPermission: jest.fn().mockResolvedValue(true),
+          },
+        },
+        {
+          provide: TranslationConnectionService,
+          useValue: { init: jest.fn(), destroy: jest.fn() },
         },
       ],
     }).compileComponents();
-
-    const userService = TestBed.inject(UserService);
-    userService.permissions$.next([
-      "<%= featureConstantName %>#CREATE",
-      "<%= featureConstantName %>#EDIT",
-      "<%= featureConstantName %>#DELETE",
-      "<%= featureConstantName %>#IMPORT",
-      "<%= featureConstantName %>#EXPORT",
-      "<%= featureConstantName %>#VIEW",
-      "<%= featureConstantName %>#SEARCH",
-      "<%= featureConstantName %>#BACK"
-    ])
-    const translateService = TestBed.inject(TranslateService);
-    translateService.use('en');
 
     store = TestBed.inject(MockStore);
     store.overrideSelector(
@@ -143,17 +160,32 @@ describe('<%= featureClassName %>DetailsComponent', () => {
     expect(breadcrumbService.setItems).toHaveBeenCalledTimes(1);
     const pageHeader = await <%= featurePropertyName %>Details.getHeader();
     const searchBreadcrumbItem = await pageHeader.getBreadcrumbItem('Details');
-    expect(await searchBreadcrumbItem!.getText()).toEqual('Details');
+    expect(await searchBreadcrumbItem?.getText()).toEqual('Details');
   });
 
   it('should display translated headers', async () => {
-    const pageHeader = await <%= featurePropertyName %>Details.getHeader();
-    expect(await pageHeader.getHeaderText()).toEqual('<%= featureClassName %> Details');
+    const pageHeader = await bookDetails.getHeader();
+    expect(await pageHeader.getHeaderText()).toEqual('Book Details');
     expect(await pageHeader.getSubheaderText()).toEqual(
-      'Display of <%= featureClassName %> Details'
+      'Display of Book Details'
     );
   });
 
+  <% if(editMode) { %>
+  it('should have 4 inline actions', async () => {
+    const pageHeader = await <%= featurePropertyName %>Details.getHeader();
+    const inlineActions = await pageHeader.getInlineActionButtons();
+    expect(inlineActions.length).toBe(4);
+
+    const backAction = await pageHeader.getInlineActionButtonByLabel('Back');
+    expect(backAction).toBeTruthy();
+
+    const moreAction = await pageHeader.getInlineActionButtonByIcon(
+      PrimeIcons.ELLIPSIS_V
+    );
+    expect(moreAction).toBeTruthy();  
+  });
+  <% }else{ %>
   it('should have 2 inline actions', async () => {
     const pageHeader = await <%= featurePropertyName %>Details.getHeader();
     const inlineActions = await pageHeader.getInlineActionButtons();
@@ -165,8 +197,9 @@ describe('<%= featureClassName %>DetailsComponent', () => {
     const moreAction = await pageHeader.getInlineActionButtonByIcon(
       PrimeIcons.ELLIPSIS_V
     );
-    expect(moreAction).toBeTruthy();
+    expect(moreAction).toBeTruthy();  
   });
+  <% } %>
 
   it('should dispatch navigateBackButtonClicked action on back button click', async () => {
     jest.spyOn(window.history, 'back');
@@ -183,9 +216,93 @@ describe('<%= featureClassName %>DetailsComponent', () => {
     expect(doneFn).toHaveBeenCalledTimes(1);
   });
 
+  <% if(editMode) { %>
+  it('should dispatch editButtonClicked action on edit button click', async () => {
+    jest.spyOn(store, 'dispatch');
+    store.overrideSelector(selectBookDetailsViewModel, {
+      ...baseBookDetailsViewModel,
+      editMode: false,
+    });
+    store.refreshState();
+    const pageHeader = await bookDetails.getHeader();
+    const editAction = await pageHeader.getInlineActionButtonByLabel('Edit');
+    await editAction?.click();
+
+    expect(editAction).toBeTruthy();
+    expect(store.dispatch).toHaveBeenCalledTimes(1);
+    expect(store.dispatch).toHaveBeenCalledWith(
+      BookDetailsActions.editButtonClicked()
+    );
+  });
+
+  it('should dispatch cancelButtonClicked action on edit button click', async () => {
+    jest.spyOn(store, 'dispatch');
+    const pageHeader = await bookDetails.getHeader();
+    const cancelAction = await pageHeader.getInlineActionButtonByLabel(
+      'Cancel'
+    );
+    await cancelAction?.click();
+
+    expect(cancelAction).toBeTruthy();
+    expect(store.dispatch).toHaveBeenCalledTimes(1);
+    expect(store.dispatch).toHaveBeenCalledWith(
+      BookDetailsActions.cancelButtonClicked({
+        dirty: false,
+      })
+    );
+  });
+
+  it('should dispatch saveButtonClicked action on edit button click', async () => {
+    jest.spyOn(store, 'dispatch');
+    component.formGroup.setValue({ id: '123' });
+
+    const pageHeader = await bookDetails.getHeader();
+    const saveAction = await pageHeader.getInlineActionButtonByLabel('Save');
+    await saveAction?.click();
+
+    expect(saveAction).toBeTruthy();
+    expect(store.dispatch).toHaveBeenCalledTimes(1);
+    expect(store.dispatch).toHaveBeenCalledWith(
+      BookDetailsActions.saveButtonClicked({ details: { id: '123' } })
+    );
+  });
+
+  it('should mark as pristine and disable form when editMode is false', async () => {
+    const markAsPristineSpy = jest.spyOn(component.formGroup, 'markAsPristine');
+    const disableSpy = jest.spyOn(component.formGroup, 'disable');
+
+    store.overrideSelector(selectBookDetailsViewModel, {
+      ...baseBookDetailsViewModel,
+      editMode: false,
+      details: { id: '123' },
+    });
+    store.refreshState();
+
+    expect(markAsPristineSpy).toHaveBeenCalledTimes(1);
+    expect(disableSpy).toHaveBeenCalledTimes(1);
+    expect(component.formGroup.pristine).toBe(true);
+    expect(component.formGroup.disabled).toBe(true);
+    expect(component.formGroup.getRawValue()).toEqual({ id: '123' });
+  });
+  <% } %>
+
+
+  it('should dispatch no action on more button click', async () => {
+    jest.spyOn(store, 'dispatch');
+
+    const pageHeader = await bookDetails.getHeader();
+    const moreAction = await pageHeader.getInlineActionButtonByIcon(
+      PrimeIcons.ELLIPSIS_V
+    );
+    await moreAction?.click();
+
+    expect(moreAction).toBeTruthy();
+    expect(store.dispatch).not.toHaveBeenCalled();
+  });
+
   it('should display item details in page header', async () => {
     component.headerLabels$ = of([
-       {
+      {
         label: 'HELLO_DETAILS.FORM.ID',
         labelPipe: TranslatePipe,
         value: 'test id',
