@@ -1,7 +1,7 @@
-import { <%= dataObjectName %> } from '../../../shared/generated';
+import { <%= resource %> } from '../../../shared/generated';
 
 export interface <%= featureClassName %>DetailsViewModel {
-    details: <%= dataObjectName %> | undefined;
+    details: <%= resource %> | undefined;
     detailsLoadingIndicator: boolean;
     backNavigationPossible: boolean;
     detailsLoaded: boolean;

@@ -45,7 +45,7 @@ const PARAMETERS: GeneratorParameter<CreateUpdateGeneratorSchema>[] = [
     showRules: [{ showIf: (values) => values.customizeNamingForAPI }],
   },
   {
-    key: 'dataObjectName',
+    key: 'resource',
     type: 'text',
     required: 'interactive',
     default: (values) => {
@@ -155,7 +155,7 @@ export async function createUpdateGenerator(
       featurePropertyName: names(options.featureName).propertyName,
       featureClassName: names(options.featureName).className,
       featureConstantName: names(options.featureName).constantName,
-      dataObjectName: options.dataObjectName,
+      resource: options.resource,
       serviceName: options.apiServiceName,
       createRequestName: options.createRequestName,
       createResponseName: options.createResponseName,

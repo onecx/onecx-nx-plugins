@@ -1,10 +1,10 @@
 import { DataTableColumn, DiagramComponentState, InteractiveDataViewComponentState, SearchHeaderComponentState } from '@onecx/portal-integration-angular';
-import { <%= dataObjectName %> } from 'src/app/shared/generated';
+import { <%= resource %> } from 'src/app/shared/generated';
 import { <%= featureClassName %>SearchCriteria } from './<%= featureFileName %>-search.parameters';
 
 export interface <%= featureClassName %>SearchState {
   columns: DataTableColumn[];
-  results: <%= dataObjectName %>[];
+  results: <%= resource %>[];
   chartVisible: boolean;
   resultComponentState: InteractiveDataViewComponentState | null;
   searchHeaderComponentState: SearchHeaderComponentState | null;
