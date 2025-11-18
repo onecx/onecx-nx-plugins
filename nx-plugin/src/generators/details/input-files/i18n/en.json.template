@@ -16,7 +16,8 @@
       "SAVE": "Save"
     },
     "FORM": {
-      "ID": "ID"
+      "ID": "ID",
+      "NAME": "Page Header with Details"
     },
     "CANCEL": {
       "HEADER": "Confirm cancel",

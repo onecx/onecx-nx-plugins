@@ -61,7 +61,7 @@
          [defaultGroupKey]="vm.resultComponentState?.activeColumnGroupKey ?? ''"
          [actionColumnPosition]="vm.resultComponentState?.actionColumnConfig?.position?? 'right'"
          [frozenActionColumn]="vm.resultComponentState?.actionColumnConfig?.frozen ?? false"
-         aria-label="Search Results"
+         [attr.aria-label]="'<%= featureConstantName%>_SEARCH.RESULTS.NAME' | translate"
        >
        </ocx-interactive-data-view>      
      </ocx-content>
@@ -81,7 +81,7 @@
             sumKey="<%= featureConstantName %>_SEARCH.DIAGRAM.SUM"
             [diagramType]="vm.diagramComponentState?.activeDiagramType ?? defaultDiagramType"
           (componentStateChanged)="diagramComponentStateChanged($event)"
-          aria-label="Diagram for Search Results"
+          [attr.aria-label]="'<%= featureConstantName%>_SEARCH.DIAGRAM.NAME' | translate"
           ></ocx-group-by-count-diagram>
         </div>
     </ocx-content>

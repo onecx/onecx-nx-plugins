@@ -7,7 +7,8 @@
     "BREADCRUMB": "Suche",
     "INPUT_FIELDS": "ACTION S4: ADD TRANSLATION for your input fields: https://onecx.github.io/docs/nx-plugins/current/general/getting_started/search/configure-search-criteria.html#action-4",
     "DIAGRAM": {
-      "SUM": "Gesamtanzahl"
+      "SUM": "Gesamtanzahl",
+      "NAME": "Diagramm für Suchergebnisse"
     },
     "HEADER_ACTIONS": {
         "EXPORT_ALL": "Alles exportieren",
@@ -30,7 +31,8 @@
         "SEARCH_CONFIGS_LOADING_FAILED": "Suchkonfigurationen konnten nicht geladen werden."
     },
     "RESULTS": {
-      "HELLO": "Hallo"
+      "HELLO": "Hallo",
+      "NAME": "Suchergebnisse"
     },
     "CRITERIA": {
       "HELLO": "Hallo"

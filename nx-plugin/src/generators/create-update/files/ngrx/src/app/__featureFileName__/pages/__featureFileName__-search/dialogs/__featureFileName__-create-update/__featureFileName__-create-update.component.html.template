@@ -1,4 +1,4 @@
-<form [formGroup]="formGroup" aria-label="Form to Create and Update" role="form">
+<form [formGroup]="formGroup" [attr.aria-label]="'<%= featureConstantName%>_CREATE_UPDATE.FORM.NAME' | translate" role="form">
     <div class="flex flex-wrap flex-column gap-4 justify-content-between mt-2">
       <div [title]="'<%= featureConstantName%>_CREATE_UPDATE.FORM.CHANGE_ME' | translate">
         <span class="p-float-label" controlErrorAnchor>

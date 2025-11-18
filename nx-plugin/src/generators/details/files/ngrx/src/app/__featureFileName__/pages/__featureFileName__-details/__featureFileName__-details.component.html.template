@@ -15,7 +15,7 @@
     [actions]="(headerActions$ | async) ?? []"
     [disableDefaultActions]="true"
     [manualBreadcrumbs]="true"
-    aria-label="Page Header with Details"
+    [attr.aria-label]="'<%= featureConstantName%>_DETAILS.FORM.NAME' | translate"
   >
   </ocx-page-header>
    <%_ if(editMode){ _%>

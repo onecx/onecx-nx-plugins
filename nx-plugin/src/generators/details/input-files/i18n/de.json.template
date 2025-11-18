@@ -16,7 +16,8 @@
          "SAVE":"Speichern"
       },
       "FORM":{
-         "ID":"ID"
+         "ID":"ID",
+         "NAME": "Seitenkopf mit Details"
       },
       "CANCEL":{
          "HEADER":"Abbruch bestätigen",
