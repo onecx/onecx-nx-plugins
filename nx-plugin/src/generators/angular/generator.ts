@@ -299,7 +299,7 @@ function adaptJestConfig(tree: Tree) {
     /transformIgnorePatterns: .+?,/,
     `transformIgnorePatterns: ['node_modules/(?!@ngrx|(?!deck.gl)|d3-scale|(?!.*\\.mjs$))'],
     moduleNameMapper: {
-    '^@primeng/themes': '\<rootDir\>/node_modules/@primeng/themes/index.mjs',
+    '^@primeng/themes': '/<rootDir>/node_modules/@primeng/themes/index.mjs',
   },`,
     tree
   );
