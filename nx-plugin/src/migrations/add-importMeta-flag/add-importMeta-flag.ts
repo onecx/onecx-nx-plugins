@@ -1,6 +1,5 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Tree } from '@nx/devkit';
-import { ast, query, replace, ScriptKind } from '@phenomnomnominal/tsquery';
+import { tsquery } from '@phenomnomnominal/tsquery';
 
 export default function addImportMetaToWebpackConfig(tree: Tree) {
   const filePath = 'webpack.config.js';
@@ -12,13 +11,13 @@ export default function addImportMetaToWebpackConfig(tree: Tree) {
 
     const moduleExportsSelector =
       'ExpressionStatement:has(PropertyAccessExpression:has(Identifier[name=module]):has(Identifier[name=exports]))  > BinaryExpression  > ObjectLiteralExpression';
-    const astSource = ast(fileContent);
-    const moduleExports = query(astSource, moduleExportsSelector);
+    const astSource = tsquery.ast(fileContent);
+    const moduleExports = tsquery.query(astSource, moduleExportsSelector);
     if (moduleExports.length === 0) {
       return;
     }
 
-    fileContent = replace(
+    fileContent = tsquery.replace(
       fileContent,
       moduleExportsSelector,
       (node) => {
@@ -29,8 +28,7 @@ export default function addImportMetaToWebpackConfig(tree: Tree) {
             ', module: { parser: { javascript: { importMeta: false } } } }';
         }
         return text;
-      },
-      ScriptKind.JS
+      }
     );
 
     tree.write(filePath, fileContent);
