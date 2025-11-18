@@ -14,7 +14,7 @@ export class FeatureModuleStep implements GeneratorStep<DeleteGeneratorSchema> {
     const find = [`from '@ngrx/effects';`];
     const replaceWith = [
       `from '@ngrx/effects';
-         import { providePortalDialogService } from '@onecx/portal-integration-angular';`,
+         import { providePortalDialogService } from '@onecx/angular-accelerator';`,
     ];
     const moduleContent = tree.read(moduleFilePath, 'utf8');
     if (!moduleContent.includes('providePortalDialogService()')) {

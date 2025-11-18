@@ -1,6 +1,11 @@
 import { <%= featureClassName %>SearchCriteria } from './<%= featureFileName %>-search.parameters'
-import { RowListGridData, DataTableColumn,   DiagramComponentState,
-  InteractiveDataViewComponentState, SearchHeaderComponentState } from '@onecx/portal-integration-angular'
+import {
+  DataTableColumn,
+  RowListGridData,
+  InteractiveDataViewComponentState,
+  SearchHeaderComponentState,
+  DiagramComponentState,
+} from '@onecx/angular-accelerator';
 
 export interface <%= featureClassName %>SearchViewModel {
     columns: DataTableColumn[];
