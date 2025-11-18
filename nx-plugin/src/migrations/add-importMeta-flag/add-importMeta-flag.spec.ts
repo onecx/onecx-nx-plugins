@@ -18,7 +18,7 @@ describe('update- migration', () => {
     module.exports = {
         ...config,
         plugins,
-        output: { uniqueName: 'onecx-app-ui', publicPath: 'auto' },
+        output: { uniqueName: 'onecx-app-ui', publicPath: 'auto' }
     };`
     );
     await addImportMetaToWebpackConfig(tree);
