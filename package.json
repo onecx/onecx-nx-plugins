@@ -17,9 +17,7 @@
     "create-nx-workspace": "^19.8.14",
     "ora": "^5.3.0",
     "tslib": "^2.3.0",
-    "yaml": "^2.3.4",
-    "@jest/globals": "^29.7.0",
-    "@phenomnomnominal/tsquery": "^5.0.1"
+    "yaml": "^2.3.4"
   },
   "devDependencies": {
     "@nx/eslint": "^19.8.14",
