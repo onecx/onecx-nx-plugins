@@ -12,7 +12,7 @@
     [actions]="(headerActions$ | async) ?? []"        
     (componentStateChanged)="searchHeaderComponentStateChanged($event)"
     [viewMode]="vm.searchHeaderComponentState?.activeViewMode ?? 'basic'"
-    aria-label="Page Header with Search"
+    [attr.aria-label]="'<%= featureConstantName%>_SEARCH.LABEL' | translate"
   >
     <form [formGroup]="<%= featurePropertyName %>SearchFormGroup">
       <div class="grid mt-0 p-fluid">

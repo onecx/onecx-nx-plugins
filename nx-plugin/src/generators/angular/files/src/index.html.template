@@ -8,6 +8,6 @@
     <link rel="icon" type="image/x-icon" href="favicon.ico" />
   </head>
   <body>
-    <app-root id="main" role="main" tabindex="-1" aria-label="<%= className %>_APP.ARIA_LABEL"></app-root>
+    <app-root id="main" role="main" tabindex="-1" aria-label="<%= className %>.LABEL | translate"></app-root>
   </body>
 </html>
