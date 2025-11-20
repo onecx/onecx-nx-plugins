@@ -12,7 +12,7 @@
     [actions]="(headerActions$ | async) ?? []"        
     (componentStateChanged)="searchHeaderComponentStateChanged($event)"
     [viewMode]="vm.searchHeaderComponentState?.activeViewMode ?? 'basic'"
-    [attr.aria-label]="'<%= featureConstantName%>_SEARCH.LABEL' | translate"
+    [attr.aria-label]="'<%= featureConstantName%>_SEARCH.ARIA-LABEL' | translate"
   >
     <form [formGroup]="<%= featurePropertyName %>SearchFormGroup">
       <div class="grid mt-0 p-fluid">
@@ -28,7 +28,7 @@
               tooltipPosition="top"
               tooltipEvent="hover"
               role="main"
-              [attr.aria-label]="'HELLO_SEARCH.CRITERIA.HELLO' | translate"
+              [attr.aria-label]="'<%= featureConstantName%>_SEARCH.CRITERIA.ARIA-LABEL' | translate"
             />
             <label for="changeMe" style="white-space: nowrap">
               {{ 'HELLO_SEARCH.CRITERIA.HELLO' | translate }}</label

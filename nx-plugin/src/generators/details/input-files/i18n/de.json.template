@@ -3,6 +3,7 @@
       "HELP_ARTICLE_ID":"Hilfeartikel",
       "BREADCRUMB":"Details",
       "HEADER":"<%= featureClassName %> Details",
+      "ARIA-LABEL": "Seitenkopf mit Details",
       "SUB_HEADER":"Anzeigen von <%= featureClassName %> Details",
       "ERROR_MESSAGES":{
          "DETAILS_LOADING_FAILED":"Details konnten nicht geladen werden."

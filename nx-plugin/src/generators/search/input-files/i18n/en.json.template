@@ -1,7 +1,7 @@
 {
   "<%= featureConstantName %>_SEARCH": {
     "HEADER": "<%= featureClassName %> Search",
-    "LABEL": "Page Header with Search",
+    "ARIA-LABEL": "Page Header with Search",
     "SUB_HEADER": "Searching and displaying of <%= featureClassName %>",
     "HELP_ARTICLE_ID": "Help Article",
     "EMPTY_RESULTS": "No results.",
@@ -36,7 +36,8 @@
       "NAME": "Search Results"
     },
     "CRITERIA": {
-      "HELLO": "Hello"
+      "HELLO": "Hello",
+      "ARIA-LABEL": "Hello"
     }
   }
 }
