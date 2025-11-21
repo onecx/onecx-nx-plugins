@@ -36,8 +36,10 @@
       "NAME": "Search Results"
     },
     "CRITERIA": {
-      "HELLO": "Hello",
-      "ARIA-LABEL": "Hello"
+      "HELLO": {
+        "LABEL": "Hello",
+        "ARIA-LABEL": "Hello"
+      }
     }
   }
 }

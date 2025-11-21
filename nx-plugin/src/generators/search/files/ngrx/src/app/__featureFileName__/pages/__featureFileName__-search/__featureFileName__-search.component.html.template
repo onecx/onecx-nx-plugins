@@ -24,14 +24,14 @@
               type="text"
               class="w-18rem"
               formControlName="changeMe"
-              [pTooltip]="'HELLO_SEARCH.CRITERIA.HELLO' | translate"
+              [pTooltip]="'HELLO_SEARCH.CRITERIA.HELLO.LABEL' | translate"
               tooltipPosition="top"
               tooltipEvent="hover"
               role="main"
-              [attr.aria-label]="'<%= featureConstantName%>_SEARCH.CRITERIA.ARIA-LABEL' | translate"
+              [attr.aria-label]="'<%= featureConstantName%>_SEARCH.CRITERIA.HELLO.ARIA-LABEL' | translate"
             />
             <label for="changeMe" style="white-space: nowrap">
-              {{ 'HELLO_SEARCH.CRITERIA.HELLO' | translate }}</label
+              {{ 'HELLO_SEARCH.CRITERIA.HELLO.LABEL' | translate }}</label
             >
             </span>
          </div>
