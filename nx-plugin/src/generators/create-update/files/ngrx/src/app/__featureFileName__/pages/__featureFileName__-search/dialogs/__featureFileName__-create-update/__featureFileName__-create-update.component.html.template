@@ -1,4 +1,4 @@
-  <form [formGroup]="formGroup">
+<form [formGroup]="formGroup" [attr.aria-label]="'<%= featureConstantName%>_CREATE_UPDATE.FORM.NAME' | translate" role="form">
     <div class="flex flex-wrap flex-column gap-4 justify-content-between mt-2">
       <div [title]="'<%= featureConstantName%>_CREATE_UPDATE.FORM.CHANGE_ME' | translate">
         <span class="p-float-label" controlErrorAnchor>
@@ -8,13 +8,15 @@
             id="<%= featureFileName %>_detail_form_changeMe"
             class="w-full pt-3 pb-2"
             formControlName="changeMe"
+            required
+            aria-required="true"
           />
           <label
             class="ocx-required-label"
             for="<%= featureFileName %>_detail_form_changeMe"
           >
-            {{ '<%= featureConstantName%>_CREATE_UPDATE.FORM.CHANGE_ME' | translate }}</label
-          >
+            {{ '<%= featureConstantName%>_CREATE_UPDATE.FORM.CHANGE_ME' | translate }}
+          </label>
         </span>
       </div>
       <!-- ACTION C2: Extend form fields. https://onecx.github.io/docs/nx-plugins/current/general/getting_started/create-update/extend-form-fields.html#action-2-->

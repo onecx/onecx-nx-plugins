@@ -15,10 +15,13 @@
     [actions]="(headerActions$ | async) ?? []"
     [disableDefaultActions]="true"
     [manualBreadcrumbs]="true"
+    [attr.aria-label]="'<%= featureConstantName%>_DETAILS.FORM.NAME' | translate"
   >
   </ocx-page-header>
    <%_ if(editMode){ _%>
-    <ocx-page-content>
+    <ocx-page-content
+      role="main"
+      [attr.aria-label]="'<%= featureConstantName %>_DETAILS.ARIA-LABEL' | translate">
       <div class="surface-section mt-3 mb-1 mx-3">
         <form [formGroup]="formGroup" errorTailor>
           <div class="mt-3 mb-1">
@@ -29,15 +32,17 @@
                 id="id"
                 class="w-full pt-3 pb-2 text-responsive"
                 formControlName="id"
+                required
+                aria-required="true"
               />
               <label class="ocx-required-label" for="id">
                 {{ '<%= featureConstantName %>_DETAILS.FORM.ID' | translate }}
               </label>
-            </span>
-          </div>          
-        </form>
-      </div>
-    </ocx-page-content>
-   <%_ } _%> 
+             </span>
+           </div>          
+         </form>
+       </div>
+     </ocx-page-content>
+    <%_ } _%> 
   </div>
 </ocx-portal-page>
