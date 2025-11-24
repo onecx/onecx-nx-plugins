@@ -17,7 +17,7 @@ describe('nx-plugin', () => {
     execSync(`npx nx migrate 20.3.4`, {
       cwd: projectDirectory,
       stdio: 'inherit',
-      env: process.env,
+      env: { ...process.env, NX_NO_CLOUD: 'true', CI: 'true' },
     });
 
     // Run migrations if migrations.json was created
