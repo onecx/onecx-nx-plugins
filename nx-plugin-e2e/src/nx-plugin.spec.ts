@@ -12,14 +12,14 @@ describe('nx-plugin', () => {
   beforeAll(() => {
     projectDirectory = createTestProject('ngrx');
 
-    // Upgrade Nx to version 19.8.14 to match the plugin's peer dependencies
-    console.log('Upgrading Nx to version 19.8.14...');
-    execSync(`npx nx migrate 19.8.14`, {
+    // Upgrade Nx to version 20.3.4 to match the plugin's peer dependencies
+    console.log('Upgrading Nx to version 20.3.4...');
+    execSync(`npx nx migrate 20.3.4`, {
       cwd: projectDirectory,
       stdio: 'inherit',
       env: process.env,
     });
-    
+
     // Run migrations if migrations.json was created
     if (existsSync(`${projectDirectory}/migrations.json`)) {
       console.log('Installing dependencies for migration...');

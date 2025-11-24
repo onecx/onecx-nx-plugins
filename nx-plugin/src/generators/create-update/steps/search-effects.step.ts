@@ -155,10 +155,16 @@ export class SearchEffectsStep
       searchByUrl$`,
     ];
     const content = tree.read(filePath, 'utf8');
-    if (!content.includes('private portalDialogService: PortalDialogService')) {
-      find.push('constructor(');
-      replaceWith.push(`constructor(
-          private portalDialogService: PortalDialogService,`);
+    if (
+      !content.includes(
+        'private portalDialogService = inject(PortalDialogService);'
+      )
+    ) {
+      find.push('private actions$ = inject(Actions);');
+      replaceWith.push(`
+        private actions$ = inject(Actions); 
+        private portalDialogService = inject(PortalDialogService);
+      `);
     }
     safeReplace(
       `Enhance ${className}SearchEffects by adding create and edit effects, integrating PortalDialogService for dialog management, and updating imports to include necessary modules and services`,

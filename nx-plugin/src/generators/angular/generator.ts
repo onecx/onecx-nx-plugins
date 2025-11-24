@@ -85,6 +85,7 @@ export async function angularGenerator(
       primeflex: '^3.3.1',
       primeicons: '^7.0.0',
       primeng: '^19.1.0',
+      postcss: '8.5.6',
       '@primeng/themes': '^19.0.6',
       '@onecx/accelerator': oneCXLibVersion,
       '@onecx/angular-accelerator': oneCXLibVersion,
@@ -299,7 +300,7 @@ function adaptJestConfig(tree: Tree) {
     /transformIgnorePatterns: .+?,/,
     `transformIgnorePatterns: ['node_modules/(?!@ngrx|(?!deck.gl)|d3-scale|(?!.*\\.mjs$))'],
     moduleNameMapper: {
-    '^@primeng/themes': '/<rootDir>/node_modules/@primeng/themes/index.mjs',
+    '^@primeng/themes': '<rootDir>/node_modules/@primeng/themes/index.mjs',
   },`,
     tree
   );
