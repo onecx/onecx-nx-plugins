@@ -32,13 +32,13 @@
         "SEARCH_CONFIGS_LOADING_FAILED": "Suchkonfigurationen konnten nicht geladen werden."
     },
     "RESULTS": {
-      "HELLO": "Hallo",
+      "CHANGE_ME": "Ändere mich",
       "NAME": "Suchergebnisse"
     },
     "CRITERIA": {
-      "HELLO": {
-        "LABEL": "Hallo",
-        "ARIA-LABEL": "Hallo"
+      "CHANGEME": {
+        "LABEL": "Ändere mich",
+        "ARIA-LABEL": "Ändere mich"
       }
     }
   }
