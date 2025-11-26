@@ -37,6 +37,7 @@ describe('<%= featureClassName %>DetailsReducer', () => {
     });
   });
 
+  <%_ if(editMode){ _%>
   it('should set editMode true on editButtonClicked', () => {
     const action = <%= featureClassName %>DetailsActions.editButtonClicked();
     const state = <%= featurePropertyName %>DetailsReducer(initialState, action);
@@ -107,4 +108,5 @@ describe('<%= featureClassName %>DetailsReducer', () => {
       isSubmitting: false,
     });
   });
+  <%_ } _%>
 });

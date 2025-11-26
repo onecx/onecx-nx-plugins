@@ -15,16 +15,20 @@ describe('<%= featureClassName %>Details selectors', () => {
           detailsLoadingIndicator,
           backNavigationPossible,
           detailsLoaded,
+          <%_ if(editMode){ _%>
           editMode,
           isSubmitting
+          <%_ } _%>
         )
       ).toEqual({
         details,
         detailsLoadingIndicator,
         backNavigationPossible,
         detailsLoaded,
+        <%_ if(editMode){ _%>
         editMode,
-        isSubmitting,
+        isSubmitting
+        <%_ } _%>
       });
     });
   });

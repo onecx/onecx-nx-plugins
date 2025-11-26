@@ -72,7 +72,6 @@ describe('<%= featureClassName %>DetailsComponent', () => {
     details: undefined,
     detailsLoadingIndicator: false,
     detailsLoaded: true,
-    backNavigationPossible: true
     backNavigationPossible: true,
     <%_ if(editMode){ _%>
     editMode: true,
@@ -123,10 +122,6 @@ describe('<%= featureClassName %>DetailsComponent', () => {
             hasPermission: jest.fn().mockResolvedValue(true),
           },
         },
-        {
-          provide: TranslationConnectionService,
-          useValue: { init: jest.fn(), destroy: jest.fn() },
-        },
       ],
     }).compileComponents();
 
@@ -164,10 +159,10 @@ describe('<%= featureClassName %>DetailsComponent', () => {
   });
 
   it('should display translated headers', async () => {
-    const pageHeader = await bookDetails.getHeader();
-    expect(await pageHeader.getHeaderText()).toEqual('Book Details');
+    const pageHeader = await <%= featurePropertyName %>Details.getHeader();
+    expect(await pageHeader.getHeaderText()).toEqual('<%= featureClassName%> Details');
     expect(await pageHeader.getSubheaderText()).toEqual(
-      'Display of Book Details'
+      'Display of <%= featureClassName%> Details'
     );
   });
 
@@ -219,25 +214,25 @@ describe('<%= featureClassName %>DetailsComponent', () => {
   <% if(editMode) { %>
   it('should dispatch editButtonClicked action on edit button click', async () => {
     jest.spyOn(store, 'dispatch');
-    store.overrideSelector(selectBookDetailsViewModel, {
-      ...baseBookDetailsViewModel,
+    store.overrideSelector(select<%= featureClassName%>DetailsViewModel, {
+      ...base<%= featureClassName%>DetailsViewModel,
       editMode: false,
     });
     store.refreshState();
-    const pageHeader = await bookDetails.getHeader();
+    const pageHeader = await <%= featurePropertyName %>Details.getHeader();
     const editAction = await pageHeader.getInlineActionButtonByLabel('Edit');
     await editAction?.click();
 
     expect(editAction).toBeTruthy();
     expect(store.dispatch).toHaveBeenCalledTimes(1);
     expect(store.dispatch).toHaveBeenCalledWith(
-      BookDetailsActions.editButtonClicked()
+      <%= featureClassName%>DetailsActions.editButtonClicked()
     );
   });
 
   it('should dispatch cancelButtonClicked action on edit button click', async () => {
     jest.spyOn(store, 'dispatch');
-    const pageHeader = await bookDetails.getHeader();
+    const pageHeader = await <%= featurePropertyName %>Details.getHeader();
     const cancelAction = await pageHeader.getInlineActionButtonByLabel(
       'Cancel'
     );
@@ -246,7 +241,7 @@ describe('<%= featureClassName %>DetailsComponent', () => {
     expect(cancelAction).toBeTruthy();
     expect(store.dispatch).toHaveBeenCalledTimes(1);
     expect(store.dispatch).toHaveBeenCalledWith(
-      BookDetailsActions.cancelButtonClicked({
+      <%= featureClassName%>DetailsActions.cancelButtonClicked({
         dirty: false,
       })
     );
@@ -256,14 +251,14 @@ describe('<%= featureClassName %>DetailsComponent', () => {
     jest.spyOn(store, 'dispatch');
     component.formGroup.setValue({ id: '123' });
 
-    const pageHeader = await bookDetails.getHeader();
+    const pageHeader = await <%= featurePropertyName %>Details.getHeader();
     const saveAction = await pageHeader.getInlineActionButtonByLabel('Save');
     await saveAction?.click();
 
     expect(saveAction).toBeTruthy();
     expect(store.dispatch).toHaveBeenCalledTimes(1);
     expect(store.dispatch).toHaveBeenCalledWith(
-      BookDetailsActions.saveButtonClicked({ details: { id: '123' } })
+      <%= featureClassName%>DetailsActions.saveButtonClicked({ details: { id: '123' } })
     );
   });
 
@@ -271,8 +266,8 @@ describe('<%= featureClassName %>DetailsComponent', () => {
     const markAsPristineSpy = jest.spyOn(component.formGroup, 'markAsPristine');
     const disableSpy = jest.spyOn(component.formGroup, 'disable');
 
-    store.overrideSelector(selectBookDetailsViewModel, {
-      ...baseBookDetailsViewModel,
+    store.overrideSelector(select<%= featureClassName%>DetailsViewModel, {
+      ...base<%= featureClassName%>DetailsViewModel,
       editMode: false,
       details: { id: '123' },
     });
@@ -290,7 +285,7 @@ describe('<%= featureClassName %>DetailsComponent', () => {
   it('should dispatch no action on more button click', async () => {
     jest.spyOn(store, 'dispatch');
 
-    const pageHeader = await bookDetails.getHeader();
+    const pageHeader = await <%= featurePropertyName %>Details.getHeader();
     const moreAction = await pageHeader.getInlineActionButtonByIcon(
       PrimeIcons.ELLIPSIS_V
     );

@@ -3,10 +3,10 @@ import { ActivatedRoute, provideRouter, Router } from '@angular/router';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action, Store } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
-import { PortalDialogService } from '@onecx/angular-accelerator';
+import { PortalDialogService } from '@onecx/portal-integration-angular';
 import { PortalMessageService } from '@onecx/angular-integration-interface';
 import { firstValueFrom, of, ReplaySubject, throwError } from 'rxjs';
-import { <%= dataObjectName%>, <%= serviceName %> } from '../../../shared/generated';
+import { <%= resource %>, <%= serviceName %> } from '../../../shared/generated';
 import { <%= featureClassName %>DetailsEffects } from './<%= featureFileName %>-details.effects';
 import { initialState } from './<%= featureFileName %>-details.reducers';
 import { routerNavigatedAction } from '@ngrx/router-store';
@@ -36,12 +36,9 @@ describe('<%= featureClassName %>DetailsEffects', () => {
     actions$ = new ReplaySubject(1);
 
     service = {
-      update<%= featureClassName %>: jest.fn(),
-      get<%= featureClassName %>ById: jest.fn(),
+      update<%= resource %>: jest.fn(),
+      get<%= resource %>ById: jest.fn(),
     } as unknown as jest.Mocked<<%= serviceName %>>;
-
-    (service as any).get<%= featureClassName %>ById = (service as any).get<%= featureClassName %>ById;
-    (service as any).update<%= featureClassName %> = (service as any).update<%= featureClassName %>;
 
     router = {
       navigate: jest.fn().mockReturnValue(Promise.resolve(true)),
@@ -102,12 +99,8 @@ describe('<%= featureClassName %>DetailsEffects', () => {
   describe('load<%= featureClassName %>ById$', () => {
     it('should dispatch <%= featurePropertyName %>DetailsReceived on success with id', async () => {
       const mockId = '123';
-      const mockDetails = { id: mockId } as <%= featureClassName %>;
-      service.get<%= featureClassName %>ById.mockReturnValue(
-        of({
-          result: mockDetails,
-        } as any) as any
-      );
+      const mockDetails = { id: mockId } as <%= resource %>;
+      service.get<%= resource %>ById.mockReturnValue(of({ resource: mockDetails } as any));
 
       actions$.next(<%= featureClassName %>DetailsActions.navigatedToDetailsPage({ id: mockId }));
       const action = await firstValueFrom(effects.load<%= featureClassName %>ById$);
@@ -115,13 +108,13 @@ describe('<%= featureClassName %>DetailsEffects', () => {
       expect(action).toEqual(
         <%= featureClassName %>DetailsActions.<%= featurePropertyName %>DetailsReceived({ details: mockDetails })
       );
-      expect(service.get<%= featureClassName %>ById).toHaveBeenCalledTimes(1);
-      expect(service.get<%= featureClassName %>ById).toHaveBeenCalledWith(mockId);
+      expect(service.get<%= resource %>ById).toHaveBeenCalledTimes(1);
+      expect(service.get<%= resource %>ById).toHaveBeenCalledWith(mockId);
     });
 
     it('should dispatch <%= featurePropertyName %>DetailsLoadingFailed on error', async () => {
       const mockError = '<%= featurePropertyName %>DetailsReceived failed';
-      service.get<%= featureClassName %>ById.mockReturnValue(throwError(() => mockError));
+      service.get<%= resource %>ById.mockReturnValue(throwError(() => mockError));
 
       actions$.next(
         <%= featureClassName %>DetailsActions.navigatedToDetailsPage({ id: undefined })
@@ -131,11 +124,12 @@ describe('<%= featureClassName %>DetailsEffects', () => {
       expect(action).toEqual(
         <%= featureClassName %>DetailsActions.<%= featurePropertyName %>DetailsLoadingFailed({ error: mockError })
       );
-      expect(service.get<%= featureClassName %>ById).toHaveBeenCalledTimes(1);
-      expect(service.get<%= featureClassName %>ById).toHaveBeenCalledWith('');
+      expect(service.get<%= resource %>ById).toHaveBeenCalledTimes(1);
+      expect(service.get<%= resource %>ById).toHaveBeenCalledWith('');
     });
   });
 
+  <%_ if(editMode){ _%>
   describe('cancelButtonNotDirty$', () => {
     it('should dispatch cancelEditNotDirty', async () => {
       actions$.next(<%= featureClassName %>DetailsActions.cancelButtonClicked({ dirty: false }));
@@ -182,33 +176,33 @@ describe('<%= featureClassName %>DetailsEffects', () => {
   });
 
   describe('saveButtonClicked$', () => {
-    it('should dispatch update<%= featureClassName %>Succeeded', async () => {
-      const mockDetails = { id: '123' } as <%= featureClassName %>;
+    it('should dispatch update<%= resource %>Succeeded', async () => {
+      const mockDetails = { id: '123' } as <%= resource %>;
 
       const selectSpy = jest
         .spyOn(store, 'select')
         .mockReturnValueOnce(of(mockDetails));
-      service.update<%= featureClassName %>.mockReturnValueOnce(of({} as any));
+      service.update<%= resource %>.mockReturnValueOnce(of({} as any));
 
       actions$.next(
         <%= featureClassName %>DetailsActions.saveButtonClicked({ details: mockDetails })
       );
       const action = await firstValueFrom(effects.saveButtonClicked$);
 
-      expect(action).toEqual(<%= featureClassName %>DetailsActions.update<%= featureClassName %>Succeeded());
+      expect(action).toEqual(<%= featureClassName %>DetailsActions.update<%= resource %>Succeeded());
       expect(selectSpy).toHaveBeenCalledTimes(1);
-      expect(service.update<%= featureClassName %>).toHaveBeenCalledTimes(1);
+      expect(service.update<%= resource %>).toHaveBeenCalledTimes(1);
       expect(messageService.success).toHaveBeenCalledWith({
         summaryKey: '<%= featureConstantName%>_DETAILS.UPDATE.SUCCESS',
       });
     });
 
-    it('should dispatch update<%= featureClassName %>Cancelled', async () => {
-      const mockDetails = { id: '123' } as <%= featureClassName %>;
+    it('should dispatch update<%= resource %>Cancelled', async () => {
+      const mockDetails = { id: '123' } as <%= resource %>;
       const selectSpy = jest
         .spyOn(store, 'select')
         .mockReturnValueOnce(of(undefined));
-      service.update<%= featureClassName %>.mockReturnValueOnce(of({} as any));
+      service.update<%= resource %>.mockReturnValueOnce(of({} as any));
 
       actions$.next(
         <%= featureClassName %>DetailsActions.saveButtonClicked({ details: mockDetails })
@@ -217,17 +211,17 @@ describe('<%= featureClassName %>DetailsEffects', () => {
 
       expect(action).toEqual(<%= featureClassName %>DetailsActions.update<%= featureClassName %>Cancelled());
       expect(selectSpy).toHaveBeenCalledTimes(1);
-      expect(service.update<%= featureClassName %>).not.toHaveBeenCalled();
+      expect(service.update<%= resource %>).not.toHaveBeenCalled();
       expect(messageService.success).not.toHaveBeenCalled();
     });
 
     it('should dispatch update<%= featureClassName %>Failed', async () => {
       const mockError = 'update<%= featureClassName %> failed';
-      const mockDetails = { id: '123' } as <%= featureClassName %>;
+      const mockDetails = { id: '123' } as <%= resource %>;
       const selectSpy = jest
         .spyOn(store, 'select')
         .mockReturnValueOnce(of(mockDetails));
-      service.update<%= featureClassName %>.mockReturnValueOnce(throwError(() => mockError));
+      service.update<%= resource %>.mockReturnValueOnce(throwError(() => mockError));
 
       actions$.next(
         <%= featureClassName %>DetailsActions.saveButtonClicked({ details: mockDetails })
@@ -238,12 +232,13 @@ describe('<%= featureClassName %>DetailsEffects', () => {
         <%= featureClassName %>DetailsActions.update<%= featureClassName %>Failed({ error: mockError })
       );
       expect(selectSpy).toHaveBeenCalledTimes(1);
-      expect(service.update<%= featureClassName %>).toHaveBeenCalledTimes(1);
+      expect(service.update<%= resource %>).toHaveBeenCalledTimes(1);
       expect(messageService.error).toHaveBeenCalledWith({
         summaryKey: '<%= featureConstantName%>_DETAILS.UPDATE.ERROR',
       });
     });
   });
+  <%_ } _%>
 
   describe('displayError$', () => {
     it('should display error message when DetailsLoadingFailed action is dispatched', async () => {
