@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit, LOCALE_ID } from '@angular/core';
+import { Component, inject, OnInit, LOCALE_ID } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import {
@@ -9,10 +9,9 @@ import {
   DiagramComponentState,
   DiagramType,
   ExportDataService,
-  PortalDialogService,
   InteractiveDataViewComponentState,
   SearchHeaderComponentState,
-} from '@onecx/portal-integration-angular';
+} from '@onecx/angular-accelerator';
 import { <%= featureClassName %>SearchActions } from './<%= featureFileName %>-search.actions';
 import {
   <%= featureClassName %>SearchCriteria,
@@ -20,7 +19,7 @@ import {
 } from './<%= featureFileName %>-search.parameters';
 import { select<%= featureClassName %>SearchViewModel } from './<%= featureFileName %>-search.selectors';
 import { <%= featureClassName %>SearchViewModel } from './<%= featureFileName %>-search.viewmodel';
-import { first, Observable, map } from 'rxjs';
+import { Observable, map } from 'rxjs';
 import { PrimeIcons } from 'primeng/api';
 import { isValidDate } from '@onecx/accelerator';
 
@@ -28,9 +27,16 @@ import { isValidDate } from '@onecx/accelerator';
   selector: 'app-<%= featureFileName %>-search',
   templateUrl: './<%= featureFileName %>-search.component.html',
   styleUrls: ['./<%= featureFileName %>-search.component.scss'],
+  standalone: false,
 })
 
 export class <%= featureClassName %>SearchComponent implements OnInit {
+  private readonly breadcrumbService = inject(BreadcrumbService);
+  private readonly store = inject(Store);
+  private readonly formBuilder = inject(FormBuilder);
+  readonly locale = inject(LOCALE_ID);
+  private readonly exportDataService = inject(ExportDataService);
+
   viewModel$: Observable<<%= featureClassName %>SearchViewModel>  = this.store.select(select<%= featureClassName %>SearchViewModel);
 
   defaultDataSortDirection = DataSortDirection.NONE
@@ -75,15 +81,6 @@ export class <%= featureClassName %>SearchComponent implements OnInit {
       ) as Record<keyof <%= featureClassName %>SearchCriteria, unknown>,
     } satisfies Record<keyof <%= featureClassName %>SearchCriteria, unknown>,
   );
-
-  constructor(
-    private readonly breadcrumbService: BreadcrumbService,
-    private readonly store: Store,
-    private readonly formBuilder: FormBuilder,
-    @Inject(LOCALE_ID) public readonly locale: string,
-    private readonly exportDataService: ExportDataService,
-  ) {
-  }
 
   ngOnInit() {
     this.breadcrumbService.setItems([
