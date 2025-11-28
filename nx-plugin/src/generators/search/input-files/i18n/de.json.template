@@ -1,13 +1,15 @@
 {
   "<%= featureConstantName %>_SEARCH": {
     "HEADER": "<%= featureClassName %> Suche",
+    "ARIA-LABEL": "Seitenkopf mit Suche",
     "SUB_HEADER": "Suchen und Anzeigen von <%= featureClassName %>",
     "HELP_ARTICLE_ID": "Hilfeartikel",
     "EMPTY_RESULTS": "Keine Ergebnisse.",
     "BREADCRUMB": "Suche",
     "INPUT_FIELDS": "ACTION S4: ADD TRANSLATION for your input fields: https://onecx.github.io/docs/nx-plugins/current/general/getting_started/search/configure-search-criteria.html#action-4",
     "DIAGRAM": {
-      "SUM": "Gesamtanzahl"
+      "SUM": "Gesamtanzahl",
+      "NAME": "Diagramm für Suchergebnisse"
     },
     "HEADER_ACTIONS": {
         "EXPORT_ALL": "Alles exportieren",
@@ -30,10 +32,15 @@
         "SEARCH_CONFIGS_LOADING_FAILED": "Suchkonfigurationen konnten nicht geladen werden."
     },
     "RESULTS": {
-      "HELLO": "Hallo"
+      "CHANGE_ME": "Ändere mich",
+      "NAME": "Suchergebnisse"
     },
     "CRITERIA": {
-      "HELLO": "Hallo"
+      "CHANGEME": {
+        "LABEL": "Ändere mich",
+        "ARIA-LABEL": "Ändere mich",
+        "TOOLTIP": "Ändere mich"
+      }
     }
   }
 }
