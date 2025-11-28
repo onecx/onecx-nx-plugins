@@ -38,7 +38,8 @@
     "CRITERIA": {
       "CHANGEME": {
         "LABEL": "Ändere mich",
-        "ARIA-LABEL": "Ändere mich"
+        "ARIA-LABEL": "Ändere mich",
+        "TOOLTIP": "Ändere mich"
       }
     }
   }

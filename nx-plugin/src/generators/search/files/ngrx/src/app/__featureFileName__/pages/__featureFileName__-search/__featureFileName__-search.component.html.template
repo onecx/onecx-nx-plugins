@@ -24,7 +24,7 @@
               type="text"
               class="w-18rem"
               formControlName="changeMe"
-              [pTooltip]="'<%= featureConstantName%>_SEARCH.CRITERIA.CHANGEME.LABEL' | translate"
+              [pTooltip]="'<%= featureConstantName%>_SEARCH.CRITERIA.CHANGEME.TOOLTIP' | translate"
               tooltipPosition="top"
               tooltipEvent="hover"
               role="main"
