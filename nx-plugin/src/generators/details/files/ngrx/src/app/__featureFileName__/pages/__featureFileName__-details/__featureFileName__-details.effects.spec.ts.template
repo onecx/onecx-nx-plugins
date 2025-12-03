@@ -9,7 +9,11 @@ import { firstValueFrom, of, ReplaySubject, throwError } from 'rxjs';
 import { <%= resource %>, <%= serviceName %> } from '../../../shared/generated';
 import { <%= featureClassName %>DetailsEffects } from './<%= featureFileName %>-details.effects';
 import { initialState } from './<%= featureFileName %>-details.reducers';
-import { routerNavigatedAction } from '@ngrx/router-store';
+import {
+  routerNavigatedAction,
+  RouterNavigatedPayload,
+  SerializedRouterStateSnapshot,
+} from '@ngrx/router-store';
 import { <%= featureClassName %>DetailsActions } from './<%= featureFileName %>-details.actions';
 import { selectBackNavigationPossible } from 'src/app/shared/selectors/onecx.selectors';
 
@@ -26,11 +30,11 @@ describe('<%= featureClassName %>DetailsEffects', () => {
   let actions$: ReplaySubject<Action>;
   let effects: <%= featureClassName %>DetailsEffects;
   let store: MockStore<Store>;
-  let router: jest.Mocked<Router>;
+  let router: Partial<jest.Mocked<Router>>;
   let route: ActivatedRoute;
   let service: jest.Mocked<<%= serviceName %>>;
-  let portalDialogService: jest.Mocked<PortalDialogService>;
-  let messageService: jest.Mocked<PortalMessageService>;
+  let portalDialogService: Partial<jest.Mocked<PortalDialogService>>;
+  let messageService: Partial<jest.Mocked<PortalMessageService>>;
 
   beforeEach(async () => {
     actions$ = new ReplaySubject(1);
@@ -44,21 +48,21 @@ describe('<%= featureClassName %>DetailsEffects', () => {
       navigate: jest.fn().mockReturnValue(Promise.resolve(true)),
       parseUrl: jest.fn(),
       events: of(),
-    } as unknown as jest.Mocked<Router>;
+    };
 
     portalDialogService = {
       openDialog: jest.fn(),
-    } as unknown as jest.Mocked<PortalDialogService>;
+    };
 
     messageService = {
       success: jest.fn(),
       error: jest.fn(),
-    } as unknown as jest.Mocked<PortalMessageService>;
+    };
 
     route = {
       queryParams: of({}),
       snapshot: { queryParams: {} },
-    } as unknown as ActivatedRoute;
+    } as ActivatedRoute;
 
     await TestBed.configureTestingModule({
       providers: [
@@ -86,7 +90,11 @@ describe('<%= featureClassName %>DetailsEffects', () => {
         .spyOn(store, 'select')
         .mockReturnValueOnce(of('test-123'));
 
-      actions$.next(routerNavigatedAction({ payload: {} as any }));
+      actions$.next(
+        routerNavigatedAction({
+          payload: {} as RouterNavigatedPayload<SerializedRouterStateSnapshot>,
+        })
+      );
       const action = await firstValueFrom(effects.navigatedToDetailsPage$);
 
       expect(action).toEqual(
@@ -142,7 +150,7 @@ describe('<%= featureClassName %>DetailsEffects', () => {
   describe('cancelButtonClickedDirty$', () => {
     it('should dispatch cancelEditConfirmClicked', async () => {
       (portalDialogService.openDialog as jest.Mock).mockReturnValueOnce(
-        of({ button: 'primary' } as any)
+        of({ button: 'primary' })
       );
 
       actions$.next(<%= featureClassName %>DetailsActions.cancelButtonClicked({ dirty: true }));
@@ -159,7 +167,7 @@ describe('<%= featureClassName %>DetailsEffects', () => {
 
     it('should dispatch cancelEditBackClicked', async () => {
       (portalDialogService.openDialog as jest.Mock).mockReturnValueOnce(
-        of({ button: 'secondary' } as any)
+        of({ button: 'secondary' })
       );
 
       actions$.next(<%= featureClassName %>DetailsActions.cancelButtonClicked({ dirty: true }));
