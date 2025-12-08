@@ -1,1 +1,5 @@
-{}
+{
+  "<%= className %>": {
+    "ARIA-LABEL": "<%= className %> App"
+  }
+}
