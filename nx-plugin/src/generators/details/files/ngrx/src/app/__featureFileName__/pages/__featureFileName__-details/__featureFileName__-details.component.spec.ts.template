@@ -31,7 +31,7 @@ import {
   provideUserServiceMock,
   UserServiceMock,
 } from '@onecx/angular-integration-interface/mocks';
-import { TranslatePipe } from '@ngx-translate/core';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 
 describe('<%= featureClassName %>DetailsComponent', () => {
   const origAddEventListener = window.addEventListener;
