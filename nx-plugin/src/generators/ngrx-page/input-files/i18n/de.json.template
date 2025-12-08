@@ -1,4 +1,6 @@
 {
-  "<%= pageConstantName %>": {
+  "<%= pageConstantName %>_VIEW": {
+    "HELP_ARTICLE_ID": "Hilfeartikel",
+    "HEADER": "<%= pageConstantName %> Seitenkopf"
   }
 }

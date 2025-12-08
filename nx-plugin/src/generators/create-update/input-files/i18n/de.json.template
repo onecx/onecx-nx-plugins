@@ -22,7 +22,8 @@
       }
     },
     "FORM": {
-      "CHANGE_ME": "ChangeMe"
+      "CHANGE_ME": "ChangeMe",
+      "NAME": "Formular zum Erstellen und Updaten"
     }
   }
 }

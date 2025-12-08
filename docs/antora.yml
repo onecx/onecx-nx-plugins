@@ -1,6 +1,2 @@
-name: nx-plugins
-title: OneCX generator
+name: documentation
 version: latest
-start_page: general:index.adoc
-nav:
-  - modules/general/nav.adoc
