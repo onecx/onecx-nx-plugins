@@ -2,6 +2,7 @@
   "name": "@onecx/nx-plugin",
   "version": "0.0.1",
   "dependencies": {
+    "@nx/devkit": "^19.8.14",
     "@nx/angular": "^19.8.14",
     "ejs": "^3.1.9",
     "enquirer": "^2.3.6",
@@ -9,13 +10,7 @@
     "picocolors": "^1.0.0",
     "tslib": "^2.3.0",
     "yaml": "^2.3.4",
-    "yargs": "^17.7.2",
-    "@nx/devkit": "^19.8.14",
-    "@jest/globals": "^29.7.0",
-    "@phenomnomnominal/tsquery": "^5.0.1"
-  },
-  "devDependencies": {
-    "jest-extended": "7.0.0"
+    "yargs": "^17.7.2"
   },
   "type": "commonjs",
   "main": "./src/index.js",
@@ -23,8 +18,5 @@
   "generators": "./generators.json",
   "publishConfig": {
     "access": "public"
-  },
-  "nx-migrations": {
-    "migrations": "./migrations.json"
   }
 }
