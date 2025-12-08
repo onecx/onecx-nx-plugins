@@ -32,7 +32,7 @@ export class <%= featureClassName %>DetailsComponent implements OnInit {
       const labels: ObjectDetailItem[] = [
         //ACTION D1: Add header values here
         {
-          label: 'HELLO_DETAILS.FORM.ID',
+          label: '<%= featureConstantName %>_DETAILS.FORM.ID',
           labelPipe: TranslatePipe,
           value: vm.details?.id,
         },

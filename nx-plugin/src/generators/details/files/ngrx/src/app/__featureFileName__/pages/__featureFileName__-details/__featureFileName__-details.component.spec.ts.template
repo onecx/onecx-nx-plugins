@@ -222,7 +222,7 @@ describe('<%= featureClassName %>DetailsComponent', () => {
   it('should display item details in page header', async () => {
     component.headerLabels$ = of([
        {
-        label: 'HELLO_DETAILS.FORM.ID',
+        label: '<%= featureConstantName %>_DETAILS.FORM.ID',
         labelPipe: TranslatePipe,
         value: 'test id',
       },
@@ -249,8 +249,9 @@ describe('<%= featureClassName %>DetailsComponent', () => {
     const objectDetails = await pageHeader.getObjectInfos();
     expect(objectDetails.length).toBe(5);
 
-    const testDetailItem = await pageHeader.getObjectInfoByLabel('HELLO_DETAILS.FORM.ID');
-    expect(await testDetailItem?.getLabel()).toEqual('HELLO_DETAILS.FORM.ID');
+    const idLabel = TestBed.inject(TranslateService).instant('<%= featureConstantName %>_DETAILS.FORM.ID');
+    const testDetailItem = await pageHeader.getObjectInfoByLabel(idLabel);
+    expect(await testDetailItem?.getLabel()).toEqual(idLabel);
     expect(await testDetailItem?.getValue()).toEqual('test id');
     expect(await testDetailItem?.getIcon()).toBeUndefined();
 

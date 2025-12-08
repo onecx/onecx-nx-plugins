@@ -201,13 +201,13 @@ describe('<%= featureClassName %>SearchComponent', () => {
         {
           columnType: ColumnType.STRING,
           id: 'changeMe',
-          nameKey: 'HELLO_SEARCH.RESULTS.HELLO',
+          nameKey: '<%= featureConstantName %>_SEARCH.RESULTS.CHANGE_ME',
           filterable: true,
           sortable: true,
           predefinedGroupKeys: [
-            'HELLO_SEARCH.PREDEFINED_GROUP.DEFAULT',
-            'HELLO_SEARCH.PREDEFINED_GROUP.EXTENDED',
-            'HELLO_SEARCH.PREDEFINED_GROUP.FULL'
+            '<%= featureConstantName %>_SEARCH.PREDEFINED_GROUP.DEFAULT',
+            '<%= featureConstantName %>_SEARCH.PREDEFINED_GROUP.EXTENDED',
+            '<%= featureConstantName %>_SEARCH.PREDEFINED_GROUP.FULL'
           ],
         },
       ],
@@ -292,13 +292,13 @@ describe('<%= featureClassName %>SearchComponent', () => {
         {
           columnType: ColumnType.STRING,
           id: 'changeMe',
-          nameKey: 'HELLO_SEARCH.RESULTS.HELLO',
+          nameKey: '<%= featureConstantName %>_SEARCH.RESULTS.CHANGE_ME',
           filterable: true,
           sortable: true,
           predefinedGroupKeys: [
-            'HELLO_SEARCH.PREDEFINED_GROUP.DEFAULT',
-            'HELLO_SEARCH.PREDEFINED_GROUP.EXTENDED',
-            'HELLO_SEARCH.PREDEFINED_GROUP.FULL'
+            '<%= featureConstantName %>_SEARCH.PREDEFINED_GROUP.DEFAULT',
+            '<%= featureConstantName %>_SEARCH.PREDEFINED_GROUP.EXTENDED',
+            '<%= featureConstantName %>_SEARCH.PREDEFINED_GROUP.FULL'
           ],
         },
       ],
@@ -363,13 +363,13 @@ describe('<%= featureClassName %>SearchComponent', () => {
       {
         columnType: ColumnType.STRING,
         id: 'changeMe',
-        nameKey: 'HELLO_SEARCH.RESULTS.HELLO',
+        nameKey: '<%= featureConstantName %>_SEARCH.RESULTS.CHANGE_ME',
         filterable: true,
         sortable: true,
         predefinedGroupKeys: [
-          'HELLO_SEARCH.PREDEFINED_GROUP.DEFAULT',
-          'HELLO_SEARCH.PREDEFINED_GROUP.EXTENDED',
-          'HELLO_SEARCH.PREDEFINED_GROUP.FULL'
+          '<%= featureConstantName %>_SEARCH.PREDEFINED_GROUP.DEFAULT',
+          '<%= featureConstantName %>_SEARCH.PREDEFINED_GROUP.EXTENDED',
+          '<%= featureConstantName %>_SEARCH.PREDEFINED_GROUP.FULL'
         ],
       },
     ];
@@ -448,13 +448,13 @@ describe('<%= featureClassName %>SearchComponent', () => {
       {
         columnType: ColumnType.STRING,
         id: 'changeMe',
-        nameKey: 'HELLO_SEARCH.RESULTS.HELLO',
+        nameKey: '<%= featureConstantName %>_SEARCH.RESULTS.CHANGE_ME',
         filterable: true,
         sortable: true,
         predefinedGroupKeys: [
-          'HELLO_SEARCH.PREDEFINED_GROUP.DEFAULT',
-          'HELLO_SEARCH.PREDEFINED_GROUP.EXTENDED',
-          'HELLO_SEARCH.PREDEFINED_GROUP.FULL'
+          '<%= featureConstantName %>_SEARCH.PREDEFINED_GROUP.DEFAULT',
+          '<%= featureConstantName %>_SEARCH.PREDEFINED_GROUP.EXTENDED',
+          '<%= featureConstantName %>_SEARCH.PREDEFINED_GROUP.FULL'
         ],
       },
     ];
@@ -488,13 +488,13 @@ describe('<%= featureClassName %>SearchComponent', () => {
         {
         columnType: ColumnType.STRING,
         id: 'changeMe',
-        nameKey: 'HELLO_SEARCH.RESULTS.HELLO',
+        nameKey: '<%= featureConstantName %>_SEARCH.RESULTS.CHANGE_ME',
         filterable: true,
         sortable: true,
         predefinedGroupKeys: [
-          'HELLO_SEARCH.PREDEFINED_GROUP.DEFAULT',
-          'HELLO_SEARCH.PREDEFINED_GROUP.EXTENDED',
-          'HELLO_SEARCH.PREDEFINED_GROUP.FULL'
+          '<%= featureConstantName %>_SEARCH.PREDEFINED_GROUP.DEFAULT',
+          '<%= featureConstantName %>_SEARCH.PREDEFINED_GROUP.EXTENDED',
+          '<%= featureConstantName %>_SEARCH.PREDEFINED_GROUP.FULL'
         ],
       },
       ],
@@ -518,13 +518,13 @@ describe('<%= featureClassName %>SearchComponent', () => {
         {
           columnType: ColumnType.STRING,
           id: 'changeMe',
-          nameKey: 'HELLO_SEARCH.RESULTS.HELLO',
+          nameKey: '<%= featureConstantName %>_SEARCH.RESULTS.CHANGE_ME',
           filterable: true,
           sortable: true,
           predefinedGroupKeys: [
-            'HELLO_SEARCH.PREDEFINED_GROUP.DEFAULT',
-            'HELLO_SEARCH.PREDEFINED_GROUP.EXTENDED',
-            'HELLO_SEARCH.PREDEFINED_GROUP.FULL'
+            '<%= featureConstantName %>_SEARCH.PREDEFINED_GROUP.DEFAULT',
+            '<%= featureConstantName %>_SEARCH.PREDEFINED_GROUP.EXTENDED',
+            '<%= featureConstantName %>_SEARCH.PREDEFINED_GROUP.FULL'
           ],
         },
       ],
@@ -548,13 +548,13 @@ describe('<%= featureClassName %>SearchComponent', () => {
         {
         columnType: ColumnType.STRING,
         id: 'changeMe',
-        nameKey: 'HELLO_SEARCH.RESULTS.HELLO',
+        nameKey: '<%= featureConstantName %>_SEARCH.RESULTS.CHANGE_ME',
         filterable: true,
         sortable: true,
         predefinedGroupKeys: [
-          'HELLO_SEARCH.PREDEFINED_GROUP.DEFAULT',
-          'HELLO_SEARCH.PREDEFINED_GROUP.EXTENDED',
-          'HELLO_SEARCH.PREDEFINED_GROUP.FULL'
+          '<%= featureConstantName %>_SEARCH.PREDEFINED_GROUP.DEFAULT',
+          '<%= featureConstantName %>_SEARCH.PREDEFINED_GROUP.EXTENDED',
+          '<%= featureConstantName %>_SEARCH.PREDEFINED_GROUP.FULL'
         ],
       },
       ],
@@ -579,13 +579,13 @@ describe('<%= featureClassName %>SearchComponent', () => {
       {
         columnType: ColumnType.STRING,
         id: 'changeMe',
-        nameKey: 'HELLO_SEARCH.RESULTS.HELLO',
+        nameKey: '<%= featureConstantName %>_SEARCH.RESULTS.CHANGE_ME',
         filterable: true,
         sortable: true,
         predefinedGroupKeys: [
-          'HELLO_SEARCH.PREDEFINED_GROUP.DEFAULT',
-          'HELLO_SEARCH.PREDEFINED_GROUP.EXTENDED',
-          'HELLO_SEARCH.PREDEFINED_GROUP.FULL'
+          '<%= featureConstantName %>_SEARCH.PREDEFINED_GROUP.DEFAULT',
+          '<%= featureConstantName %>_SEARCH.PREDEFINED_GROUP.EXTENDED',
+          '<%= featureConstantName %>_SEARCH.PREDEFINED_GROUP.FULL'
         ],
       },
     ];
