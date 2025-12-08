@@ -8,7 +8,7 @@ import { LetDirective } from '@ngrx/component';
 import { ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
-import { TranslatePipe } from '@ngx-translate/core';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import {
   AngularAcceleratorModule,
   BreadcrumbService,
