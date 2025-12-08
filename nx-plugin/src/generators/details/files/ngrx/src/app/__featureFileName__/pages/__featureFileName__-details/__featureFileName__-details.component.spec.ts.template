@@ -18,6 +18,7 @@ import {
   PermissionService,
   PortalPageComponent,
   TranslationConnectionService,
+  HAS_PERMISSION_CHECKER,
 } from '@onecx/angular-utils';
 import { <%= featureClassName %>DetailsComponent } from './<%= featureFileName %>-details.component';
 import { initialState } from './<%= featureFileName %>-details.reducers';
@@ -26,7 +27,10 @@ import { <%= featureClassName %>DetailsViewModel } from './<%= featureFileName %
 import { select<%= featureClassName %>DetailsViewModel } from './<%= featureFileName %>-details.selectors';
 import { <%= featureClassName %>DetailsActions } from './<%= featureFileName %>-details.actions';
 import { ofType } from '@ngrx/effects';
-import { provideUserServiceMock } from '@onecx/angular-integration-interface/mocks';
+import {
+  provideUserServiceMock,
+  UserServiceMock,
+} from '@onecx/angular-integration-interface/mocks';
 import { TranslatePipe } from '@ngx-translate/core';
 
 describe('<%= featureClassName %>DetailsComponent', () => {
@@ -105,23 +109,10 @@ describe('<%= featureClassName %>DetailsComponent', () => {
         }),
         BreadcrumbService,
         { provide: ActivatedRoute, useValue: mockActivatedRoute },
+        provideUserServiceMock(),
         {
-          provide: UserService,
-          useValue: {
-            getPermissions: jest
-              .fn()
-              .mockReturnValue(of([
-                "<%= featureConstantName %>#CREATE",
-                "<%= featureConstantName %>#EDIT",
-                "<%= featureConstantName %>#DELETE",
-                "<%= featureConstantName %>#IMPORT",
-                "<%= featureConstantName %>#EXPORT",
-                "<%= featureConstantName %>#VIEW",
-                "<%= featureConstantName %>#SEARCH",
-                "<%= featureConstantName %>#BACK"
-              ])),
-            hasPermission: jest.fn().mockResolvedValue(true),
-          },
+          provide: HAS_PERMISSION_CHECKER,
+          useExisting: UserService,
         },
         {
           provide: TranslationConnectionService,
@@ -129,6 +120,18 @@ describe('<%= featureClassName %>DetailsComponent', () => {
         },
       ],
     }).compileComponents();
+
+    const userServiceMock = TestBed.inject(UserServiceMock);
+    userServiceMock.permissionsTopic$.publish([
+      '<%= featureConstantName %>#CREATE',
+      '<%= featureConstantName %>#EDIT',
+      '<%= featureConstantName %>#DELETE',
+      '<%= featureConstantName %>#IMPORT',
+      '<%= featureConstantName %>#EXPORT',
+      '<%= featureConstantName %>#VIEW',
+      '<%= featureConstantName %>#SEARCH',
+      '<%= featureConstantName %>#BACK',
+    ]);
 
     store = TestBed.inject(MockStore);
     store.overrideSelector(

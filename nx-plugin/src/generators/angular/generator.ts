@@ -85,7 +85,6 @@ export async function angularGenerator(
       primeflex: '^3.3.1',
       primeicons: '^7.0.0',
       primeng: '^19.1.0',
-      postcss: '8.5.6',
       '@primeng/themes': '^19.0.6',
       '@onecx/accelerator': oneCXLibVersion,
       '@onecx/angular-accelerator': oneCXLibVersion,
@@ -119,8 +118,6 @@ export async function angularGenerator(
       '@ngrx/store': '^19.0.1',
       '@ngrx/store-devtools': '^19.0.1',
       '@webcomponents/webcomponentsjs': '^2.8.0',
-      '@phenomnomnominal/tsquery': '^6.1.3',
-      'node-html-parser': '^7.0.1',
       'zone.js': '~0.15.0',
     },
     {
@@ -147,6 +144,8 @@ export async function angularGenerator(
   );
 
   addScriptsToPackageJson(tree, options);
+
+  addOverridesToPackageJson(tree);
 
   adaptTsConfig(tree, options);
 
@@ -201,6 +200,15 @@ function addScriptsToPackageJson(tree: Tree, options: AngularGeneratorSchema) {
     pkgJson.scripts['test:ci'] =
       'nx test --watch=false --browsers=ChromeHeadless --code-coverage';
 
+    return pkgJson;
+  });
+}
+
+function addOverridesToPackageJson(tree: Tree) {
+  updateJson(tree, 'package.json', (pkgJson) => {
+    pkgJson.overrides = {
+      postcss: '8.5.6',
+    };
     return pkgJson;
   });
 }
