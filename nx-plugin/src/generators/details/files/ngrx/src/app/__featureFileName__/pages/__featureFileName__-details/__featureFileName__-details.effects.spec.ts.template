@@ -6,7 +6,11 @@ import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { PortalDialogService } from '@onecx/portal-integration-angular';
 import { PortalMessageService } from '@onecx/angular-integration-interface';
 import { firstValueFrom, of, ReplaySubject, throwError } from 'rxjs';
-import { <%= resource %>, <%= serviceName %> } from '../../../shared/generated';
+import { 
+  <%= resource %>, 
+  <%= serviceName %>,
+  Update<%= resource %>Response,
+} from '../../../shared/generated';
 import { <%= featureClassName %>DetailsEffects } from './<%= featureFileName %>-details.effects';
 import { initialState } from './<%= featureFileName %>-details.reducers';
 import {
@@ -16,6 +20,7 @@ import {
 } from '@ngrx/router-store';
 import { <%= featureClassName %>DetailsActions } from './<%= featureFileName %>-details.actions';
 import { selectBackNavigationPossible } from 'src/app/shared/selectors/onecx.selectors';
+import { HttpResponse } from '@angular/common/http';
 
 jest.mock('@onecx/ngrx-accelerator', () => {
   const actual = jest.requireActual('@onecx/ngrx-accelerator');
@@ -190,7 +195,16 @@ describe('<%= featureClassName %>DetailsEffects', () => {
       const selectSpy = jest
         .spyOn(store, 'select')
         .mockReturnValueOnce(of(mockDetails));
-      service.update<%= resource %>.mockReturnValueOnce(of({} as any));
+      service.update<%= resource %>.mockReturnValueOnce(
+        of(
+          new HttpResponse<Update<%= resource %>Response>({
+            body: {
+              dataObject: mockDetails,
+            },
+            status: 200,
+          })
+        )
+      );
 
       actions$.next(
         <%= featureClassName %>DetailsActions.saveButtonClicked({ details: mockDetails })
@@ -210,7 +224,16 @@ describe('<%= featureClassName %>DetailsEffects', () => {
       const selectSpy = jest
         .spyOn(store, 'select')
         .mockReturnValueOnce(of(undefined));
-      service.update<%= resource %>.mockReturnValueOnce(of({} as any));
+      service.update<%= resource %>.mockReturnValueOnce(
+        of(
+          new HttpResponse<Update<%= resource %>Response>({
+            body: {
+              dataObject: mockDetails,
+            },
+            status: 200,
+          })
+        )
+      );
 
       actions$.next(
         <%= featureClassName %>DetailsActions.saveButtonClicked({ details: mockDetails })
