@@ -138,6 +138,8 @@ export async function angularGenerator(
 
   addScriptsToPackageJson(tree, options);
 
+  addOverridesToPackageJson(tree);
+
   adaptTsConfig(tree, options);
 
   adaptProjectConfiguration(tree, options);
@@ -173,6 +175,18 @@ export async function angularGenerator(
     });
     installPackagesTask(tree, true);
   };
+}
+
+function addOverridesToPackageJson(tree: Tree) {
+  updateJson(tree, 'package.json', (pkgJson) => {
+    pkgJson.overrides = {
+      'jest-environment-jsdom': {
+        jsdom: '26.0.0',
+        'rrweb-cssom': '0.8.0',
+      },
+    };
+    return pkgJson;
+  });
 }
 
 function addScriptsToPackageJson(tree: Tree, options: AngularGeneratorSchema) {
