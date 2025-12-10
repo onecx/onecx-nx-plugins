@@ -37,17 +37,13 @@ describe('<%= featureClassName %>DetailsEffects', () => {
   let store: MockStore<Store>;
   let router: Partial<jest.Mocked<Router>>;
   let route: ActivatedRoute;
-  let service: jest.Mocked<<%= serviceName %>>;
+  const service = { get<%= resource %>ById: jest.fn(), update<%= resource %>: jest.fn() };
   let portalDialogService: Partial<jest.Mocked<PortalDialogService>>;
   let messageService: Partial<jest.Mocked<PortalMessageService>>;
 
   beforeEach(async () => {
+    jest.resetAllMocks();
     actions$ = new ReplaySubject(1);
-
-    service = {
-      update<%= resource %>: jest.fn(),
-      get<%= resource %>ById: jest.fn(),
-    } as unknown as jest.Mocked<<%= serviceName %>>;
 
     router = {
       navigate: jest.fn().mockReturnValue(Promise.resolve(true)),
@@ -113,7 +109,7 @@ describe('<%= featureClassName %>DetailsEffects', () => {
     it('should dispatch <%= featurePropertyName %>DetailsReceived on success with id', async () => {
       const mockId = '123';
       const mockDetails = { id: mockId } as <%= resource %>;
-      service.get<%= resource %>ById.mockReturnValue(of({ resource: mockDetails } as any));
+      service.get<%= resource %>ById.mockReturnValue(of({ resource: mockDetails }));
 
       actions$.next(<%= featureClassName %>DetailsActions.navigatedToDetailsPage({ id: mockId }));
       const action = await firstValueFrom(effects.load<%= featureClassName %>ById$);
@@ -195,16 +191,7 @@ describe('<%= featureClassName %>DetailsEffects', () => {
       const selectSpy = jest
         .spyOn(store, 'select')
         .mockReturnValueOnce(of(mockDetails));
-      service.update<%= resource %>.mockReturnValueOnce(
-        of(
-          new HttpResponse<Update<%= resource %>Response>({
-            body: {
-              dataObject: mockDetails,
-            },
-            status: 200,
-          })
-        )
-      );
+      service.update<%= resource %>.mockReturnValueOnce(of({}));
 
       actions$.next(
         <%= featureClassName %>DetailsActions.saveButtonClicked({ details: mockDetails })
@@ -224,16 +211,7 @@ describe('<%= featureClassName %>DetailsEffects', () => {
       const selectSpy = jest
         .spyOn(store, 'select')
         .mockReturnValueOnce(of(undefined));
-      service.update<%= resource %>.mockReturnValueOnce(
-        of(
-          new HttpResponse<Update<%= resource %>Response>({
-            body: {
-              dataObject: mockDetails,
-            },
-            status: 200,
-          })
-        )
-      );
+      service.update<%= resource %>.mockReturnValueOnce(of({}));
 
       actions$.next(
         <%= featureClassName %>DetailsActions.saveButtonClicked({ details: mockDetails })
