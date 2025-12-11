@@ -40,7 +40,7 @@ export class <%= featureClassName%>CreateUpdateComponent
   constructor() {
     this.formGroup = new FormGroup({
       changeMe: new FormControl(null, [Validators.maxLength(255)]),
-      // ACTION C3: Add form fields. https://onecx.github.io/docs/nx-plugins/current/general/getting_started/create-update/extend-form-fields.html#action-3
+      // ACTION C3: Add form fields. https://onecx.github.io/docs/documentation/current/onecx-nx-plugins/getting_started/create-update/extend-form-fields.html#action-3
     });
     this.formGroup.statusChanges
       .pipe(
