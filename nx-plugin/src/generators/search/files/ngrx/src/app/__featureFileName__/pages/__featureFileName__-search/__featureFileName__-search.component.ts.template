@@ -36,7 +36,7 @@ export class <%= featureClassName %>SearchComponent implements OnInit {
   defaultDataSortDirection = DataSortDirection.NONE
   defaultDiagramType = DiagramType.PIE
 
-  // ACTION S10: Update header actions: https://onecx.github.io/docs/nx-plugins/current/general/getting_started/search/update-header-actions.html#action-10
+  // ACTION S10: Update header actions: https://onecx.github.io/docs/documentation/current/onecx-nx-plugins/getting_started/search/update-header-actions.html#action-10
   headerActions$: Observable<Action[]> = this.viewModel$.pipe(map((vm) => {
       const actions: Action[] = [
         {
@@ -62,7 +62,7 @@ export class <%= featureClassName %>SearchComponent implements OnInit {
     })
   );
 
-  // ACTION S9: Select the column to be displayed in the diagram: https://onecx.github.io/docs/nx-plugins/current/general/getting_started/search/configure-result-diagram.html#action-3
+  // ACTION S9: Select the column to be displayed in the diagram: https://onecx.github.io/docs/documentation/current/onecx-nx-plugins/getting_started/search/configure-result-diagram.html#action-3
   diagramColumnId = 'id';
   diagramColumn$ = this.viewModel$.pipe(map((vm) =>vm.columns.find((e) => e.id === this.diagramColumnId) as DataTableColumn));
 
