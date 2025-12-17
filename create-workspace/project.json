@@ -30,10 +30,7 @@
       }
     },
     "release": {
-      "executor": "nx-release:build-update-publish",
-      "options": {
-        "libName": "create-workspace"
-      }
+      "executor": "@onecx/release:update-build-publish"
     }
   },
   "tags": [],
