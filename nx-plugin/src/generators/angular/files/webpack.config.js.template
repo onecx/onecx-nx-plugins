@@ -46,14 +46,6 @@ const config = withModuleFederationPlugin({
       requiredVersion: 'auto',
       includeSecondaries: true,
     },
-    primeng: {
-      requiredVersion: 'auto',
-      includeSecondaries: true,
-    },
-    '@onecx/accelerator': {
-      requiredVersion: 'auto',
-      includeSecondaries: true,
-    },
     '@onecx/angular-accelerator': {
       requiredVersion: 'auto',
       includeSecondaries: true,

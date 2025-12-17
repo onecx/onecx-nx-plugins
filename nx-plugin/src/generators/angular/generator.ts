@@ -86,7 +86,6 @@ export async function angularGenerator(
       primeicons: '^7.0.0',
       primeng: '^19.1.0',
       '@primeng/themes': '^19.0.6',
-      '@onecx/accelerator': oneCXLibVersion,
       '@onecx/angular-accelerator': oneCXLibVersion,
       '@onecx/angular-auth': oneCXLibVersion,
       '@onecx/angular-remote-components': oneCXLibVersion,
@@ -145,8 +144,6 @@ export async function angularGenerator(
 
   addScriptsToPackageJson(tree, options);
 
-  addOverridesToPackageJson(tree);
-
   adaptTsConfig(tree, options);
 
   adaptProjectConfiguration(tree, options);
@@ -200,15 +197,6 @@ function addScriptsToPackageJson(tree: Tree, options: AngularGeneratorSchema) {
     pkgJson.scripts['test:ci'] =
       'nx test --watch=false --browsers=ChromeHeadless --code-coverage';
 
-    return pkgJson;
-  });
-}
-
-function addOverridesToPackageJson(tree: Tree) {
-  updateJson(tree, 'package.json', (pkgJson) => {
-    pkgJson.overrides = {
-      postcss: '8.5.6',
-    };
     return pkgJson;
   });
 }
