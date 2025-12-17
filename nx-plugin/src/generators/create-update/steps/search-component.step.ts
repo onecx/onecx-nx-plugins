@@ -12,13 +12,13 @@ export class SearchComponentStep
     const constantName = names(options.featureName).constantName;
     const filePath = `src/app/${fileName}/pages/${fileName}-search/${fileName}-search.component.ts`;
     const find = [
-      `} from '@onecx/portal-integration-angular';`,
+      `} from '@onecx/angular-accelerator';`,
       'const actions: Action[] = [',
       'resetSearch',
     ];
     const replaceWith = [
       `RowListGridData
-      } from '@onecx/portal-integration-angular';`,
+      } from '@onecx/angular-accelerator';`,
       `const actions: Action[] = [
       {
        labelKey: '${constantName}_CREATE_UPDATE.ACTION.CREATE',
