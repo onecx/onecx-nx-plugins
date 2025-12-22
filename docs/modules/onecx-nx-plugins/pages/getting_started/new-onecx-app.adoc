@@ -25,7 +25,7 @@ include::partial$generator-namespace-item.adoc[]
 
 After running the generator take the following actions: 
 [start=1]
-. xref:getting_started/basic-onecx-app/further-actions.adoc[Check for further actions]
-. xref:getting_started/basic-onecx-app/commit-changes.adoc[Commit the changes]
+. xref:./basic-onecx-app/further-actions.adoc[Check for further actions]
+. xref:./basic-onecx-app/commit-changes.adoc[Commit the changes]
 
 Next you might want to generate a feature as this is a preqrequisite to generate a search / details page and more.
