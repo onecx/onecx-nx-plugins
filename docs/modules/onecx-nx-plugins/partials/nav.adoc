@@ -1,29 +1,38 @@
-* xref:documentation:onecx-nx-plugins:index.adoc[OneCX Generator]
-** xref:documentation:onecx-nx-plugins:getting_started/prerequisites.adoc[Check Prerequisites]
-** xref:documentation:onecx-nx-plugins:getting_started/new-onecx-app.adoc[Create a OneCX App]
-** xref:documentation:onecx-nx-plugins:getting_started/feature-module.adoc[Create a Feature Module]
+* UI Generators
+** xref:documentation:onecx-nx-plugins:index.adoc[App Generator]
+*** xref:documentation:onecx-nx-plugins:getting_started/prerequisites.adoc[Check Prerequisites]
+*** xref:documentation:onecx-nx-plugins:getting_started/new-onecx-app.adoc[Create a OneCX App]
+*** xref:documentation:onecx-nx-plugins:getting_started/feature-module.adoc[Create a Feature Module]
 
-** xref:documentation:onecx-nx-plugins:getting_started/search-page.adoc[Create a Search Page]
+*** xref:documentation:onecx-nx-plugins:getting_started/search-page.adoc[Create a Search Page]
+////
 *** xref:documentation:onecx-nx-plugins:getting_started/search/configure-search-criteria.adoc[Search Criteria]
 *** xref:documentation:onecx-nx-plugins:getting_started/search/configure-search-results.adoc[Search Results]
 *** xref:documentation:onecx-nx-plugins:getting_started/search/configure-result-diagram.adoc[Result Diagram]
 *** xref:documentation:onecx-nx-plugins:getting_started/search/update-header-actions.adoc[Header Actions]
 *** xref:documentation:onecx-nx-plugins:getting_started/search/update-permissions.adoc[Permissions]
 *** xref:documentation:onecx-nx-plugins:getting_started/search/commit-changes.adoc[Commit Changes]
+////
 
-** xref:documentation:onecx-nx-plugins:getting_started/create-update-dialog.adoc[Create Create/Update Dialog]
+*** xref:documentation:onecx-nx-plugins:getting_started/create-update-dialog.adoc[Create Create/Update Dialog]
+////
 *** xref:documentation:onecx-nx-plugins:getting_started/create-update/extend-form-fields.adoc[Extend from fields]
 *** xref:documentation:onecx-nx-plugins:getting_started/create-update/commit-changes.adoc[Commit Changes]
+////
 
-** xref:documentation:onecx-nx-plugins:getting_started/delete-dialog.adoc[Create Delete Dialog]
+*** xref:documentation:onecx-nx-plugins:getting_started/delete-dialog.adoc[Create Delete Dialog]
+////
 *** xref:documentation:onecx-nx-plugins:getting_started/delete/commit-changes.adoc[Commit Changes]
+////
 
-** xref:documentation:onecx-nx-plugins:getting_started/details-page.adoc[Create Detail Page]
+*** xref:documentation:onecx-nx-plugins:getting_started/details-page.adoc[Create Detail Page]
+////
 *** xref:documentation:onecx-nx-plugins:getting_started/details/core-data.adoc[Add core data to details page header]
 *** xref:documentation:onecx-nx-plugins:getting_started/details/further-actions.adoc[Check Actions]
 *** xref:documentation:onecx-nx-plugins:getting_started/details/commit-changes.adoc[Commit Changes]
+////
 
 ** xref:documentation:onecx-nx-plugins:getting_started/glossary.adoc[Glossary]
 
-* xref:documentation:onecx-nx-plugins:further_generators/ngrx-page/ngrx-page.adoc[NgRx Generator]
-* xref:documentation:onecx-nx-plugins:further_generators/pre-commit-validation.adoc[Pre-Commit Validation Generator]
+** xref:documentation:onecx-nx-plugins:further_generators/ngrx-page/ngrx-page.adoc[NgRx Generator]
+** xref:documentation:onecx-nx-plugins:further_generators/pre-commit-validation.adoc[Pre-Commit Validation Generator]
