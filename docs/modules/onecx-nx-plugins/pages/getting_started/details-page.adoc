@@ -15,7 +15,7 @@ nx generate <namespaceOfTheGenerator>/nx-plugin:details <feature>
 
 include::partial$generator-namespace-item.adoc[]
 
-* _<feature>_: see xref:getting_started/glossary.adoc#feature[here].
+* _<feature>_: see xref:./glossary.adoc#feature[here].
 
 TIP: Next, the CLI will ask you whether you want to customize names for the generation.
 When answering yes, the next few questions will ask you about names for the API.
@@ -42,6 +42,6 @@ If successfull it will redirect to the parent / search page, else show an error 
 After running the generator, the following actions must be taken: 
 
 [start=1]
-. xref:getting_started/details/core-data.adoc[Add core data to details page header]
-. xref:getting_started/details/extend-form-fields.adoc[Extend form fields (for Edit Mode) ]
-. xref:getting_started/details/commit-changes.adoc[Commit the changes]
+. xref:./details/core-data.adoc[Add core data to details page header]
+. xref:./details/extend-form-fields.adoc[Extend form fields (for Edit Mode) ]
+. xref:./details/commit-changes.adoc[Commit the changes]
