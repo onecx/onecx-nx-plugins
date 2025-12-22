@@ -1,6 +1,6 @@
 === Create Create/Update Dialogs
 
-:portal_dialog_service_url: xref:latest@guides:angular:cookbook/service/portal-dialog-service/index.adoc
+:portal_dialog_service_url: xref:documentation:docs-guides-ui:angular:cookbook/service/portal-dialog-service/index.adoc
 :idprefix:
 :idseparator: -
 
@@ -16,7 +16,7 @@ nx generate <namespaceOfTheGenerator>/nx-plugin:create-update <feature>
 
 include::partial$generator-namespace-item.adoc[]
 
-* _<feature>_: see xref:getting_started/glossary.adoc#feature[here].
+* _<feature>_: see xref:./glossary.adoc#feature[here].
 
 TIP: Next, the CLI will ask you whether you want to customize names for the generation.
 When answering yes, the next few questions will ask you about names for the API.
@@ -29,7 +29,7 @@ After running the generator, the following actions must be taken:
 
 
 [start=1]
-. xref:getting_started/create-update/extend-form-fields.adoc[Extend schema and form fields]
-. xref:getting_started/create-update/commit-changes.adoc[Commit the changes]
+. xref:./create-update/extend-form-fields.adoc[Extend schema and form fields]
+. xref:./create-update/commit-changes.adoc[Commit the changes]
 
 NOTE: To modify the behavior of the dialogs, please refer to {portal_dialog_service_url}[PortalDialogService docs].
