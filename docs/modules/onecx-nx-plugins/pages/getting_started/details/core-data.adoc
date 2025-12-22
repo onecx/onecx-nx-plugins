@@ -3,7 +3,7 @@
 :idprefix:
 :idseparator: -
 
-:page_header_url: xref:latest@guides:angular:cookbook/components/page-header/index.adoc
+:page_header_url: xref:documentation:docs-guides-ui:angular/cookbook/components/page-header/index.adoc
 
 On the details page you can display data in the the header and below there is a content pane. You can customize the content pane as needed.
 
@@ -39,5 +39,5 @@ You can also add additional actions to the header using the `headerActions$` pro
 
 Check the {page_header_url}[PageHeader Component] for more information.
 
-include::partial$remove-action.adoc[]
+include::documentation:onecx-nx-plugins:partial$remove-action.adoc[]
 

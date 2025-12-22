@@ -3,9 +3,9 @@
 :idprefix:
 :idseparator: -
 
-:data_table_column_properties_cookbook_url: xref:latest@guides:angular:cookbook/components/interactive-data-view/data-table-column.adoc
-:translation_cookbook_url: xref:latest@guides:angular:cookbook/multi-language/multi-language.adoc
-:api_scheme_url: xref:latest@guides:general/api_guidelines.adoc
+:data_table_column_properties_cookbook_url: xref:documentation:docs-guides-ui:angular/cookbook/components/interactive-data-view/data-table-column.adoc
+:translation_cookbook_url: xref:documentation:docs-guides-ui:angular/cookbook/multi-language/multi-language.adoc
+:api_scheme_url: xref:documentation:onecx-docs-dev:guides/api_guidelines.adoc
 
 
 To configure the search results, the following actions must be taken. 
@@ -45,9 +45,9 @@ _Adapt in File:_ `+<feature>-bff.yaml+`
 ----
 Where `+houseType+` is an additional property added to the schema of the entity `+<Feature>+`.
 
-include::partial$apigen-action.adoc[]
+include::documentation:onecx-nx-plugins:partial$apigen-action.adoc[]
 
-include::partial$remove-action.adoc[]
+include::documentation:onecx-nx-plugins:partial$remove-action.adoc[]
 
 [#action-6]
 === ACTION S6: Column configuration
@@ -92,7 +92,7 @@ The key is at the same time the translation key for the group name.
 
 Refer to the {data_table_column_properties_cookbook_url}[DataTableColumn overview] for more information.
 
-include::partial$remove-action.adoc[]
+include::documentation:onecx-nx-plugins:partial$remove-action.adoc[]
 
 [#action-7]
 === ACTION S7: Mapping from Feature to Row Item
@@ -122,7 +122,7 @@ This example shows how to map a property `+houseType+` to a translation key. If 
 
 It also shows how to map a nested property `+address.city+` to a flat property `+city+` used in the data table.
 
-include::partial$remove-action.adoc[]
+include::documentation:onecx-nx-plugins:partial$remove-action.adoc[]
 
 [#action-8]
 === ACTION S8: Add translations
@@ -152,4 +152,4 @@ For our examples above, the following entries would be necessary:
 
 Refer to the {translation_cookbook_url}[Multi-Language Cookbook] for more information.
 
-include::partial$remove-action.adoc[]
+include::documentation:onecx-nx-plugins:partial$remove-action.adoc[]

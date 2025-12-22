@@ -4,7 +4,7 @@
 :idseparator: -
 
 :type: build-test-run
-include::partial$build-test-run.adoc[]
+include::documentation:onecx-nx-plugins:partial$build-test-run.adoc[]
 
 [NOTE]
 ====
@@ -16,4 +16,4 @@ After the Application is started, make sure:
 
 :message: feat: create-update added for <nameOfTheProduct>
 :comment: pass:quotes[Please replace `_nameOfTheProduct_` with the real name of your product.]
-include::partial$commit-changes.adoc[]
+include::documentation:onecx-nx-plugins:partial$commit-changes.adoc[]

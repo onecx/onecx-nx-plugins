@@ -2,8 +2,8 @@
 
 :idprefix:
 :idseparator: -
-:page_header_cookbook_url: xref:latest@guides:angular:cookbook/components/page-header/index.adoc
-:search_header_cookbook_url: xref:latest@guides:angular:cookbook/components/search-header/index.adoc
+:page_header_cookbook_url: xref:documentation:docs-guides-ui:angular/cookbook/components/page-header/index.adoc
+:search_header_cookbook_url: xref:documentation:docs-guides-ui:angular/cookbook/components/search-header/index.adoc
 
 [#action-10]
 === ACTION S10: Update header actions

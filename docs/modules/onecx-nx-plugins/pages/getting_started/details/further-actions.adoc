@@ -3,4 +3,4 @@
 :idprefix:
 :idseparator: -
 
-include::partial$actions-check.adoc[]
+include::documentation:onecx-nx-plugins:partial$actions-check.adoc[]

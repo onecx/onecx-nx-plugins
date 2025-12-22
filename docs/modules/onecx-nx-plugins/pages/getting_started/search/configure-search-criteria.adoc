@@ -3,12 +3,12 @@
 :idprefix:
 :idseparator: -
 
-:adding_search_criteria_general_cookbook_url: xref:latest@guides:angular:ngrx/cookbook/adding-search-criteria/general.adoc
-:adding_search_criteria_general_parameters_cookbook_url: xref:latest@guides:angular:ngrx/cookbook/adding-search-criteria/general.adoc#parameters
-:adding_search_criteria_general_html_url: xref:latest@guides:angular:ngrx/cookbook/adding-search-criteria/general.adoc#html
-:adding_search_criteria_general_html_examples_url: xref:latest@guides:angular:ngrx/cookbook/adding-search-criteria/general.adoc#examples-for-different-input-fields
-:translation_cookbook_url: xref:latest@guides:angular:cookbook/multi-language/multi-language.adoc
-:api_scheme_url: xref:latest@guides:general/api_guidelines.adoc
+:adding_search_criteria_general_cookbook_url: xref:documentation:docs-guides-ui:angular/ngrx/cookbook/adding-search-criteria/general.adoc
+:adding_search_criteria_general_parameters_cookbook_url: xref:documentation:docs-guides-ui:angular/ngrx/cookbook/adding-search-criteria/general.adoc#parameters
+:adding_search_criteria_general_html_url: xref:documentation:docs-guides-ui:angular/ngrx/cookbook/adding-search-criteria/general.adoc#html
+:adding_search_criteria_general_html_examples_url: xref:documentation:docs-guides-ui:angular/ngrx/cookbook/adding-search-criteria/general.adoc#examples-for-different-input-fields
+:translation_cookbook_url: xref:documentation:docs-guides-ui:angular/cookbook/multi-language/multi-language.adoc
+:api_scheme_url: xref:documentation:docs-guides-ui:general/api_guidelines.adoc
 
 After generating the search page, you can add filter criteria. These criteria must be defined in the BFF's OpenAPI spec and represented in TypeScript for use in the UI. Users enter criteria via HTML input fields placed at the top of the page.
 
@@ -17,8 +17,8 @@ After generating the search page, you can add filter criteria. These criteria mu
 
 The `+Search<FeatureName>Request+` component in the OpenAPI yaml must be adapted. 
 
-You should have a xref:getting_started/glossary.adoc#feature[`+Search<Feature>Request+`]  defined in the OpenAPI specification.
-By modifying the xref:getting_started/glossary.adoc#feature[`+Search<Feature>Request+`], you can add additional parameters to your search request.
+You should have a xref:../glossary.adoc#feature[`+Search<Feature>Request+`]  defined in the OpenAPI specification.
+By modifying the xref:../glossary.adoc#feature[`+Search<Feature>Request+`], you can add additional parameters to your search request.
 
 _Adapt in File:_ `+<feature>-bff.yaml+`
 
@@ -47,18 +47,18 @@ Search<Feature>Request:
 
 Please refer to the {adding_search_criteria_general_cookbook_url}[adding search criteria general cookbook] for more information.
 
-include::partial$apigen-action.adoc[]
+include::documentation:onecx-nx-plugins:partial$apigen-action.adoc[]
 
-include::partial$remove-action.adoc[]
+include::documentation:onecx-nx-plugins:partial$remove-action.adoc[]
 
 [#action-2]
 === ACTION S2: Search criteria representation in zod
-The criteria you added in "Action S1" now have to be added to the xref:getting_started/glossary.adoc#feature[`+<feature>SearchCriteriasSchema+`].
+The criteria you added in "Action S1" now have to be added to the xref:../glossary.adoc#feature[`+<feature>SearchCriteriasSchema+`].
 Assure the keys and types match the ones you defined in the OpenAPI specification.
 
 Refer to the {adding_search_criteria_general_parameters_cookbook_url}[adding search criteria parameters cookbook] for more information.
 
-include::partial$remove-action.adoc[]
+include::documentation:onecx-nx-plugins:partial$remove-action.adoc[]
 
 [#action-3]
 === ACTION S3: HTML input fields for search criteria

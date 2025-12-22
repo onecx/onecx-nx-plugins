@@ -2,7 +2,7 @@
 
 :idprefix:
 :idseparator: -
-:permissions_cookbook_url: xref:latest@guides:angular:cookbook/permissions.adoc
+:permissions_cookbook_url: xref:documentation:docs-guides-ui:angular/cookbook/permissions.adoc
 
 In order to restrict users with certain roles from performing certain actions, permissions need to be introduced.
 To configure the permissions, the following actions must be taken. 
@@ -35,4 +35,4 @@ permission:
 
 Refer to the {permissions_cookbook_url}[permissions cookbook] for more information and instructions on how to import permissions.
 
-include::partial$remove-action.adoc[]
+include::documentation:onecx-nx-plugins:partial$remove-action.adoc[]
