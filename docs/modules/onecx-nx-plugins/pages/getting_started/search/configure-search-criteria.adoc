@@ -17,8 +17,8 @@ After generating the search page, you can add filter criteria. These criteria mu
 
 The `+Search<FeatureName>Request+` component in the OpenAPI yaml must be adapted. 
 
-You should have a xref:../glossary.adoc#feature[`+Search<Feature>Request+`]  defined in the OpenAPI specification.
-By modifying the xref:../glossary.adoc#feature[`+Search<Feature>Request+`], you can add additional parameters to your search request.
+You should have a xref:documentation:onecx-nx-plugins:getting-started/glossary.adoc#feature[`+Search<Feature>Request+`]  defined in the OpenAPI specification.
+By modifying the xref:documentation:onecx-nx-plugins:getting-started/glossary.adoc#feature[`+Search<Feature>Request+`], you can add additional parameters to your search request.
 
 _Adapt in File:_ `+<feature>-bff.yaml+`
 
@@ -53,7 +53,7 @@ include::documentation:onecx-nx-plugins:partial$remove-action.adoc[]
 
 [#action-2]
 === ACTION S2: Search criteria representation in zod
-The criteria you added in "Action S1" now have to be added to the xref:onecx-nx-plugins:getting-started/glossary.adoc#feature[`+<feature>SearchCriteriasSchema+`].
+The criteria you added in "Action S1" now have to be added to the xref:documentation:onecx-nx-plugins:getting-started/glossary.adoc#feature[`+<feature>SearchCriteriasSchema+`].
 Assure the keys and types match the ones you defined in the OpenAPI specification.
 
 Refer to the {adding_search_criteria_parameters_url}[adding search criteria parameters cookbook] for more information.

@@ -2,7 +2,7 @@
 
 :idprefix:
 :idseparator: -
-:permissions_cookbook_url: xref:documentation:docs-guides-ui:angular/permissions.adoc
+:permissions_url: xref:documentation:docs-guides-ui:angular/permissions.adoc
 
 In order to restrict users with certain roles from performing certain actions, permissions need to be introduced.
 To configure the permissions, the following actions must be taken. 
@@ -25,14 +25,12 @@ permission:
                 CREATE: Create feature
                 EDIT: Edit feature
                 DELETE: Delete feature
-                SAVE: Update and save feature
-                IMPORT: Import feature
-                EXPORT: Export feature
                 VIEW: View mode for feature
                 SEARCH: Search feature
-                BACK: Navigate back in details of feature
+                IMPORT: Import feature
+                EXPORT: Export feature
 ----
 
-Refer to the {permissions_cookbook_url}[permissions cookbook] for more information and instructions on how to import permissions.
+Refer to the {permissions_url}[permissions cookbook] for more information and instructions on how to import permissions.
 
 include::documentation:onecx-nx-plugins:partial$remove-action.adoc[]

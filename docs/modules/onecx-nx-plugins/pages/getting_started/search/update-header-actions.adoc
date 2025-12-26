@@ -2,15 +2,15 @@
 
 :idprefix:
 :idseparator: -
-:page_header_cookbook_url: xref:documentation:onecx-portal-ui-libs:components/page-header.adoc
-:search_header_cookbook_url: xref:documentation:onecx-portal-ui-libs:components/search-header.adoc
+:page_header_url: xref:documentation:onecx-portal-ui-libs:components/page-header.adoc
+:search_header_url: xref:documentation:onecx-portal-ui-libs:components/search-header.adoc
 
 [#action-10]
 === ACTION S10: Update header actions
 _Adapt in File:_ `+<feature>.component.ts+`
 
 The page header can be customized to your needs.
-See more details in the xref:{page_header_cookbook_url}[Page Header Cookbook] and xref:{search_header_cookbook_url}[Search Header Cookbook].
+See more details in the xref:{page_header_url}[Page Header] and xref:{search_header_url}[Search Header].
 
 .Example:
 [source, javascript]
