@@ -5,7 +5,7 @@
 
 :data_table_column_properties_cookbook_url: xref:documentation:docs-guides-ui:angular/components/interactive-data-view/data-table-column.adoc
 :translation_cookbook_url: xref:documentation:docs-guides-ui:angular/translation/multi-language.adoc
-:api_scheme_url: xref:documentation:onecx-docs-dev:guides/api_guidelines.adoc
+:api_scheme_url: xref:documentation:onecx-docs-dev:guidelines/api_guidelines.adoc
 
 
 To configure the search results, the following actions must be taken. 
