@@ -3,12 +3,12 @@
 :idprefix:
 :idseparator: -
 
-:adding_search_criteria_general_cookbook_url: xref:documentation:docs-guides-ui:angular/ngrx/cookbook/adding-search-criteria/general.adoc
-:adding_search_criteria_general_parameters_cookbook_url: xref:documentation:docs-guides-ui:angular/ngrx/cookbook/adding-search-criteria/general.adoc#parameters
-:adding_search_criteria_general_html_url: xref:documentation:docs-guides-ui:angular/ngrx/cookbook/adding-search-criteria/general.adoc#html
-:adding_search_criteria_general_html_examples_url: xref:documentation:docs-guides-ui:angular/ngrx/cookbook/adding-search-criteria/general.adoc#examples-for-different-input-fields
-:translation_cookbook_url: xref:documentation:docs-guides-ui:angular/cookbook/multi-language/multi-language.adoc
-:api_scheme_url: xref:documentation:docs-guides-ui:general/api_guidelines.adoc
+:adding_search_criteria_url: xref:documentation:docs-guides-ui:angular/ngrx/search-criteria/search-criteria.adoc
+:adding_search_criteria_parameters_url: xref:documentation:docs-guides-ui:angular/ngrx/search-criteria/search-criteria.adoc#parameters
+:adding_search_criteria_html_url: xref:documentation:docs-guides-ui:angular/ngrx/search-criteria/search-criteria.adoc#html
+:adding_search_criteria_html_examples_url: xref:documentation:docs-guides-ui:angular/ngrx/search-criteria/search-criteria.adoc#examples-for-different-input-fields
+:translation_url: xref:documentation:docs-guides-ui:angular/translation/multi-language.adoc
+:api_scheme_url: xref:documentation:onecx-docs-dev:api_guidelines.adoc
 
 After generating the search page, you can add filter criteria. These criteria must be defined in the BFF's OpenAPI spec and represented in TypeScript for use in the UI. Users enter criteria via HTML input fields placed at the top of the page.
 
@@ -45,7 +45,7 @@ Search<Feature>Request:
           type: string
 ----
 
-Please refer to the {adding_search_criteria_general_cookbook_url}[adding search criteria general cookbook] for more information.
+Please refer to the {adding_search_criteria_url}[adding search criteria] for more information.
 
 include::documentation:onecx-nx-plugins:partial$apigen-action.adoc[]
 
@@ -56,7 +56,7 @@ include::documentation:onecx-nx-plugins:partial$remove-action.adoc[]
 The criteria you added in "Action S1" now have to be added to the xref:../glossary.adoc#feature[`+<feature>SearchCriteriasSchema+`].
 Assure the keys and types match the ones you defined in the OpenAPI specification.
 
-Refer to the {adding_search_criteria_general_parameters_cookbook_url}[adding search criteria parameters cookbook] for more information.
+Refer to the {adding_search_criteria_parameters_url}[adding search criteria parameters cookbook] for more information.
 
 include::documentation:onecx-nx-plugins:partial$remove-action.adoc[]
 
@@ -64,13 +64,13 @@ include::documentation:onecx-nx-plugins:partial$remove-action.adoc[]
 === ACTION S3: HTML input fields for search criteria
 To make the search criteria visible and usable for the user, you need to add corresponding HTML input fields to the search component's HTML file.
 
-Please refer to the {adding_search_criteria_general_html_url}[adding search criteria html cookbook] for more information.
+Please refer to the {adding_search_criteria_html_url}[adding search criteria html cookbook] for more information.
 
 [#examples-for-different-input-fields]
 ==== Examples for different input fields
 Depending on what kind of input fields you want to add, the implementation differs.
 You can add different types of input fields, like `+Text+`, `+Calendar+`, `+Dropdown+`, `+MultiSelect+`, `+AutoComplete+`.
-Refer to the {adding_search_criteria_general_html_examples_url}[adding search criteria examples for different input fields cookbook].
+Refer to the {adding_search_criteria_html_examples_url}[adding search criteria examples for different input fields cookbook].
 
 [#action-4]
 === ACTION S4: Add translations
@@ -87,7 +87,7 @@ Please ensure that all input field labels have the necessary translations added.
 ----
 Translations are needed for your input fields, additional labels or dropdown values.
 
-Refer to the {translation_cookbook_url}[Multi-Language Cookbook] for more information.
+Refer to the {translation_url}[Multi-Language Cookbook] for more information.
 
 
 ---

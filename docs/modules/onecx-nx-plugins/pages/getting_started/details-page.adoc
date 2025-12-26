@@ -4,7 +4,7 @@
 :idseparator: -
 
 The fastest way to create a new details page in a feature module is to use the OneCX generator.
-include::partial$generator-check.adoc[]
+include::documentation:onecx-nx-plugins:partial$generator-check.adoc[]
 
 ******
 To run the generator, execute the following command: 
@@ -13,7 +13,7 @@ To run the generator, execute the following command:
 nx generate <namespaceOfTheGenerator>/nx-plugin:details <feature>
 ----
 
-include::partial$generator-namespace-item.adoc[]
+include::documentation:onecx-nx-plugins:partial$generator-namespace-item.adoc[]
 
 * _<feature>_: see xref:./glossary.adoc#feature[here].
 
@@ -43,5 +43,5 @@ After running the generator, the following actions must be taken:
 
 [start=1]
 . xref:./details/core-data.adoc[Add core data to details page header]
-. xref:./details/extend-form-fields.adoc[Extend form fields (for Edit Mode) ]
+. xref:./create-update/extend-form-fields.adoc[Extend form fields (for Edit Mode) ]
 . xref:./details/commit-changes.adoc[Commit the changes]

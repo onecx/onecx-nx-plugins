@@ -1,6 +1,6 @@
 == Customize form fields
 
-:portal_dialog_service_url: xref:documentation:docs-guides-ui:angular/cookbook/service/portal-dialog-service/index.adoc
+:portal_dialog_service_url: xref:documentation:docs-guides-ui:angular/service/portal-dialog-service/index.adoc
 :idprefix:
 :idseparator: -
 
