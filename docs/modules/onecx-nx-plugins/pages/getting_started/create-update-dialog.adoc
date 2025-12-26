@@ -1,6 +1,6 @@
 === Create Create/Update Dialogs
 
-:portal_dialog_service_url: xref:documentation:docs-portal-ui-libs:service/portal-dialog-service.adoc
+:portal_dialog_service_url: xref:documentation:onecx-portal-ui-libs:service/portal-dialog-service.adoc
 :idprefix:
 :idseparator: -
 
