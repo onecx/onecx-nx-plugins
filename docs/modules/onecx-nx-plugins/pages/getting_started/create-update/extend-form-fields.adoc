@@ -1,8 +1,9 @@
-== Customize form fields
-
-:portal_dialog_service_url: xref:documentation:docs-guides-ui:angular/service/portal-dialog-service/index.adoc
 :idprefix:
 :idseparator: -
+
+:portal_dialog_service_url: xref:documentation:onecx-portal-ui-libs:service/portal-dialog-service.adoc
+
+== Customize form fields
 
 The form fields of the dialog need to be adapted
 
