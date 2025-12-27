@@ -10,7 +10,7 @@
 _Adapt in File:_ `+<feature>.component.ts+`
 
 The page header can be customized to your needs.
-See more details in the xref:{page_header_url}[Page Header] and xref:{search_header_url}[Search Header].
+See more details in the {page_header_url}[Page Header] and {search_header_url}[Search Header].
 
 .Example:
 [source, javascript]

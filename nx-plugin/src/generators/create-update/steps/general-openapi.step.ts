@@ -93,7 +93,7 @@ export class GeneralOpenAPIStep
             $ref: `#/components/schemas/${resource}`,
           },
           [COMMENT_KEY]:
-            'ACTION C1: modify resource or use flat list here. https://onecx.github.io/docs/documentation/current/onecx-nx-plugins/getting_started/create-update/extend-form-fields.html#action-1',
+            'ACTION C1: modify resource or use flat list here. https://onecx.github.io/docs/documentation/current/onecx-nx-plugins:generator/create-update/extend-form-fields.html#action-1',
         },
       })
       .set(`${options.updateResponseName}`, {
@@ -104,7 +104,7 @@ export class GeneralOpenAPIStep
             $ref: `#/components/schemas/${resource}`,
           },
           [COMMENT_KEY]:
-            'ACTION C1: modify resource or use flat list here. https://onecx.github.io/docs/documentation/current/onecx-nx-plugins/getting_started/create-update/extend-form-fields.html#action-1',
+            'ACTION C1: modify resource or use flat list here. https://onecx.github.io/docs/documentation/current/onecx-nx-plugins:generator/create-update/extend-form-fields.html#action-1',
         },
       });
 
