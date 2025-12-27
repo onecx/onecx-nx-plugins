@@ -7,9 +7,9 @@
 
 On the details page you can display data in the the header and below there is a content pane. You can customize the content pane as needed.
 
-The details page will reuse the created xref:getting_started/glossary.adoc#resource[`Resource`]. If the search-result object differs from the details object, you can **define a separate xref:getting_started/glossary.adoc#feature[`<Feature>Details`] object in** the **OpenAPI** specification and modify the endpoints accordingly (get, put, delete). You also need to modify the used xref:getting_started/glossary.adoc#resource[`Resource`] in the state, viewmodel, etc. to use it.
+The details page will reuse the created xref:generator/glossary.adoc#resource[`Resource`]. If the search-result object differs from the details object, you can **define a separate xref:generator/glossary.adoc#feature[`<Feature>Details`] object in** the **OpenAPI** specification and modify the endpoints accordingly (get, put, delete). You also need to modify the used xref:generator/glossary.adoc#resource[`Resource`] in the state, viewmodel, etc. to use it.
 
-Similar to the create-update generation, you can **adapt the schema for update requests**, see xref:getting_started/create-update/extend-form-fields.adoc[Extend form fields].
+Similar to the create-update generation, you can **adapt the schema for update requests**, see xref:generator/create-update/extend-form-fields.adoc[Extend form fields].
 
 [#action-1]
 === ACTION D1: Define values to be shown in the header
