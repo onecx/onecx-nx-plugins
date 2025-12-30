@@ -14,4 +14,4 @@ export const <%= featurePropertyName %>SearchColumns: DataTableColumn[] = [
         ],
     },
 ]
-// ACTION S6: Define search results columns: https://onecx.github.io/docs/nx-plugins/current/general/getting_started/search/configure-search-results.html#action-6
+// ACTION S6: Define search results columns: https://onecx.github.io/docs/documentation/current/onecx-nx-plugins:generator/search/configure-search-results.html#action-6

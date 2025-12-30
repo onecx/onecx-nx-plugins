@@ -1,0 +1,30 @@
+== Update the header actions
+
+:idprefix:
+:idseparator: -
+:page_header_url: xref:documentation:onecx-portal-ui-libs:components/page-header.adoc
+:search_header_url: xref:documentation:onecx-portal-ui-libs:components/search-header.adoc
+
+[#action-10]
+=== ACTION S10: Update header actions
+_Adapt in File:_ `+<feature>.component.ts+`
+
+The page header can be customized to your needs.
+See more details in the {page_header_url}[Page Header] and {search_header_url}[Search Header].
+
+.Example:
+[source, javascript]
+----
+const actions: Action[] = [
+        ...
+        {
+          labelKey: 'FEATURE_SEARCH.HEADER_ACTIONS.MY_HEADER_ACTION',
+          icon: PrimeIcons.SYNC,
+          titleKey: 'FEATURE_SEARCH.HEADER_ACTIONS.MY_HEADER_ACTION',
+          show: 'asOverflow',
+          actionCallback: () => this.triggerMyHeaderAction(),
+        },
+      ];
+----
+
+include::partial$remove-action.adoc[]

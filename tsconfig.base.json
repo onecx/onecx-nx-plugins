@@ -15,7 +15,8 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@onecx/nx-plugin": ["nx-plugin/src/index.ts"]
+      "@onecx/nx-plugin": ["nx-plugin/src/index.ts"],
+      "@onecx/release": ["tools/release/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

@@ -1,0 +1,12 @@
+* UI Generators
+** xref:documentation:onecx-nx-plugins:index.adoc[App Generator]
+*** xref:documentation:onecx-nx-plugins:generator/prerequisites.adoc[Check Prerequisites]
+*** xref:documentation:onecx-nx-plugins:generator/new-onecx-app.adoc[Create a OneCX App]
+*** xref:documentation:onecx-nx-plugins:generator/feature-module.adoc[Create a Feature Module]
+*** xref:documentation:onecx-nx-plugins:generator/search-page.adoc[Create Search Page]
+*** xref:documentation:onecx-nx-plugins:generator/create-update-dialog.adoc[Create Create/Update Dialog]
+*** xref:documentation:onecx-nx-plugins:generator/delete-dialog.adoc[Create Delete Dialog]
+*** xref:documentation:onecx-nx-plugins:generator/details-page.adoc[Create Detail Page]
+** xref:documentation:onecx-nx-plugins:generator/glossary.adoc[Glossary]
+** xref:documentation:onecx-nx-plugins:ngrx/ngrx-page/ngrx-page.adoc[NgRx Generator]
+** xref:documentation:onecx-nx-plugins:ngrx/pre-commit-validation.adoc[Pre-Commit Validation Generator]

@@ -2,6 +2,10 @@
   "name": "onecx",
   "version": "1.13.1",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/onecx/onecx-nx-plugins"
+  },
   "scripts": {
     "build": "nx run nx-plugin:build && nx run create-workspace:build",
     "build-copy": "npm run build && node copy-build.js",
@@ -56,5 +60,6 @@
   ],
   "nx": {
     "includedScripts": []
-  }
+  },
+  "executors": "./executors.json"
 }
