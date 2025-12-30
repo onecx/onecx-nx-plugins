@@ -1,5 +1,9 @@
 import { createActionGroup, emptyProps, props } from '@ngrx/store';
-import { DataTableColumn, GroupByCountDiagramComponentState, InteractiveDataViewComponentState, SearchHeaderComponentState } from '@onecx/portal-integration-angular';
+import {
+  InteractiveDataViewComponentState,
+  SearchHeaderComponentState,
+  GroupByCountDiagramComponentState,
+} from '@onecx/angular-accelerator';
 import { <%= featureClassName %>SearchCriteria } from './<%= featureFileName %>-search.parameters';
 import { <%= resource %> } from '../../../shared/generated';
 
