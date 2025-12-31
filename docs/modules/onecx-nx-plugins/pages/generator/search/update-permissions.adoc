@@ -1,0 +1,36 @@
+== Update permissions
+
+:idprefix:
+:idseparator: -
+:permissions_url: xref:documentation:docs-guides-ui:angular/permissions.adoc
+
+In order to restrict users with certain roles from performing certain actions, permissions need to be introduced.
+To configure the permissions, the following actions must be taken. 
+
+
+[#action-11]
+=== ACTION S11: Update permissions and roles
+
+If you want to adapt the permissions, you must modify the `+helm/values.yml+` file.
+
+.Example values.yml after feature generation
+[source, yml]
+----
+...
+permission:
+    enabled: true
+    spec:
+        permissions:
+            FEATURE:
+                CREATE: Create feature
+                EDIT: Edit feature
+                DELETE: Delete feature
+                VIEW: View mode for feature
+                SEARCH: Search feature
+                IMPORT: Import feature
+                EXPORT: Export feature
+----
+
+Refer to the {permissions_url}[permissions cookbook] for more information and instructions on how to import permissions.
+
+include::documentation:onecx-nx-plugins:partial$remove-action.adoc[]

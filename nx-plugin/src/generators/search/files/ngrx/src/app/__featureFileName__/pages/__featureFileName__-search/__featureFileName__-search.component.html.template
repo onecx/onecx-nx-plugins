@@ -37,7 +37,7 @@
          </div>
        </div>
        <!--// ACTION S3: Specify here your desired search criterias:
-       https://onecx.github.io/docs/documentation/current/onecx-nx-plugins/getting_started/search/configure-search-criteria.html#action-3 -->
+       https://onecx.github.io/docs/documentation/current/onecx-nx-plugins:generator/search/configure-search-criteria.html#action-3 -->
      </form>
    </ocx-search-header>
    <ocx-content-container layout="horizontal">

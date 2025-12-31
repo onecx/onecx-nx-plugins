@@ -1,0 +1,31 @@
+=== Create a new OneCX app 
+
+:idprefix:
+:idseparator: -
+
+The fastest way to create a new OneCX app is to use the OneCX generator.
+include::partial$generator-check.adoc[]
+
+The generator supports three flavors of projects: angular, with and without NgRx. It is **recommended to use the NgRx flavor** because it leads to better structured projects and currently the support in the generator is better for the NgRx flavor.
+
+*****
+To run the generator, execute the following commands: 
+
+----
+npx <namespaceOfTheGenerator>/create-workspace <flavor> <nameOfTheProduct> 
+npm install
+----
+
+include::partial$generator-namespace-item.adoc[]
+
+* _<flavor>_: `+ngrx+` (or `+angular+`).
+
+* _<nameOfTheProduct>_: The name of the product to create e.g., `+theme-mgmt+`.
+*****
+
+After running the generator take the following actions: 
+[start=1]
+. xref:./basic-onecx-app/further-actions.adoc[Check for further actions]
+. xref:./basic-onecx-app/commit-changes.adoc[Commit the changes]
+
+Next you might want to generate a feature as this is a preqrequisite to generate a search / details page and more.

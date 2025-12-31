@@ -52,7 +52,7 @@ export class GeneralOpenAPIStep implements GeneratorStep<SearchGeneratorSchema> 
           id: {
             type: 'string',
           },
-          [COMMENT_KEY]: 'ACTION S5: Add additional properties: https://onecx.github.io/docs/documentation/current/onecx-nx-plugins/getting_started/search/configure-search-results.html#action-5',
+          [COMMENT_KEY]: 'ACTION S5: Add additional properties: https://onecx.github.io/docs/documentation/current/onecx-nx-plugins:generator/search/configure-search-results.html#action-5',
         },
       })
       .set(`${searchRequestName}`, {
@@ -79,7 +79,7 @@ export class GeneralOpenAPIStep implements GeneratorStep<SearchGeneratorSchema> 
             type: 'string',
           },
           [COMMENT_KEY]:
-            ' ACTION S1: Add additional properties: https://onecx.github.io/docs/documentation/current/onecx-nx-plugins/getting_started/search/configure-search-criteria.html#action-1',
+            ' ACTION S1: Add additional properties: https://onecx.github.io/docs/documentation/current/onecx-nx-plugins:generator/search/configure-search-criteria.html#action-1',
         },
       })
       .set(`${searchResponseName}`, {
