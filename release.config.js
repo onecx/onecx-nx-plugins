@@ -38,13 +38,18 @@ module.exports = {
     [
       '@semantic-release/exec',
       {
-        prepareCmd: `VERSION=\${nextRelease.version} npx nx run-many -t release && VERSION=\${nextRelease.version} npx -p replace-json-property rjp ./package.json version \${nextRelease.version}`,
+        prepareCmd: `./release-script.sh \${nextRelease.version} \${nextRelease.channel}`,
       },
     ],
     [
       '@semantic-release/git',
       {
-        assets: [`libs/**/package.json`, `package.json`, `CHANGELOG.md`],
+        assets: [
+          `nx-plugin/package.json`,
+          `create-workspace/package.json`,
+          `package.json`,
+          `CHANGELOG.md`,
+        ],
         message:
           'chore(release): -v${nextRelease.version} [skip ci]\n\n${nextRelease.notes}',
       },
