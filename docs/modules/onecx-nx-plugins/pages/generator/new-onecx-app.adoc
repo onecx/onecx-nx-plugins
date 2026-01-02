@@ -20,7 +20,7 @@ include::partial$generator-namespace-item.adoc[]
 
 * _<flavor>_: `+ngrx+` (or `+angular+`).
 
-* _<nameOfTheProduct>_: The name of the product to create e.g., `+theme-mgmt+`.
+* _<nameOfTheProduct>_: The name of the product to create e.g. `+theme-mgmt+`.
 *****
 
 After running the generator take the following actions: 

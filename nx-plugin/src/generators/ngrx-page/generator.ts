@@ -27,7 +27,7 @@ const PARAMETERS: GeneratorParameter<PageGeneratorSchema>[] = [
     type: 'text',
     required: 'always',
     default: 'Page',
-    prompt: 'Provide a name for your page (e.g., "Book" for BookComponent): ',
+    prompt: 'Provide a name for your page (e.g. "Book" for BookComponent): ',
     showInSummary: true,
   },
   {

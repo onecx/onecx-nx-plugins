@@ -40,7 +40,7 @@ const PARAMETERS: GeneratorParameter<CreateUpdateGeneratorSchema>[] = [
     default: (values) => {
       return `${names(values.featureName).className}BffService`;
     },
-    prompt: 'Provide a name for your API service (e.g., BookBffService): ',
+    prompt: 'Provide a name for your API service (e.g. BookBffService): ',
     showInSummary: true,
     showRules: [{ showIf: (values) => values.customizeNamingForAPI }],
   },
@@ -51,7 +51,7 @@ const PARAMETERS: GeneratorParameter<CreateUpdateGeneratorSchema>[] = [
     default: (values) => {
       return `${names(values.featureName).className}`;
     },
-    prompt: 'Provide a name for your Resource (e.g., Book): ',
+    prompt: 'Provide a name for your Resource (e.g. Book): ',
     showInSummary: true,
     showRules: [{ showIf: (values) => values.customizeNamingForAPI }],
   },
@@ -63,7 +63,7 @@ const PARAMETERS: GeneratorParameter<CreateUpdateGeneratorSchema>[] = [
       return `Create${names(values.featureName).className}Request`;
     },
     prompt:
-      'Provide a name for your create request (e.g., CreateBookRequest): ',
+      'Provide a name for your create request (e.g. CreateBookRequest): ',
     showInSummary: true,
     showRules: [{ showIf: (values) => values.customizeNamingForAPI }],
   },
@@ -75,7 +75,7 @@ const PARAMETERS: GeneratorParameter<CreateUpdateGeneratorSchema>[] = [
       return `Create${names(values.featureName).className}Response`;
     },
     prompt:
-      'Provide a name for your create response (e.g., CreateBookResponse): ',
+      'Provide a name for your create response (e.g. CreateBookResponse): ',
     showInSummary: true,
     showRules: [{ showIf: (values) => values.customizeNamingForAPI }],
   },
@@ -87,7 +87,7 @@ const PARAMETERS: GeneratorParameter<CreateUpdateGeneratorSchema>[] = [
       return `Update${names(values.featureName).className}Request`;
     },
     prompt:
-      'Provide a name for your update request (e.g., UpdateBookRequest): ',
+      'Provide a name for your update request (e.g. UpdateBookRequest): ',
     showInSummary: true,
     showRules: [{ showIf: (values) => values.customizeNamingForAPI }],
   },
@@ -99,7 +99,7 @@ const PARAMETERS: GeneratorParameter<CreateUpdateGeneratorSchema>[] = [
       return `Update${names(values.featureName).className}Response`;
     },
     prompt:
-      'Provide a name for your update response (e.g., UpdateBookResponse): ',
+      'Provide a name for your update response (e.g. UpdateBookResponse): ',
     showInSummary: true,
     showRules: [{ showIf: (values) => values.customizeNamingForAPI }],
   },

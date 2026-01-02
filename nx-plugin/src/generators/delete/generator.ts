@@ -38,7 +38,7 @@ const PARAMETERS: GeneratorParameter<DeleteGeneratorSchema>[] = [
     default: (values) => {
       return `${names(values.featureName).className}BffService`;
     },
-    prompt: 'Provide a name for your API service (e.g., BookBffService): ',
+    prompt: 'Provide a name for your API service (e.g. BookBffService): ',
     showInSummary: true,
     showRules: [{ showIf: (values) => values.customizeNamingForAPI }],
   },
@@ -49,7 +49,7 @@ const PARAMETERS: GeneratorParameter<DeleteGeneratorSchema>[] = [
     default: (values) => {
       return `${names(values.featureName).className}`;
     },
-    prompt: 'Provide a name for your Resource (e.g., Book): ',
+    prompt: 'Provide a name for your Resource (e.g. Book): ',
     showInSummary: true,
     showRules: [{ showIf: (values) => values.customizeNamingForAPI }],
   },

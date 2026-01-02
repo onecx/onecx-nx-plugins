@@ -45,7 +45,7 @@ const PARAMETERS: GeneratorParameter<SearchGeneratorSchema>[] = [
     default: (values) => {
       return `${names(values.featureName).className}BffService`;
     },
-    prompt: 'Provide a name for your API service (e.g., BookBffService): ',
+    prompt: 'Provide a name for your API service (e.g. BookBffService): ',
     showInSummary: true,
     showRules: [{ showIf: (values) => values.customizeNamingForAPI }],
   },
@@ -56,7 +56,7 @@ const PARAMETERS: GeneratorParameter<SearchGeneratorSchema>[] = [
     default: (values) => {
       return `${names(values.featureName).className}`;
     },
-    prompt: 'Provide a name for your Resource (e.g., Book): ',
+    prompt: 'Provide a name for your Resource (e.g. Book): ',
     showInSummary: true,
     showRules: [{ showIf: (values) => values.customizeNamingForAPI }],
   },
@@ -68,7 +68,7 @@ const PARAMETERS: GeneratorParameter<SearchGeneratorSchema>[] = [
       return `Search${names(values.featureName).className}Request`;
     },
     prompt:
-      'Provide a name for your Search Request (e.g., SearchBookRequest): ',
+      'Provide a name for your Search Request (e.g. SearchBookRequest): ',
     showInSummary: true,
     showRules: [{ showIf: (values) => values.customizeNamingForAPI }],
   },
@@ -80,7 +80,7 @@ const PARAMETERS: GeneratorParameter<SearchGeneratorSchema>[] = [
       return `Search${names(values.featureName).className}Response`;
     },
     prompt:
-      'Provide a name for your Search Response (e.g., SearchBookResponse): ',
+      'Provide a name for your Search Response (e.g. SearchBookResponse): ',
     showInSummary: true,
     showRules: [{ showIf: (values) => values.customizeNamingForAPI }],
   },
