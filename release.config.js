@@ -2,9 +2,14 @@ module.exports = {
   branches: [
     'main',
     {
+      name: 'develop',
+      channel: 'rc',
+      prerelease: 'rc',
+    },
+    {
       name: 'v5',
       range: '5.x.x',
-      channel: '5.x.x',
+      channel: 'v5-lts',
     },
   ],
   preset: 'conventionalcommits',
