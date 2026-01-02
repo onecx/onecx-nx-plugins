@@ -6,7 +6,7 @@ During code generation and updates, the system may automatically modify existing
 ==== How It Works
 1. When a new feature is generated, existing files are scanned for known patterns.
 2. If a matching pattern is found, it is updated with the new content.
-3. If an issue occurs (e.g., pattern not found), the system:
+3. If an issue occurs (e.g. pattern not found), the system:
    * Leaves a comment in the affected file describing the issue.
    * Logs the error for developers to manually resolve.
 

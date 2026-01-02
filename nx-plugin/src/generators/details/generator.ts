@@ -43,7 +43,7 @@ const PARAMETERS: GeneratorParameter<DetailsGeneratorSchema>[] = [
     default: (values) => {
       return `${names(values.featureName).className}BffService`;
     },
-    prompt: 'Provide a name for your API service (e.g., BookService): ',
+    prompt: 'Provide a name for your API service (e.g. BookService): ',
     showInSummary: true,
     showRules: [{ showIf: (values) => values.customizeNamingForAPI }],
   },
@@ -54,7 +54,7 @@ const PARAMETERS: GeneratorParameter<DetailsGeneratorSchema>[] = [
     default: (values) => {
       return `${names(values.featureName).className}`;
     },
-    prompt: 'Provide a name for your Resource (e.g., Book): ',
+    prompt: 'Provide a name for your Resource (e.g. Book): ',
     showInSummary: true,
     showRules: [{ showIf: (values) => values.customizeNamingForAPI }],
   },
@@ -66,7 +66,7 @@ const PARAMETERS: GeneratorParameter<DetailsGeneratorSchema>[] = [
       return `Get${names(values.featureName).className}ByIdResponse`;
     },
     prompt:
-      'Provide a name for your GetByIdResponse (e.g., GetBookByIdResponse): ',
+      'Provide a name for your GetByIdResponse (e.g. GetBookByIdResponse): ',
     showInSummary: true,
     showRules: [{ showIf: (values) => values.customizeNamingForAPI }],
   },
@@ -87,7 +87,7 @@ const PARAMETERS: GeneratorParameter<DetailsGeneratorSchema>[] = [
       return `Update${names(values.featureName).className}Request`;
     },
     prompt:
-      'Provide a name for your update request (e.g., UpdateBookRequest): ',
+      'Provide a name for your update request (e.g. UpdateBookRequest): ',
     showInSummary: true,
     showRules: [{ showIf: (values) => values.customizeNamingForAPI && values.editMode }],
   },
@@ -99,7 +99,7 @@ const PARAMETERS: GeneratorParameter<DetailsGeneratorSchema>[] = [
       return `Update${names(values.featureName).className}Response`;
     },
     prompt:
-      'Provide a name for your update response (e.g., UpdateBookResponse): ',
+      'Provide a name for your update response (e.g. UpdateBookResponse): ',
     showInSummary: true,
     showRules: [{ showIf: (values) => values.customizeNamingForAPI && values.editMode }],
   },

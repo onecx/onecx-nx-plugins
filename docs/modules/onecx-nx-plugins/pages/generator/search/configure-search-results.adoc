@@ -12,7 +12,7 @@ To configure the search results, the following actions must be taken.
 
 [#action-5]
 === ACTION S5: Add additional properties to entity schema
-Here you can add additional properties which you e.g., need for your `+<SearchFeatureResponse>+`.
+Here you can add additional properties which you e.g. need for your `+<SearchFeatureResponse>+`.
 
 To understand the applied API Concept read the {api_scheme_url}[API Guidelines] first.
 
@@ -51,7 +51,7 @@ include::documentation:onecx-nx-plugins:partial$remove-action.adoc[]
 
 [#action-6]
 === ACTION S6: Column configuration
-The next step is to configure the columns of the search results table. Here you can define which properties of your entity should be displayed in the results table, as well as their characteristics (e.g., if they are sortable or filterable).
+The next step is to configure the columns of the search results table. Here you can define which properties of your entity should be displayed in the results table, as well as their characteristics (e.g. if they are sortable or filterable).
 
 _Adapt in File:_ `+<feature>-search.columns.ts+`
 .Example:

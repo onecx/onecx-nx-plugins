@@ -165,7 +165,7 @@ function safeReplace(
 
 | Parameter    | Type                                      | Description                                                                 |
 |--------------|-------------------------------------------|-----------------------------------------------------------------------------|
-| `goal`       | `string`                                  | A description of the purpose of the replacement (e.g., "Adapt feature reducer"). |
+| `goal`       | `string`                                  | A description of the purpose of the replacement (e.g. "Adapt feature reducer"). |
 | `file`       | `string`                                  | The path to the file where replacements should be performed.                |
 | `find`       | `string` \| `RegExp` \| (`string` \| `RegExp`)[] | The pattern(s) to search for (can be a string, regex, or an array of strings/regexes). |
 | `replaceWith`| `string` \| `string[]`                    | The replacement string(s) (can be a single string or an array).             |
