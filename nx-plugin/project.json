@@ -52,7 +52,7 @@
       "dependsOn": ["build"]
     },
     "release": {
-      "executor": "nx-release:build-update-publish",
+      "executor": "@onecx/release:update-build-publish",
       "options": {
         "libName": "nx-plugin"
       }
