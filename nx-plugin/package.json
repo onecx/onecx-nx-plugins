@@ -1,6 +1,10 @@
 {
   "name": "@onecx/nx-plugin",
   "version": "0.0.1",
+    "repository": {
+    "type": "git",
+    "url": "https://github.com/onecx/onecx-nx-plugins"
+  },
   "dependencies": {
     "@nx/devkit": "^19.8.14",
     "@nx/angular": "^19.8.14",
