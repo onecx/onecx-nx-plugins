@@ -1,9 +1,42 @@
-= OneCX Generator
+= OneCX App Generator
 
-With the OneCX generator, you can develop a new application. And in this generated application, a feature module, a search page and a details page can be added.
+The OneCX App Generator is a powerful tool designed to streamline the development of applications within the OneCX framework. It automates the creation of essential components, ensuring consistency and adherence to best practices.
 
-This generator does generate OpenAPI code for its corresponding UI.
-By using the generated OpenAPI code as a basis, you can develop your BFF (and SVC).
+== Prerequisites
+Ensure your development environment is set up correctly before using the OneCX App Generator:
+
+The following tools must be installed and versions verified:
+
+** *npm* version should be >= 10.2.4
+** *node* version should be 20.11.0
+** *nx* - Local: v19.6.4
+** *nx* - Global: v20.0.6
+
+.Check versions
+[source,bash]
+----
+node --version
+npm --version
+nx --version
+----
+
+.Install the Nx CLI globally
+[source,bash]
+----
+npm install -g nx@latest
+----
+
+In case of issues during *Nx* installation, try the following steps:
+
+.Nx CLI installation issue resolution
+[source,bash]
+----
+rm -rf node_modules
+npm cache verify
+npm install -g @nrwl/cli
+npm install
+----
+
 
 == How to use the Generator(s)
 To generate a full application you need to run several generators in a specific order, as some depend on others:
@@ -16,30 +49,3 @@ To generate a full application you need to run several generators in a specific 
 *** Details Page
 *** Empty NGRX Page
 ** Pre Commit Validation
-
-To get started, we recommend you to visit the following pages:
-
-* xref:generator/prerequisites.adoc[Check your prerequisites]
-* xref:generator/new-onecx-app.adoc[Create a new OneCX App]
-** xref:generator/basic-onecx-app/further-actions.adoc[Check for further actions]
-** xref:generator/basic-onecx-app/commit-changes.adoc[Commit the changes]
-* xref:generator/feature-module.adoc[Create a feature module]
-** xref:generator/feature/further-actions.adoc[Check for further actions]
-** xref:generator/feature/commit-changes.adoc[Commit the changes]
-* xref:generator/search-page.adoc[Create a search page]
-** xref:generator/search/configure-search-criteria.adoc[Configure search criteria]
-** xref:generator/search/configure-search-results.adoc[Configure search results]
-** xref:generator/search/configure-result-diagram.adoc[Configure result diagram]
-** xref:generator/search/update-header-actions.adoc[Update header actions]
-** xref:generator/search/update-permissions.adoc[Update permissions]
-** xref:generator/search/further-actions.adoc[Check for further actions]
-** xref:generator/search/commit-changes.adoc[Commit the changes]
-* xref:generator/create-update-dialog.adoc[Create create-update dialog]
-** xref:generator/create-update/extend-form-fields.adoc[Extend form fields]
-** xref:generator/create-update/commit-changes.adoc[Commit the changes]
-* xref:generator/delete-dialog.adoc[Create delete dialog]
-* xref:generator/details-page.adoc[Create details page]
-** xref:generator/details/core-data.adoc[Add core data to details page header]
-** xref:generator/details/commit-changes.adoc[Commit the changes]
-* xref:generator/code-modification.adoc[Code Modification]
-* xref:ngrx/pre-commit-validation.adoc[Set up pre-commit-validation]

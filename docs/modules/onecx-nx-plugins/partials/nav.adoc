@@ -1,6 +1,5 @@
 * UI Generators
 ** xref:documentation:onecx-nx-plugins:index.adoc[App Generator]
-*** xref:documentation:onecx-nx-plugins:generator/prerequisites.adoc[Check Prerequisites]
 *** xref:documentation:onecx-nx-plugins:generator/new-onecx-app.adoc[Create a OneCX App]
 *** xref:documentation:onecx-nx-plugins:generator/feature-module.adoc[Create a Feature Module]
 *** xref:documentation:onecx-nx-plugins:generator/search-page.adoc[Create Search Page]
