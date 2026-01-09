@@ -8,7 +8,7 @@
 :adding_search_criteria_html_url: xref:documentation:docs-guides-ui:angular/ngrx/search-criteria/search-criteria.adoc#html
 :adding_search_criteria_html_examples_url: xref:documentation:docs-guides-ui:angular/ngrx/search-criteria/search-criteria.adoc#examples-for-different-input-fields
 :translation_url: xref:documentation:docs-guides-ui:angular/translation/multi-language.adoc
-:api_scheme_url: xref:documentation:onecx-docs-dev:api_guidelines.adoc
+:api_scheme_url: xref:documentation:onecx-docs-dev:guidelines/api_guidelines.adoc
 
 After generating the search page, you can add filter criteria. These criteria must be defined in the BFF's OpenAPI spec and represented in TypeScript for use in the UI. Users enter criteria via HTML input fields placed at the top of the page.
 
