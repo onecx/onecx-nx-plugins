@@ -13,7 +13,7 @@ export class SearchEffectsStep implements GeneratorStep<DeleteGeneratorSchema> {
 
     const find = [/^/, 'searchByUrl$'];
     const replaceWith = [
-      `import { PortalDialogService, DialogState } from '@onecx/portal-integration-angular';` +
+      `import { PortalDialogService, DialogState } from '@onecx/angular-accelerator';` +
         `import { mergeMap } from 'rxjs';` +
         `import {
         ${options.resource},
