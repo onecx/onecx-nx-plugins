@@ -186,7 +186,7 @@ function addScriptsToPackageJson(tree: Tree, options: AngularGeneratorSchema) {
     pkgJson.scripts['build'] = 'nx build';
     pkgJson.scripts[
       'postbuild'
-    ] = `mv \"$(find dist/${options['name']} -maxdepth 1 -type f -name \'styles.*.css\' | head -n 1)\" dist/${options['name']}/styles.css`;
+    ] = `mv "$(find dist/${options['name']} -maxdepth 1 -type f -name 'styles.*.css' | head -n 1)" dist/${options['name']}/styles.css`;
     pkgJson.scripts['format'] = 'nx format:write --uncommitted';
     pkgJson.scripts['lint'] = 'nx lint';
     pkgJson.scripts['lint:fix'] = 'nx lint --fix';
