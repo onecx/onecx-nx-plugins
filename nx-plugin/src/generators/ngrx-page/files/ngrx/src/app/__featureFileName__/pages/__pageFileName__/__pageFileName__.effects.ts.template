@@ -2,11 +2,9 @@ import { Injectable, SkipSelf } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Actions, createEffect } from '@ngrx/effects';
 import { Action, Store } from '@ngrx/store';
-import { PortalMessageService } from '@onecx/portal-integration-angular';
-import {
-  tap
-} from 'rxjs';
+import { tap } from 'rxjs';
 
+import { PortalMessageService } from '@onecx/portal-integration-angular';
 
 @Injectable()
 export class <%= pageClassName %>Effects {
