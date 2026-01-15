@@ -1,7 +1,7 @@
 <ocx-portal-page 
   *ngrxLet="viewModel$; let vm"
   role="main"
-  <% if(!standalone){ %> permission="<%= pageConstantName %>#VIEW" <% } %>
+  permission="<%= pageConstantName %>#VIEW" %>
   helpArticleId="PAGE_<%= featureConstantName %>_<%= pageConstantName %>" 
   [attr.aria-label]="'<%= pageConstantName %>.HEADER' | translate"
 >
