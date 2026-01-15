@@ -31,6 +31,14 @@ const PARAMETERS: GeneratorParameter<PageGeneratorSchema>[] = [
     showInSummary: true,
   },
   {
+    key: 'pageTitle',
+    type: 'text',
+    required: 'always',
+    default: 'Page Title',
+    prompt: 'Provide a title for your page: ',
+    showInSummary: true,
+  },
+  {
     key: 'standalone',
     type: 'boolean',
     required: 'never',
@@ -87,6 +95,7 @@ export async function componentGenerator(
       pagePropertyName: names(options.pageName).propertyName,
       pageFileName: names(options.pageName).fileName,
       pageName: options.pageName,
+      pageTitle: options.pageTitle,
       standalone: options.standalone,
     }
   );

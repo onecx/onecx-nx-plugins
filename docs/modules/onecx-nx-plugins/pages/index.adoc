@@ -38,14 +38,15 @@ npm install
 ----
 
 
-== How to use the Generator(s)
-To generate a full application you need to run several generators in a specific order, as some depend on others:
+== Generable Components
+
+The following application types and components can be generated using the OneCX App Generator:
 
 * OneCX App
 ** Feature Module
 *** Search Page
-**** Create-Update Dialog
-**** Delete Dialog
 *** Details Page
-*** Empty NGRX Page
+*** Create/Update Dialog
+*** Delete Dialog
+*** Simple NgRx Page
 ** Pre Commit Validation
