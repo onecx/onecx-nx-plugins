@@ -1,10 +1,6 @@
 name: create-release
 on:
   workflow_dispatch:
-  workflow_run:
-    workflows: [release-init]
-    types: [completed]
-    branches: [main]
 
 permissions:
   id-token: write # Required for OIDC
@@ -34,8 +30,19 @@ jobs:
       - name: Install deps
         run: npm ci
         
+      - name: Lint
+        run: npx nx run-many -t lint
+
+      - name: Test
+        run: npx nx run-many -t test --configuration=ci
+
       - name: Build
         run: npx nx run-many -t build
+
+      - name: E2E Tests
+        run: npm run test
+        env: 
+          WORKING_DIR: ${{github.workspace}}/test-output
 
       - name: Release
         run: npx semantic-release
