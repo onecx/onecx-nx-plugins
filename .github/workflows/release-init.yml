@@ -38,14 +38,6 @@ jobs:
         env: 
           WORKING_DIR: ${{github.workspace}}/test-output
 
-      - name: Upload dist artifacts
-        if: success()
-        uses: actions/upload-artifact@v4
-        with:
-          name: dist
-          path: dist/
-          retention-days: 1
-
       - name: Upload logs
         if: failure()
         uses: actions/upload-artifact@v4

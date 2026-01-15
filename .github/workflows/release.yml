@@ -34,12 +34,9 @@ jobs:
       - name: Install deps
         run: npm ci
         working-directory: repo
-
-      - name: Download dist artifacts
-        uses: actions/download-artifact@v4
-        with:
-          name: dist
-          path: repo/dist
+        
+      - name: Build
+        run: npx nx run-many -t build
 
       - name: Release
         run: npx semantic-release
