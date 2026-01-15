@@ -8,6 +8,7 @@ import { NpmPublishExecutorSchema } from './schema'
 export default async function npmPublish(options: NpmPublishExecutorSchema, context: ExecutorContext) {
   const sourceRoot = `./dist/${getRoot(context)}`
   const channel: string = process.env.CHANNEL || 'latest'
+  execSync("npm --version")
   execSync(`cd ${sourceRoot} && npm publish --tag=${channel}`)
   return {
     success: true,
