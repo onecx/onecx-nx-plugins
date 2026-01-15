@@ -1,3 +1,27 @@
+## [5.0.0](https://github.com/onecx/onecx-nx-plugins/compare/v4.0.0...v5.0.0) (2026-01-15)
+
+### ⚠ BREAKING CHANGES
+
+* increase to major version 5 (#299)
+* increase to major version 4 (#298)
+* increase to major version 3 (#297)
+
+### Features
+
+* bumped semantic-release version and removed parameter ([17aa1c0](https://github.com/onecx/onecx-nx-plugins/commit/17aa1c0932721f38da7d4b9c2c4a7d129cef5c4b))
+* formatting and publish publish, revert empty npm token ([9da7cdf](https://github.com/onecx/onecx-nx-plugins/commit/9da7cdf133a1ad3af7ced78f7664d65354c5052a))
+* increase to major version 3 ([#297](https://github.com/onecx/onecx-nx-plugins/issues/297)) ([45d8fc3](https://github.com/onecx/onecx-nx-plugins/commit/45d8fc368bcf517611008a69c4ecbc95cd2d939c))
+* increase to major version 4 ([#298](https://github.com/onecx/onecx-nx-plugins/issues/298)) ([d297c8d](https://github.com/onecx/onecx-nx-plugins/commit/d297c8d1f8c226cb9d3b352e9ea77d34c948deb1))
+* increase to major version 5 ([#299](https://github.com/onecx/onecx-nx-plugins/issues/299)) ([8ac792e](https://github.com/onecx/onecx-nx-plugins/commit/8ac792e4457cffc0175f7ab9e668767f1650db9d))
+* log npm version before publish ([c1a768c](https://github.com/onecx/onecx-nx-plugins/commit/c1a768cbe78a998044506e3e53bf7dcbc000a49d))
+
+### Bug Fixes
+
+* add importMeta flag ([#288](https://github.com/onecx/onecx-nx-plugins/issues/288)) ([2785be7](https://github.com/onecx/onecx-nx-plugins/commit/2785be77666a6ee35bc078500123a20ba8fb4194))
+* add repo in package json subpackages ([#301](https://github.com/onecx/onecx-nx-plugins/issues/301)) ([e637e29](https://github.com/onecx/onecx-nx-plugins/commit/e637e293a0f3acf69ad9796a16fbf4af254517ca))
+* release config and script dry run ([#300](https://github.com/onecx/onecx-nx-plugins/issues/300)) ([91bbf45](https://github.com/onecx/onecx-nx-plugins/commit/91bbf45057da4e03732f802037d0c95d5b67fb2d))
+* set npm token to empty ([bdbb62c](https://github.com/onecx/onecx-nx-plugins/commit/bdbb62c1b45ca1b8b25fda9b35243b867b54a6bb))
+
 ## [1.13.1](https://github.com/onecx/onecx-nx-plugins/compare/v1.13.0...v1.13.1) (2025-09-23)
 
 ### Bug Fixes
