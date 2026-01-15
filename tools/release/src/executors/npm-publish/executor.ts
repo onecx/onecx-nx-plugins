@@ -9,7 +9,7 @@ export default async function npmPublish(options: NpmPublishExecutorSchema, cont
   const sourceRoot = `./dist/${getRoot(context)}`
   const channel: string = process.env.CHANNEL || 'latest'
   execSync("npm --version")
-  execSync(`cd ${sourceRoot} && npm publish --tag=${channel}`)
+  execSync(`cd ${sourceRoot} && NODE_AUTH_TOKEN="" npm publish --tag=${channel}`)
   return {
     success: true,
   }
