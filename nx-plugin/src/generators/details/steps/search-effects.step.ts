@@ -13,7 +13,7 @@ export class SearchEffectsStep implements GeneratorStep<SearchGeneratorSchema> {
 
     const replaceWith = [
       `import { selectUrl } from 'src/app/shared/selectors/router.selectors';\n`,
-      `detailsButtonClicked$ = createEffect(
+      `navigateToOrderDetailsPage$ = createEffect(
           () => {
             return this.actions$.pipe(
               ofType(${className}SearchActions.detailsButtonClicked),
