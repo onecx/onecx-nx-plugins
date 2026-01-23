@@ -1,0 +1,26 @@
+:idprefix:
+:idseparator: -
+:page-pagination:
+
+// Internal links to OneCX Start module
+:onecx_docs_apps_create:       xref:onecx-docs-start:create_application.adoc[Creating a OneCX Application]
+
+// External links to OneCX resources
+:onecx_docs_overview_ref:      xref:onecx-docs-overview:index.adoc[OneCX Platform Overview]
+:onecx_docs_overview_app_ref:  xref:onecx-docs-overview:architecture/index.adoc#applications[OneCX Application Concept]
+:onecx_docs_apps_ref:          xref:onecx-docs-apps:index.adoc[OneCX Application List]
+:onecx_docs_dev_ref:           xref:onecx-docs-dev:index.adoc[OneCX Developer Documentation]
+:onecx_local_env_docs_ref:     xref:onecx-local-env:index.adoc[OneCX Local Environment]
+:onecx_local_env_setup_ref:    xref:onecx-local-env:setup.adoc[OneCX Local Environment Setup]
+:onecx_local_env_extend_ref:   xref:onecx-local-env:extend/extend.adoc[Extend OneCX]
+:onecx_app_generator_ref:      xref:onecx-nx-plugins:index.adoc[OneCX App Generator]
+
+// External links to general resources
+:onecx_local_env_repo_link:       link:https://github.com/onecx/onecx-local-env[OneCX Local Environment]
+:onecx_local_env_cli_repo_link:   link:https://github.com/onecx/onecx-local-env-cli[OneCX Local Environment CLI]
+:onecx_docs_repo_link:            link:https://github.com/onecx/docs[OneCX Docs]
+:kiss_principle_link:             link:https://en.wikipedia.org/wiki/KISS_principle[KISS]
+:antora_doc_link:                 link:https://docs.antora.org/antora/latest/[Antora]
+:asciidoc_doc_link:               link:https://docs.asciidoctor.org/asciidoc/latest/[AsciiDoc]
+:angular_link:                    link:https://angular.de/[Angular]
+:react_link:                      link:https://reactjs.org/[React]

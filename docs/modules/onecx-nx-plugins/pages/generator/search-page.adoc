@@ -11,7 +11,7 @@ To run the generator, execute the following command:
 nx generate <namespaceOfTheGenerator>/nx-plugin:search <feature>
 ----
 
-include::partial$generator-namespace-item.adoc[]
+include::partial$_generator-namespace.adoc[]
 
 * _<feature>_: see xref:./glossary.adoc#feature[here].
 

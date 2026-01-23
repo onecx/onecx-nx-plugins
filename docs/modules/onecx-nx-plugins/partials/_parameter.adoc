@@ -1,0 +1,11 @@
+# tag::namespace[]
+  _<namespaceOfTheGenerator>_::
+    For the OneCX generator, use `+@onecx+`. +
+    For a project specific generator, ask for the namespace of the generators.
+# end::namespace[]
+# tag::flavor[]
+  _<flavor>_::           `+ngrx+` (or `+angular+`).
+# end::flavor[]
+# tag::nameOfTheProduct[]
+  _<nameOfTheProduct>_:: The base name of the product (application) to create e.g. `+book-store+`.
+# end::nameOfTheProduct[]

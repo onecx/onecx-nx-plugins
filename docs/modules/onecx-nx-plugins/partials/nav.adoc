@@ -1,5 +1,5 @@
-* xref:documentation:onecx-nx-plugins:index.adoc[App Generator]
-** xref:documentation:onecx-nx-plugins:generator/new-onecx-app.adoc[Create OneCX App]
+* xref:documentation:onecx-nx-plugins:index.adoc[UI App Generator]
+** xref:documentation:onecx-nx-plugins:generator/create-app.adoc[Create OneCX UI App]
 ** xref:documentation:onecx-nx-plugins:generator/feature-module.adoc[Create Feature Module]
 ** xref:documentation:onecx-nx-plugins:generator/search-page.adoc[Create Search Page]
 ** xref:documentation:onecx-nx-plugins:generator/create-update-dialog.adoc[Create Create/Update Dialog]
