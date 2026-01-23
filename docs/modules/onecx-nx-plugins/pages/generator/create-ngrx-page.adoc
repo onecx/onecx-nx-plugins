@@ -4,7 +4,8 @@
 
 = Create a Simple NgRx Page
 
-This guide describes how to create a simple NgRx page using the OneCX App Generator. +
+This guide describes how to create a simple NgRx page using the OneCX App Generator.
+
 A simple NgRx page refers to an *NgRx component* with its associated state management (actions, reducers, effects, selectors), but without specific business logic or UI elements. Only a page title is displayed. +
 This can be done if you have already set up an initial Application with an feature.
 

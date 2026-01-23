@@ -1,6 +1,12 @@
+ifdef::env-site[]
+include::partial$_attributes.adoc[]
+endif::[]
+:page-hide-prev:
+:imagesdir: ../images
+
 = OneCX App Generator
 
-The OneCX App Generator is a powerful tool designed to streamline the development of applications within the OneCX framework. It automates the creation of essential components, ensuring consistency and adherence to best practices.
+The OneCX App Generator is a powerful tool designed to streamline the development of UI applications within the OneCX framework. It automates the creation of essential UI components, ensuring consistency and adherence to best practices.
 
 == Prerequisites
 Ensure your development environment is set up correctly before using the OneCX App Generator:
@@ -38,11 +44,36 @@ npm install
 ----
 
 
-== Generable Components
+== Get the Generator
 
-The following application types and components can be generated using the OneCX App Generator:
+. Clone the *onecx-nx-plugins* repository into a folder on the local machine/inside WSL2
++
+[source,bash]
+----
+git clone https://github.com/onecx/onecx-nx-plugins.git
+----
 
-* OneCX App
+. Navigate into the cloned repository and install the dependencies
++
+[source,bash]
+----
+cd onecx-nx-plugins
+npm install
+----
+
+. Build the OneCX App Generator
++
+[source,bash]
+----
+npm run build
+----
+
+
+== Generable UI Components
+
+The following application types and components can be generated:
+
+* xref:generator/create-app.adoc[OneCX UI App]
 ** Feature Module
 *** Search Page
 *** Details Page
