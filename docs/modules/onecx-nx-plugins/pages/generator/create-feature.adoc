@@ -37,7 +37,7 @@ The generator will create a new feature module with the specified name and set u
 
 == Example
 
-Create a Feature Module inside the application named "book-store" to manage customer data. Execute the following command with the book-store application as current working directory.
+Create a Feature Module inside the application named "book-store" to manage customer data. Execute the following command with the *book-store* application as current working directory.
 
 .Create a Feature Module named "customer-management"
 [source,bash]
