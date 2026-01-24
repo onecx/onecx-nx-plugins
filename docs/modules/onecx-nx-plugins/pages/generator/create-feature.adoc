@@ -1,0 +1,51 @@
+ifdef::env-site[]
+include::partial$_attributes.adoc[]
+endif::[]
+:imagesdir: ../../images
+
+= Create a Feature Module 
+
+What is a Feature Module?::
+A Feature Module is a modular unit of functionality that encapsulates a specific feature or set of related features within an UI Application. +
+It is designed to promote code reusability, maintainability, and separation of concerns by grouping related components, services, and state management logic together. +
++In Angular, feature modules are NgModules for the purpose of organizing code.+
+
+[NOTE]
+====
+The Feature Module created with the OneCX App Generator is only the base of a functional module. +
+You will need to further develop and customize the module to meet your specific requirements and business logic.
+====
+
+
+== Generate a Feature Module
+
+.To run the generator, execute the following command
+[source,bash]
+----
+nx generate <namespaceOfTheGenerator>/nx-plugin:feature  <feature>
+----
+ 
+with:
+[horizontal]
+ifdef::env-site[]
+include::partial$_parameter.adoc[tag=namespace]
+include::partial$_parameter.adoc[tag=feature]
+endif::[]
+
+The generator will create a new feature module with the specified name and set up the necessary structure and configurations.
+
+
+== Example
+
+Create a Feature Module inside the application named "book-store" to manage customer data. Execute the following command with the book-store application as current working directory.
+
+.Create a Feature Module named "customer-management"
+[source,bash]
+----
+nx generate @onecx/nx-plugin:feature customer-management
+----
+
+This command will generate a new feature module named "customer-management" with the necessary structure and configurations.
+
+.Excerpt of generated files and directories
+image::generated_feature_customer-management.png[width=200]

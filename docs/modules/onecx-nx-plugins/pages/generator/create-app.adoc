@@ -10,14 +10,18 @@ A OneCX UI App is a microfrontend application built using modern web technologie
 +
 Within the OneCX ecosystem, a UI App typically serves as the front-end interface for users to interact with various functionalities offered by OneCX. It can be a standalone application or part of a larger suite of applications, and it communicates with backend services to fetch and display data, handle user inputs, and perform various operations.
 
+[NOTE]
+====
+The OneCX UI App created with the OneCX App Generator is only the base of a functional application. +
+You will need to further develop and customize the application to meet your specific requirements and business logic.
+====
 
 == Generate a OneCX UI App
 
 The generator supports three flavors of projects: *angular*, *with NgRx* and *without NgRx*. +
 It is **recommended to use the NgRx** flavor, because it leads to better structured projects and the state management is already in place.
 
-To run the generator, execute the following commands::
-+
+.Generate the UI App with following commands
 [source,bash]
 ----
 npx <namespaceOfTheGenerator>/create-workspace <flavor> <nameOfTheProduct> 
@@ -37,7 +41,7 @@ The generator will create a new workspace folder with the specified product name
 
 == Example
 
-To create a OneCX UI App named "book-store" with NgRx support, you would run:
+.Create a OneCX UI App named "book-store" with NgRx support
 [source,bash]
 ----
 npx @onecx/create-workspace ngrx book-store

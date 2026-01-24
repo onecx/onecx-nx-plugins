@@ -74,7 +74,7 @@ npm run build
 The following application types and components can be generated:
 
 * xref:generator/create-app.adoc[OneCX UI App]
-** Feature Module
+** xref:generator/create-feature.adoc[Feature Module]
 *** Search Page
 *** Details Page
 *** Create/Update Dialog
