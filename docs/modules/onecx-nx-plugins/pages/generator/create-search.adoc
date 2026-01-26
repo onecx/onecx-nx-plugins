@@ -42,14 +42,14 @@ The next steps involve adapting the search component to your specific requiremen
 . xref:./search/update-header-actions.adoc[Update Header Actions]
 . xref:./search/update-permissions.adoc[Update Permissions]
 
-All places that need to be adapted are marked with an action box like this one: 
+.All places that need to be adapted are marked with an action box like this one
 [source, javascript]
 ----
-// ACTION S<ID>: <Short Description>
+ACTION S<ID>: <Short Description>
 ----
 
 [TIP]
-Search in your IDE for the string `*// ACTION S*` to quickly find all places that need to be adapted.
+Search in your IDE for the string `*ACTION S*` to quickly find all places that need to be adapted.
 
 
 [NOTE]
@@ -66,15 +66,15 @@ This marker is used as a placeholder for future extensions by newly generated co
 
 == Example
 
-Create a Search Component inside the *customer-management* feature module. Execute the following command with the *book-store* application as current working directory.
+Create a Search Component inside the *book* feature module. Execute the following command with the *bookstore* application as current working directory.
 
 .Create a Search Component, without adapting names
 [source,bash]
 ----
-nx generate @onecx/nx-plugin:search customer-management
+nx generate @onecx/nx-plugin:search book
 ----
 
-This command will generate a new search component *customer-management-search* within the specified feature module with the necessary structure and configurations.
+This command will generate a new search component *book-search* within the specified feature module with the necessary structure and configurations.
 
 .Excerpt of generated files and directories
-image::generated_customer-management-search.png[width=250]
+image::generated_book_search.png[width=250]

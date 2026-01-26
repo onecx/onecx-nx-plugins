@@ -5,7 +5,7 @@ endif::[]
 
 = Configure Search Criteria
 
-After generating the base of the search page, you can configure search criteria to allow users to filter search results. 
+After generating the base of the search page, you can configure search criteria to allow users to filter existing data. 
 It is necessary to add such criteria to both the user interface and the backend services to ensure proper data processing.
 
 Steps to add Search Criteria::
@@ -18,7 +18,7 @@ Steps to add Search Criteria::
 [NOTE]
 ====
 The search criteria added here are used as part of the URL parameters when making requests to the backend service. Ensure that the criteria names are URL-friendly and do not contain special characters that could interfere with URL encoding. +
-Examplarily, a search criteria named `customerName` will be used in the URL as `?customerName=value`.
+Examplarily, a search criteria named `bookTitle` will be used in the URL as `?bookTitle=value`.
 ====
 
 
@@ -62,12 +62,12 @@ File::      `<feature-name>-bff.yaml`
 Where *changeMe* is an additional search criteria added to the `+Search<Feature>Request+`.
 ====
 
-.Example: Adjustments in `+book-store-bff.yaml+`
+.Example: Adjustments in `+bookstore-bff.yaml+`
 [%collapsible]
 ====
 [source, yaml]
 ----
-    SearchCustomerManagementRequest:
+    SearchBookRequest:
       type: object
       properties:
         id:
@@ -77,22 +77,39 @@ Where *changeMe* is an additional search criteria added to the `+Search<Feature>
           type: integer
           format: int32
           default: 0
-          description: The number of the page.
+          description: The number of the page
         pageSize:
           type: integer
           format: int32
           default: 100
           maximum: 1000
           description: The size of the page.
-        customerName:
+        bookTitle:
           type: string
           maximum: 255
+        bookAuthor:
+          type: string
+          maximum: 255
+        bookIsbn:
+          type: string
+          maximum: 255
+        bookPrice:
+          type: integer
+          format: int32
+        bookPublisher:
+          type: string
+          maximum: 255
+        bookPublishedDate:
+          type: string
+          format: date
+        # " ACTION S1: Add additional properties: https://onecx.github.io/docs/documentation/current/onecx-nx-plugins:generator/search/search-criteria.html#action-1"
 ----
 
-Where *customerName* is a search criteria.
+Where e.g. *bookTitle* is a search criteria.
 ====
 
 After adding the new criteria to the OpenAPI specification, you need to regenerate the API client code to reflect these changes in your application.
+
 .Generate the API client code
 [source, bash]
 ----
@@ -108,7 +125,7 @@ More details in {ngrx_search_criteria_parameter_ref}[NgRx Search Criteria].
 
 [horizontal]
 Directory:: `<root-of-ui-app>/src/app/<feature>/pages/<search>`
-File::      `<feature-name>-search.parameters.ts`
+File::      `<feature>-search.parameters.ts`
 
 .Adjust in `+<feature>-search.parameters.ts+`
 [%collapsible]
@@ -125,17 +142,19 @@ export const <feature>SearchCriteriasSchema = z.object({
 Where *changeMe* is an additional search criteria added to the `+Search<Feature>Request+`.
 ====
 
-.Example: Adjustments in `+customer-management-search.parameters.ts+`
+.Example: Adjustments in `+book-search.parameters.ts+`
 [%collapsible]
 ====
 [source, javascript]
 ----
-export const customerManagementSearchCriteriasSchema = z.object({
-  customerName: z.string().optional(),
-} satisfies Partial<Record<keyof SearchCustomerManagementRequest, ZodTypeAny>>);
+export const bookSearchCriteriasSchema = z.object({
+  bookTitle: z.string().optional(),
+  bookAuthor: z.string().optional(),
+  bookIsbn: z.string().optional(),
+} satisfies Partial<Record<keyof SearchBookRequest, ZodTypeAny>>);
 ----
 
-Where *customerName* is the criteria added to the `+Search<Feature>Request+`.
+Where *bookTitle*, *bookAuthor*, and *bookIsbn* are the criteria added to the `+SearchBookRequest+`.
 ====
 
 
@@ -146,14 +165,14 @@ More details in {ngrx_search_criteria_html_ref}[Search Criteria HTML] and {ngrx_
 
 [horizontal]
 Directory:: `<root-of-ui-app>/src/app/<feature>/pages/<search>`
-File::      `<feature-name>-search.component.html`
+File::      `<feature>-search.component.html`
 
-.Adust Form in `+customer-management-search.component.html+`
+.Adust Form in `+book-search.component.html+`
 [%collapsible]
 ====
 [source, html]
 ----
-    <form [formGroup]="customerManagementSearchFormGroup">
+    <form [formGroup]="bookSearchFormGroup">
       <div class="grid mt-0 p-fluid">
         <div class="col-12 md:col-3">
           <span class="p-float-label">
@@ -192,49 +211,81 @@ Where *changeMe* is an additional search criteria added to the `+Search<Feature>
 ====
 
 
-.Example: Form in `+customer-management-search.component.html+`
+.Example: Form in `+book-search.component.html+`
 [%collapsible]
 ====
 [source, html]
 ----
-    <form [formGroup]="customerManagementSearchFormGroup">
+    <form [formGroup]="bookSearchFormGroup">
       <div class="grid mt-0 p-fluid">
         <div class="col-12 md:col-3">
           <span class="p-float-label">
             <input
               pInputText
-              id="customer_management_search_customer_name"
+              id="bookstore_book_search_book_title"
               type="text"
               class="w-18rem"
-              formControlName="customerName"
-              [pTooltip]="
-                'CUSTOMER_MANAGEMENT_SEARCH.CRITERIA.CUSTOMERNAME.TOOLTIP'
-                  | translate
-              "
+              formControlName="bookTitle"
+              [pTooltip]="'BOOK_SEARCH.CRITERIA.BOOK_TITLE.TOOLTIP' | translate"
               tooltipPosition="top"
               tooltipEvent="hover"
               role="main"
               [attr.aria-label]="
-                'CUSTOMER_MANAGEMENT_SEARCH.CRITERIA.CUSTOMERNAME.ARIA-LABEL'
-                  | translate
+                'BOOK_SEARCH.CRITERIA.BOOK_TITLE.ARIA-LABEL' | translate
               "
             />
-            <label
-              for="customer_management_search_customer_name"
-              style="white-space: nowrap"
+            <label for="bookstore_book_search_book_title" style="white-space: nowrap">
+              {{ 'BOOK_SEARCH.CRITERIA.BOOK_TITLE.LABEL' | translate }}</label
             >
-              {{
-                'CUSTOMER_MANAGEMENT_SEARCH.CRITERIA.CUSTOMERNAME.LABEL'
-                  | translate
-              }}
-            </label>
+          </span>
+        </div>
+        <div class="col-12 md:col-3">
+          <span class="p-float-label">
+            <input
+              pInputText
+              id="bookstore_book_search_book_author"
+              type="text"
+              class="w-18rem"
+              formControlName="bookAuthor"
+              [pTooltip]="'BOOK_SEARCH.CRITERIA.BOOK_AUTHOR.TOOLTIP' | translate"
+              tooltipPosition="top"
+              tooltipEvent="hover"
+              role="main"
+              [attr.aria-label]="
+                'BOOK_SEARCH.CRITERIA.BOOK_AUTHOR.ARIA-LABEL' | translate
+              "
+            />
+            <label for="bookstore_book_search_book_author" style="white-space: nowrap">
+              {{ 'BOOK_SEARCH.CRITERIA.BOOK_AUTHOR.LABEL' | translate }}</label
+            >
+          </span>
+        </div>
+        <div class="col-12 md:col-3">
+          <span class="p-float-label">
+            <input
+              pInputText
+              id="bookstore_book_search_book_publisher"
+              type="text"
+              class="w-18rem"
+              formControlName="bookPublisher"
+              [pTooltip]="'BOOK_SEARCH.CRITERIA.BOOK_PUBLISHER.TOOLTIP' | translate"
+              tooltipPosition="top"
+              tooltipEvent="hover"
+              role="main"
+              [attr.aria-label]="
+                'BOOK_SEARCH.CRITERIA.BOOK_PUBLISHER.ARIA-LABEL' | translate
+              "
+            />
+            <label for="bookstore_book_search_book_publisher" style="white-space: nowrap">
+              {{ 'BOOK_SEARCH.CRITERIA.BOOK_PUBLISHER.LABEL' | translate }}</label
+            >
           </span>
         </div>
       </div>
     </form>
 ----
 
-Where *customerName* is the criteria added to the `+Search<Feature>Request+`.
+Where *bookTitle*, *bookAuthor*, and *bookPublisher* are the criteria added to the `+SearchBookRequest+`.
 ====
 
 
@@ -245,19 +296,53 @@ Where *customerName* is the criteria added to the `+Search<Feature>Request+`.
 Directory:: `<root-of-ui-app>/src/assets/i18n`
 Files::      `de.json`, `en.json`
 
-Please ensure that all input field labels have the necessary translations added.
+Please ensure that all input field labels have the necessary translations added. +
+More details in {onecx_ui_translations_ref}[Multi-Language].
 
-.Example
+
+.Adust translations in `+en.json+`
+[%collapsible]
+====
 [source, json]
 ----
-  {
-    "EXAMPLE_FEATURE_SEARCH.CRITERIA.ID": "Example input field label"
-  } 
+    "CRITERIA": {
+      "INPUT_FIELDS": "ACTION S4: ADD TRANSLATION for your input fields: https://onecx.github.io/docs/documentation/current/onecx-nx-plugins:generator/search/search-criteria.html#action-4",
+      "CHANGE_ME": {
+        "LABEL": "Change Me",
+        "ARIA-LABEL": "Change Me",
+        "TOOLTIP": "Change Me"
+      }
+    }
 ----
-Translations are needed for your input fields, additional labels or dropdown values.
+Where *CHANGE_ME* is an search criteria.
+====
 
-Refer to the {onecx_ui_translations_ref}[Multi-Language] for more information.
-
-
----
-Now you can continue with the next section xref:generator/search/search-results.adoc[Configure search results]
+.Example: Translations in `+en.json+`
+[%collapsible]
+====
+[source, json]
+----
+  "BOOK_SEARCH": {
+    ...
+    "CRITERIA": {
+      "INPUT_FIELDS": "ACTION S4: ADD TRANSLATION for your input fields: https://onecx.github.io/docs/documentation/current/onecx-nx-plugins:generator/search/search-criteria.html#action-4",
+      "BOOK_TITLE": {
+        "LABEL": "Title",
+        "ARIA-LABEL": "Title",
+        "TOOLTIP": "Book title"
+      },
+      "BOOK_AUTHOR": {
+        "LABEL": "Author",
+        "ARIA-LABEL": "Author",
+        "TOOLTIP": "Book author"
+      },
+      "BOOK_PUBLISHER": {
+        "LABEL": "Publisher",
+        "ARIA-LABEL": "Publisher",
+        "TOOLTIP": "Book publisher"
+      }
+    }
+  }
+----
+Where *BOOK_TITLE*, *BOOK_AUTHOR*, and *BOOK_PUBLISHER* are the criteria added to the `+SearchBookRequest+`.
+====

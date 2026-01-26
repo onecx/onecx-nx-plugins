@@ -41,17 +41,23 @@ endif::[]
 The generator will create a new workspace folder with the specified product name and set up the OneCX UI App according to the chosen flavor. +
 Next step may xref:./create-feature.adoc[create a feature module].
 
+[TIP]
+====
+The generated app contains the dependency for the OneCX Nx Plugin. +
+This allows you to easily add new features, components, and services within your app's user interface using the OneCX Nx plugin functions..
+====
+
 
 == Example
 
-.Create a UI App named "book-store" with NgRx support
+.Create a UI App named "bookstore" with NgRx support
 [source,bash]
 ----
-npx @onecx/create-workspace ngrx book-store
-cd book-store
+npx @onecx/create-workspace ngrx bookstore
+cd bookstore
 npm install
 ----
-This command will generate a new workspace folder named "book-store" with the necessary structure and configurations for a OneCX UI App using NgRx.
+This command will generate a new workspace folder named "bookstore" with the necessary structure and configurations for a OneCX UI App using NgRx.
 
-.Excerpt of generated files and directories for the NgRx *book-store* UI App
-image::generated_workspace_book-store.png[width=200]
+.Excerpt of generated files and directories for the NgRx *bookstore* UI App
+image::generated_workspace_bookstore.png[width=200]

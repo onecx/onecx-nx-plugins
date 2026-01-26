@@ -9,7 +9,7 @@ After generating the search page, you need to configure how the search results a
 To configure the search results, the following actions must be taken. 
 
 [#action-5]
-=== ACTION S5: Add additional properties to entity schema
+== ACTION S5: Add additional properties to entity schema
 Here you can add additional properties which you e.g. need for your `+<SearchFeatureResponse>+`.
 
 To understand the applied API Concept read the {onecx_api_guidelines_ref} first.
@@ -23,7 +23,7 @@ Note that:
 
 _Adapt in File:_ `+<feature>-bff.yaml+`
 
-.Example:
+.Example
 [source, yml]
 ----
   <Feature>:
