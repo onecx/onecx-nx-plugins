@@ -1,0 +1,263 @@
+ifdef::env-site[]
+include::partial$_attributes.adoc[]
+endif::[]
+:imagesdir: ../../../images
+
+= Configure Search Criteria
+
+After generating the base of the search page, you can configure search criteria to allow users to filter search results. 
+It is necessary to add such criteria to both the user interface and the backend services to ensure proper data processing.
+
+Steps to add Search Criteria::
+
+. Adjust the OpenAPI specification to include new search criteria in the search request schema.
+. Update the TypeScript schema to represent the search criteria.
+. Modify the HTML of the search component to include input fields for the new criteria.
+. Add necessary translations for the input fields.
+
+[NOTE]
+====
+The search criteria added here are used as part of the URL parameters when making requests to the backend service. Ensure that the criteria names are URL-friendly and do not contain special characters that could interfere with URL encoding. +
+Examplarily, a search criteria named `customerName` will be used in the URL as `?customerName=value`.
+====
+
+
+[#action-1]
+== ACTION S1: Add Criteria to Search Request
+
+The `+Search<Feature>Request+` component in the OpenAPI YAML file must be adapted by adding the desired search criteria as properties. +
+More details in {ngrx_search_criteria_ref}[NgRx Search Criteria].
+
+[horizontal]
+Directory:: `<root-of-ui-app>/src/assets/swagger`
+File::      `<feature-name>-bff.yaml`
+
+.Adjust in `+<feature>-bff.yaml+`
+[%collapsible]
+====
+[source, yaml]
+----
+    Search<Feature>Request:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        pageNumber: 
+          type: integer
+          format: int32
+          default: 0
+          description: 'The number of the page.'          
+        pageSize:
+          type: integer
+          format: int32
+          default: 100
+          maximum: 1000
+          description: 'The size of the page.'      
+        changeMe:
+          type: string
+        # " ACTION S1: Add additional properties: https://onecx.github.io/docs/documentation/current/onecx-nx-plugins:generator/search/search-criteria.html#action-1"
+----
+
+Where *changeMe* is an additional search criteria added to the `+Search<Feature>Request+`.
+====
+
+.Example: Adjustments in `+book-store-bff.yaml+`
+[%collapsible]
+====
+[source, yaml]
+----
+    SearchCustomerManagementRequest:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        pageNumber:
+          type: integer
+          format: int32
+          default: 0
+          description: The number of the page.
+        pageSize:
+          type: integer
+          format: int32
+          default: 100
+          maximum: 1000
+          description: The size of the page.
+        customerName:
+          type: string
+          maximum: 255
+----
+
+Where *customerName* is a search criteria.
+====
+
+After adding the new criteria to the OpenAPI specification, you need to regenerate the API client code to reflect these changes in your application.
+.Generate the API client code
+[source, bash]
+----
+npm run apigen
+----
+
+
+[#action-2]
+== ACTION S2: Add Search Criteria in TypeScript Schema
+
+The criteria you added in "Action S1" now have to be added to the TypeScript schema. Assure the keys and types match the ones you defined in the OpenAPI specification. +
+More details in {ngrx_search_criteria_parameter_ref}[NgRx Search Criteria].
+
+[horizontal]
+Directory:: `<root-of-ui-app>/src/app/<feature>/pages/<search>`
+File::      `<feature-name>-search.parameters.ts`
+
+.Adjust in `+<feature>-search.parameters.ts+`
+[%collapsible]
+====
+[source, javascript]
+----
+export const <feature>SearchCriteriasSchema = z.object({
+  changeMe: z.string().optional(),
+  // ACTION S2: Please define the members for your customerManagementSearchCriteriasSchema here
+  // https://onecx.github.io/docs/documentation/current/onecx-nx-plugins:generator/search/search-criteria.html#action-2
+} satisfies Partial<Record<keyof SearchCustomerManagementRequest, ZodTypeAny>>);
+----
+
+Where *changeMe* is an additional search criteria added to the `+Search<Feature>Request+`.
+====
+
+.Example: Adjustments in `+customer-management-search.parameters.ts+`
+[%collapsible]
+====
+[source, javascript]
+----
+export const customerManagementSearchCriteriasSchema = z.object({
+  customerName: z.string().optional(),
+} satisfies Partial<Record<keyof SearchCustomerManagementRequest, ZodTypeAny>>);
+----
+
+Where *customerName* is the criteria added to the `+Search<Feature>Request+`.
+====
+
+
+[#action-3]
+== ACTION S3: Add input fields in HTML
+To make the search criteria usable for the user, you need to add corresponding HTML input fields to the search component's HTML file. +
+More details in {ngrx_search_criteria_html_ref}[Search Criteria HTML] and {ngrx_search_criteria_html_example_ref}[Example input fields].
+
+[horizontal]
+Directory:: `<root-of-ui-app>/src/app/<feature>/pages/<search>`
+File::      `<feature-name>-search.component.html`
+
+.Adust Form in `+customer-management-search.component.html+`
+[%collapsible]
+====
+[source, html]
+----
+    <form [formGroup]="customerManagementSearchFormGroup">
+      <div class="grid mt-0 p-fluid">
+        <div class="col-12 md:col-3">
+          <span class="p-float-label">
+            <input
+              pInputText
+              id="changeMe"
+              type="text"
+              class="w-18rem"
+              formControlName="changeMe"
+              [pTooltip]="
+                'CUSTOMER_MANAGEMENT_SEARCH.CRITERIA.CHANGE_ME.TOOLTIP'
+                  | translate
+              "
+              tooltipPosition="top"
+              tooltipEvent="hover"
+              role="main"
+              [attr.aria-label]="
+                'CUSTOMER_MANAGEMENT_SEARCH.CRITERIA.CHANGE_ME.ARIA-LABEL'
+                  | translate
+              "
+            />
+            <label for="changeMe" style="white-space: nowrap">
+              {{
+                'CUSTOMER_MANAGEMENT_SEARCH.CRITERIA.CHANGE_ME.LABEL' | translate
+              }}</label
+            >
+          </span>
+        </div>
+      </div>
+      <!--// ACTION S3: Specify here your desired search criterias:
+       https://onecx.github.io/docs/documentation/current/onecx-nx-plugins:generator/search/search-criteria.html#action-3 -->
+    </form>
+----
+
+Where *changeMe* is an additional search criteria added to the `+Search<Feature>Request+`.
+====
+
+
+.Example: Form in `+customer-management-search.component.html+`
+[%collapsible]
+====
+[source, html]
+----
+    <form [formGroup]="customerManagementSearchFormGroup">
+      <div class="grid mt-0 p-fluid">
+        <div class="col-12 md:col-3">
+          <span class="p-float-label">
+            <input
+              pInputText
+              id="customer_management_search_customer_name"
+              type="text"
+              class="w-18rem"
+              formControlName="customerName"
+              [pTooltip]="
+                'CUSTOMER_MANAGEMENT_SEARCH.CRITERIA.CUSTOMERNAME.TOOLTIP'
+                  | translate
+              "
+              tooltipPosition="top"
+              tooltipEvent="hover"
+              role="main"
+              [attr.aria-label]="
+                'CUSTOMER_MANAGEMENT_SEARCH.CRITERIA.CUSTOMERNAME.ARIA-LABEL'
+                  | translate
+              "
+            />
+            <label
+              for="customer_management_search_customer_name"
+              style="white-space: nowrap"
+            >
+              {{
+                'CUSTOMER_MANAGEMENT_SEARCH.CRITERIA.CUSTOMERNAME.LABEL'
+                  | translate
+              }}
+            </label>
+          </span>
+        </div>
+      </div>
+    </form>
+----
+
+Where *customerName* is the criteria added to the `+Search<Feature>Request+`.
+====
+
+
+[#action-4]
+== ACTION S4: Add Translations
+
+[horizontal]
+Directory:: `<root-of-ui-app>/src/assets/i18n`
+Files::      `de.json`, `en.json`
+
+Please ensure that all input field labels have the necessary translations added.
+
+.Example
+[source, json]
+----
+  {
+    "EXAMPLE_FEATURE_SEARCH.CRITERIA.ID": "Example input field label"
+  } 
+----
+Translations are needed for your input fields, additional labels or dropdown values.
+
+Refer to the {onecx_ui_translations_ref}[Multi-Language] for more information.
+
+
+---
+Now you can continue with the next section xref:generator/search/search-results.adoc[Configure search results]
