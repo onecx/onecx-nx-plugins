@@ -6,7 +6,6 @@
     "HELP_ARTICLE_ID": "Help Article",
     "EMPTY_RESULTS": "No results.",
     "BREADCRUMB": "Search",
-    "INPUT_FIELDS": "ACTION S4: ADD TRANSLATION for your input fields: https://onecx.github.io/docs/documentation/current/onecx-nx-plugins:generator/search/configure-search-criteria.html#action-4",
     "DIAGRAM": {
       "SUM": "Total",
       "NAME": "Diagram for Search Results"
@@ -36,7 +35,8 @@
       "NAME": "Search Results"
     },
     "CRITERIA": {
-      "CHANGEME": {
+      "INPUT_FIELDS": "ACTION S4: ADD TRANSLATION for your input fields: https://onecx.github.io/docs/documentation/current/onecx-nx-plugins:generator/search/search-criteria.html#action-4",
+      "CHANGE_ME": {
         "LABEL": "Change Me",
         "ARIA-LABEL": "Change Me",
         "TOOLTIP": "Change Me"

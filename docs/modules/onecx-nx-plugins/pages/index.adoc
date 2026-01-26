@@ -6,11 +6,10 @@ endif::[]
 
 = OneCX App Generator
 
-The OneCX App Generator is a powerful tool designed to streamline the development of UI applications within the OneCX framework. It automates the creation of essential UI components, ensuring consistency and adherence to best practices.
+The OneCX App Generator is a powerful tool that simplifies the development of UI applications within the OneCX framework. It automates the creation of key UI components, ensuring consistency and adherence to best practices.
 
 == Prerequisites
-Ensure your development environment is set up correctly before using the OneCX App Generator:
-
+Make sure your development environment is set up correctly before using the OneCX App Generator. +
 The following tools must be installed and versions verified:
 
 ** *npm* version should be >= 10.2.4
