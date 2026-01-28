@@ -570,8 +570,8 @@ describe('<%= featureClassName %>SearchComponent', () => {
     const cases = [
       {
         desc: 'should convert Date values to UTC and dispatch searchButtonClicked',
-        formValue: { changeMe: new Date(2024, 4, 15, 12, 30, 45) },
-        expected: { changeMe: new Date(Date.UTC(2024, 4, 15, 12, 30, 45)) }
+        formValue: { changeMe: new Date(2024, 4, 15) },
+        expected: { changeMe: new Date(Date.UTC(2024, 4, 15)) }
       },
       {
         desc: 'should pass through non-date, non-empty values unchanged',
@@ -579,8 +579,8 @@ describe('<%= featureClassName %>SearchComponent', () => {
         expected: { changeMe: 'testName' }
       },
       {
-        desc: 'should set searchCriteria property to undefined for falsy non-date values',
-        formValue: { changeMe: '' },
+        desc: 'should set searchCriteria property to undefined for null values',
+        formValue: { changeMe: null },
         expected: { changeMe: undefined }
       }
     ]

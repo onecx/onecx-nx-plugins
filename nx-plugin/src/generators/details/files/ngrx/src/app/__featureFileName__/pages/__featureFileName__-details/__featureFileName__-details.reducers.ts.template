@@ -36,6 +36,7 @@ export const <%= featurePropertyName %>DetailsReducer = createReducer(
     <%= featureClassName %>DetailsActions.navigatedToDetailsPage,
     (): <%= featureClassName %>DetailsState => ({
       ...initialState,
+      detailsLoadingIndicator: true,
     })
   )<%_ if(editMode){ _%>,
   on(
