@@ -22,6 +22,7 @@ Follow these steps:
 . Run the following OneCX App Generator command. +
   The feature parameter is optional and can be used to specify the feature module where the NgRx page should be created. If not provided, the generator prompt you to specify a feature module.
 +
+.Generate page/component
 [source, bash]
 ----
 nx generate @onecx/nx-plugin:ngrx-page [feature module]
@@ -33,6 +34,7 @@ nx generate @onecx/nx-plugin:ngrx-page [feature module]
 == Example
 To create a simple NgRx page named "Hello" under the "Hello World" feature module, you would run:
 
+.Generate page/component
 [source, bash]
 ----
 nx generate @onecx/nx-plugin:ngrx-page hello-world
@@ -43,7 +45,7 @@ To access the newly created component, navigate to `[text-important]#<your app-b
 .OneCX Local Environment with Hello Component
 [source, text]
 ----
-http://local-proxy/onecx-shell/admin/hello-world/hello
+http://onecx.localhost/onecx-shell/admin/hello-world/hello
 ----
 
 .Hello Component in action
