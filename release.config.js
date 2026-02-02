@@ -7,9 +7,9 @@ module.exports = {
       prerelease: 'rc',
     },
     {
-      name: 'v5',
-      range: '5.x.x',
-      channel: 'v5-lts',
+      name: 'v7',
+      range: '7.x.x',
+      channel: 'v7-lts',
     },
   ],
   preset: 'conventionalcommits',
