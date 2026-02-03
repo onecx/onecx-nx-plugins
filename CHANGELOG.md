@@ -1,3 +1,22 @@
+## [6.0.0-rc.1](https://github.com/onecx/onecx-nx-plugins/compare/v5.0.0...v6.0.0-rc.1) (2026-02-03)
+
+### ⚠ BREAKING CHANGES
+
+* release v5 rc (#310)
+
+### Features
+
+* simplify ngrx page, aligned with OneCX standard ([#303](https://github.com/onecx/onecx-nx-plugins/issues/303)) ([7f441ea](https://github.com/onecx/onecx-nx-plugins/commit/7f441ea057eec7dd56fe3140309dc196a667491f))
+* use onecx.localhost ([dd8fa29](https://github.com/onecx/onecx-nx-plugins/commit/dd8fa296f115900c2f6a081b8d71f93ae9760f1e))
+
+### Chores
+
+* release v5 rc ([#310](https://github.com/onecx/onecx-nx-plugins/issues/310)) ([32c0a65](https://github.com/onecx/onecx-nx-plugins/commit/32c0a6542127b37136bd78a215365e3c4e9a4eea))
+
+### Refactoring
+
+* improve generator state ([#302](https://github.com/onecx/onecx-nx-plugins/issues/302)) ([48631d5](https://github.com/onecx/onecx-nx-plugins/commit/48631d50feeb40b74e90abc72ff4d4f99eeded60))
+
 ## [5.0.0](https://github.com/onecx/onecx-nx-plugins/compare/v4.0.0...v5.0.0) (2026-01-15)
 
 ### ⚠ BREAKING CHANGES
