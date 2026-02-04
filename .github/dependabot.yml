@@ -4,6 +4,6 @@ updates:
     directory: "/"
     schedule:
       interval: daily
-    target-branch: "v6"
+    target-branch: "v5"
     labels:
       - dependencies
