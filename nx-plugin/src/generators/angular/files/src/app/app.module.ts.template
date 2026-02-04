@@ -1,30 +1,32 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { APP_INITIALIZER, NgModule } from '@angular/core';
-import { HttpClientModule, HttpClient } from '@angular/common/http';
+import { NgModule } from '@angular/core';
+import {
+  HttpClient,
+  provideHttpClient,
+  withInterceptorsFromDi,
+} from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import {
   AppStateService,
   APP_CONFIG,
   ConfigurationService,
-  createTranslateLoader,
-  PortalCoreModule,
-  translateServiceInitializer,
-  UserService
-} from '@onecx/portal-integration-angular';
+} from '@onecx/angular-integration-interface';
 import {
-  TranslateLoader,
-  TranslateModule,
-  TranslateService,
-} from '@ngx-translate/core';
+  AngularAcceleratorModule,
+  providePortalDialogService,
+} from '@onecx/angular-accelerator';
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { BASE_PATH } from './shared/generated';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { Observable } from 'rxjs';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
-import { KeycloakAuthModule } from '@onecx/keycloak-auth';
 import { CommonModule } from '@angular/common';
 import { apiConfigProvider } from './shared/utils/apiConfigProvider.utils';
+import { AngularAuthModule } from '@onecx/angular-auth';
 import { Configuration } from './shared/generated';
+import { createTranslateLoader } from '@onecx/angular-utils';
+import { ShellCoreModule } from '@onecx/shell-core';
 <%_ if(standalone){ _%>
 import { firstValueFrom } from 'rxjs';
 import { MfeInfo } from '@onecx/integration-interface';
@@ -35,14 +37,14 @@ export const commonImports = [CommonModule];
   declarations: [AppComponent],
   imports: [
     ...commonImports,
-    <%_ if(!standalone){ _%>KeycloakAuthModule, <%_ } _%>
     BrowserModule,
     BrowserAnimationsModule,
     AppRoutingModule,
-    HttpClientModule,
-    PortalCoreModule<% if(!standalone){ %>.forRoot('<%= name %>-app')<% } %>,
+    AngularAcceleratorModule,
+    AngularAuthModule,
+    ShellCoreModule,
     TranslateModule.forRoot({
-      extend: true,
+      isolate: true,
       loader: {
         provide: TranslateLoader,
         useFactory: createTranslateLoader,
@@ -51,20 +53,14 @@ export const commonImports = [CommonModule];
     }),
   ],
   providers: [
+    provideHttpClient(withInterceptorsFromDi()),
     { provide: APP_CONFIG, useValue: environment },
     {
       provide: Configuration,
       useFactory: apiConfigProvider,
       deps: [ConfigurationService, AppStateService],
     },
-    <%_ if(!standalone){ _%> 
-    {
-      provide: APP_INITIALIZER,
-      useFactory: translateServiceInitializer,
-      multi: true,
-      deps: [UserService, TranslateService],
-    },
-    <%_ }else{ _%>
+    <%_ if(standalone){ _%> 
     {
       provide: APP_INITIALIZER,
       useFactory: (

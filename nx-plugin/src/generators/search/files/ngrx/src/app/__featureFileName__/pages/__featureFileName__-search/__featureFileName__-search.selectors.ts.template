@@ -1,5 +1,5 @@
 import { createSelector } from '@ngrx/store';
-import { RowListGridData } from '@onecx/portal-integration-angular';
+import { RowListGridData } from '@onecx/angular-accelerator';
 import { createChildSelectors } from '@onecx/ngrx-accelerator';
 import { <%= featurePropertyName %>Feature } from '../../<%= featureFileName %>.reducers';
 import { initialState } from './<%= featureFileName %>-search.reducers';

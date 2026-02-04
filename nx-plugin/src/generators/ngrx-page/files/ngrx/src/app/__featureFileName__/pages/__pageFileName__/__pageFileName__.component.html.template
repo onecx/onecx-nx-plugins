@@ -11,7 +11,7 @@
   >
   </ocx-page-header>
 
-  <ocx-page-content>
+  <ocx-content>
     <h1><%= pageTitle %></h1>
-  </ocx-page-content>
+  </ocx-content>
 </ocx-portal-page>

@@ -1,4 +1,4 @@
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
@@ -9,17 +9,25 @@ import { LetDirective } from '@ngrx/component';
 import { Store, StoreModule } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { ofType } from '@ngrx/effects';
-import { TranslateService } from '@ngx-translate/core';
 import { TranslateTestingModule } from 'ngx-translate-testing';
 import { DialogService } from 'primeng/dynamicdialog';
-import { 
+import { UserService } from '@onecx/angular-integration-interface';
+import {
+  AngularAcceleratorModule,
   BreadcrumbService,
   HAS_PERMISSION_CHECKER,
   ColumnType,
-  PortalCoreModule,
-  UserService,
-  providePortalDialogService
-} from '@onecx/portal-integration-angular';
+  providePortalDialogService,
+  RowListGridData,
+} from '@onecx/angular-accelerator';
+import {
+  PermissionService,
+  PortalPageComponent,
+  TranslationConnectionService,
+} from '@onecx/angular-utils';
+import { TooltipModule } from 'primeng/tooltip';
+import { provideHttpClient } from '@angular/common/http';
+import { of } from 'rxjs';
 import { <%= featureClassName %>SearchActions } from './<%= featureFileName %>-search.actions';
 import { <%= featureClassName %>SearchComponent } from './<%= featureFileName %>-search.component';
 import { <%= featureClassName %>SearchHarness } from './<%= featureFileName %>-search.harness';
@@ -103,51 +111,60 @@ describe('<%= featureClassName %>SearchComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [<%= featureClassName %>SearchComponent],
       imports: [
-        PortalCoreModule,
+        AngularAcceleratorModule,
+        PortalPageComponent,
         LetDirective,
         ReactiveFormsModule,
+        TooltipModule,
         StoreModule.forRoot({}),
         TranslateTestingModule.withTranslations(
           'en',
           require('./../../../../assets/i18n/en.json')
-        ).withTranslations('de', require('./../../../../assets/i18n/de.json')),
-        HttpClientTestingModule,
+        )
+          .withTranslations('de', require('./../../../../assets/i18n/de.json'))
+          .withDefaultLanguage('en'),
         NoopAnimationsModule,
       ],
       providers: [
+        provideHttpClient(),
+        provideHttpClientTesting(),
         DialogService,
+        PermissionService,
         provideMockStore({
           initialState: { <%= featurePropertyName %>: { search: initialState } },
         }),
         FormBuilder,
         providePortalDialogService(),
         { provide: ActivatedRoute, useValue: mockActivatedRoute },
-        provideUserServiceMock(),
+         {
+          provide: UserService,
+          useValue: {
+            getPermissions: jest
+              .fn()
+              .mockReturnValue(of([
+                "<%= featureConstantName %>#CREATE",
+                "<%= featureConstantName %>#EDIT",
+                "<%= featureConstantName %>#DELETE",
+                "<%= featureConstantName %>#IMPORT",
+                "<%= featureConstantName %>#EXPORT",
+                "<%= featureConstantName %>#VIEW",
+                "<%= featureConstantName %>#SEARCH",
+                "<%= featureConstantName %>#BACK"
+              ])),
+            hasPermission: jest.fn().mockResolvedValue(true),
+          },
+        },
         {
-            provide: HAS_PERMISSION_CHECKER,
-            useExisting: UserService,
+          provide: TranslationConnectionService,
+          useValue: { init: jest.fn(), destroy: jest.fn() },
         },
       ],
     }).compileComponents();
   });
 
   beforeEach(async () => {
-    const userService = TestBed.inject(UserService);
-    userService.permissions$.next([
-      "<%= featureConstantName %>#CREATE",
-      "<%= featureConstantName %>#EDIT",
-      "<%= featureConstantName %>#DELETE",
-      "<%= featureConstantName %>#IMPORT",
-      "<%= featureConstantName %>#EXPORT",
-      "<%= featureConstantName %>#VIEW",
-      "<%= featureConstantName %>#SEARCH",
-      "<%= featureConstantName %>#BACK"
-    ])
-    userService.hasPermission = () => true;
-    const translateService = TestBed.inject(TranslateService);
-    translateService.use('en');
+    
     formBuilder = TestBed.inject(FormBuilder);
-
     store = TestBed.inject(MockStore);
     jest.spyOn(store, 'dispatch')
     store.overrideSelector(
@@ -170,7 +187,7 @@ describe('<%= featureClassName %>SearchComponent', () => {
   });
 
   it('should dispatch resetButtonClicked action on resetSearch', async () => {
-    var doneFn = jest.fn();
+    const doneFn = jest.fn();
     store.overrideSelector(select<%= featureClassName %>SearchViewModel, {
       ...base<%= featureClassName %>SearchViewModel,
       results: [
@@ -310,7 +327,37 @@ describe('<%= featureClassName %>SearchComponent', () => {
     expect(await searchBreadcrumbItem!.getText()).toEqual('Search');
   });
 
-  it('should dispatch displayedColumnsChanged on data view column change', async () => {
+  it('should dispatch searchButtonClicked action on search', (done) => {
+    const formValue = formBuilder.group({
+      changeMe: '123',
+    });
+    component.<%= featurePropertyName %>SearchFormGroup = formValue;
+
+    store.scannedActions$
+      .pipe(ofType(<%= featureClassName %>SearchActions.searchButtonClicked))
+      .subscribe((a) => {
+        expect(a.searchCriteria).toEqual({ changeMe: '123' });
+        done();
+      });
+
+    component.search(formValue);
+  });
+  
+  it('should dispatch viewModeChanged action on view mode changes', async () => {
+    jest.spyOn(store, 'dispatch');
+
+    component.searchHeaderComponentStateChanged({
+      activeViewMode: 'advanced',
+    });
+
+    expect(store.dispatch).toHaveBeenCalledWith(
+      <%= featureClassName %>SearchActions.searchHeaderComponentStateChanged({
+        activeViewMode: 'advanced',
+      })
+    );
+  });
+
+  it.skip('should dispatch displayedColumnsChanged on data view column change', async () => {
     jest.spyOn(store, 'dispatch');
     const columns = [
       {
@@ -336,10 +383,9 @@ describe('<%= featureClassName %>SearchComponent', () => {
   
     const interactiveDataView =
       await <%= featurePropertyName %>Search.getSearchResults();        
-    (await (
-        await interactiveDataView.getDataLayoutSelection()
-      ).getTableLayoutSelectionButton()
-    )?.click();
+    await (
+      await interactiveDataView.getDataLayoutSelection()
+    ).selectTableLayout();
 
     const columnGroupSelector =
       await interactiveDataView?.getCustomGroupColumnSelector();

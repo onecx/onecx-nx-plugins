@@ -1,22 +1,25 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
 import { LetDirective } from '@ngrx/component';
-import { HttpClientTestingModule } from '@angular/common/http/testing'
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { By } from '@angular/platform-browser';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { Store, StoreModule } from '@ngrx/store';
-import { TranslateService } from '@ngx-translate/core';
 import { TranslateTestingModule } from 'ngx-translate-testing'
 import { PrimeIcons } from 'primeng/api';
+import { ReactiveFormsModule } from '@angular/forms';
 import { of } from 'rxjs';
+import { UserService } from '@onecx/angular-integration-interface';
+import { AngularAcceleratorModule, BreadcrumbService } from '@onecx/angular-accelerator';
+import { provideHttpClient } from '@angular/common/http';
 import {
-  BreadcrumbService,
+  PermissionService,
+  PortalPageComponent,
+  TranslationConnectionService,
   HAS_PERMISSION_CHECKER,
-  PortalCoreModule,
-  UserService,
-} from '@onecx/portal-integration-angular';
+} from '@onecx/angular-utils';
 import { <%= featureClassName %>DetailsComponent } from './<%= featureFileName %>-details.component';
 import { initialState } from './<%= featureFileName %>-details.reducers';
 import { <%= featureClassName %>DetailsHarness } from './<%= featureFileName %>-details.harness';
@@ -24,8 +27,11 @@ import { <%= featureClassName %>DetailsViewModel } from './<%= featureFileName %
 import { select<%= featureClassName %>DetailsViewModel } from './<%= featureFileName %>-details.selectors';
 import { <%= featureClassName %>DetailsActions } from './<%= featureFileName %>-details.actions';
 import { ofType } from '@ngrx/effects';
-import { provideUserServiceMock } from '@onecx/angular-integration-interface/mocks';
-import { TranslatePipe } from '@ngx-translate/core';
+import {
+  provideUserServiceMock,
+  UserServiceMock,
+} from '@onecx/angular-integration-interface/mocks';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 
 describe('<%= featureClassName %>DetailsComponent', () => {
   const origAddEventListener = window.addEventListener;
@@ -72,20 +78,32 @@ describe('<%= featureClassName %>DetailsComponent', () => {
     details: undefined,
     detailsLoadingIndicator: false,
     detailsLoaded: true,
-    backNavigationPossible: true
+    backNavigationPossible: true,
+    <%_ if(editMode){ _%>
+    editMode: true,
+    isSubmitting: false,
+    <%_ } _%>
   };
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [<%= featureClassName %>DetailsComponent],
       imports: [
-        PortalCoreModule,
+        AngularAcceleratorModule,
+        PortalPageComponent,
         LetDirective,
-        TranslateTestingModule.withTranslations('en', require('./../../../../assets/i18n/en.json'))
-          .withTranslations('de', require('./../../../../assets/i18n/de.json')),
-        HttpClientTestingModule
+        ReactiveFormsModule,
+        TranslateTestingModule.withTranslations(
+          'en',
+          require('./../../../../assets/i18n/en.json')
+        )
+          .withTranslations('de', require('./../../../../assets/i18n/de.json'))
+          .withDefaultLanguage('en'),
       ],
       providers: [
+                provideHttpClient(),
+        provideHttpClientTesting(),
+        PermissionService,
         provideMockStore({
           initialState: { <%= featurePropertyName %>: { details: initialState } },
         }),
@@ -93,25 +111,27 @@ describe('<%= featureClassName %>DetailsComponent', () => {
         { provide: ActivatedRoute, useValue: mockActivatedRoute },
         provideUserServiceMock(),
         {
-            provide: HAS_PERMISSION_CHECKER,
-            useExisting: UserService,
+          provide: HAS_PERMISSION_CHECKER,
+          useExisting: UserService,
+        },
+        {
+          provide: TranslationConnectionService,
+          useValue: { init: jest.fn(), destroy: jest.fn() },
         },
       ],
     }).compileComponents();
 
-    const userService = TestBed.inject(UserService);
-    userService.permissions$.next([
-      "<%= featureConstantName %>#CREATE",
-      "<%= featureConstantName %>#EDIT",
-      "<%= featureConstantName %>#DELETE",
-      "<%= featureConstantName %>#IMPORT",
-      "<%= featureConstantName %>#EXPORT",
-      "<%= featureConstantName %>#VIEW",
-      "<%= featureConstantName %>#SEARCH",
-      "<%= featureConstantName %>#BACK"
-    ])
-    const translateService = TestBed.inject(TranslateService);
-    translateService.use('en');
+    const userServiceMock = TestBed.inject(UserServiceMock);
+    userServiceMock.permissionsTopic$.publish([
+      '<%= featureConstantName %>#CREATE',
+      '<%= featureConstantName %>#EDIT',
+      '<%= featureConstantName %>#DELETE',
+      '<%= featureConstantName %>#IMPORT',
+      '<%= featureConstantName %>#EXPORT',
+      '<%= featureConstantName %>#VIEW',
+      '<%= featureConstantName %>#SEARCH',
+      '<%= featureConstantName %>#BACK',
+    ]);
 
     store = TestBed.inject(MockStore);
     store.overrideSelector(
@@ -154,6 +174,21 @@ describe('<%= featureClassName %>DetailsComponent', () => {
     );
   });
 
+  <% if(editMode) { %>
+  it('should have 4 inline actions', async () => {
+    const pageHeader = await <%= featurePropertyName %>Details.getHeader();
+    const inlineActions = await pageHeader.getInlineActionButtons();
+    expect(inlineActions.length).toBe(4);
+
+    const backAction = await pageHeader.getInlineActionButtonByLabel('Back');
+    expect(backAction).toBeTruthy();
+
+    const moreAction = await pageHeader.getInlineActionButtonByIcon(
+      PrimeIcons.ELLIPSIS_V
+    );
+    expect(moreAction).toBeTruthy();  
+  });
+  <% }else{ %>
   it('should have 2 inline actions', async () => {
     const pageHeader = await <%= featurePropertyName %>Details.getHeader();
     const inlineActions = await pageHeader.getInlineActionButtons();
@@ -165,8 +200,9 @@ describe('<%= featureClassName %>DetailsComponent', () => {
     const moreAction = await pageHeader.getInlineActionButtonByIcon(
       PrimeIcons.ELLIPSIS_V
     );
-    expect(moreAction).toBeTruthy();
+    expect(moreAction).toBeTruthy();  
   });
+  <% } %>
 
   it('should dispatch navigateBackButtonClicked action on back button click', async () => {
     jest.spyOn(window.history, 'back');

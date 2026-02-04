@@ -19,7 +19,7 @@ export class FeatureModuleStep
       `declarations: [${className}CreateUpdateComponent,`,
       `from '@ngrx/effects';
      import { ${className}CreateUpdateComponent } from './pages/${fileName}-search/dialogs/${fileName}-create-update/${fileName}-create-update.component';
-     import { providePortalDialogService } from '@onecx/portal-integration-angular';`,
+     import { providePortalDialogService } from '@onecx/angular-accelerator';`,
       `
     providers: [providePortalDialogService()],
     declarations:`,

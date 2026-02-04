@@ -7,9 +7,9 @@ export class AppModuleStep implements GeneratorStep<SearchGeneratorSchema> {
   //@ts-eslint:ignore @typescript-eslint/no-unused-var
   process(tree: Tree, _options: SearchGeneratorSchema): void {
     const moduleFilePath = joinPathFragments('src/app/app.module.ts');
-    const find = [`} from '@onecx/portal-integration-angular'`];
+    const find = [`} from '@onecx/angular-accelerator'`];
     const replaceWith = [
-      ` providePortalDialogService } from '@onecx/portal-integration-angular'`,
+      ` providePortalDialogService } from '@onecx/angular-accelerator'`,
     ];
     const moduleContent = tree.read(moduleFilePath, 'utf8');
     if (!moduleContent.includes('providePortalDialogService()')) {

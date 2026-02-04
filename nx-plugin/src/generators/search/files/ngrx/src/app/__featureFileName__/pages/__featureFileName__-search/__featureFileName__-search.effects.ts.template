@@ -1,23 +1,25 @@
-import { ActivatedRoute, Router, RoutesRecognized } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { concatLatestFrom } from '@ngrx/operators'
 import { routerNavigatedAction } from '@ngrx/router-store';
-import { catchError, map, of, switchMap, tap, filter, mergeMap } from 'rxjs';
+import { catchError, map, of, switchMap, tap, filter } from 'rxjs';
 import {  
   <%= serviceName %>, 
 } from '../../../shared/generated';
 import { <%= featureClassName %>SearchActions } from './<%= featureFileName %>-search.actions';
 import { <%= featureClassName %>SearchComponent } from './<%= featureFileName %>-search.component';
-import { ExportDataService, PortalMessageService } from '@onecx/portal-integration-angular';
+import { PortalMessageService } from '@onecx/angular-integration-interface';
 import {
-  createQueryParamsEffect,
+  ExportDataService,
+} from '@onecx/angular-accelerator';
+import {
   filterForNavigatedTo,
   filterOutQueryParamsHaveNotChanged
 } from '@onecx/ngrx-accelerator';
 import {  
   <%= featurePropertyName %>SearchCriteriasSchema,
 } from './<%= featureFileName %>-search.parameters';
-import { Injectable, SkipSelf } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { 
   select<%= featureClassName %>SearchViewModel,
 <%= featurePropertyName %>SearchSelectors,
@@ -27,15 +29,13 @@ import equal from 'fast-deep-equal';
 
 @Injectable()
 export class <%= featureClassName %>SearchEffects {
-  constructor(
-    private actions$: Actions,
-    private route: ActivatedRoute,
-    private <%= featurePropertyName %>Service: <%= serviceName %>,    
-    private router: Router,
-    private store: Store,
-    private messageService: PortalMessageService,  
-    private readonly exportDataService: ExportDataService
-  ) {}
+  private actions$ = inject(Actions);
+  private route = inject(ActivatedRoute);
+  private <%= featurePropertyName %>Service = inject(<%= serviceName %>);
+  private router = inject(Router);
+  private store = inject(Store);
+  private messageService = inject(PortalMessageService);
+  private readonly exportDataService = inject(ExportDataService);
 
   syncParamsToUrl$ = createEffect(
     () => {
