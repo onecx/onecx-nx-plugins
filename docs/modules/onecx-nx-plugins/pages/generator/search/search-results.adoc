@@ -1,20 +1,18 @@
-== Configure the search results. 
+ifdef::env-site[]
+include::partial$_attributes.adoc[]
+endif::[]
+:imagesdir: ../../../images
 
-:idprefix:
-:idseparator: -
+= Configure Search Results
 
-:data_table_column_properties_cookbook_url: xref:documentation:onecx-portal-ui-libs:components/interactive-data-view/data-table-column.adoc
-:translation_cookbook_url: xref:documentation:docs-guides-ui:angular/translation/multi-language.adoc
-:api_scheme_url: xref:documentation:onecx-docs-dev:guidelines/api_guidelines.adoc
-
-
+After generating the search page, you need to configure how the search results are displayed to the user. +
 To configure the search results, the following actions must be taken. 
 
 [#action-5]
-=== ACTION S5: Add additional properties to entity schema
-Here you can add additional properties which you e.g., need for your `+<SearchFeatureResponse>+`.
+== ACTION S5: Add additional properties to entity schema
+Here you can add additional properties which you e.g. need for your `+<SearchFeatureResponse>+`.
 
-To understand the applied API Concept read the {api_scheme_url}[API Guidelines] first.
+To understand the applied API Concept read the {onecx_api_guidelines_ref} first.
 
 Note that:
 
@@ -25,7 +23,7 @@ Note that:
 
 _Adapt in File:_ `+<feature>-bff.yaml+`
 
-.Example:
+.Example
 [source, yml]
 ----
   <Feature>:
@@ -51,7 +49,7 @@ include::documentation:onecx-nx-plugins:partial$remove-action.adoc[]
 
 [#action-6]
 === ACTION S6: Column configuration
-The next step is to configure the columns of the search results table. Here you can define which properties of your entity should be displayed in the results table, as well as their characteristics (e.g., if they are sortable or filterable).
+The next step is to configure the columns of the search results table. Here you can define which properties of your entity should be displayed in the results table, as well as their characteristics (e.g. if they are sortable or filterable).
 
 _Adapt in File:_ `+<feature>-search.columns.ts+`
 .Example:
@@ -90,7 +88,7 @@ A predefined group allows users to quickly switch between different sets of colu
 By configuring the `+predefinedGroupKeys+`, you can define which columns belong to which groups.
 The key is at the same time the translation key for the group name.
 
-Refer to the {data_table_column_properties_cookbook_url}[DataTableColumn overview] for more information.
+Refer to the {onecx_ui_datatable_columns_ref}[DataTableColumn overview] for more information.
 
 include::documentation:onecx-nx-plugins:partial$remove-action.adoc[]
 
@@ -150,6 +148,6 @@ For our examples above, the following entries would be necessary:
   }
 ----
 
-Refer to the {translation_cookbook_url}[Multi-Language Cookbook] for more information.
+Refer to the {onecx_ui_translations_ref}[Multi-Language Cookbook] for more information.
 
 include::documentation:onecx-nx-plugins:partial$remove-action.adoc[]

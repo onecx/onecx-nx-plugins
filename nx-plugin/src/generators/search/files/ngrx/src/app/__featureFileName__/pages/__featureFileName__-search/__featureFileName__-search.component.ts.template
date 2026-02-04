@@ -1,9 +1,17 @@
-import { Component, inject, OnInit, LOCALE_ID } from '@angular/core';
+import {
+  Component,
+  inject,
+  LOCALE_ID,
+  OnInit,
+  QueryList,
+  ViewChildren,
+} from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import {
   Action,
   BreadcrumbService,
+  buildSearchCriteria,
   DataSortDirection,
   DataTableColumn,
   DiagramComponentState,
@@ -22,6 +30,7 @@ import { <%= featureClassName %>SearchViewModel } from './<%= featureFileName %>
 import { Observable, map } from 'rxjs';
 import { PrimeIcons } from 'primeng/api';
 import { isValidDate } from '@onecx/accelerator';
+import { DatePicker } from 'primeng/datepicker';
 
 @Component({
   selector: 'app-<%= featureFileName %>-search',
@@ -37,6 +46,7 @@ export class <%= featureClassName %>SearchComponent implements OnInit {
   readonly locale = inject(LOCALE_ID);
   private readonly exportDataService = inject(ExportDataService);
 
+  @ViewChildren(DatePicker) calendars!: QueryList<DatePicker>;
   viewModel$: Observable<<%= featureClassName %>SearchViewModel>  = this.store.select(select<%= featureClassName %>SearchViewModel);
 
   defaultDataSortDirection = DataSortDirection.NONE
@@ -108,23 +118,10 @@ export class <%= featureClassName %>SearchComponent implements OnInit {
   }
 
   search(formValue: FormGroup) {
-    const searchCriteria = Object.entries(formValue.getRawValue()).reduce(
-      (acc: Partial<<%= featureClassName %>SearchCriteria>, [key, value]) => ({
-        ...acc,
-        [key]: isValidDate(value)
-          ? new Date(
-              Date.UTC(
-                value.getFullYear(),
-                value.getMonth(),
-                value.getDate(),
-                value.getHours(),
-                value.getMinutes(),
-                value.getSeconds()
-              )
-            )
-          : value || undefined,
-      }),
-      {}
+    const searchCriteria = buildSearchCriteria(
+      formValue.getRawValue(),
+      this.calendars,
+      { removeNullValues: true }
     );
     this.store.dispatch(
       <%= featureClassName %>SearchActions.searchButtonClicked({ searchCriteria })

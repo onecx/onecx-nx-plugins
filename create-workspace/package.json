@@ -1,6 +1,10 @@
 {
   "name": "@onecx/create-workspace",
-  "version": "0.0.1",
+  "version": "6.0.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/onecx/onecx-nx-plugins"
+  },
   "dependencies": {
     "create-nx-workspace": "19.8.14",
     "tslib": "^2.3.0"

@@ -1,0 +1,63 @@
+ifdef::env-site[]
+include::partial$_attributes.adoc[]
+endif::[]
+:imagesdir: ../../images
+
+= Create a UI App
+
+What is a UI App?::
+A UI App is a microfrontend application built using modern web technologies such as {angular_link} or {react_link}. Such application is designed to seamlessly integrate with the OneCX platform, providing a consistent user experience across different modules and features.
++
+Within the OneCX ecosystem, a UI App typically serves as the front-end interface for users to interact with various functionalities offered by OneCX. It can be a standalone application or part of a larger suite of applications, and it communicates with backend services to fetch and display data, handle user inputs, and perform various operations.
+
+[NOTE]
+====
+The UI App created with the OneCX App Generator is only the base of a functional application. +
+You will need to further develop and customize the application to meet your specific requirements and business logic.
+====
+
+
+== Generate a UI App
+
+The generator supports three flavors of projects: *angular*, *with NgRx* and *without NgRx*. +
+It is **recommended to use the NgRx** flavor, because it leads to better structured projects and the state management is already in place.
+
+.Generate the UI App with following commands
+[source,bash]
+----
+npx <namespace>/create-workspace <flavor> <product> 
+cd <product>
+npm install
+----
+
+with:
+[horizontal]
+ifdef::env-site[]
+include::partial$_parameter.adoc[tag=namespace]
+include::partial$_parameter.adoc[tag=flavor]
+include::partial$_parameter.adoc[tag=product]
+endif::[]
+
+The generator will create a new workspace folder with the specified product name and set up the OneCX UI App according to the chosen flavor. +
+Next step may xref:./create-feature.adoc[create a feature module].
+
+[TIP]
+====
+The generated app contains the dependency for the OneCX Nx Plugin. +
+This allows you to easily add new features, components, and services within your app's user interface using the OneCX Nx plugin functions..
+====
+
+
+== Example
+
+.Create a UI App named "bookstore" with NgRx support
+[source,bash]
+----
+npx @onecx/create-workspace ngrx bookstore
+cd bookstore
+npm install
+----
+This command will generate a new workspace folder named "bookstore" with the necessary structure and configurations for a OneCX UI App using NgRx.
+
+.Excerpt of generated files and directories for the NgRx *bookstore* UI App
+image::generated_workspace_bookstore.png[width=200]

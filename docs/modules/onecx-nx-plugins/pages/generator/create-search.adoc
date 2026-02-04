@@ -1,0 +1,80 @@
+ifdef::env-site[]
+include::partial$_attributes.adoc[]
+endif::[]
+:imagesdir: ../../images
+
+= Create a Search Component
+
+What is a Component?::
+A Component is a reusable building block of the user interface in a UI Application. 
+It encapsulates the structure, behavior, and presentation of a specific part of the UI, allowing developers to create modular and maintainable applications. +
+Components can represent anything from a simple button or form field to complex data-driven views.
+
+
+== Generate a Search Component
+
+The current working directory must be the root of an existing OneCX UI Application.
+
+.To run the generator, execute the following command
+[source,bash]
+----
+nx generate <namespace>/nx-plugin:search  <feature>
+----
+ 
+with:
+[horizontal]
+ifdef::env-site[]
+include::partial$_parameter.adoc[tag=namespace]
+include::partial$_parameter.adoc[tag=feature]
+endif::[]
+
+Next, *you will be asked* if you would like to adapt the names for the generation. +
+If you answer "Yes", you can specify a name for the API in the following questions. This can be helpful if you want to customize an existing API. When changing names, make sure that you use the same custom names for the resource name and API service name for all generated components of the feature (search, details, create/update, delete), as these are shared.
+
+The generator creates a new search component within the specified feature module and set up the necessary structure and configurations.
+
+== Post-Generation Steps
+The next steps involve adapting the search component to your specific requirements and integrating it into other parts of the application. All parts that need to be adapted after the generation are described in the following sections.
+
+. xref:./search/search-criteria.adoc[Configure Search Criteria]
+. xref:./search/search-results.adoc[Configure Search Results]
+. xref:./search/configure-result-diagram.adoc[Configure Result Diagram]
+. xref:./search/update-header-actions.adoc[Update Header Actions]
+. xref:./search/update-permissions.adoc[Update Permissions]
+
+.All places that need to be adapted are marked with an action box like this one
+[source, javascript]
+----
+ACTION S<ID>: <Short Description>
+----
+
+[TIP]
+Search in your IDE for the string `*ACTION S*` to quickly find all places that need to be adapted.
+
+
+[NOTE]
+====
+.The generator uses the following Extension Marker in the search component spec file
+[source, text]
+----
+<<SPEC-EXTENSIONS-MARKER-!!!-DO-NOT-REMOVE-!!!>>
+----
+
+This marker is used as a placeholder for future extensions by newly generated components. Do not remove the marker from the code, as doing so will prevent these future generated functions and tests from being added to the Search Page Spec File.
+====
+
+
+== Example
+
+Create a Search Component inside the *book* feature module. Execute the following command with the *bookstore* application as current working directory.
+
+.Create a Search Component, without adapting names
+[source,bash]
+----
+nx generate @onecx/nx-plugin:search book
+----
+
+This command will generate a new search component *book-search* within the specified feature module with the necessary structure and configurations.
+
+.Excerpt of generated files and directories
+image::generated_book_search.png[width=250]

@@ -1,0 +1,18 @@
+# tag::namespace[]
+  _<namespace>_::
+    The base namespace of the project where the application is part of. +
+    For the OneCX, use `+@onecx+`.
+# end::namespace[]
+# tag::flavor[]
+  _<flavor>_::           `+ngrx+` (or `+angular+`).
+# end::flavor[]
+# tag::product[]
+  _<product>_::
+    The technical name of the application (product) for a certain business case. +
+    E.g. `+bookstore+` for an application named "Book Store".
+# end::product[]
+# tag::feature[]
+  _<feature>_::         
+    The name of the feature module to be created. +
+    E.g. `+book+` for a feature module named "Book".
+# end::feature[]

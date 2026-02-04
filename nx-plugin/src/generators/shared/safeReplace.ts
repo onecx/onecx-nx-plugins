@@ -75,7 +75,7 @@ function performReplacements(
  * Safely performs replacements in a file within an Nx workspace.
  * If replacements fail, it appends detailed error messages to the file and logs the errors to the console.
  *
- * @param goal - A description of the goal of the replacement (e.g., "Add new feature X").
+ * @param goal - A description of the goal of the replacement (e.g. "Add new feature X").
  * @param file - The path to the file in which replacements should be performed.
  * @param find - The pattern(s) to search for. Can be a string, regex, or an array of strings/regexes.
  * @param replaceWith - The replacement string(s) for the pattern(s). Can be a string or an array of strings.

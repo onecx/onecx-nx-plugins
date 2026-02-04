@@ -105,7 +105,7 @@ module.exports = {
     parser: {
       javascript: {
         importMeta: false,
-      }
-    }
-  }
+      },
+    },
+  },
 }

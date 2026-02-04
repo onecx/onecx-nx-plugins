@@ -262,6 +262,10 @@ describe('nx-plugin', () => {
         key: 'pageName',
         value: 'Test',
       },
+      {
+        key: 'pageTitle',
+        value: 'Test',
+      },
     ];
 
     const parameterString = requiredParameters

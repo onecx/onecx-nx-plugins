@@ -10,9 +10,6 @@ export const <%= featureClassName %>DetailsActions = createActionGroup({
     '<%= featureFileName.replaceAll("-"," ") %> details received': props<{
       details: <%= resource %>;
     }>(),
-    '<%= featureFileName.replaceAll("-"," ") %> reloaded details received': props<{
-      details: <%= resource %>;
-    }>(),
     '<%= featureFileName.replaceAll("-"," ") %> details loading failed': props<{ error: string | null }>(),
     <%_ if(editMode){ _%> 
     'edit mode set': props<{ editMode: boolean }>(),    

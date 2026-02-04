@@ -3,19 +3,23 @@ import { GeneratorStep } from '../../shared/generator.utils';
 import { safeReplace } from '../../shared/safeReplace';
 import { SearchGeneratorSchema } from '../../search/schema';
 
-export class SearchEffectsSpecStep implements GeneratorStep<SearchGeneratorSchema> {
+export class SearchEffectsSpecStep
+  implements GeneratorStep<SearchGeneratorSchema>
+{
   process(tree: Tree, options: SearchGeneratorSchema): void {
     const className = names(options.featureName).className;
-    const filePath = `src/app/${names(options.featureName).fileName}/pages/${names(options.featureName).fileName}-search/${names(options.featureName).fileName}-search.effects.spec.ts`;
+    const filePath = `src/app/${names(options.featureName).fileName}/pages/${
+      names(options.featureName).fileName
+    }-search/${names(options.featureName).fileName}-search.effects.spec.ts`;
 
     const specToAppend = `
-      describe('detailsButtonClicked$', () => {
+      describe('navigateToOrderDetailsPage$', () => {
 
         it('should navigate to details page with correct URL structure', (done) => {
           const testId = 'test-123';
           const navigateSpy = router ? jest.spyOn(router, 'navigate') : { mock: { calls: [] }, toHaveBeenCalledWith: () => {} };
 
-          effects.detailsButtonClicked$.pipe(take(1)).subscribe(() => {
+          effects.navigateToOrderDetailsPage$.pipe(take(1)).subscribe(() => {
             if (router) {
               expect(navigateSpy).toHaveBeenCalledWith(['/search', 'details', testId]);
             }
@@ -25,7 +29,7 @@ export class SearchEffectsSpecStep implements GeneratorStep<SearchGeneratorSchem
           actions$.next(${className}SearchActions.detailsButtonClicked({ id: testId }));
         });
 
-        it('should dynamically clear query params and fragment from URL on detailsButtonClicked$', (done) => {
+        it('should dynamically clear query params and fragment from URL on navigateToOrderDetailsPage$', (done) => {
           const testId = 'test-456';
           const mockUrlTree: any = { 
             toString: jest.fn(() => '/search'), 
@@ -37,7 +41,7 @@ export class SearchEffectsSpecStep implements GeneratorStep<SearchGeneratorSchem
           const emissions: Array<{ queryParams: any, fragment: any }> = [];
           emissions.push({ queryParams: { ...mockUrlTree.queryParams }, fragment: mockUrlTree.fragment });
 
-          effects.detailsButtonClicked$.pipe(take(1)).subscribe(() => {
+          effects.navigateToOrderDetailsPage$.pipe(take(1)).subscribe(() => {
             emissions.push({ queryParams: { ...mockUrlTree.queryParams }, fragment: mockUrlTree.fragment });
 
             expect(emissions).toEqual([
@@ -53,15 +57,18 @@ export class SearchEffectsSpecStep implements GeneratorStep<SearchGeneratorSchem
     `;
 
     // Escape $ characters to prevent unintended template literal interpolation during string replacement
-    // Variable names like 'actions$', 'effects.detailsButtonClicked$' need escaping to remain literal
+    // Variable names like 'actions$', 'effects.navigateToOrderDetailsPage$' need escaping to remain literal
     // Template variables like ${className} are intentionally left unescaped for proper interpolation
     const specToAppendEscaped = specToAppend.replace(/\$/g, '$$$$');
 
     safeReplace(
       `Add details effect tests to search effects spec file. Look for the marker comment '// <<SPEC-EXTENSIONS-MARKER-!!!-DO-NOT-REMOVE-!!!>>' in ${filePath} and insert the test code above it.`,
       filePath,
-      [ '// <<SPEC-EXTENSIONS-MARKER-!!!-DO-NOT-REMOVE-!!!>>' ],
-      [ specToAppendEscaped + '\n  // <<SPEC-EXTENSIONS-MARKER-!!!-DO-NOT-REMOVE-!!!>>' ],
+      ['// <<SPEC-EXTENSIONS-MARKER-!!!-DO-NOT-REMOVE-!!!>>'],
+      [
+        specToAppendEscaped +
+          '\n  // <<SPEC-EXTENSIONS-MARKER-!!!-DO-NOT-REMOVE-!!!>>',
+      ],
       tree
     );
   }

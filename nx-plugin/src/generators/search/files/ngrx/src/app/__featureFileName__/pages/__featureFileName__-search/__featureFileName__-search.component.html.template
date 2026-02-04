@@ -24,20 +24,20 @@
               type="text"
               class="w-18rem"
               formControlName="changeMe"
-              [pTooltip]="'<%= featureConstantName%>_SEARCH.CRITERIA.CHANGEME.TOOLTIP' | translate"
+              [pTooltip]="'<%= featureConstantName%>_SEARCH.CRITERIA.CHANGE_ME.TOOLTIP' | translate"
               tooltipPosition="top"
               tooltipEvent="hover"
               role="main"
-              [attr.aria-label]="'<%= featureConstantName%>_SEARCH.CRITERIA.CHANGEME.ARIA-LABEL' | translate"
+              [attr.aria-label]="'<%= featureConstantName%>_SEARCH.CRITERIA.CHANGE_ME.ARIA-LABEL' | translate"
             />
             <label for="changeMe" style="white-space: nowrap">
-              {{ '<%= featureConstantName%>_SEARCH.CRITERIA.CHANGEME.LABEL' | translate }}</label
+              {{ '<%= featureConstantName%>_SEARCH.CRITERIA.CHANGE_ME.LABEL' | translate }}</label
             >
             </span>
         </div>
       </div>
       <!--// ACTION S3: Specify here your desired search criterias:
-      https://onecx.github.io/docs/documentation/current/onecx-nx-plugins:generator/search/configure-search-criteria.html#action-3 -->
+      https://onecx.github.io/docs/documentation/current/onecx-nx-plugins:generator/search/search-criteria.html#action-3 -->
     </form>
   </ocx-search-header>
   <ocx-content-container layout="horizontal">

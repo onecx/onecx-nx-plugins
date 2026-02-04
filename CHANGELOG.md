@@ -1,3 +1,57 @@
+## [6.0.0](https://github.com/onecx/onecx-nx-plugins/compare/v5.9999.0...v6.0.0) (2026-02-04)
+
+### ⚠ BREAKING CHANGES
+
+* add release config for v6 (#313)
+
+### Chores
+
+* add release config for v6 ([#313](https://github.com/onecx/onecx-nx-plugins/issues/313)) ([2812555](https://github.com/onecx/onecx-nx-plugins/commit/2812555cf319cc7244a088d49e6d78413fdb70f6))
+* **release:** -v6.0.0-rc.1 [skip ci] ([208792f](https://github.com/onecx/onecx-nx-plugins/commit/208792f493a0e7271f07189164518b7650496278)), closes [#310](https://github.com/onecx/onecx-nx-plugins/issues/310)
+
+## [6.0.0-rc.1](https://github.com/onecx/onecx-nx-plugins/compare/v5.0.0...v6.0.0-rc.1) (2026-02-03)
+
+### ⚠ BREAKING CHANGES
+
+* release v5 rc (#310)
+
+### Features
+
+* simplify ngrx page, aligned with OneCX standard ([#303](https://github.com/onecx/onecx-nx-plugins/issues/303)) ([7f441ea](https://github.com/onecx/onecx-nx-plugins/commit/7f441ea057eec7dd56fe3140309dc196a667491f))
+* use onecx.localhost ([dd8fa29](https://github.com/onecx/onecx-nx-plugins/commit/dd8fa296f115900c2f6a081b8d71f93ae9760f1e))
+
+### Chores
+
+* release v5 rc ([#310](https://github.com/onecx/onecx-nx-plugins/issues/310)) ([32c0a65](https://github.com/onecx/onecx-nx-plugins/commit/32c0a6542127b37136bd78a215365e3c4e9a4eea))
+
+### Refactoring
+
+* improve generator state ([#302](https://github.com/onecx/onecx-nx-plugins/issues/302)) ([48631d5](https://github.com/onecx/onecx-nx-plugins/commit/48631d50feeb40b74e90abc72ff4d4f99eeded60))
+
+## [5.0.0](https://github.com/onecx/onecx-nx-plugins/compare/v4.0.0...v5.0.0) (2026-01-15)
+
+### ⚠ BREAKING CHANGES
+
+* increase to major version 5 (#299)
+* increase to major version 4 (#298)
+* increase to major version 3 (#297)
+
+### Features
+
+* bumped semantic-release version and removed parameter ([17aa1c0](https://github.com/onecx/onecx-nx-plugins/commit/17aa1c0932721f38da7d4b9c2c4a7d129cef5c4b))
+* formatting and publish publish, revert empty npm token ([9da7cdf](https://github.com/onecx/onecx-nx-plugins/commit/9da7cdf133a1ad3af7ced78f7664d65354c5052a))
+* increase to major version 3 ([#297](https://github.com/onecx/onecx-nx-plugins/issues/297)) ([45d8fc3](https://github.com/onecx/onecx-nx-plugins/commit/45d8fc368bcf517611008a69c4ecbc95cd2d939c))
+* increase to major version 4 ([#298](https://github.com/onecx/onecx-nx-plugins/issues/298)) ([d297c8d](https://github.com/onecx/onecx-nx-plugins/commit/d297c8d1f8c226cb9d3b352e9ea77d34c948deb1))
+* increase to major version 5 ([#299](https://github.com/onecx/onecx-nx-plugins/issues/299)) ([8ac792e](https://github.com/onecx/onecx-nx-plugins/commit/8ac792e4457cffc0175f7ab9e668767f1650db9d))
+* log npm version before publish ([c1a768c](https://github.com/onecx/onecx-nx-plugins/commit/c1a768cbe78a998044506e3e53bf7dcbc000a49d))
+
+### Bug Fixes
+
+* add importMeta flag ([#288](https://github.com/onecx/onecx-nx-plugins/issues/288)) ([2785be7](https://github.com/onecx/onecx-nx-plugins/commit/2785be77666a6ee35bc078500123a20ba8fb4194))
+* add repo in package json subpackages ([#301](https://github.com/onecx/onecx-nx-plugins/issues/301)) ([e637e29](https://github.com/onecx/onecx-nx-plugins/commit/e637e293a0f3acf69ad9796a16fbf4af254517ca))
+* release config and script dry run ([#300](https://github.com/onecx/onecx-nx-plugins/issues/300)) ([91bbf45](https://github.com/onecx/onecx-nx-plugins/commit/91bbf45057da4e03732f802037d0c95d5b67fb2d))
+* set npm token to empty ([bdbb62c](https://github.com/onecx/onecx-nx-plugins/commit/bdbb62c1b45ca1b8b25fda9b35243b867b54a6bb))
+
 ## [1.13.1](https://github.com/onecx/onecx-nx-plugins/compare/v1.13.0...v1.13.1) (2025-09-23)
 
 ### Bug Fixes

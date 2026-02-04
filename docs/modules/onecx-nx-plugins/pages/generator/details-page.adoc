@@ -13,7 +13,7 @@ To run the generator, execute the following command:
 nx generate <namespaceOfTheGenerator>/nx-plugin:details <feature>
 ----
 
-include::documentation:onecx-nx-plugins:partial$generator-namespace-item.adoc[]
+include::documentation:onecx-nx-plugins:partial$_generator-namespace.adoc[]
 
 * _<feature>_: see xref:./glossary.adoc#feature[here].
 

@@ -1,1 +1,0 @@
-* _<namespaceOfTheGenerator>_: For the OneCX generator, use `+@onecx+`. For a project specific generator, ask for the namespace of the generators.

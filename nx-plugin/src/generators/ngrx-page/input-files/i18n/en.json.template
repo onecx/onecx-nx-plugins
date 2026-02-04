@@ -1,6 +1,5 @@
 {
   "<%= pageConstantName %>_VIEW": {
-    "HELP_ARTICLE_ID": "Help Article",
     "HEADER": "<%= pageConstantName %> Header"
   }
 }
