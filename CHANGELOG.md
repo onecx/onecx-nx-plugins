@@ -1,3 +1,14 @@
+## [6.0.0](https://github.com/onecx/onecx-nx-plugins/compare/v5.9999.0...v6.0.0) (2026-02-04)
+
+### ⚠ BREAKING CHANGES
+
+* add release config for v6 (#313)
+
+### Chores
+
+* add release config for v6 ([#313](https://github.com/onecx/onecx-nx-plugins/issues/313)) ([2812555](https://github.com/onecx/onecx-nx-plugins/commit/2812555cf319cc7244a088d49e6d78413fdb70f6))
+* **release:** -v6.0.0-rc.1 [skip ci] ([208792f](https://github.com/onecx/onecx-nx-plugins/commit/208792f493a0e7271f07189164518b7650496278)), closes [#310](https://github.com/onecx/onecx-nx-plugins/issues/310)
+
 ## [6.0.0-rc.1](https://github.com/onecx/onecx-nx-plugins/compare/v5.0.0...v6.0.0-rc.1) (2026-02-03)
 
 ### ⚠ BREAKING CHANGES
