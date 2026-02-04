@@ -1,6 +1,6 @@
 {
   "name": "@onecx/create-workspace",
-  "version": "7.0.0-rc.1",
+  "version": "7.0.0",
   "repository": {
     "type": "git",
     "url": "https://github.com/onecx/onecx-nx-plugins"

@@ -1,3 +1,14 @@
+## [7.0.0](https://github.com/onecx/onecx-nx-plugins/compare/v6.9999.0...v7.0.0) (2026-02-04)
+
+### ⚠ BREAKING CHANGES
+
+* add release config for v7 (#317)
+
+### Chores
+
+* add release config for v7 ([#317](https://github.com/onecx/onecx-nx-plugins/issues/317)) ([5db7dac](https://github.com/onecx/onecx-nx-plugins/commit/5db7dac53eac3cb6009c067241c24ebea7989436))
+* **release:** -v7.0.0-rc.1 [skip ci] ([5dfe46b](https://github.com/onecx/onecx-nx-plugins/commit/5dfe46b1f9a7529370a7ea848774eabbcbe5169a)), closes [#314](https://github.com/onecx/onecx-nx-plugins/issues/314)
+
 ## [7.0.0-rc.1](https://github.com/onecx/onecx-nx-plugins/compare/v6.0.0...v7.0.0-rc.1) (2026-02-04)
 
 ### ⚠ BREAKING CHANGES

@@ -1,6 +1,6 @@
 {
   "name": "onecx",
-  "version": "7.0.0-rc.1",
+  "version": "7.0.0",
   "license": "MIT",
   "scripts": {
     "build": "nx run nx-plugin:build && nx run create-workspace:build",
