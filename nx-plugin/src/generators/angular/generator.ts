@@ -76,62 +76,69 @@ export async function angularGenerator(
     tree.delete(`${directory}/scripts/load-permissions.sh`);
   }
 
-  const oneCXLibVersion = '^5.47.0';
+  const oneCXLibVersion = '^6.12.2';
+  const angularVersion = '^19.0.7';
+
   addDependenciesToPackageJson(
     tree,
     {
       primeflex: '^3.3.1',
       primeicons: '^7.0.0',
-      primeng: '^17.18.8',
+      primeng: '^19.1.0',
+      '@primeng/themes': '^19.0.6',
       '@onecx/accelerator': oneCXLibVersion,
       '@onecx/angular-accelerator': oneCXLibVersion,
       '@onecx/angular-auth': oneCXLibVersion,
       '@onecx/angular-remote-components': oneCXLibVersion,
       '@onecx/angular-webcomponents': oneCXLibVersion,
+      '@onecx/angular-utils': oneCXLibVersion,
+      '@onecx/angular-standalone-shell': oneCXLibVersion,
       '@onecx/integration-interface': oneCXLibVersion,
       '@onecx/angular-integration-interface': oneCXLibVersion,
       '@onecx/ngrx-accelerator': oneCXLibVersion,
-      '@onecx/keycloak-auth': oneCXLibVersion,
-      '@onecx/portal-integration-angular': oneCXLibVersion,
-      '@onecx/portal-layout-styles': oneCXLibVersion,
-      '@ngx-translate/core': '^15.0.0',
+      '@onecx/shell-core': oneCXLibVersion,
+      '@ngx-translate/core': '^16.0.4',
       '@ngx-translate/http-loader': '^8.0.0',
       '@angular-architects/module-federation': '^18.0.4',
-      'keycloak-angular': '^16.0.1',
-      'ngrx-store-localstorage': '^18.0.0',
-      '@angular/animations': '^18.1.4',
-      '@angular/cdk': '^18.1.4',
-      '@angular/common': '^18.1.4',
-      '@angular/compiler': '^18.1.4',
-      '@angular/core': '^18.1.4',
-      '@angular/elements': '^18.1.4',
-      '@angular/forms': '^18.1.4',
-      '@angular/platform-browser': '^18.1.4',
-      '@angular/platform-browser-dynamic': '^18.1.4',
-      '@angular/router': '^18.1.4',
-      '@ngrx/component': '^18.0.2',
-      '@ngrx/effects': '^18.0.2',
-      '@ngrx/router-store': '^18.0.2',
-      '@ngrx/store': '^18.0.2',
-      '@ngrx/store-devtools': '^18.0.2',
-      '@nx/angular': '^19.8.14',
-      '@nx/devkit': '^19.8.14',
-      '@nx/plugin': '^19.8.14',
+      'keycloak-angular': '^19.0.2',
+      'ngrx-store-localstorage': '^19.0.0',
+      '@angular/animations': angularVersion,
+      '@angular/cdk': angularVersion,
+      '@angular/common': angularVersion,
+      '@angular/compiler': angularVersion,
+      '@angular/core': angularVersion,
+      '@angular/elements': angularVersion,
+      '@angular/forms': angularVersion,
+      '@angular/platform-browser': angularVersion,
+      '@angular/platform-browser-dynamic': angularVersion,
+      '@angular/router': angularVersion,
+      '@ngrx/component': '^19.0.1',
+      '@ngrx/effects': '^19.0.1',
+      '@ngrx/router-store': '^19.0.1',
+      '@ngrx/store': '^19.0.1',
+      '@ngrx/store-devtools': '^19.0.1',
       '@webcomponents/webcomponentsjs': '^2.8.0',
+      'zone.js': '~0.15.0',
     },
     {
-      '@openapitools/openapi-generator-cli': '^2.5.2',
+      '@nx/angular': '^20.3.4',
+      '@nx/devkit': '^20.3.4',
+      '@nx/plugin': '^20.3.4',
+      '@nx/module-federation': '^20.3.4',
+      '@openapitools/openapi-generator-cli': '^2.16.3',
       'ngx-translate-testing': '^7.0.0',
-      '@angular-devkit/build-angular': '^18.1.4',
-      '@angular-devkit/core': '^18.1.4',
-      '@angular-devkit/schematics': '^18.1.4',
-      '@angular/cli': '~18.1.4',
-      '@angular/compiler-cli': '^18.1.4',
-      '@angular/language-service': '^18.1.4',
+      '@angular/build': angularVersion,
+      '@angular-devkit/core': angularVersion,
+      '@angular-devkit/schematics': angularVersion,
+      '@angular-devkit/build-angular': angularVersion,
+      '@angular/cli': angularVersion,
+      '@angular/compiler-cli': angularVersion,
+      '@angular/language-service': angularVersion,
       typescript: '~5.5.4',
       jest: '^29.7.0',
       'jest-environment-jsdom': '^29.7.0',
-      'jest-preset-angular': '~14.2.2',
+      'jest-preset-angular': '~14.5.1',
+      'modify-source-webpack-plugin': '^4.1.0',
       webpack: '5.94.0',
     }
   );
@@ -230,6 +237,7 @@ function adaptProjectConfiguration(
   config.targets['serve'].options = {
     ...(config.targets['serve'].options ?? {}),
     disableHostCheck: true,
+    host: '0.0.0.0',
     publicHost: 'http://localhost:4200',
     proxyConfig: 'proxy.conf.js',
   };
@@ -241,15 +249,23 @@ function adaptProjectConfiguration(
       ...(config.targets['build'].options.assets ?? []),
       {
         glob: '**/*',
-        input: './node_modules/@onecx/portal-integration-angular/assets/',
-        output: '/onecx-portal-lib/assets/',
+        input: './node_modules/@onecx/angular-accelerator/assets/',
+        output: '/onecx-angular-accelerator/assets/',
+      },
+      {
+        glob: '**/*',
+        input: './node_modules/@onecx/angular-utils/assets/',
+        output: '/onecx-angular-utils/assets/',
+      },
+      {
+        glob: '**/*',
+        input: './node_modules/@onecx/shell-core/assets/',
+        output: '/onecx-shell-core/assets/',
       },
     ],
     styles: [
       ...(config.targets['build'].options.styles ?? []),
       'node_modules/primeicons/primeicons.css',
-      'node_modules/primeng/resources/primeng.min.css',
-      'node_modules/@onecx/portal-integration-angular/assets/output.css',
     ],
     customWebpackConfig: {
       path: 'webpack.config.js',
@@ -272,6 +288,7 @@ function adaptProjectConfiguration(
       },
     },
   };
+  config.targets['extract-i18n'].executor = '@angular/build:extract-i18n';
   updateProjectConfiguration(tree, names(options.name).fileName, config);
 }
 
@@ -281,7 +298,10 @@ function adaptJestConfig(tree: Tree) {
     'Adapt transformIgnorePatterns in Jest Config',
     filePath,
     /transformIgnorePatterns: .+?,/,
-    `transformIgnorePatterns: ['node_modules/(?!@ngrx|(?!deck.gl)|d3-scale|(?!.*\\.mjs$))'],`,
+    `transformIgnorePatterns: ['node_modules/(?!@ngrx|(?!deck.gl)|d3-scale|(?!.*\\.mjs$))'],
+    moduleNameMapper: {
+    '^@primeng/themes': '<rootDir>/node_modules/@primeng/themes/index.mjs',
+  },`,
     tree
   );
 }

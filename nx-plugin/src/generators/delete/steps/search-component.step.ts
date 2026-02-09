@@ -11,10 +11,10 @@ export class SearchComponentStep
     const className = names(options.featureName).className;
     const filePath = `src/app/${fileName}/pages/${fileName}-search/${fileName}-search.component.ts`;
 
-    const find = [`} from '@onecx/portal-integration-angular';`, 'resetSearch'];
+    const find = [`} from '@onecx/angular-accelerator';`, 'resetSearch'];
     const replaceWith = [
       `RowListGridData
-    } from '@onecx/portal-integration-angular';`,
+    } from '@onecx/angular-accelerator';`,
       `
     delete({ id }: RowListGridData) {
       this.store.dispatch(${className}SearchActions.delete${className}ButtonClicked({ id }));
