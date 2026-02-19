@@ -14,7 +14,7 @@ export default async () => {
   global.stopLocalRegistry = await startLocalRegistry({
     localRegistryTarget,
     storage,
-    verbose: false,
+    verbose: true,
   });
   const nx = require.resolve('nx');
   execFileSync(
@@ -23,4 +23,8 @@ export default async () => {
     { env: process.env, stdio: 'inherit' }
   );
   await new Promise(resolve => setTimeout(() => resolve(true), 2000));
+  execFileSync('npm', ['view', '@onecx/nx-plugin', 'versions', '--json'], {
+    env: process.env,
+    stdio: 'inherit',
+  });
 };

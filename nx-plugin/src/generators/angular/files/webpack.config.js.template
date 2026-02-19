@@ -4,10 +4,10 @@ const {
   withModuleFederationPlugin,
 } = require('@angular-architects/module-federation/webpack');
 const config = withModuleFederationPlugin({
-  name: '<%= remoteModuleFileName %>-app',
+  name: 'onecx-<%= remoteModuleFileName %>-ui',
   filename: 'remoteEntry.js',
   exposes: {
-    './<%= remoteModuleName %>Module':
+    './OneCX<%= remoteModuleName %>Module':
       './src/main.ts',
   },
   shared: share({
@@ -96,7 +96,7 @@ module.exports = {
   ...config,
   plugins,
   output: {
-    uniqueName: '<%= fileName %>',
+    uniqueName: 'onecx-<%= fileName %>-ui',
     publicPath: 'auto'
   },
   experiments: {  

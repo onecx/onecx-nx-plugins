@@ -1,0 +1,130 @@
+ifdef::env-site[]
+include::partial$_attributes.adoc[]
+endif::[]
+:imagesdir: ../../images
+
+= Create an Entity Scheme
+
+What is an Entity Scheme?::
+An Entity Scheme defines the structure of an entity, including its properties and their types. It is used to ensure that the data for the entity is consistent and follows a defined format. +
+This is the basis for processing feature data, e.g., for searching, displaying, and modifying it.
+
+At OneCX, we explicitly follow an *API-first approach*. In practice, this means that the OpenAPI file is created first, in which entities and the paths for requests/responses are described. The OpenAPI file serves as the basis for the implementation of the backend services and the frontend components.
+
+[#action-0]
+== ACTION S0 (S5)
+
+=== Template: Generated Scheme
+Adjust the feature scheme::
+Add the base properties of the feature in the OpenAPI YAML file.
+
+[horizontal]
+Directory:: `<root-of-ui-app>/src/assets/api`
+File::      `<product>-bff.yaml`
+
+.ACTION S0 (S5) in `+<product>-bff.yaml+`
+[%collapsible]
+====
+[source, yml]
+----
+components:
+  schemas:
+    <feature>:
+      type: object
+      required:
+        - 'modificationCount'
+        - 'id'
+      properties:
+        modificationCount:
+          format: int32
+          type: integer
+        creationDate:
+          $ref: '#/components/schemas/OffsetDateTime'
+        creationUser:
+          type: string
+        modificationDate:
+          $ref: '#/components/schemas/OffsetDateTime'
+        modificationUser:
+          type: string
+        id:
+          type: integer
+        # "ACTION S5: Add additional properties: https://onecx.github.io/docs/documentation/current/onecx-nx-plugins:generator/search/search-results.html#action-5"
+----
+
+Where below *properties* the properties of the entity are listed.
+====
+
+
+=== Example: Scheme for Bookstore Application
+
+[horizontal]
+Directory:: `bookstore/src/assets/api`
+File::      `bookstore-bff.yaml`
+
+.Example: Scheme in `+bookstore-bff.yaml+`
+[%collapsible]
+====
+[source, yml]
+----
+components:
+  schemas:
+    Book:
+      type: object
+      required:
+        - 'modificationCount'
+        - 'id'
+      properties:
+        modificationCount:
+          format: int32
+          type: integer
+        creationDate:
+          $ref: '#/components/schemas/OffsetDateTime'
+        creationUser:
+          type: string
+        modificationDate:
+          $ref: '#/components/schemas/OffsetDateTime'
+        modificationUser:
+          type: string
+        id:
+          type: string
+        bookType:
+          type: string
+          schema:
+            $ref: '#/components/schemas/BookType'
+        bookTitle:
+          type: string
+        bookAuthor:
+          type: string
+        bookIsbn:
+          type: string
+        bookPrice:
+          type: integer
+          format: int32
+        bookPublisher:
+          type: string
+        bookPublishedDate:
+          $ref: '#/components/schemas/OffsetDateTime'
+    BookType:
+      type: string
+      enum: [ crime, drama, fantasy, prosa, science ]
+    OffsetDateTime:
+      format: date-time
+      type: string
+      example: 2022-03-10T12:15:50-04:00
+----
+
+Where properties with prefix *book* are added to the entity `+Book+`.
+====
+
+
+[HINT]
+Each time the openAPI file is changed, the API code needs to be updated to reflect these changes. +
+To do this, run the the following command in the terminal with the root of the UI application as current working directory.
+
+.Create API code after changing the OpenAPI file
+[source,bash]
+----
+npm run apigen
+----
+
+The result can be found in the generated API folder, e.g., `+<root-of-ui-app>/src/app/api/+`.

@@ -1,6 +1,0 @@
-{
-  "eslint.validate": [
-    "json"
-  ],
-  "asciidoc.antora.enableAntoraSupport": true
-}

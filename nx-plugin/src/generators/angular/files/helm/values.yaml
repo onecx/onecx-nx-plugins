@@ -1,37 +1,31 @@
 app:
   name: ui
   image:
-    repository: 'onecx<% if(standalone){ %>-standalone<% } %>/<%= fileName %>'
+    repository: 'onecx-apps/onecx-<%= fileName %>-ui'
   routing:
     enabled: true
     path: /mfe/<%= propertyName %>/
-<% if(!standalone){ %>  
   operator:
     # Microfrontend
     microfrontend:
       enabled: true
       specs:
         main:
-          exposedModule: './<%= remoteModuleName %>Module'        
-          description: 'OneCX <%= remoteModuleName %> Module'
+          exposedModule: './OneCX<%= remoteModuleName %>Module'        
+          description: 'OneCX <%= remoteModuleName %> UI'
           note: 'OneCX <%= remoteModuleName %> UI module auto import via MF operator'
           type: MODULE
           technology: WEBCOMPONENTMODULE
           remoteName: <%= remoteModuleFileName %>
-          tagName: <%= remoteModuleFileName %>-webcomponent
+          tagName: ocx-<%= remoteModuleFileName %>-component
+    # Microservice
+    microservice:
+      spec:
+        name: OneCX <%= remoteModuleName %> UI
+        description: OneCX <%= remoteModuleName %> Frontend
     # Permission
-    # ACTION S11 Update permissions and roles: https://onecx.github.io/docs/documentation/current/onecx-nx-plugins/generator/search/update-permissions.html#action-11
     permission:
       enabled: true
       spec:
         permissions:
-    # Keycloak
-    keycloak:
-      client:
-        enabled: true
-        spec:
-          kcConfig:
-            clientId: "<%= fileName %>"
-
-# PIPE Config
-<% } %>
+    # ACTION S11 Add entity permissions: https://onecx.github.io/docs/documentation/current/onecx-nx-plugins/generator/search/update-permissions.html#action-11

@@ -38,7 +38,16 @@ include::partial$_parameter.adoc[tag=flavor]
 include::partial$_parameter.adoc[tag=product]
 endif::[]
 
-The generator will create a new workspace folder with the specified product name and set up the OneCX UI App according to the chosen flavor. +
+The generator creates a new workspace folder with the specified product name and sets up the OneCX UI App according to the chosen flavor. +
+Pls. note that the product name from your command is used as base of some essential application parts as following:
+.Essential Namings
+* App name: onecx-<product>-ui => used for project naming
+* Remote name: onecx-<product>-ui => used for module federation
+* Module name: OneCX<product>Module => used for module naming
+* Tag name: ocx-<product>-component => used for integration the web component into the DOM
+* Helm chart name: onecx-<product>-ui => used for deployment and microservice registration in OneCX
+* Repository name: onecx-apps/onecx-<product>-ui => used for docker image repository
+
 Next step may xref:./create-feature.adoc[create a feature module].
 
 [TIP]

@@ -8,6 +8,8 @@ endif::[]
 
 The OneCX App Generator is a powerful tool that simplifies the development of UI applications within the OneCX framework. It automates the creation of key UI components, ensuring consistency and adherence to best practices.
 
+Nevertheless, essential parts still need to be created or modified manually by the user.
+
 == Prerequisites
 Make sure your development environment is set up correctly before using the OneCX App Generator. +
 The following tools must be installed and versions verified:
@@ -68,9 +70,12 @@ npm run build
 ----
 
 
-== Generable UI Components
+== Generation Process
 
-The following application types and components can be generated:
+The generator offers a range of commands to gradually create various UI components such as applications, function modules, and pages. During the generation of some parts, you will be prompted to specify parameters that determine the structure and naming of the generated components. Occasionally, code adjustments will be necessary to implement business requirements. +
+Make the adjustments carefully and in accordance with the specifications and naming conventions of your project to ensure consistency and maintainability of the codebase.
+
+Here is an overview of the application parts that can be generated using the OneCX App Generator:
 
 * xref:generator/create-app.adoc[OneCX UI App]
 ** xref:generator/create-feature.adoc[Feature Module]

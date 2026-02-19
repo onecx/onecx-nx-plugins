@@ -5,11 +5,13 @@ endif::[]
 
 = Configure Search Results
 
-After generating the search page, you need to configure how the search results are displayed to the user. +
-To configure the search results, the following actions must be taken. 
+After generating the base search page, you need to configure how the search results are displayed to the user. +
+The following actions must be taken.
 
 [#action-5]
-== ACTION S5: Add additional properties to entity schema
+== ACTION S5
+
+Add additional properties to entity schema::
 Here you can add additional properties which you e.g. need for your `+<SearchFeatureResponse>+`.
 
 To understand the applied API Concept read the {onecx_api_guidelines_ref} first.
@@ -21,71 +23,110 @@ Note that:
 * Stick to necessary properties only to keep the payload small
 
 
-_Adapt in File:_ `+<feature>-bff.yaml+`
+[horizontal]
+Directory:: `<root-of-ui-app>/src/assets/api`
+File::      `<product>-bff.yaml`
 
-.Example
+.Adjust in `+<product>-bff.yaml+`
+[%collapsible]
+====
 [source, yml]
 ----
-  <Feature>:
-        type: object
-        required:
-          - 'modificationCount'
-          - 'id'
-        properties:
-          modificationCount:
-            type: integer
-            format: int32
-          id:
-            type: integer
-            format: int64
-          houseType:
-            type: string
+components:
+  schemas:
+    <feature>:
+      type: object
+      required:
+        - 'modificationCount'
+        - 'id'
+      properties:
+        modificationCount:
+          type: integer
+          format: int32
+        id:
+          type: integer
+          format: int64
+        bookType:
+          type: string
 ----
-Where `+houseType+` is an additional property added to the schema of the entity `+<Feature>+`.
+
+Where *bookType* is an additional property added to the schema of the entity `+<feature>+`.
+====
 
 include::documentation:onecx-nx-plugins:partial$apigen-action.adoc[]
 
 include::documentation:onecx-nx-plugins:partial$remove-action.adoc[]
 
 [#action-6]
-=== ACTION S6: Column configuration
+=== ACTION S6
+
+Column configuration::
 The next step is to configure the columns of the search results table. Here you can define which properties of your entity should be displayed in the results table, as well as their characteristics (e.g. if they are sortable or filterable).
 
-_Adapt in File:_ `+<feature>-search.columns.ts+`
+[horizontal]
+Directory:: `<root-of-ui-app>/src/app/<feature>`
+File::      `<feature>-search.columns.ts`
+
+.ACTION S6 in `+<feature>-search.columns.ts+`
+[%collapsible]
+====
+[source, javascript]
+----
+export const bookSearchColumns: DataTableColumn[] = [
+  {
+    columnType: ColumnType.STRING,
+    id: 'changeMe',
+    nameKey: 'BOOK_SEARCH.RESULTS.CHANGE_ME',
+    filterable: true,
+    sortable: true,
+    predefinedGroupKeys: [
+      'BOOK_SEARCH.PREDEFINED_GROUP.DEFAULT',
+      'BOOK_SEARCH.PREDEFINED_GROUP.EXTENDED',
+      'BOOK_SEARCH.PREDEFINED_GROUP.FULL',
+    ],
+  },
+];
+// ACTION S6: Define search results columns: https://onecx.github.io/docs/documentation/current/onecx-nx-plugins:generator/search/search-results.html#action-6
+----
+
+Where *changeMe* is an additional search criteria added to the `+Search<Feature>Request+`.
+====
+
+
 .Example:
 [subs=+macros]
 [source, javascript]
 ----
-  export const FeatureSearchColumns: DataTableColumn[] = [
-      {
-        columnType: ColumnType.TRANSLATION_KEY,
-        id: 'houseType',
-        nameKey: 'FEATURE_SEARCH.COLUMNS.HOUSETYPE',
-        filterable: true,
-        sortable: true,
-        predefinedGroupKeys: [
-          'FEATURE_SEARCH.PREDEFINED_GROUP.DEFAULT',
-          'FEATURE_SEARCH.PREDEFINED_GROUP.EXTENDED',
-          'FEATURE_SEARCH.PREDEFINED_GROUP.FULL',
-        ],
-      },
-      {
-        columnType: ColumnType.STRING,
-        id: 'city',
-        nameKey: 'FEATURE_SEARCH.COLUMNS.CITY',
-        filterable: true,
-        sortable: true,
-        predefinedGroupKeys: [          
-          'FEATURE_SEARCH.PREDEFINED_GROUP.EXTENDED',
-          'FEATURE_SEARCH.PREDEFINED_GROUP.FULL',
-        ],
-      }
-  ]
+export const FeatureSearchColumns: DataTableColumn[] = [
+    {
+      columnType: ColumnType.TRANSLATION_KEY,
+      id: 'bookType',
+      nameKey: 'FEATURE_SEARCH.COLUMNS.BOOKTYPE',
+      filterable: true,
+      sortable: true,
+      predefinedGroupKeys: [
+        'FEATURE_SEARCH.PREDEFINED_GROUP.DEFAULT',
+        'FEATURE_SEARCH.PREDEFINED_GROUP.EXTENDED',
+        'FEATURE_SEARCH.PREDEFINED_GROUP.FULL',
+      ],
+    },
+    {
+      columnType: ColumnType.STRING,
+      id: 'city',
+      nameKey: 'FEATURE_SEARCH.COLUMNS.CITY',
+      filterable: true,
+      sortable: true,
+      predefinedGroupKeys: [          
+        'FEATURE_SEARCH.PREDEFINED_GROUP.EXTENDED',
+        'FEATURE_SEARCH.PREDEFINED_GROUP.FULL',
+      ],
+    }
+]
 ----
-In this example, a column for the property `+houseType+` is added to the results table. The column is of type `+TRANSLATION_KEY+`, is filterable and sortable. Additionally, a column for the property `+city+` is added, which is of type `+STRING+`, filterable, sortable, and belongs to only two predefined groups.
+In this example, a column for the property *bookType* is added to the results table. The column is of type *TRANSLATION_KEY*, is filterable and sortable. Additionally, a column for the property *city* is added, which is of type *STRING*, filterable, sortable, and belongs to only two predefined groups.
 
 A predefined group allows users to quickly switch between different sets of columns in the UI using a dropdown.
-By configuring the `+predefinedGroupKeys+`, you can define which columns belong to which groups.
+By configuring the *predefinedGroupKeys*, you can define which columns belong to which groups.
 The key is at the same time the translation key for the group name.
 
 Refer to the {onecx_ui_datatable_columns_ref}[DataTableColumn overview] for more information.
@@ -97,26 +138,26 @@ include::documentation:onecx-nx-plugins:partial$remove-action.adoc[]
 
 Here you can create a mapping of your xref:generator/glossary.adoc#resource[`Resource`] to the row item used in the data table. This is also the place to add translation keys for columns with the type `TRANSLATION_KEY`.
 
-_Adapt in File:_ <feature>-search.selectors.ts
+_Adapt in File:_ `+src/app/<feature>/<feature>-search.selectors.ts+`
 
 .Example:
 [source, javascript]
 ----
-  export const selectResults = createSelector(
-    ExampleFeatureSearchSelectors.selectResults,
-    (results): RowListGridData[] => {
-      return results.map((item) => ({      
-        imagePath: '',
-        ...item,
-        houseType: item.houseType
-          ? `FEATURE_SEARCH.RESULTS.HOUSETYPES.${item.houseType}`
-          : '',
-        city: item.address?.city,
-      }));
-    }
-  );
+export const selectResults = createSelector(
+  ExampleFeatureSearchSelectors.selectResults,
+  (results): RowListGridData[] => {
+    return results.map((item) => ({      
+      imagePath: '',
+      ...item,
+      bookType: item.bookType
+        ? `FEATURE_SEARCH.RESULTS.HOUSETYPES.${item.bookType}`
+        : '',
+      city: item.address?.city,
+    }));
+  }
+);
 ----
-This example shows how to map a property `+houseType+` to a translation key. If the value of `+houseType+` is `+VILLA+`, the resulting translation key will be `+FEATURE_SEARCH.RESULTS.HOUSETYPE.VILLA+`.
+This example shows how to map a property `+bookType+` to a translation key. If the value of `+bookType+` is `+VILLA+`, the resulting translation key will be `+FEATURE_SEARCH.RESULTS.HOUSETYPE.VILLA+`.
 
 It also shows how to map a nested property `+address.city+` to a flat property `+city+` used in the data table.
 
@@ -125,7 +166,7 @@ include::documentation:onecx-nx-plugins:partial$remove-action.adoc[]
 [#action-8]
 === ACTION S8: Add translations
 
-_Adapt in File:_ `+de.json+` / `+en.json+`
+_Adapt in File:_ `+src/assets/i18n/de.json+` / `+en.json+`
 
 Please ensure that all column headers and the values in columns with the type `TRANSLATION_KEY` have the necessary translations added.
 For our examples above, the following entries would be necessary:

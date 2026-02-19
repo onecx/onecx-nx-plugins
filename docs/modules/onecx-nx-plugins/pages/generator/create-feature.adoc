@@ -20,6 +20,9 @@ You will need to further develop and customize the module to meet your specific 
 
 The current working directory must be the root of an existing OneCX UI Application.
 
+[horizontal]
+Directory:: `<root-of-ui-app>`
+
 .To run the generator, execute the following command
 [source,bash]
 ----

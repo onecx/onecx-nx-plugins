@@ -8,11 +8,11 @@
 # end::flavor[]
 # tag::product[]
   _<product>_::
-    The technical name of the application (product) for a certain business case. +
+    The technical base name of the application (product) for a certain business case. +
     E.g. `+bookstore+` for an application named "Book Store".
 # end::product[]
 # tag::feature[]
   _<feature>_::         
-    The name of the feature module to be created. +
+    The name of the feature module. +
     E.g. `+book+` for a feature module named "Book".
 # end::feature[]

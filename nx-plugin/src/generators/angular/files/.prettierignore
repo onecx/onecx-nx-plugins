@@ -1,6 +1,6 @@
 # Add files here to ignore them from prettier formatting
-/dist
-/coverage
-/.nx/cache
+dist
+coverage
+.nx
 .angular
 src/app/shared/generated

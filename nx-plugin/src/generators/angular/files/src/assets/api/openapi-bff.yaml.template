@@ -1,0 +1,9 @@
+---
+openapi: 3.0.3
+info:
+  title: <%= fileName %>-bff
+  version: "1.0"
+  description: Backend-For-Frontend (BFF) services for <%= fileName %>.
+paths: {}
+components:
+  schemas: {}

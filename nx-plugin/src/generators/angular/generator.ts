@@ -38,7 +38,7 @@ export async function angularGenerator(
   );
   Object.assign(options, parameters);
 
-  const spinner = ora('Adding angular').start();
+  const spinner = ora('Adding Angular').start();
   const directory = '.';
 
   const applicationGeneratorCallback = await applicationGenerator(tree, {
@@ -132,7 +132,7 @@ export async function angularGenerator(
       jest: '^29.7.0',
       'jest-environment-jsdom': '^29.7.0',
       'jest-preset-angular': '~14.2.2',
-      webpack: '5.94.0',
+      webpack: '5.95.0',
     }
   );
 
@@ -156,6 +156,10 @@ export async function angularGenerator(
     await applicationGeneratorCallback();
 
     installPackagesTask(tree);
+    execSync('rm -rf .vscode', {
+      cwd: tree.root,
+      stdio: 'inherit',
+    });
     execSync('npm run apigen', {
       cwd: tree.root,
       stdio: 'inherit',
@@ -195,7 +199,7 @@ function addScriptsToPackageJson(tree: Tree, options: AngularGeneratorSchema) {
     pkgJson.scripts = pkgJson.scripts ?? {};
     pkgJson.scripts[
       'apigen'
-    ] = `openapi-generator-cli generate -i src/assets/swagger/${options['name']}-bff.yaml -c apigen.yaml -o src/app/shared/generated -g typescript-angular --type-mappings AnyType=object`;
+    ] = `openapi-generator-cli generate -i src/assets/api/openapi-bff.yaml -c apigen.yaml -o src/app/shared/generated -g typescript-angular --type-mappings AnyType=object`;
     pkgJson.scripts['start'] = 'nx serve';
     pkgJson.scripts['build'] = 'nx build';
     pkgJson.scripts[
