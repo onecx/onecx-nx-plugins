@@ -39,7 +39,7 @@ include::partial$_parameter.adoc[tag=product]
 endif::[]
 
 The generator creates a new workspace folder with the specified product name and sets up the OneCX UI App according to the chosen flavor. +
-Pls. note that the product name from your command is used as base of some essential application parts as following:
+Please note that the product name from your command is used as base of some essential application parts as following:
 .Essential Namings
 * App name: onecx-<product>-ui => used for project naming
 * Remote name: onecx-<product>-ui => used for module federation
