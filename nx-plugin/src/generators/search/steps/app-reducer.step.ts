@@ -13,8 +13,7 @@ export class AppReducerStep implements GeneratorStep<SearchGeneratorSchema> {
     ];
     const replaceWith = [
       `import { ActionReducerMap, MetaReducer, ActionReducer } from '@ngrx/store';
-         import { localStorageSync } from 'ngrx-store-localstorage';
-         import { lazyLoadingMergeReducer } from '@onecx/ngrx-accelerator';`,
+         import { localStorageSync } from 'ngrx-store-localstorage';`,
       `export function localStorageSyncReducer(
             reducer: ActionReducer<any>,
           ): ActionReducer<any> {

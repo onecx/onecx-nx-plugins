@@ -11,7 +11,7 @@ packages:
   '@onecx/*':
     access: $all
     publish: $all
-    unpublish: $all
+    #unpublish: $all
     proxy: []
   '**':
     # give all users (including non-authenticated users) full access

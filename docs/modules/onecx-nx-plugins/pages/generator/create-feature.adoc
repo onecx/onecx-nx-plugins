@@ -41,15 +41,16 @@ Next steps may create components, services, and state management logic within th
 
 == Example
 
-Create a feature module *book* inside the application named *bookstore* to manage book data. Execute the following command with the *bookstore* application as current working directory.
+Create a feature module *helpItem* inside the application named *help* to manage help data. +
+Execute the following command with the *help* application as current working directory. Define the resource name as *Help* to generate a feature module for managing the entity *Help*.
 
-.Create a Feature Module named "book"
+.Create a Feature Module named "helpItem"
 [source,bash]
 ----
-nx generate @onecx/nx-plugin:feature book
+nx generate @onecx/nx-plugin:feature helpItem --resource=Help
 ----
 
-This command will generate a new feature module named *book* with the necessary structure and configurations.
+This command will generate a new feature module named *helpItem* with the necessary structure and configurations.
 
 .Excerpt of generated files and directories
-image::generated_feature_book.png[width=200]
+image::generated_feature_helpItem.png[width=200]

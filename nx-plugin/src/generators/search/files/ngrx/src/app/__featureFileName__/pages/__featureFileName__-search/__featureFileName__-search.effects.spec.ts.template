@@ -4,16 +4,18 @@ import { RouterTestingModule } from '@angular/router/testing'
 import { provideMockActions } from '@ngrx/effects/testing'
 import { Action, Store } from '@ngrx/store'
 import { MockStore, provideMockStore } from '@ngrx/store/testing'
-import { ExportDataService, PortalDialogService, PortalMessageService } from '@onecx/portal-integration-angular'
+import { routerNavigatedAction } from '@ngrx/router-store'
 import { of, ReplaySubject, throwError } from 'rxjs'
+import { take } from 'rxjs/operators'
+
+import { ExportDataService, PortalDialogService, PortalMessageService } from '@onecx/portal-integration-angular'
+
 import { <%= serviceName %> } from '../../../shared/generated'
 import { <%= featureClassName %>SearchActions } from './<%= featureFileName %>-search.actions'
 import { <%= featureClassName %>SearchEffects } from './<%= featureFileName %>-search.effects'
 import { <%= featureClassName %>SearchCriteria } from './<%= featureFileName %>-search.parameters'
 import { initialState } from './<%= featureFileName %>-search.reducers'
 import { <%= featurePropertyName %>SearchSelectors, select<%= featureClassName %>SearchViewModel } from './<%= featureFileName %>-search.selectors'
-import { take } from 'rxjs/operators'
-import { routerNavigatedAction } from '@ngrx/router-store'
 
 jest.mock('@onecx/ngrx-accelerator', () => {
   const actual = jest.requireActual('@onecx/ngrx-accelerator')
@@ -44,14 +46,14 @@ describe('<%= featureClassName %>SearchEffects', () => {
       create<%= apiModelPascal %>: jest.fn(),
       update<%= apiModelPascal %>: jest.fn(),
       delete<%= apiModelPascal %>: jest.fn(),
-      search<%= apiModelPascal %>s: jest.fn()
+      search<%= apiModelPascal %>Items: jest.fn()
     } as unknown as jest.Mocked<<%= serviceName %>>;
 
     // compatibility aliases (featureName differs from resource)
     (service as any).create<%= featureClassName %> = (service as any).create<%= apiModelPascal %>;
     (service as any).update<%= featureClassName %> = (service as any).update<%= apiModelPascal %>;
     (service as any).delete<%= featureClassName %> = (service as any).delete<%= apiModelPascal %>;
-    (service as any).search<%= featureClassName %>s = (service as any).search<%= apiModelPascal %>s;
+    (service as any).search<%= featureClassName %>s = (service as any).search<%= apiModelPascal %>Items;
 
     router = {
       navigate: jest.fn().mockReturnValue(Promise.resolve(true)),

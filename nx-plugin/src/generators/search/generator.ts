@@ -39,17 +39,6 @@ const PARAMETERS: GeneratorParameter<SearchGeneratorSchema>[] = [
     prompt: 'Do you want to customize the names for the generated API?',
   },
   {
-    key: 'apiServiceName',
-    type: 'text',
-    required: 'interactive',
-    default: (values) => {
-      return `${names(values.featureName).className}BffService`;
-    },
-    prompt: 'Provide a name for your API service (e.g. BookBffService): ',
-    showInSummary: true,
-    showRules: [{ showIf: (values) => values.customizeNamingForAPI }],
-  },
-  {
     key: 'resource',
     type: 'text',
     required: 'interactive',
@@ -61,11 +50,22 @@ const PARAMETERS: GeneratorParameter<SearchGeneratorSchema>[] = [
     showRules: [{ showIf: (values) => values.customizeNamingForAPI }],
   },
   {
+    key: 'apiServiceName',
+    type: 'text',
+    required: 'interactive',
+    default: (values) => {
+      return `${values.resource}APIService`;
+    },
+    prompt: 'Provide a name for the API service (e.g. BookAPIService): ',
+    showInSummary: true,
+    showRules: [{ showIf: (values) => values.customizeNamingForAPI }],
+  },
+  {
     key: 'searchRequestName',
     type: 'text',
     required: 'interactive',
     default: (values) => {
-      return `Search${names(values.featureName).className}Request`;
+      return `Search${values.resource}Request`;
     },
     prompt:
       'Provide a name for your Search Request (e.g. SearchBookRequest): ',
@@ -77,7 +77,7 @@ const PARAMETERS: GeneratorParameter<SearchGeneratorSchema>[] = [
     type: 'text',
     required: 'interactive',
     default: (values) => {
-      return `Search${names(values.featureName).className}Response`;
+      return `Search${values.resource}Response`;
     },
     prompt:
       'Provide a name for your Search Response (e.g. SearchBookResponse): ',
@@ -194,10 +194,10 @@ export async function searchGenerator(
       .map((c) => c.path)
       .filter((p) => p.endsWith('.ts'))
       .join(' ');
-    execSync('npx organize-imports-cli ' + files, {
-      cwd: tree.root,
-      stdio: 'inherit',
-    });
+    //execSync('npx --yes organize-imports-cli ' + files, {
+    //  cwd: tree.root,
+    //  stdio: 'inherit',
+    //});
     execSync('npx prettier --write ' + files, {
       cwd: tree.root,
       stdio: 'inherit',

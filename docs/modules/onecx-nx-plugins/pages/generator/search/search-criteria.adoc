@@ -60,7 +60,7 @@ File::      `<product>-bff.yaml`
         # " ACTION S1: Add additional properties: https://onecx.github.io/docs/documentation/current/onecx-nx-plugins:generator/search/search-criteria.html#action-1"
 ----
 
-Where *changeMe* is an additional search criteria added to the `+Search<Feature>Request+`.
+Where *changeMe* is here the example search criteria to be replaced. This criteria corresponds to the property added to the `+Search<Feature>Request+`.
 ====
 
 .Example: Adjustments in `+bookstore-bff.yaml+`
@@ -82,21 +82,13 @@ Where *changeMe* is an additional search criteria added to the `+Search<Feature>
           default: 100
           maximum: 1000
           description: The size of the page.
-        bookTitle:
+        itemId:
           type: string
           maximum: 255
-        bookType:
-          type: string
-          schema:
-            $ref: "#/components/schemas/BookType"
-          maximum: 255
-        bookIsbn:
-          type: string
-          maximum: 255
-        # " ACTION S1: Add additional properties: https://onecx.github.io/docs/documentation/current/onecx-nx-plugins:generator/search/search-criteria.html#action-1"
+        # "ACTION S1: Add additional properties: https://onecx.github.io/docs/documentation/current/onecx-nx-plugins:generator/search/search-criteria.html#action-1"
 ----
 
-Where e.g. *bookTitle* is a search criteria.
+Where e.g. *itemId* is a search criteria, same as the one added to the `+SearchHelpRequest+`.
 ====
 
 After adding the new criteria to the OpenAPI specification, you need to regenerate the API client code to reflect these changes in your application.
@@ -195,7 +187,7 @@ File::      `<feature>-search.component.html`
           </span>
         </div>
       </div>
-      <!--// ACTION S3: Specify here your desired search criterias:
+       <!-- ACTION S3: Specify search criteria here:
        https://onecx.github.io/docs/documentation/current/onecx-nx-plugins:generator/search/search-criteria.html#action-3 -->
     </form>
 ----
@@ -215,20 +207,20 @@ Where *changeMe* is an additional search criteria added to the `+Search<Feature>
           <span class="p-float-label">
             <input
               pInputText
-              id="bookstore_book_search_book_title"
+              id="bookstore_book_search_item_id"
               type="text"
               class="w-18rem"
-              formControlName="bookTitle"
-              [pTooltip]="'BOOK_SEARCH.CRITERIA.BOOK_TITLE.TOOLTIP' | translate"
+              formControlName="itemId"
+              [pTooltip]="'HELP_SEARCH.CRITERIA.ITEM_ID.TOOLTIP' | translate"
               tooltipPosition="top"
               tooltipEvent="hover"
               role="main"
               [attr.aria-label]="
-                'BOOK_SEARCH.CRITERIA.BOOK_TITLE.ARIA-LABEL' | translate
+                'HELP_SEARCH.CRITERIA.ITEM_ID.ARIA-LABEL' | translate
               "
             />
             <label for="bookstore_book_search_book_title" style="white-space: nowrap">
-              {{ 'BOOK_SEARCH.CRITERIA.BOOK_TITLE.LABEL' | translate }}</label
+              {{ 'HELP_SEARCH.CRITERIA.ITEM_ID.LABEL' | translate }}</label
             >
           </span>
         </div>

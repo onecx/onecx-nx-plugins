@@ -12,7 +12,7 @@ This is the basis for processing feature data, e.g., for searching, displaying, 
 At OneCX, we explicitly follow an *API-first approach*. In practice, this means that the OpenAPI file is created first, in which entities and the paths for requests/responses are described. The OpenAPI file serves as the basis for the implementation of the backend services and the frontend components.
 
 [#action-0]
-== ACTION S0 (S5)
+== ACTION S0
 
 === Template: Generated Scheme
 Adjust the feature scheme::
@@ -22,7 +22,7 @@ Add the base properties of the feature in the OpenAPI YAML file.
 Directory:: `<root-of-ui-app>/src/assets/api`
 File::      `<product>-bff.yaml`
 
-.ACTION S0 (S5) in `+<product>-bff.yaml+`
+.ACTION S0 in `+<product>-bff.yaml+`
 [%collapsible]
 ====
 [source, yml]
@@ -48,7 +48,7 @@ components:
           type: string
         id:
           type: integer
-        # "ACTION S5: Add additional properties: https://onecx.github.io/docs/documentation/current/onecx-nx-plugins:generator/search/search-results.html#action-5"
+        # "ACTION S0: Add entity properties: https://onecx.github.io/docs/documentation/current/onecx-nx-plugins:generator/create-schema.html#action-0"
 ----
 
 Where below *properties* the properties of the entity are listed.

@@ -4,14 +4,16 @@ endif::[]
 :page-hide-prev:
 :imagesdir: ../images
 
-= OneCX App Generator
+= OneCX UI App Generator
 
-The OneCX App Generator is a powerful tool that simplifies the development of UI applications within the OneCX framework. It automates the creation of key UI components, ensuring consistency and adherence to best practices.
+The OneCX UI App Generator is a powerful tool that simplifies the development of UI applications within the OneCX framework. It automates the creation of key UI components, ensuring consistency and adherence to best practices.
 
-Nevertheless, essential parts still need to be created or modified manually by the user.
+In addition to generation, significant parts still need to be created or modified manually by the user. To clearly explain how the generator works and the necessary adjustments, the following *example* is used in this documentation: *an application to manage help items*. The help application allows users to search for help items, view details about them, and manage their properties.
 
 == Prerequisites
-Make sure your development environment is set up correctly before using the OneCX App Generator. +
+
+=== Development Environment Setup
+Make sure your development environment is set up correctly before using the OneCX UI App Generator. +
 The following tools must be installed and versions verified:
 
 ** *npm* version should be >= 10.2.4
@@ -44,8 +46,36 @@ npm install -g @nrwl/cli
 npm install
 ----
 
+=== Knowledge of Angular and Nx
+The OneCX UI App Generator is built on top of Angular and Nx, so a basic understanding of these technologies is essential to effectively use the generator and customize the generated code.
 
-== Get the Generator
+Familiarity with Angular concepts such as components, modules, services, and state management (e.g., NgRx) will help you understand the structure of the generated code and how to extend it.
+
+
+== Generation by Example
+
+Let's explore the capabilities of the OneCX App Generator through a practical example. We will create a simple application to manage help items, which includes features such as searching for help items, viewing details, and managing their properties. We assume the backend services and OpenAPI specifications are already in place for the help items.
+
+The generator offers a range of commands to gradually create various UI components such as applications, function modules, and pages. During the generation of some parts, you will be prompted to specify parameters that determine the structure and naming of the generated components. Occasionally, code adjustments will be necessary to implement business requirements.
+
+[NOTE]
+Make the adjustments carefully and in accordance with the specifications and naming conventions of your project to ensure consistency and maintainability of the codebase.
+
+Here is an overview of the application parts that can be generated using the OneCX App Generator. Start from top to bottom, i.e. first generate the application, then the feature module, and then the pages. The generator will guide you through the necessary steps and parameters for each part.
+
+* xref:generator/create-app.adoc[OneCX UI App]
+** xref:generator/create-feature.adoc[Feature Module]
+*** xref:generator/create-schema.adoc[Entity Schema and OpenAPI]
+*** xref:generator/create-search.adoc[Search Component]
+*** Details Page
+*** Create/Update Dialog
+*** Delete Dialog
+*** Simple NgRx Page
+
+
+== Development: Get the Generator
+
+The following is only required if you want to contribute to the development of the generator or want to use the generator locally without installing it globally from npm. If you just want to use the generator, you can install it globally from npm and skip the following steps.
 
 . Clone the *onecx-nx-plugins* repository into a folder on the local machine/inside WSL2
 +
@@ -68,20 +98,3 @@ npm install
 ----
 npm run build
 ----
-
-
-== Generation Process
-
-The generator offers a range of commands to gradually create various UI components such as applications, function modules, and pages. During the generation of some parts, you will be prompted to specify parameters that determine the structure and naming of the generated components. Occasionally, code adjustments will be necessary to implement business requirements. +
-Make the adjustments carefully and in accordance with the specifications and naming conventions of your project to ensure consistency and maintainability of the codebase.
-
-Here is an overview of the application parts that can be generated using the OneCX App Generator:
-
-* xref:generator/create-app.adoc[OneCX UI App]
-** xref:generator/create-feature.adoc[Feature Module]
-*** xref:generator/create-search.adoc[Search Page]
-*** Details Page
-*** Create/Update Dialog
-*** Delete Dialog
-*** Simple NgRx Page
-** Pre Commit Validation

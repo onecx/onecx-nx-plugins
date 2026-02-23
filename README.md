@@ -99,7 +99,7 @@ nx g @onecx/nx-plugin:feature <feature-name>
 ### Alternative: Copy into node_modules
 Copy the build library into your local project `node_modules` folder:
 ```
-npm run build && cp dist/nx-plugin/* ../path/to/test-project/node_modules/@onecx/nx-plugin -r
+npm run build && cp -r dist/nx-plugin/* ../path/to/test-project/node_modules/@onecx/nx-plugin
 ```
 
 

@@ -21,7 +21,7 @@ export class FeatureModuleStep implements GeneratorStep<SearchGeneratorSchema> {
     ];
     const replaceWith = [
       `declarations: [${className}SearchComponent,`,
-      `InitializeModuleGuard, } from '@onecx/portal-integration-angular'`,
+      `,InitializeModuleGuard, } from '@onecx/portal-integration-angular'`,
       `EffectsModule.forFeature([])`,
       `EffectsModule.forFeature([${className}SearchEffects,`,
       `from '@ngrx/effects';

@@ -12,12 +12,14 @@ import {
   updateProjectConfiguration,
 } from '@nx/devkit';
 import { applicationGenerator, E2eTestRunner } from '@nx/angular/generators';
-import { AngularGeneratorSchema } from './schema';
 import { execSync } from 'child_process';
-
 import * as ora from 'ora';
+
+import { AngularGeneratorSchema } from './schema';
 import processParams, { GeneratorParameter } from '../shared/parameters.utils';
 import { safeReplace } from '../shared/safeReplace';
+import { GeneratorProcessor } from '../shared/generator.utils';
+import { GeneralOpenAPIStep } from './steps/general-openapi.step';
 
 const PARAMETERS: GeneratorParameter<AngularGeneratorSchema>[] = [
   {
@@ -30,11 +32,11 @@ const PARAMETERS: GeneratorParameter<AngularGeneratorSchema>[] = [
 
 export async function angularGenerator(
   tree: Tree,
-  options: AngularGeneratorSchema
+  options: AngularGeneratorSchema,
 ): Promise<GeneratorCallback> {
   const parameters = await processParams<AngularGeneratorSchema>(
     PARAMETERS,
-    options
+    options,
   );
   Object.assign(options, parameters);
 
@@ -68,13 +70,12 @@ export async function angularGenerator(
       constantName: names(options.name).constantName,
       propertyName: names(options.name).propertyName,
       standalone: options.standalone,
-    }
+    },
   );
+  const generatorProcessor = new GeneratorProcessor();
+  generatorProcessor.addStep(new GeneralOpenAPIStep());
 
-  // If standalone, remove unwanted files
-  if (options.standalone) {
-    tree.delete(`${directory}/scripts/load-permissions.sh`);
-  }
+  generatorProcessor.run(tree, options, spinner);
 
   const oneCXLibVersion = '^5.47.0';
   addDependenciesToPackageJson(
@@ -133,7 +134,7 @@ export async function angularGenerator(
       'jest-environment-jsdom': '^29.7.0',
       'jest-preset-angular': '~14.2.2',
       webpack: '5.95.0',
-    }
+    },
   );
 
   addScriptsToPackageJson(tree, options);
@@ -156,11 +157,11 @@ export async function angularGenerator(
     await applicationGeneratorCallback();
 
     installPackagesTask(tree);
-    execSync('rm -rf .vscode', {
+    execSync('echo "==> rm -rf .vscode" && rm -rf .vscode', {
       cwd: tree.root,
       stdio: 'inherit',
     });
-    execSync('npm run apigen', {
+    execSync('echo "==> npm run apigen" && npm run apigen', {
       cwd: tree.root,
       stdio: 'inherit',
     });
@@ -169,11 +170,11 @@ export async function angularGenerator(
       .map((c) => c.path)
       .filter((p) => p.endsWith('.ts'))
       .join(' ');
-    execSync('npx organize-imports-cli ' + files, {
-      cwd: tree.root,
-      stdio: 'inherit',
-    });
-    execSync('npx prettier --write ' + files, {
+    //execSync('npx --yes organize-imports-cli ' + files, {
+    //  cwd: tree.root,
+    //  stdio: 'inherit',
+    //});
+    execSync('echo "==> npx prettier --write" && npx prettier --write ' + files, {
       cwd: tree.root,
       stdio: 'inherit',
     });
@@ -195,23 +196,24 @@ function addOverridesToPackageJson(tree: Tree) {
 
 function addScriptsToPackageJson(tree: Tree, options: AngularGeneratorSchema) {
   updateJson(tree, 'package.json', (pkgJson) => {
-    pkgJson.name = names(options.name).fileName;
+    pkgJson.name = 'onecx-' + names(options.name).fileName + '-ui';
+    pkgJson.private = true;
+    pkgJson.license = 'Apache-2.0';
     pkgJson.scripts = pkgJson.scripts ?? {};
-    pkgJson.scripts[
-      'apigen'
-    ] = `openapi-generator-cli generate -i src/assets/api/openapi-bff.yaml -c apigen.yaml -o src/app/shared/generated -g typescript-angular --type-mappings AnyType=object`;
+    pkgJson.scripts['apigen'] =
+      `openapi-generator-cli generate -i src/assets/api/openapi-bff.yaml -c apigen.yaml -o src/app/shared/generated -g typescript-angular --type-mappings AnyType=object`;
     pkgJson.scripts['start'] = 'nx serve';
     pkgJson.scripts['build'] = 'nx build';
-    pkgJson.scripts[
-      'postbuild'
-    ] = `mv "$(find dist/${options['name']} -maxdepth 1 -type f -name 'styles.*.css' | head -n 1)" dist/${options['name']}/styles.css`;
+    pkgJson.scripts['postbuild'] =
+      `mv "$(find dist/${options['name']} -maxdepth 1 -type f -name 'styles.*.css' | head -n 1)" dist/${options['name']}/styles.css`;
+    pkgJson.scripts['clean'] =
+      'npm cache clean --force && npx clear-npx-cache && rm -rf *.log dist reports .nx .angular .eslintcache ./node_modules/.cache/prettier/.prettier-cache';
     pkgJson.scripts['format'] = 'nx format:write --uncommitted';
     pkgJson.scripts['lint'] = 'nx lint';
     pkgJson.scripts['lint:fix'] = 'nx lint --fix';
     pkgJson.scripts['test'] = 'nx test';
     pkgJson.scripts['test:ci'] =
       'nx test --watch=false --browsers=ChromeHeadless --code-coverage';
-
     return pkgJson;
   });
 }
@@ -222,7 +224,7 @@ function adaptTsConfig(tree: Tree, options: AngularGeneratorSchema) {
   const find = ['"files": [', '"compilerOptions": {'];
   const replaceWith = [
     `"files": [
-    "src/app/${fileName}-app.remote.module.ts",
+    "src/app/onecx-${fileName}.remote.module.ts",
     "src/polyfills.ts",
   `,
     `"compilerOptions": {
@@ -235,13 +237,13 @@ function adaptTsConfig(tree: Tree, options: AngularGeneratorSchema) {
     filePath,
     find,
     replaceWith,
-    tree
+    tree,
   );
 }
 
 function adaptProjectConfiguration(
   tree: Tree,
-  options: AngularGeneratorSchema
+  options: AngularGeneratorSchema,
 ) {
   const config = readProjectConfiguration(tree, options.name);
   config.targets['serve'].executor = '@nx/angular:dev-server';
@@ -277,6 +279,18 @@ function adaptProjectConfiguration(
     ...(config.targets['build'].configurations ?? {}),
     production: {
       ...(config.targets['build'].configurations.production ?? {}),
+      budgets: [
+        {
+          type: 'initial',
+          maximumWarning: '1mb',
+          maximumError: '2mb',
+        },
+        {
+          type: 'anyComponentStyle',
+          maximumWarning: '8kb',
+          maximumError: '10kb',
+        },
+      ],
       fileReplacements: [
         ...(config.targets['build'].configurations.production
           .fileReplacements ?? []),
@@ -300,7 +314,7 @@ function adaptJestConfig(tree: Tree) {
     filePath,
     /transformIgnorePatterns: .+?,/,
     `transformIgnorePatterns: ['node_modules/(?!@ngrx|(?!deck.gl)|d3-scale|(?!.*\\.mjs$))'],`,
-    tree
+    tree,
   );
 }
 
@@ -308,7 +322,7 @@ function adaptAngularPrefixConfig(tree: Tree) {
   if (tree.exists('.eslintrc.json')) {
     updateJson(tree, '.eslintrc.json', (json) => {
       const override = json['overrides'].find(
-        (o) => !!o.rules['@angular-eslint/directive-selector']
+        (o) => !!o.rules['@angular-eslint/directive-selector'],
       );
       override.rules['@angular-eslint/directive-selector'][1].prefix = 'app';
       override.rules['@angular-eslint/component-selector'][1].prefix = 'app';

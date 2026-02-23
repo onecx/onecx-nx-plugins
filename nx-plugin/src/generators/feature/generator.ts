@@ -12,13 +12,27 @@ import * as ora from 'ora';
 import { execSync } from 'child_process';
 import processParams, { GeneratorParameter } from '../shared/parameters.utils';
 import { safeReplace } from '../shared/safeReplace';
+import { GeneralOpenAPIStep } from './steps/general-openapi.step';
+import { GeneratorProcessor } from '../shared/generator.utils';
 
 const PARAMETERS: GeneratorParameter<FeatureGeneratorSchema>[] = [
   {
-    key: 'standalone',
+    key: 'customizeNamingForAPI',
     type: 'boolean',
-    required: 'never',
+    required: 'interactive',
     default: false,
+    prompt: 'Do you want to customize the names for the generated API?',
+  },
+  {
+    key: 'resource',
+    type: 'text',
+    required: 'interactive',
+    default: (values) => {
+      return `${names(values.name).className}`;
+    },
+    prompt: 'Provide a name for your Resource (e.g. Book): ',
+    showInSummary: true,
+    showRules: [{ showIf: (values) => values.customizeNamingForAPI }],
   },
 ];
 
@@ -55,6 +69,10 @@ export async function featureGenerator(
       standalone: options.standalone,
     }
   );
+  const generatorProcessor = new GeneratorProcessor();
+  generatorProcessor.addStep(new GeneralOpenAPIStep());
+  
+  generatorProcessor.run(tree, options, spinner);
 
   adaptAppRoutingModule(tree, options);
 
@@ -67,10 +85,10 @@ export async function featureGenerator(
       .map((c) => c.path)
       .filter((p) => p.endsWith('.ts'))
       .join(' ');
-    execSync('npx organize-imports-cli ' + files, {
-      cwd: tree.root,
-      stdio: 'inherit',
-    });
+    //execSync('npx --yes organize-imports-cli ' + files, {
+    //  cwd: tree.root,
+    //  stdio: 'inherit',
+    //});
     execSync('npx prettier --write ' + files, {
       cwd: tree.root,
       stdio: 'inherit',
@@ -86,6 +104,8 @@ function adaptAppRoutingModule(tree: Tree, options: FeatureGeneratorSchema) {
   const replaceWith = [
     `import { startsWith } from '@onecx/angular-webcomponents';`,
     `routes: Routes = [ {
+    // Adjust the matcher to match the feature route.
+    // If you only have one feature, you can use '' for simplification.
     matcher: startsWith('${fileName}'),
     loadChildren: () =>
       import('./${fileName}/${fileName}.module').then(

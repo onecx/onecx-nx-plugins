@@ -8,6 +8,12 @@ import {
 } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Store } from '@ngrx/store';
+import { first, Observable, map } from 'rxjs';
+import { PrimeIcons } from 'primeng/api';
+import { Calendar } from 'primeng/calendar';
+
+
+import { isValidDate } from '@onecx/accelerator';
 import {
   Action,
   BreadcrumbService,
@@ -21,6 +27,7 @@ import {
   InteractiveDataViewComponentState,
   SearchHeaderComponentState,
 } from '@onecx/portal-integration-angular';
+
 import { <%= featureClassName %>SearchActions } from './<%= featureFileName %>-search.actions';
 import {
   <%= featureClassName %>SearchCriteria,
@@ -28,10 +35,6 @@ import {
 } from './<%= featureFileName %>-search.parameters';
 import { select<%= featureClassName %>SearchViewModel } from './<%= featureFileName %>-search.selectors';
 import { <%= featureClassName %>SearchViewModel } from './<%= featureFileName %>-search.viewmodel';
-import { first, Observable, map } from 'rxjs';
-import { PrimeIcons } from 'primeng/api';
-import { isValidDate } from '@onecx/accelerator';
-import { Calendar } from 'primeng/calendar';
 
 @Component({
   selector: 'app-<%= featureFileName %>-search',

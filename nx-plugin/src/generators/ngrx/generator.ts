@@ -68,10 +68,10 @@ export async function ngrxGenerator(
       .map((c) => c.path)
       .filter((p) => p.endsWith('.ts'))
       .join(' ');
-    execSync('npx organize-imports-cli ' + files, {
-      cwd: tree.root,
-      stdio: 'inherit',
-    });
+    //execSync('npx --yes organize-imports-cli ' + files, {
+    //  cwd: tree.root,
+    //  stdio: 'inherit',
+    //});
     execSync('npx prettier --write ' + files, {
       cwd: tree.root,
       stdio: 'inherit',
@@ -104,7 +104,7 @@ function addModulesToAppModule(tree: Tree) {
 }
 
 function addImportsToAppModule(tree: Tree) {
-  const find = [`from '@angular/common';`, `PortalCoreModule,`, `NgModule`];
+  const find = [`from '@angular/common';`, `NgModule`];
   const replaceWith = [
     `from '@angular/common';
     import { StoreModule } from '@ngrx/store';
@@ -115,8 +115,6 @@ function addImportsToAppModule(tree: Tree) {
     import { StoreRouterConnectingModule } from '@ngrx/router-store';
     import { environment } from 'src/environments/environment';
     `,
-    `PortalCoreModule,
-     APP_CONFIG,`,
     `NgModule, isDevMode`,
   ];
   safeReplace(

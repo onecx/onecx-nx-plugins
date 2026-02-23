@@ -9,7 +9,7 @@ interface OpenAPIRoute {
 
 /**
  * This utility can be used to adapt OpenAPI YAML Files
- * It provides are builder-like interface to interact and bases
+ * It provides a builder-like interface to interact and bases
  * on the YAML library to parse / stringify.
  * When you want to add a comment to your JSON, you can do so by using an
  * object with the COMMENT_KEY as key. Though be aware, once this utility
@@ -21,6 +21,28 @@ export class OpenAPIUtil {
 
   constructor(yamlContent: string) {
     this.yamlContent = parse(yamlContent);
+  }
+
+  /**
+   * Quick access to the servers section of the YAML
+   * @returns interface to add items to the section
+   */
+  servers(): OpenAPIArraySectionUtil {
+    if (!this.yamlContent['servers']) {
+      this.yamlContent['servers'] = [];
+    }
+    return new OpenAPIArraySectionUtil(this, this.yamlContent['servers']);
+  }
+
+    /**
+   * Quick access to the tags section of the YAML
+   * @returns interface to add items to the section
+   */
+  tags(): OpenAPIArraySectionUtil {
+    if (!this.yamlContent['tags']) {
+      this.yamlContent['tags'] = [];
+    }
+    return new OpenAPIArraySectionUtil(this, this.yamlContent['tags']);
   }
 
   /**
