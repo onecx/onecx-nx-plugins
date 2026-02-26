@@ -19,8 +19,6 @@ export class FeatureStateStep implements GeneratorStep<SearchGeneratorSchema> {
       `import { ${className}SearchState } from './pages/${resourceFileName}-search/${resourceFileName}-search.state';`,
     ];
 
-    console.log('mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm');
-
     safeReplace(
       `Injecting search state into ${featureName} feature`,
       filePath,

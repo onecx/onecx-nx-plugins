@@ -8,11 +8,12 @@ endif::[]
 
 The OneCX UI App Generator is a powerful tool that simplifies the development of UI applications within the OneCX framework. It automates the creation of key UI components, ensuring consistency and adherence to best practices.
 
-In addition to generation, significant parts still need to be created or modified manually by the user. To clearly explain how the generator works and the necessary adjustments, the following *example* is used in this documentation: *an application to manage Books*. The Bookstore application allows users to search for books, view details about them, and manage their properties.
+In addition to generation, significant parts still need to be created or modified manually by the user. +
+To clearly explain how the generator works and the necessary adjustments, the following *example* is used in this documentation: *an application to manage Books*. The Bookstore application allows users to search for books, view details about them, and manage their properties.
 
 == Prerequisites
 
-=== Development Environment Setup
+=== Environment Setup
 Make sure your development environment is set up correctly before using the OneCX UI App Generator. +
 The following tools must be installed and versions verified:
 
@@ -51,10 +52,13 @@ The OneCX UI App Generator is built on top of Angular and Nx, so a basic underst
 
 Familiarity with Angular concepts such as components, modules, services, and state management (e.g., NgRx) will help you understand the structure of the generated code and how to extend it.
 
+=== Knowledge of App Integration
+The easiest way to integrate the generated components into your application is to follow the OneCX Local Environment guidelines in {onecx_local_env_extend_ref}. This ensures that the components are correctly registered and accessible within the application.
+
 
 == Generation by Example
 
-Let's explore the capabilities of the OneCX App Generator through a practical example. We will create a simple application to manage books, which includes features such as searching for books, viewing details, and managing their properties. We assume the backend services and OpenAPI specifications are already in place for the books.
+Let's explore the capabilities of the OneCX App Generator through a practical example. We will create a simple application to manage books, which includes features such as searching for books, viewing details, and managing their properties. We also provide a simple mock solution to simulate the backend services for the generated components, allowing you to see the generator's output in action without needing a fully functional backend.
 
 The generator offers a range of commands to gradually create various UI components such as applications, function modules, and pages. During the generation of some parts, you will be prompted to specify parameters that determine the structure and naming of the generated components. Occasionally, code adjustments will be necessary to implement business requirements.
 
@@ -63,7 +67,7 @@ Make the adjustments carefully and in accordance with the specifications and nam
 
 Here is an overview of the application parts that can be generated using the OneCX App Generator. Start from top to bottom, i.e. first generate the application, then the feature module, and then the pages. The generator will guide you through the necessary steps and parameters for each part.
 
-* xref:generator/create-app.adoc[OneCX UI App]
+* xref:generator/create-app.adoc[OneCX UI App] <= *start here*
 ** xref:generator/create-feature.adoc[Feature Module]
 *** xref:generator/create-schema.adoc[Entity Schema and OpenAPI]
 *** xref:generator/create-search.adoc[Search Component]

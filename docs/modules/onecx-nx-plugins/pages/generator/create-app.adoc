@@ -58,12 +58,15 @@ Please note that the product name from your command is used as base of some esse
 
 Next step may xref:./create-feature.adoc[create a feature module].
 
-[TIP]
+[NOTE]
 ====
 The generated app contains the dependency for the OneCX Nx Plugin. +
 This allows you to easily add new features, components, and services within your app's user interface using the OneCX Nx plugin functions.
 ====
 
+ifdef::env-site[]
+include::_integrate-into-onecx.adoc[leveloffset=+1]
+endif::[]
 
 == Example
 

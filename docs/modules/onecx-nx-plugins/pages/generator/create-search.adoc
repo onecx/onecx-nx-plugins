@@ -40,7 +40,7 @@ The generator creates a new search component within the specified feature module
 * `<resource>SearchComponent` +
   Name for the search component class
 * '' +
-  Default route path for the search component, see `src/app/<feature>/<feature>.routes.ts`.
+  Default route path (empty) for the search component, see `src/app/<feature>/<feature>.routes.ts`.
 
 
 == Post-Generation Steps
@@ -76,7 +76,8 @@ This marker is used as a placeholder for future extensions by newly generated co
 
 == Example
 
-Create a Search Component inside the *book* feature module. Execute the following command with the *bookstore* application as current working directory.
+Create a search component for books inside the *book* feature module. +
+Execute the following command with the *bookstore* application as current working directory.
 
 .Create a Search Component for Books, preset resource/entity name
 [source,bash]
@@ -89,18 +90,12 @@ This command will generate a new search component *book-search* within the speci
 .Excerpt of generated files and directories
 image::generated_feature_book_search.png[width=250]
 
+ifdef::env-site[]
+include::_integrate-into-onecx.adoc[leveloffset=+2]
+endif::[]
 
-=== Integrate Search Component into the Application
-After the generation, you need to integrate the search component into the application. This involves adding the search component to the routing configuration of the feature module and ensuring that it is properly linked to the rest of the application.
 
-In general, use the mechanism of OneCX Local environment to integrate the generated search component.
-
-.Tipps for integration:
-* Start the application with a dedicated port
-* Integrate the application into running OneCX environment with this port
-* Add necessary data to the backend to be able to call the search component (product, permissions, workspace registration, menu entry, etc.)
-* After making these changes, reload the OneCX UI and navigate to the search component route
-
+=== Preview
 In the following image, the search component is integrated into the application unchanged, exactly as it was generated.
 
 .Search UI after integration into the application

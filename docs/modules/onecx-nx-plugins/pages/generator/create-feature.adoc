@@ -39,7 +39,8 @@ endif::[]
 
 Next, *you will be asked* if you would like to adapt the names for the generation. +
 If you answer *No*, the generator will use the preset resource name to derive the names for the feature module and other generated parts. +
-If you answer *Yes*, you can specify a name for the API in the following questions. This can be helpful if you want to customize an existing API. +
+If you answer *Yes*, you can specify a name for the API in the following questions. This can be helpful if you want to customize an existing API.
+
 The generator will create a new feature module with the specified name and set up the necessary structure and configurations. +
 Next steps may create components, services, and state management logic within the feature module as needed, e.g. xref:./create-search.adoc[create a search component].
 
@@ -49,12 +50,12 @@ Next steps may create components, services, and state management logic within th
 * `<feature>Module` +
   Name for the feature module
 * `/<feature>/` +
-  Default route path for the application feature, see `app-routing.module.ts`.
+  Default *route path* for the application feature, see `app-routing.module.ts`.
 
 === Routing Configuration
 The generator will automatically configure the routing for the generated feature module. +
 It will add a new route to the application's main routing module (e.g. `app-routing.module.ts`) to lazy load the feature module when the specified route is accessed. +
-The route path will be derived from the feature name, e.g. `book` for a feature module named "book". +
+The route path will be derived from the feature name, e.g. `/book/` for a feature module named "book". +
 You can further customize the routing configuration as needed after the generation.
 
 

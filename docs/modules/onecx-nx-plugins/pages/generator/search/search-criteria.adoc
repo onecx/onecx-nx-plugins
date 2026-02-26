@@ -31,7 +31,7 @@ More details in {ngrx_search_criteria_ref}[NgRx Search Criteria].
 
 [horizontal]
 Directory:: `<root-of-ui-app>/src/assets/api`
-File::      `<product>-bff.yaml`
+File::      `openapi-bff.yaml`
 
 .ACTION S1 in `+openapi-bff.yaml+`
 [%collapsible]
