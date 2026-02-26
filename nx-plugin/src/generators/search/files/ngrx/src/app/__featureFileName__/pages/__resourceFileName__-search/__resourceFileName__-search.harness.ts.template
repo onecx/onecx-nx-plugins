@@ -5,8 +5,8 @@ import {
   GroupByCountDiagramHarness,
 } from '@onecx/angular-accelerator/testing';
 
-export class <%= featureClassName %>SearchHarness extends ComponentHarness {
-  static hostSelector = 'app-<%= featureFileName %>-search';
+export class <%= resourceClassName %>SearchHarness extends ComponentHarness {
+  static hostSelector = 'app-<%= resourceFileName %>-search';
 
   getHeader = this.locatorFor(SearchHeaderHarness);
   getSearchResults = this.locatorFor(InteractiveDataViewHarness);

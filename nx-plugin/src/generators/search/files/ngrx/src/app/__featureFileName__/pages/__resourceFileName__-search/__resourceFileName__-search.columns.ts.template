@@ -1,16 +1,16 @@
 import { ColumnType, DataTableColumn } from '@onecx/angular-accelerator';
 
-export const <%= featurePropertyName %>SearchColumns: DataTableColumn[] = [
+export const <%= resourcePropertyName %>SearchColumns: DataTableColumn[] = [
     {
         columnType: ColumnType.STRING,
         id: 'changeMe',
-        nameKey: '<%= featureConstantName %>_SEARCH.RESULTS.CHANGE_ME',
+        nameKey: '<%= resourceConstantName %>_SEARCH.RESULTS.CHANGE_ME',
         filterable: true,
         sortable: true,
         predefinedGroupKeys: [
-          '<%= featureConstantName %>_SEARCH.PREDEFINED_GROUP.DEFAULT',
-          '<%= featureConstantName %>_SEARCH.PREDEFINED_GROUP.EXTENDED',
-          '<%= featureConstantName %>_SEARCH.PREDEFINED_GROUP.FULL'
+          '<%= resourceConstantName %>_SEARCH.PREDEFINED_GROUP.DEFAULT',
+          '<%= resourceConstantName %>_SEARCH.PREDEFINED_GROUP.EXTENDED',
+          '<%= resourceConstantName %>_SEARCH.PREDEFINED_GROUP.FULL'
         ],
     },
 ]

@@ -27,10 +27,6 @@ export class GeneralOpenAPIStep implements GeneratorStep<FeatureGeneratorSchema>
         type: 'object',
         required: ['id'],
         properties: {
-          id: {
-            type: 'string',
-            readOnly: true
-          },
           modificationCount: {
             type: 'integer',
             format: 'int32',
@@ -46,6 +42,10 @@ export class GeneralOpenAPIStep implements GeneratorStep<FeatureGeneratorSchema>
             $ref: '#/components/schemas/OffsetDateTime'
           },
           modificationUser: {
+            type: 'string',
+            readOnly: true
+          },
+          id: {
             type: 'string',
             readOnly: true
           },

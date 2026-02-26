@@ -16,18 +16,18 @@ import { ExportDataService, PortalMessageService } from '@onecx/portal-integrati
 
 import {  
   <%= serviceName %>, 
-} from '../../../shared/generated';
-import { <%= featureClassName %>SearchActions } from './<%= featureFileName %>-search.actions';
-import { <%= featureClassName %>SearchComponent } from './<%= featureFileName %>-search.component';
-import { <%= featurePropertyName %>SearchCriteriasSchema } from './<%= featureFileName %>-search.parameters';
-import { select<%= featureClassName %>SearchViewModel, <%= featurePropertyName %>SearchSelectors } from './<%= featureFileName %>-search.selectors';
+} from 'src/app/shared/generated';
+import { <%= resourcePropertyName %>SearchActions } from './<%= resourceFileName %>-search.actions';
+import { <%= resourceClassName %>SearchComponent } from './<%= resourceFileName %>-search.component';
+import { <%= resourcePropertyName %>SearchCriteriasSchema } from './<%= resourceFileName %>-search.parameters';
+import { select<%= resourceClassName %>SearchViewModel, <%= resourcePropertyName %>SearchSelectors } from './<%= resourceFileName %>-search.selectors';
 
 @Injectable()
-export class <%= featureClassName %>SearchEffects {
+export class <%= resourceClassName %>SearchEffects {
   constructor(
     private actions$: Actions,
     private route: ActivatedRoute,
-    private <%= featurePropertyName %>Service: <%= serviceName %>,    
+    private <%= resourcePropertyName %>Service: <%= serviceName %>,    
     private router: Router,
     private store: Store,
     private messageService: PortalMessageService,  
@@ -38,16 +38,16 @@ export class <%= featureClassName %>SearchEffects {
     () => {
       return this.actions$.pipe(
         ofType(
-          <%= featureClassName %>SearchActions.searchButtonClicked,
-          <%= featureClassName %>SearchActions.resetButtonClicked,
+          <%= resourcePropertyName %>SearchActions.searchButtonClicked,
+          <%= resourcePropertyName %>SearchActions.resetButtonClicked,
         ),
         concatLatestFrom(() => [
-          this.store.select(<%= featurePropertyName %>SearchSelectors.selectCriteria),
+          this.store.select(<%= resourcePropertyName %>SearchSelectors.selectCriteria),
           this.route.queryParams,
         ]),
         tap(([, criteria, queryParams]) => {
           const results =
-            <%= featurePropertyName %>SearchCriteriasSchema.safeParse(queryParams);
+            <%= resourcePropertyName %>SearchCriteriasSchema.safeParse(queryParams);
           if (!results.success || !equal(criteria, results.data)) {
             const params = {
               ...criteria,
@@ -70,17 +70,17 @@ export class <%= featureClassName %>SearchEffects {
   searchByUrl$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(routerNavigatedAction),
-      filterForNavigatedTo(this.router, <%= featureClassName %>SearchComponent),
-      filterOutQueryParamsHaveNotChanged(this.router, <%= featurePropertyName %>SearchCriteriasSchema, false),      
+      filterForNavigatedTo(this.router, <%= resourceClassName %>SearchComponent),
+      filterOutQueryParamsHaveNotChanged(this.router, <%= resourcePropertyName %>SearchCriteriasSchema, false),      
       concatLatestFrom(() =>
-        this.store.select(<%= featurePropertyName %>SearchSelectors.selectCriteria),
+        this.store.select(<%= resourcePropertyName %>SearchSelectors.selectCriteria),
       ),
       switchMap(([,searchCriteria]) => this.performSearch(searchCriteria)),
     );
   });
 
   performSearch(searchCriteria: Record<string, any>) {
-    return this.<%= featurePropertyName %>Service.search<%= resource %>Items(
+    return this.<%= resourcePropertyName %>Service.search<%= resource %>Items(
       {
         ...Object.entries(searchCriteria).reduce(
           (acc, [key, value]) => ({
@@ -92,7 +92,7 @@ export class <%= featureClassName %>SearchEffects {
       }
     ).pipe(
           map(({ stream, size, number, totalElements, totalPages}) =>
-            <%= featureClassName %>SearchActions.<%= featurePropertyName %>SearchResultsReceived(
+            <%= resourcePropertyName %>SearchActions.<%= resourcePropertyName %>SearchResultsReceived(
               {
                 stream,
                 size,
@@ -104,7 +104,7 @@ export class <%= featureClassName %>SearchEffects {
           ),
           catchError((error) =>
             of(
-              <%= featureClassName %>SearchActions.<%= featurePropertyName %>SearchResultsLoadingFailed(
+              <%= resourcePropertyName %>SearchActions.<%= resourcePropertyName %>SearchResultsLoadingFailed(
                 {
                   error,
                 }
@@ -117,15 +117,15 @@ export class <%= featureClassName %>SearchEffects {
   exportData$ = createEffect(
     () => {
       return this.actions$.pipe(
-        ofType(<%= featureClassName %>SearchActions.exportButtonClicked),
+        ofType(<%= resourcePropertyName %>SearchActions.exportButtonClicked),
         concatLatestFrom(() =>
-          this.store.select(select<%= featureClassName %>SearchViewModel)
+          this.store.select(select<%= resourceClassName %>SearchViewModel)
         ),
         map(([, viewModel]) => {
           this.exportDataService.exportCsv(
             viewModel.resultComponentState?.displayedColumns ?? [],
             viewModel.results,
-            '<%= featureClassName %>.csv'
+            'export_<%= resourcePropertyName %>.csv'
           );
         })
       );
@@ -136,7 +136,7 @@ export class <%= featureClassName %>SearchEffects {
   errorMessages: { action: Action; key: string }[] = [
     {
       action:
-        <%= featureClassName %>SearchActions.<%= featurePropertyName %>SearchResultsLoadingFailed,
+        <%= resourcePropertyName %>SearchActions.<%= resourcePropertyName %>SearchResultsLoadingFailed,
       key: '<%= featureConstantName %>_SEARCH.ERROR_MESSAGES.SEARCH_RESULTS_LOADING_FAILED',
     }
   ];

@@ -19,6 +19,8 @@ export class FeatureStateStep implements GeneratorStep<PageGeneratorSchema> {
     ${pagePropertyName}: ${pageClassName}State;`,
     ];
 
+    console.log('##########################################################################');
+
     safeReplace(
       `Update ${fileName}State to include ${pagePropertyName} state, map it to ${pageClassName}State, and extend import statements to include the new state`,
       filePath,

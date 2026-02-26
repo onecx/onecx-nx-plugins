@@ -1,7 +1,7 @@
 import { ColumnType } from '@onecx/angular-accelerator'
-import * as selectors from './<%= featureFileName %>-search.selectors'
+import * as selectors from './<%= resourceFileName %>-search.selectors'
 
-describe('<%= featureClassName %>Search selectors', () => {
+describe('<%= resourceClassName %>Search selectors', () => {
   describe('selectResults projector', () => {
     const cases = [
       {
@@ -36,7 +36,7 @@ describe('<%= featureClassName %>Search selectors', () => {
     })
   })
 
-  it('select<%= featureClassName %>SearchViewModel should combine all selector results', () => {
+  it('select<%= resourceClassName %>SearchViewModel should combine all selector results', () => {
     const columns = [{ id: 'col1', nameKey: 'Col 1', columnType: ColumnType.STRING }]
     const searchCriteria = {
       id: 1,
@@ -47,7 +47,7 @@ describe('<%= featureClassName %>Search selectors', () => {
     const results = [{ imagePath: '', id: '1', name: 'A', description: 'desc', vdb: 'vdb1', vdbCollection: 'c1' }]
     const chartVisible = true
 
-    const result = selectors.select<%= featureClassName %>SearchViewModel.projector(
+    const result = selectors.select<%= resourceClassName %>SearchViewModel.projector(
       columns,
       searchCriteria,
       results,

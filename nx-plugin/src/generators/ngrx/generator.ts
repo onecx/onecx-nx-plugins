@@ -25,7 +25,7 @@ export async function ngrxGenerator(
     angularGeneratorCallback = await angularGenerator(tree, options);
   }
 
-  const spinner = ora('Adding NgRx').start();
+  const spinner = ora('Adding NgRx\n').start();
   generateFiles(
     tree,
     joinPathFragments(__dirname, './files'),
@@ -57,6 +57,11 @@ export async function ngrxGenerator(
   spinner.succeed();
 
   return async () => {
+    let cmd = '';
+    function log(command: string) {
+      console.log('');
+      console.log('generate ngrx ==> ' + command);
+    }
     if (angularGeneratorCallback) {
       await angularGeneratorCallback();
     }
@@ -68,14 +73,14 @@ export async function ngrxGenerator(
       .map((c) => c.path)
       .filter((p) => p.endsWith('.ts'))
       .join(' ');
+    //cmd = 'npx --yes organize-imports-cli ';
     //execSync('npx --yes organize-imports-cli ' + files, {
     //  cwd: tree.root,
     //  stdio: 'inherit',
     //});
-    execSync('npx prettier --write ' + files, {
-      cwd: tree.root,
-      stdio: 'inherit',
-    });
+    cmd = 'npx prettier --write ';
+    log(cmd);
+    execSync(cmd + files, { cwd: tree.root, stdio: 'inherit' });
 
     installPackagesTask(tree, true);
   };

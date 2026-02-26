@@ -1,37 +1,38 @@
 <ocx-portal-page 
-  <% if(!standalone){ %> permission="<%= featureConstantName %>#SEARCH" <% } %>
-  [helpArticleId]="'<%= featureConstantName %>_SEARCH.HELP_ARTICLE_ID' | translate" 
+  <% if(!standalone){ %> permission="<%= resourceConstantName %>#SEARCH" <% } %>
+  [helpArticleId]="'<%= resourceConstantName %>_SEARCH.HELP_ARTICLE_ID' | translate" 
   *ngrxLet="viewModel$; let vm"
 >
   <ocx-search-header
-    [headline]="'<%= featureConstantName %>_SEARCH.HEADER' | translate"
-    [subheader]="'<%= featureConstantName %>_SEARCH.SUB_HEADER' | translate"
-    (searched)="search(<%= featurePropertyName %>SearchFormGroup)"
+    [headline]="'<%= resourceConstantName %>_SEARCH.HEADER' | translate"
+    [subheader]="'<%= resourceConstantName %>_SEARCH.SUB_HEADER' | translate"
+    (searched)="search(<%= resourcePropertyName %>SearchFormGroup)"
     (resetted)="resetSearch()"
     [manualBreadcrumbs]="true"
     [actions]="(headerActions$ | async) ?? []"        
     (componentStateChanged)="searchHeaderComponentStateChanged($event)"
     [viewMode]="vm.searchHeaderComponentState?.activeViewMode ?? 'basic'"
-    [attr.aria-label]="'<%= featureConstantName%>_SEARCH.ARIA-LABEL' | translate"
+    [attr.aria-label]="'<%= resourceConstantName%>_SEARCH.ARIA-LABEL' | translate"
   >
-    <form [formGroup]="<%= featurePropertyName %>SearchFormGroup">
+    <form [formGroup]="<%= resourcePropertyName %>SearchFormGroup">
       <div class="grid mt-0 p-fluid">
         <div class="col-12 md:col-3">
           <span class="p-float-label">
            <input
               pInputText
-              id="<%= featurePropertyName %>_search_<%= resource.toLowerCase() %>_change_me"
+              id="<%= featurePropertyName %>_<%= resourcePropertyName %>_search_<%= resource.toLowerCase() %>_change_me"
               type="text"
               class="w-18rem"
               formControlName="changeMe"
-              [pTooltip]="'<%= featureConstantName%>_SEARCH.CRITERIA.CHANGE_ME.TOOLTIP' | translate"
+              [pTooltip]="'<%= resourceConstantName%>_SEARCH.CRITERIA.CHANGE_ME.TOOLTIP' | translate"
               tooltipPosition="top"
               tooltipEvent="hover"
               role="main"
-              [attr.aria-label]="'<%= featureConstantName%>_SEARCH.CRITERIA.CHANGE_ME.ARIA-LABEL' | translate"
+              [attr.aria-label]="'<%= resourceConstantName%>_SEARCH.CRITERIA.CHANGE_ME.ARIA-LABEL' | translate"
             />
-            <label for="<%= featurePropertyName %>_search_<%= resource.toLowerCase() %>_change_me" style="white-space: nowrap">
-              {{ '<%= featureConstantName%>_SEARCH.CRITERIA.CHANGE_ME.LABEL' | translate }}</label
+            <label for="<%= featurePropertyName %>_<%= resourcePropertyName %>_search_<%= resource.toLowerCase() %>_change_me"
+                   style="white-space: nowrap">
+              {{ '<%= resourceConstantName%>_SEARCH.CRITERIA.CHANGE_ME.LABEL' | translate }}</label
             >
             </span>
          </div>
@@ -46,7 +47,7 @@
          [data]="vm.results"
          [columns]="vm.columns"
          [emptyResultsMessage]="
-           '<%= featureConstantName %>_SEARCH.EMPTY_RESULTS' | translate
+           '<%= resourceConstantName %>_SEARCH.EMPTY_RESULTS' | translate
          "
          (componentStateChanged)="resultComponentStateChanged($event)"
          [layout]="vm.resultComponentState?.layout ?? 'list'"
@@ -61,7 +62,7 @@
          [defaultGroupKey]="vm.resultComponentState?.activeColumnGroupKey ?? ''"
          [actionColumnPosition]="vm.resultComponentState?.actionColumnConfig?.position?? 'right'"
          [frozenActionColumn]="vm.resultComponentState?.actionColumnConfig?.frozen ?? false"
-         [attr.aria-label]="'<%= featureConstantName%>_SEARCH.RESULTS.NAME' | translate"
+         [attr.aria-label]="'<%= resourceConstantName%>_SEARCH.RESULTS.NAME' | translate"
        >
        </ocx-interactive-data-view>      
      </ocx-content>
@@ -78,10 +79,10 @@
             *ngIf="diagramColumn$ | async as diagramColumn"
             [data]="vm.results"
             [column]="diagramColumn"
-            sumKey="<%= featureConstantName %>_SEARCH.DIAGRAM.SUM"
+            sumKey="<%= resourceConstantName %>_SEARCH.DIAGRAM.SUM"
             [diagramType]="vm.diagramComponentState?.activeDiagramType ?? defaultDiagramType"
           (componentStateChanged)="diagramComponentStateChanged($event)"
-          [attr.aria-label]="'<%= featureConstantName %>_SEARCH.DIAGRAM.NAME' | translate"
+          [attr.aria-label]="'<%= resourceConstantName %>_SEARCH.DIAGRAM.NAME' | translate"
           ></ocx-group-by-count-diagram>
         </div>
     </ocx-content>

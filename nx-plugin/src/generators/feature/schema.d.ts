@@ -3,4 +3,5 @@ export interface FeatureGeneratorSchema {
   customizeNamingForAPI: boolean;
   resource: string;
   standalone?: boolean;
+  existStrategy: 'skip';
 }

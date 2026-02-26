@@ -7,18 +7,20 @@ export class FeatureReducerStep
   implements GeneratorStep<SearchGeneratorSchema>
 {
   process(tree: Tree, options: SearchGeneratorSchema): void {
-    const fileName = names(options.featureName).fileName;
-    const propertyName = names(options.featureName).propertyName;
-    const filePath = `src/app/${fileName}/${fileName}.reducers.ts`;
+    const featureFileName = names(options.featureName).fileName;
+    const resourceFileName = names(options.resource).fileName;
+    const resourcePropertyName = names(options.resource).propertyName;
+
+    const filePath = `src/app/${featureFileName}/${featureFileName}.reducers.ts`;
     const find = [/^/, '>({'];
     const replaceWith = [
-      `import { ${propertyName}SearchReducer } from './pages/${fileName}-search/${fileName}-search.reducers';`,
+      `import { ${resourcePropertyName}SearchReducer } from './pages/${resourceFileName}-search/${resourceFileName}-search.reducers';`,
       `>({
-      search: ${propertyName}SearchReducer,`,
+      search: ${resourcePropertyName}SearchReducer,`,
     ];
 
     safeReplace(
-      `Adding search reducer to ${fileName}`,
+      `Adding search reducer to ${featureFileName}`,
       filePath,
       find,
       replaceWith,

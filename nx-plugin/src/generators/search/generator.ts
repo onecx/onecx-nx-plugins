@@ -67,8 +67,7 @@ const PARAMETERS: GeneratorParameter<SearchGeneratorSchema>[] = [
     default: (values) => {
       return `Search${values.resource}Request`;
     },
-    prompt:
-      'Provide a name for your Search Request (e.g. SearchBookRequest): ',
+    prompt: 'Provide a name for your Search Request (e.g. SearchBookRequest): ',
     showInSummary: true,
     showRules: [{ showIf: (values) => values.customizeNamingForAPI }],
   },
@@ -101,8 +100,10 @@ export async function searchGenerator(
     options
   );
   Object.assign(options, parameters);
+  console.log('');
+  console.log('Search Generator');
 
-  const spinner = ora(`Adding search to ${options.featureName}`).start();
+  const spinner = ora(`Adding search to ${options.featureName}\n`).start();
   const directory = '.';
 
   const featureNames = names(options.featureName);
@@ -112,7 +113,6 @@ export async function searchGenerator(
   const apiModelPlural = apiModelPascal.endsWith('s')
     ? apiModelPascal
     : apiModelPascal + 's';
-
 
   const isNgRx = !!Object.keys(
     readJson(tree, 'package.json').dependencies
@@ -146,12 +146,16 @@ export async function searchGenerator(
       featureClassName: names(options.featureName).className,
       featureConstantName: names(options.featureName).constantName,
       resource: options.resource,
+      resourceClassName: names(options.resource).className,
+      resourceConstantName: names(options.resource).constantName,
+      resourceFileName: names(options.resource).fileName,
+      resourcePropertyName: names(options.resource).propertyName,
       serviceName: options.apiServiceName,
       searchRequestName: options.searchRequestName,
       searchResponseName: options.searchResponseName,
       standalone: options.standalone,
       apiModelPascal,
-      apiModelPlural
+      apiModelPlural,
     }
   );
 
@@ -167,8 +171,9 @@ export async function searchGenerator(
   generatorProcessor.addStep(new GeneralPermissionsStep());
 
   // Optionally extend search with features to navigate to details (if details were generated beforehand)
-  const fileName = names(options.featureName).fileName;
-  const htmlDetailsFilePath = `src/app/${fileName}/pages/${fileName}-details/${fileName}-details.component.html`;
+  const featureFileName = names(options.featureName).fileName;
+  const resourceFileName = names(options.resource).fileName;
+  const htmlDetailsFilePath = `src/app/${featureFileName}/pages/${resourceFileName}-details/${resourceFileName}-details.component.html`;
   if (tree.exists(htmlDetailsFilePath)) {
     generatorProcessor.addStep(new SearchHTMLStep());
     generatorProcessor.addStep(new SearchComponentStep());
@@ -184,24 +189,26 @@ export async function searchGenerator(
   spinner.succeed();
 
   return () => {
+    let cmd = '';
+    function log(command: string) {
+      console.log('');
+      console.log('generate search ==> ' + command);
+    }
     installPackagesTask(tree);
-    execSync('npm run apigen', {
-      cwd: tree.root,
-      stdio: 'inherit',
-    });
+    cmd = 'npm run apigen ';
+    log(cmd);
+    execSync(cmd, { cwd: tree.root, stdio: 'inherit' });
     const files = tree
       .listChanges()
       .map((c) => c.path)
       .filter((p) => p.endsWith('.ts'))
       .join(' ');
-    //execSync('npx --yes organize-imports-cli ' + files, {
-    //  cwd: tree.root,
-    //  stdio: 'inherit',
-    //});
-    execSync('npx prettier --write ' + files, {
-      cwd: tree.root,
-      stdio: 'inherit',
-    });
+    cmd = 'npx --yes organize-imports-cli ';
+    log(cmd);
+    execSync(cmd + files, { cwd: tree.root, stdio: 'inherit' });
+    cmd = 'npx prettier --write ';
+    log(cmd);
+    execSync(cmd + files, { cwd: tree.root, stdio: 'inherit' });
   };
 }
 

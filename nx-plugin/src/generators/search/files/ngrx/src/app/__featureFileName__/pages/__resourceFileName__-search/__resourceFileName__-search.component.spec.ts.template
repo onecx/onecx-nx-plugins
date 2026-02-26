@@ -12,7 +12,8 @@ import { ofType } from '@ngrx/effects';
 import { TranslateService } from '@ngx-translate/core';
 import { TranslateTestingModule } from 'ngx-translate-testing';
 import { DialogService } from 'primeng/dynamicdialog';
-import { 
+
+import {
   BreadcrumbService,
   HAS_PERMISSION_CHECKER,
   ColumnType,
@@ -20,16 +21,17 @@ import {
   UserService,
   providePortalDialogService
 } from '@onecx/portal-integration-angular';
-import { <%= featureClassName %>SearchActions } from './<%= featureFileName %>-search.actions';
-import { <%= featureClassName %>SearchComponent } from './<%= featureFileName %>-search.component';
-import { <%= featureClassName %>SearchHarness } from './<%= featureFileName %>-search.harness';
-import { <%= featureClassName %>SearchViewModel } from './<%= featureFileName %>-search.viewmodel';
-import { <%= featurePropertyName %>SearchColumns } from './<%= featureFileName %>-search.columns';
-import { select<%= featureClassName %>SearchViewModel } from './<%= featureFileName %>-search.selectors';
-import { initialState } from './<%= featureFileName %>-search.reducers';
 import { provideUserServiceMock } from '@onecx/angular-integration-interface/mocks';
 
-describe('<%= featureClassName %>SearchComponent', () => {
+import { <%= resourcePropertyName %>SearchActions } from './<%= resourceFileName %>-search.actions';
+import { <%= resourceClassName %>SearchComponent } from './<%= resourceFileName %>-search.component';
+import { <%= resourceClassName %>SearchHarness } from './<%= resourceFileName %>-search.harness';
+import { <%= resourceClassName %>SearchViewModel } from './<%= resourceFileName %>-search.viewmodel';
+import { <%= resourceClassName %>SearchColumns } from './<%= resourceFileName %>-search.columns';
+import { select<%= resourceClassName %>SearchViewModel } from './<%= resourceFileName %>-search.selectors';
+import { initialState } from './<%= resourceFileName %>-search.reducers';
+
+describe('<%= resourceClassName %>SearchComponent', () => {
   const origAddEventListener = window.addEventListener;
   const origPostMessage = window.postMessage;
 
@@ -60,19 +62,19 @@ describe('<%= featureClassName %>SearchComponent', () => {
 
 
   HTMLCanvasElement.prototype.getContext = jest.fn();
-  let component: <%= featureClassName %>SearchComponent;
-  let fixture: ComponentFixture<<%= featureClassName %>SearchComponent>;
+  let component: <%= resourceClassName %>SearchComponent;
+  let fixture: ComponentFixture<<%= resourceClassName %>SearchComponent>;
   let store: MockStore<Store>;
   let formBuilder: FormBuilder;
-  let <%= featurePropertyName %>Search: <%= featureClassName %>SearchHarness;
+  let <%= resourceClassName %>Search: <%= resourceClassName %>SearchHarness;
   
   const mockActivatedRoute = {
     snapshot: {
       data: {},
     },
   };
-  const base<%= featureClassName %>SearchViewModel: <%= featureClassName %>SearchViewModel = {
-    columns: <%= featurePropertyName %>SearchColumns,
+  const base<%= resourceClassName %>SearchViewModel: <%= resourceClassName %>SearchViewModel = {
+    columns: <%= resourceClassName %>SearchColumns,
     searchCriteria: { changeMe: '0' },
     searchExecuted: true,
     results: [],
@@ -101,7 +103,7 @@ describe('<%= featureClassName %>SearchComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [<%= featureClassName %>SearchComponent],
+      declarations: [<%= resourceClassName %>SearchComponent],
       imports: [
         PortalCoreModule,
         LetDirective,
@@ -117,7 +119,7 @@ describe('<%= featureClassName %>SearchComponent', () => {
       providers: [
         DialogService,
         provideMockStore({
-          initialState: { <%= featurePropertyName %>: { search: initialState } },
+          initialState: { <%= resourceClassName %>: { search: initialState } },
         }),
         FormBuilder,
         providePortalDialogService(),
@@ -151,17 +153,17 @@ describe('<%= featureClassName %>SearchComponent', () => {
     store = TestBed.inject(MockStore);
     jest.spyOn(store, 'dispatch')
     store.overrideSelector(
-      select<%= featureClassName %>SearchViewModel,
-      base<%= featureClassName %>SearchViewModel
+      select<%= resourceClassName %>SearchViewModel,
+      base<%= resourceClassName %>SearchViewModel
     );
     store.refreshState();
 
-    fixture = TestBed.createComponent(<%= featureClassName %>SearchComponent);
+    fixture = TestBed.createComponent(<%= resourceClassName %>SearchComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-    <%= featurePropertyName %>Search = await TestbedHarnessEnvironment.harnessForFixture(
+    <%= resourceClassName %>Search = await TestbedHarnessEnvironment.harnessForFixture(
       fixture,
-      <%= featureClassName %>SearchHarness
+      <%= resourceClassName %>SearchHarness
     );
   });
 
@@ -171,8 +173,8 @@ describe('<%= featureClassName %>SearchComponent', () => {
 
   it('should dispatch resetButtonClicked action on resetSearch', async () => {
     var doneFn = jest.fn();
-    store.overrideSelector(select<%= featureClassName %>SearchViewModel, {
-      ...base<%= featureClassName %>SearchViewModel,
+    store.overrideSelector(select<%= resourceClassName %>SearchViewModel, {
+      ...base<%= resourceClassName %>SearchViewModel,
       results: [
         {
           id: '1',
@@ -198,18 +200,18 @@ describe('<%= featureClassName %>SearchComponent', () => {
     store.refreshState();
 
     store.scannedActions$
-      .pipe(ofType(<%= featureClassName %>SearchActions.resetButtonClicked))
+      .pipe(ofType(<%= resourcePropertyName %>SearchActions.resetButtonClicked))
       .subscribe(() => {
         doneFn();
       });
 
-    const searchHeader = await <%= featurePropertyName %>Search.getHeader();
+    const searchHeader = await <%= resourceClassName %>Search.getHeader();
     await searchHeader.clickResetButton();
     expect(doneFn).toHaveBeenCalledTimes(1);
   });
 
   it('should have 2 overFlow header actions when search config is disabled', async () => {
-    const searchHeader = await <%= featurePropertyName %>Search.getHeader();
+    const searchHeader = await <%= resourceClassName %>Search.getHeader();
     const pageHeader = await searchHeader.getPageHeader();
     const overflowActionButton = await pageHeader.getOverflowActionMenuButton();
     await overflowActionButton?.click();
@@ -229,13 +231,13 @@ describe('<%= featureClassName %>SearchComponent', () => {
   });
 
   it('should display hide chart action if chart is visible', async () => {
-    store.overrideSelector(select<%= featureClassName %>SearchViewModel, {
-      ...base<%= featureClassName %>SearchViewModel,
+    store.overrideSelector(select<%= resourceClassName %>SearchViewModel, {
+      ...base<%= resourceClassName %>SearchViewModel,
       chartVisible: true,
     });
     store.refreshState();
 
-    const searchHeader = await <%= featurePropertyName %>Search.getHeader();
+    const searchHeader = await <%= resourceClassName %>Search.getHeader();
     const pageHeader = await searchHeader.getPageHeader();
     const overflowActionButton = await pageHeader.getOverflowActionMenuButton();
     await overflowActionButton?.click();
@@ -251,8 +253,8 @@ describe('<%= featureClassName %>SearchComponent', () => {
 
   it('should display chosen column in the diagram', async () => {
     component.diagramColumnId = 'changeMe';
-    store.overrideSelector(select<%= featureClassName %>SearchViewModel, {
-      ...base<%= featureClassName %>SearchViewModel,
+    store.overrideSelector(select<%= resourceClassName %>SearchViewModel, {
+      ...base<%= resourceClassName %>SearchViewModel,
       chartVisible: true,
       results: [
         {
@@ -289,7 +291,7 @@ describe('<%= featureClassName %>SearchComponent', () => {
     store.refreshState();
 
     const diagram =
-      await (await <%= featurePropertyName %>Search.getDiagram())!.getDiagram();
+      await (await <%= resourceClassName %>Search.getDiagram())!.getDiagram();
 
     expect(await diagram.getTotalNumberOfResults()).toBe(3);
     expect(await diagram.getSumLabel()).toEqual('Total');
@@ -303,7 +305,7 @@ describe('<%= featureClassName %>SearchComponent', () => {
     fixture.detectChanges();
 
     expect(breadcrumbService.setItems).toHaveBeenCalledTimes(1);
-    const searchHeader = await <%= featurePropertyName %>Search.getHeader();
+    const searchHeader = await <%= resourceClassName %>Search.getHeader();
     const pageHeader = await searchHeader.getPageHeader();
     const searchBreadcrumbItem = await pageHeader.getBreadcrumbItem('Search');
 
@@ -326,8 +328,8 @@ describe('<%= featureClassName %>SearchComponent', () => {
         ],
       },
     ];
-    store.overrideSelector(select<%= featureClassName %>SearchViewModel, {
-      ...base<%= featureClassName %>SearchViewModel,
+    store.overrideSelector(select<%= resourceClassName %>SearchViewModel, {
+      ...base<%= resourceClassName %>SearchViewModel,
       results: [],
       columns: columns,
       displayedColumns: columns,
@@ -335,7 +337,7 @@ describe('<%= featureClassName %>SearchComponent', () => {
     store.refreshState();
   
     const interactiveDataView =
-      await <%= featurePropertyName %>Search.getSearchResults();        
+      await <%= resourceClassName %>Search.getSearchResults();        
     (await (
         await interactiveDataView.getDataLayoutSelection()
       ).getTableLayoutSelectionButton()
@@ -368,13 +370,13 @@ describe('<%= featureClassName %>SearchComponent', () => {
   it('should dispatch chartVisibilityToggled on show/hide chart header', async () => {
     jest.spyOn(store, 'dispatch');
 
-    store.overrideSelector(select<%= featureClassName %>SearchViewModel, {
-      ...base<%= featureClassName %>SearchViewModel,
+    store.overrideSelector(select<%= resourceClassName %>SearchViewModel, {
+      ...base<%= resourceClassName %>SearchViewModel,
       chartVisible: false,
     });
     store.refreshState();
 
-    const searchHeader = await <%= featurePropertyName %>Search.getHeader();
+    const searchHeader = await <%= resourceClassName %>Search.getHeader();
     const pageHeader = await searchHeader.getPageHeader();
     const overflowActionButton = await pageHeader.getOverflowActionMenuButton();
     await overflowActionButton?.click();
@@ -384,16 +386,16 @@ describe('<%= featureClassName %>SearchComponent', () => {
     );
     await showChartActionItem!.selectItem();
     expect(store.dispatch).toHaveBeenCalledWith(
-      <%= featureClassName %>SearchActions.chartVisibilityToggled()
+      <%= resourcePropertyName %>SearchActions.chartVisibilityToggled()
     );
   });  
 
   it('should display translated headers', async () => {
-    const searchHeader = await <%= featurePropertyName %>Search.getHeader();
+    const searchHeader = await <%= resourceClassName %>Search.getHeader();
     const pageHeader = await searchHeader.getPageHeader();
-    expect(await pageHeader.getHeaderText()).toEqual('<%= featureClassName %> Search');
+    expect(await pageHeader.getHeaderText()).toEqual('<%= resourceClassName %> Search');
     expect(await pageHeader.getSubheaderText()).toEqual(
-      'Searching and displaying of <%= featureClassName %>'
+      'Searching and displaying of <%= resourceClassName %>'
     );
   });
 
@@ -412,8 +414,8 @@ describe('<%= featureClassName %>SearchComponent', () => {
         ],
       },
     ];
-    store.overrideSelector(select<%= featureClassName %>SearchViewModel, {
-      ...base<%= featureClassName %>SearchViewModel,
+    store.overrideSelector(select<%= resourceClassName %>SearchViewModel, {
+      ...base<%= resourceClassName %>SearchViewModel,
       results: [],
       columns: columns,
       displayedColumns: columns,
@@ -421,7 +423,7 @@ describe('<%= featureClassName %>SearchComponent', () => {
     store.refreshState();
 
     const interactiveDataView =
-      await <%= featurePropertyName %>Search.getSearchResults();
+      await <%= resourceClassName %>Search.getSearchResults();
     const dataView = await interactiveDataView.getDataView();
     const dataTable = await dataView.getDataListGrid();
     const rows = await dataTable!.getActionButtons('list');
@@ -434,8 +436,8 @@ describe('<%= featureClassName %>SearchComponent', () => {
   it('should not display chart when no results or toggled to not visible', async () => {
     component.diagramColumnId = 'changeMe';
 
-    store.overrideSelector(select<%= featureClassName %>SearchViewModel, {
-      ...base<%= featureClassName %>SearchViewModel,
+    store.overrideSelector(select<%= resourceClassName %>SearchViewModel, {
+      ...base<%= resourceClassName %>SearchViewModel,
       results: [],
       chartVisible: true,
       columns: [
@@ -455,11 +457,11 @@ describe('<%= featureClassName %>SearchComponent', () => {
     });
     store.refreshState();
 
-    let diagram = await <%= featurePropertyName %>Search.getDiagram();
+    let diagram = await <%= resourceClassName %>Search.getDiagram();
     expect(diagram).toBeNull();
 
-    store.overrideSelector(select<%= featureClassName %>SearchViewModel, {
-      ...base<%= featureClassName %>SearchViewModel,
+    store.overrideSelector(select<%= resourceClassName %>SearchViewModel, {
+      ...base<%= resourceClassName %>SearchViewModel,
       results: [
         {
           id: '1',
@@ -485,11 +487,11 @@ describe('<%= featureClassName %>SearchComponent', () => {
     });
     store.refreshState();
 
-    diagram = await <%= featurePropertyName %>Search.getDiagram();
+    diagram = await <%= resourceClassName %>Search.getDiagram();
     expect(diagram).toBeNull();
 
-    store.overrideSelector(select<%= featureClassName %>SearchViewModel, {
-      ...base<%= featureClassName %>SearchViewModel,
+    store.overrideSelector(select<%= resourceClassName %>SearchViewModel, {
+      ...base<%= resourceClassName %>SearchViewModel,
       results: [
         {
           id: '1',
@@ -515,7 +517,7 @@ describe('<%= featureClassName %>SearchComponent', () => {
     });
     store.refreshState();
 
-    diagram = await <%= featurePropertyName %>Search.getDiagram();
+    diagram = await <%= resourceClassName %>Search.getDiagram();
     expect(diagram).toBeTruthy();
   });
 
@@ -543,15 +545,15 @@ describe('<%= featureClassName %>SearchComponent', () => {
         ],
       },
     ];
-    store.overrideSelector(select<%= featureClassName %>SearchViewModel, {
-      ...base<%= featureClassName %>SearchViewModel,
+    store.overrideSelector(select<%= resourceClassName %>SearchViewModel, {
+      ...base<%= resourceClassName %>SearchViewModel,
       results: results,
       columns: columns,
       displayedColumns: columns,
     });
     store.refreshState();
   
-    const searchHeader = await <%= featurePropertyName %>Search.getHeader();
+    const searchHeader = await <%= resourceClassName %>Search.getHeader();
     const pageHeader = await searchHeader.getPageHeader();
     const overflowActionButton = await pageHeader.getOverflowActionMenuButton();
     await overflowActionButton?.click();
@@ -562,7 +564,7 @@ describe('<%= featureClassName %>SearchComponent', () => {
     await exportAllActionItem!.selectItem();
 
     expect(store.dispatch).toHaveBeenCalledWith(
-      <%= featureClassName %>SearchActions.exportButtonClicked()
+      <%= resourcePropertyName %>SearchActions.exportButtonClicked()
     );
   });
 
@@ -589,17 +591,17 @@ describe('<%= featureClassName %>SearchComponent', () => {
       it(desc, () => {
         jest.spyOn(store, 'dispatch')
 
-        component.<%= featurePropertyName %>SearchFormGroup = {
+        component.<%= resourcePropertyName %>SearchFormGroup = {
           value: formValue,
           getRawValue: () => formValue
         } as any
 
-        component.search(component.<%= featurePropertyName %>SearchFormGroup)
+        component.search(component.<%= resourcePropertyName %>SearchFormGroup)
 
         const calls = (store.dispatch as jest.Mock).mock.calls
         expect(calls.length).toBeGreaterThan(0)
         const lastAction = calls[calls.length - 1][0]
-        expect(lastAction.type).toBe(<%= featureClassName %>SearchActions.searchButtonClicked.type)
+        expect(lastAction.type).toBe(<%= resourcePropertyName %>SearchActions.searchButtonClicked.type)
         expect(lastAction.searchCriteria).toEqual(expected)
       })
     })
@@ -609,17 +611,17 @@ describe('<%= featureClassName %>SearchComponent', () => {
     const cases = [
       {
         method: 'resultComponentStateChanged',
-        action: <%= featureClassName %>SearchActions.resultComponentStateChanged,
+        action: <%= resourcePropertyName %>SearchActions.resultComponentStateChanged,
         payload: { groupKey: 'test-group' }
       },
       {
         method: 'searchHeaderComponentStateChanged',
-        action: <%= featureClassName %>SearchActions.searchHeaderComponentStateChanged,
+        action: <%= resourcePropertyName %>SearchActions.searchHeaderComponentStateChanged,
         payload: { activeViewMode: 'basic' as 'basic', selectedSearchConfig: 'config1' }
       },
       {
         method: 'diagramComponentStateChanged',
-        action: <%= featureClassName %>SearchActions.diagramComponentStateChanged,
+        action: <%= resourcePropertyName %>SearchActions.diagramComponentStateChanged,
         payload: { label: 'Test Diagram' }
       }
     ];

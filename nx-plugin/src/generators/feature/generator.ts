@@ -46,7 +46,7 @@ export async function featureGenerator(
   );
   Object.assign(options, parameters);
 
-  const spinner = ora(`Adding feature ${options.name}`).start();
+  const spinner = ora(`Adding feature ${options.name}\n`).start();
   const directory = '.';
 
   const isNgRx = !!Object.keys(
@@ -64,14 +64,14 @@ export async function featureGenerator(
     {
       ...options,
       featureFileName: names(options.name).fileName,
-      featurePropertyName: names(options.name).propertyName,
       featureClassName: names(options.name).className,
+      featurePropertyName: names(options.name).propertyName,
       standalone: options.standalone,
     }
   );
   const generatorProcessor = new GeneratorProcessor();
   generatorProcessor.addStep(new GeneralOpenAPIStep());
-  
+
   generatorProcessor.run(tree, options, spinner);
 
   adaptAppRoutingModule(tree, options);
@@ -80,19 +80,22 @@ export async function featureGenerator(
 
   spinner.succeed();
   return () => {
+    let cmd = '';
+    function log(command: string) {
+      console.log('');
+      console.log('generate feature ==> ' + command);
+    }
     const files = tree
       .listChanges()
       .map((c) => c.path)
       .filter((p) => p.endsWith('.ts'))
       .join(' ');
-    //execSync('npx --yes organize-imports-cli ' + files, {
-    //  cwd: tree.root,
-    //  stdio: 'inherit',
-    //});
-    execSync('npx prettier --write ' + files, {
-      cwd: tree.root,
-      stdio: 'inherit',
-    });
+    cmd = 'npx --yes organize-imports-cli ';
+    log(cmd);
+    execSync(cmd + files, { cwd: tree.root, stdio: 'inherit' });
+    cmd = 'npx prettier --write ';
+    log(cmd);
+    execSync(cmd + files, { cwd: tree.root, stdio: 'inherit' });
   };
 }
 

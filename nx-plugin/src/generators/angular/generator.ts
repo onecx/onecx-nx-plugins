@@ -32,15 +32,15 @@ const PARAMETERS: GeneratorParameter<AngularGeneratorSchema>[] = [
 
 export async function angularGenerator(
   tree: Tree,
-  options: AngularGeneratorSchema,
+  options: AngularGeneratorSchema
 ): Promise<GeneratorCallback> {
   const parameters = await processParams<AngularGeneratorSchema>(
     PARAMETERS,
-    options,
+    options
   );
   Object.assign(options, parameters);
 
-  const spinner = ora('Adding Angular').start();
+  const spinner = ora('Adding Angular\n').start();
   const directory = '.';
 
   const applicationGeneratorCallback = await applicationGenerator(tree, {
@@ -70,7 +70,7 @@ export async function angularGenerator(
       constantName: names(options.name).constantName,
       propertyName: names(options.name).propertyName,
       standalone: options.standalone,
-    },
+    }
   );
   const generatorProcessor = new GeneratorProcessor();
   generatorProcessor.addStep(new GeneralOpenAPIStep());
@@ -134,7 +134,7 @@ export async function angularGenerator(
       'jest-environment-jsdom': '^29.7.0',
       'jest-preset-angular': '~14.2.2',
       webpack: '5.95.0',
-    },
+    }
   );
 
   addScriptsToPackageJson(tree, options);
@@ -155,29 +155,37 @@ export async function angularGenerator(
 
   return async () => {
     await applicationGeneratorCallback();
+    function log(command: string) {
+      console.log('');
+      console.log('generate angular ==> ' + command);
+    }
 
     installPackagesTask(tree);
-    execSync('echo "==> rm -rf .vscode" && rm -rf .vscode', {
+
+    let cmd = 'rm -rf .vscode ';
+    log(cmd);
+    execSync(cmd, {
       cwd: tree.root,
       stdio: 'inherit',
     });
-    execSync('echo "==> npm run apigen" && npm run apigen', {
-      cwd: tree.root,
-      stdio: 'inherit',
-    });
+    cmd = 'npm run apigen ';
+    log(cmd);
+    execSync(cmd, { cwd: tree.root, stdio: 'inherit' });
     const files = tree
       .listChanges()
       .map((c) => c.path)
       .filter((p) => p.endsWith('.ts'))
       .join(' ');
-    //execSync('npx --yes organize-imports-cli ' + files, {
+    //cmd = 'npx --yes organize-imports-cli '
+    //log(cmd)
+    //execSync(cmd + files, {
     //  cwd: tree.root,
     //  stdio: 'inherit',
     //});
-    execSync('echo "==> npx prettier --write" && npx prettier --write ' + files, {
-      cwd: tree.root,
-      stdio: 'inherit',
-    });
+    cmd = 'npx prettier --write ';
+    log(cmd);
+    execSync(cmd + files, { cwd: tree.root, stdio: 'inherit' });
+
     installPackagesTask(tree, true);
   };
 }
@@ -200,12 +208,14 @@ function addScriptsToPackageJson(tree: Tree, options: AngularGeneratorSchema) {
     pkgJson.private = true;
     pkgJson.license = 'Apache-2.0';
     pkgJson.scripts = pkgJson.scripts ?? {};
-    pkgJson.scripts['apigen'] =
-      `openapi-generator-cli generate -i src/assets/api/openapi-bff.yaml -c apigen.yaml -o src/app/shared/generated -g typescript-angular --type-mappings AnyType=object`;
+    pkgJson.scripts[
+      'apigen'
+    ] = `openapi-generator-cli generate -i src/assets/api/openapi-bff.yaml -c apigen.yaml -o src/app/shared/generated -g typescript-angular --type-mappings AnyType=object`;
     pkgJson.scripts['start'] = 'nx serve';
     pkgJson.scripts['build'] = 'nx build';
-    pkgJson.scripts['postbuild'] =
-      `mv "$(find dist/${options['name']} -maxdepth 1 -type f -name 'styles.*.css' | head -n 1)" dist/${options['name']}/styles.css`;
+    pkgJson.scripts[
+      'postbuild'
+    ] = `mv "$(find dist/${options['name']} -maxdepth 1 -type f -name 'styles.*.css' | head -n 1)" dist/${options['name']}/styles.css`;
     pkgJson.scripts['clean'] =
       'npm cache clean --force && npx clear-npx-cache && rm -rf *.log dist reports .nx .angular .eslintcache ./node_modules/.cache/prettier/.prettier-cache';
     pkgJson.scripts['format'] = 'nx format:write --uncommitted';
@@ -237,13 +247,13 @@ function adaptTsConfig(tree: Tree, options: AngularGeneratorSchema) {
     filePath,
     find,
     replaceWith,
-    tree,
+    tree
   );
 }
 
 function adaptProjectConfiguration(
   tree: Tree,
-  options: AngularGeneratorSchema,
+  options: AngularGeneratorSchema
 ) {
   const config = readProjectConfiguration(tree, options.name);
   config.targets['serve'].executor = '@nx/angular:dev-server';
@@ -314,7 +324,7 @@ function adaptJestConfig(tree: Tree) {
     filePath,
     /transformIgnorePatterns: .+?,/,
     `transformIgnorePatterns: ['node_modules/(?!@ngrx|(?!deck.gl)|d3-scale|(?!.*\\.mjs$))'],`,
-    tree,
+    tree
   );
 }
 
@@ -322,7 +332,7 @@ function adaptAngularPrefixConfig(tree: Tree) {
   if (tree.exists('.eslintrc.json')) {
     updateJson(tree, '.eslintrc.json', (json) => {
       const override = json['overrides'].find(
-        (o) => !!o.rules['@angular-eslint/directive-selector'],
+        (o) => !!o.rules['@angular-eslint/directive-selector']
       );
       override.rules['@angular-eslint/directive-selector'][1].prefix = 'app';
       override.rules['@angular-eslint/component-selector'][1].prefix = 'app';

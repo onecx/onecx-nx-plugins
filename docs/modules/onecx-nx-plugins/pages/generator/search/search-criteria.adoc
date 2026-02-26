@@ -33,7 +33,7 @@ More details in {ngrx_search_criteria_ref}[NgRx Search Criteria].
 Directory:: `<root-of-ui-app>/src/assets/api`
 File::      `<product>-bff.yaml`
 
-.ACTION S1 in `+<product>-bff.yaml+`
+.ACTION S1 in `+openapi-bff.yaml+`
 [%collapsible]
 ====
 [source, yaml]
@@ -63,7 +63,7 @@ File::      `<product>-bff.yaml`
 Where *changeMe* is here the example search criteria to be replaced. This criteria corresponds to the property added to the `+Search<Feature>Request+`.
 ====
 
-.Example: Adjustments in `+bookstore-bff.yaml+`
+.Example: Adjustments in `+openapi-bff.yaml+`
 [%collapsible]
 ====
 [source, yaml]
@@ -88,7 +88,7 @@ Where *changeMe* is here the example search criteria to be replaced. This criter
         # "ACTION S1: Add additional properties: https://onecx.github.io/docs/documentation/current/onecx-nx-plugins:generator/search/search-criteria.html#action-1"
 ----
 
-Where e.g. *itemId* is a search criteria, same as the one added to the `+SearchHelpRequest+`.
+Where e.g. *itemId* is a search criteria, same as the one added to the `+SearchBookRequest+`.
 ====
 
 After adding the new criteria to the OpenAPI specification, you need to regenerate the API client code to reflect these changes in your application.
@@ -132,12 +132,11 @@ Where *changeMe* is an additional search criteria added to the `+Search<Feature>
 [source, javascript]
 ----
 export const bookSearchCriteriasSchema = z.object({
-  bookTitle: z.string().optional(),
-  bookType: z.string().optional()
+  bookTitle: z.string().optional()
 } satisfies Partial<Record<keyof SearchBookRequest, ZodTypeAny>>);
 ----
 
-Where *bookTitle* and *bookType* are the criteria added to the `+SearchBookRequest+`.
+Where *bookTitle* is the criteria added to the `+SearchBookRequest+`.
 ====
 
 
@@ -149,10 +148,10 @@ To make the search criteria usable for the user, you need to add corresponding H
 More details in {ngrx_search_criteria_html_ref}[Search Criteria HTML] and {ngrx_search_criteria_html_example_ref}[Example input fields].
 
 [horizontal]
-Directory:: `<root-of-ui-app>/src/app/<feature>/pages/<search>`
-File::      `<feature>-search.component.html`
+Directory:: `<root-of-ui-app>/src/app/<feature>/pages/<resource>-<search>`
+File::      `<resource>-search.component.html`
 
-.Adust Form in `+book-search.component.html+`
+.Adust Form in `+<resource>-search.component.html+`
 [%collapsible]
 ====
 [source, html]

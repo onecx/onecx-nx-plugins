@@ -1,18 +1,20 @@
 import { createSelector } from '@ngrx/store';
+
 import { RowListGridData } from '@onecx/portal-integration-angular';
 import { createChildSelectors } from '@onecx/ngrx-accelerator';
-import { <%= featurePropertyName %>Feature } from '../../<%= featureFileName %>.reducers';
-import { initialState } from './<%= featureFileName %>-search.reducers';
-import { <%= featureClassName %>SearchViewModel } from './<%= featureFileName %>-search.viewmodel';
-import { <%= resource %> } from '../../../shared/generated';
 
-export const <%= featurePropertyName %>SearchSelectors = createChildSelectors(
+import { <%= resource %> } from 'src/app/shared/generated';
+import { <%= featurePropertyName %>Feature } from '../../<%= featureFileName %>.reducers';
+import { initialState } from './<%= resourceFileName %>-search.reducers';
+import { <%= resourceClassName %>SearchViewModel } from './<%= resourceFileName %>-search.viewmodel';
+
+export const <%= resourcePropertyName %>SearchSelectors = createChildSelectors(
   <%= featurePropertyName %>Feature.selectSearch,
   initialState
 );
 
 export const selectResults = createSelector(
-  <%= featurePropertyName %>SearchSelectors.selectResults,
+  <%= resourcePropertyName %>SearchSelectors.selectResults,
   (results: <%= resource %>[]): RowListGridData[] => {
     return results.map((item) => ({      
       imagePath: '',
@@ -24,16 +26,16 @@ export const selectResults = createSelector(
 );
 
 
-export const select<%= featureClassName %>SearchViewModel = createSelector(
-  <%= featurePropertyName %>SearchSelectors.selectColumns,
-  <%= featurePropertyName %>SearchSelectors.selectCriteria,
+export const select<%= resourceClassName %>SearchViewModel = createSelector(
+  <%= resourcePropertyName %>SearchSelectors.selectColumns,
+  <%= resourcePropertyName %>SearchSelectors.selectCriteria,
   selectResults,  
-  <%= featurePropertyName %>SearchSelectors.selectResultComponentState,
-  <%= featurePropertyName %>SearchSelectors.selectSearchHeaderComponentState,
-  <%= featurePropertyName %>SearchSelectors.selectDiagramComponentState,
-  <%= featurePropertyName %>SearchSelectors.selectChartVisible,  
-  <%= featurePropertyName %>SearchSelectors.selectSearchLoadingIndicator,
-  <%= featurePropertyName %>SearchSelectors.selectSearchExecuted, 
+  <%= resourcePropertyName %>SearchSelectors.selectResultComponentState,
+  <%= resourcePropertyName %>SearchSelectors.selectSearchHeaderComponentState,
+  <%= resourcePropertyName %>SearchSelectors.selectDiagramComponentState,
+  <%= resourcePropertyName %>SearchSelectors.selectChartVisible,  
+  <%= resourcePropertyName %>SearchSelectors.selectSearchLoadingIndicator,
+  <%= resourcePropertyName %>SearchSelectors.selectSearchExecuted, 
   (
     columns,
     searchCriteria, 
@@ -44,7 +46,7 @@ export const select<%= featureClassName %>SearchViewModel = createSelector(
     chartVisible,
     searchLoadingIndicator,
     searchExecuted
-    ): <%= featureClassName %>SearchViewModel => ({
+    ): <%= resourceClassName %>SearchViewModel => ({
     columns,
     searchCriteria,
     results,

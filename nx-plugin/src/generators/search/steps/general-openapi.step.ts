@@ -38,6 +38,38 @@ export class GeneralOpenAPIStep implements GeneratorStep<SearchGeneratorSchema> 
       )
       .done()
       .schemas()
+      .set(`${resource}`, {
+        type: 'object',
+        required: ['id'],
+        properties: {
+          modificationCount: {
+            type: 'integer',
+            format: 'int32',
+          },
+          creationDate: {
+            $ref: '#/components/schemas/OffsetDateTime'
+          },
+          creationUser: {
+            type: 'string',
+            readOnly: true
+          },
+          modificationDate: {
+            $ref: '#/components/schemas/OffsetDateTime'
+          },
+          modificationUser: {
+            type: 'string',
+            readOnly: true
+          },
+          id: {
+            type: 'string',
+            readOnly: true
+          },
+          [COMMENT_KEY]:
+            'ACTION S0: Add entity properties: https://onecx.github.io/docs/documentation/current/onecx-nx-plugins:generator/create-schema.html#action-0',
+        },
+      })
+      .done()
+      .schemas()
       .set(`${searchRequestName}`, {
         type: 'object',
         properties: {

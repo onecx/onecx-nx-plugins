@@ -5,8 +5,8 @@ import { updateYaml } from '../../shared/yaml';
 
 export class GeneralPermissionsStep implements GeneratorStep<SearchGeneratorSchema> {
   process(tree: Tree, options: SearchGeneratorSchema): void {
-    const constantName = names(options.featureName).constantName;
-    const propertyName = names(options.featureName).propertyName;
+    const constantName = names(options.resource).constantName;
+    const resourceName = options.resource;
 
     const folderPath = 'helm/values.yaml';
 
@@ -22,31 +22,28 @@ export class GeneralPermissionsStep implements GeneratorStep<SearchGeneratorSche
         ] ??= {};
         yaml['app']['operator']['permission']['spec']['permissions'][
           constantName
-        ]['CREATE'] ??= `Create ${propertyName}`;
+        ]['CREATE'] ??= `Create ${resourceName} item`;
         yaml['app']['operator']['permission']['spec']['permissions'][
           constantName
-        ]['EDIT'] ??= `Edit ${propertyName}`;
+        ]['EDIT'] ??= `Edit ${resourceName} item`;
         yaml['app']['operator']['permission']['spec']['permissions'][
           constantName
-        ]['DELETE'] ??= `Delete ${propertyName}`;
+        ]['DELETE'] ??= `Delete ${resourceName} item`;
         yaml['app']['operator']['permission']['spec']['permissions'][
           constantName
-        ]['SAVE'] ??= `Update and save ${propertyName}`;
+        ]['SEARCH'] ??= `Search ${resourceName} items`;
         yaml['app']['operator']['permission']['spec']['permissions'][
           constantName
-        ]['IMPORT'] ??= `Import ${propertyName}`;
+        ]['VIEW'] ??= `View ${resourceName} item details`;
         yaml['app']['operator']['permission']['spec']['permissions'][
           constantName
-        ]['EXPORT'] ??= `Export ${propertyName}`;
+        ]['IMPORT'] ??= `Import ${resourceName} items`;
         yaml['app']['operator']['permission']['spec']['permissions'][
           constantName
-        ]['VIEW'] ??= `View mode for ${propertyName}`;
+        ]['EXPORT'] ??= `Export ${resourceName} items`;
         yaml['app']['operator']['permission']['spec']['permissions'][
           constantName
-        ]['SEARCH'] ??= `Search ${propertyName}`;
-        yaml['app']['operator']['permission']['spec']['permissions'][
-          constantName
-        ]['BACK'] ??= `Navigate back in details of ${propertyName}`;
+        ]['BACK'] ??= `Navigate back in details of ${resourceName} item`;
         return yaml;
       });
     }

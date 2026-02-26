@@ -1,7 +1,7 @@
 {
   "name": "onecx-nx-plugins",
   "private": true,
-  "version": "8.0.0-rc.1",
+  "version": "8.0.0-rc.local",
   "license": "Apache-2.0",
   "contributors": [
     "OneCX Development Team <onecx_dev@1000kit.org>"

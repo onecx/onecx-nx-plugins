@@ -15,10 +15,10 @@ Components can represent anything from a simple button or form field to complex 
 
 The current working directory must be the root of an existing OneCX UI Application.
 
-.To run the generator, execute the following command
+.Create a search component with the following command, preset resource/entity name
 [source,bash]
 ----
-nx generate <namespace>/nx-plugin:search  <feature>
+nx generate <namespace>/nx-plugin:search <feature> --resource=<resource>
 ----
  
 with:
@@ -26,12 +26,22 @@ with:
 ifdef::env-site[]
 include::partial$_parameter.adoc[tag=namespace]
 include::partial$_parameter.adoc[tag=feature]
+include::partial$_parameter.adoc[tag=resource]
 endif::[]
 
 Next, *you will be asked* if you would like to adapt the names for the generation. +
 If you answer "Yes", you can specify a name for the API in the following questions. This can be helpful if you want to customize an existing API. When changing names, make sure that you use the same custom names for the resource name and API service name for all generated components of the feature (search, details, create/update, delete), as these are shared.
 
 The generator creates a new search component within the specified feature module and set up the necessary structure and configurations.
+
+=== Key Naming Conventions
+* `src/app/<feature>/pages/<resource>-search` +
+  Directory for the search component and its related files
+* `<resource>SearchComponent` +
+  Name for the search component class
+* '' +
+  Default route path for the search component, see `src/app/<feature>/<feature>.routes.ts`.
+
 
 == Post-Generation Steps
 The next steps involve adapting the search component to your specific requirements and integrating it into other parts of the application. All parts that need to be adapted after the generation are described in the following sections.
@@ -68,13 +78,30 @@ This marker is used as a placeholder for future extensions by newly generated co
 
 Create a Search Component inside the *book* feature module. Execute the following command with the *bookstore* application as current working directory.
 
-.Create a Search Component, without adapting names
+.Create a Search Component for Books, preset resource/entity name
 [source,bash]
 ----
-nx generate @onecx/nx-plugin:search book
+nx generate @onecx/nx-plugin:search book --resource=Book
 ----
 
-This command will generate a new search component *book-search* within the specified feature module with the necessary structure and configurations.
+This command will generate a new search component *book-search* within the specified feature module with the necessary structure and configurations. With the presetted resource/entity name *Book*, the generator will also preset the API service name to *BookService* and the API name to *BookAPI* for the generated search component. This should correspond to the created schema in OpenAPI file, see step before.
 
 .Excerpt of generated files and directories
 image::generated_feature_book_search.png[width=250]
+
+
+=== Integrate Search Component into the Application
+After the generation, you need to integrate the search component into the application. This involves adding the search component to the routing configuration of the feature module and ensuring that it is properly linked to the rest of the application.
+
+In general, use the mechanism of OneCX Local environment to integrate the generated search component.
+
+.Tipps for integration:
+* Start the application with a dedicated port
+* Integrate the application into running OneCX environment with this port
+* Add necessary data to the backend to be able to call the search component (product, permissions, workspace registration, menu entry, etc.)
+* After making these changes, reload the OneCX UI and navigate to the search component route
+
+In the following image, the search component is integrated into the application unchanged, exactly as it was generated.
+
+.Search UI after integration into the application
+image::generated_book_search_component.png[]

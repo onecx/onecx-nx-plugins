@@ -12,7 +12,6 @@ import { first, Observable, map } from 'rxjs';
 import { PrimeIcons } from 'primeng/api';
 import { Calendar } from 'primeng/calendar';
 
-
 import { isValidDate } from '@onecx/accelerator';
 import {
   Action,
@@ -28,23 +27,23 @@ import {
   SearchHeaderComponentState,
 } from '@onecx/portal-integration-angular';
 
-import { <%= featureClassName %>SearchActions } from './<%= featureFileName %>-search.actions';
+import { <%= resourcePropertyName %>SearchActions } from './<%= resourceFileName %>-search.actions';
 import {
-  <%= featureClassName %>SearchCriteria,
-  <%= featurePropertyName %>SearchCriteriasSchema,
-} from './<%= featureFileName %>-search.parameters';
-import { select<%= featureClassName %>SearchViewModel } from './<%= featureFileName %>-search.selectors';
-import { <%= featureClassName %>SearchViewModel } from './<%= featureFileName %>-search.viewmodel';
+  <%= resourceClassName %>SearchCriteria,
+  <%= resourcePropertyName %>SearchCriteriasSchema,
+} from './<%= resourceFileName %>-search.parameters';
+import { select<%= resourceClassName %>SearchViewModel } from './<%= resourceFileName %>-search.selectors';
+import { <%= resourceClassName %>SearchViewModel } from './<%= resourceFileName %>-search.viewmodel';
 
 @Component({
-  selector: 'app-<%= featureFileName %>-search',
-  templateUrl: './<%= featureFileName %>-search.component.html',
-  styleUrls: ['./<%= featureFileName %>-search.component.scss'],
+  selector: 'app-<%= resourceFileName %>-search',
+  templateUrl: './<%= resourceFileName %>-search.component.html',
+  styleUrls: ['./<%= resourceFileName %>-search.component.scss'],
 })
 
-export class <%= featureClassName %>SearchComponent implements OnInit {
+export class <%= resourceClassName %>SearchComponent implements OnInit {
   @ViewChildren(Calendar) calendars!: QueryList<Calendar>;
-  viewModel$: Observable<<%= featureClassName %>SearchViewModel>  = this.store.select(select<%= featureClassName %>SearchViewModel);
+  viewModel$: Observable<<%= resourceClassName %>SearchViewModel>  = this.store.select(select<%= resourceClassName %>SearchViewModel);
 
   defaultDataSortDirection = DataSortDirection.NONE
   defaultDiagramType = DiagramType.PIE
@@ -53,20 +52,20 @@ export class <%= featureClassName %>SearchComponent implements OnInit {
   headerActions$: Observable<Action[]> = this.viewModel$.pipe(map((vm) => {
       const actions: Action[] = [
         {
-          labelKey: '<%= featureConstantName %>_SEARCH.HEADER_ACTIONS.EXPORT_ALL',
+          labelKey: '<%= resourceConstantName %>_SEARCH.HEADER_ACTIONS.EXPORT_ALL',
           icon: PrimeIcons.DOWNLOAD,
-          titleKey: '<%= featureConstantName %>_SEARCH.HEADER_ACTIONS.EXPORT_ALL',
+          titleKey: '<%= resourceConstantName %>_SEARCH.HEADER_ACTIONS.EXPORT_ALL',
           show: 'asOverflow',
           actionCallback: () => this.exportItems(),
         },
         {
           labelKey: vm.chartVisible
-            ? '<%= featureConstantName %>_SEARCH.HEADER_ACTIONS.HIDE_CHART'
-            : '<%= featureConstantName %>_SEARCH.HEADER_ACTIONS.SHOW_CHART',
+            ? '<%= resourceConstantName %>_SEARCH.HEADER_ACTIONS.HIDE_CHART'
+            : '<%= resourceConstantName %>_SEARCH.HEADER_ACTIONS.SHOW_CHART',
           icon: PrimeIcons.EYE,
           titleKey: vm.chartVisible
-            ? '<%= featureConstantName %>_SEARCH.HEADER_ACTIONS.HIDE_CHART'
-            : '<%= featureConstantName %>_SEARCH.HEADER_ACTIONS.SHOW_CHART',
+            ? '<%= resourceConstantName %>_SEARCH.HEADER_ACTIONS.HIDE_CHART'
+            : '<%= resourceConstantName %>_SEARCH.HEADER_ACTIONS.SHOW_CHART',
           show: 'asOverflow',
           actionCallback: () => this.toggleChartVisibility(),
         },
@@ -79,14 +78,14 @@ export class <%= featureClassName %>SearchComponent implements OnInit {
   diagramColumnId = 'id';
   diagramColumn$ = this.viewModel$.pipe(map((vm) =>vm.columns.find((e) => e.id === this.diagramColumnId) as DataTableColumn));
 
-  public <%= featurePropertyName %>SearchFormGroup: FormGroup = this.formBuilder.group(
+  public <%= resourcePropertyName %>SearchFormGroup: FormGroup = this.formBuilder.group(
     {
       ...Object.fromEntries(
-        <%= featurePropertyName %>SearchCriteriasSchema
+        <%= resourcePropertyName %>SearchCriteriasSchema
           .keyof()
           .options.map((k) => [k, null])
-      ) as Record<keyof <%= featureClassName %>SearchCriteria, unknown>,
-    } satisfies Record<keyof <%= featureClassName %>SearchCriteria, unknown>,
+      ) as Record<keyof <%= resourceClassName %>SearchCriteria, unknown>,
+    } satisfies Record<keyof <%= resourceClassName %>SearchCriteria, unknown>,
   );
 
   constructor(
@@ -101,26 +100,26 @@ export class <%= featureClassName %>SearchComponent implements OnInit {
   ngOnInit() {
     this.breadcrumbService.setItems([
       {
-        titleKey: '<%= featureConstantName %>_SEARCH.BREADCRUMB',
-        labelKey: '<%= featureConstantName %>_SEARCH.BREADCRUMB',
-        routerLink: '/<%= featureFileName %>',
+        titleKey: '<%= resourceConstantName %>_SEARCH.BREADCRUMB',
+        labelKey: '<%= resourceConstantName %>_SEARCH.BREADCRUMB',
+        routerLink: '/<%= resourceFileName %>',
       },
     ]);
     this.viewModel$.subscribe((vm) =>
-      this.<%= featurePropertyName %>SearchFormGroup.patchValue(vm.searchCriteria),
+      this.<%= resourcePropertyName %>SearchFormGroup.patchValue(vm.searchCriteria),
     );
   }
 
   resultComponentStateChanged(state: InteractiveDataViewComponentState) {    
-    this.store.dispatch(<%= featureClassName %>SearchActions.resultComponentStateChanged(state))
+    this.store.dispatch(<%= resourcePropertyName %>SearchActions.resultComponentStateChanged(state))
   }
 
   searchHeaderComponentStateChanged(state: SearchHeaderComponentState) {
-    this.store.dispatch(<%= featureClassName %>SearchActions.searchHeaderComponentStateChanged(state))
+    this.store.dispatch(<%= resourcePropertyName %>SearchActions.searchHeaderComponentStateChanged(state))
   }
 
   diagramComponentStateChanged(state: DiagramComponentState) {
-    this.store.dispatch(<%= featureClassName %>SearchActions.diagramComponentStateChanged(state))
+    this.store.dispatch(<%= resourcePropertyName %>SearchActions.diagramComponentStateChanged(state))
   }
 
   search(formValue: FormGroup) {
@@ -130,20 +129,20 @@ export class <%= featureClassName %>SearchComponent implements OnInit {
       { removeNullValues: true }
     );
     this.store.dispatch(
-      <%= featureClassName %>SearchActions.searchButtonClicked({ searchCriteria })
+      <%= resourcePropertyName %>SearchActions.searchButtonClicked({ searchCriteria })
     );
   }
 
   resetSearch() {
-    this.store.dispatch(<%= featureClassName %>SearchActions.resetButtonClicked());
+    this.store.dispatch(<%= resourcePropertyName %>SearchActions.resetButtonClicked());
   }
 
 
   exportItems() {
-    this.store.dispatch(<%= featureClassName %>SearchActions.exportButtonClicked());
+    this.store.dispatch(<%= resourcePropertyName %>SearchActions.exportButtonClicked());
   }   
 
   toggleChartVisibility() {
-    this.store.dispatch(<%= featureClassName %>SearchActions.chartVisibilityToggled());
+    this.store.dispatch(<%= resourcePropertyName %>SearchActions.chartVisibilityToggled());
   }
 }

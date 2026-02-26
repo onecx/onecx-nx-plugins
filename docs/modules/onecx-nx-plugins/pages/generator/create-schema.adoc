@@ -3,10 +3,10 @@ include::partial$_attributes.adoc[]
 endif::[]
 :imagesdir: ../../images
 
-= Create an Entity Scheme
+= Create an Entity Schema
 
-What is an Entity Scheme?::
-An Entity Scheme defines the structure of an entity, including its properties and their types. It is used to ensure that the data for the entity is consistent and follows a defined format. +
+What is an Entity Schema?::
+An Entity Schema defines the structure of an entity, including its properties and their types. It is used to ensure that the data for the entity is consistent and follows a defined format. +
 This is the basis for processing feature data, e.g., for searching, displaying, and modifying it.
 
 At OneCX, we explicitly follow an *API-first approach*. In practice, this means that the OpenAPI file is created first, in which entities and the paths for requests/responses are described. The OpenAPI file serves as the basis for the implementation of the backend services and the frontend components.
@@ -14,22 +14,24 @@ At OneCX, we explicitly follow an *API-first approach*. In practice, this means 
 [#action-0]
 == ACTION S0
 
-=== Template: Generated Scheme
-Adjust the feature scheme::
-Add the base properties of the feature in the OpenAPI YAML file.
+After creating the feature module and components, the next step is to define the entity schema in the OpenAPI file. This involves adding the base properties of the entity to the OpenAPI YAML file, which will be used to generate the API code for the frontend application.
+
+=== Template: Generated Schema
+Adjust the entity schema::
+Add the base properties of the entity in the OpenAPI YAML file.
 
 [horizontal]
 Directory:: `<root-of-ui-app>/src/assets/api`
-File::      `<product>-bff.yaml`
+File::      `openapi-bff.yaml`
 
-.ACTION S0 in `+<product>-bff.yaml+`
+.ACTION S0 in `+openapi-bff.yaml+`
 [%collapsible]
 ====
 [source, yml]
 ----
 components:
   schemas:
-    <feature>:
+    <resource/entity name>:
       type: object
       required:
         - 'modificationCount'
@@ -55,13 +57,13 @@ Where below *properties* the properties of the entity are listed.
 ====
 
 
-=== Example: Scheme for Bookstore Application
+=== Example
 
 [horizontal]
 Directory:: `bookstore/src/assets/api`
-File::      `bookstore-bff.yaml`
+File::      `openapi-bff.yaml`
 
-.Example: Scheme in `+bookstore-bff.yaml+`
+.Example: Schema of Books in `+openapi-bff.yaml+`
 [%collapsible]
 ====
 [source, yml]
@@ -107,10 +109,6 @@ components:
     BookType:
       type: string
       enum: [ crime, drama, fantasy, prosa, science ]
-    OffsetDateTime:
-      format: date-time
-      type: string
-      example: 2022-03-10T12:15:50-04:00
 ----
 
 Where properties with prefix *book* are added to the entity `+Book+`.
@@ -127,4 +125,5 @@ To do this, run the the following command in the terminal with the root of the U
 npm run apigen
 ----
 
-The result can be found in the generated API folder, e.g., `+<root-of-ui-app>/src/app/api/+`.
+The result can be found in the generated API folder: +
+`+<root-of-ui-app>/src/app/shared/generated+`.

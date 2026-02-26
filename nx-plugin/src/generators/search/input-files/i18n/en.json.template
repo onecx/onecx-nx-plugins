@@ -1,8 +1,8 @@
 {
-  "<%= featureConstantName %>_SEARCH": {
-    "HEADER": "<%= featureClassName %> Search",
+  "<%= resourceConstantName %>_SEARCH": {
+    "HEADER": "<%= resourceClassName %> Search",
     "ARIA-LABEL": "Page Header with Search",
-    "SUB_HEADER": "Searching and displaying of <%= featureClassName %>",
+    "SUB_HEADER": "Searching and displaying of <%= resourceClassName %>",
     "HELP_ARTICLE_ID": "Help Article",
     "EMPTY_RESULTS": "No results.",
     "BREADCRUMB": "Search",

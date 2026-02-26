@@ -41,7 +41,7 @@ endif::[]
 The generator creates a new directory with the specified product name and sets up the OneCX UI App according to the chosen flavor. +
 Please note that the product name from your command is used as base of some essential application parts as following:
 
-.Key naming conventions used
+=== Key Naming Conventions
 * `onecx-<product>-ui` +
   project naming +
   remote name for module federation +
@@ -52,7 +52,7 @@ Please note that the product name from your command is used as base of some esse
   Tag name for integration the web component into the DOM
 * `onecx-apps/onecx-<product>-ui` +
   Repository name for docker image repository
-* `/mfe/help/` +
+* `/mfe/<product>/` +
   Base path for the microfrontend application, used within OneCX for integration purposes
 
 
@@ -67,14 +67,14 @@ This allows you to easily add new features, components, and services within your
 
 == Example
 
-.Create a UI App named "help" (product) with NgRx support
+.Create a UI App named "bookstore" (product) with NgRx support
 [source,bash]
 ----
-npx @onecx/create-workspace ngrx help
-cd help
+npx @onecx/create-workspace ngrx bookstore
+cd bookstore
 npm install
 ----
-This command will generate a new workspace folder named "help" with the necessary structure and configurations for a OneCX UI App using NgRx. This can take a while, as the generator sets up a complete Angular application with all necessary dependencies and configurations.
+This command will generate a new workspace folder named "bookstore" with the necessary structure and configurations for a OneCX UI App using NgRx. This can take a while, as the generator sets up a complete Angular application with all necessary dependencies and configurations.
 
-.Excerpt of generated files and directories for the NgRx *help* UI App
-image::generated_workspace_help.png[width=200]
+.Excerpt of generated files and directories for the NgRx *bookstore* UI App
+image::generated_workspace_bookstore.png[width=200]

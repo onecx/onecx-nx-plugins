@@ -12,7 +12,12 @@
     E.g. `+bookstore+` for an application named "Book Store".
 # end::product[]
 # tag::feature[]
-  _<feature>_::         
-    The name of the feature module. +
+  _<feature>_::
+    The name of the generated feature module. +
     E.g. `+book+` for a feature module named "Book".
 # end::feature[]
+# tag::resource[]
+  _<resource>_::
+    Optional. The name of the resource entity for which the feature module is generated. +
+    E.g. `+book+` for a resource entity named "Book".
+# end::resource[]

@@ -8,7 +8,7 @@ endif::[]
 
 The OneCX UI App Generator is a powerful tool that simplifies the development of UI applications within the OneCX framework. It automates the creation of key UI components, ensuring consistency and adherence to best practices.
 
-In addition to generation, significant parts still need to be created or modified manually by the user. To clearly explain how the generator works and the necessary adjustments, the following *example* is used in this documentation: *an application to manage help items*. The help application allows users to search for help items, view details about them, and manage their properties.
+In addition to generation, significant parts still need to be created or modified manually by the user. To clearly explain how the generator works and the necessary adjustments, the following *example* is used in this documentation: *an application to manage Books*. The Bookstore application allows users to search for books, view details about them, and manage their properties.
 
 == Prerequisites
 
@@ -54,7 +54,7 @@ Familiarity with Angular concepts such as components, modules, services, and sta
 
 == Generation by Example
 
-Let's explore the capabilities of the OneCX App Generator through a practical example. We will create a simple application to manage help items, which includes features such as searching for help items, viewing details, and managing their properties. We assume the backend services and OpenAPI specifications are already in place for the help items.
+Let's explore the capabilities of the OneCX App Generator through a practical example. We will create a simple application to manage books, which includes features such as searching for books, viewing details, and managing their properties. We assume the backend services and OpenAPI specifications are already in place for the books.
 
 The generator offers a range of commands to gradually create various UI components such as applications, function modules, and pages. During the generation of some parts, you will be prompted to specify parameters that determine the structure and naming of the generated components. Occasionally, code adjustments will be necessary to implement business requirements.
 

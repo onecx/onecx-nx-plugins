@@ -5,19 +5,24 @@ import { SearchGeneratorSchema } from '../schema';
 
 export class FeatureStateStep implements GeneratorStep<SearchGeneratorSchema> {
   process(tree: Tree, options: SearchGeneratorSchema): void {
-    const fileName = names(options.featureName).fileName;
-    const className = names(options.featureName).className;
-    const filePath = `src/app/${fileName}/${fileName}.state.ts`;
+    const featureName = options.featureName;
+    const featureFileName = names(options.featureName).fileName;
+    const resourceFileName = names(options.resource).fileName;
+    const className = names(options.resource).className;
+    
+    const filePath = `src/app/${featureFileName}/${featureFileName}.state.ts`;
     const find = ['{', /^/];
     const replaceWith = [
       `{
     search: ${className}SearchState;
   `,
-      `import { ${className}SearchState } from './pages/${fileName}-search/${fileName}-search.state';`,
+      `import { ${className}SearchState } from './pages/${resourceFileName}-search/${resourceFileName}-search.state';`,
     ];
 
+    console.log('mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm');
+
     safeReplace(
-      `Injecting search state into ${fileName} feature`,
+      `Injecting search state into ${featureName} feature`,
       filePath,
       find,
       replaceWith,
