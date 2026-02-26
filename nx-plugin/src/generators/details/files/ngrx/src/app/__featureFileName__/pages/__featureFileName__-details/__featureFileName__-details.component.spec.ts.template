@@ -16,6 +16,10 @@ import {
 } from '@onecx/angular-accelerator';
 import { UserService } from '@onecx/angular-integration-interface';
 import {
+  provideUserServiceMock,
+  UserServiceMock,
+} from '@onecx/angular-integration-interface/mocks';
+import {
   PermissionService,
   PortalPageComponent,
   TranslationConnectionService,
@@ -29,7 +33,6 @@ import { <%= featureClassName %>DetailsHarness } from './<%= featureFileName %>-
 import { initialState } from './<%= featureFileName %>-details.reducers';
 import { select<%= featureClassName %>DetailsViewModel } from './<%= featureFileName %>-details.selectors';
 import { <%= featureClassName %>DetailsViewModel } from './<%= featureFileName %>-details.viewmodel';
-import { provideUserServiceMock, UserServiceMock } from '@onecx/angular-integration-interface/mocks';
 
 describe('<%= featureClassName %>DetailsComponent', () => {
   const origAddEventListener = window.addEventListener;
@@ -110,21 +113,25 @@ describe('<%= featureClassName %>DetailsComponent', () => {
           provide: HAS_PERMISSION_CHECKER,
           useExisting: UserService,
         },
+        {
+          provide: TranslationConnectionService,
+          useValue: { init: jest.fn(), destroy: jest.fn() },
+        },
       ],
     }).compileComponents();
 
     const userServiceMock = TestBed.inject(UserServiceMock);
-    userServiceMock.permissions$.next([
-      "<%= featureConstantName %>#CREATE",
-      "<%= featureConstantName %>#EDIT",
-      "<%= featureConstantName %>#DELETE",
-      "<%= featureConstantName %>#IMPORT",
-      "<%= featureConstantName %>#EXPORT",
-      "<%= featureConstantName %>#VIEW",
-      "<%= featureConstantName %>#SEARCH",
-      "<%= featureConstantName %>#BACK"            
+    userServiceMock.permissionsTopic$.publish([
+      '<%= featureConstantName %>#CREATE',
+      '<%= featureConstantName %>#EDIT',
+      '<%= featureConstantName %>#DELETE',
+      '<%= featureConstantName %>#IMPORT',
+      '<%= featureConstantName %>#EXPORT',
+      '<%= featureConstantName %>#VIEW',
+      '<%= featureConstantName %>#SEARCH',
+      '<%= featureConstantName %>#BACK',
     ]);
-    
+
     store = TestBed.inject(MockStore);
     store.overrideSelector(
       select<%= featureClassName %>DetailsViewModel,
