@@ -53,7 +53,7 @@ The OneCX UI App Generator is built on top of Angular and Nx, so a basic underst
 Familiarity with Angular concepts such as components, modules, services, and state management (e.g., NgRx) will help you understand the structure of the generated code and how to extend it.
 
 === Knowledge of App Integration
-The easiest way to integrate the generated components into your application is to follow the OneCX Local Environment guidelines in {onecx_local_env_extend_ref}. This ensures that the components are correctly registered and accessible within the application.
+The easiest way to integrate the generated App into local running OneCX is to follow the OneCX Local Environment guidelines in {onecx_local_env_extend_ref}. This ensures that the components are correctly registered and accessible within the application.
 
 
 == Generation by Example
@@ -65,6 +65,7 @@ The generator offers a range of commands to gradually create various UI componen
 [NOTE]
 Make the adjustments carefully and in accordance with the specifications and naming conventions of your project to ensure consistency and maintainability of the codebase.
 
+=== Start Generation
 Here is an overview of the application parts that can be generated using the OneCX App Generator. Start from top to bottom, i.e. first generate the application, then the feature module, and then the pages. The generator will guide you through the necessary steps and parameters for each part.
 
 * xref:generator/create-app.adoc[OneCX UI App] <= *start here*
@@ -75,6 +76,21 @@ Here is an overview of the application parts that can be generated using the One
 *** Create/Update Dialog
 *** Delete Dialog
 *** Simple NgRx Page
+
+
+=== Build the UI App
+
+After generating the UI App and its components, you can build the application to see the results. +
+Use the following command to build the application:
+
+.Build the application
+[source,bash]
+----
+npm run build
+----
+
+.Excerpt of the build output (exemplary for *bookstore* application)
+image::generated_and_build.png[]
 
 
 == Development: Get the Generator
