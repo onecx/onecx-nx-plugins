@@ -4,7 +4,9 @@ import { SearchGeneratorSchema } from '../schema';
 import { COMMENT_KEY, OpenAPIUtil } from '../../shared/openapi/openapi.utils';
 import { createSearchEndpoint } from '../endpoint.util';
 
-export class GeneralOpenAPIStep implements GeneratorStep<SearchGeneratorSchema> {
+export class GeneralOpenAPIStep
+  implements GeneratorStep<SearchGeneratorSchema>
+{
   process(tree: Tree, options: SearchGeneratorSchema): void {
     const openApiFolderPath = 'src/assets/api';
     const bffOpenApiPath = 'openapi-bff.yaml';
@@ -27,7 +29,7 @@ export class GeneralOpenAPIStep implements GeneratorStep<SearchGeneratorSchema> 
             type: 'post',
             operationId: `search${resource}Items`,
             tags: [`${resource.toLowerCase()}`],
-            description: `Search ${resource} items by search criteria`
+            description: `Search ${resource} items by search criteria`,
           },
           {
             resource: resource,
@@ -47,25 +49,24 @@ export class GeneralOpenAPIStep implements GeneratorStep<SearchGeneratorSchema> 
             format: 'int32',
           },
           creationDate: {
-            $ref: '#/components/schemas/OffsetDateTime'
+            $ref: '#/components/schemas/OffsetDateTime',
           },
           creationUser: {
             type: 'string',
-            readOnly: true
+            readOnly: true,
           },
           modificationDate: {
-            $ref: '#/components/schemas/OffsetDateTime'
+            $ref: '#/components/schemas/OffsetDateTime',
           },
           modificationUser: {
             type: 'string',
-            readOnly: true
+            readOnly: true,
           },
           id: {
             type: 'string',
-            readOnly: true
+            readOnly: true,
           },
-          [COMMENT_KEY]:
-            'ACTION S0: Add entity properties: https://onecx.github.io/docs/documentation/current/onecx-nx-plugins:generator/create-schema.html#action-0',
+          [COMMENT_KEY]: 'ACTION S0: Add entity properties',
         },
       })
       .done()
@@ -84,7 +85,7 @@ export class GeneralOpenAPIStep implements GeneratorStep<SearchGeneratorSchema> 
             format: 'int32',
             default: 100,
             maximum: 1000,
-            description: 'The size of the page'
+            description: 'The size of the page',
           },
           id: {
             type: 'integer',
@@ -95,8 +96,7 @@ export class GeneralOpenAPIStep implements GeneratorStep<SearchGeneratorSchema> 
             maximum: 255,
             description: 'To be replaced by actual search criteria properties',
           },
-          [COMMENT_KEY]:
-            'ACTION S1: Add search criteria properties: https://onecx.github.io/docs/documentation/current/onecx-nx-plugins:generator/search/search-criteria.html#action-1',
+          [COMMENT_KEY]: 'ACTION S1: Add search criteria properties',
         },
       })
       .set(`${searchResponseName}`, {
@@ -129,8 +129,8 @@ export class GeneralOpenAPIStep implements GeneratorStep<SearchGeneratorSchema> 
             items: {
               $ref: `#/components/schemas/${resource}`,
             },
-          }
-        }
+          },
+        },
       })
       .done()
       .finalize();
@@ -138,6 +138,6 @@ export class GeneralOpenAPIStep implements GeneratorStep<SearchGeneratorSchema> 
     tree.write(joinPathFragments(openApiFolderPath, bffOpenApiPath), res);
   }
   getTitle(): string {
-    return "Adapting OpenAPI"
+    return 'Adapting OpenAPI';
   }
 }

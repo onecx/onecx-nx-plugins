@@ -135,12 +135,21 @@ export async function searchGenerator(
     };
   }
 
+  // get workspace name to be used for unique ids in UI elements
+  const projectConfig = tree.read('project.json');
+  let workspaceName = '';
+  if (projectConfig) {
+    const projectJson = JSON.parse(projectConfig.toString());
+    workspaceName = projectJson.name; // or the relevant property
+  }
+
   generateFiles(
     tree,
     joinPathFragments(__dirname, './files/ngrx'),
     `${directory}/`,
     {
       ...options,
+      workspaceName: workspaceName,
       featureFileName: names(options.featureName).fileName,
       featurePropertyName: names(options.featureName).propertyName,
       featureClassName: names(options.featureName).className,

@@ -29,6 +29,9 @@ Add Criteria to Search Request::
 The `+Search<Feature>Request+` component in the OpenAPI YAML file must be adapted by adding the desired search criteria as properties. +
 More details in {ngrx_search_criteria_ref}[NgRx Search Criteria].
 
+[discrete]
+=== Template: Generated Schema
+
 [horizontal]
 Directory:: `<root-of-ui-app>/src/assets/api`
 File::      `openapi-bff.yaml`
@@ -57,11 +60,18 @@ File::      `openapi-bff.yaml`
           description: 'The size of the page.'      
         changeMe:
           type: string
-        # " ACTION S1: Add additional properties: https://onecx.github.io/docs/documentation/current/onecx-nx-plugins:generator/search/search-criteria.html#action-1"
+        # " ACTION S1: Add additional properties"
 ----
 
 Where *changeMe* is here the example search criteria to be replaced. This criteria corresponds to the property added to the `+Search<Feature>Request+`.
 ====
+
+[discrete]
+=== Example
+
+[horizontal]
+Directory:: `bookstore/src/assets/api`
+File::      `openapi-bff.yaml`
 
 .Example: Adjustments in `+openapi-bff.yaml+`
 [%collapsible]
@@ -82,13 +92,13 @@ Where *changeMe* is here the example search criteria to be replaced. This criter
           default: 100
           maximum: 1000
           description: The size of the page.
-        itemId:
+        bookTitle:
           type: string
           maximum: 255
-        # "ACTION S1: Add additional properties: https://onecx.github.io/docs/documentation/current/onecx-nx-plugins:generator/search/search-criteria.html#action-1"
+        # "ACTION S1: Add additional properties"
 ----
 
-Where e.g. *itemId* is a search criteria, same as the one added to the `+SearchBookRequest+`.
+Where e.g. *bookTitle* is a search criteria, same as the one added to the `+SearchBookRequest+`.
 ====
 
 After adding the new criteria to the OpenAPI specification, you need to regenerate the API client code to reflect these changes in your application.
@@ -107,24 +117,33 @@ Add Search Criteria in TypeScript Schema::
 The criteria you added in "Action S1" now have to be added to the TypeScript schema. Assure the keys and types match the ones you defined in the OpenAPI specification. +
 More details in {ngrx_search_criteria_parameter_ref}[NgRx Search Criteria].
 
-[horizontal]
-Directory:: `<root-of-ui-app>/src/app/<feature>/pages/<search>`
-File::      `<feature>-search.parameters.ts`
+[discrete]
+=== Template: Generated Schema
 
-.Adjust in `+<feature>-search.parameters.ts+`
+[horizontal]
+Directory:: `<root-of-ui-app>/src/app/<feature>/pages/<resource>-search`
+File::      `<resource>-search.parameters.ts`
+
+.Adjust in `+<resource>-search.parameters.ts+`
 [%collapsible]
 ====
 [source, javascript]
 ----
 export const <feature>SearchCriteriasSchema = z.object({
-  changeMe: z.string().optional(),
-  // ACTION S2: Please define the members for your customerManagementSearchCriteriasSchema here
-  // https://onecx.github.io/docs/documentation/current/onecx-nx-plugins:generator/search/search-criteria.html#action-2
+  bookTitle: z.string().optional(),
+  // ACTION S2: Define members for the <resource>SearchCriteriasSchema here
 } satisfies Partial<Record<keyof SearchCustomerManagementRequest, ZodTypeAny>>);
 ----
 
-Where *changeMe* is an additional search criteria added to the `+Search<Feature>Request+`.
+Where *bookTitle* is an additional search criteria added to the `+Search<Feature>Request+`.
 ====
+
+[discrete]
+=== Example
+
+[horizontal]
+Directory:: `bookstore/src/app/book/pages/book-search`
+File::      `book-search.parameters.ts`
 
 .Example: Adjustments in `+book-search.parameters.ts+`
 [%collapsible]
@@ -133,6 +152,7 @@ Where *changeMe* is an additional search criteria added to the `+Search<Feature>
 ----
 export const bookSearchCriteriasSchema = z.object({
   bookTitle: z.string().optional()
+  // ACTION S2: Define members for the bookSearchCriteriasSchema here
 } satisfies Partial<Record<keyof SearchBookRequest, ZodTypeAny>>);
 ----
 
@@ -147,6 +167,9 @@ Add input fields in HTML::
 To make the search criteria usable for the user, you need to add corresponding HTML input fields to the search component's HTML file. +
 More details in {ngrx_search_criteria_html_ref}[Search Criteria HTML] and {ngrx_search_criteria_html_example_ref}[Example input fields].
 
+[discrete]
+=== Template: Generated HTML
+
 [horizontal]
 Directory:: `<root-of-ui-app>/src/app/<feature>/pages/<resource>-<search>`
 File::      `<resource>-search.component.html`
@@ -160,40 +183,41 @@ File::      `<resource>-search.component.html`
       <div class="grid mt-0 p-fluid">
         <div class="col-12 md:col-3">
           <span class="p-float-label">
+            <!-- ACTION S3: Change this search criteria -->
             <input
               pInputText
               id="changeMe"
               type="text"
               class="w-18rem"
               formControlName="changeMe"
-              [pTooltip]="
-                'CUSTOMER_MANAGEMENT_SEARCH.CRITERIA.CHANGE_ME.TOOLTIP'
-                  | translate
-              "
+              [pTooltip]="'CUSTOMER_MANAGEMENT_SEARCH.CRITERIA.CHANGE_ME.TOOLTIP' | translate"
               tooltipPosition="top"
               tooltipEvent="hover"
               role="main"
               [attr.aria-label]="
-                'CUSTOMER_MANAGEMENT_SEARCH.CRITERIA.CHANGE_ME.ARIA-LABEL'
+                'CUSTOMER_MANAGEMENT_SEARCH.CRITERIA.CHANGE_ME.ARIA_LABEL'
                   | translate
               "
             />
             <label for="changeMe" style="white-space: nowrap">
-              {{
-                'CUSTOMER_MANAGEMENT_SEARCH.CRITERIA.CHANGE_ME.LABEL' | translate
-              }}</label
-            >
+              {{ 'CUSTOMER_MANAGEMENT_SEARCH.CRITERIA.CHANGE_ME.LABEL' | translate }}
+            </label>
           </span>
         </div>
+        <!-- ACTION S3: Specify search criteria here -->
       </div>
-       <!-- ACTION S3: Specify search criteria here:
-       https://onecx.github.io/docs/documentation/current/onecx-nx-plugins:generator/search/search-criteria.html#action-3 -->
     </form>
 ----
 
 Where *changeMe* is an additional search criteria added to the `+Search<Feature>Request+`.
 ====
 
+[discrete]
+=== Example
+
+[horizontal]
+Directory:: `bookstore/src/app/book/pages/book-search`
+File::      `book-search.component.html`
 
 .Example: Form in `+book-search.component.html+`
 [%collapsible]
@@ -206,28 +230,29 @@ Where *changeMe* is an additional search criteria added to the `+Search<Feature>
           <span class="p-float-label">
             <input
               pInputText
-              id="bookstore_book_search_item_id"
+              id="bookstore_book_search_book_title"
               type="text"
               class="w-18rem"
-              formControlName="itemId"
-              [pTooltip]="'HELP_SEARCH.CRITERIA.ITEM_ID.TOOLTIP' | translate"
+              formControlName="bookTitle"
+              [pTooltip]="'HELP_SEARCH.CRITERIA.BOOK_TITLE.TOOLTIP' | translate"
               tooltipPosition="top"
               tooltipEvent="hover"
               role="main"
               [attr.aria-label]="
-                'HELP_SEARCH.CRITERIA.ITEM_ID.ARIA-LABEL' | translate
+                'HELP_SEARCH.CRITERIA.BOOK_TITLE.ARIA_LABEL' | translate
               "
             />
             <label for="bookstore_book_search_book_title" style="white-space: nowrap">
-              {{ 'HELP_SEARCH.CRITERIA.ITEM_ID.LABEL' | translate }}</label
+              {{ 'HELP_SEARCH.CRITERIA.BOOK_TITLE.LABEL' | translate }}</label
             >
           </span>
         </div>
+        <!-- ACTION S3: Specify search criteria here -->
       </div>
     </form>
 ----
 
-Where *bookTitle* and *bookType* are the criteria added to the `+SearchBookRequest+`.
+Where *bookTitle* is the criteria added to the `+SearchBookRequest+`.
 ====
 
 
@@ -237,6 +262,9 @@ Where *bookTitle* and *bookType* are the criteria added to the `+SearchBookReque
 Add Translations::
 Ensure that all input field labels have the necessary translations added. +
 More details in {onecx_ui_translations_ref}[Multi-Language].
+
+[discrete]
+=== Template: Generated Translations
 
 [horizontal]
 Directory:: `<root-of-ui-app>/src/assets/i18n`
@@ -248,16 +276,23 @@ Files::      `de.json`, `en.json`
 [source, json]
 ----
     "CRITERIA": {
-      "INPUT_FIELDS": "ACTION S4: ADD TRANSLATION for your input fields: https://onecx.github.io/docs/documentation/current/onecx-nx-plugins:generator/search/search-criteria.html#action-4",
+      "INPUT_FIELDS": "ACTION S4: ADD TRANSLATION for input fields",
       "CHANGE_ME": {
         "LABEL": "Change Me",
-        "ARIA-LABEL": "Change Me",
+        "ARIA_LABEL": "Change Me",
         "TOOLTIP": "Change Me"
       }
     }
 ----
 Where *CHANGE_ME* is an search criteria.
 ====
+
+[discrete]
+=== Example
+
+[horizontal]
+Directory:: `bookstore/src/assets/i18n`
+Files::      `de.json`, `en.json`
 
 .Example: Translations in `+en.json+`
 [%collapsible]
@@ -269,22 +304,12 @@ Where *CHANGE_ME* is an search criteria.
     "CRITERIA": {
       "BOOK_TITLE": {
         "LABEL": "Title",
-        "ARIA-LABEL": "Title",
+        "ARIA_LABEL": "Title",
         "TOOLTIP": "Book title"
-      },
-      "BOOK_AUTHOR": {
-        "LABEL": "Author",
-        "ARIA-LABEL": "Author",
-        "TOOLTIP": "Book author"
-      },
-      "BOOK_PUBLISHER": {
-        "LABEL": "Publisher",
-        "ARIA-LABEL": "Publisher",
-        "TOOLTIP": "Book publisher"
       }
     }
   }
 ----
 
-Where *BOOK_TITLE*, *BOOK_AUTHOR*, and *BOOK_PUBLISHER* are the criteria added to the `+SearchBookRequest+`.
+Where *BOOK_TITLE* is the criteria added to the `+SearchBookRequest+`.
 ====

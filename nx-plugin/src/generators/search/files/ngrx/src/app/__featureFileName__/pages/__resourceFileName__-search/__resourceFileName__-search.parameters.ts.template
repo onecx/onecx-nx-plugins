@@ -3,8 +3,7 @@ import { <%= searchRequestName %> } from 'src/app/shared/generated'
 
 export const <%= resourcePropertyName %>SearchCriteriasSchema = z.object({
   changeMe: z.string().optional(),
-  // ACTION S2: Please define the members for your <%= resourcePropertyName %>SearchCriteriasSchema here
-  // https://onecx.github.io/docs/documentation/current/onecx-nx-plugins:generator/search/search-criteria.html#action-2
+  // ACTION S2: Define the members for <%= resourcePropertyName %>SearchCriteriasSchema here
 }satisfies Partial<Record<keyof <%= searchRequestName %>, ZodTypeAny>>);
 
 export type <%= resourceClassName %>SearchCriteria = z.infer<

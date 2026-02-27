@@ -1,7 +1,7 @@
 {
   "<%= resourceConstantName %>_SEARCH": {
     "HEADER": "<%= resourceClassName %> Suche",
-    "ARIA-LABEL": "Seitenkopf mit Suche",
+    "ARIA_LABEL": "Seitenkopf mit Suche",
     "SUB_HEADER": "Suchen und Anzeigen von <%= resourceClassName %>",
     "HELP_ARTICLE_ID": "Hilfeartikel",
     "EMPTY_RESULTS": "Keine Ergebnisse.",
@@ -35,10 +35,10 @@
       "NAME": "Suchergebnisse"
     },
     "CRITERIA": {
-      "INPUT_FIELDS": "ACTION S4: ADD TRANSLATION for your input fields: https://onecx.github.io/docs/documentation/current/onecx-nx-plugins:generator/search/search-criteria.html#action-4",
+      "INPUT_FIELDS": "ACTION S4: ADD TRANSLATION for input fields",
       "CHANGE_ME": {
         "LABEL": "Ändere mich",
-        "ARIA-LABEL": "Ändere mich",
+        "ARIA_LABEL": "Ändere mich",
         "TOOLTIP": "Ändere mich"
       }
     }

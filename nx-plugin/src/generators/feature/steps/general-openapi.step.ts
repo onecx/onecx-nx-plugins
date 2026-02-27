@@ -49,8 +49,7 @@ export class GeneralOpenAPIStep implements GeneratorStep<FeatureGeneratorSchema>
             type: 'string',
             readOnly: true
           },
-          [COMMENT_KEY]:
-            'ACTION S0: Add entity properties: https://onecx.github.io/docs/documentation/current/onecx-nx-plugins:generator/create-schema.html#action-0',
+          [COMMENT_KEY]: 'ACTION S0: Add entity properties',
         },
       })
       .done()

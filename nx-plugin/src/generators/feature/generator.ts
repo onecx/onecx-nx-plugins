@@ -57,12 +57,20 @@ export async function featureGenerator(
     throw new Error('Currently only NgRx projects are supported.');
   }
 
+  const projectConfig = tree.read('project.json');
+  let workspaceName = '';
+  if (projectConfig) {
+    const projectJson = JSON.parse(projectConfig.toString());
+    workspaceName = projectJson.name; // or the relevant property
+  }
+
   generateFiles(
     tree,
     joinPathFragments(__dirname, './files/ngrx'),
     `${directory}/`,
     {
       ...options,
+      workspaceName: workspaceName,
       featureFileName: names(options.name).fileName,
       featureClassName: names(options.name).className,
       featurePropertyName: names(options.name).propertyName,

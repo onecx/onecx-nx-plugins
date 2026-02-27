@@ -48,17 +48,28 @@ npm install
 ----
 
 === Knowledge of Angular and Nx
-The OneCX UI App Generator is built on top of Angular and Nx, so a basic understanding of these technologies is essential to effectively use the generator and customize the generated code.
+The OneCX UI App Generator is built on top of {angular_link} and {nx_link}, so a basic understanding of these technologies is essential to effectively use the generator and customize the generated code.
 
-Familiarity with Angular concepts such as components, modules, services, and state management (e.g., NgRx) will help you understand the structure of the generated code and how to extend it.
+Familiarity with {angular_link} concepts such as components, modules, services, and state management (e.g., {ngrx_link}) will help you understand the structure of the generated code and how to extend it.
 
 === Knowledge of App Integration
-The easiest way to integrate the generated App into local running OneCX is to follow the OneCX Local Environment guidelines in {onecx_local_env_extend_ref}. This ensures that the components are correctly registered and accessible within the application.
+The easiest way to integrate the generated App into local running OneCX is to follow the {onecx_local_env_docs_ref} guidelines in {onecx_local_env_extend_ref}. This ensures that the components are correctly registered and accessible within the application.
+
+=== Knowledge of OpenAPI Specification
+The generator relies on the OpenAPI specification to define the API endpoints and data models. Understanding how to read and modify OpenAPI YAML files is crucial for customizing the API interactions of the generated components. +
+Use the {swagger_editor_link} to validate the syntax and structure of the OpenAPI file (openapi-bff.yaml) against the {openapi_spec_link}.
+
+.Use of Swagger Editor with example OpenAPI file
+[%collapsible]
+====
+image::openapi_swagger_editor_bookstore.png[]
+====
 
 
 == Generation by Example
 
-Let's explore the capabilities of the OneCX App Generator through a practical example. We will create a simple application to manage books, which includes features such as searching for books, viewing details, and managing their properties. We also provide a simple mock solution to simulate the backend services for the generated components, allowing you to see the generator's output in action without needing a fully functional backend.
+Let's explore the capabilities of the OneCX App Generator through a practical example. We will create a simple application to manage books, which includes features such as searching for books, viewing details, and managing their properties. +
+We also provide a simple mock solution to simulate the backend services for the generated components, allowing you to see the generator's output in action without needing a fully functional backend.
 
 The generator offers a range of commands to gradually create various UI components such as applications, function modules, and pages. During the generation of some parts, you will be prompted to specify parameters that determine the structure and naming of the generated components. Occasionally, code adjustments will be necessary to implement business requirements.
 
@@ -75,7 +86,7 @@ Here is an overview of the application parts that can be generated using the One
 *** Details Page
 *** Create/Update Dialog
 *** Delete Dialog
-*** Simple NgRx Page
+*** xref:generator/create-ngrx-page.adoc[Simple NgRx Page]
 
 
 === Build the UI App

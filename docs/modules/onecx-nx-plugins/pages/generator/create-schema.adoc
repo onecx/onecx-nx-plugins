@@ -11,26 +11,29 @@ This is the basis for processing feature data, e.g., for searching, displaying, 
 
 At OneCX, we explicitly follow an *API-first approach*. In practice, this means that the OpenAPI file is created first, in which entities and the paths for requests/responses are described. The OpenAPI file serves as the basis for the implementation of the backend services and the frontend components.
 
+Let's begin by describing the entity that can be managed in the generated components. Starting this way makes the subsequent steps easier to understand.
+
 [#action-0]
 == ACTION S0
 
-After creating the feature module and components, the next step is to define the entity schema in the OpenAPI file. This involves adding the base properties of the entity to the OpenAPI YAML file, which will be used to generate the API code for the frontend application.
+Add Entity Schema::
+After creating the feature module and components, the next step is to define the entity schema in the OpenAPI file. This involves adding the base properties of the entity, which will be used to generate the API code for the frontend application.
 
+[discrete]
 === Template: Generated Schema
-Adjust the entity schema::
-Add the base properties of the entity in the OpenAPI YAML file.
 
 [horizontal]
 Directory:: `<root-of-ui-app>/src/assets/api`
 File::      `openapi-bff.yaml`
 
-.ACTION S0 in `+openapi-bff.yaml+`
+.ACTION S0 in `+openapi-bff.yaml+` (excerpt)
 [%collapsible]
 ====
 [source, yml]
 ----
 components:
   schemas:
+    ...
     <resource/entity name>:
       type: object
       required:
@@ -50,13 +53,13 @@ components:
           type: string
         id:
           type: integer
-        # "ACTION S0: Add entity properties: https://onecx.github.io/docs/documentation/current/onecx-nx-plugins:generator/create-schema.html#action-0"
+        # "ACTION S0: Add entity properties"
 ----
-
 Where below *properties* the properties of the entity are listed.
 ====
 
 
+[discrete]
 === Example
 
 [horizontal]
@@ -70,6 +73,7 @@ File::      `openapi-bff.yaml`
 ----
 components:
   schemas:
+    ...
     Book:
       type: object
       required:
@@ -90,9 +94,7 @@ components:
         id:
           type: string
         bookType:
-          type: string
-          schema:
-            $ref: '#/components/schemas/BookType'
+          $ref: '#/components/schemas/BookType'
         bookTitle:
           type: string
         bookAuthor:
@@ -115,7 +117,7 @@ Where properties with prefix *book* are added to the entity `+Book+`.
 ====
 
 
-[HINT]
+[NOTE]
 Each time the openAPI file is changed, the API code needs to be updated to reflect these changes. +
 To do this, run the the following command in the terminal with the root of the UI application as current working directory.
 

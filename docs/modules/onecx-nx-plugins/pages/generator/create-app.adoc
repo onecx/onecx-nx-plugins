@@ -20,7 +20,8 @@ You will need to further develop and customize the application to meet your spec
 == Generate a UI App
 
 The generator supports three flavors of projects: *angular*, *with NgRx* and *without NgRx*. +
-It is **recommended to use the NgRx** flavor, because it leads to better structured projects and the state management is already in place.
+It is **recommended to use the NgRx** flavor, because it leads to better structured projects and the state management is already in place. +
+The creation of a new workspace takes a while, as the generator sets up a complete Angular application with all necessary dependencies and configurations.
 
 .Generate the UI App with following commands
 [source,bash]
@@ -70,6 +71,8 @@ endif::[]
 
 == Example
 
+The following commands create a new workspace directory named "bookstore" with the necessary structure and configurations for a OneCX UI App using NgRx. This can take a while, as the generator sets up a complete Angular application with all necessary dependencies and configurations.
+
 .Create a UI App named "bookstore" (product) with NgRx support
 [source,bash]
 ----
@@ -77,7 +80,6 @@ npx @onecx/create-workspace ngrx bookstore
 cd bookstore
 npm install
 ----
-This command will generate a new workspace folder named "bookstore" with the necessary structure and configurations for a OneCX UI App using NgRx. This can take a while, as the generator sets up a complete Angular application with all necessary dependencies and configurations.
 
 .Excerpt of generated files and directories for the NgRx *bookstore* UI App
 image::generated_workspace_bookstore.png[width=200]

@@ -48,7 +48,7 @@ export class <%= resourceClassName %>SearchComponent implements OnInit {
   defaultDataSortDirection = DataSortDirection.NONE
   defaultDiagramType = DiagramType.PIE
 
-  // ACTION S10: Update header actions: https://onecx.github.io/docs/documentation/current/onecx-nx-plugins:generator/search/update-header-actions.html#action-10
+  // ACTION S10: Update header actions
   headerActions$: Observable<Action[]> = this.viewModel$.pipe(map((vm) => {
       const actions: Action[] = [
         {
