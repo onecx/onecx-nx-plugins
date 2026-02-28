@@ -1,0 +1,56 @@
+ifdef::env-site[]
+include::partial$_attributes.adoc[]
+endif::[]
+:imagesdir: ../../../images
+
+:group_by_count_diagram: xref:documentation:onecx-portal-ui-libs:components/group-by-count-diagram.adoc
+
+= Configure the Result Diagram
+
+By default, a diagram component is added to display the value distribution of a certain column in the search results. This component is called `GroupByCountDiagram` and it groups the values of a column and counts how many times each value appears in the search results. The result is displayed as a diagram, which can be either a bar chart or a pie chart, depending on the configuration.
+
+To use this diagram, the column which should be displayed needs to be selected first. The member 'columnId' holds the column id of the column to display.
+
+[#action-9]
+== ACTION S9
+
+Select the column to be displayed::
+The `+columnId+` is the key of the column to use for the result diagram. You can select any column you defined in the search results.
+
+[discrete]
+=== Template: Column Selection for Diagram
+
+[horizontal]
+Directory:: `<root-of-ui-app>/src/app/<feature>/pages/<resource>-search`
+File::      `<resource>-search.component.ts`
+
+.ACTION S9 in `+<resource>-search.component.ts+`
+[%collapsible]
+====
+[source, javascript]
+----
+  // ACTION S9: Select the column to be displayed in the diagram
+  diagramColumnId = 'id';
+  diagramColumn$ = this.viewModel$.pipe(map((vm) =>vm.columns.find((e) => e.id === this.diagramColumnId) as DataTableColumn));
+----
+Please refer to the {group_by_count_diagram}[GroupByCountDiagram Component] for more adaptations.
+====
+
+
+[discrete]
+=== Example
+
+[horizontal]
+Directory:: `bookstore/src/app/book/pages/book-search`
+File::      `book-search.component.ts`
+
+.ACTION S9 in `+book-search.component.ts+`
+[%collapsible]
+====
+[source, javascript]
+----
+  // ACTION S9: Select the column to be displayed in the diagram
+  diagramColumnId = 'bookType';
+  diagramColumn$ = this.viewModel$.pipe(map((vm) =>vm.columns.find((e) => e.id === this.diagramColumnId) as DataTableColumn));
+----
+====

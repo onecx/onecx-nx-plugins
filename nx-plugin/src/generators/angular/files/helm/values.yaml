@@ -28,4 +28,4 @@ app:
       enabled: true
       spec:
         permissions:
-    # ACTION S11 Add entity permissions: https://onecx.github.io/docs/documentation/current/onecx-nx-plugins/generator/search/update-permissions.html#action-11
+        # ACTION S11 Add entity permissions

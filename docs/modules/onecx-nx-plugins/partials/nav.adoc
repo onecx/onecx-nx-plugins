@@ -7,6 +7,9 @@
 ** xref:documentation:onecx-nx-plugins:generator/create-search.adoc[Create Search Page]
 *** xref:documentation:onecx-nx-plugins:generator/search/search-criteria.adoc[Search Criteria]
 *** xref:documentation:onecx-nx-plugins:generator/search/search-results.adoc[Search Results]
+*** xref:documentation:onecx-nx-plugins:generator/search/result-diagram.adoc[Result Diagram]
+*** xref:documentation:onecx-nx-plugins:generator/search/header-actions.adoc[Header Actions]
+*** xref:documentation:onecx-nx-plugins:generator/search/permissions.adoc[Permissions]
 
 ** xref:documentation:onecx-nx-plugins:generator/create-update-dialog.adoc[Create Create/Update Dialog]
 ** xref:documentation:onecx-nx-plugins:generator/delete-dialog.adoc[Create Delete Dialog]
