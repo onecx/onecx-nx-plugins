@@ -50,12 +50,11 @@ The next steps involve adapting the search component to your specific requiremen
 . xref:./search/search-results.adoc[Configure Search Results]
 . xref:./search/result-diagram.adoc[Configure Result Diagram]
 . xref:./search/header-actions.adoc[Configure Header Actions]
-. xref:./search/permissions.adoc[Configure Permissions]
 
 .All places that need to be adapted are marked with an action box like this one
 [source, javascript]
 ----
-ACTION S<ID>: <Short Description>
+ACTION S<NUMBER>: <Short Description>
 ----
 
 [TIP]
@@ -99,4 +98,9 @@ endif::[]
 In the following image, the search component is integrated into the application unchanged, exactly as it was generated.
 
 .Search UI after integration into the application
-image::generated_book_search_component.png[]
+image::generated_book_search_component_org.png[]
+
+After little adaptations to the search criteria and search results, the search component can look like this:
+
+.Search UI with adapted search
+image::generated_book_search_component_adapted.png[]

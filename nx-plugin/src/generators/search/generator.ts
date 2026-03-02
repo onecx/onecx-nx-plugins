@@ -103,7 +103,7 @@ export async function searchGenerator(
   console.log('');
   console.log('Search Generator');
 
-  const spinner = ora(`Adding search to ${options.featureName}\n`).start();
+  const spinner = ora(`Adding search to feature "${options.featureName}"\n`).start();
   const directory = '.';
 
   const featureNames = names(options.featureName);

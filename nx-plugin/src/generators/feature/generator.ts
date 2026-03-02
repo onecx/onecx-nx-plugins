@@ -12,6 +12,7 @@ import * as ora from 'ora';
 import { execSync } from 'child_process';
 import processParams, { GeneratorParameter } from '../shared/parameters.utils';
 import { safeReplace } from '../shared/safeReplace';
+import { GeneralPermissionStep } from './steps/general-helm-values.step';
 import { GeneralOpenAPIStep } from './steps/general-openapi.step';
 import { GeneratorProcessor } from '../shared/generator.utils';
 
@@ -78,6 +79,7 @@ export async function featureGenerator(
     }
   );
   const generatorProcessor = new GeneratorProcessor();
+  generatorProcessor.addStep(new GeneralPermissionStep());
   generatorProcessor.addStep(new GeneralOpenAPIStep());
 
   generatorProcessor.run(tree, options, spinner);

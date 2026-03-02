@@ -49,7 +49,7 @@ export class GeneralOpenAPIStep implements GeneratorStep<FeatureGeneratorSchema>
             type: 'string',
             readOnly: true
           },
-          [COMMENT_KEY]: 'ACTION S0: Add entity properties',
+          [COMMENT_KEY]: 'ACTION E: Add entity properties',
         },
       })
       .done()
@@ -57,7 +57,8 @@ export class GeneralOpenAPIStep implements GeneratorStep<FeatureGeneratorSchema>
 
     tree.write(joinPathFragments(openApiFolderPath, bffOpenApiPath), res);
   }
+
   getTitle(): string {
-    return "Adapting OpenAPI"
+    return "Adapting Entity Schema in OpenAPI"
   }
 }

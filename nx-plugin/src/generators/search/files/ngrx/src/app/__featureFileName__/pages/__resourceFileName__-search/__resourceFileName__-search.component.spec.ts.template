@@ -27,7 +27,7 @@ import { <%= resourcePropertyName %>SearchActions } from './<%= resourceFileName
 import { <%= resourceClassName %>SearchComponent } from './<%= resourceFileName %>-search.component';
 import { <%= resourceClassName %>SearchHarness } from './<%= resourceFileName %>-search.harness';
 import { <%= resourceClassName %>SearchViewModel } from './<%= resourceFileName %>-search.viewmodel';
-import { <%= resourceClassName %>SearchColumns } from './<%= resourceFileName %>-search.columns';
+import { <%= resourcePropertyName %>SearchColumns } from './<%= resourceFileName %>-search.columns';
 import { select<%= resourceClassName %>SearchViewModel } from './<%= resourceFileName %>-search.selectors';
 import { initialState } from './<%= resourceFileName %>-search.reducers';
 
@@ -74,7 +74,7 @@ describe('<%= resourceClassName %>SearchComponent', () => {
     },
   };
   const base<%= resourceClassName %>SearchViewModel: <%= resourceClassName %>SearchViewModel = {
-    columns: <%= resourceClassName %>SearchColumns,
+    columns: <%= resourcePropertyName %>SearchColumns,
     searchCriteria: { changeMe: '0' },
     searchExecuted: true,
     results: [],

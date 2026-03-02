@@ -40,7 +40,9 @@ export class GeneratorProcessor<T> {
     this.errors = [];
     for (const step of this.steps) {
       if (ora) {
-        ora.text = step.getTitle();
+        const stepTitle = step.getTitle().trimEnd();
+        ora.info(stepTitle);
+        //ora.start(stepTitle);
       }
       try {
         step.process(tree, options);

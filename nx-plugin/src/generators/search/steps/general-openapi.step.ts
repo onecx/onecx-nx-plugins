@@ -66,7 +66,7 @@ export class GeneralOpenAPIStep
             type: 'string',
             readOnly: true,
           },
-          [COMMENT_KEY]: 'ACTION S0: Add entity properties',
+          [COMMENT_KEY]: 'ACTION E: Add entity properties',
         },
       })
       .done()

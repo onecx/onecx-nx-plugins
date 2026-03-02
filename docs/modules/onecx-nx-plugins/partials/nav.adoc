@@ -3,17 +3,17 @@
 
 ** xref:documentation:onecx-nx-plugins:generator/create-feature.adoc[Create Feature Module]
 ** xref:documentation:onecx-nx-plugins:generator/create-schema.adoc[Create Entity Schema]
+** xref:documentation:onecx-nx-plugins:generator/permissions.adoc[Configure Permissions]
 
 ** xref:documentation:onecx-nx-plugins:generator/create-search.adoc[Create Search Page]
 *** xref:documentation:onecx-nx-plugins:generator/search/search-criteria.adoc[Search Criteria]
 *** xref:documentation:onecx-nx-plugins:generator/search/search-results.adoc[Search Results]
 *** xref:documentation:onecx-nx-plugins:generator/search/result-diagram.adoc[Result Diagram]
 *** xref:documentation:onecx-nx-plugins:generator/search/header-actions.adoc[Header Actions]
-*** xref:documentation:onecx-nx-plugins:generator/search/permissions.adoc[Permissions]
 
+** xref:documentation:onecx-nx-plugins:generator/details-page.adoc[Create Detail Page]
 ** xref:documentation:onecx-nx-plugins:generator/create-update-dialog.adoc[Create Create/Update Dialog]
 ** xref:documentation:onecx-nx-plugins:generator/delete-dialog.adoc[Create Delete Dialog]
-** xref:documentation:onecx-nx-plugins:generator/details-page.adoc[Create Detail Page]
 ** xref:documentation:onecx-nx-plugins:generator/create-ngrx-page.adoc[Create NgRx Page]
 ** xref:documentation:onecx-nx-plugins:ngrx/pre-commit-validation.adoc[Pre-Commit Validation]
 ** xref:documentation:onecx-nx-plugins:generator/glossary.adoc[Glossary]

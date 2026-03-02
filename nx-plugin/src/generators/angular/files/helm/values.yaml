@@ -28,4 +28,4 @@ app:
       enabled: true
       spec:
         permissions:
-        # ACTION S11 Add entity permissions
+        # ACTION P: Adjust permissions for the entity

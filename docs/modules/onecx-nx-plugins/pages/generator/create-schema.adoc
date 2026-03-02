@@ -13,8 +13,8 @@ At OneCX, we explicitly follow an *API-first approach*. In practice, this means 
 
 Let's begin by describing the entity that can be managed in the generated components. Starting this way makes the subsequent steps easier to understand.
 
-[#action-0]
-== ACTION S0
+[#action-e]
+== ACTION E
 
 Add Entity Schema::
 After creating the feature module and components, the next step is to define the entity schema in the OpenAPI file. This involves adding the base properties of the entity, which will be used to generate the API code for the frontend application.
@@ -26,7 +26,7 @@ After creating the feature module and components, the next step is to define the
 Directory:: `<root-of-ui-app>/src/assets/api`
 File::      `openapi-bff.yaml`
 
-.ACTION S0 in `+openapi-bff.yaml+` (excerpt)
+.ACTION E in `+openapi-bff.yaml+` (excerpt)
 [%collapsible]
 ====
 [source, yml]
@@ -53,7 +53,7 @@ components:
           type: string
         id:
           type: integer
-        # "ACTION S0: Add entity properties"
+        # "ACTION E: Add entity properties"
 ----
 Where below *properties* the properties of the entity are listed.
 ====

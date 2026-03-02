@@ -43,40 +43,12 @@ import { <%= resourceClassName %>SearchViewModel } from './<%= resourceFileName 
 
 export class <%= resourceClassName %>SearchComponent implements OnInit {
   @ViewChildren(Calendar) calendars!: QueryList<Calendar>;
-  viewModel$: Observable<<%= resourceClassName %>SearchViewModel>  = this.store.select(select<%= resourceClassName %>SearchViewModel);
-
+  viewModel$: Observable<<%= resourceClassName %>SearchViewModel>;
+  headerActions$: Observable<Action[]>;
   defaultDataSortDirection = DataSortDirection.NONE
   defaultDiagramType = DiagramType.PIE
-
-  // ACTION S10: Update header actions
-  headerActions$: Observable<Action[]> = this.viewModel$.pipe(map((vm) => {
-      const actions: Action[] = [
-        {
-          labelKey: '<%= resourceConstantName %>_SEARCH.HEADER_ACTIONS.EXPORT_ALL',
-          icon: PrimeIcons.DOWNLOAD,
-          titleKey: '<%= resourceConstantName %>_SEARCH.HEADER_ACTIONS.EXPORT_ALL',
-          show: 'asOverflow',
-          actionCallback: () => this.exportItems(),
-        },
-        {
-          labelKey: vm.chartVisible
-            ? '<%= resourceConstantName %>_SEARCH.HEADER_ACTIONS.HIDE_CHART'
-            : '<%= resourceConstantName %>_SEARCH.HEADER_ACTIONS.SHOW_CHART',
-          icon: PrimeIcons.EYE,
-          titleKey: vm.chartVisible
-            ? '<%= resourceConstantName %>_SEARCH.HEADER_ACTIONS.HIDE_CHART'
-            : '<%= resourceConstantName %>_SEARCH.HEADER_ACTIONS.SHOW_CHART',
-          show: 'asOverflow',
-          actionCallback: () => this.toggleChartVisibility(),
-        },
-      ]      
-      return actions
-    })
-  );
-
-  // ACTION S9: Select the column to be displayed in the diagram
   diagramColumnId = 'id';
-  diagramColumn$ = this.viewModel$.pipe(map((vm) =>vm.columns.find((e) => e.id === this.diagramColumnId) as DataTableColumn));
+  diagramColumn$: Observable<DataTableColumn>;
 
   public <%= resourcePropertyName %>SearchFormGroup: FormGroup = this.formBuilder.group(
     {
@@ -95,6 +67,36 @@ export class <%= resourceClassName %>SearchComponent implements OnInit {
     @Inject(LOCALE_ID) public readonly locale: string,
     private readonly exportDataService: ExportDataService,
   ) {
+    this.viewModel$ = this.store.select(select<%= resourceClassName %>SearchViewModel);
+
+    // ACTION S9: Select the column to be displayed in the diagram
+    this.diagramColumn$ = this.viewModel$.pipe(map((vm) =>vm.columns.find((e) => e.id === this.diagramColumnId) as DataTableColumn));
+
+    // ACTION S10: Update header actions
+    this.headerActions$ = this.viewModel$.pipe(map((vm) => {
+        const actions: Action[] = [
+          {
+            labelKey: '<%= resourceConstantName %>_SEARCH.HEADER_ACTIONS.EXPORT_ALL',
+            icon: PrimeIcons.DOWNLOAD,
+            titleKey: '<%= resourceConstantName %>_SEARCH.HEADER_ACTIONS.EXPORT_ALL',
+            show: 'asOverflow',
+            actionCallback: () => this.exportItems(),
+          },
+          {
+            labelKey: vm.chartVisible
+              ? '<%= resourceConstantName %>_SEARCH.HEADER_ACTIONS.HIDE_CHART'
+              : '<%= resourceConstantName %>_SEARCH.HEADER_ACTIONS.SHOW_CHART',
+            icon: PrimeIcons.EYE,
+            titleKey: vm.chartVisible
+              ? '<%= resourceConstantName %>_SEARCH.HEADER_ACTIONS.HIDE_CHART'
+              : '<%= resourceConstantName %>_SEARCH.HEADER_ACTIONS.SHOW_CHART',
+            show: 'asOverflow',
+            actionCallback: () => this.toggleChartVisibility(),
+          },
+        ]      
+        return actions
+      })
+    );
   }
 
   ngOnInit() {

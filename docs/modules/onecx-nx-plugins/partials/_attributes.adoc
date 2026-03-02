@@ -23,7 +23,8 @@
 :ngrx_search_criteria_parameter_ref:    xref:documentation:docs-guides-ui:angular/ngrx/search-criteria/search-criteria.adoc#parameters
 :ngrx_search_criteria_html_ref:         xref:documentation:docs-guides-ui:angular/ngrx/search-criteria/search-criteria.adoc#html
 :ngrx_search_criteria_html_example_ref: xref:documentation:docs-guides-ui:angular/ngrx/search-criteria/search-criteria.adoc#examples-for-different-input-fields
-
+:permissions_in_angular_ref:            xref:documentation:docs-guides-ui:angular/permissions.adoc[permissions in Angular]
+:permission_management_ref:             xref:documentation:onecx-permission:index.adoc[Permission Management]
 
 
 // External links to general resources
