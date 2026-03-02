@@ -46,9 +46,8 @@ export class <%= resourceClassName %>SearchEffects {
           this.route.queryParams,
         ]),
         tap(([, criteria, queryParams]) => {
-          const results =
-            <%= resourcePropertyName %>SearchCriteriasSchema.safeParse(queryParams);
-          if (!results.success || !equal(criteria, results.data)) {
+          const results = <%= resourcePropertyName %>SearchCriteriasSchema.safeParse(queryParams);
+          if (results.success && !equal(criteria, results.data)) {
             const params = {
               ...criteria,
               //TODO: Move to docs to explain how to only put the date part in the URL in case you have date and not datetime

@@ -103,4 +103,4 @@ image::generated_book_search_component_org.png[]
 After little adaptations to the search criteria and search results, the search component can look like this:
 
 .Search UI with adapted search
-image::generated_book_search_component_adapted.png[]
+image::generated_book_search_component_example.png[]

@@ -68,7 +68,7 @@ File::      `book-search.columns.ts`
 export const BookSearchColumns: DataTableColumn[] = [
   {
     columnType: ColumnType.STRING,
-    id: 'bookstore_book_search_result_book_title',
+    id: 'book_title',
     nameKey: 'BOOK_SEARCH.RESULTS.BOOK_TITLE',
     filterable: true,
     sortable: true,
@@ -79,8 +79,8 @@ export const BookSearchColumns: DataTableColumn[] = [
     ]
   },
   {
-    columnType: ColumnType.STRING,
-    id: 'bookstore_book_search_result_book_type',
+    columnType: ColumnType.TRANSLATION_KEY,
+    id: 'book_type',
     nameKey: 'BOOK_SEARCH.RESULTS.BOOK_TYPE',
     filterable: true,
     sortable: true,
