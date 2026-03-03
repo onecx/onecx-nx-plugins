@@ -275,14 +275,20 @@ Files::      `de.json`, `en.json`
 ====
 [source, json]
 ----
+  "BOOK_SEARCH": {
+    "CHANGE_ME": "ACTION S4: Adjust translation keys for search header",
+    "HEADER": "Item Search",
+    "SUB_HEADER": "Searching and displaying of items",
+    ...
     "CRITERIA": {
-      "INPUT_FIELDS": "ACTION S4: ADD TRANSLATION for input fields",
+      "INPUT_FIELDS": "ACTION S4: Adjust translation keys for input fields",
       "CHANGE_ME": {
         "LABEL": "Change Me",
         "ARIA_LABEL": "Change Me",
         "TOOLTIP": "Change Me"
       }
     }
+  }
 ----
 Where *CHANGE_ME* is an search criteria.
 ====
@@ -300,6 +306,8 @@ Files::      `de.json`, `en.json`
 [source, json]
 ----
   "BOOK_SEARCH": {
+    "HEADER": "Book Search",
+    "SUB_HEADER": "Searching and displaying of Books",
     ...
     "CRITERIA": {
       "BOOK_TITLE": {
@@ -310,6 +318,25 @@ Files::      `de.json`, `en.json`
     }
   }
 ----
-
 Where *BOOK_TITLE* is the criteria added to the `+SearchBookRequest+`.
+====
+
+.Example: Translations in `+de.json+`
+[%collapsible]
+====
+[source, json]
+----
+  "BOOK_SEARCH": {
+    "HEADER": "Büchersuche",
+    "SUB_HEADER": "Suchen und Anzeigen von Büchern",
+    ...
+    "CRITERIA": {
+      "BOOK_TITLE": {
+        "LABEL": "Titel",
+        "ARIA_LABEL": "Buchtitel",
+        "TOOLTIP": "Buchtitel"
+      }
+    }
+  }
+----
 ====

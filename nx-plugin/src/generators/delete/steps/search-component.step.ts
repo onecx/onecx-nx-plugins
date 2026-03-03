@@ -7,9 +7,11 @@ export class SearchComponentStep
   implements GeneratorStep<DeleteGeneratorSchema>
 {
   process(tree: Tree, options: DeleteGeneratorSchema): void {
-    const fileName = names(options.featureName).fileName;
-    const className = names(options.featureName).className;
-    const filePath = `src/app/${fileName}/pages/${fileName}-search/${fileName}-search.component.ts`;
+    const featureFileName = names(options.featureName).fileName;
+    const resourceFileName = names(options.resource).fileName;
+    const className = names(options.resource).className;
+    const propertyName = names(options.resource).propertyName;
+    const filePath = `src/app/${featureFileName}/pages/${resourceFileName}-search/${resourceFileName}-search.component.ts`;
 
     const find = [`} from '@onecx/portal-integration-angular';`, 'resetSearch'];
     const replaceWith = [
@@ -17,7 +19,7 @@ export class SearchComponentStep
     } from '@onecx/portal-integration-angular';`,
       `
     delete({ id }: RowListGridData) {
-      this.store.dispatch(${className}SearchActions.delete${className}ButtonClicked({ id }));
+      this.store.dispatch(${propertyName}SearchActions.delete${className}ButtonClicked({ id }));
     }
 
     resetSearch`,

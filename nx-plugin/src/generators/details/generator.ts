@@ -37,17 +37,6 @@ const PARAMETERS: GeneratorParameter<DetailsGeneratorSchema>[] = [
     prompt: 'Do you want to customize the names for the generated API?',
   },
   {
-    key: 'apiServiceName',
-    type: 'text',
-    required: 'interactive',
-    default: (values) => {
-      return `${names(values.featureName).className}BffService`;
-    },
-    prompt: 'Provide a name for your API service (e.g. BookService): ',
-    showInSummary: true,
-    showRules: [{ showIf: (values) => values.customizeNamingForAPI }],
-  },
-  {
     key: 'resource',
     type: 'text',
     required: 'interactive',
@@ -59,11 +48,22 @@ const PARAMETERS: GeneratorParameter<DetailsGeneratorSchema>[] = [
     showRules: [{ showIf: (values) => values.customizeNamingForAPI }],
   },
   {
+    key: 'apiServiceName',
+    type: 'text',
+    required: 'interactive',
+    default: (values) => {
+      return `${names(values.resource).className}APIService`;
+    },
+    prompt: 'Provide a name for your API service (e.g. BookAPIService): ',
+    showInSummary: true,
+    showRules: [{ showIf: (values) => values.customizeNamingForAPI }],
+  },
+  {
     key: 'getByIdResponseName',
     type: 'text',
     required: 'interactive',
     default: (values) => {
-      return `Get${names(values.featureName).className}ByIdResponse`;
+      return `Get${names(values.resource).className}ByIdResponse`;
     },
     prompt:
       'Provide a name for your GetByIdResponse (e.g. GetBookByIdResponse): ',
@@ -74,8 +74,7 @@ const PARAMETERS: GeneratorParameter<DetailsGeneratorSchema>[] = [
     key: 'editMode',
     type: 'boolean',
     required: 'interactive',
-    prompt:
-      'Do you want to have an Edit/Save Mode for this page?',
+    prompt: 'Do you want to have an Edit Mode for this page?',
     showInSummary: true,
     default: false,
   },
@@ -84,31 +83,33 @@ const PARAMETERS: GeneratorParameter<DetailsGeneratorSchema>[] = [
     type: 'text',
     required: 'interactive',
     default: (values) => {
-      return `Update${names(values.featureName).className}Request`;
+      return `Update${names(values.resource).className}Request`;
     },
-    prompt:
-      'Provide a name for your update request (e.g. UpdateBookRequest): ',
+    prompt: 'Provide a name for your update request (e.g. UpdateBookRequest): ',
     showInSummary: true,
-    showRules: [{ showIf: (values) => values.customizeNamingForAPI && values.editMode }],
+    showRules: [
+      { showIf: (values) => values.customizeNamingForAPI && values.editMode },
+    ],
   },
   {
     key: 'updateResponseName',
     type: 'text',
     required: 'interactive',
     default: (values) => {
-      return `Update${names(values.featureName).className}Response`;
+      return `Update${names(values.resource).className}Response`;
     },
     prompt:
       'Provide a name for your update response (e.g. UpdateBookResponse): ',
     showInSummary: true,
-    showRules: [{ showIf: (values) => values.customizeNamingForAPI && values.editMode }],
+    showRules: [
+      { showIf: (values) => values.customizeNamingForAPI && values.editMode },
+    ],
   },
   {
     key: 'allowDelete',
     type: 'boolean',
     required: 'interactive',
-    prompt:
-      'Do you want to have an Delete Button on this page?',
+    prompt: 'Do you want to have a Delete Button on this page?',
     showInSummary: true,
     default: false,
   },
@@ -127,7 +128,7 @@ export async function detailsGenerator(
   const parameters = await processParams(PARAMETERS, options);
   Object.assign(options, parameters);
 
-  const spinner = ora(`Adding details to ${options.featureName}`).start();
+  const spinner = ora(`Adding detail to ${options.resource}`).start();
   const directory = '.';
 
   const isNgRx = !!Object.keys(
@@ -162,9 +163,13 @@ export async function detailsGenerator(
       featureClassName: names(options.featureName).className,
       featureConstantName: names(options.featureName).constantName,
       resource: options.resource,
+      resourceFileName: names(options.resource).fileName,
+      resourcePropertyName: names(options.resource).propertyName,
+      resourceClassName: names(options.resource).className,
+      resourceConstantName: names(options.resource).constantName,
       serviceName: options.apiServiceName,
       editMode: options.editMode,
-      allowDelete: options.allowDelete
+      allowDelete: options.allowDelete,
     }
   );
 
@@ -177,8 +182,9 @@ export async function detailsGenerator(
   generatorProcessor.addStep(new GeneralOpenAPIStep());
 
   // Optionally extend search with features to navigate to details (if search was generated beforehand)
-  const fileName = names(options.featureName).fileName;
-  const htmlSearchFilePath = `src/app/${fileName}/pages/${fileName}-search/${fileName}-search.component.html`;
+  const featureFileName = names(options.featureName).fileName;
+  const resourceFileName = names(options.resource).fileName;
+  const htmlSearchFilePath = `src/app/${featureFileName}/pages/${resourceFileName}-search/${resourceFileName}-search.component.html`;
   if (tree.exists(htmlSearchFilePath)) {
     generatorProcessor.addStep(new SearchHTMLStep());
     generatorProcessor.addStep(new SearchComponentStep());
@@ -193,23 +199,25 @@ export async function detailsGenerator(
   await formatFiles(tree);
   return () => {
     installPackagesTask(tree);
-    execSync('npm run apigen', {
-      cwd: tree.root,
-      stdio: 'inherit',
-    });
+    let cmd = '';
+    function log(command: string) {
+      console.log('');
+      console.log('generate detail ==> ' + command);
+    }
+    cmd = 'npm run apigen ';
+    log(cmd);
+    execSync(cmd, { cwd: tree.root, stdio: 'inherit' });
     const files = tree
       .listChanges()
       .map((c) => c.path)
       .filter((p) => p.endsWith('.ts'))
       .join(' ');
-    execSync('npx organize-imports-cli ' + files, {
-      cwd: tree.root,
-      stdio: 'inherit',
-    });
-    execSync('npx prettier --write ' + files, {
-      cwd: tree.root,
-      stdio: 'inherit',
-    });
+    cmd = 'npx organize-imports-cli ';
+    log(cmd);
+    execSync(cmd + files, { cwd: tree.root, stdio: 'inherit' });
+    cmd = 'npx prettier --write ';
+    log(cmd);
+    execSync(cmd + files, { cwd: tree.root, stdio: 'inherit' });
   };
 }
 

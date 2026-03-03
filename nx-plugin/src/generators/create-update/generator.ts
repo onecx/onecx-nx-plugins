@@ -38,9 +38,9 @@ const PARAMETERS: GeneratorParameter<CreateUpdateGeneratorSchema>[] = [
     type: 'text',
     required: 'interactive',
     default: (values) => {
-      return `${names(values.featureName).className}BffService`;
+      return `${names(values.featureName).className}APIService`;
     },
-    prompt: 'Provide a name for your API service (e.g. BookBffService): ',
+    prompt: 'Provide a name for your API service (e.g. BookAPIService): ',
     showInSummary: true,
     showRules: [{ showIf: (values) => values.customizeNamingForAPI }],
   },
@@ -62,8 +62,7 @@ const PARAMETERS: GeneratorParameter<CreateUpdateGeneratorSchema>[] = [
     default: (values) => {
       return `Create${names(values.featureName).className}Request`;
     },
-    prompt:
-      'Provide a name for your create request (e.g. CreateBookRequest): ',
+    prompt: 'Provide a name for your create request (e.g. CreateBookRequest): ',
     showInSummary: true,
     showRules: [{ showIf: (values) => values.customizeNamingForAPI }],
   },
@@ -86,8 +85,7 @@ const PARAMETERS: GeneratorParameter<CreateUpdateGeneratorSchema>[] = [
     default: (values) => {
       return `Update${names(values.featureName).className}Request`;
     },
-    prompt:
-      'Provide a name for your update request (e.g. UpdateBookRequest): ',
+    prompt: 'Provide a name for your update request (e.g. UpdateBookRequest): ',
     showInSummary: true,
     showRules: [{ showIf: (values) => values.customizeNamingForAPI }],
   },
@@ -188,23 +186,25 @@ export async function createUpdateGenerator(
 
   return () => {
     installPackagesTask(tree);
-    execSync('npm run apigen', {
-      cwd: tree.root,
-      stdio: 'inherit',
-    });
+    let cmd = '';
+    function log(command: string) {
+      console.log('');
+      console.log('generate edit ==> ' + command);
+    }
+    cmd = 'npm run apigen ';
+    log(cmd);
+    execSync(cmd, { cwd: tree.root, stdio: 'inherit' });
     const files = tree
       .listChanges()
       .map((c) => c.path)
       .filter((p) => p.endsWith('.ts'))
       .join(' ');
-    execSync('npx organize-imports-cli ' + files, {
-      cwd: tree.root,
-      stdio: 'inherit',
-    });
-    execSync('npx prettier --write ' + files, {
-      cwd: tree.root,
-      stdio: 'inherit',
-    });
+    cmd = 'npx organize-imports-cli ';
+    log(cmd);
+    execSync(cmd + files, { cwd: tree.root, stdio: 'inherit' });
+    cmd = 'npx prettier --write ';
+    log(cmd);
+    execSync(cmd + files, { cwd: tree.root, stdio: 'inherit' });
   };
 }
 

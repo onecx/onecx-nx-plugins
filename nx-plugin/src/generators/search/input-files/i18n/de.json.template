@@ -1,8 +1,9 @@
 {
   "<%= resourceConstantName %>_SEARCH": {
-    "HEADER": "<%= resourceClassName %> Suche",
+    "CHANGE_ME": "ACTION S4: Adjust translation keys for search header",
+    "HEADER": "Suche",
+    "SUB_HEADER": "Suchen und Anzeigen von ...",
     "ARIA_LABEL": "Seitenkopf mit Suche",
-    "SUB_HEADER": "Suchen und Anzeigen von <%= resourceClassName %>",
     "HELP_ARTICLE_ID": "Hilfeartikel",
     "EMPTY_RESULTS": "Keine Ergebnisse.",
     "BREADCRUMB": "Suche",
@@ -35,7 +36,7 @@
       "NAME": "Suchergebnisse"
     },
     "CRITERIA": {
-      "INPUT_FIELDS": "ACTION S4: ADD TRANSLATION for input fields",
+      "INPUT_FIELDS": "ACTION S4: Adjust translation keys for input fields",
       "CHANGE_ME": {
         "LABEL": "Ändere mich",
         "ARIA_LABEL": "Ändere mich",

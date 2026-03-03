@@ -15,6 +15,7 @@
 :onecx_local_env_setup_ref:    xref:onecx-local-env:setup.adoc[OneCX Local Environment Setup]
 :onecx_local_env_extend_ref:   xref:onecx-local-env:extend/extend.adoc[Extend OneCX]
 :onecx_app_generator_ref:      xref:onecx-nx-plugins:index.adoc[OneCX App Generator]
+:group_by_count_diagram_ref:       xref:documentation:onecx-portal-ui-libs:components/group-by-count-diagram.adoc
 
 :onecx_ui_datatable_columns_ref: xref:documentation:onecx-portal-ui-libs:components/interactive-data-view/data-table-column.adoc
 

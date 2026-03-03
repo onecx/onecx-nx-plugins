@@ -5,9 +5,11 @@ import { safeReplace } from '../../shared/safeReplace';
 
 export class SearchEffectsStep implements GeneratorStep<SearchGeneratorSchema> {
   process(tree: Tree, options: SearchGeneratorSchema): void {
-    const fileName = names(options.featureName).fileName;
-    const className = names(options.featureName).className;
-    const filePath = `src/app/${fileName}/pages/${fileName}-search/${fileName}-search.effects.ts`;
+    const featureFileName = names(options.featureName).fileName;
+    const resourceFileName = names(options.resource).fileName;
+    const className = names(options.resource).className;
+    const propertyName = names(options.resource).propertyName;
+    const filePath = `src/app/${featureFileName}/pages/${resourceFileName}-search/${resourceFileName}-search.effects.ts`;
 
     const find = [/^/, 'searchByUrl$'];
 
@@ -16,10 +18,10 @@ export class SearchEffectsStep implements GeneratorStep<SearchGeneratorSchema> {
       `navigateToOrderDetailsPage$ = createEffect(
           () => {
             return this.actions$.pipe(
-              ofType(${className}SearchActions.detailsButtonClicked),
+              ofType(${propertyName}SearchActions.detailsButtonClicked),
               concatLatestFrom(() => this.store.select(selectUrl)),
               tap(([action, currentUrl]) => {
-                let urlTree = this.router.parseUrl(currentUrl);
+                const urlTree = this.router.parseUrl(currentUrl);
                 urlTree.queryParams = {};
                 urlTree.fragment = null;
                 this.router.navigate([urlTree.toString(), 'details', action.id]);

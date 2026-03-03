@@ -186,21 +186,19 @@ Files::     `de.json` / `en.json`
 ====
 [source, json]
 ----
-  {
-    "BOOK_SEARCH": {
-      ...,
-      "RESULTS": {
-        "BOOK_TITLE": "Book Title",
-        "BOOK_TYPE": "Book Type",
-        "BOOK_TYPES": {
-          "CRIME": "Crime",
-          "DRAMA": "Drama",
-          "FANTASY": "Fantasy",
-          "PROSA": "Prosa",
-          "SCIENCE": "Science"
-        },
-        "NAME": "Search Results"
+  "BOOK_SEARCH": {
+    ...
+    "RESULTS": {
+      "BOOK_TITLE": "Book Title",
+      "BOOK_TYPE": "Book Type",
+      "BOOK_TYPES": {
+        "CRIME": "Crime",
+        "DRAMA": "Drama",
+        "FANTASY": "Fantasy",
+        "PROSA": "Prosa",
+        "SCIENCE": "Science"
       },
+      "NAME": "Search Results"
     }
   }
 ----
@@ -212,21 +210,19 @@ Refer to the {onecx_ui_translations_ref}[Multi-Language Cookbook] for more infor
 ====
 [source, json]
 ----
-  {
-    "BOOK_SEARCH": {
-      ...,
-      "RESULTS": {
-        "BOOK_TITLE": "Buchtitel",
-        "BOOK_TYPE": "Buchtyp",
-        "BOOK_TYPES": {
-          "CRIME": "Krimi",
-          "DRAMA": "Drama",
-          "FANTASY": "Fantasie",
-          "PROSA": "Prosa",
-          "SCIENCE": "Wissenschaft"
-        },
-        "NAME": "Suchergebnisse"
-      }
+  "BOOK_SEARCH": {
+    ...
+    "RESULTS": {
+      "BOOK_TITLE": "Buchtitel",
+      "BOOK_TYPE": "Buchtyp",
+      "BOOK_TYPES": {
+        "CRIME": "Krimi",
+        "DRAMA": "Drama",
+        "FANTASY": "Fantasie",
+        "PROSA": "Prosa",
+        "SCIENCE": "Wissenschaft"
+      },
+      "NAME": "Suchergebnisse"
     }
   }
 ----

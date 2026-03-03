@@ -21,7 +21,7 @@
             <!-- ACTION S3: Change this search criteria -->
             <input
               pInputText
-              id="<%= workspaceName.toLowerCase() %>_<%= resourcePropertyName.toLowerCase() %>_search_criteria_<%= resource.toLowerCase() %>_change_me"
+              id="<%= workspaceName.toLowerCase() %>_<%= resourcePropertyName.toLowerCase() %>_search_criteria_change_me"
               type="text"
               class="w-18rem"
               formControlName="changeMe"
@@ -32,7 +32,7 @@
               [attr.aria-label]="'<%= resourceConstantName%>_SEARCH.CRITERIA.CHANGE_ME.ARIA_LABEL' | translate"
             />
             <label 
-              for="<%= workspaceName.toLowerCase() %>_<%= resourcePropertyName.toLowerCase() %>_search_criteria_<%= resource.toLowerCase() %>_change_me"
+              for="<%= workspaceName.toLowerCase() %>_<%= resourcePropertyName.toLowerCase() %>_search_criteria_change_me"
               class="white-space-nowrap">
               {{ '<%= resourceConstantName%>_SEARCH.CRITERIA.CHANGE_ME.LABEL' | translate }}
             </label>

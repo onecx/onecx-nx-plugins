@@ -7,12 +7,14 @@ export class SearchHTMLStep
   implements GeneratorStep<CreateUpdateGeneratorSchema>
 {
   process(tree: Tree, options: CreateUpdateGeneratorSchema): void {
-    const fileName = names(options.featureName).fileName;
-    const constantName = names(options.featureName).constantName;
-    const htmlSearchFilePath = `src/app/${fileName}/pages/${fileName}-search/${fileName}-search.component.html`;
+    const featureFileName = names(options.featureName).fileName;
+    const resourceFileName = names(options.resource).fileName;
+    const className = names(options.resource).className;
+    const constantName = names(options.resource).constantName;
+    const htmlSearchFilePath = `src/app/${featureFileName}/pages/${resourceFileName}-search/${resourceFileName}-search.component.html`;
 
     safeReplace(
-      `Add edit event and permissions to <ocx-interactive-data-view> in ${fileName}SearchComponent`,
+      `Add edit event and permissions to <ocx-interactive-data-view> in ${className}SearchComponent`,
       htmlSearchFilePath,
       '<ocx-interactive-data-view',
       `<ocx-interactive-data-view

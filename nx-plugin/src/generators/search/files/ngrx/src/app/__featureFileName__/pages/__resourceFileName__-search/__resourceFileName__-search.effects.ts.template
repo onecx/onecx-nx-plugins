@@ -78,7 +78,7 @@ export class <%= resourceClassName %>SearchEffects {
     );
   });
 
-  performSearch(searchCriteria: Record<string, any>) {
+  performSearch(searchCriteria: Record<string, string | number | boolean | Date | undefined>) {
     return this.<%= resourcePropertyName %>Service.search<%= resource %>Items(
       {
         ...Object.entries(searchCriteria).reduce(
@@ -136,7 +136,7 @@ export class <%= resourceClassName %>SearchEffects {
     {
       action:
         <%= resourcePropertyName %>SearchActions.<%= resourcePropertyName %>SearchResultsLoadingFailed,
-      key: '<%= featureConstantName %>_SEARCH.ERROR_MESSAGES.SEARCH_RESULTS_LOADING_FAILED',
+      key: '<%= resourceConstantName %>_SEARCH.ERROR_MESSAGES.SEARCH_RESULTS_LOADING_FAILED',
     }
   ];
 

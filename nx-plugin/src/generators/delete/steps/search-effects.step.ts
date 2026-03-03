@@ -5,11 +5,12 @@ import { DeleteGeneratorSchema } from '../schema';
 
 export class SearchEffectsStep implements GeneratorStep<DeleteGeneratorSchema> {
   process(tree: Tree, options: DeleteGeneratorSchema): void {
-    const fileName = names(options.featureName).fileName;
-    const className = names(options.featureName).className;
-    const propertyName = names(options.featureName).propertyName;
-    const constantName = names(options.featureName).constantName;
-    const filePath = `src/app/${fileName}/pages/${fileName}-search/${fileName}-search.effects.ts`;
+    const featureFileName = names(options.featureName).fileName;
+    const resourceFileName = names(options.resource).fileName;
+    const className = names(options.resource).className;
+    const propertyName = names(options.resource).propertyName;
+    const constantName = names(options.resource).constantName;
+    const filePath = `src/app/${featureFileName}/pages/${resourceFileName}-search/${resourceFileName}-search.effects.ts`;
 
     const find = [/^/, 'searchByUrl$'];
     const replaceWith = [
@@ -23,7 +24,7 @@ export class SearchEffectsStep implements GeneratorStep<DeleteGeneratorSchema> {
       refreshSearchAfterDelete$ = createEffect(() => {
         return this.actions$.pipe(
           ofType(
-            ${className}SearchActions.delete${className}Succeeded,
+            ${propertyName}SearchActions.delete${className}Succeeded,
           ),
           concatLatestFrom(() => this.store.select(${propertyName}SearchSelectors.selectCriteria)),
           switchMap(([, searchCriteria]) => this.performSearch(searchCriteria))
@@ -32,7 +33,7 @@ export class SearchEffectsStep implements GeneratorStep<DeleteGeneratorSchema> {
 
       deleteButtonClicked$ = createEffect(() => {
       return this.actions$.pipe(
-        ofType(${className}SearchActions.delete${className}ButtonClicked),
+        ofType(${propertyName}SearchActions.delete${className}ButtonClicked),
         concatLatestFrom(() =>
           this.store.select(${propertyName}SearchSelectors.selectResults)
         ),
@@ -62,27 +63,27 @@ export class SearchEffectsStep implements GeneratorStep<DeleteGeneratorSchema> {
         }),
         switchMap(([dialogResult, itemToDelete]) => {
           if (!dialogResult || dialogResult.button == 'secondary') {
-            return of(${className}SearchActions.delete${className}Cancelled());
+            return of(${propertyName}SearchActions.delete${className}Cancelled());
           }
           if (!itemToDelete) {
             throw new Error('Item to delete not found!');
           }
 
           return this.${propertyName}Service
-            .delete${options.resource}(itemToDelete.id)
+            .delete${className}(itemToDelete.id)
             .pipe(
               map(() => {
                 this.messageService.success({
                   summaryKey: '${constantName}_DELETE.SUCCESS',
                 });
-                return ${className}SearchActions.delete${className}Succeeded();
+                return ${propertyName}SearchActions.delete${className}Succeeded();
               }),
               catchError((error) => {
                 this.messageService.error({
                   summaryKey: '${constantName}_DELETE.ERROR',
                 });
                 return of(
-                  ${className}SearchActions.delete${className}Failed({
+                  ${propertyName}SearchActions.delete${className}Failed({
                     error,
                   })
                 );

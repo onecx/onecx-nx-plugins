@@ -5,9 +5,11 @@ import { safeReplace } from '../../shared/safeReplace';
 
 export class SearchHTMLStep implements GeneratorStep<SearchGeneratorSchema> {
   process(tree: Tree, options: SearchGeneratorSchema): void {
-    const fileName = names(options.featureName).fileName;
-    const constantName = names(options.featureName).constantName;
-    const htmlSearchFilePath = `src/app/${fileName}/pages/${fileName}-search/${fileName}-search.component.html`;
+    const featureFileName = names(options.featureName).fileName;
+    const resourceFileName = names(options.resource).fileName;
+    const className = names(options.resource).className;
+    const constantName = names(options.resource).constantName;
+    const htmlSearchFilePath = `src/app/${featureFileName}/pages/${resourceFileName}-search/${resourceFileName}-search.component.html`;
 
     const find = '<ocx-interactive-data-view';
 
@@ -15,7 +17,7 @@ export class SearchHTMLStep implements GeneratorStep<SearchGeneratorSchema> {
       ${options.standalone ? '' : `viewPermission="${constantName}#VIEW"`}`;
 
     safeReplace(
-      `Add view event and permission to ${fileName}SearchComponent HTML`,
+      `Add view event and permission to ${className}SearchComponent HTML`,
       htmlSearchFilePath,
       find,
       replaceWith,

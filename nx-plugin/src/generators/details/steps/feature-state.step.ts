@@ -5,19 +5,19 @@ import { DetailsGeneratorSchema } from '../schema';
 
 export class FeatureStateStep implements GeneratorStep<DetailsGeneratorSchema> {
   process(tree: Tree, options: DetailsGeneratorSchema): void {
-    const fileName = names(options.featureName).fileName;
-    const className = names(options.featureName).className;
-    const filePath = `src/app/${fileName}/${fileName}.state.ts`;
+    const featureFileName = names(options.featureName).fileName;
+    const resourceFileName = names(options.resource).fileName;
+    const featureClassName = names(options.featureName).className;
+    const className = names(options.resource).className;
+    const filePath = `src/app/${featureFileName}/${featureFileName}.state.ts`;
 
     const find = [/^/, 'State {'];
     const replaceWith = [
-      `import { ${className}DetailsState } from './pages/${fileName}-details/${fileName}-details.state';`,
-      `State {
-    details: ${className}DetailsState;
-  `,
+      `import { ${className}DetailsState } from './pages/${resourceFileName}-details/${resourceFileName}-details.state';`,
+      `State { details: ${className}DetailsState; `,
     ];
     safeReplace(
-      `Add details state to ${fileName}State`,
+      `Add details state to ${featureClassName}State`,
       filePath,
       find,
       replaceWith,

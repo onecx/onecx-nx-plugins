@@ -5,9 +5,11 @@ import { safeReplace } from '../../shared/safeReplace';
 
 export class SearchTestsStep implements GeneratorStep<DeleteGeneratorSchema> {
   process(tree: Tree, options: DeleteGeneratorSchema): void {
-    const fileName = names(options.featureName).fileName;
-    const className = names(options.featureName).className;
-    const filePath = `src/app/${fileName}/pages/${fileName}-search/${fileName}-search.component.spec.ts`;
+    const featureFileName = names(options.featureName).fileName;
+    const resourceFileName = names(options.resource).fileName;
+    const className = names(options.resource).className;
+    const propertyName = names(options.resource).propertyName;
+    const filePath = `src/app/${featureFileName}/pages/${resourceFileName}-search/${resourceFileName}-search.component.spec.ts`;
 
     const content = tree.exists(filePath) ? tree.read(filePath, 'utf8')! : '';
     if (!content.includes(`import { RowListGridData } from '@onecx/portal-integration-angular'`)) {
@@ -26,7 +28,7 @@ export class SearchTestsStep implements GeneratorStep<DeleteGeneratorSchema> {
         const row = { id: '1' } as any;
         component.delete(row);
         expect(store.dispatch).toHaveBeenCalledWith(
-          ${className}SearchActions.delete${className}ButtonClicked({ id: '1' })
+          ${propertyName}SearchActions.delete${className}ButtonClicked({ id: '1' })
         );
       });
     `;

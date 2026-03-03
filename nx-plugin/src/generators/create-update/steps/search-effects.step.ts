@@ -7,11 +7,12 @@ export class SearchEffectsStep
   implements GeneratorStep<CreateUpdateGeneratorSchema>
 {
   process(tree: Tree, options: CreateUpdateGeneratorSchema): void {
-    const fileName = names(options.featureName).fileName;
-    const className = names(options.featureName).className;
-    const propertyName = names(options.featureName).propertyName;
-    const constantName = names(options.featureName).constantName;
-    const filePath = `src/app/${fileName}/pages/${fileName}-search/${fileName}-search.effects.ts`;
+    const featureFileName = names(options.featureName).fileName;
+    const resourceFileName = names(options.resource).fileName;
+    const className = names(options.resource).className;
+    const constantName = names(options.resource).constantName;
+    const propertyName = names(options.resource).propertyName;
+    const filePath = `src/app/${featureFileName}/pages/${resourceFileName}-search/${resourceFileName}-search.effects.ts`;
 
     const find = [/^/, 'searchByUrl$'];
     const replaceWith = [
@@ -22,13 +23,13 @@ export class SearchEffectsStep
         ${options.createRequestName},
         ${options.updateRequestName},
       } from 'src/app/shared/generated';` +
-        `import { ${className}CreateUpdateComponent } from './dialogs/${options.featureName}-create-update/${options.featureName}-create-update.component';`,
+        `import { ${className}CreateUpdateComponent } from './dialogs/${resourceFileName}-create-update/${resourceFileName}-create-update.component';`,
       `
       refreshSearchAfterCreateUpdate$ = createEffect(() => {
         return this.actions$.pipe(
           ofType(
-            ${className}SearchActions.create${className}Succeeded,
-            ${className}SearchActions.update${className}Succeeded
+            ${propertyName}SearchActions.create${className}Succeeded,
+            ${propertyName}SearchActions.update${className}Succeeded
           ),
           concatLatestFrom(() => this.store.select(${propertyName}SearchSelectors.selectCriteria)),
           switchMap(([, searchCriteria]) => this.performSearch(searchCriteria))
@@ -37,7 +38,7 @@ export class SearchEffectsStep
 
       editButtonClicked$ = createEffect(() => {
       return this.actions$.pipe(
-        ofType(${className}SearchActions.edit${className}ButtonClicked),
+        ofType(${propertyName}SearchActions.edit${className}ButtonClicked),
         concatLatestFrom(() =>
           this.store.select(${propertyName}SearchSelectors.selectResults)
         ),
@@ -63,7 +64,7 @@ export class SearchEffectsStep
         }),
         switchMap((dialogResult) => {
           if (!dialogResult || dialogResult.button == 'secondary') {
-            return of(${className}SearchActions.update${className}Cancelled());
+            return of(${propertyName}SearchActions.update${className}Cancelled());
           }
           if (!dialogResult?.result) {
             throw new Error('DialogResult was not set as expected!');
@@ -79,7 +80,7 @@ export class SearchEffectsStep
                 this.messageService.success({
                   summaryKey: '${constantName}_CREATE_UPDATE.UPDATE.SUCCESS',
                 });
-                return ${className}SearchActions.update${className}Succeeded();
+                return ${propertyName}SearchActions.update${className}Succeeded();
               })
             );
         }),
@@ -88,7 +89,7 @@ export class SearchEffectsStep
             summaryKey: '${constantName}_CREATE_UPDATE.UPDATE.ERROR',
           });
           return of(
-            ${className}SearchActions.update${className}Failed({
+            ${propertyName}SearchActions.update${className}Failed({
               error,
             })
           );
@@ -99,7 +100,7 @@ export class SearchEffectsStep
     createButtonClicked$ = createEffect(
       () => {
         return this.actions$.pipe(
-          ofType(${className}SearchActions.create${className}ButtonClicked),
+          ofType(${propertyName}SearchActions.create${className}ButtonClicked),
           switchMap(() => {
             return this.portalDialogService.openDialog< ${options.resource} | undefined>(
               '${constantName}_CREATE_UPDATE.CREATE.HEADER',
@@ -119,7 +120,7 @@ export class SearchEffectsStep
           }),
           switchMap((dialogResult) => {
             if (!dialogResult || dialogResult.button == 'secondary') {
-              return of(${className}SearchActions.create${className}Cancelled());
+              return of(${propertyName}SearchActions.create${className}Cancelled());
             }
             if (!dialogResult?.result) {
               throw new Error('DialogResult was not set as expected!');
@@ -134,7 +135,7 @@ export class SearchEffectsStep
                   this.messageService.success({
                     summaryKey: '${constantName}_CREATE_UPDATE.CREATE.SUCCESS',
                   });
-                  return ${className}SearchActions.create${className}Succeeded();
+                  return ${propertyName}SearchActions.create${className}Succeeded();
                 })
               );
           }),
@@ -143,7 +144,7 @@ export class SearchEffectsStep
               summaryKey: '${constantName}_CREATE_UPDATE.CREATE.ERROR',
             });
             return of(
-              ${className}SearchActions.create${className}Failed({
+              ${propertyName}SearchActions.create${className}Failed({
                 error,
               })
             );

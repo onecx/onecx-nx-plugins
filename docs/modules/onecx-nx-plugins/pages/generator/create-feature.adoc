@@ -71,6 +71,7 @@ nx generate @onecx/nx-plugin:feature book --resource=Book
 ----
 
 This command will generate a new feature module named *book* with the necessary structure and configurations.
+The preset resource name *Book* will be used to derive the names for the generated components and services related to managing book data.
 
 .Excerpt of generated files and directories
 image::generated_feature_book.png[width=200]

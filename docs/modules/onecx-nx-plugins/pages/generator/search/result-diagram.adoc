@@ -3,8 +3,6 @@ include::partial$_attributes.adoc[]
 endif::[]
 :imagesdir: ../../../images
 
-:group_by_count_diagram: xref:documentation:onecx-portal-ui-libs:components/group-by-count-diagram.adoc
-
 = Configure the Result Diagram
 
 By default, a diagram component is added to display the value distribution of a certain column in the search results. This component is called `GroupByCountDiagram` and it groups the values of a column and counts how many times each value appears in the search results. The result is displayed as a diagram, which can be either a bar chart or a pie chart, depending on the configuration.
@@ -33,7 +31,7 @@ File::      `<resource>-search.component.ts`
   diagramColumnId = 'id';
   diagramColumn$ = this.viewModel$.pipe(map((vm) =>vm.columns.find((e) => e.id === this.diagramColumnId) as DataTableColumn));
 ----
-Please refer to the {group_by_count_diagram}[GroupByCountDiagram Component] for more adaptations.
+Please refer to the {group_by_count_diagram_ref}[GroupByCountDiagram Component] for more adaptations.
 ====
 
 

@@ -39,7 +39,7 @@ File::      `<resource>-search.component.ts`
         },
         ...
 ----
-Please refer to the {group_by_count_diagram}[GroupByCountDiagram Component] for more adaptations.
+Please refer to the {group_by_count_diagram_ref}[GroupByCountDiagram Component] for more adaptations.
 ====
 
 

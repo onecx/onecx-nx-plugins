@@ -7,10 +7,10 @@ export class SearchEffectsSpecStep
   implements GeneratorStep<SearchGeneratorSchema>
 {
   process(tree: Tree, options: SearchGeneratorSchema): void {
-    const className = names(options.featureName).className;
-    const filePath = `src/app/${names(options.featureName).fileName}/pages/${
-      names(options.featureName).fileName
-    }-search/${names(options.featureName).fileName}-search.effects.spec.ts`;
+    const featureFileName = names(options.featureName).fileName;
+    const resourceFileName = names(options.resource).fileName;
+    const propertyName = names(options.resource).propertyName;
+    const filePath = `src/app/${featureFileName}/pages/${resourceFileName}-search/${resourceFileName}-search.effects.spec.ts`;
 
     const specToAppend = `
       describe('navigateToOrderDetailsPage$', () => {
@@ -26,7 +26,7 @@ export class SearchEffectsSpecStep
             done();
           });
 
-          actions$.next(${className}SearchActions.detailsButtonClicked({ id: testId }));
+          actions$.next(${propertyName}SearchActions.detailsButtonClicked({ id: testId }));
         });
 
         it('should dynamically clear query params and fragment from URL on navigateToOrderDetailsPage$', (done) => {
@@ -51,7 +51,7 @@ export class SearchEffectsSpecStep
             done();
           });
 
-          actions$.next(${className}SearchActions.detailsButtonClicked({ id: testId }));
+          actions$.next(${propertyName}SearchActions.detailsButtonClicked({ id: testId }));
         });
       });
     `;

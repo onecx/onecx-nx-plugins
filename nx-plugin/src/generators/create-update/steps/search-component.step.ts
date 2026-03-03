@@ -7,10 +7,12 @@ export class SearchComponentStep
   implements GeneratorStep<CreateUpdateGeneratorSchema>
 {
   process(tree: Tree, options: CreateUpdateGeneratorSchema): void {
-    const fileName = names(options.featureName).fileName;
-    const className = names(options.featureName).className;
-    const constantName = names(options.featureName).constantName;
-    const filePath = `src/app/${fileName}/pages/${fileName}-search/${fileName}-search.component.ts`;
+    const featureFileName = names(options.featureName).fileName;
+    const resourceFileName = names(options.resource).fileName;
+    const className = names(options.resource).className;
+    const constantName = names(options.resource).constantName;
+    const propertyName = names(options.resource).propertyName;
+    const filePath = `src/app/${featureFileName}/pages/${resourceFileName}-search/${resourceFileName}-search.component.ts`;
     const find = [
       `} from '@onecx/portal-integration-angular';`,
       'const actions: Action[] = [',
@@ -28,11 +30,11 @@ export class SearchComponentStep
       },`,
       `
       create() {
-        this.store.dispatch(${className}SearchActions.create${className}ButtonClicked());
+        this.store.dispatch(${propertyName}SearchActions.create${className}ButtonClicked());
       }
 
       edit({ id }: RowListGridData) {
-        this.store.dispatch(${className}SearchActions.edit${className}ButtonClicked({ id }));
+        this.store.dispatch(${propertyName}SearchActions.edit${className}ButtonClicked({ id }));
       }
 
       resetSearch`,

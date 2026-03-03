@@ -7,18 +7,19 @@ export class FeatureModuleStep
   implements GeneratorStep<CreateUpdateGeneratorSchema>
 {
   process(tree: Tree, options: CreateUpdateGeneratorSchema): void {
-    const fileName = names(options.featureName).fileName;
-    const className = names(options.featureName).className;
+    const featureFileName = names(options.featureName).fileName;
+    const resourceFileName = names(options.resource).fileName;
+    const className = names(options.resource).className;
     const moduleFilePath = joinPathFragments(
       'src/app',
-      fileName,
-      fileName + '.module.ts'
+      featureFileName,
+      featureFileName + '.module.ts'
     );
     const find = ['declarations: [', `from '@ngrx/effects';`];
     const replaceWith = [
       `declarations: [${className}CreateUpdateComponent,`,
       `from '@ngrx/effects';
-     import { ${className}CreateUpdateComponent } from './pages/${fileName}-search/dialogs/${fileName}-create-update/${fileName}-create-update.component';
+     import { ${className}CreateUpdateComponent } from './pages/${resourceFileName}-search/dialogs/${resourceFileName}-create-update/${resourceFileName}-create-update.component';
      import { providePortalDialogService } from '@onecx/portal-integration-angular';`,
       `
     providers: [providePortalDialogService()],

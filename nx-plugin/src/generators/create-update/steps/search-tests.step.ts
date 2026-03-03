@@ -7,10 +7,11 @@ export class SearchTestsStep
   implements GeneratorStep<CreateUpdateGeneratorSchema>
 {
   process(tree: Tree, options: CreateUpdateGeneratorSchema): void {
-    const fileName = names(options.featureName).fileName;
-    const className = names(options.featureName).className;
-    const propertyName = names(options.featureName).propertyName;
-    const filePath = `src/app/${fileName}/pages/${fileName}-search/${fileName}-search.component.spec.ts`;
+    const featureFileName = names(options.featureName).fileName;
+    const resourceFileName = names(options.resource).fileName;
+    const className = names(options.resource).className;
+    const propertyName = names(options.resource).propertyName;
+    const filePath = `src/app/${featureFileName}/pages/${resourceFileName}-search/${resourceFileName}-search.component.spec.ts`;
 
     const content = tree.read(filePath, 'utf8') ?? '';
 
@@ -51,7 +52,7 @@ export class SearchTestsStep
         });
         store.refreshState();
 
-        const interactiveDataView = await ${propertyName}Search.getSearchResults();
+        const interactiveDataView = await ${className}Search.getSearchResults();
         const dataView = await interactiveDataView.getDataView();
         const dataTable = await dataView.getDataListGrid();
         const rowActionButtons = await dataTable?.getActionButtons('list');
@@ -69,21 +70,21 @@ export class SearchTestsStep
         await editButton?.click();
 
         expect(store.dispatch).toHaveBeenCalledWith(
-          ${className}SearchActions.edit${className}ButtonClicked({ id: '1' })
+          ${propertyName}SearchActions.edit${className}ButtonClicked({ id: '1' })
         );
       });
 
       it('should dispatch create${className}ButtonClicked action on create click', async () => {
         jest.spyOn(store, 'dispatch');
 
-        const header = await ${propertyName}Search.getHeader();
+        const header = await ${className}Search.getHeader();
         const createButton = await (await header.getPageHeader()).getInlineActionButtonByIcon(PrimeIcons.PLUS);
 
         expect(createButton).toBeTruthy();
         await createButton?.click();
 
         expect(store.dispatch).toHaveBeenCalledWith(
-          ${className}SearchActions.create${className}ButtonClicked()
+          ${propertyName}SearchActions.create${className}ButtonClicked()
         );
       });
     `;
