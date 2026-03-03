@@ -1,0 +1,44 @@
+import { createSelector } from '@ngrx/store';
+import { createChildSelectors } from '@onecx/ngrx-accelerator';
+import { <%= resourcePropertyName %>Feature } from '../../<%= featureFileName %>.reducers';
+import { initialState } from './<%= featureFileName %>-details.reducers';
+import {
+  <%= resourceClassName %>DetailsViewModel,
+} from './<%= featureFileName %>-details.viewmodel';
+import {
+  selectBackNavigationPossible
+} from 'src/app/shared/selectors/onecx.selectors';
+import { <%= resource %> } from '../../../shared/generated';
+
+export const <%= resourcePropertyName %>DetailsSelectors = createChildSelectors(
+  <%= resourcePropertyName %>Feature.selectDetails,
+  initialState
+);
+
+export const select<%= resourceClassName %>DetailsViewModel = createSelector(
+  <%= resourcePropertyName %>DetailsSelectors.selectDetails,
+  <%= resourcePropertyName %>DetailsSelectors.selectDetailsLoadingIndicator,
+  selectBackNavigationPossible,
+  <%= resourcePropertyName %>DetailsSelectors.selectDetailsLoaded,
+  <%_ if(editMode){ _%>
+  <%= resourcePropertyName %>DetailsSelectors.selectEditMode,
+  <%= resourcePropertyName %>DetailsSelectors.selectIsSubmitting,
+  <%_ } _%>
+  (details: <%= resource %> | undefined,
+  detailsLoadingIndicator: boolean,
+  backNavigationPossible: boolean,
+  detailsLoaded: boolean,
+  <%_ if(editMode){ _%>
+  editMode: boolean,
+  isSubmitting: boolean
+  <%_ } _%>): <%= resourceClassName %>DetailsViewModel => ({
+    details,
+    detailsLoadingIndicator,
+    backNavigationPossible,
+    detailsLoaded,
+    <%_ if(editMode){ _%>
+     editMode,
+    isSubmitting
+    <%_ } _%>
+  })
+);

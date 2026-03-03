@@ -1,0 +1,34 @@
+import { createActionGroup, emptyProps, props } from '@ngrx/store';
+import { <%= resource %> } from 'src/app/shared/generated';
+
+export const <%= resourcePropertyName %>DetailsActions = createActionGroup({
+  source: '<%= resourceClassName %>Details',
+  events: {
+    'Navigated to details page': props<{ id: string | undefined }>(),
+    '<%= resourceClassName %> details received': props<{ details: <%= resource %> | undefined }>(),
+    '<%= resourceClassName %> details loading failed': props<{ error: string | null }>(),
+    <%_ if(editMode){ _%>
+    'Edit mode set': props<{ editMode: boolean }>(),    
+    'Update <%= resourceClassName %> cancelled': emptyProps(),
+    'Update <%= resourceClassName %> succeeded': emptyProps(),
+    'Update <%= resourceClassName %> failed': props<{ error: string | null }>(),
+    'Delete <%= resourceClassName %> cancelled': emptyProps(),
+    'Delete <%= resourceClassName %> succeeded': emptyProps(),
+    'Delete <%= resourceClassName %> failed': props<{ error: string | null }>(),
+    'Cancel edit back clicked': emptyProps(),
+    'Cancel edit confirm clicked': emptyProps(),
+    'Cancel edit not dirty': emptyProps(),
+    'Edit button clicked': emptyProps(),
+    'Save button clicked': props<{ details: <%= resource %> }>(),
+    'Cancel button clicked': props<{ dirty: boolean }>(),
+    <%_ } _%>
+    <%_ if(allowDelete){ _%>     
+    'Delete button clicked': emptyProps(),
+    <%_ } _%>
+    'Navigate back button clicked': emptyProps(),
+    'Back navigation started': emptyProps(),
+    'Back navigation failed': emptyProps(),
+    'Navigation to search started': emptyProps(),
+    'Navigation to search not started': emptyProps(),
+  },
+});
