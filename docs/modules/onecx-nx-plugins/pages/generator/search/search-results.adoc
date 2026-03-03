@@ -32,17 +32,17 @@ File::      `<resource>-search.columns.ts`
 ====
 [source, javascript]
 ----
-export const bookSearchColumns: DataTableColumn[] = [
+export const <resource>SearchColumns: DataTableColumn[] = [
   {
     columnType: ColumnType.STRING,
     id: 'changeMe',
-    nameKey: 'BOOK_SEARCH.RESULTS.CHANGE_ME',
+    nameKey: '<RESOURCE>_SEARCH.RESULTS.CHANGE_ME',
     filterable: true,
     sortable: true,
     predefinedGroupKeys: [
-      'BOOK_SEARCH.PREDEFINED_GROUP.DEFAULT',
-      'BOOK_SEARCH.PREDEFINED_GROUP.EXTENDED',
-      'BOOK_SEARCH.PREDEFINED_GROUP.FULL',
+      '<RESOURCE>_SEARCH.PREDEFINED_GROUP.DEFAULT',
+      '<RESOURCE>_SEARCH.PREDEFINED_GROUP.EXTENDED',
+      '<RESOURCE>_SEARCH.PREDEFINED_GROUP.FULL',
     ]
   }
   // ACTION S6: Define search results columns
@@ -65,7 +65,7 @@ File::      `book-search.columns.ts`
 [subs=+macros]
 [source, javascript]
 ----
-export const BookSearchColumns: DataTableColumn[] = [
+export const bookSearchColumns: DataTableColumn[] = [
   {
     columnType: ColumnType.STRING,
     id: 'book_title',
@@ -118,8 +118,8 @@ File::      `<resource>-search.selectors.ts`
 [source, typescript]
 ----
 export const selectResults = createSelector(
-  bookSearchSelectors.selectResults,
-  (results: Book[]): RowListGridData[] => {
+  <resource>SearchSelectors.selectResults,
+  (results: <resource>[]): RowListGridData[] => {
     return results.map((item) => ({
       imagePath: '',
       ...item,
