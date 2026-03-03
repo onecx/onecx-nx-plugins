@@ -77,4 +77,4 @@ nx generate @onecx/nx-plugin:search book
 This command will generate a new search component *book-search* within the specified feature module with the necessary structure and configurations.
 
 .Excerpt of generated files and directories
-image::generated_book_search.png[width=250]
+image::generated_feature_book_search.png[width=250]

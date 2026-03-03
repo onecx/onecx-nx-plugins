@@ -74,7 +74,7 @@ The following application types and components can be generated:
 
 * xref:generator/create-app.adoc[OneCX UI App]
 ** xref:generator/create-feature.adoc[Feature Module]
-*** Search Page
+*** xref:generator/create-search.adoc[Search Page]
 *** Details Page
 *** Create/Update Dialog
 *** Delete Dialog
