@@ -1,7 +1,8 @@
-import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { LetDirective } from '@ngrx/component';
@@ -9,27 +10,29 @@ import { ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
+import { TranslateTestingModule } from 'ngx-translate-testing';
+import { PrimeIcons } from 'primeng/api';
+import { of } from 'rxjs';
+
 import {
   AngularAcceleratorModule,
   BreadcrumbService,
   HAS_PERMISSION_CHECKER,
 } from '@onecx/angular-accelerator';
 import { UserService } from '@onecx/angular-integration-interface';
+import { provideUserServiceMock, UserServiceMock } from '@onecx/angular-integration-interface/mocks';
 import {
   PermissionService,
   PortalPageComponent,
   TranslationConnectionService,
 } from '@onecx/angular-utils';
-import { TranslateTestingModule } from 'ngx-translate-testing';
-import { PrimeIcons } from 'primeng/api';
-import { of } from 'rxjs';
-import { <%= resourcePropertyName %>DetailsActions } from './<%= featureFileName %>-details.actions';
-import { <%= resourceClassName %>DetailsComponent } from './<%= featureFileName %>-details.component';
-import { <%= resourceClassName %>DetailsHarness } from './<%= featureFileName %>-details.harness';
-import { initialState } from './<%= featureFileName %>-details.reducers';
-import { select<%= resourceClassName %>DetailsViewModel } from './<%= featureFileName %>-details.selectors';
-import { <%= resourceClassName %>DetailsViewModel } from './<%= featureFileName %>-details.viewmodel';
-import { provideUserServiceMock, UserServiceMock } from '@onecx/angular-integration-interface/mocks';
+
+import { initialState } from './<%= resourceFileName %>-details.reducers';
+import { <%= resourcePropertyName %>DetailsActions } from './<%= resourceFileName %>-details.actions';
+import { <%= resourceClassName %>DetailsComponent } from './<%= resourceFileName %>-details.component';
+import { <%= resourceClassName %>DetailsHarness } from './<%= resourceFileName %>-details.harness';
+import { <%= resourceClassName %>DetailsViewModel } from './<%= resourceFileName %>-details.viewmodel';
+import { select<%= resourceClassName %>DetailsViewModel } from './<%= resourceFileName %>-details.selectors';
 
 describe('<%= resourceClassName %>DetailsComponent', () => {
   const origAddEventListener = window.addEventListener;
@@ -89,12 +92,10 @@ describe('<%= resourceClassName %>DetailsComponent', () => {
         PortalPageComponent,
         LetDirective,
         ReactiveFormsModule,
-        TranslateTestingModule.withTranslations(
-          'en',
-          require('./../../../../assets/i18n/en.json')
-        )
-          .withTranslations('de', require('./../../../../assets/i18n/de.json'))
-          .withDefaultLanguage('en'),
+        TranslateTestingModule.withTranslations({
+          de: require('src/assets/i18n/de.json'),
+          en: require('src/assets/i18n/en.json')
+        }).withDefaultLanguage('en')
       ],
       providers: [
         provideHttpClient(),
