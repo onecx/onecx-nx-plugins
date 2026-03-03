@@ -13,7 +13,7 @@ export class SearchComponentStep
 
     const find = [/^/, 'resetSearch'];
     const replaceWith = [
-      `import {RowListGridData} from '@onecx/portal-integration-angular';\n`,
+      `import {RowListGridData} from '@onecx/angular-accelerator';\n`,
       `
     details({id}:RowListGridData) {
       this.store.dispatch(${className}SearchActions.detailsButtonClicked({id}));

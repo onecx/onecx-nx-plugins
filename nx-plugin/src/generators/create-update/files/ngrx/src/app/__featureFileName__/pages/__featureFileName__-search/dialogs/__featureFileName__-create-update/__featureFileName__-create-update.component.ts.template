@@ -5,10 +5,10 @@ import {
   OnInit,
 } from '@angular/core';
 import {
-  DialogButtonClicked,
   DialogPrimaryButtonDisabled,
   DialogResult,
-} from '@onecx/portal-integration-angular';
+  DialogButtonClicked,
+} from '@onecx/angular-accelerator';
 
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { map } from 'rxjs';
@@ -20,6 +20,7 @@ import { <%= featureClassName%>CreateUpdateViewModel } from './<%= featureFileNa
   selector: 'app-<%= featureFileName %>-create-update',
   templateUrl: './<%= featureFileName %>-create-update.component.html',
   styleUrls: ['./<%= featureFileName %>-create-update.component.scss'],
+  standalone: false,
 })
 export class <%= featureClassName%>CreateUpdateComponent 
   implements

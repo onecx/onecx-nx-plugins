@@ -1,24 +1,3 @@
-## [8.0.0-rc.1](https://github.com/onecx/onecx-nx-plugins/compare/v7.0.0...v8.0.0-rc.1) (2026-02-04)
-
-### ⚠ BREAKING CHANGES
-
-* release v7 rc (#318)
-
-### Chores
-
-* release v7 rc ([#318](https://github.com/onecx/onecx-nx-plugins/issues/318)) ([b2d97eb](https://github.com/onecx/onecx-nx-plugins/commit/b2d97ebdfdcf709659b428b2f22dd9bff7046a43))
-
-## [7.0.0](https://github.com/onecx/onecx-nx-plugins/compare/v6.9999.0...v7.0.0) (2026-02-04)
-
-### ⚠ BREAKING CHANGES
-
-* add release config for v7 (#317)
-
-### Chores
-
-* add release config for v7 ([#317](https://github.com/onecx/onecx-nx-plugins/issues/317)) ([5db7dac](https://github.com/onecx/onecx-nx-plugins/commit/5db7dac53eac3cb6009c067241c24ebea7989436))
-* **release:** -v7.0.0-rc.1 [skip ci] ([5dfe46b](https://github.com/onecx/onecx-nx-plugins/commit/5dfe46b1f9a7529370a7ea848774eabbcbe5169a)), closes [#314](https://github.com/onecx/onecx-nx-plugins/issues/314)
-
 ## [7.0.0-rc.1](https://github.com/onecx/onecx-nx-plugins/compare/v6.0.0...v7.0.0-rc.1) (2026-02-04)
 
 ### ⚠ BREAKING CHANGES
@@ -28,6 +7,16 @@
 ### Chores
 
 * release v6 rc ([#314](https://github.com/onecx/onecx-nx-plugins/issues/314)) ([0bd79dc](https://github.com/onecx/onecx-nx-plugins/commit/0bd79dc690ff1bb7bf0202e7ced08875ce0310e8))
+## [6.1.0](https://github.com/onecx/onecx-nx-plugins/compare/v6.0.0...v6.1.0) (2026-02-16)
+
+### Features
+
+* update to angular 19 ([#287](https://github.com/onecx/onecx-nx-plugins/issues/287)) ([01b8fe4](https://github.com/onecx/onecx-nx-plugins/commit/01b8fe46afa6ed08b94c9f59c8fcc4585e353afe))
+
+### Chores
+
+* release v6 as latest ([#315](https://github.com/onecx/onecx-nx-plugins/issues/315)) ([9efc743](https://github.com/onecx/onecx-nx-plugins/commit/9efc743642f4f68c781ab956ff5f084a64bc8b33))
+* release v6 as lts ([#320](https://github.com/onecx/onecx-nx-plugins/issues/320)) ([1d8c617](https://github.com/onecx/onecx-nx-plugins/commit/1d8c617631049c3bb6f74158f042943c7aa43cc4))
 
 ## [6.0.0](https://github.com/onecx/onecx-nx-plugins/compare/v5.9999.0...v6.0.0) (2026-02-04)
 

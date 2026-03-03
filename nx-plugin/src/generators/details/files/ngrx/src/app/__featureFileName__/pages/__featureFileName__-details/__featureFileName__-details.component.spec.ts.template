@@ -5,31 +5,36 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { LetDirective } from '@ngrx/component';
-import { ofType } from '@ngrx/effects';
-import { Store } from '@ngrx/store';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
+import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { By } from '@angular/platform-browser';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
-import { TranslatePipe, TranslateService } from '@ngx-translate/core';
-import {
-  AngularAcceleratorModule,
-  BreadcrumbService,
-  HAS_PERMISSION_CHECKER,
-} from '@onecx/angular-accelerator';
+import { Store, StoreModule } from '@ngrx/store';
+import { TranslateTestingModule } from 'ngx-translate-testing'
+import { PrimeIcons } from 'primeng/api';
+import { ReactiveFormsModule } from '@angular/forms';
+import { of } from 'rxjs';
 import { UserService } from '@onecx/angular-integration-interface';
+import { AngularAcceleratorModule, BreadcrumbService } from '@onecx/angular-accelerator';
+import { provideHttpClient } from '@angular/common/http';
 import {
   PermissionService,
   PortalPageComponent,
   TranslationConnectionService,
+  HAS_PERMISSION_CHECKER,
 } from '@onecx/angular-utils';
-import { TranslateTestingModule } from 'ngx-translate-testing';
-import { PrimeIcons } from 'primeng/api';
-import { of } from 'rxjs';
-import { <%= featureClassName %>DetailsActions } from './<%= featureFileName %>-details.actions';
 import { <%= featureClassName %>DetailsComponent } from './<%= featureFileName %>-details.component';
 import { <%= featureClassName %>DetailsHarness } from './<%= featureFileName %>-details.harness';
 import { initialState } from './<%= featureFileName %>-details.reducers';
 import { select<%= featureClassName %>DetailsViewModel } from './<%= featureFileName %>-details.selectors';
-import { <%= featureClassName %>DetailsViewModel } from './<%= featureFileName %>-details.viewmodel';
-import { provideUserServiceMock, UserServiceMock } from '@onecx/angular-integration-interface/mocks';
+import { <%= featureClassName %>DetailsActions } from './<%= featureFileName %>-details.actions';
+import { ofType } from '@ngrx/effects';
+import {
+  provideUserServiceMock,
+  UserServiceMock,
+} from '@onecx/angular-integration-interface/mocks';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 
 describe('<%= featureClassName %>DetailsComponent', () => {
   const origAddEventListener = window.addEventListener;
@@ -110,21 +115,25 @@ describe('<%= featureClassName %>DetailsComponent', () => {
           provide: HAS_PERMISSION_CHECKER,
           useExisting: UserService,
         },
+        {
+          provide: TranslationConnectionService,
+          useValue: { init: jest.fn(), destroy: jest.fn() },
+        },
       ],
     }).compileComponents();
 
     const userServiceMock = TestBed.inject(UserServiceMock);
-    userServiceMock.permissions$.next([
-      "<%= featureConstantName %>#CREATE",
-      "<%= featureConstantName %>#EDIT",
-      "<%= featureConstantName %>#DELETE",
-      "<%= featureConstantName %>#IMPORT",
-      "<%= featureConstantName %>#EXPORT",
-      "<%= featureConstantName %>#VIEW",
-      "<%= featureConstantName %>#SEARCH",
-      "<%= featureConstantName %>#BACK"            
+    userServiceMock.permissionsTopic$.publish([
+      '<%= featureConstantName %>#CREATE',
+      '<%= featureConstantName %>#EDIT',
+      '<%= featureConstantName %>#DELETE',
+      '<%= featureConstantName %>#IMPORT',
+      '<%= featureConstantName %>#EXPORT',
+      '<%= featureConstantName %>#VIEW',
+      '<%= featureConstantName %>#SEARCH',
+      '<%= featureConstantName %>#BACK',
     ]);
-    
+
     store = TestBed.inject(MockStore);
     store.overrideSelector(
       select<%= featureClassName %>DetailsViewModel,

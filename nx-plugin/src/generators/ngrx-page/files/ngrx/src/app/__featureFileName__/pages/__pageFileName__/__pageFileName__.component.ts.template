@@ -9,6 +9,7 @@ import { <%= pageClassName %>ViewModel } from './<%= pageFileName %>.viewmodel';
   selector: 'app-<%= pageFileName %>',
   templateUrl: './<%= pageFileName %>.component.html',
   styleUrls: ['./<%= pageFileName %>.component.scss'],
+  standalone: false,
 })
 export class <%= pageClassName %>Component {
   viewModel$: Observable<<%= pageClassName %>ViewModel>;
