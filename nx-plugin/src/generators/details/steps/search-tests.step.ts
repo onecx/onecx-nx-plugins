@@ -11,7 +11,7 @@ export class SearchTestsStep implements GeneratorStep<SearchGeneratorSchema> {
     const propertyName = names(options.resource).propertyName;
     const filePath = `src/app/${featureFileName}/pages/${resourceFileName}-search/${resourceFileName}-search.component.spec.ts`;
 
-    const content = tree.exists(filePath) ? tree.read(filePath, 'utf8')! : '';
+    const content = tree.exists(filePath) ? tree.read(filePath, 'utf8') : '';
     if (!content.includes(`import { RowListGridData } from '@onecx/portal-integration-angular'`)) {
       safeReplace(
         `Add RowListGridData import to ${className}SearchComponent spec`,

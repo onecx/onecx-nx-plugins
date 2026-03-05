@@ -11,7 +11,7 @@ export class SearchEffectsSpecStep implements GeneratorStep<DeleteGeneratorSchem
     const className = names(options.resource).className;
     const propertyName = names(options.resource).propertyName;
 
-    const dataObjectPascal = toPascalCase((options as any).resource || className)
+    const dataObjectPascal = toPascalCase(options.resource || className)
     const dataObjectPlural = pluralize(dataObjectPascal)
 
     const filePath = `src/app/${featureFileName}/pages/${resourceFileName}-search/${resourceFileName}-search.effects.spec.ts`
