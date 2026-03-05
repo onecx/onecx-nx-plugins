@@ -1,7 +1,8 @@
 import { Tree, names } from '@nx/devkit';
+
+import { safeReplace } from '../../shared/safeReplace';
 import { GeneratorStep } from '../../shared/generator.utils';
 import { SearchGeneratorSchema } from '../../search/schema';
-import { safeReplace } from '../../shared/safeReplace';
 
 export class SearchTestsStep implements GeneratorStep<SearchGeneratorSchema> {
   process(tree: Tree, options: SearchGeneratorSchema): void {

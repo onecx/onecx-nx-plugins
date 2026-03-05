@@ -8,21 +8,21 @@ import {
   ObjectDetailItem,
 } from '@onecx/portal-integration-angular';
 
-import { select<%= featureClassName %>DetailsViewModel } from './<%= featureFileName %>-details.selectors';
-import { <%= resourcePropertyName %>DetailsActions } from './<%= featureFileName %>-details.actions';
+import { select<%= resourceClassName %>DetailsViewModel } from './<%= resourceFileName %>-details.selectors';
+import { <%= resourcePropertyName %>DetailsActions } from './<%= resourceFileName %>-details.actions';
 import {
-  <%= featureClassName %>DetailsViewModel
-} from './<%= featureFileName %>-details.viewmodel';
+  <%= resourceClassName %>DetailsViewModel
+} from './<%= resourceFileName %>-details.viewmodel';
 import { PrimeIcons } from 'primeng/api';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
-  selector: 'app-<%= featureFileName %>-details',
-  templateUrl: './<%= featureFileName %>-details.component.html',
-  styleUrls: ['./<%= featureFileName %>-details.component.scss'],
+  selector: 'app-<%= resourceFileName %>-details',
+  templateUrl: './<%= resourceFileName %>-details.component.html',
+  styleUrls: ['./<%= resourceFileName %>-details.component.scss'],
 })
 export class <%= resourceClassName %>DetailsComponent implements OnInit {
-  viewModel$: Observable<<%= featureClassName %>DetailsViewModel> = this.store.select(select<%= featureClassName %>DetailsViewModel);
+  viewModel$: Observable<<%= resourceClassName %>DetailsViewModel> = this.store.select(select<%= resourceClassName %>DetailsViewModel);
   
   headerLabels$: Observable<ObjectDetailItem[]> = this.viewModel$.pipe(
     map((vm) => {
@@ -159,7 +159,7 @@ export class <%= resourceClassName %>DetailsComponent implements OnInit {
       {
         titleKey: '<%= resourceConstantName %>_DETAILS.BREADCRUMB',
         labelKey: '<%= resourceConstantName %>_DETAILS.BREADCRUMB',
-        routerLink: '/<%= featureFileName %>',
+        routerLink: '/<%= resourceFileName %>',
       },
     ]);
   }

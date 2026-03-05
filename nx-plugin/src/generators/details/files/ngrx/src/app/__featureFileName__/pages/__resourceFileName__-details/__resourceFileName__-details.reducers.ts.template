@@ -1,6 +1,6 @@
 import { createReducer, on } from '@ngrx/store';
-import { <%= resourcePropertyName %>DetailsActions } from './<%= featureFileName %>-details.actions';
-import { <%= resourceClassName %>DetailsState } from './<%= featureFileName %>-details.state';
+import { <%= resourcePropertyName %>DetailsActions } from './<%= resourceFileName %>-details.actions';
+import { <%= resourceClassName %>DetailsState } from './<%= resourceFileName %>-details.state';
 
 export const initialState: <%= resourceClassName %>DetailsState = {
   details: undefined,

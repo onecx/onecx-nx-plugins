@@ -20,9 +20,9 @@ import {
   Update<%= resource %>Response,
 } from 'src/app/shared/generated';
 import { selectBackNavigationPossible } from 'src/app/shared/selectors/onecx.selectors';
-import { <%= resourcePropertyName %>DetailsActions } from './<%= featureFileName %>-details.actions';
-import { <%= featureClassName %>DetailsEffects } from './<%= featureFileName %>-details.effects';
-import { initialState } from './<%= featureFileName %>-details.reducers';
+import { <%= resourcePropertyName %>DetailsActions } from './<%= resourceFileName %>-details.actions';
+import { <%= resourceClassName %>DetailsEffects } from './<%= resourceFileName %>-details.effects';
+import { initialState } from './<%= resourceFileName %>-details.reducers';
 
 jest.mock('@onecx/ngrx-accelerator', () => {
   const actual = jest.requireActual('@onecx/ngrx-accelerator');
@@ -33,9 +33,9 @@ jest.mock('@onecx/ngrx-accelerator', () => {
   };
 });
 
-describe('<%= featureClassName %>DetailsEffects', () => {
+describe('<%= resourceClassName %>DetailsEffects', () => {
   let actions$: ReplaySubject<Action>;
-  let effects: <%= featureClassName %>DetailsEffects;
+  let effects: <%= resourceClassName %>DetailsEffects;
   let store: MockStore<Store>;
   let router: Partial<jest.Mocked<Router>>;
   let route: ActivatedRoute;
@@ -69,10 +69,10 @@ describe('<%= featureClassName %>DetailsEffects', () => {
 
     await TestBed.configureTestingModule({
       providers: [
-        <%= featureClassName %>DetailsEffects,
+        <%= resourceClassName %>DetailsEffects,
         provideRouter([]),
         provideMockStore({
-          initialState: { <%= featurePropertyName %>Search: initialState },
+          initialState: { <%= resourcePropertyName %>Search: initialState },
         }),
         provideMockActions(() => actions$),
         { provide: ActivatedRoute, useValue: route },
@@ -84,7 +84,7 @@ describe('<%= featureClassName %>DetailsEffects', () => {
     }).compileComponents();
 
     store = TestBed.inject(MockStore);
-    effects = TestBed.inject(<%= featureClassName %>DetailsEffects);
+    effects = TestBed.inject(<%= resourceClassName %>DetailsEffects);
   });
 
   describe('navigatedToDetailsPage$', () => {
@@ -107,33 +107,33 @@ describe('<%= featureClassName %>DetailsEffects', () => {
     });
   });
 
-  describe('load<%= featureClassName %>ById$', () => {
-    it('should dispatch <%= featurePropertyName %>DetailsReceived on success with id', async () => {
+  describe('load<%= resourceClassName %>ById$', () => {
+    it('should dispatch <%= resourcePropertyName %>DetailsReceived on success with id', async () => {
       const mockId = '123';
       const mockDetails = { id: mockId } as <%= resource %>;
       service.get<%= resource %>ById.mockReturnValue(of({ resource: mockDetails }));
 
       actions$.next(<%= resourcePropertyName %>DetailsActions.navigatedToDetailsPage({ id: mockId }));
-      const action = await firstValueFrom(effects.load<%= featureClassName %>ById$);
+      const action = await firstValueFrom(effects.load<%= resourceClassName %>ById$);
 
       expect(action).toEqual(
-        <%= resourcePropertyName %>DetailsActions.<%= featurePropertyName %>DetailsReceived({ details: mockDetails })
+        <%= resourcePropertyName %>DetailsActions.<%= resourcePropertyName %>DetailsReceived({ details: mockDetails })
       );
       expect(service.get<%= resource %>ById).toHaveBeenCalledTimes(1);
       expect(service.get<%= resource %>ById).toHaveBeenCalledWith({ id: mockId });
     });
 
-    it('should dispatch <%= featurePropertyName %>DetailsLoadingFailed on error', async () => {
+    it('should dispatch <%= resourcePropertyName %>DetailsLoadingFailed on error', async () => {
       const mockError = 'Missing ID';
       service.get<%= resource %>ById.mockReturnValue(throwError(() => mockError));
 
       actions$.next(
         <%= resourcePropertyName %>DetailsActions.navigatedToDetailsPage({ id: undefined })
       );
-      const action = await firstValueFrom(effects.load<%= featureClassName %>ById$);
+      const action = await firstValueFrom(effects.load<%= resourceClassName %>ById$);
 
       expect(action).toEqual(
-        <%= resourcePropertyName %>DetailsActions.<%= featurePropertyName %>DetailsLoadingFailed({ error: mockError })
+        <%= resourcePropertyName %>DetailsActions.<%= resourcePropertyName %>DetailsLoadingFailed({ error: mockError })
       );
       // TODO: check the error message
       // expect(service.get<%= resource %>ById).toHaveBeenCalledTimes(1);
@@ -163,9 +163,9 @@ describe('<%= featureClassName %>DetailsEffects', () => {
       expect(action).toEqual(<%= resourcePropertyName %>DetailsActions.cancelEditConfirmClicked());
       expect(portalDialogService.openDialog).toHaveBeenCalledTimes(1);
       expect(portalDialogService.openDialog).toHaveBeenCalledWith(
-        '<%= featureConstantName%>_DETAILS.CANCEL.HEADER',
-        '<%= featureConstantName%>_DETAILS.CANCEL.MESSAGE',
-        '<%= featureConstantName%>_DETAILS.CANCEL.CONFIRM'
+        '<%= resourceConstantName%>_DETAILS.CANCEL.HEADER',
+        '<%= resourceConstantName%>_DETAILS.CANCEL.MESSAGE',
+        '<%= resourceConstantName%>_DETAILS.CANCEL.CONFIRM'
       );
     });
 
@@ -180,9 +180,9 @@ describe('<%= featureClassName %>DetailsEffects', () => {
       expect(action).toEqual(<%= resourcePropertyName %>DetailsActions.cancelEditBackClicked());
       expect(portalDialogService.openDialog).toHaveBeenCalledTimes(1);
       expect(portalDialogService.openDialog).toHaveBeenCalledWith(
-        '<%= featureConstantName%>_DETAILS.CANCEL.HEADER',
-        '<%= featureConstantName%>_DETAILS.CANCEL.MESSAGE',
-        '<%= featureConstantName%>_DETAILS.CANCEL.CONFIRM'
+        '<%= resourceConstantName%>_DETAILS.CANCEL.HEADER',
+        '<%= resourceConstantName%>_DETAILS.CANCEL.MESSAGE',
+        '<%= resourceConstantName%>_DETAILS.CANCEL.CONFIRM'
       );
     });
   });
@@ -205,7 +205,7 @@ describe('<%= featureClassName %>DetailsEffects', () => {
       expect(selectSpy).toHaveBeenCalledTimes(1);
       expect(service.update<%= resource %>).toHaveBeenCalledTimes(1);
       expect(messageService.success).toHaveBeenCalledWith({
-        summaryKey: '<%= featureConstantName%>_DETAILS.UPDATE.SUCCESS',
+        summaryKey: '<%= resourceConstantName%>_DETAILS.UPDATE.SUCCESS',
       });
     });
 
@@ -221,14 +221,14 @@ describe('<%= featureClassName %>DetailsEffects', () => {
       );
       const action = await firstValueFrom(effects.saveButtonClicked$);
 
-      expect(action).toEqual(<%= resourcePropertyName %>DetailsActions.update<%= featureClassName %>Cancelled());
+      expect(action).toEqual(<%= resourcePropertyName %>DetailsActions.update<%= resourceClassName %>Cancelled());
       expect(selectSpy).toHaveBeenCalledTimes(1);
       expect(service.update<%= resource %>).not.toHaveBeenCalled();
       expect(messageService.success).not.toHaveBeenCalled();
     });
 
-    it('should dispatch update<%= featureClassName %>Failed', async () => {
-      const mockError = 'update<%= featureClassName %> failed';
+    it('should dispatch update<%= resourceClassName %>Failed', async () => {
+      const mockError = 'update<%= resourceClassName %> failed';
       const mockDetails = { id: '123' } as <%= resource %>;
       const selectSpy = jest
         .spyOn(store, 'select')
@@ -241,12 +241,12 @@ describe('<%= featureClassName %>DetailsEffects', () => {
       const action = await firstValueFrom(effects.saveButtonClicked$);
 
       expect(action).toEqual(
-        <%= resourcePropertyName %>DetailsActions.update<%= featureClassName %>Failed({ error: mockError })
+        <%= resourcePropertyName %>DetailsActions.update<%= resourceClassName %>Failed({ error: mockError })
       );
       expect(selectSpy).toHaveBeenCalledTimes(1);
       expect(service.update<%= resource %>).toHaveBeenCalledTimes(1);
       expect(messageService.error).toHaveBeenCalledWith({
-        summaryKey: '<%= featureConstantName%>_DETAILS.UPDATE.ERROR',
+        summaryKey: '<%= resourceConstantName%>_DETAILS.UPDATE.ERROR',
       });
     });
   });
@@ -255,7 +255,7 @@ describe('<%= featureClassName %>DetailsEffects', () => {
   describe('displayError$', () => {
     it('should display error message when DetailsLoadingFailed action is dispatched', async () => {
       actions$.next(
-        <%= resourcePropertyName %>DetailsActions.<%= featurePropertyName %>DetailsLoadingFailed({
+        <%= resourcePropertyName %>DetailsActions.<%= resourcePropertyName %>DetailsLoadingFailed({
           error: 'Test error',
         })
       );

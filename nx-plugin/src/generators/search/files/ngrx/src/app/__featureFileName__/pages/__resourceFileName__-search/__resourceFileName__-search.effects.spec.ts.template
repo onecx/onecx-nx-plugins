@@ -10,7 +10,7 @@ import { take } from 'rxjs/operators'
 
 import { ExportDataService, PortalDialogService, PortalMessageService } from '@onecx/portal-integration-angular'
 
-import { <%= serviceName %> } from '../../../shared/generated'
+import { <%= serviceName %> } from 'src/app/shared/generated'
 import { <%= resourcePropertyName %>SearchActions } from './<%= resourceFileName %>-search.actions'
 import { <%= resourceClassName %>SearchEffects } from './<%= resourceFileName %>-search.effects'
 import { <%= resourceClassName %>SearchCriteria } from './<%= resourceFileName %>-search.parameters'

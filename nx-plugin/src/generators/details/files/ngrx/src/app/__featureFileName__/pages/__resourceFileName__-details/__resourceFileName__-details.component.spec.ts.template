@@ -38,23 +38,23 @@ describe('<%= resourceClassName %>DetailsComponent', () => {
   const origAddEventListener = window.addEventListener;
   const origPostMessage = window.postMessage;
 
-  let listeners: any[] = [];
-  window.addEventListener = (_type: any, listener: any) => {
+  let listeners: unknown[] = [];
+  window.addEventListener = (_type: unknown, listener: unknown) => {
     listeners.push(listener);
   };
 
-  window.removeEventListener = (_type: any, listener: any) => {
+  window.removeEventListener = (_type: unknown, listener: unknown) => {
     listeners = listeners.filter((l) => l !== listener);
   };
 
-  window.postMessage = (m: any) => {
+  window.postMessage = (m: unknown) => {
     listeners.forEach((l) =>
-      l({
+      (l as (event: { data: unknown; stopImmediatePropagation: () => void; stopPropagation: () => void }) => void)({
         data: m,
-        stopImmediatePropagation: () => {},
-        stopPropagation: () => {},
+        stopImmediatePropagation: () => {}, // eslint-disable-line @typescript-eslint/no-empty-function
+        stopPropagation: () => {} // eslint-disable-line @typescript-eslint/no-empty-function
       })
-    );
+    )
   };
 
   afterAll(() => {

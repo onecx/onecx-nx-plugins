@@ -1,14 +1,15 @@
-import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { ActivatedRoute } from '@angular/router';
+
+import { ofType } from '@ngrx/effects';
 import { LetDirective } from '@ngrx/component';
 import { Store, StoreModule } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
-import { ofType } from '@ngrx/effects';
 import { TranslateService } from '@ngx-translate/core';
 import { TranslateTestingModule } from 'ngx-translate-testing';
 import { DialogService } from 'primeng/dynamicdialog';
@@ -118,7 +119,7 @@ describe('<%= resourceClassName %>SearchComponent', () => {
       providers: [
         DialogService,
         provideMockStore({
-          initialState: { <%= featurePropertyName %>: { search: initialState } },
+          initialState: { <%= resourcePropertyName %>: { search: initialState } },
         }),
         FormBuilder,
         providePortalDialogService(),
@@ -135,14 +136,14 @@ describe('<%= resourceClassName %>SearchComponent', () => {
   beforeEach(async () => {
     const userService = TestBed.inject(UserService);
     userService.permissions$.next([
-      "<%= featureConstantName %>#CREATE",
-      "<%= featureConstantName %>#EDIT",
-      "<%= featureConstantName %>#DELETE",
-      "<%= featureConstantName %>#IMPORT",
-      "<%= featureConstantName %>#EXPORT",
-      "<%= featureConstantName %>#VIEW",
-      "<%= featureConstantName %>#SEARCH",
-      "<%= featureConstantName %>#BACK"
+      "<%= resourceConstantName %>#CREATE",
+      "<%= resourceConstantName %>#EDIT",
+      "<%= resourceConstantName %>#DELETE",
+      "<%= resourceConstantName %>#IMPORT",
+      "<%= resourceConstantName %>#EXPORT",
+      "<%= resourceConstantName %>#VIEW",
+      "<%= resourceConstantName %>#SEARCH",
+      "<%= resourceConstantName %>#BACK"
     ])
     userService.hasPermission = () => true;
     const translateService = TestBed.inject(TranslateService);
@@ -185,13 +186,13 @@ describe('<%= resourceClassName %>SearchComponent', () => {
         {
           columnType: ColumnType.STRING,
           id: 'changeMe',
-          nameKey: '<%= featureConstantName %>_SEARCH.RESULTS.CHANGE_ME',
+          nameKey: '<%= resourceConstantName %>_SEARCH.RESULTS.CHANGE_ME',
           filterable: true,
           sortable: true,
           predefinedGroupKeys: [
-            '<%= featureConstantName %>_SEARCH.PREDEFINED_GROUP.DEFAULT',
-            '<%= featureConstantName %>_SEARCH.PREDEFINED_GROUP.EXTENDED',
-            '<%= featureConstantName %>_SEARCH.PREDEFINED_GROUP.FULL'
+            '<%= resourceConstantName %>_SEARCH.PREDEFINED_GROUP.DEFAULT',
+            '<%= resourceConstantName %>_SEARCH.PREDEFINED_GROUP.EXTENDED',
+            '<%= resourceConstantName %>_SEARCH.PREDEFINED_GROUP.FULL'
           ],
         },
       ],
@@ -273,13 +274,13 @@ describe('<%= resourceClassName %>SearchComponent', () => {
         {
           columnType: ColumnType.STRING,
           id: 'changeMe',
-          nameKey: '<%= featureConstantName %>_SEARCH.RESULTS.CHANGE_ME',
+          nameKey: '<%= resourceConstantName %>_SEARCH.RESULTS.CHANGE_ME',
           filterable: true,
           sortable: true,
           predefinedGroupKeys: [
-            '<%= featureConstantName %>_SEARCH.PREDEFINED_GROUP.DEFAULT',
-            '<%= featureConstantName %>_SEARCH.PREDEFINED_GROUP.EXTENDED',
-            '<%= featureConstantName %>_SEARCH.PREDEFINED_GROUP.FULL'
+            '<%= resourceConstantName %>_SEARCH.PREDEFINED_GROUP.DEFAULT',
+            '<%= resourceConstantName %>_SEARCH.PREDEFINED_GROUP.EXTENDED',
+            '<%= resourceConstantName %>_SEARCH.PREDEFINED_GROUP.FULL'
           ],
         },
       ],
@@ -314,13 +315,13 @@ describe('<%= resourceClassName %>SearchComponent', () => {
       {
         columnType: ColumnType.STRING,
         id: 'changeMe',
-        nameKey: '<%= featureConstantName %>_SEARCH.RESULTS.CHANGE_ME',
+        nameKey: '<%= resourceConstantName %>_SEARCH.RESULTS.CHANGE_ME',
         filterable: true,
         sortable: true,
         predefinedGroupKeys: [
-          '<%= featureConstantName %>_SEARCH.PREDEFINED_GROUP.DEFAULT',
-          '<%= featureConstantName %>_SEARCH.PREDEFINED_GROUP.EXTENDED',
-          '<%= featureConstantName %>_SEARCH.PREDEFINED_GROUP.FULL'
+          '<%= resourceConstantName %>_SEARCH.PREDEFINED_GROUP.DEFAULT',
+          '<%= resourceConstantName %>_SEARCH.PREDEFINED_GROUP.EXTENDED',
+          '<%= resourceConstantName %>_SEARCH.PREDEFINED_GROUP.FULL'
         ],
       },
     ];
@@ -397,13 +398,13 @@ describe('<%= resourceClassName %>SearchComponent', () => {
       {
         columnType: ColumnType.STRING,
         id: 'changeMe',
-        nameKey: '<%= featureConstantName %>_SEARCH.RESULTS.CHANGE_ME',
+        nameKey: '<%= resourceConstantName %>_SEARCH.RESULTS.CHANGE_ME',
         filterable: true,
         sortable: true,
         predefinedGroupKeys: [
-          '<%= featureConstantName %>_SEARCH.PREDEFINED_GROUP.DEFAULT',
-          '<%= featureConstantName %>_SEARCH.PREDEFINED_GROUP.EXTENDED',
-          '<%= featureConstantName %>_SEARCH.PREDEFINED_GROUP.FULL'
+          '<%= resourceConstantName %>_SEARCH.PREDEFINED_GROUP.DEFAULT',
+          '<%= resourceConstantName %>_SEARCH.PREDEFINED_GROUP.EXTENDED',
+          '<%= resourceConstantName %>_SEARCH.PREDEFINED_GROUP.FULL'
         ],
       },
     ];
@@ -436,13 +437,13 @@ describe('<%= resourceClassName %>SearchComponent', () => {
         {
         columnType: ColumnType.STRING,
         id: 'changeMe',
-        nameKey: '<%= featureConstantName %>_SEARCH.RESULTS.CHANGE_ME',
+        nameKey: '<%= resourceConstantName %>_SEARCH.RESULTS.CHANGE_ME',
         filterable: true,
         sortable: true,
         predefinedGroupKeys: [
-          '<%= featureConstantName %>_SEARCH.PREDEFINED_GROUP.DEFAULT',
-          '<%= featureConstantName %>_SEARCH.PREDEFINED_GROUP.EXTENDED',
-          '<%= featureConstantName %>_SEARCH.PREDEFINED_GROUP.FULL'
+          '<%= resourceConstantName %>_SEARCH.PREDEFINED_GROUP.DEFAULT',
+          '<%= resourceConstantName %>_SEARCH.PREDEFINED_GROUP.EXTENDED',
+          '<%= resourceConstantName %>_SEARCH.PREDEFINED_GROUP.FULL'
         ],
       },
       ],
@@ -467,13 +468,13 @@ describe('<%= resourceClassName %>SearchComponent', () => {
         {
           columnType: ColumnType.STRING,
           id: 'changeMe',
-          nameKey: '<%= featureConstantName %>_SEARCH.RESULTS.CHANGE_ME',
+          nameKey: '<%= resourceConstantName %>_SEARCH.RESULTS.CHANGE_ME',
           filterable: true,
           sortable: true,
           predefinedGroupKeys: [
-            '<%= featureConstantName %>_SEARCH.PREDEFINED_GROUP.DEFAULT',
-            '<%= featureConstantName %>_SEARCH.PREDEFINED_GROUP.EXTENDED',
-            '<%= featureConstantName %>_SEARCH.PREDEFINED_GROUP.FULL'
+            '<%= resourceConstantName %>_SEARCH.PREDEFINED_GROUP.DEFAULT',
+            '<%= resourceConstantName %>_SEARCH.PREDEFINED_GROUP.EXTENDED',
+            '<%= resourceConstantName %>_SEARCH.PREDEFINED_GROUP.FULL'
           ],
         },
       ],
@@ -498,13 +499,13 @@ describe('<%= resourceClassName %>SearchComponent', () => {
         {
         columnType: ColumnType.STRING,
         id: 'changeMe',
-        nameKey: '<%= featureConstantName %>_SEARCH.RESULTS.CHANGE_ME',
+        nameKey: '<%= resourceConstantName %>_SEARCH.RESULTS.CHANGE_ME',
         filterable: true,
         sortable: true,
         predefinedGroupKeys: [
-          '<%= featureConstantName %>_SEARCH.PREDEFINED_GROUP.DEFAULT',
-          '<%= featureConstantName %>_SEARCH.PREDEFINED_GROUP.EXTENDED',
-          '<%= featureConstantName %>_SEARCH.PREDEFINED_GROUP.FULL'
+          '<%= resourceConstantName %>_SEARCH.PREDEFINED_GROUP.DEFAULT',
+          '<%= resourceConstantName %>_SEARCH.PREDEFINED_GROUP.EXTENDED',
+          '<%= resourceConstantName %>_SEARCH.PREDEFINED_GROUP.FULL'
         ],
       },
       ],
@@ -530,13 +531,13 @@ describe('<%= resourceClassName %>SearchComponent', () => {
       {
         columnType: ColumnType.STRING,
         id: 'changeMe',
-        nameKey: '<%= featureConstantName %>_SEARCH.RESULTS.CHANGE_ME',
+        nameKey: '<%= resourceConstantName %>_SEARCH.RESULTS.CHANGE_ME',
         filterable: true,
         sortable: true,
         predefinedGroupKeys: [
-          '<%= featureConstantName %>_SEARCH.PREDEFINED_GROUP.DEFAULT',
-          '<%= featureConstantName %>_SEARCH.PREDEFINED_GROUP.EXTENDED',
-          '<%= featureConstantName %>_SEARCH.PREDEFINED_GROUP.FULL'
+          '<%= resourceConstantName %>_SEARCH.PREDEFINED_GROUP.DEFAULT',
+          '<%= resourceConstantName %>_SEARCH.PREDEFINED_GROUP.EXTENDED',
+          '<%= resourceConstantName %>_SEARCH.PREDEFINED_GROUP.FULL'
         ],
       },
     ];

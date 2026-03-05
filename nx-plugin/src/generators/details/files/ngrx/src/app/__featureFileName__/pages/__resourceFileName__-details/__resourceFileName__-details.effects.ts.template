@@ -1,25 +1,27 @@
+import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { routerNavigatedAction } from '@ngrx/router-store';
+import { Action, Store } from '@ngrx/store';
 import { concatLatestFrom } from '@ngrx/operators'
+import { routerNavigatedAction } from '@ngrx/router-store';
 import { PrimeIcons } from 'primeng/api';
 import { catchError, filter, map, mergeMap, of, switchMap, tap } from 'rxjs';
+
 import { filterForNavigatedTo } from '@onecx/ngrx-accelerator';
-import { Injectable } from '@angular/core';
-import { selectBackNavigationPossible } from 'src/app/shared/selectors/onecx.selectors';
-import { <%= resourcePropertyName %>DetailsActions } from './<%= featureFileName %>-details.actions';
-import { <%= resourceClassName %>DetailsComponent } from './<%= featureFileName %>-details.component';
-import { Action, Store } from '@ngrx/store';
-import { selectRouteParam, selectUrl } from 'src/app/shared/selectors/router.selectors';
 import { DialogState, PortalDialogService, PortalMessageService } from '@onecx/portal-integration-angular';
-import { <%= updateRequestName%>, <%= resource %>, <%= serviceName %> } from '../../../shared/generated';
-import { <%= featurePropertyName %>DetailsSelectors } from './<%= featureFileName %>-details.selectors';
+
+import { <%= updateRequestName%>, <%= resource %>, <%= serviceName %> } from 'src/app/shared/generated';
+import { selectBackNavigationPossible } from 'src/app/shared/selectors/onecx.selectors';
+import { selectRouteParam, selectUrl } from 'src/app/shared/selectors/router.selectors';
+import { <%= resourcePropertyName %>DetailsActions } from './<%= resourceFileName %>-details.actions';
+import { <%= resourceClassName %>DetailsComponent } from './<%= resourceFileName %>-details.component';
+import { <%= resourcePropertyName %>DetailsSelectors } from './<%= resourceFileName %>-details.selectors';
 
 @Injectable()
-export class <%= featureClassName %>DetailsEffects {
+export class <%= resourceClassName %>DetailsEffects {
   constructor(
     private actions$: Actions,
-    private <%= featurePropertyName %>Service: <%= serviceName %>,
+    private <%= resourcePropertyName %>Service: <%= serviceName %>,
     private router: Router,
     private store: Store,
     private messageService: PortalMessageService <%_ if(editMode){ _%> ,
@@ -38,7 +40,7 @@ export class <%= featureClassName %>DetailsEffects {
     );
   });
 
-  load<%= featureClassName %>ById$ = createEffect(() => {
+  load<%= resourceClassName %>ById$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(<%= resourcePropertyName %>DetailsActions.navigatedToDetailsPage),
       switchMap(({ id }) => {
@@ -47,15 +49,15 @@ export class <%= featureClassName %>DetailsEffects {
             <%= resourcePropertyName %>DetailsActions.<%= resourcePropertyName %>DetailsLoadingFailed({ error: 'Missing ID' })
           );
         }
-        return this.<%= featurePropertyName %>Service.get<%= resource %>ById({ id: id }).pipe(
+        return this.<%= resourcePropertyName %>Service.get<%= resource %>ById({ id: id }).pipe(
           map(({ resource }) =>
-            <%= resourcePropertyName %>DetailsActions.<%= featurePropertyName %>DetailsReceived({
+            <%= resourcePropertyName %>DetailsActions.<%= resourcePropertyName %>DetailsReceived({
               details: resource,
             })
           ),
           catchError((error) =>
             of(
-              <%= resourcePropertyName %>DetailsActions.<%= featurePropertyName %>DetailsLoadingFailed({
+              <%= resourcePropertyName %>DetailsActions.<%= resourcePropertyName %>DetailsLoadingFailed({
                 error,
               })
             )
@@ -82,9 +84,9 @@ export class <%= featureClassName %>DetailsEffects {
       filter((action) => action.dirty),
       switchMap(() => {
         return this.portalDialogService.openDialog<<%= resource %> | undefined>(
-          '<%= featureConstantName%>_DETAILS.CANCEL.HEADER',
-          '<%= featureConstantName%>_DETAILS.CANCEL.MESSAGE',
-          '<%= featureConstantName%>_DETAILS.CANCEL.CONFIRM',
+          '<%= resourceConstantName%>_DETAILS.CANCEL.HEADER',
+          '<%= resourceConstantName%>_DETAILS.CANCEL.MESSAGE',
+          '<%= resourceConstantName%>_DETAILS.CANCEL.CONFIRM',
         );
       }),
       switchMap((dialogResult) => {
@@ -100,7 +102,7 @@ export class <%= featureClassName %>DetailsEffects {
     return this.actions$.pipe(
       ofType(<%= resourcePropertyName %>DetailsActions.saveButtonClicked),
       concatLatestFrom(() =>
-        this.store.select(<%= featurePropertyName %>DetailsSelectors.selectDetails)
+        this.store.select(<%= resourcePropertyName %>DetailsSelectors.selectDetails)
       ),
       switchMap(([action, details]) => {
         const itemToEditId = details?.id;
@@ -110,24 +112,24 @@ export class <%= featureClassName %>DetailsEffects {
         }
 
         if (!itemToEditId) {
-          return of(<%= resourcePropertyName %>DetailsActions.update<%= featureClassName %>Cancelled());
+          return of(<%= resourcePropertyName %>DetailsActions.update<%= resourceClassName %>Cancelled());
         }
         const itemToEdit = {
           dataObject: updatedItem,
-        } as Update<%= featureClassName %>Request;
-        return this.<%= featurePropertyName %>Service.update<%= featureClassName %>({ id: itemToEditId, updateBookRequest: itemToEdit }).pipe(
+        } as Update<%= resourceClassName %>Request;
+        return this.<%= resourcePropertyName %>Service.update<%= resourceClassName %>({ id: itemToEditId, updateBookRequest: itemToEdit }).pipe(
           map(() => {
             this.messageService.success({
-              summaryKey: '<%= featureConstantName%>_DETAILS.UPDATE.SUCCESS',
+              summaryKey: '<%= resourceConstantName%>_DETAILS.UPDATE.SUCCESS',
             });
-            return <%= resourcePropertyName %>DetailsActions.update<%= featureClassName %>Succeeded();
+            return <%= resourcePropertyName %>DetailsActions.update<%= resourceClassName %>Succeeded();
           }),
           catchError((error) => {
             this.messageService.error({
-              summaryKey: '<%= featureConstantName%>_DETAILS.UPDATE.ERROR',
+              summaryKey: '<%= resourceConstantName%>_DETAILS.UPDATE.ERROR',
             });
             return of(
-              <%= resourcePropertyName %>DetailsActions.update<%= featureClassName %>Failed({
+              <%= resourcePropertyName %>DetailsActions.update<%= resourceClassName %>Failed({
                 error,
               })
             );
@@ -143,19 +145,19 @@ export class <%= featureClassName %>DetailsEffects {
     return this.actions$.pipe(
       ofType(<%= resourcePropertyName %>DetailsActions.deleteButtonClicked),
       concatLatestFrom(() =>
-        this.store.select(<%= featurePropertyName %>DetailsSelectors.selectDetails)
+        this.store.select(<%= resourcePropertyName %>DetailsSelectors.selectDetails)
       ),
       mergeMap(([, itemToDelete]) => {
         return this.portalDialogService
           .openDialog<unknown>(
-            '<%= featureConstantName%>_DETAILS.DELETE.HEADER',
-            '<%= featureConstantName%>_DETAILS.DELETE.MESSAGE',
+            '<%= resourceConstantName%>_DETAILS.DELETE.HEADER',
+            '<%= resourceConstantName%>_DETAILS.DELETE.MESSAGE',
             {
-              key: '<%= featureConstantName%>_DETAILS.DELETE.CONFIRM',
+              key: '<%= resourceConstantName%>_DETAILS.DELETE.CONFIRM',
               icon: PrimeIcons.CHECK,
             },
             {
-              key: '<%= featureConstantName%>_DETAILS.DELETE.CANCEL',
+              key: '<%= resourceConstantName%>_DETAILS.DELETE.CANCEL',
               icon: PrimeIcons.TIMES,
             }
           )
@@ -167,25 +169,25 @@ export class <%= featureClassName %>DetailsEffects {
       }),
       switchMap(([dialogResult, itemToDelete]) => {
         if (!dialogResult || dialogResult.button == 'secondary') {
-          return of(<%= resourcePropertyName %>DetailsActions.delete<%= featureClassName %>Cancelled());
+          return of(<%= resourcePropertyName %>DetailsActions.delete<%= resourceClassName %>Cancelled());
         }
         if (!itemToDelete) {
           throw new Error('Item to delete not found!');
         }
 
-        return this.<%= featurePropertyName %>Service.delete<%= featureClassName %>({ id: itemToDelete.id }).pipe(
+        return this.<%= resourcePropertyName %>Service.delete<%= resourceClassName %>({ id: itemToDelete.id }).pipe(
           map(() => {
             this.messageService.success({
-              summaryKey: '<%= featureConstantName%>_DETAILS.DELETE.SUCCESS',
+              summaryKey: '<%= resourceConstantName%>_DETAILS.DELETE.SUCCESS',
             });
-            return <%= resourcePropertyName %>DetailsActions.delete<%= featureClassName %>Succeeded();
+            return <%= resourcePropertyName %>DetailsActions.delete<%= resourceClassName %>Succeeded();
           }),
           catchError((error) => {
             this.messageService.error({
-              summaryKey: '<%= featureConstantName%>_DETAILS.DELETE.ERROR',
+              summaryKey: '<%= resourceConstantName%>_DETAILS.DELETE.ERROR',
             });
             return of(
-              <%= resourcePropertyName %>DetailsActions.delete<%= featureClassName %>Failed({
+              <%= resourcePropertyName %>DetailsActions.delete<%= resourceClassName %>Failed({
                 error,
               })
             );
@@ -195,10 +197,10 @@ export class <%= featureClassName %>DetailsEffects {
     );
   });
 
-  delete<%= featureClassName %>Succeeded$ = createEffect(
+  delete<%= resourceClassName %>Succeeded$ = createEffect(
     () => {
       return this.actions$.pipe(
-        ofType(<%= resourcePropertyName %>DetailsActions.delete<%= featureClassName %>Succeeded),
+        ofType(<%= resourcePropertyName %>DetailsActions.delete<%= resourceClassName %>Succeeded),
         concatLatestFrom(() => this.store.select(selectUrl)),
         tap(([, currentUrl]) => {
           const urlTree = this.router.parseUrl(currentUrl);
@@ -222,8 +224,8 @@ export class <%= featureClassName %>DetailsEffects {
   errorMessages: { action: Action; key: string }[] = [
     {
       action:
-        <%= resourcePropertyName %>DetailsActions.<%= featurePropertyName %>DetailsLoadingFailed,
-      key: '<%= featureConstantName %>_DETAILS.ERROR_MESSAGES.DETAILS_LOADING_FAILED',
+        <%= resourcePropertyName %>DetailsActions.<%= resourcePropertyName %>DetailsLoadingFailed,
+      key: '<%= resourceConstantName %>_DETAILS.ERROR_MESSAGES.DETAILS_LOADING_FAILED',
     },
   ];
 

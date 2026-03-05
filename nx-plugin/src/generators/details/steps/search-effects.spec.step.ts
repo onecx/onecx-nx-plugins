@@ -1,4 +1,5 @@
 import { Tree, names } from '@nx/devkit';
+
 import { GeneratorStep } from '../../shared/generator.utils';
 import { safeReplace } from '../../shared/safeReplace';
 import { SearchGeneratorSchema } from '../../search/schema';
@@ -17,7 +18,10 @@ export class SearchEffectsSpecStep
 
         it('should navigate to details page with correct URL structure', (done) => {
           const testId = 'test-123';
-          const navigateSpy = router ? jest.spyOn(router, 'navigate') : { mock: { calls: [] }, toHaveBeenCalledWith: () => {} };
+          const navigateSpy = router 
+            ? jest.spyOn(router, 'navigate')
+            // eslint-disable-next-line @typescript-eslint/no-empty-function
+            : { mock: { calls: [] }, toHaveBeenCalledWith: () => {} };
 
           effects.navigateToOrderDetailsPage$.pipe(take(1)).subscribe(() => {
             if (router) {

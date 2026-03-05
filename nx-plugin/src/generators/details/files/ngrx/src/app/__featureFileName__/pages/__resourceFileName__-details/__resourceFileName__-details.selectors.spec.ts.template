@@ -1,4 +1,4 @@
-import { select<%= resourceClassName %>DetailsViewModel } from './<%= featureFileName %>-details.selectors';
+import { select<%= resourceClassName %>DetailsViewModel } from './<%= resourceFileName %>-details.selectors';
 
 describe('<%= resourceClassName %>Details selectors', () => {
   describe('select<%= resourceClassName %>DetailsViewModel', () => {

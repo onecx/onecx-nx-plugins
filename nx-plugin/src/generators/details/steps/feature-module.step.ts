@@ -16,14 +16,14 @@ export class FeatureModuleStep
       `} from '@onecx/portal-integration-angular'`,
       'EffectsModule.forFeature()',
       'EffectsModule.forFeature([',
-      `from '@ngrx/effects';`,
+      `from '@ngrx/effects'`,
     ];
     const replaceWith = [
       `declarations: [${className}DetailsComponent,`,
       `InitializeModuleGuard, } from '@onecx/portal-integration-angular'`,
       `EffectsModule.forFeature([])`,
       `EffectsModule.forFeature([${className}DetailsEffects,`,
-      `from '@ngrx/effects';
+      `from '@ngrx/effects'
   import { ${className}DetailsEffects } from './pages/${resourceFileName}-details/${resourceFileName}-details.effects';
   import { ${className}DetailsComponent } from './pages/${resourceFileName}-details/${resourceFileName}-details.component';
   import { providePortalDialogService } from '@onecx/portal-integration-angular';

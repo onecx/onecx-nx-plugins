@@ -1,17 +1,14 @@
 import { createSelector } from '@ngrx/store';
 import { createChildSelectors } from '@onecx/ngrx-accelerator';
-import { <%= resourcePropertyName %>Feature } from '../../<%= featureFileName %>.reducers';
+import { <%= featurePropertyName %>Feature } from '../../<%= featureFileName %>.reducers';
 import { initialState } from './<%= featureFileName %>-details.reducers';
-import {
-  <%= resourceClassName %>DetailsViewModel,
-} from './<%= featureFileName %>-details.viewmodel';
-import {
-  selectBackNavigationPossible
-} from 'src/app/shared/selectors/onecx.selectors';
-import { <%= resource %> } from '../../../shared/generated';
+import { <%= resourceClassName %>DetailsViewModel } from './<%= resourceFileName %>-details.viewmodel';
+
+import { <%= resource %> } from 'src/app/shared/generated';
+import { selectBackNavigationPossible } from 'src/app/shared/selectors/onecx.selectors';
 
 export const <%= resourcePropertyName %>DetailsSelectors = createChildSelectors(
-  <%= resourcePropertyName %>Feature.selectDetails,
+  <%= featurePropertyName %>Feature.selectDetails,
   initialState
 );
 

@@ -1,10 +1,11 @@
 import { Tree, joinPathFragments, names, updateJson } from '@nx/devkit';
+
+import { deepMerge } from '../../shared/deepMerge';
 import { GeneratorStep } from '../../shared/generator.utils';
+import { renderJsonFile } from '../../shared/renderJsonFile';
 import { DetailsGeneratorSchema } from '../schema';
 import path = require('path');
-import { renderJsonFile } from '../../shared/renderJsonFile';
 import * as fs from 'fs';
-import { deepMerge } from '../../shared/deepMerge';
 
 export class GeneralTranslationsStep
   implements GeneratorStep<DetailsGeneratorSchema>

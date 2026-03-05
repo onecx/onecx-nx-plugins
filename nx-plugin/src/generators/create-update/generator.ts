@@ -34,17 +34,6 @@ const PARAMETERS: GeneratorParameter<CreateUpdateGeneratorSchema>[] = [
     prompt: 'Do you want to customize the names for the generated API?',
   },
   {
-    key: 'apiServiceName',
-    type: 'text',
-    required: 'interactive',
-    default: (values) => {
-      return `${names(values.featureName).className}APIService`;
-    },
-    prompt: 'Provide a name for your API service (e.g. BookAPIService): ',
-    showInSummary: true,
-    showRules: [{ showIf: (values) => values.customizeNamingForAPI }],
-  },
-  {
     key: 'resource',
     type: 'text',
     required: 'interactive',
@@ -52,6 +41,17 @@ const PARAMETERS: GeneratorParameter<CreateUpdateGeneratorSchema>[] = [
       return `${names(values.featureName).className}`;
     },
     prompt: 'Provide a name for your Resource (e.g. Book): ',
+    showInSummary: true,
+    showRules: [{ showIf: (values) => values.customizeNamingForAPI }],
+  },
+  {
+    key: 'apiServiceName',
+    type: 'text',
+    required: 'interactive',
+    default: (values) => {
+      return `${names(values.featureName).className}APIService`;
+    },
+    prompt: 'Provide a name for your API service (e.g. BookAPIService): ',
     showInSummary: true,
     showRules: [{ showIf: (values) => values.customizeNamingForAPI }],
   },
@@ -154,6 +154,10 @@ export async function createUpdateGenerator(
       featureClassName: names(options.featureName).className,
       featureConstantName: names(options.featureName).constantName,
       resource: options.resource,
+      resourceFileName: names(options.resource).fileName,
+      resourcePropertyName: names(options.resource).propertyName,
+      resourceClassName: names(options.resource).className,
+      resourceConstantName: names(options.resource).constantName,
       serviceName: options.apiServiceName,
       createRequestName: options.createRequestName,
       createResponseName: options.createResponseName,
@@ -168,8 +172,10 @@ export async function createUpdateGenerator(
   generatorProcessor.addStep(new GeneralTranslationsStep());
   generatorProcessor.addStep(new GeneralOpenAPIStep());
 
-  const fileName = names(options.featureName).fileName;
-  const htmlDetailsFilePath = `src/app/${fileName}/pages/${fileName}-search/dialogs/${fileName}-create-update/${fileName}-create-update.component.html`;
+  const featureFileName = names(options.featureName).fileName;
+  const resourceFileName = names(options.resource).fileName;
+
+  const htmlDetailsFilePath = `src/app/${featureFileName}/pages/${resourceFileName}-search/dialogs/${resourceFileName}-create-update/${resourceFileName}-create-update.component.html`;
   if (tree.exists(htmlDetailsFilePath)) {
     generatorProcessor.addStep(new SearchActionsStep());
     generatorProcessor.addStep(new SearchEffectsStep());
@@ -189,7 +195,7 @@ export async function createUpdateGenerator(
     let cmd = '';
     function log(command: string) {
       console.log('');
-      console.log('generate edit ==> ' + command);
+      console.log('generate create/update ==> ' + command);
     }
     cmd = 'npm run apigen ';
     log(cmd);

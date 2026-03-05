@@ -1,4 +1,5 @@
 import { Tree, names } from '@nx/devkit';
+
 import { GeneratorStep } from '../../shared/generator.utils';
 import { safeReplace } from '../../shared/safeReplace';
 import { DetailsGeneratorSchema } from '../schema';
@@ -13,7 +14,7 @@ export class FeatureStateStep implements GeneratorStep<DetailsGeneratorSchema> {
 
     const find = [/^/, 'State {'];
     const replaceWith = [
-      `import { ${className}DetailsState } from './pages/${resourceFileName}-details/${resourceFileName}-details.state';`,
+      `import { ${className}DetailsState } from './pages/${resourceFileName}-details/${resourceFileName}-details.state'`,
       `State { details: ${className}DetailsState; `,
     ];
     safeReplace(

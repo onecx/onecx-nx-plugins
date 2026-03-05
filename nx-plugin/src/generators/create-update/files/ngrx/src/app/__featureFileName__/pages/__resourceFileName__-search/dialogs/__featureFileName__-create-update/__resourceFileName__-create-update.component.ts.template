@@ -4,31 +4,31 @@ import {
   Input,
   OnInit,
 } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { map } from 'rxjs';
+
 import {
   DialogButtonClicked,
   DialogPrimaryButtonDisabled,
   DialogResult,
 } from '@onecx/portal-integration-angular';
 
-import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { map } from 'rxjs';
 import { <%= resource%> } from 'src/app/shared/generated';
-
-import { <%= featureClassName%>CreateUpdateViewModel } from './<%= featureFileName %>-create-update.viewmodel';
+import { <%= resourceClassName%>CreateUpdateViewModel } from './<%= resourceFileName %>-create-update.viewmodel';
 
 @Component({
-  selector: 'app-<%= featureFileName %>-create-update',
-  templateUrl: './<%= featureFileName %>-create-update.component.html',
-  styleUrls: ['./<%= featureFileName %>-create-update.component.scss'],
+  selector: 'app-<%= resourceFileName %>-create-update',
+  templateUrl: './<%= resourceFileName %>-create-update.component.html',
+  styleUrls: ['./<%= resourceFileName %>-create-update.component.scss'],
 })
-export class <%= featureClassName%>CreateUpdateComponent 
+export class <%= resourceClassName%>CreateUpdateComponent 
   implements
     DialogPrimaryButtonDisabled,
     DialogResult<<%= resource %> | undefined>,
-    DialogButtonClicked<<%= featureClassName%>CreateUpdateComponent>,
+    DialogButtonClicked<<%= resourceClassName%>CreateUpdateComponent>,
     OnInit {
 
-  @Input() public vm: <%= featureClassName%>CreateUpdateViewModel = {
+  @Input() public vm: <%= resourceClassName%>CreateUpdateViewModel = {
     itemToEdit: undefined,
   };
   

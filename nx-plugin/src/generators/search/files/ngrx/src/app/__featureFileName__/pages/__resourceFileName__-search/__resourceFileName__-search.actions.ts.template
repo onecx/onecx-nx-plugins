@@ -2,8 +2,7 @@ import { createActionGroup, emptyProps, props } from '@ngrx/store';
 import { DataTableColumn, GroupByCountDiagramComponentState, InteractiveDataViewComponentState, SearchHeaderComponentState } from '@onecx/portal-integration-angular';
 
 import { <%= resourceClassName %>SearchCriteria } from './<%= resourceFileName %>-search.parameters';
-import { <%= resource %> } from '../../../shared/generated';
-
+import { <%= resource %> } from 'src/app/shared/generated';
 
 export const <%= resourcePropertyName %>SearchActions = createActionGroup({
   source: '<%= resourceClassName %>Search',

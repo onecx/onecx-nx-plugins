@@ -1,10 +1,10 @@
 {
   "<%= resourceConstantName %>_DETAILS": {
+    "HEADER": "<%= resourceClassName %> Details",
+    "SUB_HEADER": "Anzeigen von <%= resourceClassName %> Details",
     "HELP_ARTICLE_ID": "Hilfeartikel",
     "BREADCRUMB": "Details",
-    "HEADER": "<%= resourceClassName %> Details",
     "ARIA_LABEL": "Seitenkopf mit Details",
-    "SUB_HEADER": "Anzeigen von <%= resourceClassName %> Details",
     "ERROR_MESSAGES":{
       "DETAILS_LOADING_FAILED":"Details konnten nicht geladen werden."
     },
