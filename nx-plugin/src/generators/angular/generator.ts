@@ -77,13 +77,14 @@ export async function angularGenerator(
 
   generatorProcessor.run(tree, options, spinner);
 
-  const oneCXLibVersion = '^5.47.0';
+  addBaseToPackageJson(tree, options);
+  addExtensionsToPackageJson(tree);
+  addScriptsToPackageJson(tree, options);
+
+  const oneCXLibVersion = '^5.47.5';
   addDependenciesToPackageJson(
     tree,
     {
-      primeflex: '^3.3.1',
-      primeicons: '^7.0.0',
-      primeng: '^17.18.8',
       '@onecx/accelerator': oneCXLibVersion,
       '@onecx/angular-accelerator': oneCXLibVersion,
       '@onecx/angular-auth': oneCXLibVersion,
@@ -98,8 +99,6 @@ export async function angularGenerator(
       '@ngx-translate/core': '^15.0.0',
       '@ngx-translate/http-loader': '^8.0.0',
       '@angular-architects/module-federation': '^18.0.4',
-      'keycloak-angular': '^16.0.1',
-      'ngrx-store-localstorage': '^18.0.0',
       '@angular/animations': '^18.1.4',
       '@angular/cdk': '^18.1.4',
       '@angular/common': '^18.1.4',
@@ -119,6 +118,11 @@ export async function angularGenerator(
       '@nx/devkit': '^19.8.14',
       '@nx/plugin': '^19.8.14',
       '@webcomponents/webcomponentsjs': '^2.8.0',
+      'keycloak-angular': '^16.1.0',
+      'ngrx-store-localstorage': '^18.0.0',
+      primeflex: '^3.3.1',
+      primeicons: '^7.0.0',
+      primeng: '^17.18.8',
     },
     {
       '@openapitools/openapi-generator-cli': '^2.5.2',
@@ -126,18 +130,34 @@ export async function angularGenerator(
       '@angular-devkit/build-angular': '^18.1.4',
       '@angular-devkit/core': '^18.1.4',
       '@angular-devkit/schematics': '^18.1.4',
+      'angular-eslint': '^18.4.3',
+      '@angular-eslint/builder': '^18.4.3',
+      '@angular-eslint/eslint-plugin': '^18.4.3',
+      '@angular-eslint/eslint-plugin-template': '^18.4.3',
+      '@angular-eslint/schematics': '^18.4.3',
+      '@angular-eslint/template-parser': '^18.4.3',
       '@angular/cli': '~18.1.4',
       '@angular/compiler-cli': '^18.1.4',
       '@angular/language-service': '^18.1.4',
-      typescript: '~5.5.4',
+      '@eslint/js': '^8.57.1',
+      '@nx/eslint': '19.8.14',
+      '@nx/eslint-plugin': '19.8.14',
+      eslint: '^8.57.1',
+      'eslint-config-prettier': '^9.1.0',
+      'eslint-plugin-deprecation': '^3.0.0',
+      'eslint-plugin-import': '2.31.0',
+      'eslint-plugin-prettier': '^5.2.1',
+      husky: '^9.1.7',
       jest: '^29.7.0',
       'jest-environment-jsdom': '^29.7.0',
       'jest-preset-angular': '~14.2.2',
+      nx: '19.8.14',
+      prettier: '^3.5.3',
+      'sonar-scanner': '^3.1.0',
+      typescript: '~5.5.4',
       webpack: '5.95.0',
     }
   );
-
-  addScriptsToPackageJson(tree, options);
 
   addOverridesToPackageJson(tree);
 
@@ -190,6 +210,29 @@ export async function angularGenerator(
   };
 }
 
+function addBaseToPackageJson(tree: Tree, options: AngularGeneratorSchema) {
+  updateJson(tree, 'package.json', (pkgJson) => {
+    pkgJson.name = 'onecx-' + names(options.name).fileName + '-ui';
+    pkgJson.private = true;
+    pkgJson.license = 'Apache-2.0';
+    return pkgJson;
+  });
+}
+
+function addExtensionsToPackageJson(tree: Tree) {
+  updateJson(tree, 'package.json', (pkgJson) => {
+    pkgJson.husky = {
+      hooks: {
+        'pre-commit': 'pretty-quick --staged',
+      },
+    };
+    pkgJson.jestSonar = {
+      reportPath: 'reports',
+    };
+    return pkgJson;
+  });
+}
+
 function addOverridesToPackageJson(tree: Tree) {
   updateJson(tree, 'package.json', (pkgJson) => {
     pkgJson.overrides = {
@@ -204,9 +247,6 @@ function addOverridesToPackageJson(tree: Tree) {
 
 function addScriptsToPackageJson(tree: Tree, options: AngularGeneratorSchema) {
   updateJson(tree, 'package.json', (pkgJson) => {
-    pkgJson.name = 'onecx-' + names(options.name).fileName + '-ui';
-    pkgJson.private = true;
-    pkgJson.license = 'Apache-2.0';
     pkgJson.scripts = pkgJson.scripts ?? {};
     pkgJson.scripts[
       'apigen'
@@ -219,11 +259,12 @@ function addScriptsToPackageJson(tree: Tree, options: AngularGeneratorSchema) {
     pkgJson.scripts['clean'] =
       'npm cache clean --force && npx clear-npx-cache && rm -rf *.log dist reports .nx .angular .eslintcache ./node_modules/.cache/prettier/.prettier-cache';
     pkgJson.scripts['format'] = 'nx format:write --uncommitted';
+    pkgJson.scripts['prepare'] = 'husky install || true';
     pkgJson.scripts['lint'] = 'nx lint';
     pkgJson.scripts['lint:fix'] = 'nx lint --fix';
+    pkgJson.scripts['sonar'] = 'npx sonar-scanner';
     pkgJson.scripts['test'] = 'nx test';
-    pkgJson.scripts['test:ci'] =
-      'nx test --watch=false --browsers=ChromeHeadless --code-coverage';
+    pkgJson.scripts['test:ci'] = 'nx test --watch=false --browsers=ChromeHeadless --code-coverage';
     return pkgJson;
   });
 }

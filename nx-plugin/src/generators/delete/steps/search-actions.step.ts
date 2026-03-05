@@ -16,14 +16,10 @@ export class SearchActionsStep implements GeneratorStep<DeleteGeneratorSchema> {
       filePath,
       'events: {',
       `events: {
-      'Delete ${actionName} button clicked': props<{
-        id: number | string;
-      }>(),
+      'Delete ${actionName} button clicked': props<{ id: number | string; }>(),
       'Delete ${actionName} cancelled': emptyProps(),
       'Delete ${actionName} succeeded': emptyProps(),
-      'Delete ${actionName} failed': props<{
-        error: string | null;
-      }>(),
+      'Delete ${actionName} failed': props<{ error: string | null; }>(),
     `,
       tree
     );

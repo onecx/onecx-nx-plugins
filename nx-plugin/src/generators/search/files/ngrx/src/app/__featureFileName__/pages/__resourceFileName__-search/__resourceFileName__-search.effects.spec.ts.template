@@ -32,7 +32,7 @@ describe('<%= resourceClassName %>SearchEffects', () => {
   let store: MockStore<Store>
   let router: jest.Mocked<Router>
   let route: ActivatedRoute
-  let service: jest.Mocked<<%= serviceName %>>
+  let <%= resourcePropertyName %>Service: jest.Mocked<<%= serviceName %>>
   let portalDialogService: jest.Mocked<PortalDialogService>
   let messageService: jest.Mocked<PortalMessageService>
   let exportDataService: jest.Mocked<ExportDataService>
@@ -42,7 +42,7 @@ describe('<%= resourceClassName %>SearchEffects', () => {
   beforeEach(async () => {
     actions$ = new ReplaySubject(1)
 
-    service = {
+    <%= resourcePropertyName %>Service = {
       create<%= apiModelPascal %>: jest.fn(),
       update<%= apiModelPascal %>: jest.fn(),
       delete<%= apiModelPascal %>: jest.fn(),
@@ -50,10 +50,10 @@ describe('<%= resourceClassName %>SearchEffects', () => {
     } as unknown as jest.Mocked<<%= serviceName %>>;
 
     // compatibility aliases (featureName differs from resource)
-    (service as any).create<%= resourceClassName %> = (service as any).create<%= apiModelPascal %>;
-    (service as any).update<%= resourceClassName %> = (service as any).update<%= apiModelPascal %>;
-    (service as any).delete<%= resourceClassName %> = (service as any).delete<%= apiModelPascal %>;
-    (service as any).search<%= resourceClassName %>s = (service as any).search<%= apiModelPascal %>Items;
+    (<%= resourcePropertyName %>Service as any).create<%= resourceClassName %> = (<%= resourcePropertyName %>Service as any).create<%= apiModelPascal %>;
+    (<%= resourcePropertyName %>Service as any).update<%= resourceClassName %> = (<%= resourcePropertyName %>Service as any).update<%= apiModelPascal %>;
+    (<%= resourcePropertyName %>Service as any).delete<%= resourceClassName %> = (<%= resourcePropertyName %>Service as any).delete<%= apiModelPascal %>;
+    (<%= resourcePropertyName %>Service as any).search<%= resourceClassName %>Items = (<%= resourcePropertyName %>Service as any).search<%= apiModelPascal %>Items;
 
     router = {
       navigate: jest.fn().mockReturnValue(Promise.resolve(true)),
@@ -89,7 +89,7 @@ describe('<%= resourceClassName %>SearchEffects', () => {
         provideMockActions(() => actions$),
         { provide: ActivatedRoute, useValue: route },
         { provide: Router, useValue: router },
-        { provide: <%= serviceName %>, useValue: service },
+        { provide: <%= serviceName %>, useValue: <%= resourcePropertyName %>Service },
         { provide: PortalDialogService, useValue: portalDialogService },
         { provide: PortalMessageService, useValue: messageService },
         { provide: ExportDataService, useValue: exportDataService }
@@ -157,7 +157,7 @@ describe('<%= resourceClassName %>SearchEffects', () => {
       store.overrideSelector(<%= resourcePropertyName %>SearchSelectors.selectCriteria, mockCriteria as any)
       store.refreshState()
 
-      service.search<%= apiModelPascal %>s.mockReturnValue(
+      <%= resourcePropertyName %>Service.search<%= apiModelPascal %>Items.mockReturnValue(
         of({
           stream: [{ id: '1', name: 'Item 1', description: '', imagePath: '' } as any],
           content: [{ id: '1', name: 'Item 1', description: '', imagePath: '' } as any],
@@ -171,7 +171,7 @@ describe('<%= resourceClassName %>SearchEffects', () => {
 
     it('should dispatch resultsLoadingFailed on search error', (done) => {
       const mockError = 'Search failed'
-      service.search<%= apiModelPascal %>s.mockReturnValueOnce(throwError(() => mockError) as any)
+      <%= resourcePropertyName %>Service.search<%= apiModelPascal %>Items.mockReturnValueOnce(throwError(() => mockError) as any)
 
       effects.performSearch(mockCriteria as any).pipe(take(1)).subscribe((action) => {
         expect(action.type).toEqual(<%= resourcePropertyName %>SearchActions.<%= resourcePropertyName %>SearchResultsLoadingFailed.type)
@@ -180,9 +180,9 @@ describe('<%= resourceClassName %>SearchEffects', () => {
       })
     })
 
-    it('should convert Date objects in search criteria before calling service', (done) => {
+    it('should convert Date objects in search criteria before calling <%= resourcePropertyName %>Service', (done) => {
       const criteriaWithDate: any = { ...mockCriteria, startDate: new Date('2023-01-01'), endDate: new Date('2023-12-31') }
-      const searchSpy = jest.spyOn(service, 'search<%= apiModelPascal %>s')
+      const searchSpy = jest.spyOn(<%= resourcePropertyName %>Service, 'search<%= apiModelPascal %>Items')
 
       effects.performSearch(criteriaWithDate).pipe(take(1)).subscribe(() => {
         expect(searchSpy).toHaveBeenCalledWith(
@@ -230,7 +230,7 @@ describe('<%= resourceClassName %>SearchEffects', () => {
         store.overrideSelector(select<%= resourceClassName %>SearchViewModel, viewModel as any)
 
         effects.exportData$.pipe(take(1)).subscribe(() => {
-          expect(exportDataService.exportCsv).toHaveBeenCalledWith([], viewModel.results, '<%= resourceClassName %>.csv')
+          expect(exportDataService.exportCsv).toHaveBeenCalledWith([], viewModel.results, 'export_<%= resourcePropertyName %>.csv')
           done()
         })
 
@@ -245,7 +245,7 @@ describe('<%= resourceClassName %>SearchEffects', () => {
       store.overrideSelector(select<%= resourceClassName %>SearchViewModel, mockViewModel as any)
 
       effects.exportData$.pipe(take(1)).subscribe(() => {
-        expect(exportDataService.exportCsv).toHaveBeenCalledWith(mockColumns, mockResults, '<%= resourceClassName %>.csv')
+        expect(exportDataService.exportCsv).toHaveBeenCalledWith(mockColumns, mockResults, 'export_<%= resourcePropertyName %>.csv')
         done()
       })
 
@@ -258,7 +258,7 @@ describe('<%= resourceClassName %>SearchEffects', () => {
       store.overrideSelector(select<%= resourceClassName %>SearchViewModel, mockViewModel as any)
 
       effects.exportData$.pipe(take(1)).subscribe(() => {
-        expect(exportDataService.exportCsv).toHaveBeenCalledWith(mockColumns, [], '<%= resourceClassName %>.csv')
+        expect(exportDataService.exportCsv).toHaveBeenCalledWith(mockColumns, [], 'export_<%= resourcePropertyName %>.csv')
         done()
       })
 

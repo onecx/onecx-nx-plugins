@@ -15,8 +15,8 @@ export class AppReducerStep implements GeneratorStep<SearchGeneratorSchema> {
       `import { ActionReducerMap, MetaReducer, ActionReducer } from '@ngrx/store';
          import { localStorageSync } from 'ngrx-store-localstorage';`,
       `export function localStorageSyncReducer(
-            reducer: ActionReducer<any>,
-          ): ActionReducer<any> {
+            reducer: ActionReducer<State>,
+          ): ActionReducer<State> {
             return localStorageSync({
               keys: [
                 {
@@ -34,7 +34,7 @@ export class AppReducerStep implements GeneratorStep<SearchGeneratorSchema> {
               ],
               mergeReducer: lazyLoadingMergeReducer,
               rehydrate: true,
-              storageKeySerializer: (key) => '${propertyName}.\${key}',
+              storageKeySerializer: (key) => \`${propertyName}.\${key}\`,
             })(reducer);
           }
 

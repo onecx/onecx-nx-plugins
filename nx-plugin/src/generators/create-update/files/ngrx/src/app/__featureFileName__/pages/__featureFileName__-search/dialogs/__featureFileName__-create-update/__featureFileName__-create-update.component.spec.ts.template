@@ -9,7 +9,7 @@ import {
   PortalCoreModule,
 } from '@onecx/portal-integration-angular';
 import { TranslateTestingModule } from 'ngx-translate-testing';
-import { <%= featureClassName%>CreateUpdateComponent } from './<%= featureFileName%>-create-update.component';
+import { <%= resourceClassName%>CreateUpdateComponent } from './<%= featureFileName%>-create-update.component';
 import { distinctUntilChanged, filter, skip, take, toArray } from 'rxjs'
 
 Object.defineProperty(window, 'matchMedia', {
@@ -26,25 +26,25 @@ Object.defineProperty(window, 'matchMedia', {
   })),
 });
 
-describe('<%= featureClassName%>CreateUpdateComponent', () => {
-  let component: <%= featureClassName%>CreateUpdateComponent;
-  let fixture: ComponentFixture<<%= featureClassName%>CreateUpdateComponent>;
+describe('<%= resourceClassName%>CreateUpdateComponent', () => {
+  let component: <%= resourceClassName%>CreateUpdateComponent;
+  let fixture: ComponentFixture<<%= resourceClassName%>CreateUpdateComponent>;
 
   const mockActivatedRoute = {};
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [<%= featureClassName%>CreateUpdateComponent],
+      declarations: [<%= resourceClassName%>CreateUpdateComponent],
       imports: [
-        PortalCoreModule,
         FormsModule,
-        ReactiveFormsModule,
         LetDirective,
-        TranslateTestingModule.withTranslations(
-          'en',
-          require('./../../../../../../assets/i18n/en.json')
-        ).withTranslations('de', require('./../../../../../../assets/i18n/de.json')),
         HttpClientTestingModule,
+        PortalCoreModule,
+        ReactiveFormsModule,
+        TranslateTestingModule.withTranslations({
+          de: require('../../../../assets/i18n/de.json'),
+          en: require('../../../../assets/i18n/en.json')
+        }).withDefaultLanguage('en'),
       ],
       providers: [
         BreadcrumbService,
@@ -52,7 +52,7 @@ describe('<%= featureClassName%>CreateUpdateComponent', () => {
       ],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(<%= featureClassName%>CreateUpdateComponent);
+    fixture = TestBed.createComponent(<%= resourceClassName%>CreateUpdateComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -60,7 +60,7 @@ npm run build
 
 Next navigate to the created package (e.g. in `./dist/nx-plugin`) and publish it: 
 ```
-npm publish --registry http://localhost:4873/
+npm publish --registry http://localhost:4873/ --tag latest
 ```
 
 Go to your web-browser and open `http://localhost:4873/` to validate if your image is shown there, with correct version.

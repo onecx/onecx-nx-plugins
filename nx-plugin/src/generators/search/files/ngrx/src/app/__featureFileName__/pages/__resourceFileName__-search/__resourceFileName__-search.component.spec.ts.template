@@ -66,7 +66,7 @@ describe('<%= resourceClassName %>SearchComponent', () => {
   let fixture: ComponentFixture<<%= resourceClassName %>SearchComponent>;
   let store: MockStore<Store>;
   let formBuilder: FormBuilder;
-  let <%= resourceClassName %>Search: <%= resourceClassName %>SearchHarness;
+  let <%= resourcePropertyName %>Search: <%= resourceClassName %>SearchHarness;
   
   const mockActivatedRoute = {
     snapshot: {
@@ -109,17 +109,17 @@ describe('<%= resourceClassName %>SearchComponent', () => {
         LetDirective,
         ReactiveFormsModule,
         StoreModule.forRoot({}),
-        TranslateTestingModule.withTranslations(
-          'en',
-          require('./../../../../assets/i18n/en.json')
-        ).withTranslations('de', require('./../../../../assets/i18n/de.json')),
+        TranslateTestingModule.withTranslations({
+          de: require('../../../../assets/i18n/de.json'),
+          en: require('../../../../assets/i18n/en.json')
+        }).withDefaultLanguage('en'),
         HttpClientTestingModule,
         NoopAnimationsModule,
       ],
       providers: [
         DialogService,
         provideMockStore({
-          initialState: { <%= resourceClassName %>: { search: initialState } },
+          initialState: { <%= featurePropertyName %>: { search: initialState } },
         }),
         FormBuilder,
         providePortalDialogService(),
@@ -161,7 +161,7 @@ describe('<%= resourceClassName %>SearchComponent', () => {
     fixture = TestBed.createComponent(<%= resourceClassName %>SearchComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-    <%= resourceClassName %>Search = await TestbedHarnessEnvironment.harnessForFixture(
+    <%= resourcePropertyName %>Search = await TestbedHarnessEnvironment.harnessForFixture(
       fixture,
       <%= resourceClassName %>SearchHarness
     );
@@ -172,7 +172,7 @@ describe('<%= resourceClassName %>SearchComponent', () => {
   });
 
   it('should dispatch resetButtonClicked action on resetSearch', async () => {
-    var doneFn = jest.fn();
+    const doneFn = jest.fn();
     store.overrideSelector(select<%= resourceClassName %>SearchViewModel, {
       ...base<%= resourceClassName %>SearchViewModel,
       results: [
@@ -205,13 +205,13 @@ describe('<%= resourceClassName %>SearchComponent', () => {
         doneFn();
       });
 
-    const searchHeader = await <%= resourceClassName %>Search.getHeader();
+    const searchHeader = await <%= resourcePropertyName %>Search.getHeader();
     await searchHeader.clickResetButton();
     expect(doneFn).toHaveBeenCalledTimes(1);
   });
 
   it('should have 2 overFlow header actions when search config is disabled', async () => {
-    const searchHeader = await <%= resourceClassName %>Search.getHeader();
+    const searchHeader = await <%= resourcePropertyName %>Search.getHeader();
     const pageHeader = await searchHeader.getPageHeader();
     const overflowActionButton = await pageHeader.getOverflowActionMenuButton();
     await overflowActionButton?.click();
@@ -219,14 +219,12 @@ describe('<%= resourceClassName %>SearchComponent', () => {
     const overflowMenuItems = await pageHeader.getOverFlowMenuItems();
     expect(overflowMenuItems.length).toBe(2);
 
-    const exportAllActionItem = await pageHeader.getOverFlowMenuItem(
-      'Export all'
-    );
+    const exportAllActionItem = await pageHeader.getOverFlowMenuItem('Export all');
+    expect(exportAllActionItem).not.toBeNull();
     expect(await exportAllActionItem!.getText()).toBe('Export all');
 
-    const showHideChartActionItem = await pageHeader.getOverFlowMenuItem(
-      'Show chart'
-    );
+    const showHideChartActionItem = await pageHeader.getOverFlowMenuItem('Show chart');
+    expect(showHideChartActionItem).not.toBeNull();
     expect(await showHideChartActionItem!.getText()).toBe('Show chart');
   });
 
@@ -237,7 +235,7 @@ describe('<%= resourceClassName %>SearchComponent', () => {
     });
     store.refreshState();
 
-    const searchHeader = await <%= resourceClassName %>Search.getHeader();
+    const searchHeader = await <%= resourcePropertyName %>Search.getHeader();
     const pageHeader = await searchHeader.getPageHeader();
     const overflowActionButton = await pageHeader.getOverflowActionMenuButton();
     await overflowActionButton?.click();
@@ -245,9 +243,8 @@ describe('<%= resourceClassName %>SearchComponent', () => {
     const overflowMenuItems = await pageHeader.getOverFlowMenuItems();
     expect(overflowMenuItems.length).toBe(2);
 
-    const showHideChartActionItem = await pageHeader.getOverFlowMenuItem(
-      'Hide chart'
-    );
+    const showHideChartActionItem = await pageHeader.getOverFlowMenuItem('Hide chart');
+    expect(showHideChartActionItem).not.toBeNull();
     expect(await showHideChartActionItem!.getText()).toEqual('Hide chart');
   });
 
@@ -290,8 +287,7 @@ describe('<%= resourceClassName %>SearchComponent', () => {
     });
     store.refreshState();
 
-    const diagram =
-      await (await <%= resourceClassName %>Search.getDiagram())!.getDiagram();
+    const diagram = await (await <%= resourcePropertyName %>Search.getDiagram())!.getDiagram();
 
     expect(await diagram.getTotalNumberOfResults()).toBe(3);
     expect(await diagram.getSumLabel()).toEqual('Total');
@@ -305,7 +301,7 @@ describe('<%= resourceClassName %>SearchComponent', () => {
     fixture.detectChanges();
 
     expect(breadcrumbService.setItems).toHaveBeenCalledTimes(1);
-    const searchHeader = await <%= resourceClassName %>Search.getHeader();
+    const searchHeader = await <%= resourcePropertyName %>Search.getHeader();
     const pageHeader = await searchHeader.getPageHeader();
     const searchBreadcrumbItem = await pageHeader.getBreadcrumbItem('Search');
 
@@ -337,7 +333,7 @@ describe('<%= resourceClassName %>SearchComponent', () => {
     store.refreshState();
   
     const interactiveDataView =
-      await <%= resourceClassName %>Search.getSearchResults();        
+      await <%= resourcePropertyName %>Search.getSearchResults();        
     (await (
         await interactiveDataView.getDataLayoutSelection()
       ).getTableLayoutSelectionButton()
@@ -376,7 +372,7 @@ describe('<%= resourceClassName %>SearchComponent', () => {
     });
     store.refreshState();
 
-    const searchHeader = await <%= resourceClassName %>Search.getHeader();
+    const searchHeader = await <%= resourcePropertyName %>Search.getHeader();
     const pageHeader = await searchHeader.getPageHeader();
     const overflowActionButton = await pageHeader.getOverflowActionMenuButton();
     await overflowActionButton?.click();
@@ -391,11 +387,11 @@ describe('<%= resourceClassName %>SearchComponent', () => {
   });  
 
   it('should display translated headers', async () => {
-    const searchHeader = await <%= resourceClassName %>Search.getHeader();
+    const searchHeader = await <%= resourcePropertyName %>Search.getHeader();
     const pageHeader = await searchHeader.getPageHeader();
     expect(await pageHeader.getHeaderText()).toEqual('<%= resourceClassName %> Search');
     expect(await pageHeader.getSubheaderText()).toEqual(
-      'Searching and displaying of <%= resourceClassName %>'
+      'Searching and displaying of <%= resourceClassName %>s'
     );
   });
 
@@ -422,15 +418,14 @@ describe('<%= resourceClassName %>SearchComponent', () => {
     });
     store.refreshState();
 
-    const interactiveDataView =
-      await <%= resourceClassName %>Search.getSearchResults();
+    const interactiveDataView = await <%= resourcePropertyName %>Search.getSearchResults();
     const dataView = await interactiveDataView.getDataView();
     const dataTable = await dataView.getDataListGrid();
-    const rows = await dataTable!.getActionButtons('list');
-    expect(rows.length).toBe(0);
-    expect(
-      fixture.debugElement.query(By.css('.p-dataview-emptymessage')),
-    ).toBeDefined();
+    if (dataTable) {
+      const rows = await dataTable.getActionButtons('list');
+      expect(rows.length).toBe(0);
+    }
+    expect(fixture.debugElement.query(By.css('.p-dataview-emptymessage'))).not.toBeNull();
   });
 
   it('should not display chart when no results or toggled to not visible', async () => {
@@ -456,8 +451,9 @@ describe('<%= resourceClassName %>SearchComponent', () => {
       ],
     });
     store.refreshState();
+    fixture.detectChanges();
 
-    let diagram = await <%= resourceClassName %>Search.getDiagram();
+    let diagram = await <%= resourcePropertyName %>Search.getDiagram();
     expect(diagram).toBeNull();
 
     store.overrideSelector(select<%= resourceClassName %>SearchViewModel, {
@@ -486,8 +482,9 @@ describe('<%= resourceClassName %>SearchComponent', () => {
       ],
     });
     store.refreshState();
+    fixture.detectChanges();
 
-    diagram = await <%= resourceClassName %>Search.getDiagram();
+    diagram = await <%= resourcePropertyName %>Search.getDiagram();
     expect(diagram).toBeNull();
 
     store.overrideSelector(select<%= resourceClassName %>SearchViewModel, {
@@ -516,8 +513,9 @@ describe('<%= resourceClassName %>SearchComponent', () => {
       ],
     });
     store.refreshState();
+    fixture.detectChanges();
 
-    diagram = await <%= resourceClassName %>Search.getDiagram();
+    diagram = await <%= resourcePropertyName %>Search.getDiagram();
     expect(diagram).toBeTruthy();
   });
 
@@ -553,14 +551,12 @@ describe('<%= resourceClassName %>SearchComponent', () => {
     });
     store.refreshState();
   
-    const searchHeader = await <%= resourceClassName %>Search.getHeader();
+    const searchHeader = await <%= resourcePropertyName %>Search.getHeader();
     const pageHeader = await searchHeader.getPageHeader();
     const overflowActionButton = await pageHeader.getOverflowActionMenuButton();
     await overflowActionButton?.click();
   
-    const exportAllActionItem = await pageHeader.getOverFlowMenuItem(
-      'Export all'
-    );
+    const exportAllActionItem = await pageHeader.getOverFlowMenuItem('Export all');
     await exportAllActionItem!.selectItem();
 
     expect(store.dispatch).toHaveBeenCalledWith(
@@ -617,7 +613,7 @@ describe('<%= resourceClassName %>SearchComponent', () => {
       {
         method: 'searchHeaderComponentStateChanged',
         action: <%= resourcePropertyName %>SearchActions.searchHeaderComponentStateChanged,
-        payload: { activeViewMode: 'basic' as 'basic', selectedSearchConfig: 'config1' }
+        payload: { activeViewMode: 'basic' as 'basic' | 'advanced', selectedSearchConfig: 'config1' }
       },
       {
         method: 'diagramComponentStateChanged',
