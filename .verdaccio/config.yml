@@ -8,11 +8,11 @@ uplinks:
     maxage: 60m
 
 packages:
-  '@onecx/*':
-    access: $all
-    publish: $all
-    #unpublish: $all
-    proxy: []
+  #'@onecx/*':
+  #  access: $all
+  #  publish: $all
+  #  #unpublish: $all
+  #  proxy: []
   '**':
     # give all users (including non-authenticated users) full access
     # because it is a local registry
@@ -27,7 +27,7 @@ packages:
 log:
   type: stdout
   format: pretty
-  level: debug
+  level: warn
 
 publish:
   allow_offline: true # set offline to true to allow publish offline

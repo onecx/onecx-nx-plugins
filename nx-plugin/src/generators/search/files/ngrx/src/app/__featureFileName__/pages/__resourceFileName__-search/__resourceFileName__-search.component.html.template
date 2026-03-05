@@ -50,7 +50,7 @@
         [columns]="vm.columns"
         [emptyResultsMessage]="'<%= resourceConstantName %>_SEARCH.EMPTY_RESULTS' | translate"
         (componentStateChanged)="resultComponentStateChanged($event)"
-        [layout]="vm.resultComponentState?.layout ?? 'table'"
+        [layout]="vm.resultComponentState?.layout ?? 'list'"
         [displayedColumns]="vm.resultComponentState?.displayedColumns ?? []"
         [supportedViewLayouts]="['list', 'table']"
         [page]="vm.resultComponentState?.activePage ?? 0"

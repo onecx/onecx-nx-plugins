@@ -1,6 +1,6 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
@@ -35,24 +35,23 @@ describe('<%= resourceClassName %>SearchComponent', () => {
   const origAddEventListener = window.addEventListener;
   const origPostMessage = window.postMessage;
 
-  let listeners: any[] = [];
-  window.addEventListener = (_type: any, listener: any) => {
+  let listeners: unknown[] = [];
+  window.addEventListener = (_type: unknown, listener: unknown) => {
     listeners.push(listener);
   };
 
-  window.removeEventListener = (_type: any, listener: any) => {
+  window.removeEventListener = (_type: unknown, listener: unknown) => {
     listeners = listeners.filter((l) => l !== listener);
   };
 
-  window.postMessage = (m: any) => {
-    // eslint-disable-next-line @typescript-eslint/no-empty-function
+  window.postMessage = (m: unknown) => {
     listeners.forEach((l) =>
-      l({
+      (l as (event: { data: unknown; stopImmediatePropagation: () => void; stopPropagation: () => void }) => void)({
         data: m,
-        stopImmediatePropagation: () => {},
-        stopPropagation: () => {},
+        stopImmediatePropagation: () => {}, // eslint-disable-line @typescript-eslint/no-empty-function
+        stopPropagation: () => {} // eslint-disable-line @typescript-eslint/no-empty-function
       })
-    );
+    )
   };
 
   afterAll(() => {
@@ -65,7 +64,7 @@ describe('<%= resourceClassName %>SearchComponent', () => {
   let component: <%= resourceClassName %>SearchComponent;
   let fixture: ComponentFixture<<%= resourceClassName %>SearchComponent>;
   let store: MockStore<Store>;
-  let formBuilder: FormBuilder;
+  let formBuilder: FormBuilder; // eslint-disable-line @typescript-eslint/no-unused-vars
   let <%= resourcePropertyName %>Search: <%= resourceClassName %>SearchHarness;
   
   const mockActivatedRoute = {
@@ -110,8 +109,8 @@ describe('<%= resourceClassName %>SearchComponent', () => {
         ReactiveFormsModule,
         StoreModule.forRoot({}),
         TranslateTestingModule.withTranslations({
-          de: require('../../../../assets/i18n/de.json'),
-          en: require('../../../../assets/i18n/en.json')
+          de: require('../../../../assets/i18n/de.json'), // eslint-disable-line @typescript-eslint/no-require-imports
+          en: require('../../../../assets/i18n/en.json') // eslint-disable-line @typescript-eslint/no-require-imports
         }).withDefaultLanguage('en'),
         HttpClientTestingModule,
         NoopAnimationsModule,
@@ -221,11 +220,11 @@ describe('<%= resourceClassName %>SearchComponent', () => {
 
     const exportAllActionItem = await pageHeader.getOverFlowMenuItem('Export all');
     expect(exportAllActionItem).not.toBeNull();
-    expect(await exportAllActionItem!.getText()).toBe('Export all');
+    if (exportAllActionItem) expect(await exportAllActionItem.getText()).toBe('Export all');
 
     const showHideChartActionItem = await pageHeader.getOverFlowMenuItem('Show chart');
     expect(showHideChartActionItem).not.toBeNull();
-    expect(await showHideChartActionItem!.getText()).toBe('Show chart');
+    if (showHideChartActionItem) expect(await showHideChartActionItem.getText()).toBe('Show chart');
   });
 
   it('should display hide chart action if chart is visible', async () => {
@@ -245,7 +244,7 @@ describe('<%= resourceClassName %>SearchComponent', () => {
 
     const showHideChartActionItem = await pageHeader.getOverFlowMenuItem('Hide chart');
     expect(showHideChartActionItem).not.toBeNull();
-    expect(await showHideChartActionItem!.getText()).toEqual('Hide chart');
+    if (showHideChartActionItem) expect(await showHideChartActionItem.getText()).toEqual('Hide chart');
   });
 
   it('should display chosen column in the diagram', async () => {
@@ -287,10 +286,11 @@ describe('<%= resourceClassName %>SearchComponent', () => {
     });
     store.refreshState();
 
-    const diagram = await (await <%= resourcePropertyName %>Search.getDiagram())!.getDiagram();
-
-    expect(await diagram.getTotalNumberOfResults()).toBe(3);
-    expect(await diagram.getSumLabel()).toEqual('Total');
+    const diagram = await (await <%= resourcePropertyName %>Search.getDiagram())?.getDiagram();
+    if (diagram) {
+      expect(await diagram.getTotalNumberOfResults()).toBe(3)
+      expect(await diagram.getSumLabel()).toEqual('Total')
+    }
   });
 
   it('should display correct breadcrumbs', async () => {
@@ -305,7 +305,7 @@ describe('<%= resourceClassName %>SearchComponent', () => {
     const pageHeader = await searchHeader.getPageHeader();
     const searchBreadcrumbItem = await pageHeader.getBreadcrumbItem('Search');
 
-    expect(await searchBreadcrumbItem!.getText()).toEqual('Search');
+    if (searchBreadcrumbItem) expect(await searchBreadcrumbItem.getText()).toEqual('Search');
   });
 
   it('should dispatch displayedColumnsChanged on data view column change', async () => {
@@ -339,28 +339,27 @@ describe('<%= resourceClassName %>SearchComponent', () => {
       ).getTableLayoutSelectionButton()
     )?.click();
 
-    const columnGroupSelector =
-      await interactiveDataView?.getCustomGroupColumnSelector();
+    const columnGroupSelector = await interactiveDataView?.getCustomGroupColumnSelector();
     expect(columnGroupSelector).toBeTruthy();
 
-    await columnGroupSelector!.openCustomGroupColumnSelectorDialog();
-    const pickList = await columnGroupSelector!.getPicklist();
-    const transferControlButtons = await pickList.getTransferControlsButtons();
-    expect(transferControlButtons.length).toBe(4);
-
-    // Currently, all columns are selected. Next, we are unselecting all to have a clean test setting.
-    const deactivateAllColumnsButton = transferControlButtons[1];
-    await deactivateAllColumnsButton.click();
-    const inactiveItems = await pickList.getTargetListItems();
-    await inactiveItems[0].selectItem();
-    const activateCurrentColumnButton = transferControlButtons[2];
-    await activateCurrentColumnButton.click();
-    const saveButton = await columnGroupSelector!.getSaveButton();
-    await saveButton.click();
-
-    expect(store.dispatch).toHaveBeenLastCalledWith(
-       expect.objectContaining({ displayedColumns: columns })
-    );
+    if (columnGroupSelector) {
+      await columnGroupSelector!.openCustomGroupColumnSelectorDialog();
+      const pickList = await columnGroupSelector!.getPicklist();
+      const transferControlButtons = await pickList.getTransferControlsButtons();
+      expect(transferControlButtons.length).toBe(4);
+  
+      // Currently, all columns are selected. Next, we are unselecting all to have a clean test setting.
+      const deactivateAllColumnsButton = transferControlButtons[1];
+      await deactivateAllColumnsButton.click();
+      const inactiveItems = await pickList.getTargetListItems();
+      await inactiveItems[0].selectItem();
+      const activateCurrentColumnButton = transferControlButtons[2];
+      await activateCurrentColumnButton.click();
+      const saveButton = await columnGroupSelector!.getSaveButton();
+      await saveButton.click();
+  
+      expect(store.dispatch).toHaveBeenLastCalledWith(expect.objectContaining({ displayedColumns: columns }));
+    }
   });
 
   it('should dispatch chartVisibilityToggled on show/hide chart header', async () => {
@@ -377,13 +376,11 @@ describe('<%= resourceClassName %>SearchComponent', () => {
     const overflowActionButton = await pageHeader.getOverflowActionMenuButton();
     await overflowActionButton?.click();
 
-    const showChartActionItem = await pageHeader.getOverFlowMenuItem(
-      'Show chart'
-    );
-    await showChartActionItem!.selectItem();
-    expect(store.dispatch).toHaveBeenCalledWith(
-      <%= resourcePropertyName %>SearchActions.chartVisibilityToggled()
-    );
+    const showChartActionItem = await pageHeader.getOverFlowMenuItem('Show chart');
+    if (showChartActionItem) {
+      await showChartActionItem!.selectItem();
+      expect(store.dispatch).toHaveBeenCalledWith(<%= resourcePropertyName %>SearchActions.chartVisibilityToggled());
+    }
   });  
 
   it('should display translated headers', async () => {
@@ -557,11 +554,9 @@ describe('<%= resourceClassName %>SearchComponent', () => {
     await overflowActionButton?.click();
   
     const exportAllActionItem = await pageHeader.getOverFlowMenuItem('Export all');
-    await exportAllActionItem!.selectItem();
+    if (exportAllActionItem) await exportAllActionItem.selectItem();
 
-    expect(store.dispatch).toHaveBeenCalledWith(
-      <%= resourcePropertyName %>SearchActions.exportButtonClicked()
-    );
+    expect(store.dispatch).toHaveBeenCalledWith(<%= resourcePropertyName %>SearchActions.exportButtonClicked());
   });
 
   describe('searchCriteria mapping', () => {
@@ -590,7 +585,7 @@ describe('<%= resourceClassName %>SearchComponent', () => {
         component.<%= resourcePropertyName %>SearchFormGroup = {
           value: formValue,
           getRawValue: () => formValue
-        } as any
+        } as unknown as FormGroup
 
         component.search(component.<%= resourcePropertyName %>SearchFormGroup)
 

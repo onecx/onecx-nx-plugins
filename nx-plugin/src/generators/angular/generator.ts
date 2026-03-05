@@ -144,7 +144,6 @@ export async function angularGenerator(
       '@nx/eslint-plugin': '19.8.14',
       eslint: '^8.57.1',
       'eslint-config-prettier': '^9.1.0',
-      'eslint-plugin-deprecation': '^3.0.0',
       'eslint-plugin-import': '2.31.0',
       'eslint-plugin-prettier': '^5.2.1',
       husky: '^9.1.7',
@@ -259,7 +258,7 @@ function addScriptsToPackageJson(tree: Tree, options: AngularGeneratorSchema) {
     pkgJson.scripts['clean'] =
       'npm cache clean --force && npx clear-npx-cache && rm -rf *.log dist reports .nx .angular .eslintcache ./node_modules/.cache/prettier/.prettier-cache';
     pkgJson.scripts['format'] = 'nx format:write --uncommitted';
-    pkgJson.scripts['prepare'] = 'husky install || true';
+    pkgJson.scripts['prepare'] = 'husky init || true';
     pkgJson.scripts['lint'] = 'nx lint';
     pkgJson.scripts['lint:fix'] = 'nx lint --fix';
     pkgJson.scripts['sonar'] = 'npx sonar-scanner';
