@@ -41,6 +41,6 @@ export class FeatureModuleStep
     );
   }
   getTitle(): string {
-    return 'Adapting Feature Module';
+    return 'Adapting Feature Module (create/update)';
   }
 }

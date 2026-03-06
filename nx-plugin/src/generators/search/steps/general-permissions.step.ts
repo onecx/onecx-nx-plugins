@@ -1,7 +1,8 @@
 import { Tree, names } from '@nx/devkit';
+
+import { updateYaml } from '../../shared/yaml';
 import { GeneratorStep } from '../../shared/generator.utils';
 import { SearchGeneratorSchema } from '../schema';
-import { updateYaml } from '../../shared/yaml';
 
 export class GeneralPermissionsStep implements GeneratorStep<SearchGeneratorSchema> {
   process(tree: Tree, options: SearchGeneratorSchema): void {

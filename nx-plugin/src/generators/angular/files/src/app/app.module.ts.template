@@ -3,13 +3,11 @@ import { CommonModule } from '@angular/common';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { Observable } from 'rxjs';
 import {
   TranslateLoader,
   TranslateModule,
   TranslateService,
 } from '@ngx-translate/core';
-import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
 import {
   AppStateService,
@@ -22,11 +20,12 @@ import {
 } from '@onecx/portal-integration-angular';
 import { KeycloakAuthModule } from '@onecx/keycloak-auth';
 
-import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
-import { BASE_PATH } from './shared/generated';
-import { apiConfigProvider } from './shared/utils/apiConfigProvider.utils';
-import { Configuration } from './shared/generated';
+import { Configuration } from './shared/generated'
+import { apiConfigProvider } from './shared/utils/apiConfigProvider.utils'
+
+import { environment } from 'src/environments/environment'
+import { AppComponent } from './app.component'
+import { AppRoutingModule } from './app-routing.module'
 
 <%_ if(standalone){ _%>
 import { firstValueFrom } from 'rxjs';

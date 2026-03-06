@@ -50,15 +50,7 @@ export class <%= resourceClassName %>SearchComponent implements OnInit {
   diagramColumnId = 'id';
   diagramColumn$: Observable<DataTableColumn>;
 
-  public <%= resourcePropertyName %>SearchFormGroup: FormGroup = this.formBuilder.group(
-    {
-      ...Object.fromEntries(
-        <%= resourcePropertyName %>SearchCriteriasSchema
-          .keyof()
-          .options.map((k) => [k, null])
-      ) as Record<keyof <%= resourceClassName %>SearchCriteria, unknown>,
-    } satisfies Record<keyof <%= resourceClassName %>SearchCriteria, unknown>,
-  );
+  public <%= resourcePropertyName %>SearchFormGroup: FormGroup;
 
   constructor(
     private readonly breadcrumbService: BreadcrumbService,
@@ -96,6 +88,16 @@ export class <%= resourceClassName %>SearchComponent implements OnInit {
         ]      
         return actions
       })
+    );
+
+    this.<%= resourcePropertyName %>SearchFormGroup = this.formBuilder.group(
+      {
+        ...Object.fromEntries(
+          <%= resourcePropertyName %>SearchCriteriasSchema
+            .keyof()
+            .options.map((k) => [k, null])
+        ) as Record<keyof <%= resourceClassName %>SearchCriteria, unknown>,
+      } satisfies Record<keyof <%= resourceClassName %>SearchCriteria, unknown>,
     );
   }
 

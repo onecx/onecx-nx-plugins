@@ -4,13 +4,12 @@ import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testin
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { LetDirective } from '@ngrx/component';
-import {
-  BreadcrumbService,
-  PortalCoreModule,
-} from '@onecx/portal-integration-angular';
 import { TranslateTestingModule } from 'ngx-translate-testing';
-import { <%= resourceClassName%>CreateUpdateComponent } from './<%= resourceFileName%>-create-update.component';
 import { distinctUntilChanged, filter, skip, take, toArray } from 'rxjs'
+
+import { BreadcrumbService, PortalCoreModule } from '@onecx/portal-integration-angular';
+
+import { <%= resourceClassName%>CreateUpdateComponent } from './<%= resourceFileName%>-create-update.component';
 
 Object.defineProperty(window, 'matchMedia', {
   writable: true,
@@ -42,8 +41,8 @@ describe('<%= resourceClassName%>CreateUpdateComponent', () => {
         PortalCoreModule,
         ReactiveFormsModule,
         TranslateTestingModule.withTranslations({
-          de: require('../../../../assets/i18n/de.json'),
-          en: require('../../../../assets/i18n/en.json')
+          de: require('../../../../assets/i18n/de.json'), // eslint-disable-line @typescript-eslint/no-require-imports
+          en: require('../../../../assets/i18n/en.json') // eslint-disable-line @typescript-eslint/no-require-imports
         }).withDefaultLanguage('en'),
       ],
       providers: [

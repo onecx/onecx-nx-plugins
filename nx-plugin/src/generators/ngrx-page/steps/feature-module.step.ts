@@ -26,7 +26,7 @@ export class FeatureModuleStep implements GeneratorStep<PageGeneratorSchema> {
 
     const replaceWith = [
       `declarations: [${pageClassName}Component,`,
-      `InitializeModuleGuard, } from '@onecx/portal-integration-angular'`,
+      `,InitializeModuleGuard } from '@onecx/portal-integration-angular'`,
       `EffectsModule.forFeature([])`,
       `EffectsModule.forFeature([${pageClassName}Effects,`,
       `from '@ngrx/effects';

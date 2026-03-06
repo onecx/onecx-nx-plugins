@@ -10,23 +10,23 @@ export class SearchComponentStep
   process(tree: Tree, options: SearchGeneratorSchema): void {
     const featureFileName = names(options.featureName).fileName;
     const resourceFileName = names(options.resource).fileName;
-    const className = names(options.resource).className;
-    const propertyName = names(options.resource).propertyName;
+    const resourceClassName = names(options.resource).className;
+    const resourcePropertyName = names(options.resource).propertyName;
     const filePath = `src/app/${featureFileName}/pages/${resourceFileName}-search/${resourceFileName}-search.component.ts`;
 
     const find = [/^/, 'resetSearch'];
     const replaceWith = [
-      `import {RowListGridData} from '@onecx/portal-integration-angular';\n`,
+      `import { RowListGridData } from '@onecx/portal-integration-angular';`,
       `
-    details({id}:RowListGridData) {
-      this.store.dispatch(${propertyName}SearchActions.detailsButtonClicked({id}));
+    details({id}: RowListGridData) {
+      this.store.dispatch(${resourcePropertyName}SearchActions.detailsButtonClicked({id}));
     }
 
     resetSearch`,
     ];
 
     safeReplace(
-      `Add details method to ${className}SearchComponent`,
+      `Add details method to ${resourceClassName}SearchComponent`,
       filePath,
       find,
       replaceWith,

@@ -25,7 +25,7 @@ export async function ngrxGenerator(
     angularGeneratorCallback = await angularGenerator(tree, options);
   }
 
-  const spinner = ora('Adding NgRx\n').start();
+  const spinner = ora('Adding NgRx').start();
   generateFiles(
     tree,
     joinPathFragments(__dirname, './files'),
@@ -109,7 +109,7 @@ function addModulesToAppModule(tree: Tree) {
 }
 
 function addImportsToAppModule(tree: Tree) {
-  const find = [`from '@angular/common';`, `NgModule`];
+  const find = [`from '@angular/common'`, `NgModule`];
   const replaceWith = [
     `from '@angular/common';
     import { StoreModule } from '@ngrx/store';
@@ -118,7 +118,6 @@ function addImportsToAppModule(tree: Tree) {
     import { LetDirective } from '@ngrx/component';
     import { EffectsModule } from '@ngrx/effects';
     import { StoreRouterConnectingModule } from '@ngrx/router-store';
-    import { environment } from 'src/environments/environment';
     `,
     `NgModule, isDevMode`,
   ];

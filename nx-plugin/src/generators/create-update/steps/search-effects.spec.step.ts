@@ -1,17 +1,18 @@
 import { Tree, names } from '@nx/devkit';
+
+import { toPascalCase, pluralize } from '../../shared/naming.utils';
 import { GeneratorStep } from '../../shared/generator.utils';
 import { safeReplace } from '../../shared/safeReplace';
 import { CreateUpdateGeneratorSchema } from '../schema';
-import { toPascalCase, pluralize } from '../../shared/naming.utils';
 
 export class SearchEffectsSpecStep implements GeneratorStep<CreateUpdateGeneratorSchema> {
   process(tree: Tree, options: CreateUpdateGeneratorSchema): void {
     const featureFileName = names(options.featureName).fileName;
     const resourceFileName = names(options.resource).fileName;
-    const className = names(options.resource).className;
-    const propertyName = names(options.resource).propertyName;
+    const resourceClassName = names(options.resource).className;
+    const resourcePropertyName = names(options.resource).propertyName;
 
-    const dataObjectPascal = toPascalCase(options.resource || className);
+    const dataObjectPascal = toPascalCase(options.resource || resourceClassName);
     const dataObjectPlural = pluralize(dataObjectPascal);
 
     const filePath = `src/app/${featureFileName}/pages/${resourceFileName}-search/${resourceFileName}-search.effects.spec.ts`;
@@ -46,22 +47,22 @@ export class SearchEffectsSpecStep implements GeneratorStep<CreateUpdateGenerato
         it('should dispatch ResultsLoadingFailed when search after create/update fails', (done) => {
           const mockError = 'Refresh search failed';
         
-          store.overrideSelector(${propertyName}SearchSelectors.selectCriteria, {} as any);
+          store.overrideSelector(${resourcePropertyName}SearchSelectors.selectCriteria, {} as any);
           service.search${dataObjectPlural}.mockReturnValueOnce(throwError(() => mockError) as any);
           
           effects.refreshSearchAfterCreateUpdate$.pipe(take(1)).subscribe((action: any) => {
-            expect(action).toEqual(${propertyName}SearchActions.${propertyName}SearchResultsLoadingFailed({ error: mockError }));
+            expect(action).toEqual(${resourcePropertyName}SearchActions.${resourcePropertyName}SearchResultsLoadingFailed({ error: mockError }));
             done();
           });
           
-          actions$.next(${propertyName}SearchActions.create${className}Succeeded());
+          actions$.next(${resourcePropertyName}SearchActions.create${resourceClassName}Succeeded());
         });
       });
 
       describe('editButtonClicked$', () => {
         const item = { id: 'test-123', name: 'Item' } as any;
         beforeEach(() => {
-          store.overrideSelector(${propertyName}SearchSelectors.selectResults, [item]);
+          store.overrideSelector(${resourcePropertyName}SearchSelectors.selectResults, [item]);
           store.refreshState();
         });
 
@@ -72,13 +73,13 @@ export class SearchEffectsSpecStep implements GeneratorStep<CreateUpdateGenerato
           service.update${dataObjectPascal}.mockReturnValue(of({}) as any);
 
           effects.editButtonClicked$.pipe(take(1)).subscribe((action: any) => {
-            expect(action.type).toBe(${propertyName}SearchActions.update${className}Succeeded.type);
+            expect(action.type).toBe(${resourcePropertyName}SearchActions.update${resourceClassName}Succeeded.type);
             
             expect(messageService.success).toHaveBeenCalled();
             done();
           });
 
-          actions$.next(${propertyName}SearchActions.edit${className}ButtonClicked({ id: 'test-123' }));
+          actions$.next(${resourcePropertyName}SearchActions.edit${resourceClassName}ButtonClicked({ id: 'test-123' }));
         });
 
         it('should dispatch updateCancelled and not call the service when dialog is cancelled', (done) => {
@@ -86,13 +87,13 @@ export class SearchEffectsSpecStep implements GeneratorStep<CreateUpdateGenerato
           portalDialogService.openDialog.mockReturnValue(of({ button: 'secondary', result: null }) as never);
 
           effects.editButtonClicked$.pipe(take(1)).subscribe((action: any) => {
-            expect(action.type).toBe(${propertyName}SearchActions.update${className}Cancelled.type);
+            expect(action.type).toBe(${resourcePropertyName}SearchActions.update${resourceClassName}Cancelled.type);
             
             expect(service.update${dataObjectPascal}).not.toHaveBeenCalled();
             done();
           });
 
-          actions$.next(${propertyName}SearchActions.edit${className}ButtonClicked({ id: 'test-123' }));
+          actions$.next(${resourcePropertyName}SearchActions.edit${resourceClassName}ButtonClicked({ id: 'test-123' }));
         });
 
         it('should dispatch updateFailed and show an error message when API update call fails', (done) => {
@@ -101,26 +102,26 @@ export class SearchEffectsSpecStep implements GeneratorStep<CreateUpdateGenerato
           service.update${dataObjectPascal}.mockReturnValue(throwError(() => 'Update failed') as any);
 
           effects.editButtonClicked$.pipe(take(1)).subscribe((action: any) => {
-            expect(action).toEqual(${propertyName}SearchActions.update${className}Failed({ error: 'Update failed' }));
+            expect(action).toEqual(${resourcePropertyName}SearchActions.update${resourceClassName}Failed({ error: 'Update failed' }));
             
             expect(messageService.error).toHaveBeenCalled();
             done();
           });
 
-          actions$.next(${propertyName}SearchActions.edit${className}ButtonClicked({ id: 'test-123' }));
+          actions$.next(${resourcePropertyName}SearchActions.edit${resourceClassName}ButtonClicked({ id: 'test-123' }));
         });
 
         it('should dispatch updateFailed when dialog confirms but returns no result', (done) => {  
           portalDialogService.openDialog.mockReturnValue(of({ button: 'primary', result: undefined }) as never);
           
           effects.editButtonClicked$.pipe(take(1)).subscribe((action: any) => {
-            expect(action.type).toBe(${propertyName}SearchActions.update${className}Failed.type);
+            expect(action.type).toBe(${resourcePropertyName}SearchActions.update${resourceClassName}Failed.type);
             
             expect(service.update${dataObjectPascal}).not.toHaveBeenCalled();
             done();
           });
 
-          actions$.next(${propertyName}SearchActions.edit${className}ButtonClicked({ id: 'test-123' }));
+          actions$.next(${resourcePropertyName}SearchActions.edit${resourceClassName}ButtonClicked({ id: 'test-123' }));
         });
       });
 
@@ -131,36 +132,36 @@ export class SearchEffectsSpecStep implements GeneratorStep<CreateUpdateGenerato
           service.create${dataObjectPascal}.mockReturnValue(of({}) as any);
 
           effects.createButtonClicked$.pipe(take(1)).subscribe((action: any) => {
-            expect(action.type).toBe(${propertyName}SearchActions.create${className}Succeeded.type);
+            expect(action.type).toBe(${resourcePropertyName}SearchActions.create${resourceClassName}Succeeded.type);
             expect(messageService.success).toHaveBeenCalled();
             done();
           });
 
-          actions$.next(${propertyName}SearchActions.create${className}ButtonClicked());
+          actions$.next(${resourcePropertyName}SearchActions.create${resourceClassName}ButtonClicked());
         });
 
         it('should dispatch createCancelled and not call the service when dialog is cancelled', (done) => {
           portalDialogService.openDialog.mockReturnValue(of({ button: 'secondary', result: { name: 'x' } }) as never);
 
           effects.createButtonClicked$.pipe(take(1)).subscribe((action: any) => {
-            expect(action.type).toBe(${propertyName}SearchActions.create${className}Cancelled.type);
+            expect(action.type).toBe(${resourcePropertyName}SearchActions.create${resourceClassName}Cancelled.type);
             expect(service.create${dataObjectPascal}).not.toHaveBeenCalled();
             done();
           });
 
-          actions$.next(${propertyName}SearchActions.create${className}ButtonClicked());
+          actions$.next(${resourcePropertyName}SearchActions.create${resourceClassName}ButtonClicked());
         });
 
         it('should dispatch createFailed when dialog confirms but returns no result', (done) => {
           portalDialogService.openDialog.mockReturnValue(of({ button: 'primary', result: undefined }) as never);
 
           effects.createButtonClicked$.pipe(take(1)).subscribe((action: any) => {
-            expect(action.type).toBe(${propertyName}SearchActions.create${className}Failed.type);
+            expect(action.type).toBe(${resourcePropertyName}SearchActions.create${resourceClassName}Failed.type);
             expect(service.create${dataObjectPascal}).not.toHaveBeenCalled();
             done();
           });
 
-          actions$.next(${propertyName}SearchActions.create${className}ButtonClicked());
+          actions$.next(${resourcePropertyName}SearchActions.create${resourceClassName}ButtonClicked());
         });
 
         it('should dispatch createFailed and show an error message when API create call fails', (done) => {
@@ -169,12 +170,12 @@ export class SearchEffectsSpecStep implements GeneratorStep<CreateUpdateGenerato
           service.create${dataObjectPascal}.mockReturnValue(throwError(() => 'API Error') as any);
 
           effects.createButtonClicked$.pipe(take(1)).subscribe((action: any) => {
-            expect(action).toEqual(${propertyName}SearchActions.create${className}Failed({ error: 'API Error' }));
+            expect(action).toEqual(${resourcePropertyName}SearchActions.create${resourceClassName}Failed({ error: 'API Error' }));
             expect(messageService.error).toHaveBeenCalled();
             done();
           });
 
-          actions$.next(${propertyName}SearchActions.create${className}ButtonClicked());
+          actions$.next(${resourcePropertyName}SearchActions.create${resourceClassName}ButtonClicked());
         });
       });
     `;

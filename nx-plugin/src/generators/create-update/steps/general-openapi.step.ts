@@ -1,7 +1,8 @@
 import { Tree, joinPathFragments, names } from '@nx/devkit';
+
+import { COMMENT_KEY, OpenAPIUtil } from '../../shared/openapi/openapi.utils';
 import { GeneratorStep } from '../../shared/generator.utils';
 import { CreateUpdateGeneratorSchema } from '../schema';
-import { COMMENT_KEY, OpenAPIUtil } from '../../shared/openapi/openapi.utils';
 import { createCreateEndpoint, createUpdateEndpoint } from '../endpoint.util';
 
 export class GeneralOpenAPIStep
@@ -92,7 +93,7 @@ export class GeneralOpenAPIStep
             $ref: `#/components/schemas/${resource}`,
           },
           [COMMENT_KEY]:
-            'ACTION C1: modify resource or use flat list here. https://onecx.github.io/docs/documentation/current/onecx-nx-plugins:generator/create-update/extend-form-fields.html#action-1',
+            'ACTION C1: modify resource or use flat list here',
         },
       })
       .set(`${options.updateResponseName}`, {
@@ -103,7 +104,7 @@ export class GeneralOpenAPIStep
             $ref: `#/components/schemas/${resource}`,
           },
           [COMMENT_KEY]:
-            'ACTION C1: modify resource or use flat list here. https://onecx.github.io/docs/documentation/current/onecx-nx-plugins:generator/create-update/extend-form-fields.html#action-1',
+            'ACTION C1: modify resource or use flat list here',
         },
       });
 
@@ -161,6 +162,6 @@ export class GeneralOpenAPIStep
     );
   }
   getTitle(): string {
-    return 'Adapting OpenAPI';
+    return 'Adapting OpenAPI (create/update)';
   }
 }

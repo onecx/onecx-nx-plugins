@@ -1,4 +1,5 @@
 import { Tree, names } from '@nx/devkit';
+
 import { GeneratorStep } from '../../shared/generator.utils';
 import { safeReplace } from '../../shared/safeReplace';
 import { CreateUpdateGeneratorSchema } from '../schema';
@@ -9,12 +10,13 @@ export class SearchComponentStep
   process(tree: Tree, options: CreateUpdateGeneratorSchema): void {
     const featureFileName = names(options.featureName).fileName;
     const resourceFileName = names(options.resource).fileName;
-    const className = names(options.resource).className;
-    const constantName = names(options.resource).constantName;
-    const propertyName = names(options.resource).propertyName;
+    const resourceClassName = names(options.resource).className;
+    const resourceConstantName = names(options.resource).constantName;
+    const resourcePropertyName = names(options.resource).propertyName;
     const filePath = `src/app/${featureFileName}/pages/${resourceFileName}-search/${resourceFileName}-search.component.ts`;
+
     const find = [
-      `} from '@onecx/portal-integration-angular';`,
+      `} from '@onecx/portal-integration-angular'`,
       'const actions: Action[] = [',
       'resetSearch',
     ];
@@ -23,24 +25,24 @@ export class SearchComponentStep
       } from '@onecx/portal-integration-angular';`,
       `const actions: Action[] = [
       {
-       labelKey: '${constantName}_CREATE_UPDATE.ACTION.CREATE',
+       labelKey: '${resourceConstantName}_CREATE_UPDATE.ACTION.CREATE',
        icon: PrimeIcons.PLUS,
        show: 'always',
        actionCallback: () => this.create(),
       },`,
       `
       create() {
-        this.store.dispatch(${propertyName}SearchActions.create${className}ButtonClicked());
+        this.store.dispatch(${resourcePropertyName}SearchActions.create${resourceClassName}ButtonClicked());
       }
 
       edit({ id }: RowListGridData) {
-        this.store.dispatch(${propertyName}SearchActions.edit${className}ButtonClicked({ id }));
+        this.store.dispatch(${resourcePropertyName}SearchActions.edit${resourceClassName}ButtonClicked({ id }));
       }
 
       resetSearch`,
     ];
     safeReplace(
-      `Modify ${className}SearchComponent to implement create and edit actions, extend the actions array with a new create button, and update import statements to include RowListGridData`,
+      `Modify ${resourceClassName}SearchComponent to implement create and edit actions, extend the actions array with a new create button, and update import statements to include RowListGridData`,
       filePath,
       find,
       replaceWith,
@@ -48,6 +50,6 @@ export class SearchComponentStep
     );
   }
   getTitle(): string {
-    return 'Adapting Search Component';
+    return 'Adapting Search Component (create/update)';
   }
 }

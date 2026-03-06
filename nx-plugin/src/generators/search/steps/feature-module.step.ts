@@ -8,7 +8,7 @@ export class FeatureModuleStep implements GeneratorStep<SearchGeneratorSchema> {
     const featureName = options.featureName;
     const featureFileName = names(options.featureName).fileName;
     const resourceFileName = names(options.resource).fileName;
-    const className = names(options.resource).className;
+    const resourceClassName = names(options.resource).className;
     
     const moduleFilePath = joinPathFragments(
       'src/app',
@@ -20,20 +20,20 @@ export class FeatureModuleStep implements GeneratorStep<SearchGeneratorSchema> {
       `} from '@onecx/portal-integration-angular'`,
       'EffectsModule.forFeature()',
       'EffectsModule.forFeature([',
-      `from '@ngrx/effects';`,
+      `from '@ngrx/effects'`,
     ];
     const replaceWith = [
-      `declarations: [${className}SearchComponent,`,
-      `,InitializeModuleGuard, } from '@onecx/portal-integration-angular'`,
+      `declarations: [${resourceClassName}SearchComponent,`,
+      ` ,InitializeModuleGuard } from '@onecx/portal-integration-angular'`,
       `EffectsModule.forFeature([])`,
-      `EffectsModule.forFeature([${className}SearchEffects,`,
+      `EffectsModule.forFeature([${resourceClassName}SearchEffects,`,
       `from '@ngrx/effects';
-    import { ${className}SearchEffects } from './pages/${resourceFileName}-search/${resourceFileName}-search.effects';
-    import { ${className}SearchComponent } from './pages/${resourceFileName}-search/${resourceFileName}-search.component';`,
+    import { ${resourceClassName}SearchEffects } from './pages/${resourceFileName}-search/${resourceFileName}-search.effects';
+    import { ${resourceClassName}SearchComponent } from './pages/${resourceFileName}-search/${resourceFileName}-search.component';`,
     ];
 
     safeReplace(
-      `Integrating ${className}SearchComponent into ${featureName} module"`,
+      `Integrating ${resourceClassName}SearchComponent into ${featureName} module"`,
       moduleFilePath,
       find,
       replaceWith,

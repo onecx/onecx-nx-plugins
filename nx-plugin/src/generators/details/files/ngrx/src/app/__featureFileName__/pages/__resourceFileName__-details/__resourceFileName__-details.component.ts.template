@@ -22,106 +22,9 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
   styleUrls: ['./<%= resourceFileName %>-details.component.scss'],
 })
 export class <%= resourceClassName %>DetailsComponent implements OnInit {
-  viewModel$: Observable<<%= resourceClassName %>DetailsViewModel> = this.store.select(select<%= resourceClassName %>DetailsViewModel);
-  
-  headerLabels$: Observable<ObjectDetailItem[]> = this.viewModel$.pipe(
-    map((vm) => {
-      const labels: ObjectDetailItem[] = [
-        //ACTION D1: Add header values here
-        {
-          label: '<%= resourceConstantName %>_DETAILS.FORM.ID',
-          labelPipe: TranslatePipe,
-          value: vm.details?.id,
-        },
-      ];
-      return labels;
-    })
-  );
-
-  headerActions$: Observable<Action[]> = this.viewModel$.pipe(
-    map((vm) => {
-      const actions: Action[] = [
-        {
-          titleKey: '<%= resourceConstantName %>_DETAILS.GENERAL.BACK',
-          labelKey: '<%= resourceConstantName %>_DETAILS.GENERAL.BACK',
-          show: 'always',
-          disabled: !vm.backNavigationPossible,
-          permission: '<%= resourceConstantName %>#BACK',
-          <%_ if(editMode){ _%> 
-          showCondition: !vm.editMode,
-          <%_ } _%>
-          actionCallback: () => {
-            this.store.dispatch(
-              <%= resourcePropertyName %>DetailsActions.navigateBackButtonClicked(),
-            );
-          },
-        },
-        <%_ if(editMode){ _%> 
-        {
-          titleKey: '<%= resourceConstantName %>_DETAILS.GENERAL.EDIT',
-          labelKey: '<%= resourceConstantName %>_DETAILS.GENERAL.EDIT',
-          show: 'always',
-          icon: PrimeIcons.PENCIL,
-          conditional: true,
-          showCondition: !vm.editMode,
-          actionCallback: () => {
-            this.edit()
-          }
-        },
-        {
-          titleKey: '<%= resourceConstantName %>_DETAILS.GENERAL.CANCEL',
-          labelKey: '<%= resourceConstantName %>_DETAILS.GENERAL.CANCEL',
-          show: 'always',
-          icon: PrimeIcons.TIMES,
-          conditional: true,
-          showCondition: vm.editMode,
-          disabled: vm.isSubmitting,
-          actionCallback: () => {
-            this.cancel()
-          }
-        },
-        {
-          titleKey: '<%= resourceConstantName %>_DETAILS.GENERAL.SAVE',
-          labelKey: '<%= resourceConstantName %>_DETAILS.GENERAL.SAVE',
-          show: 'always',
-          icon: PrimeIcons.SAVE,
-          conditional: true,
-          disabled: vm.isSubmitting,
-          showCondition: vm.editMode,
-          actionCallback: () => {
-            this.save()
-          }
-        },        
-        <%_ } _%>
-        <%_ if(allowDelete){ _%> 
-        {
-            titleKey: '<%= resourceConstantName %>_DETAILS.GENERAL.DELETE',
-            labelKey: '<%= resourceConstantName %>_DETAILS.GENERAL.DELETE',
-            icon: PrimeIcons.TRASH,
-            show: 'asOverflow',
-            btnClass: '',
-            conditional: true,
-            <%_ if(editMode){ _%>
-            showCondition: !vm.editMode,
-            <%_ } _%> 
-            actionCallback: () => {
-              this.delete()
-            },
-          },
-        <%_ } _%>
-        {
-          titleKey: '<%= resourceConstantName %>_DETAILS.GENERAL.MORE',
-          icon: PrimeIcons.ELLIPSIS_V,
-          show: 'always',
-          btnClass: '',
-          actionCallback: () => {
-            // TODO: add callback
-          },
-        },
-      ];
-      return actions;
-    })
-  );
+  viewModel$: Observable<<%= resourceClassName %>DetailsViewModel>;
+  headerLabels$: Observable<ObjectDetailItem[]>;
+  headerActions$: Observable<Action[]>;
 
   <%_ if(editMode){ _%>
   public formGroup: FormGroup
@@ -131,6 +34,105 @@ export class <%= resourceClassName %>DetailsComponent implements OnInit {
     private store: Store,
     private breadcrumbService: BreadcrumbService
   ) {
+    viewModel$ = this.store.select(select<%= resourceClassName %>DetailsViewModel);
+    headerLabels$ = this.viewModel$.pipe(
+      map((vm) => {
+        const labels: ObjectDetailItem[] = [
+          //ACTION D1: Add header values here
+          {
+            label: '<%= resourceConstantName %>_DETAILS.FORM.ID',
+            labelPipe: TranslatePipe,
+            value: vm.details?.id,
+          },
+        ];
+        return labels;
+      })
+    );
+    this.headerActions$ = this.viewModel$.pipe(
+      map((vm) => {
+        const actions: Action[] = [
+          {
+            titleKey: '<%= resourceConstantName %>_DETAILS.GENERAL.BACK',
+            labelKey: '<%= resourceConstantName %>_DETAILS.GENERAL.BACK',
+            show: 'always',
+            disabled: !vm.backNavigationPossible,
+            permission: '<%= resourceConstantName %>#BACK',
+            <%_ if(editMode){ _%> 
+            showCondition: !vm.editMode,
+            <%_ } _%>
+            actionCallback: () => {
+              this.store.dispatch(
+                <%= resourcePropertyName %>DetailsActions.navigateBackButtonClicked(),
+              );
+            },
+          },
+          <%_ if(editMode){ _%> 
+          {
+            titleKey: '<%= resourceConstantName %>_DETAILS.GENERAL.EDIT',
+            labelKey: '<%= resourceConstantName %>_DETAILS.GENERAL.EDIT',
+            show: 'always',
+            icon: PrimeIcons.PENCIL,
+            conditional: true,
+            showCondition: !vm.editMode,
+            actionCallback: () => {
+              this.edit()
+            }
+          },
+          {
+            titleKey: '<%= resourceConstantName %>_DETAILS.GENERAL.CANCEL',
+            labelKey: '<%= resourceConstantName %>_DETAILS.GENERAL.CANCEL',
+            show: 'always',
+            icon: PrimeIcons.TIMES,
+            conditional: true,
+            showCondition: vm.editMode,
+            disabled: vm.isSubmitting,
+            actionCallback: () => {
+              this.cancel()
+            }
+          },
+          {
+            titleKey: '<%= resourceConstantName %>_DETAILS.GENERAL.SAVE',
+            labelKey: '<%= resourceConstantName %>_DETAILS.GENERAL.SAVE',
+            show: 'always',
+            icon: PrimeIcons.SAVE,
+            conditional: true,
+            disabled: vm.isSubmitting,
+            showCondition: vm.editMode,
+            actionCallback: () => {
+              this.save()
+            }
+          },        
+          <%_ } _%>
+          <%_ if(allowDelete){ _%> 
+          {
+              titleKey: '<%= resourceConstantName %>_DETAILS.GENERAL.DELETE',
+              labelKey: '<%= resourceConstantName %>_DETAILS.GENERAL.DELETE',
+              icon: PrimeIcons.TRASH,
+              show: 'asOverflow',
+              btnClass: '',
+              conditional: true,
+              <%_ if(editMode){ _%>
+              showCondition: !vm.editMode,
+              <%_ } _%> 
+              actionCallback: () => {
+                this.delete()
+              },
+            },
+          <%_ } _%>
+          {
+            titleKey: '<%= resourceConstantName %>_DETAILS.GENERAL.MORE',
+            icon: PrimeIcons.ELLIPSIS_V,
+            show: 'always',
+            btnClass: '',
+            actionCallback: () => {
+              // TODO: add callback
+            },
+          },
+        ];
+        return actions;
+      })
+    );
+
     <%_ if(editMode){ _%>
      this.formGroup = new FormGroup({
       id: new FormControl(null, [Validators.maxLength(255)]),

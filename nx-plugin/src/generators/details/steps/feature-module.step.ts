@@ -9,7 +9,7 @@ export class FeatureModuleStep
     const featureFileName = names(options.featureName).fileName;
     const resourceFileName = names(options.resource).fileName;
     const featureClassName = names(options.featureName).className;
-    const className = names(options.resource).className;
+    const resourceClassName = names(options.resource).className;
     const moduleFilePath = `src/app/${featureFileName}/${featureFileName}.module.ts`;
     const find = [
       'declarations: [',
@@ -19,13 +19,13 @@ export class FeatureModuleStep
       `from '@ngrx/effects'`,
     ];
     const replaceWith = [
-      `declarations: [${className}DetailsComponent,`,
-      `InitializeModuleGuard, } from '@onecx/portal-integration-angular'`,
+      `declarations: [${resourceClassName}DetailsComponent,`,
+      `,InitializeModuleGuard } from '@onecx/portal-integration-angular'`,
       `EffectsModule.forFeature([])`,
-      `EffectsModule.forFeature([${className}DetailsEffects,`,
+      `EffectsModule.forFeature([${resourceClassName}DetailsEffects,`,
       `from '@ngrx/effects'
-  import { ${className}DetailsEffects } from './pages/${resourceFileName}-details/${resourceFileName}-details.effects';
-  import { ${className}DetailsComponent } from './pages/${resourceFileName}-details/${resourceFileName}-details.component';
+  import { ${resourceClassName}DetailsEffects } from './pages/${resourceFileName}-details/${resourceFileName}-details.effects';
+  import { ${resourceClassName}DetailsComponent } from './pages/${resourceFileName}-details/${resourceFileName}-details.component';
   import { providePortalDialogService } from '@onecx/portal-integration-angular';
   `,
     ];

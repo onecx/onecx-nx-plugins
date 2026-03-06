@@ -47,7 +47,7 @@ export async function featureGenerator(
   );
   Object.assign(options, parameters);
 
-  const spinner = ora(`Adding feature ${options.name}\n`).start();
+  const spinner = ora(`Adding feature ${options.name}`).start();
   const directory = '.';
 
   const isNgRx = !!Object.keys(

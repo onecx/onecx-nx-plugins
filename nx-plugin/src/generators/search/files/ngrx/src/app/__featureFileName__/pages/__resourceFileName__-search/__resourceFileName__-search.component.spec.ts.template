@@ -344,8 +344,8 @@ describe('<%= resourceClassName %>SearchComponent', () => {
     expect(columnGroupSelector).toBeTruthy();
 
     if (columnGroupSelector) {
-      await columnGroupSelector!.openCustomGroupColumnSelectorDialog();
-      const pickList = await columnGroupSelector!.getPicklist();
+      await columnGroupSelector.openCustomGroupColumnSelectorDialog();
+      const pickList = await columnGroupSelector.getPicklist();
       const transferControlButtons = await pickList.getTransferControlsButtons();
       expect(transferControlButtons.length).toBe(4);
   
@@ -356,7 +356,7 @@ describe('<%= resourceClassName %>SearchComponent', () => {
       await inactiveItems[0].selectItem();
       const activateCurrentColumnButton = transferControlButtons[2];
       await activateCurrentColumnButton.click();
-      const saveButton = await columnGroupSelector!.getSaveButton();
+      const saveButton = await columnGroupSelector.getSaveButton();
       await saveButton.click();
   
       expect(store.dispatch).toHaveBeenLastCalledWith(expect.objectContaining({ displayedColumns: columns }));
@@ -379,7 +379,7 @@ describe('<%= resourceClassName %>SearchComponent', () => {
 
     const showChartActionItem = await pageHeader.getOverFlowMenuItem('Show chart');
     if (showChartActionItem) {
-      await showChartActionItem!.selectItem();
+      await showChartActionItem.selectItem();
       expect(store.dispatch).toHaveBeenCalledWith(<%= resourcePropertyName %>SearchActions.chartVisibilityToggled());
     }
   });  

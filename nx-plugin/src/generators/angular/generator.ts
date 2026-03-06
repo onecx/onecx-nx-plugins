@@ -40,7 +40,7 @@ export async function angularGenerator(
   );
   Object.assign(options, parameters);
 
-  const spinner = ora('Adding Angular\n').start();
+  const spinner = ora('Adding Angular').start();
   const directory = '.';
 
   const applicationGeneratorCallback = await applicationGenerator(tree, {
@@ -96,6 +96,7 @@ export async function angularGenerator(
       '@onecx/keycloak-auth': oneCXLibVersion,
       '@onecx/portal-integration-angular': oneCXLibVersion,
       '@onecx/portal-layout-styles': oneCXLibVersion,
+      '@onecx/angular-utils': oneCXLibVersion,
       '@ngx-translate/core': '^15.0.0',
       '@ngx-translate/http-loader': '^8.0.0',
       '@angular-architects/module-federation': '^18.0.4',

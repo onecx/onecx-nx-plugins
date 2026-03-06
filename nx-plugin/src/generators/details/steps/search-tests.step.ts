@@ -46,6 +46,6 @@ export class SearchTestsStep implements GeneratorStep<SearchGeneratorSchema> {
     );
   }
   getTitle(): string {
-    return 'Adapting Search Tests';
+    return 'Adapting Search Tests (details)';
   }
 }

@@ -1,17 +1,18 @@
 import { Tree, names } from '@nx/devkit'
+
+import { toPascalCase, pluralize } from '../../shared/naming.utils';
 import { GeneratorStep } from '../../shared/generator.utils'
 import { safeReplace } from '../../shared/safeReplace'
 import { DeleteGeneratorSchema } from '../schema'
-import { toPascalCase, pluralize } from '../../shared/naming.utils';
 
 export class SearchEffectsSpecStep implements GeneratorStep<DeleteGeneratorSchema> {
   process(tree: Tree, options: DeleteGeneratorSchema): void {
     const featureFileName = names(options.featureName).fileName;
     const resourceFileName = names(options.resource).fileName;
-    const className = names(options.resource).className;
-    const propertyName = names(options.resource).propertyName;
+    const resourceClassName = names(options.resource).className;
+    const resourcePropertyName = names(options.resource).propertyName;
 
-    const dataObjectPascal = toPascalCase(options.resource || className)
+    const dataObjectPascal = toPascalCase(options.resource || resourceClassName)
     const dataObjectPlural = pluralize(dataObjectPascal)
 
     const filePath = `src/app/${featureFileName}/pages/${resourceFileName}-search/${resourceFileName}-search.effects.spec.ts`
@@ -46,20 +47,20 @@ export class SearchEffectsSpecStep implements GeneratorStep<DeleteGeneratorSchem
       describe('refreshSearchAfterDelete$', () => {
         it('should dispatch ResultsLoadingFailed when refresh search after delete fails', (done) => {
           const mockError = 'Refresh search after delete failed'
-          store.overrideSelector(${propertyName}SearchSelectors.selectCriteria, { changeMe: 'x' } as any)
+          store.overrideSelector(${resourcePropertyName}SearchSelectors.selectCriteria, { changeMe: 'x' } as any)
           service.search${dataObjectPlural}.mockReturnValueOnce(throwError(() => mockError) as any)
           effects.refreshSearchAfterDelete$.pipe(take(1)).subscribe((action: any) => {
-            expect(action).toEqual(${propertyName}SearchActions.${propertyName}SearchResultsLoadingFailed({ error: mockError }))
+            expect(action).toEqual(${resourcePropertyName}SearchActions.${resourcePropertyName}SearchResultsLoadingFailed({ error: mockError }))
             done()
           })
-          actions$.next(${propertyName}SearchActions.delete${className}Succeeded())
+          actions$.next(${resourcePropertyName}SearchActions.delete${resourceClassName}Succeeded())
         })
       })
 
       describe('deleteButtonClicked$', () => {
         const item = { id: 'test-123', name: 'X' } as any
         beforeEach(() => {
-          store.overrideSelector(${propertyName}SearchSelectors.selectResults, [item])
+          store.overrideSelector(${resourcePropertyName}SearchSelectors.selectResults, [item])
           store.refreshState()
         })
 
@@ -67,37 +68,37 @@ export class SearchEffectsSpecStep implements GeneratorStep<DeleteGeneratorSchem
           portalDialogService.openDialog.mockReturnValue(of({ button: 'primary', result: null }) as never)
           service.delete${dataObjectPascal}.mockReturnValue(of({}) as any)
           effects.deleteButtonClicked$.pipe(take(1)).subscribe((action: any) => {
-            expect(action.type).toBe(${propertyName}SearchActions.delete${className}Succeeded.type)
+            expect(action.type).toBe(${resourcePropertyName}SearchActions.delete${resourceClassName}Succeeded.type)
             expect(messageService.success).toHaveBeenCalled()
             expect(service.delete${dataObjectPascal}).toHaveBeenCalled()
             done()
           })
-          actions$.next(${propertyName}SearchActions.delete${className}ButtonClicked({ id: 'test-123' }))
+          actions$.next(${resourcePropertyName}SearchActions.delete${resourceClassName}ButtonClicked({ id: 'test-123' }))
         })
 
         it('should dispatch deleteCancelled and not call the service when the user cancels the dialog', (done) => {
           portalDialogService.openDialog.mockReturnValue(of({ button: 'secondary', result: null }) as never)
           effects.deleteButtonClicked$.pipe(take(1)).subscribe((action: any) => {
-            expect(action.type).toBe(${propertyName}SearchActions.delete${className}Cancelled.type)
+            expect(action.type).toBe(${resourcePropertyName}SearchActions.delete${resourceClassName}Cancelled.type)
             expect(service.delete${dataObjectPascal}).not.toHaveBeenCalled()
             done()
           })
-          actions$.next(${propertyName}SearchActions.delete${className}ButtonClicked({ id: 'test-123' }))
+          actions$.next(${resourcePropertyName}SearchActions.delete${resourceClassName}ButtonClicked({ id: 'test-123' }))
         })
 
         it('should dispatch deleteFailed and show an error message when the API call fails', (done) => {
           portalDialogService.openDialog.mockReturnValue(of({ button: 'primary', result: null }) as never)
           service.delete${dataObjectPascal}.mockReturnValue(throwError(() => 'Delete failed') as any)
           effects.deleteButtonClicked$.pipe(take(1)).subscribe((action: any) => {
-            expect(action).toEqual(${propertyName}SearchActions.delete${className}Failed({ error: 'Delete failed' }))
+            expect(action).toEqual(${resourcePropertyName}SearchActions.delete${resourceClassName}Failed({ error: 'Delete failed' }))
             expect(messageService.error).toHaveBeenCalled()
             done()
           })
-          actions$.next(${propertyName}SearchActions.delete${className}ButtonClicked({ id: 'test-123' }))
+          actions$.next(${resourcePropertyName}SearchActions.delete${resourceClassName}ButtonClicked({ id: 'test-123' }))
         })
 
         it('should throw an error when attempting to delete a non‑existing item', (done) => {
-          store.overrideSelector(${propertyName}SearchSelectors.selectResults, [{ id: 'other' }])
+          store.overrideSelector(${resourcePropertyName}SearchSelectors.selectResults, [{ id: 'other' }])
           store.refreshState()
           portalDialogService.openDialog.mockReturnValue(of({ button: 'primary', result: null }) as never)
           effects.deleteButtonClicked$.pipe(take(1)).subscribe({
@@ -107,7 +108,7 @@ export class SearchEffectsSpecStep implements GeneratorStep<DeleteGeneratorSchem
               done()
             }
           })
-          actions$.next(${propertyName}SearchActions.delete${className}ButtonClicked({ id: 'missing' as any }))
+          actions$.next(${resourcePropertyName}SearchActions.delete${resourceClassName}ButtonClicked({ id: 'missing' as any }))
         })
       })
     `

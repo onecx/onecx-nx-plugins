@@ -14,10 +14,7 @@ export class SearchActionsStep implements GeneratorStep<SearchGeneratorSchema> {
     const find = 'events: {';
 
     const replaceWith = `events: {
-      'Details button clicked': props<{
-        id: number | string;
-      }>(),
-    `;
+      'Details button clicked': props<{ id: number | string; }>(),`;
 
     safeReplace(
       `Add details button event to ${propertyName}SearchActions`,

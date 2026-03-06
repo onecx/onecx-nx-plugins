@@ -10,12 +10,12 @@ export class AppModuleStep implements GeneratorStep<SearchGeneratorSchema> {
     const moduleFilePath = joinPathFragments('src/app/app.module.ts');
     const find = [`} from '@onecx/portal-integration-angular'`];
     const replaceWith = [
-      ` providePortalDialogService } from '@onecx/portal-integration-angular'`,
+      `, providePortalDialogService } from '@onecx/portal-integration-angular';`,
     ];
     const moduleContent = tree.read(moduleFilePath, 'utf8');
     if (!moduleContent.includes('providePortalDialogService()')) {
       find.push('providers: [');
-      replaceWith.push(`providers: [providePortalDialogService(),`);
+      replaceWith.push(`providers: [providePortalDialogService(), `);
     }
     safeReplace(
       `Update AppModule to include providePortalDialogService in the providers array and extend import statements to include the service`,

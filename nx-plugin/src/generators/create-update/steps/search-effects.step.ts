@@ -1,4 +1,5 @@
 import { Tree, names } from '@nx/devkit';
+
 import { GeneratorStep } from '../../shared/generator.utils';
 import { safeReplace } from '../../shared/safeReplace';
 import { CreateUpdateGeneratorSchema } from '../schema';
@@ -9,9 +10,9 @@ export class SearchEffectsStep
   process(tree: Tree, options: CreateUpdateGeneratorSchema): void {
     const featureFileName = names(options.featureName).fileName;
     const resourceFileName = names(options.resource).fileName;
-    const className = names(options.resource).className;
-    const constantName = names(options.resource).constantName;
-    const propertyName = names(options.resource).propertyName;
+    const resourceClassName = names(options.resource).className;
+    const resourceConstantName = names(options.resource).constantName;
+    const resourcePropertyName = names(options.resource).propertyName;
     const filePath = `src/app/${featureFileName}/pages/${resourceFileName}-search/${resourceFileName}-search.effects.ts`;
 
     const find = [/^/, 'searchByUrl$'];
@@ -23,48 +24,48 @@ export class SearchEffectsStep
         ${options.createRequestName},
         ${options.updateRequestName},
       } from 'src/app/shared/generated';` +
-        `import { ${className}CreateUpdateComponent } from './dialogs/${resourceFileName}-create-update/${resourceFileName}-create-update.component';`,
+        `import { ${resourceClassName}CreateUpdateComponent } from './dialogs/${resourceFileName}-create-update/${resourceFileName}-create-update.component';`,
       `
       refreshSearchAfterCreateUpdate$ = createEffect(() => {
         return this.actions$.pipe(
           ofType(
-            ${propertyName}SearchActions.create${className}Succeeded,
-            ${propertyName}SearchActions.update${className}Succeeded
+            ${resourcePropertyName}SearchActions.create${resourceClassName}Succeeded,
+            ${resourcePropertyName}SearchActions.update${resourceClassName}Succeeded
           ),
-          concatLatestFrom(() => this.store.select(${propertyName}SearchSelectors.selectCriteria)),
+          concatLatestFrom(() => this.store.select(${resourcePropertyName}SearchSelectors.selectCriteria)),
           switchMap(([, searchCriteria]) => this.performSearch(searchCriteria))
         );
       });
 
       editButtonClicked$ = createEffect(() => {
       return this.actions$.pipe(
-        ofType(${propertyName}SearchActions.edit${className}ButtonClicked),
+        ofType(${resourcePropertyName}SearchActions.edit${resourceClassName}ButtonClicked),
         concatLatestFrom(() =>
-          this.store.select(${propertyName}SearchSelectors.selectResults)
+          this.store.select(${resourcePropertyName}SearchSelectors.selectResults)
         ),
         map(([action, results]) => {
           return results.find((item) => item.id == action.id);
         }),
         mergeMap((itemToEdit) => {
           return this.portalDialogService.openDialog< ${options.resource} | undefined>(
-            '${constantName}_CREATE_UPDATE.UPDATE.HEADER',
+            '${resourceConstantName}_CREATE_UPDATE.UPDATE.HEADER',
             {
-              type: ${className}CreateUpdateComponent,
+              type: ${resourceClassName}CreateUpdateComponent,
               inputs: {
                 vm: {
                   itemToEdit,
                 }
               },
             },
-            '${constantName}_CREATE_UPDATE.UPDATE.FORM.SAVE',
-            '${constantName}_CREATE_UPDATE.UPDATE.FORM.CANCEL', {
+            '${resourceConstantName}_CREATE_UPDATE.UPDATE.FORM.SAVE',
+            '${resourceConstantName}_CREATE_UPDATE.UPDATE.FORM.CANCEL', {
               baseZIndex: 100
             }
           );
         }),
         switchMap((dialogResult) => {
           if (!dialogResult || dialogResult.button == 'secondary') {
-            return of(${propertyName}SearchActions.update${className}Cancelled());
+            return of(${resourcePropertyName}SearchActions.update${resourceClassName}Cancelled());
           }
           if (!dialogResult?.result) {
             throw new Error('DialogResult was not set as expected!');
@@ -73,23 +74,23 @@ export class SearchEffectsStep
           const itemToEdit = {
               dataObject: dialogResult.result
           } as ${options.updateRequestName};
-          return this.${propertyName}Service
+          return this.${resourcePropertyName}Service
             .update${options.resource}(itemToEditId, itemToEdit)
             .pipe(
               map(() => {
                 this.messageService.success({
-                  summaryKey: '${constantName}_CREATE_UPDATE.UPDATE.SUCCESS',
+                  summaryKey: '${resourceConstantName}_CREATE_UPDATE.UPDATE.SUCCESS',
                 });
-                return ${propertyName}SearchActions.update${className}Succeeded();
+                return ${resourcePropertyName}SearchActions.update${resourceClassName}Succeeded();
               })
             );
         }),
         catchError((error) => {
           this.messageService.error({
-            summaryKey: '${constantName}_CREATE_UPDATE.UPDATE.ERROR',
+            summaryKey: '${resourceConstantName}_CREATE_UPDATE.UPDATE.ERROR',
           });
           return of(
-            ${propertyName}SearchActions.update${className}Failed({
+            ${resourcePropertyName}SearchActions.update${resourceClassName}Failed({
               error,
             })
           );
@@ -100,27 +101,27 @@ export class SearchEffectsStep
     createButtonClicked$ = createEffect(
       () => {
         return this.actions$.pipe(
-          ofType(${propertyName}SearchActions.create${className}ButtonClicked),
+          ofType(${resourcePropertyName}SearchActions.create${resourceClassName}ButtonClicked),
           switchMap(() => {
             return this.portalDialogService.openDialog< ${options.resource} | undefined>(
-              '${constantName}_CREATE_UPDATE.CREATE.HEADER',
+              '${resourceConstantName}_CREATE_UPDATE.CREATE.HEADER',
               {
-                type: ${className}CreateUpdateComponent,
+                type: ${resourceClassName}CreateUpdateComponent,
                 inputs: {
                   vm: {
                     itemToEdit: {},
                   }
                 },
               },
-              '${constantName}_CREATE_UPDATE.CREATE.FORM.SAVE',
-              '${constantName}_CREATE_UPDATE.CREATE.FORM.CANCEL', {
+              '${resourceConstantName}_CREATE_UPDATE.CREATE.FORM.SAVE',
+              '${resourceConstantName}_CREATE_UPDATE.CREATE.FORM.CANCEL', {
                 baseZIndex: 100
               }
             );
           }),
           switchMap((dialogResult) => {
             if (!dialogResult || dialogResult.button == 'secondary') {
-              return of(${propertyName}SearchActions.create${className}Cancelled());
+              return of(${resourcePropertyName}SearchActions.create${resourceClassName}Cancelled());
             }
             if (!dialogResult?.result) {
               throw new Error('DialogResult was not set as expected!');
@@ -128,23 +129,23 @@ export class SearchEffectsStep
             const toCreateItem = {
               dataObject: dialogResult.result
             } as ${options.createRequestName};
-            return this.${propertyName}Service
+            return this.${resourcePropertyName}Service
               .create${options.resource}(toCreateItem)
               .pipe(
                 map(() => {
                   this.messageService.success({
-                    summaryKey: '${constantName}_CREATE_UPDATE.CREATE.SUCCESS',
+                    summaryKey: '${resourceConstantName}_CREATE_UPDATE.CREATE.SUCCESS',
                   });
-                  return ${propertyName}SearchActions.create${className}Succeeded();
+                  return ${resourcePropertyName}SearchActions.create${resourceClassName}Succeeded();
                 })
               );
           }),
           catchError((error) => {
             this.messageService.error({
-              summaryKey: '${constantName}_CREATE_UPDATE.CREATE.ERROR',
+              summaryKey: '${resourceConstantName}_CREATE_UPDATE.CREATE.ERROR',
             });
             return of(
-              ${propertyName}SearchActions.create${className}Failed({
+              ${resourcePropertyName}SearchActions.create${resourceClassName}Failed({
                 error,
               })
             );
@@ -162,7 +163,7 @@ export class SearchEffectsStep
           private portalDialogService: PortalDialogService,`);
     }
     safeReplace(
-      `Enhance ${className}SearchEffects by adding create and edit effects, integrating PortalDialogService for dialog management, and updating imports to include necessary modules and services`,
+      `Enhance ${resourceClassName}SearchEffects by adding create and edit effects, integrating PortalDialogService for dialog management, and updating imports to include necessary modules and services`,
       filePath,
       find,
       replaceWith,
@@ -170,6 +171,6 @@ export class SearchEffectsStep
     );
   }
   getTitle(): string {
-    return 'Adapting Search Effects';
+    return 'Adapting Search Effects (create/update)';
   }
 }

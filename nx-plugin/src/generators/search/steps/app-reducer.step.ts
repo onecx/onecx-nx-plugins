@@ -1,4 +1,5 @@
 import { Tree, joinPathFragments, names } from '@nx/devkit';
+
 import { GeneratorStep } from '../../shared/generator.utils';
 import { safeReplace } from '../../shared/safeReplace';
 import { SearchGeneratorSchema } from '../schema';
@@ -12,11 +13,10 @@ export class AppReducerStep implements GeneratorStep<SearchGeneratorSchema> {
       "import { oneCxReducer } from '@onecx/ngrx-accelerator'",
       "export const metaReducers: MetaReducer<State>[] = isDevMode() ? [] : []",
     ];
-    console.log(find);
     const replaceWith = [
-      `import { ActionReducer, ActionReducerMap, MetaReducer } from '@ngrx/store'
-       import { localStorageSync } from 'ngrx-store-localstorage'`,
-      `import { lazyLoadingMergeReducer, oneCxReducer } from '@onecx/ngrx-accelerator'`,
+      `import { ActionReducer, ActionReducerMap, MetaReducer } from '@ngrx/store';
+       import { localStorageSync } from 'ngrx-store-localstorage';`,
+      `import { lazyLoadingMergeReducer, oneCxReducer } from '@onecx/ngrx-accelerator';`,
 `export function localStorageSyncReducer(reducer: ActionReducer<State>): ActionReducer<State> {
   return localStorageSync({
     keys: [

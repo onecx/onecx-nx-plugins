@@ -9,10 +9,22 @@ export class FeatureStateStep implements GeneratorStep<SearchGeneratorSchema> {
     const featureFileName = names(options.featureName).fileName;
     const resourceFileName = names(options.resource).fileName;
     const className = names(options.resource).className;
-    
     const filePath = `src/app/${featureFileName}/${featureFileName}.state.ts`;
-    const find = ['{', /^/];
-    const replaceWith = [
+
+    // remove linter directive needed for linting an empty feature
+    const find = ['/* eslint-disable  @typescript-eslint/no-empty-interface */', '/* eslint-disable  @typescript-eslint/no-empty-object-type */'];
+    const replaceWith = [``, ``];
+
+    safeReplace(
+      `Removing linter directives from ${featureName} feature`,
+      filePath,
+      find,
+      replaceWith,
+      tree
+    );
+
+    const find2 = ['{', /^/];
+    const replaceWith2 = [
       `{
     search: ${className}SearchState;
   `,
@@ -22,10 +34,11 @@ export class FeatureStateStep implements GeneratorStep<SearchGeneratorSchema> {
     safeReplace(
       `Injecting search state into ${featureName} feature`,
       filePath,
-      find,
-      replaceWith,
+      find2,
+      replaceWith2,
       tree
     );
+
   }
   getTitle(): string {
     return 'Adapting Feature State';
