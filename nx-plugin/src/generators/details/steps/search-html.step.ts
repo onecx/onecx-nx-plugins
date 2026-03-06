@@ -8,17 +8,17 @@ export class SearchHTMLStep implements GeneratorStep<SearchGeneratorSchema> {
   process(tree: Tree, options: SearchGeneratorSchema): void {
     const featureFileName = names(options.featureName).fileName;
     const resourceFileName = names(options.resource).fileName;
-    const className = names(options.resource).className;
-    const constantName = names(options.resource).constantName;
+    const resourceClassName = names(options.resource).className;
+    const resourceConstantName = names(options.resource).constantName;
     const htmlSearchFilePath = `src/app/${featureFileName}/pages/${resourceFileName}-search/${resourceFileName}-search.component.html`;
 
     const find = '<ocx-interactive-data-view';
 
     const replaceWith = `<ocx-interactive-data-view \n (viewItem)="details($event)"
-      ${options.standalone ? '' : `viewPermission="${constantName}#VIEW"`}`;
+      ${options.standalone ? '' : `viewPermission="${resourceConstantName}#VIEW"`}`;
 
     safeReplace(
-      `Add view event and permission to ${className}SearchComponent HTML`,
+      `Add view event and permission to ${resourceClassName}SearchComponent HTML`,
       htmlSearchFilePath,
       find,
       replaceWith,

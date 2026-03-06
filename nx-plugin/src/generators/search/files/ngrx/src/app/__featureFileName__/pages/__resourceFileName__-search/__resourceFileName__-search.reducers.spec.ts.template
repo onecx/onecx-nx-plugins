@@ -13,6 +13,7 @@ describe('<%= resourcePropertyName %>SearchReducer', () => {
     const preState = { ...reducers.initialState, results: [{ id: '1' }], criteria: { changeMe: 'val' } }
     const action = <%= resourcePropertyName %>SearchActions.resetButtonClicked()
     const state = reducers.<%= resourcePropertyName %>SearchReducer(preState, action)
+
     expect(state.results).toEqual([])
     expect(state.criteria).toEqual({})
   })
@@ -21,6 +22,7 @@ describe('<%= resourcePropertyName %>SearchReducer', () => {
     const searchCriteria = { changeMe: 'foo' }
     const action = <%= resourcePropertyName %>SearchActions.searchButtonClicked({ searchCriteria })
     const state = reducers.<%= resourcePropertyName %>SearchReducer(reducers.initialState, action)
+
     expect(state.searchLoadingIndicator).toBe(true)
     expect(state.criteria).toEqual(searchCriteria)
   })
@@ -35,6 +37,7 @@ describe('<%= resourcePropertyName %>SearchReducer', () => {
       totalPages: 1
     })
     const state = reducers.<%= resourcePropertyName %>SearchReducer(reducers.initialState, action)
+
     expect(state.results).toEqual(stream)
   })
 
@@ -42,6 +45,7 @@ describe('<%= resourcePropertyName %>SearchReducer', () => {
     const preState = { ...reducers.initialState, results: [{ id: '1' }] }
     const action = <%= resourcePropertyName %>SearchActions.<%= resourcePropertyName %>SearchResultsLoadingFailed({ error: null })
     const state = reducers.<%= resourcePropertyName %>SearchReducer(preState, action)
+
     expect(state.results).toEqual([])
   })
 
@@ -49,10 +53,12 @@ describe('<%= resourcePropertyName %>SearchReducer', () => {
     const initialStateWithChartHidden = { ...reducers.initialState, chartVisible: false }
     const action = <%= resourcePropertyName %>SearchActions.chartVisibilityToggled()
     let state = reducers.<%= resourcePropertyName %>SearchReducer(initialStateWithChartHidden, action)
+
     expect(state.chartVisible).toBe(true)
 
     const stateWithChartVisible = { ...reducers.initialState, chartVisible: true }
     state = reducers.<%= resourcePropertyName %>SearchReducer(stateWithChartVisible, action)
+
     expect(state.chartVisible).toBe(false)
   })
 
@@ -60,6 +66,7 @@ describe('<%= resourcePropertyName %>SearchReducer', () => {
     const newComponentState: InteractiveDataViewComponentState = {}
     const action = <%= resourcePropertyName %>SearchActions.resultComponentStateChanged(newComponentState)
     const state = reducers.<%= resourcePropertyName %>SearchReducer(reducers.initialState, action)
+
     expect(state.resultComponentState).toBeDefined()
     expect(state).not.toBe(reducers.initialState)
   })
@@ -71,6 +78,7 @@ describe('<%= resourcePropertyName %>SearchReducer', () => {
     }
     const action = <%= resourcePropertyName %>SearchActions.searchHeaderComponentStateChanged(newHeaderState)
     const state = reducers.<%= resourcePropertyName %>SearchReducer(reducers.initialState, action)
+
     expect(state.searchHeaderComponentState).toBeDefined()
     if (state.searchHeaderComponentState) {
       expect(state.searchHeaderComponentState.activeViewMode).toBe('basic')
@@ -85,6 +93,7 @@ describe('<%= resourcePropertyName %>SearchReducer', () => {
     }
     const action = <%= resourcePropertyName %>SearchActions.diagramComponentStateChanged(newDiagramState)
     const state = reducers.<%= resourcePropertyName %>SearchReducer(reducers.initialState, action)
+
     expect(state.diagramComponentState).toBeDefined()
     if (state.diagramComponentState) {
       expect(state.diagramComponentState.activeDiagramType).toBe('PIE')
@@ -102,6 +111,7 @@ describe('<%= resourcePropertyName %>SearchReducer', () => {
     const preState = { ...reducers.initialState, criteria: {}, searchLoadingIndicator: false }
     const action = routerNavigatedAction({ payload: { routerState: { root: { queryParams: { foo: 'bar' } } } } })
     const state = reducers.<%= resourcePropertyName %>SearchReducer(preState, action)
+
     expect(state.criteria).toEqual({ foo: 'bar' })
     expect(state.searchLoadingIndicator).toBe(true)
   })
@@ -115,6 +125,7 @@ describe('<%= resourcePropertyName %>SearchReducer', () => {
     const preState = { ...reducers.initialState, criteria: { changeMe: 'bar' }, searchLoadingIndicator: true }
     const action = routerNavigatedAction({ payload: { routerState: { root: { queryParams: { foo: 'bar' } } } } })
     const state = reducers.<%= resourcePropertyName %>SearchReducer(preState, action)
+
     expect(state).toBe(preState)
   })
 })

@@ -8,7 +8,7 @@ export class FeatureStateStep implements GeneratorStep<SearchGeneratorSchema> {
     const featureName = options.featureName;
     const featureFileName = names(options.featureName).fileName;
     const resourceFileName = names(options.resource).fileName;
-    const className = names(options.resource).className;
+    const resourceClassName = names(options.resource).className;
     const filePath = `src/app/${featureFileName}/${featureFileName}.state.ts`;
 
     // remove linter directive needed for linting an empty feature
@@ -26,9 +26,9 @@ export class FeatureStateStep implements GeneratorStep<SearchGeneratorSchema> {
     const find2 = ['{', /^/];
     const replaceWith2 = [
       `{
-    search: ${className}SearchState;
+    search: ${resourceClassName}SearchState;
   `,
-      `import { ${className}SearchState } from './pages/${resourceFileName}-search/${resourceFileName}-search.state';`,
+      `import { ${resourceClassName}SearchState } from './pages/${resourceFileName}-search/${resourceFileName}-search.state';`,
     ];
 
     safeReplace(

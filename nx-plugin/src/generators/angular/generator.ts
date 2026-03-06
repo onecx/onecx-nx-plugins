@@ -196,12 +196,6 @@ export async function angularGenerator(
       .map((c) => c.path)
       .filter((p) => p.endsWith('.ts'))
       .join(' ');
-    //cmd = 'npx --yes organize-imports-cli '
-    //log(cmd)
-    //execSync(cmd + files, {
-    //  cwd: tree.root,
-    //  stdio: 'inherit',
-    //});
     cmd = 'npx prettier --write ';
     log(cmd);
     execSync(cmd + files, { cwd: tree.root, stdio: 'inherit' });

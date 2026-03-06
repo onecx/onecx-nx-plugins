@@ -9,13 +9,13 @@ export class FeatureStateStep implements GeneratorStep<DetailsGeneratorSchema> {
     const featureFileName = names(options.featureName).fileName;
     const resourceFileName = names(options.resource).fileName;
     const featureClassName = names(options.featureName).className;
-    const className = names(options.resource).className;
+    const resourceClassName = names(options.resource).className;
     const filePath = `src/app/${featureFileName}/${featureFileName}.state.ts`;
 
     const find = [/^/, 'State {'];
     const replaceWith = [
-      `import { ${className}DetailsState } from './pages/${resourceFileName}-details/${resourceFileName}-details.state';`,
-      `State { details: ${className}DetailsState; `,
+      `import { ${resourceClassName}DetailsState } from './pages/${resourceFileName}-details/${resourceFileName}-details.state';`,
+      `State { details: ${resourceClassName}DetailsState; `,
     ];
     safeReplace(
       `Add details state to ${featureClassName}State`,

@@ -8,14 +8,14 @@ export class SearchTestsStep implements GeneratorStep<SearchGeneratorSchema> {
   process(tree: Tree, options: SearchGeneratorSchema): void {
     const featureFileName = names(options.featureName).fileName;
     const resourceFileName = names(options.resource).fileName;
-    const className = names(options.resource).className;
-    const propertyName = names(options.resource).propertyName;
+    const resourceClassName = names(options.resource).className;
+    const resourcePropertyName = names(options.resource).propertyName;
     const filePath = `src/app/${featureFileName}/pages/${resourceFileName}-search/${resourceFileName}-search.component.spec.ts`;
 
     const content = tree.exists(filePath) ? tree.read(filePath, 'utf8') : '';
     if (!content.includes(`import { RowListGridData } from '@onecx/portal-integration-angular'`)) {
       safeReplace(
-        `Add RowListGridData import to ${className}SearchComponent spec`,
+        `Add RowListGridData import to ${resourceClassName}SearchComponent spec`,
         filePath,
         [/^/],
         [`import { RowListGridData } from '@onecx/portal-integration-angular';`],
@@ -29,7 +29,7 @@ export class SearchTestsStep implements GeneratorStep<SearchGeneratorSchema> {
         const row: RowListGridData = { id: 'test-id', imagePath: '' };
         component.details(row);
         expect(store.dispatch).toHaveBeenCalledWith(
-          ${propertyName}SearchActions.detailsButtonClicked({ id: 'test-id' })
+          ${resourcePropertyName}SearchActions.detailsButtonClicked({ id: 'test-id' })
         );
       });
     `;

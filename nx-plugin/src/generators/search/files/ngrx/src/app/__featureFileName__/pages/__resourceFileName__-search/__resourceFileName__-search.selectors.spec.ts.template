@@ -29,6 +29,7 @@ describe('<%= resourceClassName %>Search selectors', () => {
         ]
       }
     ]
+
     cases.forEach(({ desc, input, expected }) => {
       it(desc, () => {
         expect(selectors.selectResults.projector(input)).toEqual(expected)
@@ -58,6 +59,7 @@ describe('<%= resourceClassName %>Search selectors', () => {
       false,
       true
     )
+
     expect(result).toEqual({
       columns,
       searchCriteria,

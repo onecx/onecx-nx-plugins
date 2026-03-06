@@ -15,7 +15,6 @@ export class GeneralOpenAPIStep implements GeneratorStep<DetailsGeneratorSchema>
 
     const resource = options.resource;
     const propertyName = names(options.resource).propertyName;
-    // const apiServiceName = options.apiServiceName;
     const getByIdResponseName = options.getByIdResponseName;
     const apiUtil = new OpenAPIUtil(bffOpenApiContent);
 

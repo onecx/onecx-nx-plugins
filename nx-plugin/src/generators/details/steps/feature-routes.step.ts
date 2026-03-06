@@ -10,12 +10,12 @@ export class FeatureRoutesStep
     const featureFileName = names(options.featureName).fileName;
     const resourceFileName = names(options.resource).fileName;
     const featureClassName = names(options.featureName).className;
-    const className = names(options.resource).className;
+    const resourceClassName = names(options.resource).className;
     const routesFilePath = `src/app/${featureFileName}/${featureFileName}.routes.ts`;
     const find = [/^/, 'routes: Routes = ['];
     const replaceWith = [
-      `import { ${className}DetailsComponent } from './pages/${resourceFileName}-details/${resourceFileName}-details.component';`,
-      `routes: Routes = [ { path: 'details/:id', component: ${className}DetailsComponent, pathMatch: 'full' },`,
+      `import { ${resourceClassName}DetailsComponent } from './pages/${resourceFileName}-details/${resourceFileName}-details.component';`,
+      `routes: Routes = [ { path: 'details/:id', component: ${resourceClassName}DetailsComponent, pathMatch: 'full' },`,
     ];
 
     safeReplace(

@@ -135,9 +135,7 @@ describe('<%= resourceClassName %>DetailsEffects', () => {
       expect(action).toEqual(
         <%= resourcePropertyName %>DetailsActions.<%= resourcePropertyName %>DetailsLoadingFailed({ error: mockError })
       );
-      // TODO: check the error message
-      // expect(service.get<%= resource %>ById).toHaveBeenCalledTimes(1);
-      // expect(service.get<%= resource %>ById).toHaveBeenCalledWith({ id: undefined });
+      expect(service.get<%= resourceClassName %>ById).not.toHaveBeenCalled();
     });
   });
 
@@ -190,7 +188,6 @@ describe('<%= resourceClassName %>DetailsEffects', () => {
   describe('saveButtonClicked$', () => {
     it('should dispatch update<%= resource %>Succeeded', async () => {
       const mockDetails = { id: '123' } as <%= resource %>;
-
       const selectSpy = jest
         .spyOn(store, 'select')
         .mockReturnValueOnce(of(mockDetails));
@@ -260,6 +257,7 @@ describe('<%= resourceClassName %>DetailsEffects', () => {
         })
       );
       await firstValueFrom(effects.displayError$);
+
       expect(messageService.error).toHaveBeenCalled();
     });
   });

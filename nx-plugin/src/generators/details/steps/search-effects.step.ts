@@ -8,8 +8,8 @@ export class SearchEffectsStep implements GeneratorStep<SearchGeneratorSchema> {
   process(tree: Tree, options: SearchGeneratorSchema): void {
     const featureFileName = names(options.featureName).fileName;
     const resourceFileName = names(options.resource).fileName;
-    const className = names(options.resource).className;
-    const propertyName = names(options.resource).propertyName;
+    const resourceClassName = names(options.resource).className;
+    const resourcePropertyName = names(options.resource).propertyName;
     const filePath = `src/app/${featureFileName}/pages/${resourceFileName}-search/${resourceFileName}-search.effects.ts`;
 
     const find = [/^/, 'searchByUrl$'];
@@ -19,7 +19,7 @@ export class SearchEffectsStep implements GeneratorStep<SearchGeneratorSchema> {
       `navigateToOrderDetailsPage$ = createEffect(
           () => {
             return this.actions$.pipe(
-              ofType(${propertyName}SearchActions.detailsButtonClicked),
+              ofType(${resourcePropertyName}SearchActions.detailsButtonClicked),
               concatLatestFrom(() => this.store.select(selectUrl)),
               tap(([action, currentUrl]) => {
                 const urlTree = this.router.parseUrl(currentUrl);
@@ -35,7 +35,7 @@ export class SearchEffectsStep implements GeneratorStep<SearchGeneratorSchema> {
     ];
 
     safeReplace(
-      `Add details navigation effect to ${className}SearchEffects`,
+      `Add details navigation effect to ${resourceClassName}SearchEffects`,
       filePath,
       find,
       replaceWith,
