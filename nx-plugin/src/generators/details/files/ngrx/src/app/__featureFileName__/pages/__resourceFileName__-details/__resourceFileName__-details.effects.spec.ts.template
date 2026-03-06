@@ -28,8 +28,8 @@ jest.mock('@onecx/ngrx-accelerator', () => {
   const actual = jest.requireActual('@onecx/ngrx-accelerator');
   return {
     ...actual,
-    filterForNavigatedTo: () => (source: any) => source,
-    filterOutQueryParamsHaveNotChanged: () => (source: any) => source,
+    filterForNavigatedTo: () => (source: unknown) => source,
+    filterOutQueryParamsHaveNotChanged: () => (source: unknown) => source,
   };
 });
 

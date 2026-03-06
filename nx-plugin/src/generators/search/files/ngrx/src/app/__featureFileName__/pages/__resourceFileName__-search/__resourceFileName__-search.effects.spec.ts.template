@@ -1,4 +1,5 @@
 import { TestBed } from '@angular/core/testing'
+import { HttpEvent } from '@angular/common/http'
 import { ActivatedRoute, Router } from '@angular/router'
 import { RouterTestingModule } from '@angular/router/testing'
 import { provideMockActions } from '@ngrx/effects/testing'
@@ -8,21 +9,22 @@ import { routerNavigatedAction } from '@ngrx/router-store'
 import { of, ReplaySubject, throwError } from 'rxjs'
 import { take } from 'rxjs/operators'
 
-import { ExportDataService, PortalDialogService, PortalMessageService } from '@onecx/portal-integration-angular'
+import { ColumnType, DataTableColumn, ExportDataService, PortalDialogService, PortalMessageService, RowListGridData } from '@onecx/portal-integration-angular'
 
-import { <%= serviceName %> } from 'src/app/shared/generated'
+import { <%= serviceName %>, Search<%= resourceClassName %>Response } from 'src/app/shared/generated'
 import { <%= resourcePropertyName %>SearchActions } from './<%= resourceFileName %>-search.actions'
 import { <%= resourceClassName %>SearchEffects } from './<%= resourceFileName %>-search.effects'
 import { <%= resourceClassName %>SearchCriteria } from './<%= resourceFileName %>-search.parameters'
 import { initialState } from './<%= resourceFileName %>-search.reducers'
 import { <%= resourcePropertyName %>SearchSelectors, select<%= resourceClassName %>SearchViewModel } from './<%= resourceFileName %>-search.selectors'
+import { <%= resourceClassName %>SearchViewModel } from './<%= resourceFileName %>-search.viewmodel'
 
 jest.mock('@onecx/ngrx-accelerator', () => {
   const actual = jest.requireActual('@onecx/ngrx-accelerator')
   return {
     ...actual,
-    filterForNavigatedTo: () => (source: any) => source,
-    filterOutQueryParamsHaveNotChanged: () => (source: any) => source
+    filterForNavigatedTo: () => (source: unknown) => source,
+    filterOutQueryParamsHaveNotChanged: () => (source: unknown) => source
   }
 })
 
@@ -37,23 +39,14 @@ describe('<%= resourceClassName %>SearchEffects', () => {
   let messageService: jest.Mocked<PortalMessageService>
   let exportDataService: jest.Mocked<ExportDataService>
 
-  const mockCriteria: <%= resourceClassName %>SearchCriteria = { changeMe: 'test' } as any
+  const mockCriteria: <%= resourceClassName %>SearchCriteria = { changeMe: 'test' }
 
   beforeEach(async () => {
     actions$ = new ReplaySubject(1)
 
     <%= resourcePropertyName %>Service = {
-      create<%= apiModelPascal %>: jest.fn(),
-      update<%= apiModelPascal %>: jest.fn(),
-      delete<%= apiModelPascal %>: jest.fn(),
       search<%= apiModelPascal %>Items: jest.fn()
     } as unknown as jest.Mocked<<%= serviceName %>>;
-
-    // compatibility aliases (featureName differs from resource)
-    (<%= resourcePropertyName %>Service as any).create<%= resourceClassName %> = (<%= resourcePropertyName %>Service as any).create<%= apiModelPascal %>;
-    (<%= resourcePropertyName %>Service as any).update<%= resourceClassName %> = (<%= resourcePropertyName %>Service as any).update<%= apiModelPascal %>;
-    (<%= resourcePropertyName %>Service as any).delete<%= resourceClassName %> = (<%= resourcePropertyName %>Service as any).delete<%= apiModelPascal %>;
-    (<%= resourcePropertyName %>Service as any).search<%= resourceClassName %>Items = (<%= resourcePropertyName %>Service as any).search<%= apiModelPascal %>Items;
 
     router = {
       navigate: jest.fn().mockReturnValue(Promise.resolve(true)),
@@ -106,18 +99,18 @@ describe('<%= resourceClassName %>SearchEffects', () => {
       toString: () => (url ? url.split('?')[0].split('#')[0] : '/search'),
       queryParams: {},
       fragment: null
-    }) as any)
+    }))
   })
 
   describe('syncParamsToUrl$', () => {
     beforeEach(() => {
-      store.overrideSelector(<%= resourcePropertyName %>SearchSelectors.selectCriteria, mockCriteria as any)
+      store.overrideSelector(<%= resourcePropertyName %>SearchSelectors.selectCriteria, mockCriteria)
       store.refreshState()
     })
 
     it('should navigate to update URL when criteria differs from query params', (done) => {
       const navigateSpy = jest.spyOn(router, 'navigate')
-      route.queryParams = of({ different: 'yes' }) as any
+      route.queryParams = of({ different: 'yes' })
 
       effects.syncParamsToUrl$.pipe(take(1)).subscribe(() => {
         expect(navigateSpy).toHaveBeenCalled()
@@ -129,7 +122,7 @@ describe('<%= resourceClassName %>SearchEffects', () => {
 
     it('should not navigate when criteria matches query params', (done) => {
       const navigateSpy = jest.spyOn(router, 'navigate')
-      route.queryParams = of(mockCriteria as any) as any
+      route.queryParams = of(mockCriteria)
 
       effects.syncParamsToUrl$.pipe(take(1)).subscribe(() => {
         expect(navigateSpy).not.toHaveBeenCalled()
@@ -141,7 +134,7 @@ describe('<%= resourceClassName %>SearchEffects', () => {
 
     it('should navigate when resetButtonClicked action is triggered', (done) => {
       const navigateSpy = jest.spyOn(router, 'navigate')
-      route.queryParams = of({ something: 'else' }) as any
+      route.queryParams = of({ something: 'else' })
 
       effects.syncParamsToUrl$.pipe(take(1)).subscribe(() => {
         expect(navigateSpy).toHaveBeenCalled()
@@ -154,26 +147,26 @@ describe('<%= resourceClassName %>SearchEffects', () => {
 
   describe('searchByUrl$ / performSearch', () => {
     beforeEach(() => {
-      store.overrideSelector(<%= resourcePropertyName %>SearchSelectors.selectCriteria, mockCriteria as any)
+      store.overrideSelector(<%= resourcePropertyName %>SearchSelectors.selectCriteria, mockCriteria)
       store.refreshState()
 
       <%= resourcePropertyName %>Service.search<%= apiModelPascal %>Items.mockReturnValue(
         of({
-          stream: [{ id: '1', name: 'Item 1', description: '', imagePath: '' } as any],
-          content: [{ id: '1', name: 'Item 1', description: '', imagePath: '' } as any],
+          stream: [{ id: '1', name: 'Item 1', description: '', imagePath: '' }],
+          content: [{ id: '1', name: 'Item 1', description: '', imagePath: '' }],
           size: 10,
           number: 0,
           totalElements: 1,
           totalPages: 1
-        } as any) as any
+        } as unknown as HttpEvent<Search<%= resourceClassName %>Response>)
       )
     })
 
     it('should dispatch resultsLoadingFailed on search error', (done) => {
       const mockError = 'Search failed'
-      <%= resourcePropertyName %>Service.search<%= apiModelPascal %>Items.mockReturnValueOnce(throwError(() => mockError) as any)
+      <%= resourcePropertyName %>Service.search<%= apiModelPascal %>Items.mockReturnValueOnce(throwError(() => mockError))
 
-      effects.performSearch(mockCriteria as any).pipe(take(1)).subscribe((action) => {
+      effects.performSearch(mockCriteria).pipe(take(1)).subscribe((action) => {
         expect(action.type).toEqual(<%= resourcePropertyName %>SearchActions.<%= resourcePropertyName %>SearchResultsLoadingFailed.type)
         expect(action).toEqual(<%= resourcePropertyName %>SearchActions.<%= resourcePropertyName %>SearchResultsLoadingFailed({ error: mockError }))
         done()
@@ -181,7 +174,7 @@ describe('<%= resourceClassName %>SearchEffects', () => {
     })
 
     it('should convert Date objects in search criteria before calling <%= resourcePropertyName %>Service', (done) => {
-      const criteriaWithDate: any = { ...mockCriteria, startDate: new Date('2023-01-01'), endDate: new Date('2023-12-31') }
+      const criteriaWithDate = { ...mockCriteria, startDate: new Date('2023-01-01'), endDate: new Date('2023-12-31') }
       const searchSpy = jest.spyOn(<%= resourcePropertyName %>Service, 'search<%= apiModelPascal %>Items')
 
       effects.performSearch(criteriaWithDate).pipe(take(1)).subscribe(() => {
@@ -196,11 +189,11 @@ describe('<%= resourceClassName %>SearchEffects', () => {
     })
     
     it('should use latest criteria from store and call performSearch on routerNavigatedAction', (done) => {
-      const criteriaFromStore: any = { changeMe: 'fromStore' }
-      store.overrideSelector(<%= resourcePropertyName %>SearchSelectors.selectCriteria, criteriaFromStore as any)
+      const criteriaFromStore = { changeMe: 'fromStore' }
+      store.overrideSelector(<%= resourcePropertyName %>SearchSelectors.selectCriteria, criteriaFromStore)
       store.refreshState()
 
-      const markerAction = { type: 'MARKER_ACTION' } as any
+      const markerAction = <%= resourcePropertyName %>SearchActions.<%= resourcePropertyName %>SearchResultsLoadingFailed({ error: null })
       const performSearchSpy = jest.spyOn(effects, 'performSearch').mockReturnValue(of(markerAction))
 
       effects.searchByUrl$.pipe(take(1)).subscribe((action) => {
@@ -209,7 +202,7 @@ describe('<%= resourceClassName %>SearchEffects', () => {
         done()
       })
 
-      actions$.next({ type: routerNavigatedAction.type } as any)
+      actions$.next({ type: routerNavigatedAction.type })
     })
   })
 
@@ -217,17 +210,21 @@ describe('<%= resourceClassName %>SearchEffects', () => {
     const cases = [
       {
         desc: 'should handle export with empty displayed columns',
-        viewModel: { results: [{ id: '1', name: 'Context 1', description: 'Description 1', imagePath: '' } as any], resultComponentState: { displayedColumns: undefined } }
+        viewModel: { 
+          results: [{ id: '1', name: 'Context 1', description: 'Description 1', imagePath: '' }], resultComponentState: { displayedColumns: undefined }
+        } as Partial<<%= resourceClassName %>SearchViewModel>
       },
       {
         desc: 'should handle export with null resultComponentState',
-        viewModel: { results: [{ id: '1', name: 'Context 1', description: 'Description 1', imagePath: '' } as any], resultComponentState: null }
+        viewModel: {
+          results: [{ id: '1', name: 'Context 1', description: 'Description 1', imagePath: '' }], resultComponentState: null
+        } as Partial<<%= resourceClassName %>SearchViewModel>
       }
     ];
     
     cases.forEach(({ desc, viewModel }) => {
       it(desc, (done) => {
-        store.overrideSelector(select<%= resourceClassName %>SearchViewModel, viewModel as any)
+        store.overrideSelector(select<%= resourceClassName %>SearchViewModel, viewModel as <%= resourceClassName %>SearchViewModel)
 
         effects.exportData$.pipe(take(1)).subscribe(() => {
           expect(exportDataService.exportCsv).toHaveBeenCalledWith([], viewModel.results, 'export_<%= resourcePropertyName %>.csv')
@@ -239,10 +236,20 @@ describe('<%= resourceClassName %>SearchEffects', () => {
     })
 
     it('should export CSV with correct parameters when export button is clicked', (done) => {
-      const mockColumns = [{ field: 'name', header: 'Name' }, { field: 'description', header: 'Description' }]
-      const mockResults = [{ id: '1', name: 'Context 1', description: 'Description 1' } as any, { id: '2', name: 'Context 2', description: 'Description 2' } as any]
+      const mockColumns: DataTableColumn[] = [
+        {
+          columnType: ColumnType.STRING,
+          id: 'change_me',
+          nameKey: '<%= resourceConstantName %>_SEARCH.RESULTS.CHANGE_ME',
+        }
+      ]
+      const mockResults: Partial<RowListGridData>[] = [
+        { id: '1', name: 'Context 1', description: 'Description 1' },
+        { id: '2', name: 'Context 2', description: 'Description 2' }
+      ]
       const mockViewModel = { resultComponentState: { displayedColumns: mockColumns }, results: mockResults }
-      store.overrideSelector(select<%= resourceClassName %>SearchViewModel, mockViewModel as any)
+      store.overrideSelector(select<%= resourceClassName %>SearchViewModel, mockViewModel as <%= resourceClassName %>SearchViewModel)
+
 
       effects.exportData$.pipe(take(1)).subscribe(() => {
         expect(exportDataService.exportCsv).toHaveBeenCalledWith(mockColumns, mockResults, 'export_<%= resourcePropertyName %>.csv')
@@ -253,9 +260,15 @@ describe('<%= resourceClassName %>SearchEffects', () => {
     })
 
     it('should handle export with empty results', (done) => {
-      const mockColumns = [{ field: 'name', header: 'Name' }, { field: 'description', header: 'Description' }]
-      const mockViewModel = { resultComponentState: { displayedColumns: mockColumns }, results: [] }
-      store.overrideSelector(select<%= resourceClassName %>SearchViewModel, mockViewModel as any)
+      const mockColumns: DataTableColumn[] = [
+        {
+          columnType: ColumnType.STRING,
+          id: 'change_me',
+          nameKey: '<%= resourceConstantName %>_SEARCH.RESULTS.CHANGE_ME',
+        }
+      ]
+      const mockViewModel = { resultComponentState: { displayedColumns: mockColumns }, results: [] as RowListGridData[]}
+      store.overrideSelector(select<%= resourceClassName %>SearchViewModel, mockViewModel as <%= resourceClassName %>SearchViewModel)
 
       effects.exportData$.pipe(take(1)).subscribe(() => {
         expect(exportDataService.exportCsv).toHaveBeenCalledWith(mockColumns, [], 'export_<%= resourcePropertyName %>.csv')

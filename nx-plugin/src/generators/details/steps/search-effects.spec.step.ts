@@ -35,14 +35,14 @@ export class SearchEffectsSpecStep
 
         it('should dynamically clear query params and fragment from URL on navigateToOrderDetailsPage$', (done) => {
           const testId = 'test-456';
-          const mockUrlTree: any = { 
+          const mockUrlTree = { 
             toString: jest.fn(() => '/search'), 
             queryParams: { a: 1 }, 
             fragment: 'frag' 
           };
           (router.parseUrl as jest.Mock).mockReturnValue(mockUrlTree);
 
-          const emissions: Array<{ queryParams: any, fragment: any }> = [];
+          const emissions: Array<{ queryParams: unknown, fragment: unknown }> = [];
           emissions.push({ queryParams: { ...mockUrlTree.queryParams }, fragment: mockUrlTree.fragment });
 
           effects.navigateToOrderDetailsPage$.pipe(take(1)).subscribe(() => {

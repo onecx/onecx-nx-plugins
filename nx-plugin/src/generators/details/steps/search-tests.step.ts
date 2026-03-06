@@ -18,7 +18,7 @@ export class SearchTestsStep implements GeneratorStep<SearchGeneratorSchema> {
         `Add RowListGridData import to ${className}SearchComponent spec`,
         filePath,
         [/^/],
-        [`import { RowListGridData } from '@onecx/portal-integration-angular';\n`],
+        [`import { RowListGridData } from '@onecx/portal-integration-angular';`],
         tree
       );
     }
@@ -26,7 +26,7 @@ export class SearchTestsStep implements GeneratorStep<SearchGeneratorSchema> {
     const snippet = `
       it('should dispatch detailsButtonClicked action on details', () => {
         jest.spyOn(store, 'dispatch');
-        const row: RowListGridData = { id: 'test-id', imagePath: '' } as any;
+        const row: RowListGridData = { id: 'test-id', imagePath: '' };
         component.details(row);
         expect(store.dispatch).toHaveBeenCalledWith(
           ${propertyName}SearchActions.detailsButtonClicked({ id: 'test-id' })

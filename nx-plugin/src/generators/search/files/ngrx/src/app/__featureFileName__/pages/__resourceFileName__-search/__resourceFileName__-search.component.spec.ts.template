@@ -418,6 +418,9 @@ describe('<%= resourceClassName %>SearchComponent', () => {
 
     const interactiveDataView = await <%= resourcePropertyName %>Search.getSearchResults();
     const dataView = await interactiveDataView.getDataView();
+    // switch to list layout for testing table
+    const layoutSelection = await interactiveDataView.getDataLayoutSelection()
+    await (await layoutSelection.getListLayoutSelectionButton())?.click()
     const dataTable = await dataView.getDataListGrid();
     if (dataTable) {
       const rows = await dataTable.getActionButtons('list');
@@ -621,6 +624,7 @@ describe('<%= resourceClassName %>SearchComponent', () => {
     cases.forEach(({ method, action, payload }) => {
       it(`should dispatch ${action.type} when ${method} is called`, () => {
         jest.spyOn(store, 'dispatch');
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         (component as any)[method](payload);
         expect(store.dispatch).toHaveBeenCalledWith(action(payload));
       });
