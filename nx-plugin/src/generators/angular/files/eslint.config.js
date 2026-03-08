@@ -66,7 +66,7 @@ module.exports = [
     files: ['**/*.spec.ts'],
     rules: {
       '@typescript-eslint/no-require-imports': [
-        'warn',
+        'off',
         {
           allowAsImport: true
         }

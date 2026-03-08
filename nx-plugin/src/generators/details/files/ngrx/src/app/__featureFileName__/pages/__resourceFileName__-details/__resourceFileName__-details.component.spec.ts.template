@@ -93,8 +93,8 @@ describe('<%= resourceClassName %>DetailsComponent', () => {
         LetDirective,
         ReactiveFormsModule,
         TranslateTestingModule.withTranslations({
-          de: require('../../../../assets/i18n/de.json'), // eslint-disable-line @typescript-eslint/no-require-imports
-          en: require('../../../../assets/i18n/en.json') // eslint-disable-line @typescript-eslint/no-require-imports
+          de: require('../../../../assets/i18n/de.json'),
+          en: require('../../../../assets/i18n/en.json')
         }).withDefaultLanguage('en')
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],

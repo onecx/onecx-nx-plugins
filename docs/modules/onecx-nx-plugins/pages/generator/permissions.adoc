@@ -23,7 +23,7 @@ Refer to {permissions_in_angular_ref} for more information.
 == ACTION P
 
 Configure permissions::
-Adapt the permissions in the `+helm/values.yaml+` file.
+Adapt the preset permissions in the `+helm/values.yaml+` file.
 
 
 [discrete]
@@ -34,7 +34,7 @@ Configure permissions for the `Book` entity by adding the following snippet to t
 Directory:: `bookstore/helm/`
 File::      `values.yaml`
 
-.ACTION P in `+values.yaml+`
+.ACTION P in `+values.yaml+` with preset permissions for the `Book` entity
 [%collapsible]
 ====
 [source, yaml]

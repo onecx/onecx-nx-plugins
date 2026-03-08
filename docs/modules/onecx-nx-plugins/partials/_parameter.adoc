@@ -20,4 +20,5 @@
   _<resource>_::
     Optional. The name of the resource entity for which the feature module is generated. +
     E.g. `+book+` for a resource entity named "Book".
+    If not specified, the generator will use the feature name as resource name by default.
 # end::resource[]

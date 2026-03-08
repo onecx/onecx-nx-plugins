@@ -90,8 +90,7 @@ Here is an overview of the application parts that can be generated using the One
 
 
 === Build the UI App
-
-After generating the UI App and its components, you can build the application to see the results. +
+After generating the UI App and its components, you can build the application. +
 Use the following command to build the application:
 
 .Build the application
@@ -102,6 +101,35 @@ npm run build
 
 .Excerpt of the build output (exemplary for *bookstore* application)
 image::generated_and_build.png[]
+
+
+=== Lint the UI App
+The generator creates code that adheres to standard linting rules, but it's always a good practice to run the linter after generation to catch any potential issues or inconsistencies. +
+Use the following command to lint the application:
+
+.Static code analyzing of the application
+[source,bash]
+----
+npm run lint
+----
+
+.Excerpt of the lint output (exemplary for *bookstore* application)
+image::generated_and_lint.png[]
+
+
+=== Test the UI App
+
+After generating the application and its components, it's crucial to run the tests to ensure that everything is working as expected. The generator creates basic test cases for the generated components, but you may need to add more tests or adjust the existing ones based on your specific requirements and business logic. +
+Use the following command to run the tests:
+
+.Test the application
+[source,bash]
+----
+npm run test
+----
+
+.Excerpt of the test output (exemplary for *bookstore* application)
+image::generated_and_test.png[]
 
 
 == Development: Get the Generator

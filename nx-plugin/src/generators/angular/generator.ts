@@ -3,7 +3,6 @@ import {
   formatFiles,
   generateFiles,
   GeneratorCallback,
-  installPackagesTask,
   joinPathFragments,
   names,
   readProjectConfiguration,
@@ -15,12 +14,13 @@ import { applicationGenerator, E2eTestRunner } from '@nx/angular/generators';
 import { execSync } from 'child_process';
 import * as ora from 'ora';
 
-import { AngularGeneratorSchema } from './schema';
 import processParams, { GeneratorParameter } from '../shared/parameters.utils';
 import { safeReplace } from '../shared/safeReplace';
 import { GeneratorProcessor } from '../shared/generator.utils';
+import { AngularGeneratorSchema } from './schema';
 import { GeneralOpenAPIStep } from './steps/general-openapi.step';
 
+// set default options for the generator
 const PARAMETERS: GeneratorParameter<AngularGeneratorSchema>[] = [
   {
     key: 'standalone',
@@ -28,12 +28,24 @@ const PARAMETERS: GeneratorParameter<AngularGeneratorSchema>[] = [
     required: 'never',
     default: false,
   },
+  {
+    key: 'verbose',
+    type: 'boolean',
+    required: 'never',
+    default: false,
+  }
 ];
 
 export async function angularGenerator(
   tree: Tree,
   options: AngularGeneratorSchema
 ): Promise<GeneratorCallback> {
+  function log(command: unknown) {
+    if (options.verbose) {
+      console.log('');
+      console.log('generate ngrx ==> ' + command);
+    }
+  }
   const parameters = await processParams<AngularGeneratorSchema>(
     PARAMETERS,
     options
@@ -78,8 +90,8 @@ export async function angularGenerator(
   generatorProcessor.run(tree, options, spinner);
 
   addBaseToPackageJson(tree, options);
-  addExtensionsToPackageJson(tree);
   addScriptsToPackageJson(tree, options);
+  addExtensionsToPackageJson(tree);
 
   const oneCXLibVersion = '^5.47.5';
   addDependenciesToPackageJson(
@@ -160,13 +172,9 @@ export async function angularGenerator(
   );
 
   addOverridesToPackageJson(tree);
-
   adaptTsConfig(tree, options);
-
   adaptProjectConfiguration(tree, options);
-
   adaptJestConfig(tree);
-
   adaptAngularPrefixConfig(tree);
 
   await formatFiles(tree);
@@ -175,19 +183,9 @@ export async function angularGenerator(
 
   return async () => {
     await applicationGeneratorCallback();
-    function log(command: string) {
-      console.log('');
-      console.log('generate angular ==> ' + command);
-    }
-
-    installPackagesTask(tree);
-
     let cmd = 'rm -rf .vscode ';
     log(cmd);
-    execSync(cmd, {
-      cwd: tree.root,
-      stdio: 'inherit',
-    });
+    execSync(cmd, { cwd: tree.root, stdio: 'inherit' });
     cmd = 'npm run apigen ';
     log(cmd);
     execSync(cmd, { cwd: tree.root, stdio: 'inherit' });
@@ -199,8 +197,6 @@ export async function angularGenerator(
     cmd = 'npx prettier --write ';
     log(cmd);
     execSync(cmd + files, { cwd: tree.root, stdio: 'inherit' });
-
-    installPackagesTask(tree, true);
   };
 }
 
@@ -258,7 +254,8 @@ function addScriptsToPackageJson(tree: Tree, options: AngularGeneratorSchema) {
     pkgJson.scripts['lint:fix'] = 'nx lint --fix';
     pkgJson.scripts['sonar'] = 'npx sonar-scanner';
     pkgJson.scripts['test'] = 'nx test';
-    pkgJson.scripts['test:ci'] = 'nx test --watch=false --browsers=ChromeHeadless --code-coverage';
+    pkgJson.scripts['test:ci'] =
+      'nx test --watch=false --browsers=ChromeHeadless --code-coverage';
     return pkgJson;
   });
 }
@@ -278,7 +275,7 @@ function adaptTsConfig(tree: Tree, options: AngularGeneratorSchema) {
   ];
 
   safeReplace(
-    'Adapt files and compilerOptions Typescript Config',
+    'Adapt files and compilerOptions Typescript config',
     filePath,
     find,
     replaceWith,
