@@ -8,11 +8,6 @@ uplinks:
     maxage: 60m
 
 packages:
-  #'@onecx/*':
-  #  access: $all
-  #  publish: $all
-  #  #unpublish: $all
-  #  proxy: []
   '**':
     # give all users (including non-authenticated users) full access
     # because it is a local registry
