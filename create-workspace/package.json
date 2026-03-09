@@ -2,9 +2,7 @@
   "name": "@onecx/create-workspace",
   "version": "8.0.0-rc.1",
   "license": "Apache-2.0",
-  "contributors": [
-    "OneCX Development Team <onecx_dev@1000kit.org>"
-  ],
+  "contributors": [],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/onecx/onecx-nx-plugins.git"

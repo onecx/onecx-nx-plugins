@@ -14,7 +14,7 @@ export default async () => {
   global.stopLocalRegistry = await startLocalRegistry({
     localRegistryTarget,
     storage,
-    verbose: true,
+    verbose: false,
   });
   const nx = require.resolve('nx');
   execFileSync(

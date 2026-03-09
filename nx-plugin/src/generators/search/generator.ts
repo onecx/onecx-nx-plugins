@@ -100,10 +100,8 @@ export async function searchGenerator(
     options
   );
   Object.assign(options, parameters);
-  console.log('');
-  console.log('Search Generator');
 
-  const spinner = ora(`Adding search to feature "${options.featureName}"\n`).start();
+  const spinner = ora(`Adding search to feature "${options.featureName}"`).start();
   const directory = '.';
 
   const featureNames = names(options.featureName);

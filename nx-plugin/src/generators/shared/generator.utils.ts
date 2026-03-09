@@ -42,7 +42,6 @@ export class GeneratorProcessor<T> {
       if (ora) {
         const stepTitle = step.getTitle().trimEnd();
         ora.info(stepTitle);
-        //ora.start(stepTitle);
       }
       try {
         step.process(tree, options);
