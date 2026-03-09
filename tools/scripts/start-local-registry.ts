@@ -23,4 +23,8 @@ export default async () => {
     { env: process.env, stdio: 'inherit' }
   );
   await new Promise(resolve => setTimeout(() => resolve(true), 2000));
+  execFileSync('npm', ['view', '@onecx/nx-plugin', 'versions', '--json'], {
+    env: process.env,
+    stdio: 'inherit',
+  });
 };

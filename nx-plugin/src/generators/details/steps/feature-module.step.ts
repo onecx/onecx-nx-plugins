@@ -7,29 +7,31 @@ export class FeatureModuleStep
   implements GeneratorStep<DetailsGeneratorSchema>
 {
   process(tree: Tree, options: DetailsGeneratorSchema): void {
-    const fileName = names(options.featureName).fileName;
-    const className = names(options.featureName).className;
-    const moduleFilePath = `src/app/${fileName}/${fileName}.module.ts`;
+    const featureFileName = names(options.featureName).fileName;
+    const resourceFileName = names(options.resource).fileName;
+    const featureClassName = names(options.featureName).className;
+    const resourceClassName = names(options.resource).className;
+    const moduleFilePath = `src/app/${featureFileName}/${featureFileName}.module.ts`;
     const find = [
       'declarations: [',
       `} from '@onecx/angular-accelerator'`,
       'EffectsModule.forFeature()',
       'EffectsModule.forFeature([',
-      `from '@ngrx/effects';`,
+      `from '@ngrx/effects'`,
     ];
     const replaceWith = [
-      `declarations: [${className}DetailsComponent,`,
+      `declarations: [${resourceClassName}DetailsComponent,`,
       `} from '@onecx/angular-accelerator'`,
       `EffectsModule.forFeature([])`,
-      `EffectsModule.forFeature([${className}DetailsEffects,`,
+      `EffectsModule.forFeature([${resourceClassName}DetailsEffects,`,
       `from '@ngrx/effects';
-  import { ${className}DetailsEffects } from './pages/${fileName}-details/${fileName}-details.effects';
-  import { ${className}DetailsComponent } from './pages/${fileName}-details/${fileName}-details.component';
+  import { ${resourceClassName}DetailsEffects } from './pages/${resourceFileName}-details/${resourceFileName}-details.effects';
+  import { ${resourceClassName}DetailsComponent } from './pages/${resourceFileName}-details/${resourceFileName}-details.component';
   import { providePortalDialogService } from '@onecx/angular-accelerator';
   `,
     ];
     safeReplace(
-      `Enhance ${fileName}Module with details component and effects`,
+      `Enhance ${featureClassName}Module with details component and effects`,
       moduleFilePath,
       find,
       replaceWith,

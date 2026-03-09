@@ -17,16 +17,14 @@ export class FeatureModuleStep implements GeneratorStep<PageGeneratorSchema> {
     );
 
     const find = [
-      'declarations: [',
-      `} from '@onecx/angular-accelerator'`,
+      'declarations: [',      
       'EffectsModule.forFeature()',
       'EffectsModule.forFeature([',
       `from '@ngrx/effects';`,
     ];
 
     const replaceWith = [
-      `declarations: [${pageClassName}Component,`,
-      `} from '@onecx/angular-accelerator'`,
+      `declarations: [${pageClassName}Component,`,      
       `EffectsModule.forFeature([])`,
       `EffectsModule.forFeature([${pageClassName}Effects,`,
       `from '@ngrx/effects';

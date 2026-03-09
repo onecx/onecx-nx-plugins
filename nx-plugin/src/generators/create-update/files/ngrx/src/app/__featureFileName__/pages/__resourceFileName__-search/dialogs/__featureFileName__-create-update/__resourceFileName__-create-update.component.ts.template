@@ -1,0 +1,70 @@
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+} from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { map } from 'rxjs';
+
+import {
+  DialogPrimaryButtonDisabled,
+  DialogResult,
+  DialogButtonClicked,
+} from '@onecx/angular-accelerator';
+
+import { <%= resource%> } from 'src/app/shared/generated';
+import { <%= resourceClassName%>CreateUpdateViewModel } from './<%= resourceFileName %>-create-update.viewmodel';
+
+@Component({
+  selector: 'app-<%= resourceFileName %>-create-update',
+  templateUrl: './<%= resourceFileName %>-create-update.component.html',
+  styleUrls: ['./<%= resourceFileName %>-create-update.component.scss'],
+  standalone: false,
+})
+export class <%= resourceClassName%>CreateUpdateComponent 
+  implements
+    DialogPrimaryButtonDisabled,
+    DialogResult<<%= resource %> | undefined>,
+    DialogButtonClicked<<%= resourceClassName%>CreateUpdateComponent>,
+    OnInit {
+
+  @Input() public vm: <%= resourceClassName%>CreateUpdateViewModel = {
+    itemToEdit: undefined,
+  };
+  
+  public formGroup: FormGroup;  
+  
+  primaryButtonEnabled: EventEmitter<boolean> = new EventEmitter();
+  dialogResult: <%= resource %> | undefined = undefined;;
+
+  constructor() {
+    this.formGroup = new FormGroup({
+      changeMe: new FormControl(null, [Validators.maxLength(255)]),
+      // ACTION C3: Add form fields. https://onecx.github.io/docs/documentation/current/onecx-nx-plugins:generator/create-update/extend-form-fields.html#action-3
+    });
+    this.formGroup.statusChanges
+      .pipe(
+        map((status) => {
+          return status === 'VALID';
+        })
+      )
+      .subscribe(this.primaryButtonEnabled);
+  }
+
+  ocxDialogButtonClicked() {
+    this.dialogResult = {
+      ...this.vm.itemToEdit,
+      ...this.formGroup.value,
+    };
+  }
+
+  ngOnInit() {
+    if (this.vm.itemToEdit) {
+      this.formGroup.patchValue({
+        ...this.vm.itemToEdit,
+      });
+    }
+  }
+
+}

@@ -1,0 +1,5 @@
+import { <%= resource %> } from '../../../../../shared/generated';
+
+export interface <%= resourceClassName %>CreateUpdateViewModel {
+  itemToEdit: <%= resource %> | undefined;
+}

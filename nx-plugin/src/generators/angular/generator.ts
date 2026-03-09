@@ -3,7 +3,6 @@ import {
   formatFiles,
   generateFiles,
   GeneratorCallback,
-  installPackagesTask,
   joinPathFragments,
   names,
   readProjectConfiguration,
@@ -12,13 +11,16 @@ import {
   updateProjectConfiguration,
 } from '@nx/devkit';
 import { applicationGenerator, E2eTestRunner } from '@nx/angular/generators';
-import { AngularGeneratorSchema } from './schema';
 import { execSync } from 'child_process';
-
 import * as ora from 'ora';
+
 import processParams, { GeneratorParameter } from '../shared/parameters.utils';
 import { safeReplace } from '../shared/safeReplace';
+import { GeneratorProcessor } from '../shared/generator.utils';
+import { AngularGeneratorSchema } from './schema';
+import { GeneralOpenAPIStep } from './steps/general-openapi.step';
 
+// set default options for the generator
 const PARAMETERS: GeneratorParameter<AngularGeneratorSchema>[] = [
   {
     key: 'standalone',
@@ -26,19 +28,31 @@ const PARAMETERS: GeneratorParameter<AngularGeneratorSchema>[] = [
     required: 'never',
     default: false,
   },
+  {
+    key: 'verbose',
+    type: 'boolean',
+    required: 'never',
+    default: false,
+  }
 ];
 
 export async function angularGenerator(
   tree: Tree,
   options: AngularGeneratorSchema
 ): Promise<GeneratorCallback> {
+  function log(command: unknown) {
+    if (options.verbose) {
+      console.log('');
+      console.log('generate ngrx ==> ' + command);
+    }
+  }
   const parameters = await processParams<AngularGeneratorSchema>(
     PARAMETERS,
     options
   );
   Object.assign(options, parameters);
 
-  const spinner = ora('Adding angular').start();
+  const spinner = ora('Adding Angular').start();
   const directory = '.';
 
   const applicationGeneratorCallback = await applicationGenerator(tree, {
@@ -70,22 +84,21 @@ export async function angularGenerator(
       standalone: options.standalone,
     }
   );
+  const generatorProcessor = new GeneratorProcessor();
+  generatorProcessor.addStep(new GeneralOpenAPIStep());
 
-  // If standalone, remove unwanted files
-  if (options.standalone) {
-    tree.delete(`${directory}/scripts/load-permissions.sh`);
-  }
+  generatorProcessor.run(tree, options, spinner);
+
+  addBaseToPackageJson(tree, options);
+  addScriptsToPackageJson(tree, options);
+  addExtensionsToPackageJson(tree);
 
   const oneCXLibVersion = '^6.12.2';
   const angularVersion = '^19.0.7';
-
+  
   addDependenciesToPackageJson(
     tree,
     {
-      primeflex: '^3.3.1',
-      primeicons: '^7.0.0',
-      primeng: '^19.1.0',
-      '@primeng/themes': '^19.0.6',
       '@onecx/accelerator': oneCXLibVersion,
       '@onecx/angular-accelerator': oneCXLibVersion,
       '@onecx/angular-auth': oneCXLibVersion,
@@ -102,6 +115,16 @@ export async function angularGenerator(
       '@angular-architects/module-federation': '^18.0.4',
       'keycloak-angular': '^19.0.2',
       'ngrx-store-localstorage': '^19.0.0',
+      '@ngrx/component': '^19.0.1',
+      '@ngrx/effects': '^19.0.1',
+      '@ngrx/router-store': '^19.0.1',
+      '@ngrx/store': '^19.0.1',
+      '@ngrx/store-devtools': '^19.0.1',
+      '@webcomponents/webcomponentsjs': '^2.8.0',
+      'zone.js': '~0.15.0',
+      '@onecx/keycloak-auth': oneCXLibVersion,
+      '@onecx/portal-integration-angular': oneCXLibVersion,
+      '@onecx/portal-layout-styles': oneCXLibVersion,
       '@angular/animations': angularVersion,
       '@angular/cdk': angularVersion,
       '@angular/common': angularVersion,
@@ -111,14 +134,14 @@ export async function angularGenerator(
       '@angular/forms': angularVersion,
       '@angular/platform-browser': angularVersion,
       '@angular/platform-browser-dynamic': angularVersion,
-      '@angular/router': angularVersion,
-      '@ngrx/component': '^19.0.1',
-      '@ngrx/effects': '^19.0.1',
-      '@ngrx/router-store': '^19.0.1',
-      '@ngrx/store': '^19.0.1',
-      '@ngrx/store-devtools': '^19.0.1',
-      '@webcomponents/webcomponentsjs': '^2.8.0',
-      'zone.js': '~0.15.0',
+      '@angular/router': angularVersion,            
+      '@nx/angular': '^19.8.14',
+      '@nx/devkit': '^19.8.14',
+      '@nx/plugin': '^19.8.14',
+      primeflex: '^3.3.1',
+      primeicons: '^7.0.0',
+      primeng: '^19.1.0',
+      '@primeng/themes': '^19.0.6',
     },
     {
       '@nx/angular': '^20.3.4',
@@ -126,33 +149,44 @@ export async function angularGenerator(
       '@nx/plugin': '^20.3.4',
       '@nx/module-federation': '^20.3.4',
       '@openapitools/openapi-generator-cli': '^2.16.3',
-      'ngx-translate-testing': '^7.0.0',
+      'ngx-translate-testing': '^7.0.0',                              
+      'modify-source-webpack-plugin': '^4.1.0',
       '@angular/build': angularVersion,
       '@angular-devkit/core': angularVersion,
       '@angular-devkit/schematics': angularVersion,
       '@angular-devkit/build-angular': angularVersion,
       '@angular/cli': angularVersion,
       '@angular/compiler-cli': angularVersion,
-      '@angular/language-service': angularVersion,
-      typescript: '~5.5.4',
+      '@angular/language-service': angularVersion,      
+      'angular-eslint': '^18.4.3',
+      '@angular-eslint/builder': '^18.4.3',
+      '@angular-eslint/eslint-plugin': '^18.4.3',
+      '@angular-eslint/eslint-plugin-template': '^18.4.3',
+      '@angular-eslint/schematics': '^18.4.3',
+      '@angular-eslint/template-parser': '^18.4.3',
+      '@eslint/js': '^8.57.1',
+      '@nx/eslint': '19.8.14',
+      '@nx/eslint-plugin': '19.8.14',
+      eslint: '^8.57.1',
+      'eslint-config-prettier': '^9.1.0',
+      'eslint-plugin-import': '2.31.0',
+      'eslint-plugin-prettier': '^5.2.1',
+      husky: '^9.1.7',
       jest: '^29.7.0',
       'jest-environment-jsdom': '^29.7.0',
       'jest-preset-angular': '~14.5.1',
-      'modify-source-webpack-plugin': '^4.1.0',
-      webpack: '5.94.0',
+      nx: '19.8.14',
+      prettier: '^3.5.3',
+      'sonar-scanner': '^3.1.0',
+      typescript: '~5.5.4',
+      webpack: '5.95.0',
     }
   );
 
-  addScriptsToPackageJson(tree, options);
-
   addOverridesToPackageJson(tree);
-
   adaptTsConfig(tree, options);
-
   adaptProjectConfiguration(tree, options);
-
   adaptJestConfig(tree);
-
   adaptAngularPrefixConfig(tree);
 
   await formatFiles(tree);
@@ -161,27 +195,44 @@ export async function angularGenerator(
 
   return async () => {
     await applicationGeneratorCallback();
-
-    installPackagesTask(tree);
-    execSync('npm run apigen', {
-      cwd: tree.root,
-      stdio: 'inherit',
-    });
+    let cmd = 'rm -rf .vscode ';
+    log(cmd);
+    execSync(cmd, { cwd: tree.root, stdio: 'inherit' });
+    cmd = 'npm run apigen ';
+    log(cmd);
+    execSync(cmd, { cwd: tree.root, stdio: 'inherit' });
     const files = tree
       .listChanges()
       .map((c) => c.path)
       .filter((p) => p.endsWith('.ts'))
       .join(' ');
-    execSync('npx organize-imports-cli ' + files, {
-      cwd: tree.root,
-      stdio: 'inherit',
-    });
-    execSync('npx prettier --write ' + files, {
-      cwd: tree.root,
-      stdio: 'inherit',
-    });
-    installPackagesTask(tree, true);
+    cmd = 'npx prettier --write ';
+    log(cmd);
+    execSync(cmd + files, { cwd: tree.root, stdio: 'inherit' });
   };
+}
+
+function addBaseToPackageJson(tree: Tree, options: AngularGeneratorSchema) {
+  updateJson(tree, 'package.json', (pkgJson) => {
+    pkgJson.name = 'onecx-' + names(options.name).fileName + '-ui';
+    pkgJson.private = true;
+    pkgJson.license = 'Apache-2.0';
+    return pkgJson;
+  });
+}
+
+function addExtensionsToPackageJson(tree: Tree) {
+  updateJson(tree, 'package.json', (pkgJson) => {
+    pkgJson.husky = {
+      hooks: {
+        'pre-commit': 'pretty-quick --staged',
+      },
+    };
+    pkgJson.jestSonar = {
+      reportPath: 'reports',
+    };
+    return pkgJson;
+  });
 }
 
 function addOverridesToPackageJson(tree: Tree) {
@@ -198,23 +249,25 @@ function addOverridesToPackageJson(tree: Tree) {
 
 function addScriptsToPackageJson(tree: Tree, options: AngularGeneratorSchema) {
   updateJson(tree, 'package.json', (pkgJson) => {
-    pkgJson.name = names(options.name).fileName;
     pkgJson.scripts = pkgJson.scripts ?? {};
     pkgJson.scripts[
       'apigen'
-    ] = `openapi-generator-cli generate -i src/assets/swagger/${options['name']}-bff.yaml -c apigen.yaml -o src/app/shared/generated -g typescript-angular --type-mappings AnyType=object`;
+    ] = `openapi-generator-cli generate -i src/assets/api/openapi-bff.yaml -c apigen.yaml -o src/app/shared/generated -g typescript-angular --type-mappings AnyType=object`;
     pkgJson.scripts['start'] = 'nx serve';
     pkgJson.scripts['build'] = 'nx build';
     pkgJson.scripts[
       'postbuild'
     ] = `mv "$(find dist/${options['name']} -maxdepth 1 -type f -name 'styles.*.css' | head -n 1)" dist/${options['name']}/styles.css`;
+    pkgJson.scripts['clean'] =
+      'npm cache clean --force && npx clear-npx-cache && rm -rf *.log dist reports .nx .angular .eslintcache ./node_modules/.cache/prettier/.prettier-cache';
     pkgJson.scripts['format'] = 'nx format:write --uncommitted';
+    pkgJson.scripts['prepare'] = 'husky init || true';
     pkgJson.scripts['lint'] = 'nx lint';
     pkgJson.scripts['lint:fix'] = 'nx lint --fix';
+    pkgJson.scripts['sonar'] = 'npx sonar-scanner';
     pkgJson.scripts['test'] = 'nx test';
     pkgJson.scripts['test:ci'] =
       'nx test --watch=false --browsers=ChromeHeadless --code-coverage';
-
     return pkgJson;
   });
 }
@@ -225,7 +278,7 @@ function adaptTsConfig(tree: Tree, options: AngularGeneratorSchema) {
   const find = ['"files": [', '"compilerOptions": {'];
   const replaceWith = [
     `"files": [
-    "src/app/${fileName}-app.remote.module.ts",
+    "src/app/onecx-${fileName}.remote.module.ts",
     "src/polyfills.ts",
   `,
     `"compilerOptions": {
@@ -234,7 +287,7 @@ function adaptTsConfig(tree: Tree, options: AngularGeneratorSchema) {
   ];
 
   safeReplace(
-    'Adapt files and compilerOptions Typescript Config',
+    'Adapt files and compilerOptions Typescript config',
     filePath,
     find,
     replaceWith,
@@ -289,6 +342,18 @@ function adaptProjectConfiguration(
     ...(config.targets['build'].configurations ?? {}),
     production: {
       ...(config.targets['build'].configurations.production ?? {}),
+      budgets: [
+        {
+          type: 'initial',
+          maximumWarning: '1mb',
+          maximumError: '2mb',
+        },
+        {
+          type: 'anyComponentStyle',
+          maximumWarning: '8kb',
+          maximumError: '10kb',
+        },
+      ],
       fileReplacements: [
         ...(config.targets['build'].configurations.production
           .fileReplacements ?? []),

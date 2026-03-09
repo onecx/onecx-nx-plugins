@@ -1,0 +1,192 @@
+import { Component, OnInit, inject } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { Observable, map } from 'rxjs'
+import { TranslatePipe } from '@ngx-translate/core';
+import {
+  Action,
+  BreadcrumbService,
+  ObjectDetailItem,
+} from '@onecx/angular-accelerator';
+
+import { select<%= resourceClassName %>DetailsViewModel } from './<%= resourceFileName %>-details.selectors';
+import { <%= resourcePropertyName %>DetailsActions } from './<%= resourceFileName %>-details.actions';
+import {
+  <%= resourceClassName %>DetailsViewModel
+} from './<%= resourceFileName %>-details.viewmodel';
+import { PrimeIcons } from 'primeng/api';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+
+@Component({
+  selector: 'app-<%= resourceFileName %>-details',
+  templateUrl: './<%= resourceFileName %>-details.component.html',
+  styleUrls: ['./<%= resourceFileName %>-details.component.scss'],
+  standalone: false,
+})
+export class <%= resourceClassName %>DetailsComponent implements OnInit {
+  private store = inject(Store);
+  private breadcrumbService = inject(BreadcrumbService);
+
+  viewModel$: Observable<<%= featureClassName %>DetailsViewModel> = this.store.select(select<%= featureClassName %>DetailsViewModel);
+  headerLabels$: Observable<ObjectDetailItem[]> = this.viewModel$.pipe(
+    map((vm) => {
+      const labels: ObjectDetailItem[] = [
+        //ACTION D1: Add header values here
+        {
+          label: '<%= featureConstantName %>_DETAILS.FORM.ID',
+          labelPipe: TranslatePipe,
+          value: vm.details?.id,
+        },
+      ];
+      return labels;
+    })
+  );
+
+  headerActions$: Observable<Action[]> = this.viewModel$.pipe(
+      map((vm) => {
+        const actions: Action[] = [
+          {
+            titleKey: '<%= resourceConstantName %>_DETAILS.GENERAL.BACK',
+            labelKey: '<%= resourceConstantName %>_DETAILS.GENERAL.BACK',
+            show: 'always',
+            disabled: !vm.backNavigationPossible,
+            permission: '<%= resourceConstantName %>#BACK',
+            <%_ if(editMode){ _%> 
+            showCondition: !vm.editMode,
+            <%_ } _%>
+            actionCallback: () => {
+              this.store.dispatch(
+                <%= resourcePropertyName %>DetailsActions.navigateBackButtonClicked(),
+              );
+            },
+          },
+          <%_ if(editMode){ _%> 
+          {
+            titleKey: '<%= resourceConstantName %>_DETAILS.GENERAL.EDIT',
+            labelKey: '<%= resourceConstantName %>_DETAILS.GENERAL.EDIT',
+            show: 'always',
+            icon: PrimeIcons.PENCIL,
+            conditional: true,
+            showCondition: !vm.editMode,
+            actionCallback: () => {
+              this.edit()
+            }
+          },
+          {
+            titleKey: '<%= resourceConstantName %>_DETAILS.GENERAL.CANCEL',
+            labelKey: '<%= resourceConstantName %>_DETAILS.GENERAL.CANCEL',
+            show: 'always',
+            icon: PrimeIcons.TIMES,
+            conditional: true,
+            showCondition: vm.editMode,
+            disabled: vm.isSubmitting,
+            actionCallback: () => {
+              this.cancel()
+            }
+          },
+          {
+            titleKey: '<%= resourceConstantName %>_DETAILS.GENERAL.SAVE',
+            labelKey: '<%= resourceConstantName %>_DETAILS.GENERAL.SAVE',
+            show: 'always',
+            icon: PrimeIcons.SAVE,
+            conditional: true,
+            disabled: vm.isSubmitting,
+            showCondition: vm.editMode,
+            actionCallback: () => {
+              this.save()
+            }
+          },        
+          <%_ } _%>
+          <%_ if(allowDelete){ _%> 
+          {
+              titleKey: '<%= resourceConstantName %>_DETAILS.GENERAL.DELETE',
+              labelKey: '<%= resourceConstantName %>_DETAILS.GENERAL.DELETE',
+              icon: PrimeIcons.TRASH,
+              show: 'asOverflow',
+              btnClass: '',
+              conditional: true,
+              <%_ if(editMode){ _%>
+              showCondition: !vm.editMode,
+              <%_ } _%> 
+              actionCallback: () => {
+                this.delete()
+              },
+            },
+          <%_ } _%>
+          {
+            titleKey: '<%= resourceConstantName %>_DETAILS.GENERAL.MORE',
+            icon: PrimeIcons.ELLIPSIS_V,
+            show: 'always',
+            btnClass: '',
+            actionCallback: () => {
+              // TODO: add callback
+            },
+          },
+        ];
+        return actions;
+      })
+    );
+
+  <%_ if(editMode){ _%>
+  public formGroup: FormGroup
+  <%_ } _%>
+
+  constructor() {   
+    <%_ if(editMode){ _%>
+     this.formGroup = new FormGroup({
+      id: new FormControl(null, [Validators.maxLength(255)]),
+    })
+    this.formGroup.disable();
+
+    this.viewModel$.subscribe((vm) => {
+      if (!vm.editMode) {
+        this.formGroup.setValue({
+          id: vm.details?.id
+        })
+        this.formGroup.markAsPristine();
+      }
+
+      if (vm.editMode) {
+        this.formGroup.enable()
+      } else {
+        this.formGroup.disable()
+      }
+    })
+    <%_ } _%>
+  }
+
+  ngOnInit(): void {
+    this.breadcrumbService.setItems([
+      {
+        titleKey: '<%= resourceConstantName %>_DETAILS.BREADCRUMB',
+        labelKey: '<%= resourceConstantName %>_DETAILS.BREADCRUMB',
+        routerLink: '/<%= resourceFileName %>',
+      },
+    ]);
+  }
+
+  <%_ if(editMode){ _%> 
+  edit() {
+    this.store.dispatch(<%= resourcePropertyName %>DetailsActions.editButtonClicked())
+  }
+
+  cancel() {
+    this.store.dispatch(<%= resourcePropertyName %>DetailsActions.cancelButtonClicked(
+      { dirty: this.formGroup.dirty }
+    ))
+  }
+
+  save() {
+    this.store.dispatch(<%= resourcePropertyName %>DetailsActions.saveButtonClicked(
+      {
+        details: this.formGroup.value
+      }
+    ))
+  }
+  <%_ } _%>
+  
+  <%_ if(allowDelete){ _%> 
+  delete() {
+      this.store.dispatch(<%= resourcePropertyName %>DetailsActions.deleteButtonClicked())
+  }
+  <%_ } _%>  
+}

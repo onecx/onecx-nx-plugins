@@ -1,0 +1,20 @@
+import { <%= resourceClassName %>SearchCriteria } from './<%= resourceFileName %>-search.parameters'
+import {
+  DataTableColumn,
+  RowListGridData,
+  InteractiveDataViewComponentState,
+  SearchHeaderComponentState,
+  DiagramComponentState,
+} from '@onecx/angular-accelerator';
+
+export interface <%= resourceClassName %>SearchViewModel {
+    columns: DataTableColumn[];
+    searchCriteria: <%= resourceClassName %>SearchCriteria;
+    results: RowListGridData[]; 
+    resultComponentState: InteractiveDataViewComponentState | null;
+    searchHeaderComponentState: SearchHeaderComponentState | null;
+    diagramComponentState: DiagramComponentState | null;   
+    chartVisible: boolean;   
+    searchLoadingIndicator: boolean;
+    searchExecuted: boolean; 
+}

@@ -1,5 +1,6 @@
 import { Tree, joinPathFragments, names, updateJson } from '@nx/devkit';
 import * as fs from 'fs';
+
 import { deepMerge } from '../../shared/deepMerge';
 import { GeneratorStep } from '../../shared/generator.utils';
 import { renderJsonFile } from '../../shared/renderJsonFile';

@@ -1,0 +1,35 @@
+import { select<%= resourceClassName %>DetailsViewModel } from './<%= resourceFileName %>-details.selectors';
+
+describe('<%= resourceClassName %>Details selectors', () => {
+  describe('select<%= resourceClassName %>DetailsViewModel', () => {
+    it('should combine the input to be the viewmodel', () => {
+      const details = { id: '10' };
+      const detailsLoadingIndicator = true;
+      const backNavigationPossible = true;
+      const detailsLoaded = true;
+      const editMode = true;
+      const isSubmitting = true;
+      expect(
+        select<%= resourceClassName %>DetailsViewModel.projector(
+          details,
+          detailsLoadingIndicator,
+          backNavigationPossible,
+          detailsLoaded,
+          <%_ if(editMode){ _%>
+          editMode,
+          isSubmitting
+          <%_ } _%>
+        )
+      ).toEqual({
+        details,
+        detailsLoadingIndicator,
+        backNavigationPossible,
+        detailsLoaded,
+        <%_ if(editMode){ _%>
+        editMode,
+        isSubmitting
+        <%_ } _%>
+      });
+    });
+  });
+});

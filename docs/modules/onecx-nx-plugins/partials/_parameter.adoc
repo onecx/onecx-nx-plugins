@@ -8,11 +8,17 @@
 # end::flavor[]
 # tag::product[]
   _<product>_::
-    The technical name of the application (product) for a certain business case. +
+    The technical base name of the application (product) for a certain business case. +
     E.g. `+bookstore+` for an application named "Book Store".
 # end::product[]
 # tag::feature[]
-  _<feature>_::         
-    The name of the feature module to be created. +
+  _<feature>_::
+    The name of the generated feature module. +
     E.g. `+book+` for a feature module named "Book".
 # end::feature[]
+# tag::resource[]
+  _<resource>_::
+    Optional. The name of the resource entity for which the feature module is generated. +
+    E.g. `+book+` for a resource entity named "Book".
+    If not specified, the generator will use the feature name as resource name by default.
+# end::resource[]

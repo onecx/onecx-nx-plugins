@@ -1,0 +1,260 @@
+import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
+import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { Action, Store } from '@ngrx/store';
+import { concatLatestFrom } from '@ngrx/operators'
+import { routerNavigatedAction } from '@ngrx/router-store';
+import { PrimeIcons } from 'primeng/api';
+import { catchError, filter, map, mergeMap, of, switchMap, tap } from 'rxjs';
+
+import { filterForNavigatedTo } from '@onecx/ngrx-accelerator';
+import { Injectable, inject } from '@angular/core';
+import { PortalMessageService } from '@onecx/angular-integration-interface';
+import { PortalDialogService, DialogState } from '@onecx/angular-accelerator';
+import { <%= updateRequestName%>, <%= resource %>, <%= serviceName %> } from '../../../shared/generated';
+import { selectBackNavigationPossible } from 'src/app/shared/selectors/onecx.selectors';
+import { selectRouteParam, selectUrl } from 'src/app/shared/selectors/router.selectors';
+import { <%= resourcePropertyName %>DetailsActions } from './<%= resourceFileName %>-details.actions';
+import { <%= resourceClassName %>DetailsComponent } from './<%= resourceFileName %>-details.component';
+import { <%= resourcePropertyName %>DetailsSelectors } from './<%= resourceFileName %>-details.selectors';
+@Injectable()
+export class <%= resourceClassName %>DetailsEffects {
+  private actions$ = inject(Actions);
+  private <%= featurePropertyName %>Service = inject(<%= serviceName %>);
+  private router = inject(Router);
+  private store = inject(Store);
+  private messageService = inject(PortalMessageService);
+  <%_ if(editMode){ _%>
+  private portalDialogService = inject(PortalDialogService);
+  <%_ } _%> 
+
+  navigatedToDetailsPage$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(routerNavigatedAction),
+      filterForNavigatedTo(this.router, <%= resourceClassName %>DetailsComponent),
+      concatLatestFrom(() => this.store.select(selectRouteParam('id'))),
+      map(([, id]) => {
+        return <%= resourcePropertyName %>DetailsActions.navigatedToDetailsPage({ id });
+      })
+    );
+  });
+
+  load<%= resourceClassName %>ById$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(<%= resourcePropertyName %>DetailsActions.navigatedToDetailsPage),
+      switchMap(({ id }) => {
+        if (!id) {
+          return of(
+            <%= resourcePropertyName %>DetailsActions.<%= resourcePropertyName %>DetailsLoadingFailed({ error: 'Missing ID' })
+          );
+        }
+        return this.<%= resourcePropertyName %>Service.get<%= resource %>ById({ id: id }).pipe(
+          map(({ resource }) =>
+            <%= resourcePropertyName %>DetailsActions.<%= resourcePropertyName %>DetailsReceived({
+              details: resource,
+            })
+          ),
+          catchError((error) =>
+            of(
+              <%= resourcePropertyName %>DetailsActions.<%= resourcePropertyName %>DetailsLoadingFailed({
+                error,
+              })
+            )
+          )
+        )
+      })
+    );
+  });
+
+  <%_ if(editMode){ _%> 
+  cancelButtonNotDirty$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(<%= resourcePropertyName %>DetailsActions.cancelButtonClicked),
+      filter((action) => !action.dirty),
+      map(() => {
+        return <%= resourcePropertyName %>DetailsActions.cancelEditNotDirty();
+      })
+    );
+  });
+
+  cancelButtonClickedDirty$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(<%= resourcePropertyName %>DetailsActions.cancelButtonClicked),
+      filter((action) => action.dirty),
+      switchMap(() => {
+        return this.portalDialogService.openDialog<<%= resource %> | undefined>(
+          '<%= resourceConstantName%>_DETAILS.CANCEL.HEADER',
+          '<%= resourceConstantName%>_DETAILS.CANCEL.MESSAGE',
+          '<%= resourceConstantName%>_DETAILS.CANCEL.CONFIRM',
+        );
+      }),
+      switchMap((dialogResult) => {
+        if (!dialogResult || dialogResult.button == 'secondary') {
+          return of(<%= resourcePropertyName %>DetailsActions.cancelEditBackClicked());
+        }
+        return of(<%= resourcePropertyName %>DetailsActions.cancelEditConfirmClicked());
+      })
+    );
+  });
+
+  saveButtonClicked$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(<%= resourcePropertyName %>DetailsActions.saveButtonClicked),
+      concatLatestFrom(() =>
+        this.store.select(<%= resourcePropertyName %>DetailsSelectors.selectDetails)
+      ),
+      switchMap(([action, details]) => {
+        const itemToEditId = details?.id;
+        const updatedItem = {
+          ...details,
+          ...action.details
+        }
+
+        if (!itemToEditId) {
+          return of(<%= resourcePropertyName %>DetailsActions.update<%= resourceClassName %>Cancelled());
+        }
+        const itemToEdit = {
+          dataObject: updatedItem,
+        } as Update<%= resourceClassName %>Request;
+        return this.<%= resourcePropertyName %>Service.update<%= resourceClassName %>({ id: itemToEditId, updateBookRequest: itemToEdit }).pipe(
+          map(() => {
+            this.messageService.success({
+              summaryKey: '<%= resourceConstantName%>_DETAILS.UPDATE.SUCCESS',
+            });
+            return <%= resourcePropertyName %>DetailsActions.update<%= resourceClassName %>Succeeded();
+          }),
+          catchError((error) => {
+            this.messageService.error({
+              summaryKey: '<%= resourceConstantName%>_DETAILS.UPDATE.ERROR',
+            });
+            return of(
+              <%= resourcePropertyName %>DetailsActions.update<%= resourceClassName %>Failed({
+                error,
+              })
+            );
+          })
+        );
+      },
+      ))
+  })
+
+  <%_ } _%> 
+  <%_ if(allowDelete){ _%> 
+  deleteButtonClicked$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(<%= resourcePropertyName %>DetailsActions.deleteButtonClicked),
+      concatLatestFrom(() =>
+        this.store.select(<%= resourcePropertyName %>DetailsSelectors.selectDetails)
+      ),
+      mergeMap(([, itemToDelete]) => {
+        return this.portalDialogService
+          .openDialog<unknown>(
+            '<%= resourceConstantName%>_DETAILS.DELETE.HEADER',
+            '<%= resourceConstantName%>_DETAILS.DELETE.MESSAGE',
+            {
+              key: '<%= resourceConstantName%>_DETAILS.DELETE.CONFIRM',
+              icon: PrimeIcons.CHECK,
+            },
+            {
+              key: '<%= resourceConstantName%>_DETAILS.DELETE.CANCEL',
+              icon: PrimeIcons.TIMES,
+            }
+          )
+          .pipe(
+            map((state): [DialogState<unknown>, <%= resource %> | undefined] => {
+              return [state, itemToDelete];
+            })
+          );
+      }),
+      switchMap(([dialogResult, itemToDelete]) => {
+        if (!dialogResult || dialogResult.button == 'secondary') {
+          return of(<%= resourcePropertyName %>DetailsActions.delete<%= resourceClassName %>Cancelled());
+        }
+        if (!itemToDelete) {
+          throw new Error('Item to delete not found!');
+        }
+
+        return this.<%= resourcePropertyName %>Service.delete<%= resourceClassName %>({ id: itemToDelete.id }).pipe(
+          map(() => {
+            this.messageService.success({
+              summaryKey: '<%= resourceConstantName%>_DETAILS.DELETE.SUCCESS',
+            });
+            return <%= resourcePropertyName %>DetailsActions.delete<%= resourceClassName %>Succeeded();
+          }),
+          catchError((error) => {
+            this.messageService.error({
+              summaryKey: '<%= resourceConstantName%>_DETAILS.DELETE.ERROR',
+            });
+            return of(
+              <%= resourcePropertyName %>DetailsActions.delete<%= resourceClassName %>Failed({
+                error,
+              })
+            );
+          })
+        );
+      })
+    );
+  });
+
+  delete<%= resourceClassName %>Succeeded$ = createEffect(
+    () => {
+      return this.actions$.pipe(
+        ofType(<%= resourcePropertyName %>DetailsActions.delete<%= resourceClassName %>Succeeded),
+        concatLatestFrom(() => this.store.select(selectUrl)),
+        tap(([, currentUrl]) => {
+          const urlTree = this.router.parseUrl(currentUrl);
+          urlTree.queryParams = {};
+          urlTree.fragment = null;
+
+          const targetUrl = urlTree
+            .toString()
+            .split("/")
+            .slice(0, -2)
+            .join("/");
+          this.router.navigate([targetUrl]);
+        })
+      );
+    },
+    { dispatch: false }
+  );
+
+  <%_ } _%>
+
+  errorMessages: { action: Action; key: string }[] = [
+    {
+      action:
+        <%= resourcePropertyName %>DetailsActions.<%= resourcePropertyName %>DetailsLoadingFailed,
+      key: '<%= resourceConstantName %>_DETAILS.ERROR_MESSAGES.DETAILS_LOADING_FAILED',
+    },
+  ];
+
+  displayError$ = createEffect(
+    () => {
+      return this.actions$.pipe(
+        tap((action) => {
+          const e = this.errorMessages.find(
+            (e) => e.action.type === action.type
+          );
+          if (e) {
+            this.messageService.error({ summaryKey: e.key });
+          }
+        })
+      );
+    },
+    { dispatch: false }
+  );
+
+  navigateBack$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(<%= resourcePropertyName %>DetailsActions.navigateBackButtonClicked),
+      concatLatestFrom(() => [this.store.select(selectBackNavigationPossible)]),
+      switchMap(([, backNavigationPossible]) => {
+        if (!backNavigationPossible) {
+          return of(<%= resourcePropertyName %>DetailsActions.backNavigationFailed());
+        }
+        window.history.back();
+        return of(<%= resourcePropertyName %>DetailsActions.backNavigationStarted());
+      }),
+    );
+  });
+}

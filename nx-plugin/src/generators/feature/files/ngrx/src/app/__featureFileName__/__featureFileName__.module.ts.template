@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { HttpClient } from '@angular/common/http';
 import { RouterModule, Routes } from '@angular/router';
 import { SharedModule } from '../shared/shared.module';
 import {
@@ -9,17 +10,22 @@ import {
 import { DatePickerModule } from 'primeng/datepicker';
 import { TooltipModule } from 'primeng/tooltip';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { LetDirective } from '@ngrx/component';
+import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
 import {
   MissingTranslationHandler,
   TranslateLoader,
   TranslateModule
 } from '@ngx-translate/core';
-import { HttpClient } from '@angular/common/http';
-import { LetDirective } from '@ngrx/component';
-import { StoreModule } from '@ngrx/store';
+import { CalendarModule } from 'primeng/calendar';
+
+import { PortalCoreModule } from '@onecx/portal-integration-angular'
+import { addInitializeModuleGuard } from '@onecx/angular-integration-interface'
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
 import { routes } from './<%= featureFileName %>.routes';
 import { <%= featurePropertyName %>Feature } from './<%= featureFileName %>.reducers';
-import { EffectsModule } from '@ngrx/effects';
 import { PermissionService, PortalPageComponent } from '@onecx/angular-utils';
 
 

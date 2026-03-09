@@ -1,9 +1,11 @@
 {
   "name": "@onecx/create-workspace",
-  "version": "7.0.0-rc.1",
+  "version": "8.0.0-rc.1",
+  "license": "Apache-2.0",
+  "contributors": [],
   "repository": {
     "type": "git",
-    "url": "https://github.com/onecx/onecx-nx-plugins"
+    "url": "git+https://github.com/onecx/onecx-nx-plugins.git"
   },
   "dependencies": {
     "create-nx-workspace": "19.8.14",

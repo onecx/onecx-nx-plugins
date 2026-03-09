@@ -13,6 +13,11 @@ export function createSearchEndpoint(
   const response = {};
   response[data.type] = {
     operationId: data.operationId,
+    'x-onecx': {
+      permissions: {
+        [`${parameter.resource}`]: ['read']
+      },
+    },
     tags: data.tags,
     description: data.description,
     requestBody: {
@@ -25,8 +30,8 @@ export function createSearchEndpoint(
       },
     },
     responses: {
-      '200': {
-        description: 'OK',
+      "200": {
+        description: `${parameter.resource} search results retrieved successfully`,
         content: {
           'application/json': {
             schema: {
@@ -35,11 +40,15 @@ export function createSearchEndpoint(
           },
         },
       },
-      '400': {
-        description: 'Bad request',
-      },
-      '500': {
-        description: 'Something went wrong',
+      "400": {
+        description: `Bad request`,
+        content: {
+          'application/json': {
+            schema: {
+              $ref: `#/components/schemas/ProblemDetailResponse`,
+            },
+          },
+        },
       },
     },
   };

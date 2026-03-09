@@ -12,13 +12,28 @@ import * as ora from 'ora';
 import { execSync } from 'child_process';
 import processParams, { GeneratorParameter } from '../shared/parameters.utils';
 import { safeReplace } from '../shared/safeReplace';
+import { GeneralPermissionStep } from './steps/general-helm-values.step';
+import { GeneralOpenAPIStep } from './steps/general-openapi.step';
+import { GeneratorProcessor } from '../shared/generator.utils';
 
 const PARAMETERS: GeneratorParameter<FeatureGeneratorSchema>[] = [
   {
-    key: 'standalone',
+    key: 'customizeNamingForAPI',
     type: 'boolean',
-    required: 'never',
+    required: 'interactive',
     default: false,
+    prompt: 'Do you want to customize the names for the generated API?',
+  },
+  {
+    key: 'resource',
+    type: 'text',
+    required: 'interactive',
+    default: (values) => {
+      return `${names(values.name).className}`;
+    },
+    prompt: 'Provide a name for your Resource (e.g. Book): ',
+    showInSummary: true,
+    showRules: [{ showIf: (values) => values.customizeNamingForAPI }],
   },
 ];
 
@@ -43,18 +58,31 @@ export async function featureGenerator(
     throw new Error('Currently only NgRx projects are supported.');
   }
 
+  const projectConfig = tree.read('project.json');
+  let workspaceName = '';
+  if (projectConfig) {
+    const projectJson = JSON.parse(projectConfig.toString());
+    workspaceName = projectJson.name; // or the relevant property
+  }
+
   generateFiles(
     tree,
     joinPathFragments(__dirname, './files/ngrx'),
     `${directory}/`,
     {
       ...options,
+      workspaceName: workspaceName,
       featureFileName: names(options.name).fileName,
-      featurePropertyName: names(options.name).propertyName,
       featureClassName: names(options.name).className,
+      featurePropertyName: names(options.name).propertyName,
       standalone: options.standalone,
     }
   );
+  const generatorProcessor = new GeneratorProcessor();
+  generatorProcessor.addStep(new GeneralPermissionStep());
+  generatorProcessor.addStep(new GeneralOpenAPIStep());
+
+  generatorProcessor.run(tree, options, spinner);
 
   adaptAppRoutingModule(tree, options);
 
@@ -62,19 +90,22 @@ export async function featureGenerator(
 
   spinner.succeed();
   return () => {
+    let cmd = '';
+    function log(command: string) {
+      console.log('');
+      console.log('generate feature ==> ' + command);
+    }
     const files = tree
       .listChanges()
       .map((c) => c.path)
       .filter((p) => p.endsWith('.ts'))
       .join(' ');
-    execSync('npx organize-imports-cli ' + files, {
-      cwd: tree.root,
-      stdio: 'inherit',
-    });
-    execSync('npx prettier --write ' + files, {
-      cwd: tree.root,
-      stdio: 'inherit',
-    });
+    cmd = 'npx --yes organize-imports-cli ';
+    log(cmd);
+    execSync(cmd + files, { cwd: tree.root, stdio: 'inherit' });
+    cmd = 'npx prettier --write ';
+    log(cmd);
+    execSync(cmd + files, { cwd: tree.root, stdio: 'inherit' });
   };
 }
 
@@ -86,6 +117,8 @@ function adaptAppRoutingModule(tree: Tree, options: FeatureGeneratorSchema) {
   const replaceWith = [
     `import { startsWith } from '@onecx/angular-webcomponents';`,
     `routes: Routes = [ {
+    // Adjust the matcher to match the feature route.
+    // If you only have one feature, you can use '' for simplification.
     matcher: startsWith('${fileName}'),
     loadChildren: () =>
       import('./${fileName}/${fileName}.module').then(

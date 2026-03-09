@@ -1,0 +1,114 @@
+[source,javascript]
+----
+const bodyParser = require("body-parser");
+const express = require("express");
+const { v4 } = require("uuid");
+const app = express();
+app.use(express.json());
+
+
+const apiNames = ["book"];
+const generateBooks = (count) => {
+  let results = [];
+  for (let i = 0; i < count; i++) {
+    results.push({
+      creationDate: "2024-04-12T06:08:27.806Z",
+      creationUser: "anonymous",
+      modificationDate: "2024-04-12T06:08:40.312Z",
+      modificationUser: "anonymous",
+      modificationCount: "0",
+      id: i,
+      bookTitle: "Big Bang and Black Holes - " + i,
+      bookType: "SCIENCE",
+      bookAuthor: "Stephan Hawking",
+      bookIsbn: "978-3-99-123456-" + i,
+      bookPrice: "12,80",
+      bookPublisher: 'World Scientific',
+      bookPublishedDate: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000).toISOString()
+    });
+  }
+  return { number: 0, size: 100, totalElements: results.length, totalPages: 1, stream: results };
+};
+
+// Book Endpoints
+app.post("/book/search", (req, res) => {
+  const bookTitle = req.body.bookTitle;
+
+  res.send(
+    generateBooks(23)
+  );
+});
+
+
+app.get(`/book/:id`, (req, res) => {
+  res.send({
+    book: {
+      creationDate: "2026-02-12T05:08:08.080Z",
+      creationUser: "anonymous",
+      modificationDate: "2026-02-12T05:18:18.888Z",
+      modificationUser: "anonymous",
+      modificationCount: "0",
+      id: req.id,
+      bookTitle: "Big Bang and Black Holes - " + req.id,
+      bookType: "SCIENCE",
+      bookAuthor: "Stephan Hawking",
+      bookIsbn: "978-3-99-123456-" + req.id,
+      bookPrice: "12,80",
+      bookPublisher: 'World Scientific',
+      bookPublishedDate: "1993-02-12T05:08:08.080Z",
+    },
+  });
+});
+
+// Generic Endpoints
+for (const apiname of apiNames) {
+  app.post(`/${apiname}/search`, (req, res) => {
+    res.send({
+      results: data[apiname],
+      totalNumberOfResults: data[apiname].length,
+    });
+  });
+
+  app.delete(`/${apiname}/:id`, (req, res) => {
+    data[apiname] = data[apiname].filter((i) => i.id != req.params.id);
+    res.status(204).send("Item deleted");
+  });
+
+  app.post(`/${apiname}/`, (req, res) => {
+    let item = {
+      id: v4(),
+      ...req.body.dataObject,
+    };
+    data[apiname] = [...data[apiname], item];
+    res.send(item);
+  });
+
+  app.put(`/${apiname}/:id`, (req, res) => {
+    let item = data[apiname].find((i) => i.id == req.params.id);
+
+    item = {
+      ...item,
+      ...req.body.dataObject,
+    };
+
+    data[apiname] = data[apiname].map((_item) => {
+      if (_item.id == item.id) {
+        return item;
+      } else {
+        return _item;
+      }
+    });
+
+    res.send(item);
+  });
+
+  app.get(`/${apiname}/:id`, (req, res) => {
+    const result = {
+      result: data[apiname].find((i) => i.id == req.params.id),
+    };
+    res.send(result);
+  });
+}
+
+app.listen(3000, () => console.log("Bookstore app is listening on port 3000."));
+----

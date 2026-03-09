@@ -1,4 +1,5 @@
 import { Tree, names } from '@nx/devkit';
+
 import { GeneratorStep } from '../../shared/generator.utils';
 import { safeReplace } from '../../shared/safeReplace';
 import { CreateUpdateGeneratorSchema } from '../schema';
@@ -7,33 +8,34 @@ export class SearchTestsStep
   implements GeneratorStep<CreateUpdateGeneratorSchema>
 {
   process(tree: Tree, options: CreateUpdateGeneratorSchema): void {
-    const fileName = names(options.featureName).fileName;
-    const className = names(options.featureName).className;
-    const propertyName = names(options.featureName).propertyName;
-    const filePath = `src/app/${fileName}/pages/${fileName}-search/${fileName}-search.component.spec.ts`;
+    const featureFileName = names(options.featureName).fileName;
+    const resourceFileName = names(options.resource).fileName;
+    const resourceClassName = names(options.resource).className;
+    const resourcePropertyName = names(options.resource).propertyName;
+    const filePath = `src/app/${featureFileName}/pages/${resourceFileName}-search/${resourceFileName}-search.component.spec.ts`;
 
     const content = tree.read(filePath, 'utf8') ?? '';
 
     if (!content.includes(`PrimeIcons`) ) {
       safeReplace(
-        `Add PrimeIcons import to ${className}SearchComponent spec`,
+        `Add PrimeIcons import to ${resourceClassName}SearchComponent spec`,
         filePath,
         [/^/],
-        [`import { PrimeIcons } from 'primeng/api';\n`],
+        [`import { PrimeIcons } from 'primeng/api';`],
         tree
       );
     }
 
-    if (content.includes(`edit${className}ButtonClicked action on item edit click`)) {
+    if (content.includes(`edit${resourceClassName}ButtonClicked action on item edit click`)) {
       return;
     }
 
     const snippet = `
-      it('should dispatch edit${className}ButtonClicked action on item edit click', async () => {
+      it('should dispatch edit${resourceClassName}ButtonClicked action on item edit click', async () => {
         jest.spyOn(store, 'dispatch');
 
-        store.overrideSelector(select${className}SearchViewModel, {
-          ...base${className}SearchViewModel,
+        store.overrideSelector(select${resourceClassName}SearchViewModel, {
+          ...base${resourceClassName}SearchViewModel,
           results: [
             {
               id: '1',
@@ -51,7 +53,7 @@ export class SearchTestsStep
         });
         store.refreshState();
 
-        const interactiveDataView = await ${propertyName}Search.getSearchResults();
+        const interactiveDataView = await ${resourceClassName}Search.getSearchResults();
         const dataView = await interactiveDataView.getDataView();
         const dataTable = await dataView.getDataListGrid();
         const rowActionButtons = await dataTable?.getActionButtons('list');
@@ -69,21 +71,21 @@ export class SearchTestsStep
         await editButton?.click();
 
         expect(store.dispatch).toHaveBeenCalledWith(
-          ${className}SearchActions.edit${className}ButtonClicked({ id: '1' })
+          ${resourcePropertyName}SearchActions.edit${resourceClassName}ButtonClicked({ id: '1' })
         );
       });
 
-      it('should dispatch create${className}ButtonClicked action on create click', async () => {
+      it('should dispatch create${resourceClassName}ButtonClicked action on create click', async () => {
         jest.spyOn(store, 'dispatch');
 
-        const header = await ${propertyName}Search.getHeader();
+        const header = await ${resourceClassName}Search.getHeader();
         const createButton = await (await header.getPageHeader()).getInlineActionButtonByIcon(PrimeIcons.PLUS);
 
         expect(createButton).toBeTruthy();
         await createButton?.click();
 
         expect(store.dispatch).toHaveBeenCalledWith(
-          ${className}SearchActions.create${className}ButtonClicked()
+          ${resourcePropertyName}SearchActions.create${resourceClassName}ButtonClicked()
         );
       });
     `;

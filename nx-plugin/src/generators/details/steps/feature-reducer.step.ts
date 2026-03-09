@@ -7,17 +7,18 @@ export class FeatureReducerStep
   implements GeneratorStep<DetailsGeneratorSchema>
 {
   process(tree: Tree, options: DetailsGeneratorSchema): void {
-    const fileName = names(options.featureName).fileName;
+    const featureFileName = names(options.featureName).fileName;
+    const resourceFileName = names(options.resource).fileName;
     const propertyName = names(options.featureName).propertyName;
-    const filePath = `src/app/${fileName}/${fileName}.reducers.ts`;
+    const filePath = `src/app/${featureFileName}/${featureFileName}.reducers.ts`;
     const find = [/^/, '>({'];
     const replaceWith = [
-      `import { ${propertyName}DetailsReducer } from './pages/${fileName}-details/${fileName}-details.reducers';`,
+      `import { ${propertyName}DetailsReducer } from './pages/${resourceFileName}-details/${resourceFileName}-details.reducers';`,
       `>({
     details: ${propertyName}DetailsReducer,`,
     ];
     safeReplace(
-      `Adapt ${fileName}Reducer with details reducer setup`,
+      `Adapt ${propertyName}Reducer with details reducer setup`,
       filePath,
       find,
       replaceWith,

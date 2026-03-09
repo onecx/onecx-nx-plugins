@@ -1,15 +1,16 @@
 import { Tree, joinPathFragments, names } from '@nx/devkit';
+
 import { GeneratorStep } from '../../shared/generator.utils';
 import { safeReplace } from '../../shared/safeReplace';
 import { DeleteGeneratorSchema } from '../schema';
 
 export class FeatureModuleStep implements GeneratorStep<DeleteGeneratorSchema> {
   process(tree: Tree, options: DeleteGeneratorSchema): void {
-    const fileName = names(options.featureName).fileName;
+    const featureFileName = names(options.featureName).fileName;
     const moduleFilePath = joinPathFragments(
       'src/app',
-      fileName,
-      fileName + '.module.ts'
+      featureFileName,
+      featureFileName + '.module.ts'
     );
     const find = [`from '@ngrx/effects';`];
     const replaceWith = [
@@ -24,7 +25,7 @@ export class FeatureModuleStep implements GeneratorStep<DeleteGeneratorSchema> {
     declarations:`);
     }
     safeReplace(
-      `Add providePortalDialogService to ${fileName}Module providers`,
+      `Add providePortalDialogService to ${featureFileName}Module providers`,
       moduleFilePath,
       find,
       replaceWith,

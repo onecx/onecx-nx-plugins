@@ -98,13 +98,13 @@ export function safeReplace(
   const result = performReplacements(content, find, replaceWith);
 
   if (result.success) {
-    tree.write(file, result.content!);
+    tree.write(file, result.content);
   } else {
     const comment = `// Generator Failure occurred!
 // The goal of the generation was to: ${goal}
 //
 // The following replacements failed:
-${result.errors!.map((error) => `// ${error}`).join('\n')}
+${result.errors.map((error) => `// ${error}`).join('\n')}
 //
 // Please perform the replacements manually.
 `;
@@ -115,6 +115,6 @@ ${result.errors!.map((error) => `// ${error}`).join('\n')}
     console.error(
       `Error: Some replacements could not be completed. Review the file for more information: ${file}`
     );
-    console.error(`Errors: ${result.errors!.join('\n')}`);
+    console.error(`Errors: ${result.errors.join('\n')}`);
   }
 }

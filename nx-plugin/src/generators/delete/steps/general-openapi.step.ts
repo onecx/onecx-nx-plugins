@@ -7,9 +7,8 @@ export class GeneralOpenAPIStep
   implements GeneratorStep<DeleteGeneratorSchema>
 {
   process(tree: Tree, options: DeleteGeneratorSchema): void {
-    const openApiFolderPath = 'src/assets/swagger';
-    const openApiFiles = tree.children(openApiFolderPath);
-    const bffOpenApiPath = openApiFiles.find((f) => f.endsWith('-bff.yaml'));
+    const openApiFolderPath = 'src/assets/api';
+    const bffOpenApiPath = 'openapi-bff.yaml';
     const bffOpenApiContent = tree.read(
       joinPathFragments(openApiFolderPath, bffOpenApiPath),
       'utf8'

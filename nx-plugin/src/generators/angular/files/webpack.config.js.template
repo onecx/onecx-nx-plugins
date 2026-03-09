@@ -4,11 +4,10 @@ const {
   withModuleFederationPlugin,
 } = require('@angular-architects/module-federation/webpack');
 const config = withModuleFederationPlugin({
-  name: '<%= remoteModuleFileName %>-app',
+  name: 'onecx-<%= remoteModuleFileName %>-ui',
   filename: 'remoteEntry.js',
   exposes: {
-    './<%= remoteModuleName %>Module':
-      './src/main.ts',
+    './OneCX<%= remoteModuleName %>Module': './src/main.ts'
   },
   shared: share({
     '@angular/core': {
@@ -34,19 +33,23 @@ const config = withModuleFederationPlugin({
       requiredVersion: 'auto',
       includeSecondaries: true,
     },
+    '@angular/forms': {
+      requiredVersion: 'auto',
+      includeSecondaries: true,
+      eager: false,
+    },
+    '@angular/platform-browser': { 
+      requiredVersion: 'auto',
+      includeSecondaries: true 
+    },
     '@angular/router': {
       requiredVersion: 'auto',
       includeSecondaries: true,
     },
-    primeng: {
-      requiredVersion: 'auto',
-      includeSecondaries: true
-    },
-    rxjs: {
-      requiredVersion: 'auto',
-      includeSecondaries: true,
-    },
-     '@onecx/accelerator': {
+    primeng: { requiredVersion: 'auto', includeSecondaries: true },
+    rxjs: { requiredVersion: 'auto', includeSecondaries: true },
+    '@ngx-translate/core': { requiredVersion: 'auto' },
+    '@onecx/accelerator': {
       requiredVersion: 'auto',
       includeSecondaries: true,
     },
@@ -77,30 +80,19 @@ const config = withModuleFederationPlugin({
     '@onecx/integration-interface': {
       requiredVersion: 'auto',
       includeSecondaries: true,
-    },
-    '@ngx-translate/core': {
-      requiredVersion: 'auto',
-    },
+    }
   }),
+  sharedMappings: ['@onecx/portal-integration-angular'],
 });
 
 const plugins = config.plugins.filter((plugin) => !(plugin instanceof ModifyEntryPlugin))
 
 module.exports = {
   ...config,
-  plugins: [...plugins],
-  output: {
-    uniqueName: '<%= fileName %>',
-    publicPath: 'auto'
-  },
-  experiments: {  
-    ...config.experiments,
-    topLevelAwait: true
-  },
-  optimization: {
-    runtimeChunk: false,
-    splitChunks: false
-  },
+  plugins,
+  output: { uniqueName: 'onecx-<%= fileName %>-ui', publicPath: 'auto' },
+  experiments: { ...config.experiments, topLevelAwait: true },
+  optimization: { runtimeChunk: false, splitChunks: false },
   module: {
     parser: {
       javascript: {

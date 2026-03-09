@@ -72,8 +72,13 @@ export function createUpdateEndpoint(
 ) {
   const response = {};
   response[data.type] = {
-    operationId: data.operationId,
+    'x-onecx': {
+      permissions: {
+        [parameter.resource.toLocaleLowerCase()]: ['write'],
+      },
+    },
     tags: data.tags,
+    operationId: data.operationId,
     description: data.description,
     parameters: [
       {

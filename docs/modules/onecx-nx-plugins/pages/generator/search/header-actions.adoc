@@ -1,0 +1,70 @@
+ifdef::env-site[]
+include::partial$_attributes.adoc[]
+endif::[]
+:imagesdir: ../../../images
+
+:page_header_url: xref:documentation:onecx-portal-ui-libs:components/page-header.adoc
+:search_header_url: xref:documentation:onecx-portal-ui-libs:components/search-header.adoc
+
+= Configure Page Header Actions
+
+[#action-10]
+== ACTION S10
+
+Configure Header Actions::
+The header of the search page contains action buttons that allow users to perform various operations related to the search functionality. These actions can be customized to fit the specific needs of your application. +
+See more details in {page_header_url}[Page Header] and {search_header_url}[Search Header].
+
+[discrete]
+=== Template: Header Actions
+
+[horizontal]
+Directory:: `<root-of-ui-app>/src/app/<feature>/pages/<resource>-search`
+File::      `<resource>-search.component.ts`
+
+.ACTION S10 in `+<resource>-search.component.ts+`
+[%collapsible]
+====
+[source, javascript]
+----
+  // ACTION S10: Update header actions
+  headerActions$: Observable<Action[]> = this.viewModel$.pipe(map((vm) => {
+      const actions: Action[] = [
+        {
+          labelKey: '<%= resourceConstantName %>_SEARCH.HEADER_ACTIONS.EXPORT_ALL',
+          icon: PrimeIcons.DOWNLOAD,
+          titleKey: '<%= resourceConstantName %>_SEARCH.HEADER_ACTIONS.EXPORT_ALL',
+          show: 'asOverflow',
+          actionCallback: () => this.exportItems(),
+        },
+        ...
+----
+Please refer to the {group_by_count_diagram_ref}[GroupByCountDiagram Component] for more adaptations.
+====
+
+
+[discrete]
+=== Example
+
+[horizontal]
+Directory:: `bookstore/src/app/book/pages/book-search`
+File::      `book-search.component.ts`
+
+.ACTION S10 in `+book-search.component.ts+`
+[%collapsible]
+====
+[source, javascript]
+----
+  // ACTION S10: Update header actions
+  headerActions$: Observable<Action[]> = this.viewModel$.pipe(map((vm) => {
+      const actions: Action[] = [
+        {
+          labelKey: 'BOOK_SEARCH.HEADER_ACTIONS.EXPORT_ALL',
+          icon: PrimeIcons.DOWNLOAD,
+          titleKey: 'BOOK_SEARCH.HEADER_ACTIONS.EXPORT_ALL',
+          show: 'asOverflow',
+          actionCallback: () => this.exportItems(),
+        },
+        ...
+----
+====
