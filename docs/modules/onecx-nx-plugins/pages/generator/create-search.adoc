@@ -10,15 +10,21 @@ A Component is a reusable building block of the user interface in a UI Applicati
 It encapsulates the structure, behavior, and presentation of a specific part of the UI, allowing developers to create modular and maintainable applications. +
 Components can represent anything from a simple button or form field to complex data-driven views.
 
+Search Component and Entity/Resource::
+The Search Component is a specific type of component that provides a user interface for searching and displaying results based on a certain entity or resource. +
+The entity or resource represents the data model that the search component interacts with. THerefore, the resource is the base parameter for the generation of a search component.
+
 
 == Generate a Search Component
 
 The current working directory must be the root of an existing OneCX UI Application.
 
-.To run the generator, execute the following command
+When a resource name is specified with the `--resource` option, the generator will preset the API service name to `<Resource>APIService` used by the generated search component. This should correspond to the created schema in OpenAPI file, see step before.
+
+.Create a search component with the following command, preset resource/entity name
 [source,bash]
 ----
-nx generate <namespace>/nx-plugin:search  <feature>
+nx generate <namespace>/nx-plugin:search <feature> --resource=<resource>
 ----
  
 with:
@@ -26,26 +32,41 @@ with:
 ifdef::env-site[]
 include::partial$_parameter.adoc[tag=namespace]
 include::partial$_parameter.adoc[tag=feature]
+include::partial$_parameter.adoc[tag=resource]
 endif::[]
 
 Next, *you will be asked* if you would like to adapt the names for the generation. +
-If you answer "Yes", you can specify a name for the API in the following questions. This can be helpful if you want to customize an existing API. When changing names, make sure that you use the same custom names for the resource name and API service name for all generated components of the feature (search, details, create/update, delete), as these are shared.
+If you answer *No*, the generator will use the preset resource name (if specified) or derive the name from feature name. This is the fastest way. +
+If you answer *Yes*, you can specify a name for the resource/entity and the API components. This can be helpful if you want to customize an existing API.
 
 The generator creates a new search component within the specified feature module and set up the necessary structure and configurations.
+
+.Example: Search component for books - answering "Yes" to specify adjustments
+image::generated_feature_book_search_book_yes.png[]
+
+
+=== Key Naming Conventions
+* `src/app/<feature>/pages/<resource>-search` +
+  Directory for the search component and its related files
+* `<resource>SearchComponent` +
+  Name for the search component class
+* '' +
+  Default route path (empty) for the search component, see `src/app/<feature>/<feature>.routes.ts`.
+
 
 == Post-Generation Steps
 The next steps involve adapting the search component to your specific requirements and integrating it into other parts of the application. All parts that need to be adapted after the generation are described in the following sections.
 
 . xref:./search/search-criteria.adoc[Configure Search Criteria]
 . xref:./search/search-results.adoc[Configure Search Results]
-. xref:./search/configure-result-diagram.adoc[Configure Result Diagram]
-. xref:./search/update-header-actions.adoc[Update Header Actions]
-. xref:./search/update-permissions.adoc[Update Permissions]
+. xref:./search/result-diagram.adoc[Configure Result Diagram]
+. xref:./search/header-actions.adoc[Configure Header Actions]
+. xref:./search/simulated-data.adoc[Prepare Simulated Data]
 
 .All places that need to be adapted are marked with an action box like this one
 [source, javascript]
 ----
-ACTION S<ID>: <Short Description>
+ACTION S<NUMBER>: <Short Description>
 ----
 
 [TIP]
@@ -66,15 +87,32 @@ This marker is used as a placeholder for future extensions by newly generated co
 
 == Example
 
-Create a Search Component inside the *book* feature module. Execute the following command with the *bookstore* application as current working directory.
+Create a search component for books inside the *book* feature module. +
+Execute the following command with the *bookstore* application as current working directory.
 
-.Create a Search Component, without adapting names
+.Create a Search Component for Books, preset resource/entity name
 [source,bash]
 ----
-nx generate @onecx/nx-plugin:search book
+nx generate @onecx/nx-plugin:search book --resource=Book
 ----
 
-This command will generate a new search component *book-search* within the specified feature module with the necessary structure and configurations.
+This command will generate a new search component *book-search* within the specified feature module with the necessary structure and configurations. With the presetted resource/entity name *Book*, the generator will also preset the API service name to *BookAPIService* used by the generated search component. This should correspond to the created schema in OpenAPI file, see step before.
 
 .Excerpt of generated files and directories
 image::generated_feature_book_search.png[width=250]
+
+ifdef::env-site[]
+include::_integrate-into-onecx.adoc[leveloffset=+2]
+endif::[]
+
+
+=== Preview
+In the following image, the search component is integrated into the application unchanged, exactly as it was generated.
+
+.Search UI after integration into the application
+image::generated_book_search_component_org.png[]
+
+After little adaptations to the search criteria and search results, the search component can look like this:
+
+.Search UI with adapted search
+image::generated_book_search_component_example.png[]

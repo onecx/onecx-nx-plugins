@@ -1,0 +1,17 @@
+ifdef::env-site[]
+include::partial$_attributes.adoc[]
+endif::[]
+:imagesdir: ../../images
+
+= Integrate UI App into OneCX
+
+After the generation, you need to integrate the generated App into the local running OneCX. This involves adding the search component to the routing configuration of the feature module and ensuring that it is properly linked to the rest of the application.
+
+[TIP]
+It is recommended to use the mechanism of OneCX Local environment to integrate the generated UI App into the running OneCX environment. Follow the guide in {onecx_local_env_extend_ref}.
+
+.Steps for integration:
+* Start the application with a dedicated port
+* Integrate the application into running OneCX environment with this port
+* Add necessary data to the backend to be able to call the search component (product, permissions, workspace registration, menu entry, etc.)
+* After making these changes, reload the OneCX UI and navigate to the search component route
