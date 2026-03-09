@@ -8,8 +8,8 @@ endif::[]
 What is a Mock API?::
 A Mock API is a simulated version of a real API that allows developers to test and develop their applications without needing access to a live backend. It provides predefined responses to API requests, enabling frontend teams to work independently of backend systems, enabling faster load times, predictable responses, and controlled performance testing.
 
-Using a Mock API provides a more realistic testing environment, as it simulates the actual API interactions that your app will have with a backend service.
-There are different ways to prepare Mock APIs. Here we use {node_js_link}.
+Using a Mock API provides a more realistic testing environment, as it simulates the actual API interactions that your app will have with a backend service. There are different ways to prepare Mock APIs. +
+Here we use {node_js_link}.
 
 
 == Mock Server with Node.js
@@ -37,7 +37,7 @@ image::mock_server_running.png[]
 
 
 == Using the Mock API
-To use the Mock API for your generated UI app, you need to configure your app to point to the mock server's URL (e.g. http://localhost:3000) instead of a real backend URL. Due to the generated UI app is a Webpack application, the generator has also created a `proxy.conf.js` file that configures the mapping of API paths to backend URLs. This file is located in the root directory of your Angular project.
+To use the Mock API for your generated UI app, you need to configure your app to point to the mock server's URL (e.g. \http://localhost:3000) instead of a real backend URL. Due to the generated UI app is a Webpack application, the generator has also created a `proxy.conf.js` file that configures the mapping of API paths to backend URLs. This file is located in the root directory of your Angular project.
 
 [horizontal]
 Directory:: `<root-of-ui-app>`

@@ -2,6 +2,7 @@
  * Used in local environment:
  *   Request proxy to rewrite URLs and prevent CORS errors
  */
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const logFn = function (_req, _res) {
   //console.log(new Date().toISOString() + `: bypassing ${_req.method} ${_req.url} `)
 }

@@ -19,7 +19,8 @@ npx nx run-many --targets publish --ver 1.0.0 --tag latest --skip-nx-cache
 
 ## Local Development
 
-To use the created generator locally, you can use [Verdaccio](https://verdaccio.org/) which provides a local registry for npm packages.
+To use the created generator locally, you can use [Verdaccio](https://verdaccio.org/) which provides a local registry for npm packages. +
+This is primarily useful for changes within the `create_workspace` subproject. If you have only made changes to the `nx-plugin`, copying the build result to the target directory `node_modules` (see below) is simpler and recommended.
 
 ### Setup a local Verdaccio Registry
 
@@ -45,7 +46,7 @@ Now Verdaccio local registry is running, see in web-browser `http://localhost:48
 
 Then add a local user with: `npm adduser --registry http://localhost:4873/` and login.
 
-Use `admin` as user name, enter password/email as you want. Onece done you are logged in and ready to 
+Use `admin` as user name, enter password/email as you want. Onece done you are logged in and ready to publish something.
 
 ### Publish Packages to local Registry
 
