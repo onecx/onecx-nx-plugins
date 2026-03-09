@@ -12,7 +12,7 @@ export class FeatureStateStep implements GeneratorStep<SearchGeneratorSchema> {
     const filePath = `src/app/${featureFileName}/${featureFileName}.state.ts`;
 
     // remove linter directive needed for linting an empty feature
-    let find = ['/* eslint-disable  @typescript-eslint/no-empty-interface */', '/* eslint-disable  @typescript-eslint/no-empty-object-type */'];
+    let find: (string | RegExp)[] = ['/* eslint-disable  @typescript-eslint/no-empty-interface */', '/* eslint-disable  @typescript-eslint/no-empty-object-type */'];
     let replaceWith = [``, ``];
 
     safeReplace(
