@@ -71,7 +71,6 @@ export class GeneralOpenAPIStep
         type: 'object',
         properties: {
           dataObject: {
-            type: 'object',
             $ref: `#/components/schemas/${resource}`,
           },
         },
@@ -80,7 +79,6 @@ export class GeneralOpenAPIStep
         type: 'object',
         properties: {
           dataObject: {
-            type: 'object',
             $ref: `#/components/schemas/${resource}`,
           },
         },
@@ -89,7 +87,6 @@ export class GeneralOpenAPIStep
         type: 'object',
         properties: {
           dataObject: {
-            type: 'object',
             $ref: `#/components/schemas/${resource}`,
           },
           [COMMENT_KEY]:
@@ -100,7 +97,6 @@ export class GeneralOpenAPIStep
         type: 'object',
         properties: {
           dataObject: {
-            type: 'object',
             $ref: `#/components/schemas/${resource}`,
           },
           [COMMENT_KEY]:
