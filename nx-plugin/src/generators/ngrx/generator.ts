@@ -28,7 +28,7 @@ const PARAMETERS: GeneratorParameter<NgrxGeneratorSchema>[] = [
     key: 'chatty',
     type: 'boolean',
     required: 'never',
-    default: true,
+    default: false,
   },
 ];
 

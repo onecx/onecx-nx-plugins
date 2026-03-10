@@ -32,7 +32,7 @@ const PARAMETERS: GeneratorParameter<AngularGeneratorSchema>[] = [
     key: 'chatty',
     type: 'boolean',
     required: 'never',
-    default: true,
+    default: false,
   }
 ];
 
