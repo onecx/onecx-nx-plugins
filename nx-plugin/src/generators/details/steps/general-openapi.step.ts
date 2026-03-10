@@ -22,7 +22,7 @@ export class GeneralOpenAPIStep implements GeneratorStep<DetailsGeneratorSchema>
     const updateResponseName = options.updateResponseName;
 
     apiUtil.paths().set(
-      `/${propertyName}/{id}`,
+      `/${propertyName}s/{id}`,
       {
         get: {
           'x-onecx': {
@@ -78,17 +78,18 @@ export class GeneralOpenAPIStep implements GeneratorStep<DetailsGeneratorSchema>
     if (options.editMode) {
       // Paths for editMode
       apiUtil.paths().set(
-        `/${propertyName}/{id}`,
+        `/${propertyName}s/{id}`,
         {
           ...createUpdateEndpoint(
             {
               type: 'put',
-              operationId: `update${resource}`,
+              operationId: `update${resource}ById`,
               tags: [propertyName],
               description: `Update ${resource} by id`,
             },
             {
               resource: resource,
+              propertyName: propertyName,
               updateRequestSchema: updateRequestName,
               updateResponseSchema: updateResponseName,
             }
@@ -106,7 +107,6 @@ export class GeneralOpenAPIStep implements GeneratorStep<DetailsGeneratorSchema>
           type: 'object',
           properties: {
             dataObject: {
-              type: 'object',
               $ref: `#/components/schemas/${resource}`,
             },
           },
@@ -115,7 +115,6 @@ export class GeneralOpenAPIStep implements GeneratorStep<DetailsGeneratorSchema>
           type: 'object',
           properties: {
             dataObject: {
-              type: 'object',
               $ref: `#/components/schemas/${resource}`,
             },
             [COMMENT_KEY]: 'ACTION DE1: modify resource or use flat list here',
@@ -125,7 +124,7 @@ export class GeneralOpenAPIStep implements GeneratorStep<DetailsGeneratorSchema>
 
     if (options.allowDelete) {
       apiUtil.paths().set(
-        `/${propertyName}/{id}`,
+        `/${propertyName}s/{id}`,
         {
           delete: {
             'x-onecx': {
@@ -134,7 +133,7 @@ export class GeneralOpenAPIStep implements GeneratorStep<DetailsGeneratorSchema>
               },
             },
             tags: [propertyName],
-            operationId: `delete${resource}`,
+            operationId: `delete${resource}ById`,
             description: `Delete ${resource} by id`,
             parameters: [
               {
@@ -161,7 +160,7 @@ export class GeneralOpenAPIStep implements GeneratorStep<DetailsGeneratorSchema>
 
     apiUtil.schemas().set(resource, {
       type: 'object',
-      required: ['modificationCount', 'id'],
+      required: ['id', 'modificationCount'],
       properties: {
         modificationCount: {
           type: 'integer',
@@ -237,6 +236,6 @@ export class GeneralOpenAPIStep implements GeneratorStep<DetailsGeneratorSchema>
     );
   }
   getTitle(): string {
-    return "Adapting OpenAPI"
+    return "Adapting OpenAPI (details)"
   }
 }

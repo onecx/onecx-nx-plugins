@@ -2,6 +2,7 @@ import { OpenAPIDefault } from '../shared/openapi/models/openapi-default.model';
 
 interface SearchEndpointParameter {
   resource: string;
+  propertyName: string;
   searchRequestName: string;
   searchResponseName: string;
 }
@@ -15,7 +16,7 @@ export function createSearchEndpoint(
     operationId: data.operationId,
     'x-onecx': {
       permissions: {
-        [`${parameter.resource}`]: ['read']
+        [`${parameter.propertyName}`]: ['read']
       },
     },
     tags: data.tags,

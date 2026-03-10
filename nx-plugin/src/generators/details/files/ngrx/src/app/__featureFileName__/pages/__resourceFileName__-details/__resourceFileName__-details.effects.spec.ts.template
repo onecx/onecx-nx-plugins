@@ -39,7 +39,7 @@ describe('<%= resourceClassName %>DetailsEffects', () => {
   let store: MockStore<Store>;
   let router: Partial<jest.Mocked<Router>>;
   let route: ActivatedRoute;
-  const service = { get<%= resource %>ById: jest.fn(), update<%= resource %>: jest.fn() };
+  const <%= resourcePropertyName %>Service = { get<%= resource %>ById: jest.fn(), update<%= resource %>ById: jest.fn() };
   let portalDialogService: Partial<jest.Mocked<PortalDialogService>>;
   let messageService: Partial<jest.Mocked<PortalMessageService>>;
 
@@ -77,7 +77,7 @@ describe('<%= resourceClassName %>DetailsEffects', () => {
         provideMockActions(() => actions$),
         { provide: ActivatedRoute, useValue: route },
         { provide: Router, useValue: router },
-        { provide: <%= serviceName %>, useValue: service },
+        { provide: <%= serviceName %>, useValue: <%= resourcePropertyName %>Service },
         { provide: PortalDialogService, useValue: portalDialogService },
         { provide: PortalMessageService, useValue: messageService },
       ],
@@ -111,7 +111,7 @@ describe('<%= resourceClassName %>DetailsEffects', () => {
     it('should dispatch <%= resourcePropertyName %>DetailsReceived on success with id', async () => {
       const mockId = '123';
       const mockDetails = { id: mockId } as <%= resource %>;
-      service.get<%= resource %>ById.mockReturnValue(of({ resource: mockDetails }));
+      <%= resourcePropertyName %>Service.get<%= resource %>ById.mockReturnValue(of({ resource: mockDetails }));
 
       actions$.next(<%= resourcePropertyName %>DetailsActions.navigatedToDetailsPage({ id: mockId }));
       const action = await firstValueFrom(effects.load<%= resourceClassName %>ById$);
@@ -119,13 +119,13 @@ describe('<%= resourceClassName %>DetailsEffects', () => {
       expect(action).toEqual(
         <%= resourcePropertyName %>DetailsActions.<%= resourcePropertyName %>DetailsReceived({ details: mockDetails })
       );
-      expect(service.get<%= resource %>ById).toHaveBeenCalledTimes(1);
-      expect(service.get<%= resource %>ById).toHaveBeenCalledWith({ id: mockId });
+      expect(<%= resourcePropertyName %>Service.get<%= resource %>ById).toHaveBeenCalledTimes(1);
+      expect(<%= resourcePropertyName %>Service.get<%= resource %>ById).toHaveBeenCalledWith({ id: mockId });
     });
 
     it('should dispatch <%= resourcePropertyName %>DetailsLoadingFailedMissingId on error', async () => {
       const mockError = 'Missing ID';
-      service.get<%= resource %>ById.mockReturnValue(throwError(() => mockError));
+      <%= resourcePropertyName %>Service.get<%= resource %>ById.mockReturnValue(throwError(() => mockError));
 
       actions$.next(
         <%= resourcePropertyName %>DetailsActions.navigatedToDetailsPage({ id: undefined })
@@ -135,12 +135,12 @@ describe('<%= resourceClassName %>DetailsEffects', () => {
       expect(action).toEqual(
         <%= resourcePropertyName %>DetailsActions.<%= resourcePropertyName %>DetailsLoadingFailedMissingId({ error: mockError })
       );
-      expect(service.get<%= resourceClassName %>ById).not.toHaveBeenCalled();
+      expect(<%= resourcePropertyName %>Service.get<%= resourceClassName %>ById).not.toHaveBeenCalled();
     });
 
     it('should dispatch <%= resourcePropertyName %>DetailsLoadingFailed on error', async () => {
       const mockError = 'something went wrong';
-      service.get<%= resource %>ById.mockReturnValue(throwError(() => mockError));
+      <%= resourcePropertyName %>Service.get<%= resource %>ById.mockReturnValue(throwError(() => mockError));
 
       actions$.next(
         <%= resourcePropertyName %>DetailsActions.navigatedToDetailsPage({ id: 'abc' })
@@ -150,7 +150,7 @@ describe('<%= resourceClassName %>DetailsEffects', () => {
       expect(action).toEqual(
         <%= resourcePropertyName %>DetailsActions.<%= resourcePropertyName %>DetailsLoadingFailed({ error: mockError })
       );
-      expect(service.get<%= resourceClassName %>ById).toHaveBeenCalled();
+      expect(<%= resourcePropertyName %>Service.get<%= resourceClassName %>ById).toHaveBeenCalled();
     });
   });
 
@@ -206,7 +206,7 @@ describe('<%= resourceClassName %>DetailsEffects', () => {
       const selectSpy = jest
         .spyOn(store, 'select')
         .mockReturnValueOnce(of(mockDetails));
-      service.update<%= resource %>.mockReturnValueOnce(of({}));
+      <%= resourcePropertyName %>Service.update<%= resource %>ById.mockReturnValueOnce(of({}));
 
       actions$.next(
         <%= resourcePropertyName %>DetailsActions.saveButtonClicked({ details: mockDetails })
@@ -215,7 +215,7 @@ describe('<%= resourceClassName %>DetailsEffects', () => {
 
       expect(action).toEqual(<%= resourcePropertyName %>DetailsActions.update<%= resource %>Succeeded());
       expect(selectSpy).toHaveBeenCalledTimes(1);
-      expect(service.update<%= resource %>).toHaveBeenCalledTimes(1);
+      expect(<%= resourcePropertyName %>Service.update<%= resource %>ById).toHaveBeenCalledTimes(1);
       expect(messageService.success).toHaveBeenCalledWith({
         summaryKey: '<%= resourceConstantName%>_DETAILS.UPDATE.SUCCESS',
       });
@@ -226,7 +226,7 @@ describe('<%= resourceClassName %>DetailsEffects', () => {
       const selectSpy = jest
         .spyOn(store, 'select')
         .mockReturnValueOnce(of(undefined));
-      service.update<%= resource %>.mockReturnValueOnce(of({}));
+      <%= resourcePropertyName %>Service.update<%= resource %>ById.mockReturnValueOnce(of({}));
 
       actions$.next(
         <%= resourcePropertyName %>DetailsActions.saveButtonClicked({ details: mockDetails })
@@ -235,7 +235,7 @@ describe('<%= resourceClassName %>DetailsEffects', () => {
 
       expect(action).toEqual(<%= resourcePropertyName %>DetailsActions.update<%= resourceClassName %>Cancelled());
       expect(selectSpy).toHaveBeenCalledTimes(1);
-      expect(service.update<%= resource %>).not.toHaveBeenCalled();
+      expect(<%= resourcePropertyName %>Service.update<%= resource %>ById).not.toHaveBeenCalled();
       expect(messageService.success).not.toHaveBeenCalled();
     });
 
@@ -245,7 +245,7 @@ describe('<%= resourceClassName %>DetailsEffects', () => {
       const selectSpy = jest
         .spyOn(store, 'select')
         .mockReturnValueOnce(of(mockDetails));
-      service.update<%= resource %>.mockReturnValueOnce(throwError(() => mockError));
+      <%= resourcePropertyName %>Service.update<%= resource %>ById.mockReturnValueOnce(throwError(() => mockError));
 
       actions$.next(
         <%= resourcePropertyName %>DetailsActions.saveButtonClicked({ details: mockDetails })
@@ -256,7 +256,7 @@ describe('<%= resourceClassName %>DetailsEffects', () => {
         <%= resourcePropertyName %>DetailsActions.update<%= resourceClassName %>Failed({ error: mockError })
       );
       expect(selectSpy).toHaveBeenCalledTimes(1);
-      expect(service.update<%= resource %>).toHaveBeenCalledTimes(1);
+      expect(<%= resourcePropertyName %>Service.update<%= resource %>ById).toHaveBeenCalledTimes(1);
       expect(messageService.error).toHaveBeenCalledWith({
         summaryKey: '<%= resourceConstantName%>_DETAILS.UPDATE.ERROR',
       });

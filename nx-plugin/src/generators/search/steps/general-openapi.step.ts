@@ -1,4 +1,4 @@
-import { Tree, joinPathFragments } from '@nx/devkit';
+import { Tree, joinPathFragments, names } from '@nx/devkit';
 import { GeneratorStep } from '../../shared/generator.utils';
 import { SearchGeneratorSchema } from '../schema';
 import { COMMENT_KEY, OpenAPIUtil } from '../../shared/openapi/openapi.utils';
@@ -16,6 +16,7 @@ export class GeneralOpenAPIStep
     );
 
     const resource = options.resource;
+    const propertyName = names(options.resource).propertyName;
     const searchRequestName = options.searchRequestName;
     const searchResponseName = options.searchResponseName;
 
@@ -23,16 +24,17 @@ export class GeneralOpenAPIStep
     const res = apiUtil
       .paths()
       .set(
-        `/${resource.toLowerCase()}/search`,
+        `/${propertyName}s/search`,
         createSearchEndpoint(
           {
             type: 'post',
             operationId: `search${resource}Items`,
-            tags: [`${resource.toLowerCase()}`],
+            tags: [`${propertyName}`],
             description: `Search ${resource} items by search criteria`,
           },
           {
             resource: resource,
+            propertyName: propertyName,
             searchRequestName: searchRequestName,
             searchResponseName: searchResponseName,
           }
@@ -138,6 +140,6 @@ export class GeneralOpenAPIStep
     tree.write(joinPathFragments(openApiFolderPath, bffOpenApiPath), res);
   }
   getTitle(): string {
-    return 'Adapting OpenAPI';
+    return 'Adapting OpenAPI (search)';
   }
 }
