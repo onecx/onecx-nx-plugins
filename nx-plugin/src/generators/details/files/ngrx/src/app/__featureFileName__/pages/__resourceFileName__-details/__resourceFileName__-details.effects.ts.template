@@ -46,7 +46,7 @@ export class <%= resourceClassName %>DetailsEffects {
       switchMap(({ id }) => {
         if (!id) {
           return of(
-            <%= resourcePropertyName %>DetailsActions.<%= resourcePropertyName %>DetailsLoadingFailed({ error: 'Missing ID' })
+            <%= resourcePropertyName %>DetailsActions.<%= resourcePropertyName %>DetailsLoadingFailedMissingId({ error: 'Missing ID' })
           );
         }
         return this.<%= resourcePropertyName %>Service.get<%= resource %>ById({ id: id }).pipe(
