@@ -47,7 +47,7 @@ export class <%= resourceClassName %>SearchComponent implements OnInit {
   headerActions$: Observable<Action[]>;
   defaultDataSortDirection = DataSortDirection.NONE
   defaultDiagramType = DiagramType.PIE
-  diagramColumnId = 'id';
+  diagramColumnId: string;
   diagramColumn$: Observable<DataTableColumn>;
 
   public <%= resourcePropertyName %>SearchFormGroup: FormGroup;
@@ -62,6 +62,7 @@ export class <%= resourceClassName %>SearchComponent implements OnInit {
     this.viewModel$ = this.store.select(select<%= resourceClassName %>SearchViewModel);
 
     // ACTION S9: Select the column to be displayed in the diagram
+    this.diagramColumnId = 'id'
     this.diagramColumn$ = this.viewModel$.pipe(map((vm) =>vm.columns.find((e) => e.id === this.diagramColumnId) as DataTableColumn));
 
     // ACTION S10: Update header actions
