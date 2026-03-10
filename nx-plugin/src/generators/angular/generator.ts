@@ -210,11 +210,6 @@ function addBaseToPackageJson(tree: Tree, options: AngularGeneratorSchema) {
 
 function addExtensionsToPackageJson(tree: Tree) {
   updateJson(tree, 'package.json', (pkgJson) => {
-    pkgJson.husky = {
-      hooks: {
-        'pre-commit': 'pretty-quick --staged',
-      },
-    };
     pkgJson.jestSonar = {
       reportPath: 'reports',
     };
