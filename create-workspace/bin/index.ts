@@ -12,7 +12,7 @@ async function main() {
     throw new Error('Please provide a name for the workspace.');
   }
 
-  console.log(`Creating the "${name}" workspace...`);
+  console.log(`Creating the workspace ${name} with the ${flavor} preset`);
 
   // This assumes "@onecx/nx-plugin" and "create-workspace" are at the same version
   // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -27,7 +27,7 @@ async function main() {
     verbose: true,
   });
 
-  console.log(`Successfully created the "${name}" workspace`);
+  console.log(`Successfully created the workspace ${name} with the ${flavor} preset`);
 }
 
 main();
