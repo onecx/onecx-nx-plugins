@@ -42,7 +42,7 @@ export const commonImports = [CommonModule];
     BrowserAnimationsModule,
     AppRoutingModule,
     HttpClientModule,
-    PortalCoreModule<% if(!standalone){ %>.forRoot('<%= name %>-app')<% } %>,
+    PortalCoreModule<% if(!standalone){ %>.forRoot('onecx<%= name %>-ui')<% } %>,
     TranslateModule.forRoot({
       extend: true,
       loader: {
