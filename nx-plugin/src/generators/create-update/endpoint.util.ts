@@ -2,6 +2,7 @@ import { OpenAPIDefault } from '../shared/openapi/models/openapi-default.model';
 
 interface CreateEndpointParameter {
   resource: string;
+  propertyName: string;
   createRequestName: string;
   createResponseName: string;
 }
@@ -12,8 +13,13 @@ export function createCreateEndpoint(
 ) {
   const response = {};
   response[data.type] = {
-    operationId: data.operationId,
+    'x-onecx': {
+      permissions: {
+        [parameter.propertyName]: ['write'],
+      },
+    },
     tags: data.tags,
+    operationId: data.operationId,
     description: data.description,
     requestBody: {
       required: true,
@@ -28,15 +34,6 @@ export function createCreateEndpoint(
     responses: {
       '201': {
         description: `New ${parameter.resource} created`,
-        headers: {
-          Location: {
-            required: true,
-            schema: {
-              type: 'string',
-              format: 'url',
-            },
-          },
-        },
         content: {
           'application/json': {
             schema: {
@@ -62,6 +59,7 @@ export function createCreateEndpoint(
 
 interface UpdateEndpointParameter {
   resource: string;
+  propertyName: string;
   updateRequestSchema: string;
   updateResponseSchema: string;
 }
@@ -74,7 +72,7 @@ export function createUpdateEndpoint(
   response[data.type] = {
     'x-onecx': {
       permissions: {
-        [parameter.resource.toLocaleLowerCase()]: ['write'],
+        [parameter.propertyName]: ['write'],
       },
     },
     tags: data.tags,
@@ -101,17 +99,8 @@ export function createUpdateEndpoint(
       },
     },
     responses: {
-      '204': {
+      '200': {
         description: `${parameter.resource} updated`,
-        headers: {
-          Location: {
-            required: true,
-            schema: {
-              type: 'string',
-              format: 'url',
-            },
-          },
-        },
         content: {
           'application/json': {
             schema: {

@@ -26,7 +26,7 @@ export class GeneralOpenAPIStep
 
     const apiUtil = new OpenAPIUtil(bffOpenApiContent);
     // Paths
-    apiUtil.paths().set(`/${propertyName}`, {
+    apiUtil.paths().set(`/${propertyName}s`, {
       ...createCreateEndpoint(
         {
           type: 'post',
@@ -36,6 +36,7 @@ export class GeneralOpenAPIStep
         },
         {
           resource: resource,
+          propertyName: propertyName,
           createRequestName: createRequestName,
           createResponseName: createResponseName,
         }
@@ -48,12 +49,13 @@ export class GeneralOpenAPIStep
         ...createUpdateEndpoint(
           {
             type: 'put',
-            operationId: `update${resource}`,
+            operationId: `update${resource}ById`,
             tags: [apiServiceName],
             description: `This operation performs an update.`,
           },
           {
             resource: resource,
+            propertyName: propertyName,
             updateRequestSchema: updateRequestName,
             updateResponseSchema: updateResponseName,
           }
@@ -71,7 +73,6 @@ export class GeneralOpenAPIStep
         type: 'object',
         properties: {
           dataObject: {
-            type: 'object',
             $ref: `#/components/schemas/${resource}`,
           },
         },
@@ -80,7 +81,6 @@ export class GeneralOpenAPIStep
         type: 'object',
         properties: {
           dataObject: {
-            type: 'object',
             $ref: `#/components/schemas/${resource}`,
           },
         },
@@ -89,22 +89,18 @@ export class GeneralOpenAPIStep
         type: 'object',
         properties: {
           dataObject: {
-            type: 'object',
             $ref: `#/components/schemas/${resource}`,
           },
-          [COMMENT_KEY]:
-            'ACTION C1: modify resource or use flat list here',
+          [COMMENT_KEY]: 'ACTION C1: modify resource or use flat list here',
         },
       })
       .set(`${options.updateResponseName}`, {
         type: 'object',
         properties: {
           dataObject: {
-            type: 'object',
             $ref: `#/components/schemas/${resource}`,
           },
-          [COMMENT_KEY]:
-            'ACTION C1: modify resource or use flat list here',
+          [COMMENT_KEY]: 'ACTION C1: modify resource or use flat list here',
         },
       });
 

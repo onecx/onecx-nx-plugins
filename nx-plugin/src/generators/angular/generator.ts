@@ -29,7 +29,7 @@ const PARAMETERS: GeneratorParameter<AngularGeneratorSchema>[] = [
     default: false,
   },
   {
-    key: 'verbose',
+    key: 'chatty',
     type: 'boolean',
     required: 'never',
     default: false,
@@ -41,9 +41,9 @@ export async function angularGenerator(
   options: AngularGeneratorSchema
 ): Promise<GeneratorCallback> {
   function log(command: unknown) {
-    if (options.verbose) {
+    if (options.chatty) {
       console.log('');
-      console.log('generate ngrx ==> ' + command);
+      console.log('generate angular ==> ' + command);
     }
   }
   const parameters = await processParams<AngularGeneratorSchema>(
@@ -168,7 +168,6 @@ export async function angularGenerator(
       'eslint-config-prettier': '^9.1.0',
       'eslint-plugin-import': '2.31.0',
       'eslint-plugin-prettier': '^5.2.1',
-      husky: '^9.1.7',
       jest: '^29.7.0',
       'jest-environment-jsdom': '^29.7.0',
       'jest-preset-angular': '~14.5.1',
@@ -220,11 +219,6 @@ function addBaseToPackageJson(tree: Tree, options: AngularGeneratorSchema) {
 
 function addExtensionsToPackageJson(tree: Tree) {
   updateJson(tree, 'package.json', (pkgJson) => {
-    pkgJson.husky = {
-      hooks: {
-        'pre-commit': 'pretty-quick --staged',
-      },
-    };
     pkgJson.jestSonar = {
       reportPath: 'reports',
     };
@@ -258,7 +252,6 @@ function addScriptsToPackageJson(tree: Tree, options: AngularGeneratorSchema) {
     pkgJson.scripts['clean'] =
       'npm cache clean --force && npx clear-npx-cache && rm -rf *.log dist reports .nx .angular .eslintcache ./node_modules/.cache/prettier/.prettier-cache';
     pkgJson.scripts['format'] = 'nx format:write --uncommitted';
-    pkgJson.scripts['prepare'] = 'husky init || true';
     pkgJson.scripts['lint'] = 'nx lint';
     pkgJson.scripts['lint:fix'] = 'nx lint --fix';
     pkgJson.scripts['sonar'] = 'npx sonar-scanner';

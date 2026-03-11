@@ -21,11 +21,11 @@ export class GeneralOpenAPIStep
     const apiUtil = new OpenAPIUtil(bffOpenApiContent);
 
     apiUtil.paths().set(
-      `/${propertyName}/{id}`,
+      `/${propertyName}s/{id}`,
       {
         delete: {
           tags: [apiServiceName],
-          operationId: `delete${resource}`,
+          operationId: `delete${resource}ById`,
           description: `Delete ${resource} by id`,
           parameters: [
             {

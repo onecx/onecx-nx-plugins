@@ -7,6 +7,7 @@ export const <%= resourcePropertyName %>DetailsActions = createActionGroup({
     'Navigated to details page': props<{ id: string | undefined }>(),
     '<%= resourceClassName %> details received': props<{ details: <%= resource %> | undefined }>(),
     '<%= resourceClassName %> details loading failed': props<{ error: string | null }>(),
+    '<%= resourceClassName %> details loading failed missing id': props<{ error: string | null }>(),
     <%_ if(editMode){ _%>
     'Edit mode set': props<{ editMode: boolean }>(),    
     'Update <%= resourceClassName %> cancelled': emptyProps(),

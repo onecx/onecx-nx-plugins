@@ -25,7 +25,7 @@ const PARAMETERS: GeneratorParameter<NgrxGeneratorSchema>[] = [
     default: false,
   },
   {
-    key: 'verbose',
+    key: 'chatty',
     type: 'boolean',
     required: 'never',
     default: false,
@@ -37,7 +37,7 @@ export async function ngrxGenerator(
   options: NgrxGeneratorSchema
 ): Promise<GeneratorCallback> {
   function log(command: unknown) {
-    if (options.verbose) {
+    if (options.chatty) {
       console.log('');
       console.log('generate ngrx ==> ' + command);
     }

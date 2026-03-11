@@ -12,19 +12,19 @@ describe('<%= resourcePropertyName %>SearchReducer', () => {
   it('should reset results and criteria on resetButtonClicked', () => {
     const preState = { ...reducers.initialState, results: [{ id: '1' }], criteria: { changeMe: 'val' } }
     const action = <%= resourcePropertyName %>SearchActions.resetButtonClicked()
-    const state = reducers.<%= resourcePropertyName %>SearchReducer(preState, action)
+    const nextState = reducers.<%= resourcePropertyName %>SearchReducer(preState, action)
 
-    expect(state.results).toEqual([])
-    expect(state.criteria).toEqual({})
+    expect(nextState.results).toEqual([])
+    expect(nextState.criteria).toEqual({})
   })
 
   it('should set searchLoadingIndicator and criteria on searchButtonClicked', () => {
     const searchCriteria = { changeMe: 'foo' }
     const action = <%= resourcePropertyName %>SearchActions.searchButtonClicked({ searchCriteria })
-    const state = reducers.<%= resourcePropertyName %>SearchReducer(reducers.initialState, action)
+    const nextState = reducers.<%= resourcePropertyName %>SearchReducer(reducers.initialState, action)
 
-    expect(state.searchLoadingIndicator).toBe(true)
-    expect(state.criteria).toEqual(searchCriteria)
+    expect(nextState.searchLoadingIndicator).toBe(true)
+    expect(nextState.criteria).toEqual(searchCriteria)
   })
 
   it('should set results on <%= resourcePropertyName %>SearchResultsReceived', () => {
@@ -36,39 +36,39 @@ describe('<%= resourcePropertyName %>SearchReducer', () => {
       totalElements: 2,
       totalPages: 1
     })
-    const state = reducers.<%= resourcePropertyName %>SearchReducer(reducers.initialState, action)
+    const nextState = reducers.<%= resourcePropertyName %>SearchReducer(reducers.initialState, action)
 
-    expect(state.results).toEqual(stream)
+    expect(nextState.results).toEqual(stream)
   })
 
   it('should clear results on <%= resourcePropertyName %>SearchResultsLoadingFailed', () => {
     const preState = { ...reducers.initialState, results: [{ id: '1' }] }
     const action = <%= resourcePropertyName %>SearchActions.<%= resourcePropertyName %>SearchResultsLoadingFailed({ error: null })
-    const state = reducers.<%= resourcePropertyName %>SearchReducer(preState, action)
+    const nextState = reducers.<%= resourcePropertyName %>SearchReducer(preState, action)
 
-    expect(state.results).toEqual([])
+    expect(nextState.results).toEqual([])
   })
 
   it('should toggle chartVisible on chartVisibilityToggled', () => {
     const initialStateWithChartHidden = { ...reducers.initialState, chartVisible: false }
     const action = <%= resourcePropertyName %>SearchActions.chartVisibilityToggled()
-    let state = reducers.<%= resourcePropertyName %>SearchReducer(initialStateWithChartHidden, action)
+    let nextState = reducers.<%= resourcePropertyName %>SearchReducer(initialStateWithChartHidden, action)
 
-    expect(state.chartVisible).toBe(true)
+    expect(nextState.chartVisible).toBe(true)
 
     const stateWithChartVisible = { ...reducers.initialState, chartVisible: true }
-    state = reducers.<%= resourcePropertyName %>SearchReducer(stateWithChartVisible, action)
+    nextState = reducers.<%= resourcePropertyName %>SearchReducer(stateWithChartVisible, action)
 
-    expect(state.chartVisible).toBe(false)
+    expect(nextState.chartVisible).toBe(false)
   })
 
   it('should update resultComponentState when resultComponentStateChanged', () => {
     const newComponentState: InteractiveDataViewComponentState = {}
     const action = <%= resourcePropertyName %>SearchActions.resultComponentStateChanged(newComponentState)
-    const state = reducers.<%= resourcePropertyName %>SearchReducer(reducers.initialState, action)
+    const nextState = reducers.<%= resourcePropertyName %>SearchReducer(reducers.initialState, action)
 
-    expect(state.resultComponentState).toBeDefined()
-    expect(state).not.toBe(reducers.initialState)
+    expect(nextState.resultComponentState).toBeDefined()
+    expect(nextState).not.toBe(reducers.initialState)
   })
 
   it('should update searchHeaderComponentState when searchHeaderComponentStateChanged', () => {
@@ -77,14 +77,14 @@ describe('<%= resourcePropertyName %>SearchReducer', () => {
       selectedSearchConfig: 'config1'
     }
     const action = <%= resourcePropertyName %>SearchActions.searchHeaderComponentStateChanged(newHeaderState)
-    const state = reducers.<%= resourcePropertyName %>SearchReducer(reducers.initialState, action)
+    const nextState = reducers.<%= resourcePropertyName %>SearchReducer(reducers.initialState, action)
 
-    expect(state.searchHeaderComponentState).toBeDefined()
-    if (state.searchHeaderComponentState) {
-      expect(state.searchHeaderComponentState.activeViewMode).toBe('basic')
-      expect(state.searchHeaderComponentState.selectedSearchConfig).toBe('config1')
+    expect(nextState.searchHeaderComponentState).toBeDefined()
+    if (nextState.searchHeaderComponentState) {
+      expect(nextState.searchHeaderComponentState.activeViewMode).toBe('basic')
+      expect(nextState.searchHeaderComponentState.selectedSearchConfig).toBe('config1')
     }
-    expect(state).not.toBe(reducers.initialState)
+    expect(nextState).not.toBe(reducers.initialState)
   })
 
   it('should update diagramComponentState when diagramComponentStateChanged', () => {
@@ -92,13 +92,13 @@ describe('<%= resourcePropertyName %>SearchReducer', () => {
       activeDiagramType: DiagramType.PIE
     }
     const action = <%= resourcePropertyName %>SearchActions.diagramComponentStateChanged(newDiagramState)
-    const state = reducers.<%= resourcePropertyName %>SearchReducer(reducers.initialState, action)
+    const nextState = reducers.<%= resourcePropertyName %>SearchReducer(reducers.initialState, action)
 
-    expect(state.diagramComponentState).toBeDefined()
-    if (state.diagramComponentState) {
-      expect(state.diagramComponentState.activeDiagramType).toBe('PIE')
+    expect(nextState.diagramComponentState).toBeDefined()
+    if (nextState.diagramComponentState) {
+      expect(nextState.diagramComponentState.activeDiagramType).toBe('PIE')
     }
-    expect(state).not.toBe(reducers.initialState)
+    expect(nextState).not.toBe(reducers.initialState)
   })
 
   it('should set criteria and searchLoadingIndicator=true when routerNavigatedAction succeeds and queryParams present', () => {
@@ -110,10 +110,10 @@ describe('<%= resourcePropertyName %>SearchReducer', () => {
     })
     const preState = { ...reducers.initialState, criteria: {}, searchLoadingIndicator: false }
     const action = routerNavigatedAction({ payload: { routerState: { root: { queryParams: { foo: 'bar' } } } } })
-    const state = reducers.<%= resourcePropertyName %>SearchReducer(preState, action)
+    const nextState = reducers.<%= resourcePropertyName %>SearchReducer(preState, action)
 
-    expect(state.criteria).toEqual({ foo: 'bar' })
-    expect(state.searchLoadingIndicator).toBe(true)
+    expect(nextState.criteria).toEqual({ foo: 'bar' })
+    expect(nextState.searchLoadingIndicator).toBe(true)
   })
 
   it('should not change state when routerNavigatedAction fails schema parse', () => {
@@ -124,8 +124,8 @@ describe('<%= resourcePropertyName %>SearchReducer', () => {
     })
     const preState = { ...reducers.initialState, criteria: { changeMe: 'bar' }, searchLoadingIndicator: true }
     const action = routerNavigatedAction({ payload: { routerState: { root: { queryParams: { foo: 'bar' } } } } })
-    const state = reducers.<%= resourcePropertyName %>SearchReducer(preState, action)
+    const nextState = reducers.<%= resourcePropertyName %>SearchReducer(preState, action)
 
-    expect(state).toBe(preState)
+    expect(nextState).toBe(preState)
   })
 })

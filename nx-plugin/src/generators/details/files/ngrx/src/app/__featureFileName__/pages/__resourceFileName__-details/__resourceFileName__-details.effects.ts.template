@@ -44,7 +44,7 @@ export class <%= resourceClassName %>DetailsEffects {
       switchMap(({ id }) => {
         if (!id) {
           return of(
-            <%= resourcePropertyName %>DetailsActions.<%= resourcePropertyName %>DetailsLoadingFailed({ error: 'Missing ID' })
+            <%= resourcePropertyName %>DetailsActions.<%= resourcePropertyName %>DetailsLoadingFailedMissingId({ error: 'Missing ID' })
           );
         }
         return this.<%= resourcePropertyName %>Service.get<%= resource %>ById({ id: id }).pipe(
@@ -115,7 +115,7 @@ export class <%= resourceClassName %>DetailsEffects {
         const itemToEdit = {
           dataObject: updatedItem,
         } as Update<%= resourceClassName %>Request;
-        return this.<%= resourcePropertyName %>Service.update<%= resourceClassName %>({ id: itemToEditId, updateBookRequest: itemToEdit }).pipe(
+        return this.<%= resourcePropertyName %>Service.update<%= resourceClassName %>ById({ id: itemToEditId, updateBookRequest: itemToEdit }).pipe(
           map(() => {
             this.messageService.success({
               summaryKey: '<%= resourceConstantName%>_DETAILS.UPDATE.SUCCESS',
@@ -173,7 +173,7 @@ export class <%= resourceClassName %>DetailsEffects {
           throw new Error('Item to delete not found!');
         }
 
-        return this.<%= resourcePropertyName %>Service.delete<%= resourceClassName %>({ id: itemToDelete.id }).pipe(
+        return this.<%= resourcePropertyName %>Service.delete<%= resourceClassName %>ById({ id: itemToDelete.id }).pipe(
           map(() => {
             this.messageService.success({
               summaryKey: '<%= resourceConstantName%>_DETAILS.DELETE.SUCCESS',
