@@ -8,17 +8,12 @@ import { TranslateTestingModule } from 'ngx-translate-testing';
 import { ShellCoreModule } from '@onecx/shell-core';
 import { provideHttpClient } from '@angular/common/http';
 
-import { PortalCoreModule, AUTH_SERVICE,  MockAuthModule } from '@onecx/portal-integration-angular';
-
-import { AppComponent } from './app.component';
-
 describe('AppComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations:[AppComponent],
       imports: [
-        RouterTestingModule, 
-        PortalCoreModule.forRoot('test'),        
+        RouterTestingModule,              
         AngularAcceleratorModule,
         ShellCoreModule,
         TranslateTestingModule.withTranslations('en', require('./../assets/i18n/en.json'))

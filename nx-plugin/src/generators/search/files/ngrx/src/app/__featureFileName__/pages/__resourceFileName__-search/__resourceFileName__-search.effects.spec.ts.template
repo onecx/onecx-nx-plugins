@@ -6,14 +6,15 @@ import { MockStore, provideMockStore } from '@ngrx/store/testing'
 import {
   PortalDialogService,
   ExportDataService,
+  ColumnType, 
+  DataTableColumn, 
+  RowListGridData
 } from '@onecx/angular-accelerator';
 import { PortalMessageService } from '@onecx/angular-integration-interface';
 import { HttpEvent } from '@angular/common/http'
 import { routerNavigatedAction } from '@ngrx/router-store'
 import { of, ReplaySubject, throwError } from 'rxjs'
 import { take } from 'rxjs/operators'
-
-import { ColumnType, DataTableColumn, ExportDataService, PortalDialogService, PortalMessageService, RowListGridData } from '@onecx/portal-integration-angular'
 
 import { <%= serviceName %>, Search<%= resourceClassName %>Response } from 'src/app/shared/generated'
 import { <%= resourcePropertyName %>SearchActions } from './<%= resourceFileName %>-search.actions'

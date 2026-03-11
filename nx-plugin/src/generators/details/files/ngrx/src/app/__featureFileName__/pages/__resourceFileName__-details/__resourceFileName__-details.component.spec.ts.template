@@ -19,11 +19,11 @@ import { of } from 'rxjs';
 import { UserService } from '@onecx/angular-integration-interface';
 import { AngularAcceleratorModule, BreadcrumbService, HAS_PERMISSION_CHECKER } from '@onecx/angular-accelerator';
 import { provideHttpClient } from '@angular/common/http';
-import { <%= featureClassName %>DetailsComponent } from './<%= featureFileName %>-details.component';
-import { <%= featureClassName %>DetailsHarness } from './<%= featureFileName %>-details.harness';
-import { initialState } from './<%= featureFileName %>-details.reducers';
-import { select<%= featureClassName %>DetailsViewModel } from './<%= featureFileName %>-details.selectors';
-import { <%= featureClassName %>DetailsActions } from './<%= featureFileName %>-details.actions';
+import { <%= featureClassName %>DetailsComponent } from './<%= resourceFileName %>-details.component';
+import { <%= featureClassName %>DetailsHarness } from './<%= resourceFileName %>-details.harness';
+import { initialState } from './<%= resourceFileName %>-details.reducers';
+import { select<%= featureClassName %>DetailsViewModel } from './<%= resourceFileName %>-details.selectors';
+import { <%= featureClassName %>DetailsActions } from './<%= resourceFileName %>-details.actions';
 import { ofType } from '@ngrx/effects';
 import {
   provideUserServiceMock,

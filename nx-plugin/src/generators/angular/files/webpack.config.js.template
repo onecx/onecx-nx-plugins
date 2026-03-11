@@ -81,8 +81,7 @@ const config = withModuleFederationPlugin({
       requiredVersion: 'auto',
       includeSecondaries: true,
     }
-  }),
-  sharedMappings: ['@onecx/portal-integration-angular'],
+  }),  
 });
 
 const plugins = config.plugins.filter((plugin) => !(plugin instanceof ModifyEntryPlugin))

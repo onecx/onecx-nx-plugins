@@ -11,7 +11,7 @@ import {
   SerializedRouterStateSnapshot,
 } from '@ngrx/router-store';
 
-import { PortalDialogService } from '@onecx/portal-integration-angular';
+import { PortalDialogService } from '@onecx/angular-accelerator';
 import { PortalMessageService } from '@onecx/angular-integration-interface';
 
 import { 

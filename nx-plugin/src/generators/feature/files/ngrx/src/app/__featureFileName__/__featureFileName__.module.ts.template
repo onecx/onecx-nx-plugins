@@ -20,7 +20,6 @@ import {
 } from '@ngx-translate/core';
 import { CalendarModule } from 'primeng/calendar';
 
-import { PortalCoreModule } from '@onecx/portal-integration-angular'
 import { addInitializeModuleGuard } from '@onecx/angular-integration-interface'
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 

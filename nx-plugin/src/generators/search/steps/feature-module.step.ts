@@ -16,15 +16,13 @@ export class FeatureModuleStep implements GeneratorStep<SearchGeneratorSchema> {
       featureFileName + '.module.ts'
     );
     const find = [
-      'declarations: [',
-      `} from '@onecx/angular-accelerator'`,
+      'declarations: [',      
       'EffectsModule.forFeature()',
       'EffectsModule.forFeature([',
       `from '@ngrx/effects'`,
     ];
     const replaceWith = [
-      `declarations: [${resourceClassName}SearchComponent,`,
-      ` ,InitializeModuleGuard } from '@onecx/portal-integration-angular'`,
+      `declarations: [${resourceClassName}SearchComponent,`,      
       `EffectsModule.forFeature([])`,
       `EffectsModule.forFeature([${resourceClassName}SearchEffects,`,
       `from '@ngrx/effects';

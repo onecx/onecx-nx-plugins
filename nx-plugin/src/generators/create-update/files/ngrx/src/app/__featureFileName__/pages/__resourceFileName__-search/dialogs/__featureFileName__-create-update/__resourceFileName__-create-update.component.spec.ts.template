@@ -10,9 +10,6 @@ import {
 } from '@onecx/angular-accelerator';
 import { TranslateTestingModule } from 'ngx-translate-testing';
 import { distinctUntilChanged, filter, skip, take, toArray } from 'rxjs'
-
-import { BreadcrumbService, PortalCoreModule } from '@onecx/portal-integration-angular';
-
 import { <%= resourceClassName%>CreateUpdateComponent } from './<%= resourceFileName%>-create-update.component';
 
 Object.defineProperty(window, 'matchMedia', {

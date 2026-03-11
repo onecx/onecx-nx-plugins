@@ -17,7 +17,6 @@ import {
   filterForNavigatedTo,
   filterOutQueryParamsHaveNotChanged
 } from '@onecx/ngrx-accelerator';
-import { ExportDataService, PortalMessageService } from '@onecx/portal-integration-angular';
 
 import {  
     <%= serviceName %>, 
