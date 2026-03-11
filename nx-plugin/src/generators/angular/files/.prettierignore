@@ -21,4 +21,3 @@ Dockerfile
 *.log
 *.sh
 src/app/shared/generated/**
-src/assets/api
