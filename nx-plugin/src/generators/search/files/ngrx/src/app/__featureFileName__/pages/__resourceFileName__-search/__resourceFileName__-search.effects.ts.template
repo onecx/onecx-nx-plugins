@@ -7,8 +7,6 @@ import { catchError, map, of, switchMap, tap, filter } from 'rxjs';
 import {  
   <%= serviceName %>, 
 } from '../../../shared/generated';
-import { <%= featureClassName %>SearchActions } from './<%= featureFileName %>-search.actions';
-import { <%= featureClassName %>SearchComponent } from './<%= featureFileName %>-search.component';
 import { PortalMessageService } from '@onecx/angular-integration-interface';
 import {
   ExportDataService,

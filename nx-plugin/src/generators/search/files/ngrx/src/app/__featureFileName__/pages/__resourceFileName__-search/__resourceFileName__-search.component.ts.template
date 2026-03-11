@@ -49,7 +49,7 @@ export class <%= resourceClassName %>SearchComponent implements OnInit {
   private readonly exportDataService = inject(ExportDataService);
 
   @ViewChildren(DatePicker) calendars!: QueryList<DatePicker>;
-  viewModel$: Observable<<%= featureClassName %>SearchViewModel> = this.store.select(select<%= featureClassName %>SearchViewModel);
+  viewModel$: Observable<<%= resourceClassName %>SearchViewModel> = this.store.select(select<%= resourceClassName %>SearchViewModel);
   
   // ACTION S10: Update header actions
   headerActions$: Observable<Action[]> = this.viewModel$.pipe(map((vm) => {

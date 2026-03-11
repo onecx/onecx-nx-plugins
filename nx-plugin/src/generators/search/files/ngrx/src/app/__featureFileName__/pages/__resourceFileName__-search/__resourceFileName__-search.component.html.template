@@ -4,7 +4,7 @@
   *ngrxLet="viewModel$; let vm"
 >
   <ocx-search-header
-    [headline]="'<%= resourceConstantName %>_SEARCH.HEADER' | translate"
+    [header]="'<%= resourceConstantName %>_SEARCH.HEADER' | translate"
     [subheader]="'<%= resourceConstantName %>_SEARCH.SUB_HEADER' | translate"
     (searched)="search(<%= resourcePropertyName %>SearchFormGroup)"
     (resetted)="resetSearch()"
@@ -50,8 +50,7 @@
         [columns]="vm.columns"
         [emptyResultsMessage]="'<%= resourceConstantName %>_SEARCH.EMPTY_RESULTS' | translate"
         (componentStateChanged)="resultComponentStateChanged($event)"
-        [layout]="vm.resultComponentState?.layout ?? 'table'"
-        [displayedColumns]="vm.resultComponentState?.displayedColumns ?? []"
+        [layout]="vm.resultComponentState?.layout ?? 'list'"
         [supportedViewLayouts]="['list', 'table']"
         [page]="vm.resultComponentState?.activePage ?? 0"
         [pageSize]="vm.resultComponentState?.pageSize"
@@ -61,10 +60,10 @@
         [selectedRows]="vm.resultComponentState?.selectedRows?? []"
         [defaultGroupKey]="vm.resultComponentState?.activeColumnGroupKey ?? ''"
         [actionColumnPosition]="vm.resultComponentState?.actionColumnConfig?.position?? 'right'"
-        [frozenActionColumn]="vm.resultComponentState?.actionColumnConfig?.frozen ?? false"
+        [frozenActionColumn]="vm.resultComponentState?.actionColumnConfig?.frozen ?? false">
         [attr.aria-label]="'<%= resourceConstantName%>_SEARCH.RESULTS.NAME' | translate"
       >
-      </ocx-interactive-data-view>      
+      </ocx-interactive-data-view>
     </ocx-content>
     @if (vm.results.length > 0 && vm.chartVisible && (diagramColumn$ | async)) {
     <ocx-content class="w-full lg:w-3">
@@ -83,5 +82,6 @@
         }
       </div>
     </ocx-content>
+  }
   </ocx-content-container>
 </ocx-portal-page>

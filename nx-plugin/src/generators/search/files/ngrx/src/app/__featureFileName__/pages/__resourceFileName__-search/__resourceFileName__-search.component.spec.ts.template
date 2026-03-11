@@ -17,8 +17,7 @@ import { DialogService } from 'primeng/dynamicdialog';
 import { UserService } from '@onecx/angular-integration-interface';
 import {
   AngularAcceleratorModule,
-  BreadcrumbService,
-  HAS_PERMISSION_CHECKER,
+  BreadcrumbService,  
   ColumnType,
   providePortalDialogService,  
   RowListGridData,
@@ -26,18 +25,12 @@ import {
 import {
   PermissionService,
   PortalPageComponent,
+  HAS_PERMISSION_CHECKER,
   TranslationConnectionService,
 } from '@onecx/angular-utils';
 import { TooltipModule } from 'primeng/tooltip';
 import { provideHttpClient } from '@angular/common/http';
 import { of } from 'rxjs';
-import { <%= featureClassName %>SearchActions } from './<%= featureFileName %>-search.actions';
-import { <%= featureClassName %>SearchComponent } from './<%= featureFileName %>-search.component';
-import { <%= featureClassName %>SearchHarness } from './<%= featureFileName %>-search.harness';
-import { <%= featureClassName %>SearchViewModel } from './<%= featureFileName %>-search.viewmodel';
-import { <%= featurePropertyName %>SearchColumns } from './<%= featureFileName %>-search.columns';
-import { select<%= featureClassName %>SearchViewModel } from './<%= featureFileName %>-search.selectors';
-import { initialState } from './<%= featureFileName %>-search.reducers';
 import { TranslateService } from '@ngx-translate/core';
 import { provideUserServiceMock, UserServiceMock } from '@onecx/angular-integration-interface/mocks';
 
@@ -160,7 +153,7 @@ describe('<%= resourceClassName %>SearchComponent', () => {
 
   beforeEach(async () => {
     const userService = TestBed.inject(UserServiceMock);
-    userService.permissionsTopic$.next([
+    userService.permissionsTopic$.publish([
       "<%= resourceConstantName %>#CREATE",
       "<%= resourceConstantName %>#EDIT",
       "<%= resourceConstantName %>#DELETE",
@@ -169,7 +162,7 @@ describe('<%= resourceClassName %>SearchComponent', () => {
       "<%= resourceConstantName %>#VIEW",
       "<%= resourceConstantName %>#SEARCH",
       "<%= resourceConstantName %>#BACK"
-    ])    
+    ])
        
     formBuilder = TestBed.inject(FormBuilder);
     store = TestBed.inject(MockStore);
@@ -335,10 +328,10 @@ describe('<%= resourceClassName %>SearchComponent', () => {
     const formValue = formBuilder.group({
       changeMe: '123',
     });
-    component.<%= featurePropertyName %>SearchFormGroup = formValue;
+    component.<%= resourcePropertyName %>SearchFormGroup = formValue;
 
     store.scannedActions$
-      .pipe(ofType(<%= featureClassName %>SearchActions.searchButtonClicked))
+      .pipe(ofType(<%= resourcePropertyName %>SearchActions.searchButtonClicked))
       .subscribe((a) => {
         expect(a.searchCriteria).toEqual({ changeMe: '123' });
         done();
@@ -355,7 +348,7 @@ describe('<%= resourceClassName %>SearchComponent', () => {
     });
 
     expect(store.dispatch).toHaveBeenCalledWith(
-      <%= featureClassName %>SearchActions.searchHeaderComponentStateChanged({
+      <%= resourcePropertyName %>SearchActions.searchHeaderComponentStateChanged({
         activeViewMode: 'advanced',
       })
     );
@@ -470,8 +463,9 @@ describe('<%= resourceClassName %>SearchComponent', () => {
     const interactiveDataView = await <%= resourcePropertyName %>Search.getSearchResults();
     const dataView = await interactiveDataView.getDataView();
     // switch to list layout for testing table
-    const layoutSelection = await interactiveDataView.getDataLayoutSelection()
-    await (await layoutSelection.getListLayoutSelectionButton())?.click()
+    await (
+      await interactiveDataView.getDataLayoutSelection()
+    ).selectListLayout();
     const dataTable = await dataView.getDataListGrid();
     if (dataTable) {
       const rows = await dataTable.getActionButtons('list');
