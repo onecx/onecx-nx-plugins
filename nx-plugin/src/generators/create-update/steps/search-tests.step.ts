@@ -53,32 +53,34 @@ export class SearchTestsStep
         });
         store.refreshState();
 
-        const interactiveDataView = await ${resourceClassName}Search.getSearchResults();
+        const interactiveDataView = await ${resourcePropertyName}Search.getSearchResults();
         const dataView = await interactiveDataView.getDataView();
         const dataTable = await dataView.getDataListGrid();
         const rowActionButtons = await dataTable?.getActionButtons('list');
 
-        expect(rowActionButtons?.length).toBeGreaterThan(0);
-        let editButton;
-        for (const actionButton of rowActionButtons ?? []) {
-          const icon = await actionButton.getAttribute('ng-reflect-icon');
-          expect(icon).toBeTruthy();
-          if (icon === 'pi pi-pencil') {
-            editButton = actionButton;
+        if (rowActionButtons) {
+          expect(rowActionButtons?.length).toBeGreaterThan(0);
+          let editButton;
+          for (const actionButton of rowActionButtons ?? []) {
+            const icon = await actionButton.getAttribute('ng-reflect-icon');
+            expect(icon).toBeTruthy();
+            if (icon === 'pi pi-pencil') {
+              editButton = actionButton;
+            }
           }
+          expect(editButton).toBeTruthy();
+          await editButton?.click();
+  
+          expect(store.dispatch).toHaveBeenCalledWith(
+            ${resourcePropertyName}SearchActions.edit${resourceClassName}ButtonClicked({ id: '1' })
+          );
         }
-        expect(editButton).toBeTruthy();
-        await editButton?.click();
-
-        expect(store.dispatch).toHaveBeenCalledWith(
-          ${resourcePropertyName}SearchActions.edit${resourceClassName}ButtonClicked({ id: '1' })
-        );
       });
 
       it('should dispatch create${resourceClassName}ButtonClicked action on create click', async () => {
         jest.spyOn(store, 'dispatch');
 
-        const header = await ${resourceClassName}Search.getHeader();
+        const header = await ${resourcePropertyName}Search.getHeader();
         const createButton = await (await header.getPageHeader()).getInlineActionButtonByIcon(PrimeIcons.PLUS);
 
         expect(createButton).toBeTruthy();

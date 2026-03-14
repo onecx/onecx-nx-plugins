@@ -20,7 +20,7 @@ export class SearchEffectsStep
       `import { PortalDialogService } from '@onecx/portal-integration-angular';` +
         `import { mergeMap } from 'rxjs';` +
         `import {
-        ${options.resource},
+        ${resourceClassName},
         ${options.createRequestName},
         ${options.updateRequestName},
       } from 'src/app/shared/generated';` +
@@ -47,7 +47,7 @@ export class SearchEffectsStep
           return results.find((item) => item.id == action.id);
         }),
         mergeMap((itemToEdit) => {
-          return this.portalDialogService.openDialog< ${options.resource} | undefined>(
+          return this.portalDialogService.openDialog< ${resourceClassName} | undefined>(
             '${resourceConstantName}_CREATE_UPDATE.UPDATE.HEADER',
             {
               type: ${resourceClassName}CreateUpdateComponent,
@@ -75,7 +75,7 @@ export class SearchEffectsStep
               dataObject: dialogResult.result
           } as ${options.updateRequestName};
           return this.${resourcePropertyName}Service
-            .update${options.resource}(itemToEditId, itemToEdit)
+            .update${resourceClassName}ById({id: itemToEditId, update${resourceClassName}Request: itemToEdit})
             .pipe(
               map(() => {
                 this.messageService.success({
@@ -103,7 +103,7 @@ export class SearchEffectsStep
         return this.actions$.pipe(
           ofType(${resourcePropertyName}SearchActions.create${resourceClassName}ButtonClicked),
           switchMap(() => {
-            return this.portalDialogService.openDialog< ${options.resource} | undefined>(
+            return this.portalDialogService.openDialog< ${resourceClassName} | undefined>(
               '${resourceConstantName}_CREATE_UPDATE.CREATE.HEADER',
               {
                 type: ${resourceClassName}CreateUpdateComponent,
@@ -130,7 +130,7 @@ export class SearchEffectsStep
               dataObject: dialogResult.result
             } as ${options.createRequestName};
             return this.${resourcePropertyName}Service
-              .create${options.resource}(toCreateItem)
+              .create${resourceClassName}({create${resourceClassName}Request: toCreateItem})
               .pipe(
                 map(() => {
                   this.messageService.success({

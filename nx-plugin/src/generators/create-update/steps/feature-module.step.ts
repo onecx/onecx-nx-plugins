@@ -15,7 +15,7 @@ export class FeatureModuleStep
       featureFileName,
       featureFileName + '.module.ts'
     );
-    const find = ['declarations: [', `from '@ngrx/effects';`];
+    const find = ['declarations: [', `from '@ngrx/effects'`];
     const replaceWith = [
       `declarations: [${resourceClassName}CreateUpdateComponent,`,
       `from '@ngrx/effects';

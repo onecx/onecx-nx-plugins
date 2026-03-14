@@ -4,7 +4,7 @@ import {
   PortalApiConfiguration,
 } from '@onecx/portal-integration-angular';
 import { environment } from 'src/environments/environment';
-import { Configuration } from '../generated';
+import { Configuration } from 'src/app/shared/generated';
 
 export function apiConfigProvider(
   configService: ConfigurationService,

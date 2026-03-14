@@ -1,4 +1,4 @@
-import { Tree, joinPathFragments } from '@nx/devkit';
+import { Tree, joinPathFragments, names } from '@nx/devkit';
 import { GeneratorStep } from '../../shared/generator.utils';
 import { FeatureGeneratorSchema } from '../schema';
 import { COMMENT_KEY, OpenAPIUtil } from '../../shared/openapi/openapi.utils';
@@ -13,12 +13,13 @@ export class GeneralOpenAPIStep implements GeneratorStep<FeatureGeneratorSchema>
     );
 
     const resource = options.resource;
+    const propertyName = names(options.resource).propertyName;
 
     const apiUtil = new OpenAPIUtil(bffOpenApiContent);
     const res = apiUtil
       .tags()
       .add({
-        name: `${resource.toLocaleLowerCase()}`,
+        name: `${propertyName}`,
         description: `Managing ${resource} items`,
       })
       .done()

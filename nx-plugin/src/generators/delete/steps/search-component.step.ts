@@ -14,10 +14,9 @@ export class SearchComponentStep
     const resourcePropertyName = names(options.resource).propertyName;
     const filePath = `src/app/${featureFileName}/pages/${resourceFileName}-search/${resourceFileName}-search.component.ts`;
 
-    const find = [`} from '@onecx/portal-integration-angular';`, 'resetSearch'];
+    const find = [`} from '@onecx/portal-integration-angular'`, 'resetSearch'];
     const replaceWith = [
-      `RowListGridData
-    } from '@onecx/portal-integration-angular';`,
+      `, RowListGridData } from '@onecx/portal-integration-angular';`,
       `
     delete({ id }: RowListGridData) {
       this.store.dispatch(${resourcePropertyName}SearchActions.delete${resourceClassName}ButtonClicked({ id }));

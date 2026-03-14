@@ -8,7 +8,7 @@ import {
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { BrowserModule } from '@angular/platform-browser'
 import { Router, RouterModule } from '@angular/router';
-import { Actions, EffectsModule, EffectsRunner,  EffectSources   } from '@ngrx/effects';
+import { Actions, EffectsModule, EffectsRunner, EffectSources } from '@ngrx/effects';
 import { StoreRouterConnectingModule } from '@ngrx/router-store';
 import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
@@ -31,9 +31,9 @@ import { AppEntrypointComponent } from './app-entrypoint.component';
 import { metaReducers, reducers } from './app.reducers';
 import { routes } from './app-routing.module';
 
-import { Configuration } from './shared/generated';
-import { SharedModule } from './shared/shared.module';
-import { apiConfigProvider } from './shared/utils/apiConfigProvider.utils';
+import { Configuration } from 'src/app/shared/generated';
+import { SharedModule } from 'src/app/shared/shared.module';
+import { apiConfigProvider } from 'src/app/shared/utils/apiConfigProvider.utils';
 
 // Workaround for the following issue:
 // https://github.com/ngrx/platform/issues/3700

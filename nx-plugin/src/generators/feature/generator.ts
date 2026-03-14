@@ -95,6 +95,9 @@ export async function featureGenerator(
       console.log('');
       console.log('generate feature ==> ' + command);
     }
+    cmd = 'npm run apigen ';
+    log(cmd);
+    execSync(cmd, { cwd: tree.root, stdio: 'inherit' });
     const files = tree
       .listChanges()
       .map((c) => c.path)

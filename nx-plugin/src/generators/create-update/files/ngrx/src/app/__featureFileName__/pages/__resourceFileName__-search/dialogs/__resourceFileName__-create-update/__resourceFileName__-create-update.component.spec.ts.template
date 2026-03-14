@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -9,6 +8,7 @@ import { distinctUntilChanged, filter, skip, take, toArray } from 'rxjs'
 
 import { BreadcrumbService, PortalCoreModule } from '@onecx/portal-integration-angular';
 
+import { <%= resourceClassName%> } from 'src/app/shared/generated';
 import { <%= resourceClassName%>CreateUpdateComponent } from './<%= resourceFileName%>-create-update.component';
 
 Object.defineProperty(window, 'matchMedia', {
@@ -41,8 +41,8 @@ describe('<%= resourceClassName%>CreateUpdateComponent', () => {
         PortalCoreModule,
         ReactiveFormsModule,
         TranslateTestingModule.withTranslations({
-          de: require('../../../../assets/i18n/de.json'),
-          en: require('../../../../assets/i18n/en.json')
+          de: require('../../../../../../assets/i18n/de.json'),
+          en: require('../../../../../../assets/i18n/en.json')
         }).withDefaultLanguage('en'),
       ],
       providers: [
@@ -112,12 +112,13 @@ describe('<%= resourceClassName%>CreateUpdateComponent', () => {
   }))
 
   it('should set dialogResult with merged values on ocxDialogButtonClicked', () => {
-    component.vm.itemToEdit = { appId: 'oldId', name: 'oldName', description: 'oldDesc' } as any
+    component.vm.itemToEdit = { id:'1', appId: 'oldId', name: 'oldName', description: 'oldDesc' } as <%= resourceClassName%>
     component.formGroup.setValue({ changeMe: 'newVal' })
 
     component.ocxDialogButtonClicked()
 
     expect(component.dialogResult).toEqual({
+      id:'1',
       appId: 'oldId',
       name: 'oldName',
       description: 'oldDesc',
@@ -126,13 +127,13 @@ describe('<%= resourceClassName%>CreateUpdateComponent', () => {
   })
 
   it('should patch formGroup values from vm.itemToEdit on ngOnInit', () => {
-    component.vm.itemToEdit = { changeMe: 'editVal' } as any
+    component.vm.itemToEdit = { id:'1', changeMe: 'editVal' } as <%= resourceClassName%>
     component.ngOnInit()
     expect(component.formGroup.value).toEqual({ changeMe: 'editVal' })
   })
 
   it('should set dialogResult to form values when creating (no itemToEdit)', () => {
-    component.vm.itemToEdit = undefined as any
+    component.vm.itemToEdit = undefined
     component.formGroup.setValue({ changeMe: 'createVal' })
 
     component.ocxDialogButtonClicked()

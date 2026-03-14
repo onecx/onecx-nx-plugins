@@ -49,7 +49,7 @@ const PARAMETERS: GeneratorParameter<CreateUpdateGeneratorSchema>[] = [
     type: 'text',
     required: 'interactive',
     default: (values) => {
-      return `${names(values.featureName).className}APIService`;
+      return `${names(values.resource).className}APIService`;
     },
     prompt: 'Provide a name for your API service (e.g. BookAPIService): ',
     showInSummary: true,
@@ -60,7 +60,7 @@ const PARAMETERS: GeneratorParameter<CreateUpdateGeneratorSchema>[] = [
     type: 'text',
     required: 'interactive',
     default: (values) => {
-      return `Create${names(values.featureName).className}Request`;
+      return `Create${names(values.resource).className}Request`;
     },
     prompt: 'Provide a name for your create request (e.g. CreateBookRequest): ',
     showInSummary: true,
@@ -71,7 +71,7 @@ const PARAMETERS: GeneratorParameter<CreateUpdateGeneratorSchema>[] = [
     type: 'text',
     required: 'interactive',
     default: (values) => {
-      return `Create${names(values.featureName).className}Response`;
+      return `Create${names(values.resource).className}Response`;
     },
     prompt:
       'Provide a name for your create response (e.g. CreateBookResponse): ',
@@ -83,7 +83,7 @@ const PARAMETERS: GeneratorParameter<CreateUpdateGeneratorSchema>[] = [
     type: 'text',
     required: 'interactive',
     default: (values) => {
-      return `Update${names(values.featureName).className}Request`;
+      return `Update${names(values.resource).className}Request`;
     },
     prompt: 'Provide a name for your update request (e.g. UpdateBookRequest): ',
     showInSummary: true,
@@ -94,7 +94,7 @@ const PARAMETERS: GeneratorParameter<CreateUpdateGeneratorSchema>[] = [
     type: 'text',
     required: 'interactive',
     default: (values) => {
-      return `Update${names(values.featureName).className}Response`;
+      return `Update${names(values.resource).className}Response`;
     },
     prompt:
       'Provide a name for your update response (e.g. UpdateBookResponse): ',

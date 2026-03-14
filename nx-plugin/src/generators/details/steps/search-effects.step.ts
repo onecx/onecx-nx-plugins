@@ -22,7 +22,7 @@ export class SearchEffectsStep implements GeneratorStep<SearchGeneratorSchema> {
               ofType(${resourcePropertyName}SearchActions.detailsButtonClicked),
               concatLatestFrom(() => this.store.select(selectUrl)),
               tap(([action, currentUrl]) => {
-                const urlTree = this.router.parseUrl(currentUrl);
+                const urlTree = this.router.parseUrl(currentUrl as string);
                 urlTree.queryParams = {};
                 urlTree.fragment = null;
                 this.router.navigate([urlTree.toString(), 'details', action.id]);

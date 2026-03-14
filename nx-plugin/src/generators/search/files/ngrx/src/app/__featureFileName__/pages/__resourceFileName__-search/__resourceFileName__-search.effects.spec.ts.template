@@ -45,6 +45,9 @@ describe('<%= resourceClassName %>SearchEffects', () => {
     actions$ = new ReplaySubject(1)
 
     <%= resourcePropertyName %>Service = {
+      create<%= apiModelPascal %>: jest.fn(),
+      update<%= apiModelPascal %>ById: jest.fn(),
+      delete<%= apiModelPascal %>ById: jest.fn(),
       search<%= apiModelPascal %>Items: jest.fn()
     } as unknown as jest.Mocked<<%= serviceName %>>;
 

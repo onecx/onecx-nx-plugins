@@ -3,7 +3,7 @@ export interface DetailsGeneratorSchema {
   customizeNamingForAPI: boolean;
   apiServiceName: string;
   resource: string;
-  getByIdResponseName: string;
+  getResponseName: string;
   editMode: boolean;
   allowDelete: boolean;
   standalone?: boolean;  

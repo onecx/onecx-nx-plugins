@@ -21,8 +21,7 @@ export class SearchComponentStep
       'resetSearch',
     ];
     const replaceWith = [
-      `RowListGridData
-      } from '@onecx/portal-integration-angular';`,
+      `, RowListGridData } from '@onecx/portal-integration-angular';`,
       `const actions: Action[] = [
       {
        labelKey: '${resourceConstantName}_CREATE_UPDATE.ACTION.CREATE',

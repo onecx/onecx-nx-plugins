@@ -1,6 +1,5 @@
 import { Tree, names } from '@nx/devkit'
 
-import { toPascalCase, pluralize } from '../../shared/naming.utils';
 import { GeneratorStep } from '../../shared/generator.utils'
 import { safeReplace } from '../../shared/safeReplace'
 import { DeleteGeneratorSchema } from '../schema'
@@ -12,15 +11,22 @@ export class SearchEffectsSpecStep implements GeneratorStep<DeleteGeneratorSchem
     const resourceClassName = names(options.resource).className;
     const resourcePropertyName = names(options.resource).propertyName;
 
-    const dataObjectPascal = toPascalCase(options.resource || resourceClassName)
-    const dataObjectPlural = pluralize(dataObjectPascal)
-
     const filePath = `src/app/${featureFileName}/pages/${resourceFileName}-search/${resourceFileName}-search.effects.spec.ts`
     const content = tree.read(filePath, 'utf8') ?? ''
 
     if (content.includes(`describe('refreshSearchAfterDelete$'`) ||
         content.includes(`describe('deleteButtonClicked$'`)) {
       return
+    }
+
+    if (!content.includes(`import { ${resourceClassName},`) && content.includes(`from 'src/app/shared/generated'`)) {
+      safeReplace(
+        `Add ${resourceClassName} import`,
+        filePath,
+        [`${resourceClassName}APIService`],
+        [`${resourceClassName}, ${resourceClassName}APIService`],
+        tree
+      );
     }
 
     if (!content.includes(`PortalDialogService`) || !content.includes(`from '@onecx/portal-integration-angular'`)) {
@@ -47,9 +53,9 @@ export class SearchEffectsSpecStep implements GeneratorStep<DeleteGeneratorSchem
       describe('refreshSearchAfterDelete$', () => {
         it('should dispatch ResultsLoadingFailed when refresh search after delete fails', (done) => {
           const mockError = 'Refresh search after delete failed'
-          store.overrideSelector(${resourcePropertyName}SearchSelectors.selectCriteria, { changeMe: 'x' } as any)
-          service.search${dataObjectPlural}.mockReturnValueOnce(throwError(() => mockError) as any)
-          effects.refreshSearchAfterDelete$.pipe(take(1)).subscribe((action: any) => {
+          store.overrideSelector(${resourcePropertyName}SearchSelectors.selectCriteria, { changeMe: 'x' })
+          ${resourcePropertyName}Service.search${resourceClassName}Items.mockReturnValueOnce(throwError(() => mockError))
+          effects.refreshSearchAfterDelete$.pipe(take(1)).subscribe((action) => {
             expect(action).toEqual(${resourcePropertyName}SearchActions.${resourcePropertyName}SearchResultsLoadingFailed({ error: mockError }))
             done()
           })
@@ -58,7 +64,7 @@ export class SearchEffectsSpecStep implements GeneratorStep<DeleteGeneratorSchem
       })
 
       describe('deleteButtonClicked$', () => {
-        const item = { id: 'test-123', name: 'X' } as any
+        const item = { id: 'test-123', name: 'X' } as ${resourceClassName}
         beforeEach(() => {
           store.overrideSelector(${resourcePropertyName}SearchSelectors.selectResults, [item])
           store.refreshState()
@@ -66,11 +72,11 @@ export class SearchEffectsSpecStep implements GeneratorStep<DeleteGeneratorSchem
 
         it('should delete the item and show a success message when the user confirms the dialog', (done) => {
           portalDialogService.openDialog.mockReturnValue(of({ button: 'primary', result: null }) as never)
-          service.delete${dataObjectPascal}.mockReturnValue(of({}) as any)
-          effects.deleteButtonClicked$.pipe(take(1)).subscribe((action: any) => {
+          ${resourcePropertyName}Service.delete${resourceClassName}ById.mockReturnValue(of({}) as any)
+          effects.deleteButtonClicked$.pipe(take(1)).subscribe((action) => {
             expect(action.type).toBe(${resourcePropertyName}SearchActions.delete${resourceClassName}Succeeded.type)
             expect(messageService.success).toHaveBeenCalled()
-            expect(service.delete${dataObjectPascal}).toHaveBeenCalled()
+            expect(${resourcePropertyName}Service.delete${resourceClassName}ById).toHaveBeenCalled()
             done()
           })
           actions$.next(${resourcePropertyName}SearchActions.delete${resourceClassName}ButtonClicked({ id: 'test-123' }))
@@ -78,9 +84,9 @@ export class SearchEffectsSpecStep implements GeneratorStep<DeleteGeneratorSchem
 
         it('should dispatch deleteCancelled and not call the service when the user cancels the dialog', (done) => {
           portalDialogService.openDialog.mockReturnValue(of({ button: 'secondary', result: null }) as never)
-          effects.deleteButtonClicked$.pipe(take(1)).subscribe((action: any) => {
+          effects.deleteButtonClicked$.pipe(take(1)).subscribe((action) => {
             expect(action.type).toBe(${resourcePropertyName}SearchActions.delete${resourceClassName}Cancelled.type)
-            expect(service.delete${dataObjectPascal}).not.toHaveBeenCalled()
+            expect(${resourcePropertyName}Service.delete${resourceClassName}ById).not.toHaveBeenCalled()
             done()
           })
           actions$.next(${resourcePropertyName}SearchActions.delete${resourceClassName}ButtonClicked({ id: 'test-123' }))
@@ -88,8 +94,8 @@ export class SearchEffectsSpecStep implements GeneratorStep<DeleteGeneratorSchem
 
         it('should dispatch deleteFailed and show an error message when the API call fails', (done) => {
           portalDialogService.openDialog.mockReturnValue(of({ button: 'primary', result: null }) as never)
-          service.delete${dataObjectPascal}.mockReturnValue(throwError(() => 'Delete failed') as any)
-          effects.deleteButtonClicked$.pipe(take(1)).subscribe((action: any) => {
+          ${resourcePropertyName}Service.delete${resourceClassName}ById.mockReturnValue(throwError(() => 'Delete failed'))
+          effects.deleteButtonClicked$.pipe(take(1)).subscribe((action) => {
             expect(action).toEqual(${resourcePropertyName}SearchActions.delete${resourceClassName}Failed({ error: 'Delete failed' }))
             expect(messageService.error).toHaveBeenCalled()
             done()
@@ -103,12 +109,12 @@ export class SearchEffectsSpecStep implements GeneratorStep<DeleteGeneratorSchem
           portalDialogService.openDialog.mockReturnValue(of({ button: 'primary', result: null }) as never)
           effects.deleteButtonClicked$.pipe(take(1)).subscribe({
             next: () => done.fail('Expected error'),
-            error: (e: any) => {
+            error: (e: unknown) => {
               expect(String(e)).toContain('Item to delete not found!')
               done()
             }
           })
-          actions$.next(${resourcePropertyName}SearchActions.delete${resourceClassName}ButtonClicked({ id: 'missing' as any }))
+          actions$.next(${resourcePropertyName}SearchActions.delete${resourceClassName}ButtonClicked({ id: 'missing' }))
         })
       })
     `

@@ -17,12 +17,11 @@ export class GeneralOpenAPIStep
     );
 
     const resource = options.resource;
-    const propertyName = names(options.featureName).propertyName;
+    const propertyName = names(options.resource).propertyName;
     const createRequestName = options.createRequestName;
     const createResponseName = options.createResponseName;
     const updateRequestName = options.updateRequestName;
     const updateResponseName = options.updateResponseName;
-    const apiServiceName = options.apiServiceName;
 
     const apiUtil = new OpenAPIUtil(bffOpenApiContent);
     // Paths
@@ -31,7 +30,7 @@ export class GeneralOpenAPIStep
         {
           type: 'post',
           operationId: `create${resource}`,
-          tags: [apiServiceName],
+          tags: [propertyName],
           description: `This operation performs a create.`,
         },
         {
@@ -44,13 +43,13 @@ export class GeneralOpenAPIStep
     });
 
     apiUtil.paths().set(
-      `/${propertyName}/{id}`,
+      `/${propertyName}s/{id}`,
       {
         ...createUpdateEndpoint(
           {
             type: 'put',
             operationId: `update${resource}ById`,
-            tags: [apiServiceName],
+            tags: [propertyName],
             description: `This operation performs an update.`,
           },
           {

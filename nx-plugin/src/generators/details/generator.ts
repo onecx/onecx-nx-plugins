@@ -59,14 +59,14 @@ const PARAMETERS: GeneratorParameter<DetailsGeneratorSchema>[] = [
     showRules: [{ showIf: (values) => values.customizeNamingForAPI }],
   },
   {
-    key: 'getByIdResponseName',
+    key: 'getResponseName',
     type: 'text',
     required: 'interactive',
     default: (values) => {
-      return `Get${names(values.resource).className}ByIdResponse`;
+      return `Get${names(values.resource).className}Response`;
     },
     prompt:
-      'Provide a name for your GetByIdResponse (e.g. GetBookByIdResponse): ',
+      'Provide a name for your GetResourceResponse (e.g. GetBookResponse): ',
     showInSummary: true,
     showRules: [{ showIf: (values) => values.customizeNamingForAPI }],
   },

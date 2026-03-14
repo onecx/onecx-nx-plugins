@@ -6,6 +6,8 @@ const NON_INTERACTIVE_KEY = 'non-interactive';
 const projectName = 'test-project';
 const featureName = 'test-feature';
 const featureNameCustom = 'test-custom-feature';
+const resourceName = 'TestResource';
+
 describe('nx-plugin', () => {
   let projectDirectory: string;
 
@@ -96,7 +98,7 @@ describe('nx-plugin', () => {
   });
 
   it('should add a feature', () => {
-    execSync(`nx generate @onecx/nx-plugin:feature ${featureName} --verbose`, {
+    execSync(`nx generate @onecx/nx-plugin:feature ${featureName} --resource=${resourceName} --verbose`, {
       cwd: projectDirectory,
       stdio: 'inherit',
       env: process.env,
@@ -128,7 +130,7 @@ describe('nx-plugin', () => {
       .join(' ');
 
     execSync(
-      `nx generate @onecx/nx-plugin:search ${featureName} ${parameterString} --verbose`,
+      `nx generate @onecx/nx-plugin:search ${featureName} --resource=${resourceName} ${parameterString} --verbose`,
       {
         cwd: projectDirectory,
         stdio: 'inherit',
@@ -163,7 +165,7 @@ describe('nx-plugin', () => {
       .join(' ');
 
     execSync(
-      `nx generate @onecx/nx-plugin:details ${featureName} ${parameterString} --verbose`,
+      `nx generate @onecx/nx-plugin:details ${featureName} --resource=${resourceName} ${parameterString} --verbose`,
       {
         cwd: projectDirectory,
         stdio: 'inherit',
@@ -197,7 +199,7 @@ describe('nx-plugin', () => {
       .join(' ');
 
     execSync(
-      `nx generate @onecx/nx-plugin:create-update ${featureName} ${parameterString} --verbose`,
+      `nx generate @onecx/nx-plugin:create-update ${featureName} --resource=${resourceName} ${parameterString} --verbose`,
       {
         cwd: projectDirectory,
         stdio: 'inherit',
@@ -231,7 +233,7 @@ describe('nx-plugin', () => {
       .join(' ');
 
     execSync(
-      `nx generate @onecx/nx-plugin:delete ${featureName} ${parameterString} --verbose`,
+      `nx generate @onecx/nx-plugin:delete ${featureName} --resource=${resourceName} ${parameterString} --verbose`,
       {
         cwd: projectDirectory,
         stdio: 'inherit',
@@ -269,7 +271,7 @@ describe('nx-plugin', () => {
       .join(' ');
 
     execSync(
-      `nx generate @onecx/nx-plugin:ngrx-page ${featureName} ${parameterString} --verbose`,
+      `nx generate @onecx/nx-plugin:ngrx-page ${featureName} --resource=${resourceName} ${parameterString} --verbose`,
       {
         cwd: projectDirectory,
         stdio: 'inherit',
@@ -285,7 +287,7 @@ describe('nx-plugin', () => {
 
   it('should add a custom named feature', () => {
     execSync(
-      `nx generate @onecx/nx-plugin:feature ${featureNameCustom} --verbose`,
+      `nx generate @onecx/nx-plugin:feature ${featureNameCustom} --resource=${resourceName} --verbose`,
       {
         cwd: projectDirectory,
         stdio: 'inherit',
@@ -335,7 +337,7 @@ describe('nx-plugin', () => {
       .join(' ');
 
     execSync(
-      `nx generate @onecx/nx-plugin:search ${featureNameCustom} ${parameterString} --verbose`,
+      `nx generate @onecx/nx-plugin:search ${featureNameCustom} --resource=${resourceName} ${parameterString} --verbose`,
       {
         cwd: projectDirectory,
         stdio: 'inherit',

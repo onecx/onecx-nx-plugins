@@ -12,7 +12,7 @@ export class FeatureModuleStep implements GeneratorStep<DeleteGeneratorSchema> {
       featureFileName,
       featureFileName + '.module.ts'
     );
-    const find = [`from '@ngrx/effects';`];
+    const find = [`from '@ngrx/effects'`];
     const replaceWith = [
       `from '@ngrx/effects';
         import { providePortalDialogService } from '@onecx/portal-integration-angular';`,
