@@ -13,6 +13,9 @@ export class SearchEffectsStep
     const resourceClassName = names(options.resource).className;
     const resourceConstantName = names(options.resource).constantName;
     const resourcePropertyName = names(options.resource).propertyName;
+    const createRequestPropertyName = names(options.createRequestName).propertyName;
+    const updateRequestPropertyName = names(options.updateRequestName).propertyName;
+
     const filePath = `src/app/${featureFileName}/pages/${resourceFileName}-search/${resourceFileName}-search.effects.ts`;
 
     const find = [/^/, 'searchByUrl$'];
@@ -75,7 +78,7 @@ export class SearchEffectsStep
               dataObject: dialogResult.result
           } as ${options.updateRequestName};
           return this.${resourcePropertyName}Service
-            .update${resourceClassName}ById({id: itemToEditId, update${resourceClassName}Request: itemToEdit})
+            .update${resourceClassName}ById({id: itemToEditId, ${updateRequestPropertyName}: itemToEdit})
             .pipe(
               map(() => {
                 this.messageService.success({
@@ -130,7 +133,7 @@ export class SearchEffectsStep
               dataObject: dialogResult.result
             } as ${options.createRequestName};
             return this.${resourcePropertyName}Service
-              .create${resourceClassName}({create${resourceClassName}Request: toCreateItem})
+              .create${resourceClassName}({${createRequestPropertyName}: toCreateItem})
               .pipe(
                 map(() => {
                   this.messageService.success({

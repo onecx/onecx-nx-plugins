@@ -27,7 +27,7 @@ const PARAMETERS: GeneratorParameter<PageGeneratorSchema>[] = [
     type: 'text',
     required: 'always',
     default: 'Page',
-    prompt: 'Provide a name for your page (e.g. "Book" for BookComponent): ',
+    prompt: 'Provide a name for the page (e.g. "Book" for BookComponent): ',
     showInSummary: true,
   },
   {
@@ -35,7 +35,7 @@ const PARAMETERS: GeneratorParameter<PageGeneratorSchema>[] = [
     type: 'text',
     required: 'always',
     default: 'Page Title',
-    prompt: 'Provide a title for your page: ',
+    prompt: 'Provide a title for the page: ',
     showInSummary: true,
   },
   {
@@ -121,7 +121,7 @@ export async function componentGenerator(
       .map((c) => c.path)
       .filter((p) => p.endsWith('.ts'))
       .join(' ');
-    execSync('npx organize-imports-cli ' + files, {
+    execSync('npx --yes organize-imports-cli ' + files, {
       cwd: tree.root,
       stdio: 'inherit',
     });

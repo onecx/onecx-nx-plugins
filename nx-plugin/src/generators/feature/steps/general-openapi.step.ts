@@ -3,7 +3,9 @@ import { GeneratorStep } from '../../shared/generator.utils';
 import { FeatureGeneratorSchema } from '../schema';
 import { COMMENT_KEY, OpenAPIUtil } from '../../shared/openapi/openapi.utils';
 
-export class GeneralOpenAPIStep implements GeneratorStep<FeatureGeneratorSchema> {
+export class GeneralOpenAPIStep
+  implements GeneratorStep<FeatureGeneratorSchema>
+{
   process(tree: Tree, options: FeatureGeneratorSchema): void {
     const openApiFolderPath = 'src/assets/api';
     const bffOpenApiPath = 'openapi-bff.yaml';
@@ -18,41 +20,52 @@ export class GeneralOpenAPIStep implements GeneratorStep<FeatureGeneratorSchema>
     const apiUtil = new OpenAPIUtil(bffOpenApiContent);
     const res = apiUtil
       .tags()
-      .add({
-        name: `${propertyName}`,
-        description: `Managing ${resource} items`,
-      })
+      .add(`${propertyName}`,
+        {
+          name: `${propertyName}`,
+          description: `Managing ${resource} items`,
+        },
+        {
+          existStrategy: 'skip',
+        }
+      )
       .done()
       .schemas()
-      .set(`${resource}`, {
-        type: 'object',
-        required: ['id'],
-        properties: {
-          modificationCount: {
-            type: 'integer',
-            format: 'int32',
+      .set(
+        `${resource}`,
+        {
+          type: 'object',
+          required: ['id'],
+          properties: {
+            modificationCount: {
+              type: 'integer',
+              format: 'int32',
+            },
+            creationDate: {
+              $ref: '#/components/schemas/OffsetDateTime',
+            },
+            creationUser: {
+              type: 'string',
+              readOnly: true,
+            },
+            modificationDate: {
+              $ref: '#/components/schemas/OffsetDateTime',
+            },
+            modificationUser: {
+              type: 'string',
+              readOnly: true,
+            },
+            id: {
+              type: 'string',
+              readOnly: true,
+            },
+            [COMMENT_KEY]: 'ACTION E: Add entity properties',
           },
-          creationDate: {
-            $ref: '#/components/schemas/OffsetDateTime'
-          },
-          creationUser: {
-            type: 'string',
-            readOnly: true
-          },
-          modificationDate: {
-            $ref: '#/components/schemas/OffsetDateTime'
-          },
-          modificationUser: {
-            type: 'string',
-            readOnly: true
-          },
-          id: {
-            type: 'string',
-            readOnly: true
-          },
-          [COMMENT_KEY]: 'ACTION E: Add entity properties',
         },
-      })
+        {
+          existStrategy: 'skip',
+        }
+      )
       .done()
       .finalize();
 
@@ -60,6 +73,6 @@ export class GeneralOpenAPIStep implements GeneratorStep<FeatureGeneratorSchema>
   }
 
   getTitle(): string {
-    return "Adapting Entity Schema in OpenAPI"
+    return 'Adapting Entity Schema in OpenAPI';
   }
 }

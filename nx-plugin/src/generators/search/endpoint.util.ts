@@ -2,6 +2,7 @@ import { OpenAPIDefault } from '../shared/openapi/models/openapi-default.model';
 
 interface SearchEndpointParameter {
   resource: string;
+  className: string;
   propertyName: string;
   searchRequestName: string;
   searchResponseName: string;
@@ -32,7 +33,7 @@ export function createSearchEndpoint(
     },
     responses: {
       "200": {
-        description: `${parameter.resource} search results retrieved successfully`,
+        description: `${parameter.className} search results retrieved successfully`,
         content: {
           'application/json': {
             schema: {

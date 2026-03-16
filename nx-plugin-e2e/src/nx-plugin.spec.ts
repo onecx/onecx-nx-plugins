@@ -1,7 +1,8 @@
-import { execSync } from 'child_process';
+import { execSync, ExecSyncOptionsWithBufferEncoding } from 'child_process';
 import { join, dirname } from 'path';
 import { existsSync, mkdirSync, rmSync } from 'fs';
 import * as os from 'os';
+
 const NON_INTERACTIVE_KEY = 'non-interactive';
 const projectName = 'test-project';
 const featureName = 'test-feature';
@@ -10,6 +11,10 @@ const resourceName = 'TestResource';
 
 describe('nx-plugin', () => {
   let projectDirectory: string;
+  const option: ExecSyncOptionsWithBufferEncoding = {
+    stdio: 'inherit',
+    env: process.env,
+  };
 
   beforeAll(() => {
     projectDirectory = createTestProject('ngrx');
@@ -21,7 +26,7 @@ describe('nx-plugin', () => {
       stdio: 'inherit',
       env: process.env,
     });
-    
+
     // Run migrations if migrations.json was created
     if (existsSync(`${projectDirectory}/migrations.json`)) {
       console.log('Installing dependencies for migration...');
@@ -97,455 +102,205 @@ describe('nx-plugin', () => {
     });
   });
 
-  it('should add a feature', () => {
-    execSync(`nx generate @onecx/nx-plugin:feature ${featureName} --resource=${resourceName} --verbose`, {
-      cwd: projectDirectory,
-      stdio: 'inherit',
-      env: process.env,
+  beforeEach(() => {
+    console.log('########################################################');
+  });
+
+  describe('use presettings', () => {
+    it('should add a feature', () => {
+      const tcOption = { ...option, cwd: projectDirectory };
+      const parameterString = getParameterAsString([]);
+      console.log('### ==> should add a feature ###########################');
+      console.log(tcOption);
+
+      execSync(
+        `nx generate @onecx/nx-plugin:feature ${featureName} --resource=${resourceName} ${parameterString}`,
+        tcOption
+      );
+      execSync(`nx run build --skip-nx-cache`, tcOption);
+      execSync(`nx run test --skip-nx-cache`, tcOption);
     });
-    execSync(`nx run build --skip-nx-cache`, {
-      cwd: projectDirectory,
-      stdio: 'inherit',
-      env: process.env,
+
+    it('should add a search page', () => {
+      const tcOption = { ...option, cwd: projectDirectory };
+      const parameterString = getParameterAsString([]);
+      console.log('### ==> should add a search page #######################');
+
+      execSync(
+        `nx generate @onecx/nx-plugin:search ${featureName} --resource=${resourceName} ${parameterString}`,
+        tcOption
+      );
+      execSync(`nx run build --skip-nx-cache`, tcOption);
+      execSync(`nx run test --skip-nx-cache`, tcOption);
     });
-    execSync(`nx run test --skip-nx-cache`, {
-      cwd: projectDirectory,
-      stdio: 'inherit',
-      env: process.env,
+
+    it('should add a details page', () => {
+      const tcOption = { ...option, cwd: projectDirectory };
+      const parameterString = getParameterAsString([]);
+      console.log('### ==> should add a details page #######################');
+
+      execSync(
+        `nx generate @onecx/nx-plugin:details ${featureName} --resource=${resourceName} ${parameterString}`,
+        tcOption
+      );
+      execSync(`nx run build --skip-nx-cache`, tcOption);
+      execSync(`nx run test --skip-nx-cache --coverage`, tcOption);
+    });
+
+    it('should add a create-update dialog', () => {
+      const tcOption = { ...option, cwd: projectDirectory };
+      const parameterString = getParameterAsString([]);
+      console.log(
+        '### ==> should add a create-update dialog #######################'
+      );
+
+      execSync(
+        `nx generate @onecx/nx-plugin:create-update ${featureName} --resource=${resourceName} ${parameterString} --verbose`,
+        tcOption
+      );
+      execSync(`nx run build --skip-nx-cache`, tcOption);
+      execSync(`nx run test --skip-nx-cache --coverage`, tcOption);
+    });
+
+    it('should add a delete dialog', () => {
+      const tcOption = { ...option, cwd: projectDirectory };
+      const parameterString = getParameterAsString([]);
+      console.log('### ==> should add a delete dialog #######################');
+
+      execSync(
+        `nx generate @onecx/nx-plugin:delete ${featureName} --resource=${resourceName} ${parameterString} --verbose`,
+        tcOption
+      );
+      execSync(`nx run build --skip-nx-cache`, tcOption);
+      execSync(`nx run test --skip-nx-cache --coverage`, tcOption);
+    });
+
+    it('should add an empty ngrx-page', () => {
+      const tcOption = { ...option, cwd: projectDirectory };
+      const parameterString = getParameterAsString([
+        {
+          key: 'pageName',
+          value: 'Test',
+        },
+        {
+          key: 'pageTitle',
+          value: 'Page Title',
+        },
+      ]);
+      console.log(
+        '### ==> should add an empty ngrx-page #######################'
+      );
+
+      execSync(
+        `nx generate @onecx/nx-plugin:ngrx-page ${featureName} ${parameterString}`,
+        tcOption
+      );
+      execSync(`nx run build --skip-nx-cache`, tcOption);
     });
   });
 
-  it('should add a search page', () => {
-    // Add all required parameters to this array with a value.
-    // As tests are non-interactive, not-added but required items will block the test
-    const requiredParameters = [
-      {
-        key: NON_INTERACTIVE_KEY,
-        value: true,
-      },
-    ];
+  describe('use custom names instead presettings', () => {
+    it('should add a custom named feature', () => {
+      const tcOption = { ...option, cwd: projectDirectory };
+      const parameterString = getParameterAsString([
+        { key: 'resource', value: 'CustomDataObject' },
+      ]);
+      console.log('### ==> should add a custom named feature ################');
 
-    const parameterString = requiredParameters
-      .map((o) => `--${o.key} ${o.value}`)
-      .join(' ');
-
-    execSync(
-      `nx generate @onecx/nx-plugin:search ${featureName} --resource=${resourceName} ${parameterString} --verbose`,
-      {
-        cwd: projectDirectory,
-        stdio: 'inherit',
-        env: process.env,
-      }
-    );
-
-    execSync(`nx run build --skip-nx-cache`, {
-      cwd: projectDirectory,
-      stdio: 'inherit',
-      env: process.env,
+      execSync(
+        `nx generate @onecx/nx-plugin:feature ${featureNameCustom} ${parameterString} --verbose`,
+        tcOption
+      );
+      execSync(`nx run build --skip-nx-cache`, tcOption);
+      execSync(`nx run test --skip-nx-cache`, tcOption);
     });
-    execSync(`nx run test --skip-nx-cache`, {
-      cwd: projectDirectory,
-      stdio: 'inherit',
-      env: process.env,
+
+    it('should add a custom named search page', () => {
+      const tcOption = { ...option, cwd: projectDirectory };
+      const parameterString = getParameterAsString([
+        { key: 'resource', value: 'CustomDataObject' },
+        { key: 'searchRequestName', value: 'CustomDataObjectSearchRequest' },
+        { key: 'searchResponseName', value: 'CustomDataObjectSearchResponse' },
+      ]);
+      console.log('### ==> should add a custom named search page ############');
+
+      execSync(
+        `nx generate @onecx/nx-plugin:search ${featureNameCustom} ${parameterString} --verbose`,
+        tcOption
+      );
+      execSync(`nx run build --skip-nx-cache`, tcOption);
+      execSync(`nx run test --skip-nx-cache --coverage`, tcOption);
     });
-  });
 
-  it('should add a details page', () => {
-    // Add all required parameters to this array with a value.
-    // As tests are non-interactive, not-added but required items will block the test
-    const requiredParameters = [
-      {
-        key: NON_INTERACTIVE_KEY,
-        value: true,
-      },
-    ];
+    it('should add a custom named details page', () => {
+      const tcOption = { ...option, cwd: projectDirectory };
+      const parameterString = getParameterAsString([
+        { key: 'resource', value: 'CustomDataObject' },
+        { key: 'getResponseName', value: 'CustomDataObjectGetResponse' },
+      ]);
+      console.log('### ==> should add a custom named details page ###########');
 
-    const parameterString = requiredParameters
-      .map((o) => `--${o.key} ${o.value}`)
-      .join(' ');
-
-    execSync(
-      `nx generate @onecx/nx-plugin:details ${featureName} --resource=${resourceName} ${parameterString} --verbose`,
-      {
-        cwd: projectDirectory,
-        stdio: 'inherit',
-        env: process.env,
-      }
-    );
-    execSync(`nx run build --skip-nx-cache`, {
-      cwd: projectDirectory,
-      stdio: 'inherit',
-      env: process.env,
+      execSync(
+        `nx generate @onecx/nx-plugin:details ${featureNameCustom} ${parameterString} --verbose`,
+        tcOption
+      );
+      execSync(`nx run build --skip-nx-cache`, tcOption);
+      execSync(`nx run test --skip-nx-cache --coverage`, tcOption);
     });
-    execSync(`nx run test --skip-nx-cache --coverage`, {
-      cwd: projectDirectory,
-      stdio: 'inherit',
-      env: process.env,
+
+    it('should add a custom named create-update dialog', () => {
+      const tcOption = { ...option, cwd: projectDirectory };
+      const parameterString = getParameterAsString([
+        { key: 'resource', value: 'CustomDataObject' },
+        { key: 'createRequestName', value: 'CustomDataObjectCreateRequest' },
+        { key: 'createResponseName', value: 'CustomDataObjectCreateResponse' },
+        { key: 'updateRequestName', value: 'CustomDataObjectUpdateRequest' },
+        { key: 'updateResponseName', value: 'CustomDataObjectUpdateResponse' },
+      ]);
+      console.log('### ==> should add a custom named create-update dialog ##');
+
+      execSync(
+        `nx generate @onecx/nx-plugin:create-update ${featureNameCustom} ${parameterString} --verbose`,
+        tcOption
+      );
+      execSync(`nx run build --skip-nx-cache`, tcOption);
+      execSync(`nx run test --skip-nx-cache --coverage`, tcOption);
     });
-  });
 
-  it('should add a create-update dialog', () => {
-    // Add all required parameters to this array with a value.
-    // As tests are non-interactive, not-added but required items will block the test
-    const requiredParameters = [
-      {
-        key: NON_INTERACTIVE_KEY,
-        value: true,
-      },
-    ];
+    it('should add a custom named delete dialog', () => {
+      const tcOption = { ...option, cwd: projectDirectory };
+      const parameterString = getParameterAsString([
+        { key: 'resource', value: 'CustomDataObject' },
+        { key: 'deleteRequestName', value: 'CustomDataObjectDeleteRequest' },
+        { key: 'deleteResponseName', value: 'CustomDataObjectDeleteResponse' },
+      ]);
+      console.log('### ==> should add a custom named delete dialog ##########');
 
-    const parameterString = requiredParameters
-      .map((o) => `--${o.key} ${o.value}`)
-      .join(' ');
-
-    execSync(
-      `nx generate @onecx/nx-plugin:create-update ${featureName} --resource=${resourceName} ${parameterString} --verbose`,
-      {
-        cwd: projectDirectory,
-        stdio: 'inherit',
-        env: process.env,
-      }
-    );
-    execSync(`nx run build --skip-nx-cache`, {
-      cwd: projectDirectory,
-      stdio: 'inherit',
-      env: process.env,
-    });
-    execSync(`nx run test --skip-nx-cache --coverage`, {
-      cwd: projectDirectory,
-      stdio: 'inherit',
-      env: process.env,
+      execSync(
+        `nx generate @onecx/nx-plugin:delete ${featureNameCustom} ${parameterString} --verbose`,
+        tcOption
+      );
+      execSync(`nx run build --skip-nx-cache`, tcOption);
+      execSync(`nx run test --skip-nx-cache --coverage`, tcOption);
     });
   });
 
-  it('should add a delete dialog', () => {
-    // Add all required parameters to this array with a value.
-    // As tests are non-interactive, not-added but required items will block the test
-    const requiredParameters = [
-      {
-        key: NON_INTERACTIVE_KEY,
-        value: true,
-      },
-    ];
+  describe('extras', () => {
+    it('should add pre commit validation', () => {
+      const tcOption = { ...option, cwd: projectDirectory };
+      const parameterString = getParameterAsString([
+        { key: 'enableEslint', value: true },
+        { key: 'enableConventionalCommits', value: true },
+        { key: 'enableDetectSecrets', value: true },
+      ]);
+      console.log('### ==> should add pre commit validation #################');
 
-    const parameterString = requiredParameters
-      .map((o) => `--${o.key} ${o.value}`)
-      .join(' ');
-
-    execSync(
-      `nx generate @onecx/nx-plugin:delete ${featureName} --resource=${resourceName} ${parameterString} --verbose`,
-      {
-        cwd: projectDirectory,
-        stdio: 'inherit',
-        env: process.env,
-      }
-    );
-    execSync(`nx run build --skip-nx-cache`, {
-      cwd: projectDirectory,
-      stdio: 'inherit',
-      env: process.env,
-    });
-    execSync(`nx run test --skip-nx-cache --coverage`, {
-      cwd: projectDirectory,
-      stdio: 'inherit',
-      env: process.env,
-    });
-  });
-
-  it('should add an empty ngrx-page', () => {
-    // Add all required parameters to this array with a value.
-    // As tests are non-interactive, not-added but required items will block the test
-    const requiredParameters = [
-      {
-        key: NON_INTERACTIVE_KEY,
-        value: true,
-      },
-      {
-        key: 'pageName',
-        value: 'Test',
-      },
-    ];
-
-    const parameterString = requiredParameters
-      .map((o) => `--${o.key} ${o.value}`)
-      .join(' ');
-
-    execSync(
-      `nx generate @onecx/nx-plugin:ngrx-page ${featureName} --resource=${resourceName} ${parameterString} --verbose`,
-      {
-        cwd: projectDirectory,
-        stdio: 'inherit',
-        env: process.env,
-      }
-    );
-    execSync(`nx run build --skip-nx-cache`, {
-      cwd: projectDirectory,
-      stdio: 'inherit',
-      env: process.env,
-    });
-  });
-
-  it('should add a custom named feature', () => {
-    execSync(
-      `nx generate @onecx/nx-plugin:feature ${featureNameCustom} --resource=${resourceName} --verbose`,
-      {
-        cwd: projectDirectory,
-        stdio: 'inherit',
-        env: process.env,
-      }
-    );
-    execSync(`nx run build --skip-nx-cache`, {
-      cwd: projectDirectory,
-      stdio: 'inherit',
-      env: process.env,
-    });
-    execSync(`nx run test --skip-nx-cache`, {
-      cwd: projectDirectory,
-      stdio: 'inherit',
-      env: process.env,
-    });
-  });
-
-  it('should add a custom named search page', () => {
-    // Add all required parameters to this array with a value.
-    // As tests are non-interactive, not-added but required items will block the test
-    const requiredParameters = [
-      {
-        key: NON_INTERACTIVE_KEY,
-        value: true,
-      },
-      {
-        key: 'apiServiceName',
-        value: 'CustomService',
-      },
-      {
-        key: 'resource',
-        value: 'CustomDataObject',
-      },
-      {
-        key: 'searchRequestName',
-        value: 'CustomDataObjectSearchRequest',
-      },
-      {
-        key: 'searchResponseName',
-        value: 'CustomDataObjectSearchResponse',
-      },
-    ];
-
-    const parameterString = requiredParameters
-      .map((o) => `--${o.key} ${o.value}`)
-      .join(' ');
-
-    execSync(
-      `nx generate @onecx/nx-plugin:search ${featureNameCustom} --resource=${resourceName} ${parameterString} --verbose`,
-      {
-        cwd: projectDirectory,
-        stdio: 'inherit',
-        env: process.env,
-      }
-    );
-
-    execSync(`nx run build --skip-nx-cache`, {
-      cwd: projectDirectory,
-      stdio: 'inherit',
-      env: process.env,
-    });
-    execSync(`nx run test --skip-nx-cache`, {
-      cwd: projectDirectory,
-      stdio: 'inherit',
-      env: process.env,
-    });
-  });
-
-  it('should add a custom named details page', () => {
-    // Add all required parameters to this array with a value.
-    // As tests are non-interactive, not-added but required items will block the test
-    const requiredParameters = [
-      {
-        key: NON_INTERACTIVE_KEY,
-        value: true,
-      },
-      {
-        key: 'apiServiceName',
-        value: 'CustomService',
-      },
-      {
-        key: 'resource',
-        value: 'CustomDataObject',
-      },
-      {
-        key: 'getByIdResponseName',
-        value: 'GetCustomDataObjectByIdResponse',
-      },
-    ];
-
-    const parameterString = requiredParameters
-      .map((o) => `--${o.key} ${o.value}`)
-      .join(' ');
-
-    execSync(
-      `nx generate @onecx/nx-plugin:details ${featureNameCustom} ${parameterString} --verbose`,
-      {
-        cwd: projectDirectory,
-        stdio: 'inherit',
-        env: process.env,
-      }
-    );
-    execSync(`nx run build --skip-nx-cache`, {
-      cwd: projectDirectory,
-      stdio: 'inherit',
-      env: process.env,
-    });
-    execSync(`nx run test --skip-nx-cache --coverage`, {
-      cwd: projectDirectory,
-      stdio: 'inherit',
-      env: process.env,
-    });
-  });
-
-  it('should add a custom named create-update dialog', () => {
-    // Add all required parameters to this array with a value.
-    // As tests are non-interactive, not-added but required items will block the test
-    const requiredParameters = [
-      {
-        key: NON_INTERACTIVE_KEY,
-        value: true,
-      },
-      {
-        key: 'apiServiceName',
-        value: 'CustomService',
-      },
-      {
-        key: 'resource',
-        value: 'CustomDataObject',
-      },
-      {
-        key: 'createRequestName',
-        value: 'CustomCreateDataObject',
-      },
-      {
-        key: 'createResponseName',
-        value: 'DataObjectCustomCreationResponse',
-      },
-      {
-        key: 'updateRequestName',
-        value: 'DataObjectCustomUpdate',
-      },
-      {
-        key: 'updateResponseName',
-        value: 'DataObjectCustomUpdateResponse',
-      },
-    ];
-
-    const parameterString = requiredParameters
-      .map((o) => `--${o.key} ${o.value}`)
-      .join(' ');
-
-    execSync(
-      `nx generate @onecx/nx-plugin:create-update ${featureNameCustom} ${parameterString} --verbose`,
-      {
-        cwd: projectDirectory,
-        stdio: 'inherit',
-        env: process.env,
-      }
-    );
-    execSync(`nx run build --skip-nx-cache`, {
-      cwd: projectDirectory,
-      stdio: 'inherit',
-      env: process.env,
-    });
-    execSync(`nx run test --skip-nx-cache --coverage`, {
-      cwd: projectDirectory,
-      stdio: 'inherit',
-      env: process.env,
-    });
-  });
-
-  it('should add a custom named delete dialog', () => {
-    // Add all required parameters to this array with a value.
-    // As tests are non-interactive, not-added but required items will block the test
-    const requiredParameters = [
-      {
-        key: NON_INTERACTIVE_KEY,
-        value: true,
-      },
-      {
-        key: 'apiServiceName',
-        value: 'CustomService',
-      },
-      {
-        key: 'resource',
-        value: 'CustomDataObject',
-      },
-    ];
-
-    const parameterString = requiredParameters
-      .map((o) => `--${o.key} ${o.value}`)
-      .join(' ');
-
-    execSync(
-      `nx generate @onecx/nx-plugin:delete ${featureNameCustom} ${parameterString} --verbose`,
-      {
-        cwd: projectDirectory,
-        stdio: 'inherit',
-        env: process.env,
-      }
-    );
-    execSync(`nx run build --skip-nx-cache`, {
-      cwd: projectDirectory,
-      stdio: 'inherit',
-      env: process.env,
-    });
-    execSync(`nx run test --skip-nx-cache --coverage`, {
-      cwd: projectDirectory,
-      stdio: 'inherit',
-      env: process.env,
-    });
-  });
-
-  it('should add pre commit validation', () => {
-    // Add all required parameters to this array with a value.
-    // As tests are non-interactive, not-added but required items will block the test
-    const requiredParameters = [
-      {
-        key: NON_INTERACTIVE_KEY,
-        value: true,
-      },
-      {
-        key: 'enableEslint',
-        value: true,
-      },
-      {
-        key: 'enableConventionalCommits',
-        value: true,
-      },
-      {
-        key: 'enableDetectSecrets',
-        value: true,
-      },
-    ];
-
-    const parameterString = requiredParameters
-      .map((o) => `--${o.key} ${o.value}`)
-      .join(' ');
-
-    execSync(
-      `nx generate @onecx/nx-plugin:pre-commit-validation ${parameterString} --verbose`,
-      {
-        cwd: projectDirectory,
-        stdio: 'inherit',
-        env: process.env,
-      }
-    );
-    execSync(`nx run build --skip-nx-cache`, {
-      cwd: projectDirectory,
-      stdio: 'inherit',
-      env: process.env,
-    });
-    execSync(`nx run test --skip-nx-cache --coverage`, {
-      cwd: projectDirectory,
-      stdio: 'inherit',
-      env: process.env,
+      execSync(
+        `nx generate @onecx/nx-plugin:pre-commit-validation ${parameterString} --verbose`,
+        tcOption
+      );
+      execSync(`nx run build --skip-nx-cache`, tcOption);
+      execSync(`nx run test --skip-nx-cache --coverage`, tcOption);
     });
   });
 });
@@ -578,4 +333,20 @@ function createTestProject(flavor) {
   console.log(`Created test project in "${projectDirectory}"`);
 
   return projectDirectory;
+}
+
+/**
+ * Creates a string of CLI parameters from the given array of key-value pairs, adding a non-interactive parameter to ensure the generators run without blocking for user input.
+ * @param parameters Array of key-value pairs representing CLI parameters
+ * @returns A string of CLI parameters
+ */
+function getParameterAsString(parameters: { key: string; value: unknown }[]) {
+  // As tests are non-interactive, not-added but required items will block the test
+  const nonInteractiveParameter = {
+    key: NON_INTERACTIVE_KEY,
+    value: true,
+  };
+  return [nonInteractiveParameter, ...parameters]
+    .map((o) => `--${o.key} ${o.value}`)
+    .join(' ');
 }

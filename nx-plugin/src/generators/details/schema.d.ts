@@ -1,7 +1,7 @@
 export interface DetailsGeneratorSchema {
   featureName: string;
   customizeNamingForAPI: boolean;
-  apiServiceName: string;
+  serviceName: string;
   resource: string;
   getResponseName: string;
   editMode: boolean;

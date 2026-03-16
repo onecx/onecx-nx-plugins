@@ -25,8 +25,8 @@ import { SearchComponentStep } from './steps/search-component.step';
 import { SearchEffectsStep } from './steps/search-effects.step';
 import { SearchEffectsSpecStep } from './steps/search-effects.spec.step';
 import { SearchHTMLStep } from './steps/search-html.step';
-import { SearchTestsStep } from './steps/search-tests.step';
 import { ValidateFeatureModuleStep } from '../shared/steps/validate-feature-module.step';
+import { SearchComponentTestsStep } from './steps/search-component-spec.step';
 
 const PARAMETERS: GeneratorParameter<DetailsGeneratorSchema>[] = [
   {
@@ -43,18 +43,7 @@ const PARAMETERS: GeneratorParameter<DetailsGeneratorSchema>[] = [
     default: (values) => {
       return `${names(values.featureName).className}`;
     },
-    prompt: 'Provide a name for your Resource (e.g. Book): ',
-    showInSummary: true,
-    showRules: [{ showIf: (values) => values.customizeNamingForAPI }],
-  },
-  {
-    key: 'apiServiceName',
-    type: 'text',
-    required: 'interactive',
-    default: (values) => {
-      return `${names(values.resource).className}APIService`;
-    },
-    prompt: 'Provide a name for your API service (e.g. BookAPIService): ',
+    prompt: 'Provide a name for the Resource (e.g. Book): ',
     showInSummary: true,
     showRules: [{ showIf: (values) => values.customizeNamingForAPI }],
   },
@@ -66,7 +55,7 @@ const PARAMETERS: GeneratorParameter<DetailsGeneratorSchema>[] = [
       return `Get${names(values.resource).className}Response`;
     },
     prompt:
-      'Provide a name for your GetResourceResponse (e.g. GetBookResponse): ',
+      'Provide a name for the GetResourceResponse (e.g. GetBookResponse): ',
     showInSummary: true,
     showRules: [{ showIf: (values) => values.customizeNamingForAPI }],
   },
@@ -85,7 +74,7 @@ const PARAMETERS: GeneratorParameter<DetailsGeneratorSchema>[] = [
     default: (values) => {
       return `Update${names(values.resource).className}Request`;
     },
-    prompt: 'Provide a name for your update request (e.g. UpdateBookRequest): ',
+    prompt: 'Provide a name for the update request (e.g. UpdateBookRequest): ',
     showInSummary: true,
     showRules: [
       { showIf: (values) => values.customizeNamingForAPI && values.editMode },
@@ -99,7 +88,7 @@ const PARAMETERS: GeneratorParameter<DetailsGeneratorSchema>[] = [
       return `Update${names(values.resource).className}Response`;
     },
     prompt:
-      'Provide a name for your update response (e.g. UpdateBookResponse): ',
+      'Provide a name for the update response (e.g. UpdateBookResponse): ',
     showInSummary: true,
     showRules: [
       { showIf: (values) => values.customizeNamingForAPI && values.editMode },
@@ -112,6 +101,12 @@ const PARAMETERS: GeneratorParameter<DetailsGeneratorSchema>[] = [
     prompt: 'Do you want to have a Delete Button on this page?',
     showInSummary: true,
     default: false,
+  },
+  {
+    key: 'serviceName',
+    type: 'text',
+    required: 'never',
+    default: (values) => GeneratorProcessor.getServiceName(`${names(values.resource).className}`),
   },
   {
     key: 'standalone',
@@ -167,7 +162,9 @@ export async function detailsGenerator(
       resourcePropertyName: names(options.resource).propertyName,
       resourceClassName: names(options.resource).className,
       resourceConstantName: names(options.resource).constantName,
-      serviceName: options.apiServiceName,
+      updateRequestPropertyName: options.updateRequestName,
+      updateResponsePropertyName: names(options.updateResponseName).propertyName,
+      serviceName: options.serviceName,
       editMode: options.editMode,
       allowDelete: options.allowDelete,
     }
@@ -188,10 +185,10 @@ export async function detailsGenerator(
   if (tree.exists(htmlSearchFilePath)) {
     generatorProcessor.addStep(new SearchHTMLStep());
     generatorProcessor.addStep(new SearchComponentStep());
+    generatorProcessor.addStep(new SearchComponentTestsStep());
     generatorProcessor.addStep(new SearchActionsStep());
     generatorProcessor.addStep(new SearchEffectsStep());
     generatorProcessor.addStep(new SearchEffectsSpecStep());
-    generatorProcessor.addStep(new SearchTestsStep());
   }
 
   generatorProcessor.run(tree, options, spinner);
@@ -212,7 +209,7 @@ export async function detailsGenerator(
       .map((c) => c.path)
       .filter((p) => p.endsWith('.ts'))
       .join(' ');
-    cmd = 'npx organize-imports-cli ';
+    cmd = 'npx --yes organize-imports-cli ';
     log(cmd);
     execSync(cmd + files, { cwd: tree.root, stdio: 'inherit' });
     cmd = 'npx prettier --write ';

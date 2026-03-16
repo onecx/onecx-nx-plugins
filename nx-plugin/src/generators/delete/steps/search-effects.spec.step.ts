@@ -10,6 +10,7 @@ export class SearchEffectsSpecStep implements GeneratorStep<DeleteGeneratorSchem
     const resourceFileName = names(options.resource).fileName;
     const resourceClassName = names(options.resource).className;
     const resourcePropertyName = names(options.resource).propertyName;
+    const serviceName = options.serviceName;
 
     const filePath = `src/app/${featureFileName}/pages/${resourceFileName}-search/${resourceFileName}-search.effects.spec.ts`
     const content = tree.read(filePath, 'utf8') ?? ''
@@ -23,8 +24,8 @@ export class SearchEffectsSpecStep implements GeneratorStep<DeleteGeneratorSchem
       safeReplace(
         `Add ${resourceClassName} import`,
         filePath,
-        [`${resourceClassName}APIService`],
-        [`${resourceClassName}, ${resourceClassName}APIService`],
+        [`${serviceName}`],
+        [`${resourceClassName}, ${serviceName}`],
         tree
       );
     }

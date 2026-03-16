@@ -38,20 +38,15 @@ const PARAMETERS: GeneratorParameter<DeleteGeneratorSchema>[] = [
     default: (values) => {
       return `${names(values.featureName).className}`;
     },
-    prompt: 'Provide a name for your Resource (e.g. Book): ',
+    prompt: 'Provide a name for the Resource (e.g. Book): ',
     showInSummary: true,
     showRules: [{ showIf: (values) => values.customizeNamingForAPI }],
   },
   {
-    key: 'apiServiceName',
+    key: 'serviceName',
     type: 'text',
-    required: 'interactive',
-    default: (values) => {
-      return `${names(values.resource).className}APIService`;
-    },
-    prompt: 'Provide a name for your API service (e.g. BookAPIService): ',
-    showInSummary: true,
-    showRules: [{ showIf: (values) => values.customizeNamingForAPI }],
+    required: 'never',
+    default: (values) => GeneratorProcessor.getServiceName(`${names(values.resource).className}`),
   },
   {
     key: 'standalone',
@@ -128,7 +123,7 @@ export async function deleteGenerator(
       .map((c) => c.path)
       .filter((p) => p.endsWith('.ts'))
       .join(' ');
-    cmd = 'npx organize-imports-cli ';
+    cmd = 'npx --yes organize-imports-cli ';
     log(cmd);
     execSync(cmd + files, { cwd: tree.root, stdio: 'inherit' });
     cmd = 'npx prettier --write ';

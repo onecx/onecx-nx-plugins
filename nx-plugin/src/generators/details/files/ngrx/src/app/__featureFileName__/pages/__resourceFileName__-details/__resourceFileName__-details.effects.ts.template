@@ -116,9 +116,9 @@ export class <%= resourceClassName %>DetailsEffects {
         }
         const itemToEdit = {
           dataObject: updatedItem,
-        } as Update<%= resourceClassName %>Request;
+        } as <%= updateRequestName %>;
         return this.<%= resourcePropertyName %>Service.update<%= resourceClassName %>ById(
-          { id: itemToEditId, update<%= resourceClassName %>Request: itemToEdit }).pipe(
+          { id: itemToEditId, <%= updateRequestPropertyName %>: itemToEdit }).pipe(
           map(() => {
             this.messageService.success({
               summaryKey: '<%= resourceConstantName%>_DETAILS.UPDATE.SUCCESS',

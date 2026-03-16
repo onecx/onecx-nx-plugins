@@ -4,7 +4,7 @@ import { safeReplace } from '../../shared/safeReplace';
 import { GeneratorStep } from '../../shared/generator.utils';
 import { SearchGeneratorSchema } from '../../search/schema';
 
-export class SearchTestsStep implements GeneratorStep<SearchGeneratorSchema> {
+export class SearchComponentTestsStep implements GeneratorStep<SearchGeneratorSchema> {
   process(tree: Tree, options: SearchGeneratorSchema): void {
     const featureFileName = names(options.featureName).fileName;
     const resourceFileName = names(options.resource).fileName;
@@ -13,12 +13,12 @@ export class SearchTestsStep implements GeneratorStep<SearchGeneratorSchema> {
     const filePath = `src/app/${featureFileName}/pages/${resourceFileName}-search/${resourceFileName}-search.component.spec.ts`;
 
     const content = tree.exists(filePath) ? tree.read(filePath, 'utf8') : '';
-    if (!content.includes(`import { RowListGridData } from '@onecx/portal-integration-angular'`)) {
+    if (!content.includes(`RowListGridData,`)) {
       safeReplace(
         `Add RowListGridData import to ${resourceClassName}SearchComponent spec`,
         filePath,
-        [/^/],
-        [`import { RowListGridData } from '@onecx/portal-integration-angular';`],
+        [`} from '@onecx/portal-integration-angular'`],
+        [` , RowListGridData } from '@onecx/portal-integration-angular';`],
         tree
       );
     }

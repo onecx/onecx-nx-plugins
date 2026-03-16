@@ -10,6 +10,7 @@ export class SearchEffectsSpecStep implements GeneratorStep<CreateUpdateGenerato
     const resourceFileName = names(options.resource).fileName;
     const resourceClassName = names(options.resource).className;
     const resourcePropertyName = names(options.resource).propertyName;
+    const updateResponseName = names(options.updateResponseName).className;
 
     const filePath = `src/app/${featureFileName}/pages/${resourceFileName}-search/${resourceFileName}-search.effects.spec.ts`;
     const content = tree.read(filePath, 'utf8') ?? '';
@@ -27,7 +28,6 @@ export class SearchEffectsSpecStep implements GeneratorStep<CreateUpdateGenerato
         tree
       );
     }
-
     if (content.includes('providers: [') && !content.includes('PortalDialogService')) {
       safeReplace(
         'Add PortalDialogService provider',
@@ -37,13 +37,12 @@ export class SearchEffectsSpecStep implements GeneratorStep<CreateUpdateGenerato
         tree
       );
     }
-
-    if (!content.includes(` Update${resourceClassName}Response>`)) {
+    if (!content.includes(` ${updateResponseName}`)) {
       safeReplace(
-        `Add import of Update${resourceClassName}Response`,
+        `Add import of ${updateResponseName} to effects spec`,
         filePath,
         [`} from 'src/app/shared/generated'`],
-        [`, Update${resourceClassName}Response } from 'src/app/shared/generated'`],
+        [`, ${updateResponseName} } from 'src/app/shared/generated'`],
         tree
       );
     }
@@ -76,7 +75,7 @@ export class SearchEffectsSpecStep implements GeneratorStep<CreateUpdateGenerato
           const dialog = { button: 'primary', result: { ...item } };
           
           portalDialogService.openDialog.mockReturnValue(of(dialog) as never);
-          ${resourcePropertyName}Service.update${resourceClassName}ById.mockReturnValue(of({} as HttpEvent<Update${resourceClassName}Response>));
+          ${resourcePropertyName}Service.update${resourceClassName}ById.mockReturnValue(of({} as HttpEvent<${updateResponseName}>));
 
           effects.editButtonClicked$.pipe(take(1)).subscribe((action) => {
             expect(action.type).toBe(${resourcePropertyName}SearchActions.update${resourceClassName}Succeeded.type);

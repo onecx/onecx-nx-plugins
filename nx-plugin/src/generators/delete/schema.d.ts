@@ -1,7 +1,7 @@
 export interface DeleteGeneratorSchema {
   featureName: string;
   customizeNamingForAPI: boolean;
-  apiServiceName: string;
+  serviceName: string;
   resource: string;
   standalone?: boolean;
 }

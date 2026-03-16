@@ -10,13 +10,13 @@ import {
 } from '@nx/devkit';
 import { execSync } from 'child_process';
 import * as ora from 'ora';
+
 import { SearchActionsStep } from '../details/steps/search-actions.step';
 import { SearchComponentStep } from '../details/steps/search-component.step';
 import { SearchEffectsStep } from '../details/steps/search-effects.step';
 import { SearchHTMLStep } from '../details/steps/search-html.step';
-import { SearchTestsStep } from '../details/steps/search-tests.step';
-import { GeneratorProcessor } from '../shared/generator.utils';
-import processParams, { GeneratorParameter } from '../shared/parameters.utils';
+import { SearchComponentTestsStep } from '../details/steps/search-component-spec.step';
+
 import { SearchGeneratorSchema } from './schema';
 import { AppModuleStep } from './steps/app-module.step';
 import { AppReducerStep } from './steps/app-reducer.step';
@@ -27,6 +27,9 @@ import { FeatureStateStep } from './steps/feature-state.step';
 import { GeneralOpenAPIStep } from './steps/general-openapi.step';
 import { GeneralPermissionsStep } from './steps/general-permissions.step';
 import { GeneralTranslationsStep } from './steps/general-translations.step';
+
+import { GeneratorProcessor } from '../shared/generator.utils';
+import processParams, { GeneratorParameter } from '../shared/parameters.utils';
 import { ValidateFeatureModuleStep } from '../shared/steps/validate-feature-module.step';
 import { toPascalCase } from '../shared/naming.utils';
 
@@ -45,18 +48,7 @@ const PARAMETERS: GeneratorParameter<SearchGeneratorSchema>[] = [
     default: (values) => {
       return `${names(values.featureName).className}`;
     },
-    prompt: 'Provide a name for your Resource (e.g. Book): ',
-    showInSummary: true,
-    showRules: [{ showIf: (values) => values.customizeNamingForAPI }],
-  },
-  {
-    key: 'apiServiceName',
-    type: 'text',
-    required: 'interactive',
-    default: (values) => {
-      return `${values.resource}APIService`;
-    },
-    prompt: 'Provide a name for the API service (e.g. BookAPIService): ',
+    prompt: 'Provide a name for the Resource (e.g. Book): ',
     showInSummary: true,
     showRules: [{ showIf: (values) => values.customizeNamingForAPI }],
   },
@@ -65,9 +57,9 @@ const PARAMETERS: GeneratorParameter<SearchGeneratorSchema>[] = [
     type: 'text',
     required: 'interactive',
     default: (values) => {
-      return `Search${values.resource}Request`;
+      return `Search${names(values.resource).className}Request`;
     },
-    prompt: 'Provide a name for your Search Request (e.g. SearchBookRequest): ',
+    prompt: 'Provide a name for the Search Request (e.g. SearchBookRequest): ',
     showInSummary: true,
     showRules: [{ showIf: (values) => values.customizeNamingForAPI }],
   },
@@ -76,12 +68,18 @@ const PARAMETERS: GeneratorParameter<SearchGeneratorSchema>[] = [
     type: 'text',
     required: 'interactive',
     default: (values) => {
-      return `Search${values.resource}Response`;
+      return `Search${names(values.resource).className}Response`;
     },
     prompt:
-      'Provide a name for your Search Response (e.g. SearchBookResponse): ',
+      'Provide a name for the Search Response (e.g. SearchBookResponse): ',
     showInSummary: true,
     showRules: [{ showIf: (values) => values.customizeNamingForAPI }],
+  },
+  {
+    key: 'serviceName',
+    type: 'text',
+    required: 'never',
+    default: (values) => GeneratorProcessor.getServiceName(`${names(values.resource).className}`),
   },
   {
     key: 'standalone',
@@ -157,7 +155,7 @@ export async function searchGenerator(
       resourceConstantName: names(options.resource).constantName,
       resourceFileName: names(options.resource).fileName,
       resourcePropertyName: names(options.resource).propertyName,
-      serviceName: options.apiServiceName,
+      serviceName: options.serviceName,
       searchRequestName: options.searchRequestName,
       searchResponseName: options.searchResponseName,
       standalone: options.standalone,
@@ -181,12 +179,13 @@ export async function searchGenerator(
   const featureFileName = names(options.featureName).fileName;
   const resourceFileName = names(options.resource).fileName;
   const htmlDetailsFilePath = `src/app/${featureFileName}/pages/${resourceFileName}-details/${resourceFileName}-details.component.html`;
+
   if (tree.exists(htmlDetailsFilePath)) {
     generatorProcessor.addStep(new SearchHTMLStep());
     generatorProcessor.addStep(new SearchComponentStep());
     generatorProcessor.addStep(new SearchActionsStep());
     generatorProcessor.addStep(new SearchEffectsStep());
-    generatorProcessor.addStep(new SearchTestsStep());
+    generatorProcessor.addStep(new SearchComponentTestsStep());
   }
 
   generatorProcessor.run(tree, options, spinner);

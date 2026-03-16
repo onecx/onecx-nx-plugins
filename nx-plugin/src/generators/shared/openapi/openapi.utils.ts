@@ -108,6 +108,7 @@ export interface ObjectSetOptions {
   // If a value already exists for a key, what action should be performed
   existStrategy: 'skip' | 'replace' | 'extend';
 }
+
 export class OpenAPIObjectSectionUtil {
   private util: OpenAPIUtil;
   private sectionContent: object;
@@ -171,11 +172,20 @@ export class OpenAPIArraySectionUtil<T = unknown> {
 
   /**
    * Add a new item to the section
-   * @param value
+   * @param key key of the entry object
+   * @param value value of the entry object
+   * @param options configure existStrategy and comment
    * @returns this util
    */
-  add(value: T) {
-    this.sectionContent.push(value);
+  add(key: string, value: T, options?: ObjectSetOptions) {
+    const existStrategy = options ? options.existStrategy : 'skip';
+    const existingItem = this.sectionContent.find((item: any) => item.name === key);
+    if (existingItem != null) {
+      if (existStrategy == 'skip') {
+        return this;
+      }
+    }
+    this.sectionContent.push(value); // add item to array
     return this;
   }
 
