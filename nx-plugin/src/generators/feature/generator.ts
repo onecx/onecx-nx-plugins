@@ -31,7 +31,7 @@ const PARAMETERS: GeneratorParameter<FeatureGeneratorSchema>[] = [
     default: (values) => {
       return `${names(values.name).className}`;
     },
-    prompt: 'Provide a name for your Resource (e.g. Book): ',
+    prompt: 'Provide a name for the resource/entity managed by the feature (e.g. Book): ',
     showInSummary: true,
     showRules: [{ showIf: (values) => values.customizeNamingForAPI }],
   },
@@ -95,6 +95,9 @@ export async function featureGenerator(
       console.log('');
       console.log('generate feature ==> ' + command);
     }
+    cmd = 'npm run apigen ';
+    log(cmd);
+    execSync(cmd, { cwd: tree.root, stdio: 'inherit' });
     const files = tree
       .listChanges()
       .map((c) => c.path)

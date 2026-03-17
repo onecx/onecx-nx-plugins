@@ -1,7 +1,7 @@
 import { <%= resourcePropertyName %>DetailsActions } from './<%= resourceFileName %>-details.actions';
 import { <%= resourcePropertyName %>DetailsReducer, initialState } from './<%= resourceFileName %>-details.reducers';
 
-describe('<%= resourceClassName %>DetailsReducer', () => {
+describe('<%= resourcePropertyName %>DetailsReducer', () => {
   it('should set details on <%= resourcePropertyName %>DetailsReceived', () => {
     const details = { id: '1' };
     const action = <%= resourcePropertyName %>DetailsActions.<%= resourcePropertyName %>DetailsReceived({

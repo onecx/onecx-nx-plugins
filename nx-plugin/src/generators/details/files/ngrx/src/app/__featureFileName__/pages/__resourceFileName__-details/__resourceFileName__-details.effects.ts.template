@@ -33,7 +33,7 @@ export class <%= resourceClassName %>DetailsEffects {
       filterForNavigatedTo(this.router, <%= resourceClassName %>DetailsComponent),
       concatLatestFrom(() => this.store.select(selectRouteParam('id'))),
       map(([, id]) => {
-        return <%= resourcePropertyName %>DetailsActions.navigatedToDetailsPage({ id });
+        return <%= resourcePropertyName %>DetailsActions.navigatedToDetailsPage({ id: id as string | undefined });
       })
     );
   });
@@ -114,8 +114,9 @@ export class <%= resourceClassName %>DetailsEffects {
         }
         const itemToEdit = {
           dataObject: updatedItem,
-        } as Update<%= resourceClassName %>Request;
-        return this.<%= resourcePropertyName %>Service.update<%= resourceClassName %>ById({ id: itemToEditId, updateBookRequest: itemToEdit }).pipe(
+        } as <%= updateRequestName %>;
+        return this.<%= resourcePropertyName %>Service.update<%= resourceClassName %>ById(
+          { id: itemToEditId, <%= updateRequestPropertyName %>: itemToEdit }).pipe(
           map(() => {
             this.messageService.success({
               summaryKey: '<%= resourceConstantName%>_DETAILS.UPDATE.SUCCESS',
@@ -201,7 +202,7 @@ export class <%= resourceClassName %>DetailsEffects {
         ofType(<%= resourcePropertyName %>DetailsActions.delete<%= resourceClassName %>Succeeded),
         concatLatestFrom(() => this.store.select(selectUrl)),
         tap(([, currentUrl]) => {
-          const urlTree = this.router.parseUrl(currentUrl);
+          const urlTree = this.router.parseUrl(currentUrl as string);
           urlTree.queryParams = {};
           urlTree.fragment = null;
 

@@ -171,6 +171,8 @@ export async function angularGenerator(
       jest: '^29.7.0',
       'jest-environment-jsdom': '^29.7.0',
       'jest-preset-angular': '~14.5.1',
+      'jest-sonar': '^0.2.16',
+      'jest-sonar-reporter': '^2.0.0',
       nx: '19.8.14',
       prettier: '^3.5.3',
       'sonar-scanner': '^3.1.0',
@@ -194,14 +196,29 @@ export async function angularGenerator(
     let cmd = 'rm -rf .vscode ';
     log(cmd);
     execSync(cmd, { cwd: tree.root, stdio: 'inherit' });
+
+    // Replace the generated solution for gitignore and jest testing, 
+    // because they do not fit the needs of the generated application and 
+    // would require manual adjustments after generation otherwise.
+    cmd = 'mv -f .gitignore.org .gitignore';
+    log(cmd);
+    execSync(cmd, { cwd: tree.root, stdio: 'inherit' });  
+    cmd = 'rm -f jest.config.ts jest.config.d.ts jest.config.js.map';
+    log(cmd);
+    execSync(cmd, { cwd: tree.root, stdio: 'inherit' });
+    cmd = 'mv -f jest.config.ts.org jest.config.ts';
+    log(cmd);
+    execSync(cmd, { cwd: tree.root, stdio: 'inherit' });
+
     cmd = 'npm run apigen ';
     log(cmd);
     execSync(cmd, { cwd: tree.root, stdio: 'inherit' });
+
     const files = tree
       .listChanges()
       .map((c) => c.path)
       .filter((p) => p.endsWith('.ts'))
-      .join(' ');
+      .join(' ');    
     cmd = 'npx prettier --write ';
     log(cmd);
     execSync(cmd + files, { cwd: tree.root, stdio: 'inherit' });

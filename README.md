@@ -177,9 +177,9 @@ safeReplace(
   "src/app/example/example.reducers.ts",
   [/^/, ">({"],
   [
-    "import { ExampleDetailsReducer } from './pages/example-details/example-details.reducers';",
+    "import { exampleDetailsReducer } from './pages/example-details/example-details.reducers';",
     ">({
-      details: ExampleDetailsReducer,"
+      details: exampleDetailsReducer,"
   ],
   tree
 );

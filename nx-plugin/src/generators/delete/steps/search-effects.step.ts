@@ -71,7 +71,7 @@ export class SearchEffectsStep implements GeneratorStep<DeleteGeneratorSchema> {
           }
 
           return this.${resourcePropertyName}Service
-            .delete${resourceClassName}(itemToDelete.id)
+            .delete${resourceClassName}ById({ id: itemToDelete.id })
             .pipe(
               map(() => {
                 this.messageService.success({ summaryKey: '${resourceConstantName}_DELETE.SUCCESS' });

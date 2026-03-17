@@ -34,6 +34,6 @@ export class SearchComponentStep
     );
   }
   getTitle(): string {
-    return 'Adapting Search Component';
+    return 'Adapting Search Component (details)';
   }
 }

@@ -21,6 +21,8 @@ export class GeneralTranslationsStep
     ...options,
     featureConstantName: names(options.featureName).constantName,
     featureClassName: names(options.featureName).className,
+    resourceConstantName: names(options.resource).constantName,
+    resourceClassName: names(options.resource).className,
   });
 
   tree.children(folderPath).forEach((file) => {
@@ -35,6 +37,8 @@ export class GeneralTranslationsStep
           ...options,
           featureConstantName: names(options.featureName).constantName,
           featureClassName: names(options.featureName).className,
+          resourceConstantName: names(options.resource).constantName,
+          resourceClassName: names(options.resource).className,
         });
       }
 

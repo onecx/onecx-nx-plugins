@@ -1,7 +1,8 @@
 import { Tree, joinPathFragments, names } from '@nx/devkit';
+
 import { GeneratorStep } from '../../shared/generator.utils';
-import { SearchGeneratorSchema } from '../schema';
 import { COMMENT_KEY, OpenAPIUtil } from '../../shared/openapi/openapi.utils';
+import { SearchGeneratorSchema } from '../schema';
 import { createSearchEndpoint } from '../endpoint.util';
 
 export class GeneralOpenAPIStep
@@ -16,6 +17,7 @@ export class GeneralOpenAPIStep
     );
 
     const resource = options.resource;
+    const className = names(options.resource).className;
     const propertyName = names(options.resource).propertyName;
     const searchRequestName = options.searchRequestName;
     const searchResponseName = options.searchResponseName;
@@ -28,12 +30,13 @@ export class GeneralOpenAPIStep
         createSearchEndpoint(
           {
             type: 'post',
-            operationId: `search${resource}Items`,
+            operationId: `search${className}Items`,
             tags: [`${propertyName}`],
-            description: `Search ${resource} items by search criteria`,
+            description: `Search ${className} items by search criteria`,
           },
           {
             resource: resource,
+            className: className,
             propertyName: propertyName,
             searchRequestName: searchRequestName,
             searchResponseName: searchResponseName,
@@ -42,7 +45,7 @@ export class GeneralOpenAPIStep
       )
       .done()
       .schemas()
-      .set(`${resource}`, {
+      .set(`${className}`, {
         type: 'object',
         required: ['id'],
         properties: {
@@ -129,7 +132,7 @@ export class GeneralOpenAPIStep
             type: 'array',
             description: 'Array of found items',
             items: {
-              $ref: `#/components/schemas/${resource}`,
+              $ref: `#/components/schemas/${className}`,
             },
           },
         },

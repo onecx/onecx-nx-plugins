@@ -13,6 +13,9 @@ export class SearchEffectsStep
     const resourceClassName = names(options.resource).className;
     const resourceConstantName = names(options.resource).constantName;
     const resourcePropertyName = names(options.resource).propertyName;
+    const createRequestPropertyName = names(options.createRequestName).propertyName;
+    const updateRequestPropertyName = names(options.updateRequestName).propertyName;
+
     const filePath = `src/app/${featureFileName}/pages/${resourceFileName}-search/${resourceFileName}-search.effects.ts`;
 
     const find = [/^/, 'searchByUrl$'];
@@ -20,7 +23,7 @@ export class SearchEffectsStep
       `import { PortalDialogService } from '@onecx/angular-accelerator';` +
         `import { mergeMap } from 'rxjs';` +
         `import {
-        ${options.resource},
+        ${resourceClassName},
         ${options.createRequestName},
         ${options.updateRequestName},
       } from 'src/app/shared/generated';` +
@@ -47,7 +50,7 @@ export class SearchEffectsStep
           return results.find((item) => item.id == action.id);
         }),
         mergeMap((itemToEdit) => {
-          return this.portalDialogService.openDialog< ${options.resource} | undefined>(
+          return this.portalDialogService.openDialog< ${resourceClassName} | undefined>(
             '${resourceConstantName}_CREATE_UPDATE.UPDATE.HEADER',
             {
               type: ${resourceClassName}CreateUpdateComponent,
@@ -75,7 +78,7 @@ export class SearchEffectsStep
               dataObject: dialogResult.result
           } as ${options.updateRequestName};
           return this.${resourcePropertyName}Service
-            .update${options.resource}(itemToEditId, itemToEdit)
+            .update${resourceClassName}ById({id: itemToEditId, ${updateRequestPropertyName}: itemToEdit})
             .pipe(
               map(() => {
                 this.messageService.success({
@@ -103,7 +106,7 @@ export class SearchEffectsStep
         return this.actions$.pipe(
           ofType(${resourcePropertyName}SearchActions.create${resourceClassName}ButtonClicked),
           switchMap(() => {
-            return this.portalDialogService.openDialog< ${options.resource} | undefined>(
+            return this.portalDialogService.openDialog< ${resourceClassName} | undefined>(
               '${resourceConstantName}_CREATE_UPDATE.CREATE.HEADER',
               {
                 type: ${resourceClassName}CreateUpdateComponent,
@@ -130,7 +133,7 @@ export class SearchEffectsStep
               dataObject: dialogResult.result
             } as ${options.createRequestName};
             return this.${resourcePropertyName}Service
-              .create${options.resource}(toCreateItem)
+              .create${resourceClassName}({${createRequestPropertyName}: toCreateItem})
               .pipe(
                 map(() => {
                   this.messageService.success({

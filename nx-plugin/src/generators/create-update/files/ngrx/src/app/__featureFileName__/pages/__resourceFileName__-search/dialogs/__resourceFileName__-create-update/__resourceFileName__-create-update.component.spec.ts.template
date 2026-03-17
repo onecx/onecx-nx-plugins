@@ -11,6 +11,7 @@ import {
 import { TranslateTestingModule } from 'ngx-translate-testing';
 import { distinctUntilChanged, filter, skip, take, toArray } from 'rxjs'
 import { <%= resourceClassName%>CreateUpdateComponent } from './<%= resourceFileName%>-create-update.component';
+import { <%= resourceClassName%> } from 'src/app/shared/generated';
 
 Object.defineProperty(window, 'matchMedia', {
   writable: true,
@@ -43,8 +44,8 @@ describe('<%= resourceClassName%>CreateUpdateComponent', () => {
         PortalCoreModule,
         ReactiveFormsModule,
         TranslateTestingModule.withTranslations({
-          de: require('../../../../assets/i18n/de.json'),
-          en: require('../../../../assets/i18n/en.json')
+          de: require('../../../../../../assets/i18n/de.json'),
+          en: require('../../../../../../assets/i18n/en.json')
         }).withDefaultLanguage('en'),
       ],
       providers: [
@@ -115,12 +116,13 @@ describe('<%= resourceClassName%>CreateUpdateComponent', () => {
   }))
 
   it('should set dialogResult with merged values on ocxDialogButtonClicked', () => {
-    component.vm.itemToEdit = { appId: 'oldId', name: 'oldName', description: 'oldDesc' } as any
+    component.vm.itemToEdit = { id:'1', appId: 'oldId', name: 'oldName', description: 'oldDesc' } as <%= resourceClassName%>
     component.formGroup.setValue({ changeMe: 'newVal' })
 
     component.ocxDialogButtonClicked()
 
     expect(component.dialogResult).toEqual({
+      id:'1',
       appId: 'oldId',
       name: 'oldName',
       description: 'oldDesc',
@@ -129,13 +131,13 @@ describe('<%= resourceClassName%>CreateUpdateComponent', () => {
   })
 
   it('should patch formGroup values from vm.itemToEdit on ngOnInit', () => {
-    component.vm.itemToEdit = { changeMe: 'editVal' } as any
+    component.vm.itemToEdit = { id:'1', changeMe: 'editVal' } as <%= resourceClassName%>
     component.ngOnInit()
     expect(component.formGroup.value).toEqual({ changeMe: 'editVal' })
   })
 
   it('should set dialogResult to form values when creating (no itemToEdit)', () => {
-    component.vm.itemToEdit = undefined as any
+    component.vm.itemToEdit = undefined
     component.formGroup.setValue({ changeMe: 'createVal' })
 
     component.ocxDialogButtonClicked()

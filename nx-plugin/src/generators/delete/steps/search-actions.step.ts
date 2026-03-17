@@ -10,7 +10,7 @@ export class SearchActionsStep implements GeneratorStep<DeleteGeneratorSchema> {
     const resourceFileName = names(options.resource).fileName;
     const resourcePropertyName = names(options.resource).propertyName;
     const filePath = `src/app/${featureFileName}/pages/${resourceFileName}-search/${resourceFileName}-search.actions.ts`;
-    const actionName = names(options.resource).fileName.replaceAll('-', ' ');
+    const actionName = resourceFileName.replaceAll('-', ' ');
 
     safeReplace(
       `Add delete button events to ${resourcePropertyName}SearchActions`,
@@ -26,6 +26,6 @@ export class SearchActionsStep implements GeneratorStep<DeleteGeneratorSchema> {
     );
   }
   getTitle(): string {
-    return 'Adapting Search Actions';
+    return 'Adapting Search Actions (delete)';
   }
 }

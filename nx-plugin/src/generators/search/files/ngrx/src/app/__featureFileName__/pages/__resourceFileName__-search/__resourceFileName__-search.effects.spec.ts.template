@@ -16,7 +16,7 @@ import { routerNavigatedAction } from '@ngrx/router-store'
 import { of, ReplaySubject, throwError } from 'rxjs'
 import { take } from 'rxjs/operators'
 
-import { <%= serviceName %>, Search<%= resourceClassName %>Response } from 'src/app/shared/generated'
+import { <%= serviceName %>, <%= searchResponseName %> } from 'src/app/shared/generated'
 import { <%= resourcePropertyName %>SearchActions } from './<%= resourceFileName %>-search.actions'
 import { <%= resourceClassName %>SearchEffects } from './<%= resourceFileName %>-search.effects'
 import { <%= resourceClassName %>SearchCriteria } from './<%= resourceFileName %>-search.parameters'
@@ -50,6 +50,9 @@ describe('<%= resourceClassName %>SearchEffects', () => {
     actions$ = new ReplaySubject(1)
 
     <%= resourcePropertyName %>Service = {
+      create<%= apiModelPascal %>: jest.fn(),
+      update<%= apiModelPascal %>ById: jest.fn(),
+      delete<%= apiModelPascal %>ById: jest.fn(),
       search<%= apiModelPascal %>Items: jest.fn()
     } as unknown as jest.Mocked<<%= serviceName %>>;
 
@@ -163,7 +166,7 @@ describe('<%= resourceClassName %>SearchEffects', () => {
           number: 0,
           totalElements: 1,
           totalPages: 1
-        } as unknown as HttpEvent<Search<%= resourceClassName %>Response>)
+        } as unknown as HttpEvent<<%= searchResponseName %>>)
       )
     })
 

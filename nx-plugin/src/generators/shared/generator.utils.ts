@@ -97,4 +97,8 @@ export class GeneratorProcessor<T> {
     await genProc.run(tree, options, ora, printErrors);
     return genProc;
   }
+
+  static getServiceName(name: string): string {
+    return name + 'APIService';
+  }
 }

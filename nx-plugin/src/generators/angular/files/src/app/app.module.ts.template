@@ -18,14 +18,11 @@ import {
   providePortalDialogService,
 } from '@onecx/angular-accelerator';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
-import { BASE_PATH } from './shared/generated';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { Observable } from 'rxjs';
-import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { CommonModule } from '@angular/common';
-import { apiConfigProvider } from './shared/utils/apiConfigProvider.utils';
+import { apiConfigProvider } from 'src/app/shared/utils/apiConfigProvider.utils'
 import { AngularAuthModule } from '@onecx/angular-auth';
-import { Configuration } from './shared/generated';
+import { Configuration } from 'src/app/shared/generated'
 import { createTranslateLoader } from '@onecx/angular-utils';
 import { ShellCoreModule } from '@onecx/shell-core';
 import { environment } from 'src/environments/environment'

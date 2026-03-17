@@ -9,16 +9,17 @@ export class FeatureReducerStep
   process(tree: Tree, options: DetailsGeneratorSchema): void {
     const featureFileName = names(options.featureName).fileName;
     const resourceFileName = names(options.resource).fileName;
-    const propertyName = names(options.featureName).propertyName;
+    const resourcePropertyName = names(options.resource).propertyName;
     const filePath = `src/app/${featureFileName}/${featureFileName}.reducers.ts`;
+
     const find = [/^/, '>({'];
     const replaceWith = [
-      `import { ${propertyName}DetailsReducer } from './pages/${resourceFileName}-details/${resourceFileName}-details.reducers';`,
+      `import { ${resourcePropertyName}DetailsReducer } from './pages/${resourceFileName}-details/${resourceFileName}-details.reducers';`,
       `>({
-    details: ${propertyName}DetailsReducer,`,
+    details: ${resourcePropertyName}DetailsReducer,`,
     ];
     safeReplace(
-      `Adapt ${propertyName}Reducer with details reducer setup`,
+      `Adapt ${resourcePropertyName}Reducer with details reducer setup`,
       filePath,
       find,
       replaceWith,

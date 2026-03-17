@@ -40,18 +40,7 @@ const PARAMETERS: GeneratorParameter<CreateUpdateGeneratorSchema>[] = [
     default: (values) => {
       return `${names(values.featureName).className}`;
     },
-    prompt: 'Provide a name for your Resource (e.g. Book): ',
-    showInSummary: true,
-    showRules: [{ showIf: (values) => values.customizeNamingForAPI }],
-  },
-  {
-    key: 'apiServiceName',
-    type: 'text',
-    required: 'interactive',
-    default: (values) => {
-      return `${names(values.featureName).className}APIService`;
-    },
-    prompt: 'Provide a name for your API service (e.g. BookAPIService): ',
+    prompt: 'Provide a name for the Resource (e.g. Book): ',
     showInSummary: true,
     showRules: [{ showIf: (values) => values.customizeNamingForAPI }],
   },
@@ -60,9 +49,9 @@ const PARAMETERS: GeneratorParameter<CreateUpdateGeneratorSchema>[] = [
     type: 'text',
     required: 'interactive',
     default: (values) => {
-      return `Create${names(values.featureName).className}Request`;
+      return `Create${names(values.resource).className}Request`;
     },
-    prompt: 'Provide a name for your create request (e.g. CreateBookRequest): ',
+    prompt: 'Provide a name for the create request (e.g. CreateBookRequest): ',
     showInSummary: true,
     showRules: [{ showIf: (values) => values.customizeNamingForAPI }],
   },
@@ -71,10 +60,10 @@ const PARAMETERS: GeneratorParameter<CreateUpdateGeneratorSchema>[] = [
     type: 'text',
     required: 'interactive',
     default: (values) => {
-      return `Create${names(values.featureName).className}Response`;
+      return `Create${names(values.resource).className}Response`;
     },
     prompt:
-      'Provide a name for your create response (e.g. CreateBookResponse): ',
+      'Provide a name for the create response (e.g. CreateBookResponse): ',
     showInSummary: true,
     showRules: [{ showIf: (values) => values.customizeNamingForAPI }],
   },
@@ -83,9 +72,9 @@ const PARAMETERS: GeneratorParameter<CreateUpdateGeneratorSchema>[] = [
     type: 'text',
     required: 'interactive',
     default: (values) => {
-      return `Update${names(values.featureName).className}Request`;
+      return `Update${names(values.resource).className}Request`;
     },
-    prompt: 'Provide a name for your update request (e.g. UpdateBookRequest): ',
+    prompt: 'Provide a name for the update request (e.g. UpdateBookRequest): ',
     showInSummary: true,
     showRules: [{ showIf: (values) => values.customizeNamingForAPI }],
   },
@@ -94,12 +83,18 @@ const PARAMETERS: GeneratorParameter<CreateUpdateGeneratorSchema>[] = [
     type: 'text',
     required: 'interactive',
     default: (values) => {
-      return `Update${names(values.featureName).className}Response`;
+      return `Update${names(values.resource).className}Response`;
     },
     prompt:
-      'Provide a name for your update response (e.g. UpdateBookResponse): ',
+      'Provide a name for the update response (e.g. UpdateBookResponse): ',
     showInSummary: true,
     showRules: [{ showIf: (values) => values.customizeNamingForAPI }],
+  },
+  {
+    key: 'serviceName',
+    type: 'text',
+    required: 'never',
+    default: (values) => GeneratorProcessor.getServiceName(`${names(values.resource).className}`),
   },
   {
     key: 'standalone',
@@ -158,11 +153,6 @@ export async function createUpdateGenerator(
       resourcePropertyName: names(options.resource).propertyName,
       resourceClassName: names(options.resource).className,
       resourceConstantName: names(options.resource).constantName,
-      serviceName: options.apiServiceName,
-      createRequestName: options.createRequestName,
-      createResponseName: options.createResponseName,
-      updateRequestName: options.updateRequestName,
-      updateResponseName: options.updateResponseName,
     }
   );
 
@@ -205,7 +195,7 @@ export async function createUpdateGenerator(
       .map((c) => c.path)
       .filter((p) => p.endsWith('.ts'))
       .join(' ');
-    cmd = 'npx organize-imports-cli ';
+    cmd = 'npx --yes organize-imports-cli ';
     log(cmd);
     execSync(cmd + files, { cwd: tree.root, stdio: 'inherit' });
     cmd = 'npx prettier --write ';
