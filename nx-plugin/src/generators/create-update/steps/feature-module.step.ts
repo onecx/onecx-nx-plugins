@@ -15,15 +15,11 @@ export class FeatureModuleStep
       featureFileName,
       featureFileName + '.module.ts'
     );
-    const find = ['declarations: [', `from '@ngrx/effects';`];
+    const find = ['declarations: [', /^/];
     const replaceWith = [
       `declarations: [${resourceClassName}CreateUpdateComponent,`,
-      `from '@ngrx/effects';
-     import { ${resourceClassName}CreateUpdateComponent } from './pages/${resourceFileName}-search/dialogs/${resourceFileName}-create-update/${resourceFileName}-create-update.component';
-     import { providePortalDialogService } from '@onecx/angular-accelerator';`,
-      `
-    providers: [providePortalDialogService()],
-    declarations:`,
+      `import { ${resourceClassName}CreateUpdateComponent } from './pages/${resourceFileName}-search/dialogs/${resourceFileName}-create-update/${resourceFileName}-create-update.component';
+       import { providePortalDialogService } from '@onecx/angular-accelerator';`,
     ];
     const moduleContent = tree.read(moduleFilePath, 'utf8');
     if (!moduleContent.includes('providePortalDialogService()')) {

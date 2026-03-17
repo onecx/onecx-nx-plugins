@@ -20,16 +20,15 @@ export class FeatureModuleStep implements GeneratorStep<PageGeneratorSchema> {
       'declarations: [',      
       'EffectsModule.forFeature()',
       'EffectsModule.forFeature([',
-      `from '@ngrx/effects';`,
+      /^/,
     ];
 
     const replaceWith = [
       `declarations: [${pageClassName}Component,`,      
       `EffectsModule.forFeature([])`,
       `EffectsModule.forFeature([${pageClassName}Effects,`,
-      `from '@ngrx/effects';
-    import { ${pageClassName}Effects } from './pages/${pageFileName}/${pageFileName}.effects';
-    import { ${pageClassName}Component } from './pages/${pageFileName}/${pageFileName}.component';`,
+      `import { ${pageClassName}Effects } from './pages/${pageFileName}/${pageFileName}.effects';
+       import { ${pageClassName}Component } from './pages/${pageFileName}/${pageFileName}.component';`,
     ];
 
     safeReplace(

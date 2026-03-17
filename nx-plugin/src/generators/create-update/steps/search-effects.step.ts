@@ -159,13 +159,13 @@ export class SearchEffectsStep
     const content = tree.read(filePath, 'utf8');
     if (
       !content.includes(
-        'private portalDialogService = inject(PortalDialogService);'
+        'private readonly portalDialogService = inject(PortalDialogService)'
       )
     ) {
-      find.push('private actions$ = inject(Actions);');
+      find.push('private readonly actions$ = inject(Actions)');
       replaceWith.push(`
-        private actions$ = inject(Actions); 
-        private portalDialogService = inject(PortalDialogService);
+        private readonly actions$ = inject(Actions)
+        private readonly portalDialogService = inject(PortalDialogService)
       `);
     }
     safeReplace(

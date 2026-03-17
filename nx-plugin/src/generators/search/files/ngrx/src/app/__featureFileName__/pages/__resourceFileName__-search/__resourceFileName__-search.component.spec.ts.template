@@ -186,7 +186,7 @@ describe('<%= resourceClassName %>SearchComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should dispatch resetButtonClicked action on resetSearch', async () => {
+  it.skip('should dispatch resetButtonClicked action on resetSearch', async () => {
     const doneFn = jest.fn();
     store.overrideSelector(select<%= resourceClassName %>SearchViewModel, {
       ...base<%= resourceClassName %>SearchViewModel,

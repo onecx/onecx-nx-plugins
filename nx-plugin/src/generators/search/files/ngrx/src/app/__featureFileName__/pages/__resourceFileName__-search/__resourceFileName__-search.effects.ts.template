@@ -32,12 +32,12 @@ import { select<%= resourceClassName %>SearchViewModel, <%= resourcePropertyName
 
 @Injectable()
 export class <%= resourceClassName %>SearchEffects {
-  private actions$ = inject(Actions);
-  private route = inject(ActivatedRoute);
-  private <%= featurePropertyName %>Service = inject(<%= serviceName %>);
-  private router = inject(Router);
-  private store = inject(Store);
-  private messageService = inject(PortalMessageService);
+  private readonly actions$ = inject(Actions);
+  private readonly route = inject(ActivatedRoute);
+  private readonly <%= featurePropertyName %>Service = inject(<%= serviceName %>);
+  private readonly router = inject(Router);
+  private readonly store = inject(Store);
+  private readonly messageService = inject(PortalMessageService);
   private readonly exportDataService = inject(ExportDataService);
 
   syncParamsToUrl$ = createEffect(
