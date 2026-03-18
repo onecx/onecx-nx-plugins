@@ -1,6 +1,6 @@
 import { createSelector } from '@ngrx/store';
 import { createChildSelectors } from '@onecx/ngrx-accelerator';
-import { <%= featurePropertyName %>Feature } from '../../<%= resourceFileName %>.reducers';
+import { <%= featurePropertyName %>Feature } from '../../<%= featureFileName %>.reducers';
 import { initialState } from './<%= resourceFileName %>-details.reducers';
 import { <%= resourceClassName %>DetailsViewModel } from './<%= resourceFileName %>-details.viewmodel';
 

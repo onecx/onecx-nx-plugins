@@ -39,9 +39,7 @@ describe('<%= resourceClassName%>CreateUpdateComponent', () => {
       imports: [
         AngularAcceleratorModule,
         FormsModule,
-        LetDirective,        
-        HttpClientTestingModule,
-        PortalCoreModule,
+        LetDirective,
         ReactiveFormsModule,
         TranslateTestingModule.withTranslations({
           de: require('../../../../../../assets/i18n/de.json'),

@@ -23,10 +23,10 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
   standalone: false,
 })
 export class <%= resourceClassName %>DetailsComponent implements OnInit {
-  private store = inject(Store);
-  private breadcrumbService = inject(BreadcrumbService);
+  private readonly store = inject(Store);
+  private readonly breadcrumbService = inject(BreadcrumbService);
 
-  viewModel$: Observable<<%= featureClassName %>DetailsViewModel> = this.store.select(select<%= featureClassName %>DetailsViewModel);
+  viewModel$: Observable<<%= resourceClassName %>DetailsViewModel> = this.store.select(select<%= resourceClassName %>DetailsViewModel);
   headerLabels$: Observable<ObjectDetailItem[]> = this.viewModel$.pipe(
     map((vm) => {
       const labels: ObjectDetailItem[] = [
@@ -130,8 +130,8 @@ export class <%= resourceClassName %>DetailsComponent implements OnInit {
   public formGroup: FormGroup
   <%_ } _%>
 
-  constructor() {   
-    <%_ if(editMode){ _%>
+  <%_ if(editMode){ _%>
+  constructor() {
      this.formGroup = new FormGroup({
       id: new FormControl(null, [Validators.maxLength(255)]),
     })
@@ -151,8 +151,8 @@ export class <%= resourceClassName %>DetailsComponent implements OnInit {
         this.formGroup.disable()
       }
     })
-    <%_ } _%>
   }
+  <%_ } _%>
 
   ngOnInit(): void {
     this.breadcrumbService.setItems([

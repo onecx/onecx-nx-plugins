@@ -34,7 +34,7 @@ import { select<%= resourceClassName %>SearchViewModel, <%= resourcePropertyName
 export class <%= resourceClassName %>SearchEffects {
   private readonly actions$ = inject(Actions);
   private readonly route = inject(ActivatedRoute);
-  private readonly <%= featurePropertyName %>Service = inject(<%= serviceName %>);
+  private readonly <%= resourcePropertyName %>Service = inject(<%= serviceName %>);
   private readonly router = inject(Router);
   private readonly store = inject(Store);
   private readonly messageService = inject(PortalMessageService);

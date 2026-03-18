@@ -19,7 +19,7 @@ import { <%= resourcePropertyName %>DetailsSelectors } from './<%= resourceFileN
 @Injectable()
 export class <%= resourceClassName %>DetailsEffects {
   private actions$ = inject(Actions);
-  private <%= featurePropertyName %>Service = inject(<%= serviceName %>);
+  private <%= resourcePropertyName %>Service = inject(<%= serviceName %>);
   private router = inject(Router);
   private store = inject(Store);
   private messageService = inject(PortalMessageService);
