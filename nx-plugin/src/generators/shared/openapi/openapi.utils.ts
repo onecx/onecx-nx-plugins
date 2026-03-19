@@ -110,7 +110,7 @@ export interface ObjectSetOptions {
 }
 
 export class OpenAPIObjectSectionUtil {
-  private util: OpenAPIUtil;
+  private readonly util: OpenAPIUtil;
   private sectionContent: object;
 
   constructor(util: OpenAPIUtil, sectionContent: object) {
@@ -142,7 +142,7 @@ export class OpenAPIObjectSectionUtil {
       // Replace is same as initial set
     }
     this.sectionContent[key] = value;
-    if (options && options.comment) {
+    if (options?.comment) {
       this.sectionContent[key][COMMENT_KEY] = options.comment;
     }
     return this;
@@ -162,7 +162,7 @@ export class OpenAPIObjectSectionUtil {
 }
 
 export class OpenAPIArraySectionUtil<T = unknown> {
-  private util: OpenAPIUtil;
+  private readonly util: OpenAPIUtil;
   private sectionContent: T[];
 
   constructor(util: OpenAPIUtil, sectionContent: T[]) {
