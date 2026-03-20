@@ -17,7 +17,7 @@
     <form [formGroup]="<%= resourcePropertyName %>SearchFormGroup">
       <div class="grid mt-0 p-fluid">
         <div class="col-12 md:col-3">
-          <span class="p-float-label">
+          <p-floatlabel>
             <!-- ACTION S3: Change this search criteria -->
             <input
               pInputText
@@ -36,7 +36,7 @@
               class="white-space-nowrap">
               {{ '<%= resourceConstantName%>_SEARCH.CRITERIA.CHANGE_ME.LABEL' | translate }}
             </label>
-          </span>
+          </p-floatlabel>
         </div>
         <!-- ACTION S3: Specify search criteria here -->
       </div>
@@ -60,7 +60,7 @@
         [selectedRows]="vm.resultComponentState?.selectedRows?? []"
         [defaultGroupKey]="vm.resultComponentState?.activeColumnGroupKey ?? ''"
         [actionColumnPosition]="vm.resultComponentState?.actionColumnConfig?.position?? 'right'"
-        [frozenActionColumn]="vm.resultComponentState?.actionColumnConfig?.frozen ?? false">
+        [frozenActionColumn]="vm.resultComponentState?.actionColumnConfig?.frozen ?? false"
         [attr.aria-label]="'<%= resourceConstantName%>_SEARCH.RESULTS.NAME' | translate"
       >
       </ocx-interactive-data-view>

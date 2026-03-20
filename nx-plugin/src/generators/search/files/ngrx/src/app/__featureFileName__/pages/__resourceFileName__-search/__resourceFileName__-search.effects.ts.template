@@ -76,7 +76,7 @@ export class <%= resourceClassName %>SearchEffects {
     return this.actions$.pipe(
       ofType(routerNavigatedAction),
       filterForNavigatedTo(this.router, <%= resourceClassName %>SearchComponent),
-      filterOutQueryParamsHaveNotChanged(this.router, <%= resourcePropertyName %>SearchCriteriasSchema, false),      
+      filterOutQueryParamsHaveNotChanged(this.router, <%= resourcePropertyName %>SearchCriteriasSchema, true),
       concatLatestFrom(() =>
         this.store.select(<%= resourcePropertyName %>SearchSelectors.selectCriteria),
       ),

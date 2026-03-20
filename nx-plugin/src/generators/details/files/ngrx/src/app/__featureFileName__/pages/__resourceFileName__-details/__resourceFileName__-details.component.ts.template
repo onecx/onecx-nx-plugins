@@ -139,7 +139,7 @@ export class <%= resourceClassName %>DetailsComponent implements OnInit {
 
     this.viewModel$.subscribe((vm) => {
       if (!vm.editMode) {
-        this.formGroup.setValue({
+        this.formGroup.patchValue({
           id: vm.details?.id
         })
         this.formGroup.markAsPristine();

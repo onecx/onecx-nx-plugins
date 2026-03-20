@@ -20,6 +20,7 @@ export class FeatureModuleStep implements GeneratorStep<SearchGeneratorSchema> {
       'EffectsModule.forFeature()',
       'EffectsModule.forFeature([',
       `from '@ngrx/effects'`,
+      `imports: [`
     ];
     const replaceWith = [
       `declarations: [${resourceClassName}SearchComponent,`,      
@@ -28,6 +29,10 @@ export class FeatureModuleStep implements GeneratorStep<SearchGeneratorSchema> {
       `from '@ngrx/effects';
     import { ${resourceClassName}SearchEffects } from './pages/${resourceFileName}-search/${resourceFileName}-search.effects';
     import { ${resourceClassName}SearchComponent } from './pages/${resourceFileName}-search/${resourceFileName}-search.component';`,
+    `imports: [
+      FloatLabelModule,
+      InputTextModule,
+    `
     ];
 
     safeReplace(

@@ -162,7 +162,7 @@ export async function detailsGenerator(
       resourcePropertyName: names(options.resource).propertyName,
       resourceClassName: names(options.resource).className,
       resourceConstantName: names(options.resource).constantName,
-      updateRequestPropertyName: options.updateRequestName,
+      updateRequestPropertyName: names(options.updateRequestName).propertyName,
       updateResponsePropertyName: names(options.updateResponseName).propertyName,
       serviceName: options.serviceName,
       editMode: options.editMode,
