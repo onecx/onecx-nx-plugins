@@ -95,7 +95,7 @@ export async function angularGenerator(
 
   const oneCXLibVersion = '^6.12.2';
   const angularVersion = '^19.0.7';
-  
+
   addDependenciesToPackageJson(
     tree,
     {
@@ -131,7 +131,7 @@ export async function angularGenerator(
       '@angular/forms': angularVersion,
       '@angular/platform-browser': angularVersion,
       '@angular/platform-browser-dynamic': angularVersion,
-      '@angular/router': angularVersion,            
+      '@angular/router': angularVersion,
       '@nx/angular': '^19.8.14',
       '@nx/devkit': '^19.8.14',
       '@nx/plugin': '^19.8.14',
@@ -146,7 +146,7 @@ export async function angularGenerator(
       '@nx/plugin': '^20.3.4',
       '@nx/module-federation': '^20.3.4',
       '@openapitools/openapi-generator-cli': '^2.16.3',
-      'ngx-translate-testing': '^7.0.0',                              
+      'ngx-translate-testing': '^7.0.0',
       'modify-source-webpack-plugin': '^4.1.0',
       '@angular/build': angularVersion,
       '@angular-devkit/core': angularVersion,
@@ -154,7 +154,7 @@ export async function angularGenerator(
       '@angular-devkit/build-angular': angularVersion,
       '@angular/cli': angularVersion,
       '@angular/compiler-cli': angularVersion,
-      '@angular/language-service': angularVersion,      
+      '@angular/language-service': angularVersion,
       'angular-eslint': '^18.4.3',
       '@angular-eslint/builder': '^18.4.3',
       '@angular-eslint/eslint-plugin': '^18.4.3',
@@ -202,7 +202,7 @@ export async function angularGenerator(
     // would require manual adjustments after generation otherwise.
     cmd = 'mv -f .gitignore.org .gitignore';
     log(cmd);
-    execSync(cmd, { cwd: tree.root, stdio: 'inherit' });  
+    execSync(cmd, { cwd: tree.root, stdio: 'inherit' });
     cmd = 'rm -f jest.config.ts jest.config.d.ts jest.config.js.map';
     log(cmd);
     execSync(cmd, { cwd: tree.root, stdio: 'inherit' });
@@ -218,7 +218,7 @@ export async function angularGenerator(
       .listChanges()
       .map((c) => c.path)
       .filter((p) => p.endsWith('.ts'))
-      .join(' ');    
+      .join(' ');
     cmd = 'npx prettier --write ';
     log(cmd);
     execSync(cmd + files, { cwd: tree.root, stdio: 'inherit' });
@@ -261,7 +261,7 @@ function addScriptsToPackageJson(tree: Tree, options: AngularGeneratorSchema) {
     pkgJson.scripts[
       'apigen'
     ] = `openapi-generator-cli generate -i src/assets/api/openapi-bff.yaml -c apigen.yaml -o src/app/shared/generated -g typescript-angular --type-mappings AnyType=object`;
-    pkgJson.scripts['start'] = 'nx serve';
+    pkgJson.scripts['start'] = 'nx serve --host 0.0.0.0 --disable-host-check';
     pkgJson.scripts['build'] = 'nx build';
     pkgJson.scripts[
       'postbuild'
@@ -314,6 +314,12 @@ function adaptProjectConfiguration(
     host: '0.0.0.0',
     publicHost: 'http://localhost:4200',
     proxyConfig: 'proxy.conf.js',
+    headers: {
+      "Allow": "GET, POST, PUT, DELETE, PATCH, OPTIONS",
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Headers": "*",
+      "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, PATCH, OPTIONS"
+    }
   };
   config.targets['build'].executor = '@nx/angular:webpack-browser';
   config.targets['build'].options = {
@@ -338,8 +344,11 @@ function adaptProjectConfiguration(
       },
     ],
     styles: [
-      ...(config.targets['build'].options.styles ?? []),
-      'node_modules/primeicons/primeicons.css',
+      {
+        input: 'src/styles.scss',
+        bundleName: 'styles',
+        inject: true
+      }
     ],
     customWebpackConfig: {
       path: 'webpack.config.js',
