@@ -262,7 +262,7 @@ function addScriptsToPackageJson(tree: Tree, options: AngularGeneratorSchema) {
       'apigen'
     ] = `openapi-generator-cli generate -i src/assets/api/openapi-bff.yaml -c apigen.yaml -o src/app/shared/generated -g typescript-angular --type-mappings AnyType=object`;
     pkgJson.scripts['start'] = 'nx serve --host 0.0.0.0 --disable-host-check';
-    pkgJson.scripts['build'] = 'nx build';
+    pkgJson.scripts['build'] = `nx build && cp dist/${options['name']}/styles.*.css dist/${options['name']}/styles.css`;
     pkgJson.scripts[
       'postbuild'
     ] = `mv "$(find dist/${options['name']} -maxdepth 1 -type f -name 'styles.*.css' | head -n 1)" dist/${options['name']}/styles.css`;

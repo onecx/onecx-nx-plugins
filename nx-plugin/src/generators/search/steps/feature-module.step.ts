@@ -27,12 +27,13 @@ export class FeatureModuleStep implements GeneratorStep<SearchGeneratorSchema> {
       `EffectsModule.forFeature([])`,
       `EffectsModule.forFeature([${resourceClassName}SearchEffects,`,
       `from '@ngrx/effects';
+    import { FloatLabelModule } from 'primeng/floatlabel'
+    import { InputTextModule } from 'primeng/inputtext'
     import { ${resourceClassName}SearchEffects } from './pages/${resourceFileName}-search/${resourceFileName}-search.effects';
     import { ${resourceClassName}SearchComponent } from './pages/${resourceFileName}-search/${resourceFileName}-search.component';`,
     `imports: [
       FloatLabelModule,
-      InputTextModule,
-    `
+      InputTextModule,`
     ];
 
     safeReplace(
