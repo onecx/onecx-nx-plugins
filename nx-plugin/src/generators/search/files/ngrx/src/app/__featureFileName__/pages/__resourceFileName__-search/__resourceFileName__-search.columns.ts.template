@@ -3,7 +3,7 @@ import { ColumnType, DataTableColumn } from '@onecx/angular-accelerator';
 export const <%= resourcePropertyName %>SearchColumns: DataTableColumn[] = [
   {
     columnType: ColumnType.STRING,
-    id: 'change_me',
+    id: 'changeMe',
     nameKey: '<%= resourceConstantName %>_SEARCH.RESULTS.CHANGE_ME',
     filterable: true,
     sortable: true,

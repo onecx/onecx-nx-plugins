@@ -247,7 +247,7 @@ describe('<%= resourceClassName %>SearchEffects', () => {
       const mockColumns: DataTableColumn[] = [
         {
           columnType: ColumnType.STRING,
-          id: 'change_me',
+          id: 'changeMe',
           nameKey: '<%= resourceConstantName %>_SEARCH.RESULTS.CHANGE_ME',
         }
       ]
@@ -271,7 +271,7 @@ describe('<%= resourceClassName %>SearchEffects', () => {
       const mockColumns: DataTableColumn[] = [
         {
           columnType: ColumnType.STRING,
-          id: 'change_me',
+          id: 'changeMe',
           nameKey: '<%= resourceConstantName %>_SEARCH.RESULTS.CHANGE_ME',
         }
       ]
