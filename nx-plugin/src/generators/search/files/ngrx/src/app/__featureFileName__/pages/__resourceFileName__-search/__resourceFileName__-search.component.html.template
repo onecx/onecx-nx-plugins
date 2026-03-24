@@ -17,7 +17,7 @@
     <form [formGroup]="<%= resourcePropertyName %>SearchFormGroup">
       <div class="grid mt-0 p-fluid">
         <div class="col-12 md:col-3">
-          <p-floatlabel>
+          <p-floatlabel variant="on">
             <!-- ACTION S3: Change this search criteria -->
             <input
               pInputText

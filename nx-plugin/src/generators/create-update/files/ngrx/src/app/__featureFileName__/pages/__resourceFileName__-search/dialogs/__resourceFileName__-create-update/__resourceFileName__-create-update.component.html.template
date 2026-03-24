@@ -1,7 +1,7 @@
 <form [formGroup]="formGroup" [attr.aria-label]="'<%= resourceConstantName%>_CREATE_UPDATE.FORM.NAME' | translate" role="form">
     <div class="flex flex-wrap flex-column gap-4 justify-content-between mt-2">
       <div [title]="'<%= resourceConstantName%>_CREATE_UPDATE.FORM.CHANGE_ME' | translate">
-        <span class="p-float-label" controlErrorAnchor>
+        <p-floatlabel variant="on" controlErrorAnchor>
           <input
             pInputText
             type="text"
@@ -17,7 +17,7 @@
           >
             {{ '<%= resourceConstantName%>_CREATE_UPDATE.FORM.CHANGE_ME' | translate }}
           </label>
-        </span>
+        </p-floatlabel>
       </div>
       <!-- ACTION C2: Extend form fields -->
     </div>

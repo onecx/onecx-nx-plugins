@@ -28,7 +28,7 @@
       <div class="surface-section mt-3 mb-1 mx-3">
         <form [formGroup]="formGroup" errorTailor>
           <div class="mt-3 mb-1">
-            <p-floatlabel controlErrorAnchor>
+            <p-floatlabel variant="on" controlErrorAnchor>
               <input
                 pInputText
                 type="text"
