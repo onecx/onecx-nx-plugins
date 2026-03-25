@@ -93,7 +93,7 @@ export async function angularGenerator(
   addScriptsToPackageJson(tree, options);
   addExtensionsToPackageJson(tree);
 
-  const oneCXLibVersion = '^6.12.2';
+  const oneCXLibVersion = '^6.17.0';
   const angularVersion = '^19.0.7';
 
   addDependenciesToPackageJson(
@@ -141,10 +141,10 @@ export async function angularGenerator(
       '@primeng/themes': '^19.0.6',
     },
     {
-      '@nx/angular': '^20.3.4',
-      '@nx/devkit': '^20.3.4',
-      '@nx/plugin': '^20.3.4',
-      '@nx/module-federation': '^20.3.4',
+      '@nx/angular': '^20.4.0',
+      '@nx/devkit': '^20.4.0',
+      '@nx/plugin': '^20.4.0',
+      '@nx/module-federation': '^20.4.0',
       '@openapitools/openapi-generator-cli': '^2.16.3',
       'ngx-translate-testing': '^7.0.0',
       'modify-source-webpack-plugin': '^4.1.0',

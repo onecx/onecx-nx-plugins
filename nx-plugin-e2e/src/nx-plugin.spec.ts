@@ -19,9 +19,9 @@ describe('nx-plugin', () => {
   beforeAll(() => {
     projectDirectory = createTestProject('ngrx');
 
-    // Upgrade Nx to version 20.3.4 to match the plugin's peer dependencies
-    console.log('Upgrading Nx to version 20.3.4...');
-    execSync(`npx nx migrate 20.3.4`, {
+    // Upgrade Nx to version 20.4.0 to match the plugin's peer dependencies
+    console.log('Upgrading Nx to version 20.4.0...');
+    execSync(`npx nx migrate 20.4.0`, {
       cwd: projectDirectory,
       stdio: 'inherit',
       env: { ...process.env, NX_NO_CLOUD: 'true', CI: 'true' },
@@ -136,7 +136,10 @@ describe('nx-plugin', () => {
 
     it('should add a details page', () => {
       const tcOption = { ...option, cwd: projectDirectory };
-      const parameterString = getParameterAsString([]);
+      const parameterString = getParameterAsString([
+        { key: 'editMode', value: 'true' },
+        { key: 'allowDelete', value: 'true' },
+      ]);
       console.log('### ==> should add a details page #######################');
 
       execSync(
