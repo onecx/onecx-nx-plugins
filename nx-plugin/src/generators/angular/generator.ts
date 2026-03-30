@@ -109,7 +109,6 @@ export async function angularGenerator(
       '@onecx/integration-interface': oneCXLibVersion,
       '@onecx/angular-integration-interface': oneCXLibVersion,
       '@onecx/ngrx-accelerator': oneCXLibVersion,
-      '@onecx/shell-core': oneCXLibVersion,
       '@ngx-translate/core': '^16.0.4',
       '@ngx-translate/http-loader': '^8.0.0',
       '@angular-architects/module-federation': '^18.0.4',
@@ -336,11 +335,6 @@ function adaptProjectConfiguration(
         glob: '**/*',
         input: './node_modules/@onecx/angular-utils/assets/',
         output: '/onecx-angular-utils/assets/',
-      },
-      {
-        glob: '**/*',
-        input: './node_modules/@onecx/shell-core/assets/',
-        output: '/onecx-shell-core/assets/',
       },
     ],
     styles: [
