@@ -29,6 +29,8 @@ import {
   TranslationConnectionService,
 } from '@onecx/angular-utils';
 import { TooltipModule } from 'primeng/tooltip';
+import { FloatLabelModule } from 'primeng/floatlabel';
+import { InputTextModule } from 'primeng/inputtext';
 import { provideHttpClient } from '@angular/common/http';
 import { of } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
@@ -120,6 +122,8 @@ describe('<%= resourceClassName %>SearchComponent', () => {
         LetDirective,
         ReactiveFormsModule,
         TooltipModule,
+        FloatLabelModule,
+        InputTextModule,
         StoreModule.forRoot({}),
         TranslateTestingModule.withTranslations({
           de: require('../../../../assets/i18n/de.json'),

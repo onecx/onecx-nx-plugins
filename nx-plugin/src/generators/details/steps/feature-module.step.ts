@@ -18,6 +18,7 @@ export class FeatureModuleStep
       'EffectsModule.forFeature()',
       'EffectsModule.forFeature([',
       `from '@ngrx/effects'`,
+      `imports: [`
     ];
     const replaceWith = [
       `declarations: [${resourceClassName}DetailsComponent,`,
@@ -25,10 +26,15 @@ export class FeatureModuleStep
       `EffectsModule.forFeature([])`,
       `EffectsModule.forFeature([${resourceClassName}DetailsEffects,`,
       `from '@ngrx/effects';
+  import { FloatLabelModule } from 'primeng/floatlabel';
+  import { InputTextModule } from 'primeng/inputtext';
   import { ${resourceClassName}DetailsEffects } from './pages/${resourceFileName}-details/${resourceFileName}-details.effects';
   import { ${resourceClassName}DetailsComponent } from './pages/${resourceFileName}-details/${resourceFileName}-details.component';
   import { providePortalDialogService } from '@onecx/angular-accelerator';
   `,
+      `imports: [
+      FloatLabelModule,
+      InputTextModule,`
     ];
     safeReplace(
       `Enhance ${featureClassName}Module with details component and effects`,
