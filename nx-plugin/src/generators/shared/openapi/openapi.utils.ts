@@ -9,7 +9,7 @@ interface OpenAPIRoute {
 
 /**
  * This utility can be used to adapt OpenAPI YAML Files
- * It provides are builder-like interface to interact and bases
+ * It provides a builder-like interface to interact and bases
  * on the YAML library to parse / stringify.
  * When you want to add a comment to your JSON, you can do so by using an
  * object with the COMMENT_KEY as key. Though be aware, once this utility
@@ -21,6 +21,28 @@ export class OpenAPIUtil {
 
   constructor(yamlContent: string) {
     this.yamlContent = parse(yamlContent);
+  }
+
+  /**
+   * Quick access to the servers section of the YAML
+   * @returns interface to add items to the section
+   */
+  servers(): OpenAPIArraySectionUtil {
+    if (!this.yamlContent['servers']) {
+      this.yamlContent['servers'] = [];
+    }
+    return new OpenAPIArraySectionUtil(this, this.yamlContent['servers']);
+  }
+
+    /**
+   * Quick access to the tags section of the YAML
+   * @returns interface to add items to the section
+   */
+  tags(): OpenAPIArraySectionUtil {
+    if (!this.yamlContent['tags']) {
+      this.yamlContent['tags'] = [];
+    }
+    return new OpenAPIArraySectionUtil(this, this.yamlContent['tags']);
   }
 
   /**
@@ -86,8 +108,9 @@ export interface ObjectSetOptions {
   // If a value already exists for a key, what action should be performed
   existStrategy: 'skip' | 'replace' | 'extend';
 }
+
 export class OpenAPIObjectSectionUtil {
-  private util: OpenAPIUtil;
+  private readonly util: OpenAPIUtil;
   private sectionContent: object;
 
   constructor(util: OpenAPIUtil, sectionContent: object) {
@@ -119,7 +142,7 @@ export class OpenAPIObjectSectionUtil {
       // Replace is same as initial set
     }
     this.sectionContent[key] = value;
-    if (options && options.comment) {
+    if (options?.comment) {
       this.sectionContent[key][COMMENT_KEY] = options.comment;
     }
     return this;
@@ -139,7 +162,7 @@ export class OpenAPIObjectSectionUtil {
 }
 
 export class OpenAPIArraySectionUtil<T = unknown> {
-  private util: OpenAPIUtil;
+  private readonly util: OpenAPIUtil;
   private sectionContent: T[];
 
   constructor(util: OpenAPIUtil, sectionContent: T[]) {
@@ -149,11 +172,20 @@ export class OpenAPIArraySectionUtil<T = unknown> {
 
   /**
    * Add a new item to the section
-   * @param value
+   * @param key key of the entry object
+   * @param value value of the entry object
+   * @param options configure existStrategy and comment
    * @returns this util
    */
-  add(value: T) {
-    this.sectionContent.push(value);
+  add(key: string, value: T, options?: ObjectSetOptions) {
+    const existStrategy = options ? options.existStrategy : 'skip';
+    const existingItem = this.sectionContent.find((item: any) => item.name === key);
+    if (existingItem != null) {
+      if (existStrategy == 'skip') {
+        return this;
+      }
+    }
+    this.sectionContent.push(value); // add item to array
     return this;
   }
 

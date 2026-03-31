@@ -6,25 +6,23 @@ import { createUpdateEndpoint } from '../../create-update/endpoint.util';
 
 export class GeneralOpenAPIStep implements GeneratorStep<DetailsGeneratorSchema> {
   process(tree: Tree, options: DetailsGeneratorSchema): void {
-    const openApiFolderPath = 'src/assets/swagger';
-    const openApiFiles = tree.children(openApiFolderPath);
-    const bffOpenApiPath = openApiFiles.find((f) => f.endsWith('-bff.yaml'));
+    const openApiFolderPath = 'src/assets/api';
+    const bffOpenApiPath = 'openapi-bff.yaml';
     const bffOpenApiContent = tree.read(
       joinPathFragments(openApiFolderPath, bffOpenApiPath),
       'utf8'
     );
 
     const resource = options.resource;
-    const propertyName = names(options.featureName).propertyName;
-    const apiServiceName = options.apiServiceName;
-    const getByIdResponseName = options.getByIdResponseName;
+    const propertyName = names(options.resource).propertyName;
+    const getResponseName = options.getResponseName;
     const apiUtil = new OpenAPIUtil(bffOpenApiContent);
 
     const updateRequestName = options.updateRequestName;
     const updateResponseName = options.updateResponseName;
 
     apiUtil.paths().set(
-      `/${propertyName}/{id}`,
+      `/${propertyName}s/{id}`,
       {
         get: {
           'x-onecx': {
@@ -33,7 +31,8 @@ export class GeneralOpenAPIStep implements GeneratorStep<DetailsGeneratorSchema>
             },
           },
           operationId: `get${resource}ById`,
-          tags: [apiServiceName],
+          description: `Get ${resource} by id`,
+          tags: [propertyName],
           parameters: [
             {
               name: 'id',
@@ -50,7 +49,7 @@ export class GeneralOpenAPIStep implements GeneratorStep<DetailsGeneratorSchema>
               content: {
                 'application/json': {
                   schema: {
-                    $ref: `#/components/schemas/${getByIdResponseName}`,
+                    $ref: `#/components/schemas/${getResponseName}`,
                   },
                 },
               },
@@ -66,20 +65,10 @@ export class GeneralOpenAPIStep implements GeneratorStep<DetailsGeneratorSchema>
               },
             },
             '404': {
-              description: 'Not Found',
-            },
-            '500': {
-              description: 'Internal Server Error',
-              content: {
-                'application/json': {
-                  schema: {
-                    $ref: '#/components/schemas/ProblemDetailResponse',
-                  },
-                },
-              },
-            },
-          },
-        },
+              description: `${resource} not found`,
+            }
+          }
+        }
       },
       {
         existStrategy: 'extend',
@@ -89,17 +78,18 @@ export class GeneralOpenAPIStep implements GeneratorStep<DetailsGeneratorSchema>
     if (options.editMode) {
       // Paths for editMode
       apiUtil.paths().set(
-        `/${propertyName}/{id}`,
+        `/${propertyName}s/{id}`,
         {
           ...createUpdateEndpoint(
             {
               type: 'put',
-              operationId: `update${resource}`,
-              tags: [apiServiceName],
-              description: `This operation performs an update.`,
+              operationId: `update${resource}ById`,
+              tags: [propertyName],
+              description: `Update ${resource} by id`,
             },
             {
               resource: resource,
+              propertyName: propertyName,
               updateRequestSchema: updateRequestName,
               updateResponseSchema: updateResponseName,
             }
@@ -117,7 +107,6 @@ export class GeneralOpenAPIStep implements GeneratorStep<DetailsGeneratorSchema>
           type: 'object',
           properties: {
             dataObject: {
-              type: 'object',
               $ref: `#/components/schemas/${resource}`,
             },
           },
@@ -126,22 +115,25 @@ export class GeneralOpenAPIStep implements GeneratorStep<DetailsGeneratorSchema>
           type: 'object',
           properties: {
             dataObject: {
-              type: 'object',
               $ref: `#/components/schemas/${resource}`,
             },
-            [COMMENT_KEY]:
-              'ACTION DE1: modify resource or use flat list here. https://onecx.github.io/docs/documentation/current/onecx-nx-plugins:generator/create-update/extend-form-fields.html#action-1',
+            [COMMENT_KEY]: 'ACTION DE1: modify resource or use flat list here',
           },
         });
     }
 
     if (options.allowDelete) {
       apiUtil.paths().set(
-        `/${propertyName}/{id}`,
+        `/${propertyName}s/{id}`,
         {
           delete: {
-            tags: [apiServiceName],
-            operationId: `delete${resource}`,
+            'x-onecx': {
+              permissions: {
+                [propertyName]: ['delete'],
+              },
+            },
+            tags: [propertyName],
+            operationId: `delete${resource}ById`,
             description: `Delete ${resource} by id`,
             parameters: [
               {
@@ -168,7 +160,7 @@ export class GeneralOpenAPIStep implements GeneratorStep<DetailsGeneratorSchema>
 
     apiUtil.schemas().set(resource, {
       type: 'object',
-      required: ['modificationCount', 'id'],
+      required: ['id', 'modificationCount'],
       properties: {
         modificationCount: {
           type: 'integer',
@@ -229,7 +221,7 @@ export class GeneralOpenAPIStep implements GeneratorStep<DetailsGeneratorSchema>
       },
     });
 
-    apiUtil.schemas().set(getByIdResponseName, {
+    apiUtil.schemas().set(getResponseName, {
       type: 'object',
       required: ['result'],
       properties: {
@@ -244,6 +236,6 @@ export class GeneralOpenAPIStep implements GeneratorStep<DetailsGeneratorSchema>
     );
   }
   getTitle(): string {
-    return "Adapting OpenAPI"
+    return "Adapting OpenAPI (details)"
   }
 }

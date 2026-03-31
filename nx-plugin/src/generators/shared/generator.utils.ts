@@ -40,7 +40,8 @@ export class GeneratorProcessor<T> {
     this.errors = [];
     for (const step of this.steps) {
       if (ora) {
-        ora.text = step.getTitle();
+        const stepTitle = step.getTitle().trimEnd();
+        ora.info(stepTitle);
       }
       try {
         step.process(tree, options);
@@ -95,5 +96,9 @@ export class GeneratorProcessor<T> {
     steps.forEach((s) => genProc.addStep(s));
     await genProc.run(tree, options, ora, printErrors);
     return genProc;
+  }
+
+  static getServiceName(name: string): string {
+    return name + 'APIService';
   }
 }

@@ -1,9 +1,10 @@
 import { Tree, joinPathFragments, names, updateJson } from '@nx/devkit';
+
+import { deepMerge } from '../../shared/deepMerge';
+import { renderJsonFile } from '../../shared/renderJsonFile';
 import { GeneratorStep } from '../../shared/generator.utils';
 import { CreateUpdateGeneratorSchema } from '../schema';
 import path = require('path');
-import { renderJsonFile } from '../../shared/renderJsonFile';
-import { deepMerge } from '../../shared/deepMerge';
 import * as fs from 'fs';
 
 export class GeneralTranslationsStep
@@ -20,6 +21,8 @@ export class GeneralTranslationsStep
     ...options,
     featureConstantName: names(options.featureName).constantName,
     featureClassName: names(options.featureName).className,
+    resourceConstantName: names(options.resource).constantName,
+    resourceClassName: names(options.resource).className,
   });
 
   tree.children(folderPath).forEach((file) => {
@@ -34,6 +37,8 @@ export class GeneralTranslationsStep
           ...options,
           featureConstantName: names(options.featureName).constantName,
           featureClassName: names(options.featureName).className,
+          resourceConstantName: names(options.resource).constantName,
+          resourceClassName: names(options.resource).className,
         });
       }
 
@@ -44,6 +49,6 @@ export class GeneralTranslationsStep
   });
   }
   getTitle(): string {
-    return 'Adapting Translations';
+    return 'Adapting Translations (create/update)';
   }
 }

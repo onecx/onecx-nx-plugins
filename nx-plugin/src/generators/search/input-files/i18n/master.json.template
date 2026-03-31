@@ -1,5 +1,5 @@
 {
-  "<%= featureConstantName %>_SEARCH": {
+  "<%= resourceConstantName %>_SEARCH": {
     "HEADER": "ACTION S8: ADD TRANSLATION",
     "SUB_HEADER": "ACTION S8: ADD TRANSLATION",
     "HELP_ARTICLE_ID": "ACTION S8: ADD TRANSLATION",

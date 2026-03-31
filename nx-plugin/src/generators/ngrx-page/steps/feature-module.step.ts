@@ -17,21 +17,18 @@ export class FeatureModuleStep implements GeneratorStep<PageGeneratorSchema> {
     );
 
     const find = [
-      'declarations: [',
-      `} from '@onecx/portal-integration-angular'`,
+      'declarations: [',      
       'EffectsModule.forFeature()',
       'EffectsModule.forFeature([',
-      `from '@ngrx/effects';`,
+      /^/,
     ];
 
     const replaceWith = [
-      `declarations: [${pageClassName}Component,`,
-      `InitializeModuleGuard, } from '@onecx/portal-integration-angular'`,
+      `declarations: [${pageClassName}Component,`,      
       `EffectsModule.forFeature([])`,
       `EffectsModule.forFeature([${pageClassName}Effects,`,
-      `from '@ngrx/effects';
-    import { ${pageClassName}Effects } from './pages/${pageFileName}/${pageFileName}.effects';
-    import { ${pageClassName}Component } from './pages/${pageFileName}/${pageFileName}.component';`,
+      `import { ${pageClassName}Effects } from './pages/${pageFileName}/${pageFileName}.effects';
+       import { ${pageClassName}Component } from './pages/${pageFileName}/${pageFileName}.component';`,
     ];
 
     safeReplace(

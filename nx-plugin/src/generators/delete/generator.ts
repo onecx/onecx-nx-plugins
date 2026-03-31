@@ -32,26 +32,21 @@ const PARAMETERS: GeneratorParameter<DeleteGeneratorSchema>[] = [
     prompt: 'Do you want to customize the names for the generated API?',
   },
   {
-    key: 'apiServiceName',
-    type: 'text',
-    required: 'interactive',
-    default: (values) => {
-      return `${names(values.featureName).className}BffService`;
-    },
-    prompt: 'Provide a name for your API service (e.g. BookBffService): ',
-    showInSummary: true,
-    showRules: [{ showIf: (values) => values.customizeNamingForAPI }],
-  },
-  {
     key: 'resource',
     type: 'text',
     required: 'interactive',
     default: (values) => {
       return `${names(values.featureName).className}`;
     },
-    prompt: 'Provide a name for your Resource (e.g. Book): ',
+    prompt: 'Provide a name for the Resource (e.g. Book): ',
     showInSummary: true,
     showRules: [{ showIf: (values) => values.customizeNamingForAPI }],
+  },
+  {
+    key: 'serviceName',
+    type: 'text',
+    required: 'never',
+    default: (values) => GeneratorProcessor.getServiceName(`${names(values.resource).className}`),
   },
   {
     key: 'standalone',
@@ -71,7 +66,7 @@ export async function deleteGenerator(
   );
   Object.assign(options, parameters);
 
-  const spinner = ora(`Adding delete to ${options.featureName}`).start();
+  const spinner = ora(`Adding delete to ${options.resource}`).start();
 
   const isNgRx = !!Object.keys(
     readJson(tree, 'package.json').dependencies
@@ -115,23 +110,25 @@ export async function deleteGenerator(
 
   return () => {
     installPackagesTask(tree);
-    execSync('npm run apigen', {
-      cwd: tree.root,
-      stdio: 'inherit',
-    });
+    let cmd = '';
+    function log(command: string) {
+      console.log('');
+      console.log('generate delete ==> ' + command);
+    }
+    cmd = 'npm run apigen ';
+    log(cmd);
+    execSync(cmd, { cwd: tree.root, stdio: 'inherit' });
     const files = tree
       .listChanges()
       .map((c) => c.path)
       .filter((p) => p.endsWith('.ts'))
       .join(' ');
-    execSync('npx organize-imports-cli ' + files, {
-      cwd: tree.root,
-      stdio: 'inherit',
-    });
-    execSync('npx prettier --write ' + files, {
-      cwd: tree.root,
-      stdio: 'inherit',
-    });
+    cmd = 'npx --yes organize-imports-cli ';
+    log(cmd);
+    execSync(cmd + files, { cwd: tree.root, stdio: 'inherit' });
+    cmd = 'npx prettier --write ';
+    log(cmd);
+    execSync(cmd + files, { cwd: tree.root, stdio: 'inherit' });
   };
 }
 

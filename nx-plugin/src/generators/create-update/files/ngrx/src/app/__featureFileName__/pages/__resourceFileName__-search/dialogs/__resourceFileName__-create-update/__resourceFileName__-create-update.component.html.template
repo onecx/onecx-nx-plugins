@@ -1,0 +1,24 @@
+<form [formGroup]="formGroup" [attr.aria-label]="'<%= resourceConstantName%>_CREATE_UPDATE.FORM.NAME' | translate" role="form">
+    <div class="flex flex-wrap flex-column gap-4 justify-content-between mt-2">
+      <div [title]="'<%= resourceConstantName%>_CREATE_UPDATE.FORM.CHANGE_ME' | translate">
+        <p-floatlabel variant="on" controlErrorAnchor>
+          <input
+            pInputText
+            type="text"
+            id="<%= resourceFileName %>_detail_form_change_me"
+            class="w-full pt-3 pb-2 text-responsive"
+            formControlName="changeMe"
+            required
+            aria-required="true"
+          />
+          <label
+            class="ocx-required-label"
+            for="<%= resourceFileName %>_detail_form_change_me"
+          >
+            {{ '<%= resourceConstantName%>_CREATE_UPDATE.FORM.CHANGE_ME' | translate }}
+          </label>
+        </p-floatlabel>
+      </div>
+      <!-- ACTION C2: Extend form fields -->
+    </div>
+  </form>

@@ -1,0 +1,31 @@
+import { createActionGroup, emptyProps, props } from '@ngrx/store';
+import {
+  InteractiveDataViewComponentState,
+  SearchHeaderComponentState,
+  GroupByCountDiagramComponentState,
+} from '@onecx/angular-accelerator';
+import { <%= resource %> } from '../../../shared/generated';
+import { <%= resourceClassName %>SearchCriteria } from './<%= resourceFileName %>-search.parameters';
+
+export const <%= resourcePropertyName %>SearchActions = createActionGroup({
+  source: '<%= resourceClassName %>Search',
+  events: {
+    'Search button clicked': props<{
+      searchCriteria: <%= resourceClassName %>SearchCriteria;
+    }>(),
+    'Reset button clicked': emptyProps(),
+    '<%= resource %> search results received': props<{
+      stream: <%= resource %>[];
+      size: number;
+      number: number;
+      totalElements: number;
+      totalPages: number;
+    }>(),
+    '<%= resource %> search results loading failed': props<{ error: string | null }>(),    
+    'Export button clicked': emptyProps(),
+    'Result component state changed': props<InteractiveDataViewComponentState>(),
+    'Search header component state changed': props<SearchHeaderComponentState>(),
+    'Diagram component state changed': props<GroupByCountDiagramComponentState>(),
+    'Chart visibility toggled': emptyProps(),
+  },
+});

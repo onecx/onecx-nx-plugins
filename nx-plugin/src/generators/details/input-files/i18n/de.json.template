@@ -1,41 +1,46 @@
 {
-   "<%= featureConstantName %>_DETAILS":{
-      "HELP_ARTICLE_ID":"Hilfeartikel",
-      "BREADCRUMB":"Details",
-      "HEADER":"<%= featureClassName %> Details",
-      "ARIA-LABEL": "Seitenkopf mit Details",
-      "SUB_HEADER":"Anzeigen von <%= featureClassName %> Details",
-      "ERROR_MESSAGES":{
-         "DETAILS_LOADING_FAILED":"Details konnten nicht geladen werden."
+  "<%= resourceConstantName %>_DETAILS": {
+    "HEADER": "<%= resourceClassName %> Details",
+    "SUB_HEADER": "Anzeigen von <%= resourceClassName %> Details",
+    "HELP_ARTICLE_ID": "Hilfeartikel",
+    "BREADCRUMB": "Details",
+    "ARIA_LABEL": "Seitenkopf mit Details",
+    "ERROR_MESSAGES":{
+      "DETAILS_LOADING_FAILED":"Details konnten nicht geladen werden."
+    },
+    "GENERAL": {
+      "BACK": "Zurück",
+      "MORE": "Mehr",
+      "EDIT": "Bearbeiten",
+      "DELETE": "Löschen",
+      "CANCEL": "Abbrechen",
+      "SAVE": "Speichern"
+    },
+    "FORM": {
+      "ID": "ID",
+      "NAME": "Seitenkopf mit Details"
+    },
+    "CANCEL": {
+      "HEADER": "Abbruch bestätigen",
+      "MESSAGE": "Bitte bestätigen Sie, dass Sie die Bearbeitung abbrechen und die Änderungen zurücksetzen möchten.",
+      "CONFIRM": "Bestätigen"
+    },
+    "UPDATE": {
+      "SUCCESS": "Speichern erfolgreich",         
+      "ERROR": "Speichern fehlgeschlagen",
+      "FORM": {
+        "SAVE": "Speichern",
+        "CANCEL": "Abbrechen"
       },
-      "GENERAL":{
-         "BACK":"Zurück",
-         "MORE":"Mehr",
-         "EDIT":"Bearbeiten",
-         "DELETE":"Löschen",
-         "CANCEL":"Abbrechen",
-         "SAVE":"Speichern"
-      },
-      "FORM":{
-         "ID":"ID",
-         "NAME": "Seitenkopf mit Details"
-      },
-      "CANCEL":{
-         "HEADER":"Abbruch bestätigen",
-         "MESSAGE":"Bitte bestätigen Sie, dass Sie die Bearbeitung abbrechen und die Änderungen zurücksetzen möchten.",
-         "CONFIRM":"Bestätigen"
-      },
-      "UPDATE":{
-         "SUCCESS":"Speichern erfolgreich",         
-         "ERROR":"Speichern fehlgeschlagen"
-      },
-      "DELETE":{
-         "HEADER":"<%= featureClassName %> löschen",
-         "MESSAGE":"Bitte bestätigen Sie, dass Sie dieses <%= featureClassName %> löschen möchten.",
-         "CONFIRM":"Bestätigen",
-         "CANCEL":"Abbrechen",
-         "SUCCESS":"<%= featureClassName %> erfolgreich gelöscht",
-         "ERROR":"Konnte <%= featureClassName %> nicht löschen"
-      }
-   }
+      "HEADER": "<%= resourceClassName %> ändern"
+    },
+    "DELETE": {
+      "HEADER": "<%= resourceClassName %> löschen",
+      "MESSAGE": "Bitte bestätigen Sie, dass Sie <%= resourceClassName %> löschen möchten.",
+      "CONFIRM": "Bestätigen",
+      "CANCEL": "Abbrechen",
+      "SUCCESS": "<%= resourceClassName %> erfolgreich gelöscht",
+      "ERROR": "Konnte <%= resourceClassName %> nicht löschen"
+    }
+  }
 }
