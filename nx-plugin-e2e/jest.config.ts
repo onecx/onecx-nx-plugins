@@ -8,6 +8,5 @@ export default {
   moduleFileExtensions: ['ts', 'js', 'html'],
   coverageDirectory: '../coverage/nx-plugin-e2e',
   globalSetup: '../tools/scripts/start-local-registry.ts',
-  globalTeardown: '../tools/scripts/stop-local-registry.ts',
-  bail: true
+  globalTeardown: '../tools/scripts/stop-local-registry.ts'
 };

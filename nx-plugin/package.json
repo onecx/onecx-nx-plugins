@@ -1,13 +1,16 @@
 {
   "name": "@onecx/nx-plugin",
-  "version": "7.0.0",
+  "version": "6.1.0",
+  "license": "Apache-2.0",
+  "contributors": [],
   "repository": {
     "type": "git",
-    "url": "https://github.com/onecx/onecx-nx-plugins"
+    "url": "git+https://github.com/onecx/onecx-nx-plugins.git"
   },
   "dependencies": {
     "@nx/devkit": "^19.8.14",
     "@nx/angular": "^19.8.14",
+    "@nx/eslint-plugin": "^19.8.14",
     "ejs": "^3.1.9",
     "enquirer": "^2.3.6",
     "ora": "^5.3.0",
@@ -22,5 +25,6 @@
   "generators": "./generators.json",
   "publishConfig": {
     "access": "public"
-  }
+  },
+  "types": "./src/index.d.ts"
 }

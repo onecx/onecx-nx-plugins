@@ -1,10 +1,10 @@
 {
-  "<%= featureConstantName %>_DELETE": {
-    "HEADER": "Delete <%= featureClassName %>",
-    "MESSAGE": "Please confirm that you want to delete this <%= featureClassName %>.",
+  "<%= resourceConstantName %>_DELETE": {
+    "HEADER": "Delete <%= resourceClassName %>",
+    "MESSAGE": "Please confirm that you want to delete this <%= resourceClassName %>.",
     "CONFIRM": "Confirm",
     "CANCEL": "Cancel",
-    "SUCCESS": "<%= featureClassName %> deleted successfully",
-    "ERROR": "Could not delete <%= featureClassName %>"
+    "SUCCESS": "<%= resourceClassName %> deleted successfully",
+    "ERROR": "Could not delete <%= resourceClassName %>"
   }
 }

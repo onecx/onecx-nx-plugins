@@ -1,0 +1,146 @@
+import {
+  Component,
+  inject,
+  LOCALE_ID,
+  OnInit,
+  QueryList,
+  ViewChildren,
+} from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { Store } from '@ngrx/store';
+import { Observable, map } from 'rxjs';
+import { PrimeIcons } from 'primeng/api';
+import { DatePicker } from 'primeng/datepicker';
+
+import { isValidDate } from '@onecx/accelerator';
+import {
+  Action,
+  BreadcrumbService,
+  buildSearchCriteria,
+  DataSortDirection,
+  DataTableColumn,
+  DiagramComponentState,
+  DiagramType,
+  ExportDataService,  
+  InteractiveDataViewComponentState,
+  SearchHeaderComponentState,
+} from '@onecx/angular-accelerator';
+
+import { <%= resourcePropertyName %>SearchActions } from './<%= resourceFileName %>-search.actions';
+import {
+  <%= resourceClassName %>SearchCriteria,
+  <%= resourcePropertyName %>SearchCriteriasSchema,
+} from './<%= resourceFileName %>-search.parameters';
+import { select<%= resourceClassName %>SearchViewModel } from './<%= resourceFileName %>-search.selectors';
+import { <%= resourceClassName %>SearchViewModel } from './<%= resourceFileName %>-search.viewmodel';
+
+@Component({
+  selector: 'app-<%= resourceFileName %>-search',
+  templateUrl: './<%= resourceFileName %>-search.component.html',
+  styleUrls: ['./<%= resourceFileName %>-search.component.scss'],
+  standalone: false,
+})
+
+export class <%= resourceClassName %>SearchComponent implements OnInit {
+  private readonly breadcrumbService = inject(BreadcrumbService);
+  private readonly store = inject(Store);
+  private readonly formBuilder = inject(FormBuilder);
+  readonly locale = inject(LOCALE_ID);
+  private readonly exportDataService = inject(ExportDataService);
+
+  @ViewChildren(DatePicker) calendars!: QueryList<DatePicker>;
+  viewModel$: Observable<<%= resourceClassName %>SearchViewModel> = this.store.select(select<%= resourceClassName %>SearchViewModel);
+  
+  // ACTION S10: Update header actions
+  headerActions$: Observable<Action[]> = this.viewModel$.pipe(map((vm) => {
+        const actions: Action[] = [
+          {
+            labelKey: '<%= resourceConstantName %>_SEARCH.HEADER_ACTIONS.EXPORT_ALL',
+            icon: PrimeIcons.DOWNLOAD,
+            titleKey: '<%= resourceConstantName %>_SEARCH.HEADER_ACTIONS.EXPORT_ALL',
+            show: 'asOverflow',
+            actionCallback: () => this.exportItems(),
+          },
+          {
+            labelKey: vm.chartVisible
+              ? '<%= resourceConstantName %>_SEARCH.HEADER_ACTIONS.HIDE_CHART'
+              : '<%= resourceConstantName %>_SEARCH.HEADER_ACTIONS.SHOW_CHART',
+            icon: PrimeIcons.EYE,
+            titleKey: vm.chartVisible
+              ? '<%= resourceConstantName %>_SEARCH.HEADER_ACTIONS.HIDE_CHART'
+              : '<%= resourceConstantName %>_SEARCH.HEADER_ACTIONS.SHOW_CHART',
+            show: 'asOverflow',
+            actionCallback: () => this.toggleChartVisibility(),
+          },
+        ]      
+        return actions
+      })
+    );
+
+
+  defaultDataSortDirection = DataSortDirection.NONE
+  defaultDiagramType = DiagramType.PIE
+  
+  // ACTION S9: Select the column to be displayed in the diagram
+  diagramColumnId = 'id';
+  diagramColumn$: Observable<DataTableColumn> = this.viewModel$.pipe(map((vm) =>vm.columns.find((e) => e.id === this.diagramColumnId) as DataTableColumn));
+
+  public <%= resourcePropertyName %>SearchFormGroup: FormGroup = this.formBuilder.group(
+      {
+        ...Object.fromEntries(
+          <%= resourcePropertyName %>SearchCriteriasSchema
+            .keyof()
+            .options.map((k) => [k, null])
+        ) as Record<keyof <%= resourceClassName %>SearchCriteria, unknown>,
+      } satisfies Record<keyof <%= resourceClassName %>SearchCriteria, unknown>,
+    );
+
+  ngOnInit() {
+    this.breadcrumbService.setItems([
+      {
+        titleKey: '<%= resourceConstantName %>_SEARCH.BREADCRUMB',
+        labelKey: '<%= resourceConstantName %>_SEARCH.BREADCRUMB',
+        routerLink: '/<%= resourceFileName %>',
+      },
+    ]);
+    this.viewModel$.subscribe((vm) =>
+      this.<%= resourcePropertyName %>SearchFormGroup.patchValue(vm.searchCriteria),
+    );
+  }
+
+  resultComponentStateChanged(state: InteractiveDataViewComponentState) {    
+    this.store.dispatch(<%= resourcePropertyName %>SearchActions.resultComponentStateChanged(state))
+  }
+
+  searchHeaderComponentStateChanged(state: SearchHeaderComponentState) {
+    this.store.dispatch(<%= resourcePropertyName %>SearchActions.searchHeaderComponentStateChanged(state))
+  }
+
+  diagramComponentStateChanged(state: DiagramComponentState) {
+    this.store.dispatch(<%= resourcePropertyName %>SearchActions.diagramComponentStateChanged(state))
+  }
+
+  search(formValue: FormGroup) {
+    const searchCriteria = buildSearchCriteria(
+      formValue.getRawValue(),
+      this.calendars,
+      { removeNullValues: true }
+    );
+    this.store.dispatch(
+      <%= resourcePropertyName %>SearchActions.searchButtonClicked({ searchCriteria })
+    );
+  }
+
+  resetSearch() {
+    this.store.dispatch(<%= resourcePropertyName %>SearchActions.resetButtonClicked());
+  }
+
+
+  exportItems() {
+    this.store.dispatch(<%= resourcePropertyName %>SearchActions.exportButtonClicked());
+  }   
+
+  toggleChartVisibility() {
+    this.store.dispatch(<%= resourcePropertyName %>SearchActions.chartVisibilityToggled());
+  }
+}

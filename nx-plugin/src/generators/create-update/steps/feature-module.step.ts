@@ -7,22 +7,24 @@ export class FeatureModuleStep
   implements GeneratorStep<CreateUpdateGeneratorSchema>
 {
   process(tree: Tree, options: CreateUpdateGeneratorSchema): void {
-    const fileName = names(options.featureName).fileName;
-    const className = names(options.featureName).className;
+    const featureFileName = names(options.featureName).fileName;
+    const resourceFileName = names(options.resource).fileName;
+    const resourceClassName = names(options.resource).className;
     const moduleFilePath = joinPathFragments(
       'src/app',
-      fileName,
-      fileName + '.module.ts'
+      featureFileName,
+      featureFileName + '.module.ts'
     );
-    const find = ['declarations: [', `from '@ngrx/effects';`];
+    const find = ['declarations: [', /^/, `imports: [`];
     const replaceWith = [
-      `declarations: [${className}CreateUpdateComponent,`,
-      `from '@ngrx/effects';
-     import { ${className}CreateUpdateComponent } from './pages/${fileName}-search/dialogs/${fileName}-create-update/${fileName}-create-update.component';
-     import { providePortalDialogService } from '@onecx/portal-integration-angular';`,
-      `
-    providers: [providePortalDialogService()],
-    declarations:`,
+      `declarations: [${resourceClassName}CreateUpdateComponent,`,
+      `import { FloatLabelModule } from 'primeng/floatlabel';
+       import { InputTextModule } from 'primeng/inputtext';
+       import { ${resourceClassName}CreateUpdateComponent } from './pages/${resourceFileName}-search/dialogs/${resourceFileName}-create-update/${resourceFileName}-create-update.component';
+       import { providePortalDialogService } from '@onecx/angular-accelerator';`,
+      `imports: [
+      FloatLabelModule,
+      InputTextModule,`
     ];
     const moduleContent = tree.read(moduleFilePath, 'utf8');
     if (!moduleContent.includes('providePortalDialogService()')) {
@@ -32,7 +34,7 @@ export class FeatureModuleStep
     declarations:`);
     }
     safeReplace(
-      `Update feature module to include ${className}CreateUpdateComponent in declarations, add providePortalDialogService to providers, and extend import statements to include necessary dependencies`,
+      `Update feature module to include ${resourceClassName}CreateUpdateComponent in declarations, add providePortalDialogService to providers, and extend import statements to include necessary dependencies`,
       moduleFilePath,
       find,
       replaceWith,
@@ -40,6 +42,6 @@ export class FeatureModuleStep
     );
   }
   getTitle(): string {
-    return 'Adapting Feature Module';
+    return 'Adapting Feature Module (create/update)';
   }
 }

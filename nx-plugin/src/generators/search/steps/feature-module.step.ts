@@ -5,32 +5,39 @@ import { SearchGeneratorSchema } from '../schema';
 
 export class FeatureModuleStep implements GeneratorStep<SearchGeneratorSchema> {
   process(tree: Tree, options: SearchGeneratorSchema): void {
-    const fileName = names(options.featureName).fileName;
-    const className = names(options.featureName).className;
+    const featureName = options.featureName;
+    const featureFileName = names(options.featureName).fileName;
+    const resourceFileName = names(options.resource).fileName;
+    const resourceClassName = names(options.resource).className;
+    
     const moduleFilePath = joinPathFragments(
       'src/app',
-      fileName,
-      fileName + '.module.ts'
+      featureFileName,
+      featureFileName + '.module.ts'
     );
     const find = [
-      'declarations: [',
-      `} from '@onecx/portal-integration-angular'`,
+      'declarations: [',      
       'EffectsModule.forFeature()',
       'EffectsModule.forFeature([',
-      `from '@ngrx/effects';`,
+      `from '@ngrx/effects'`,
+      `imports: [`
     ];
     const replaceWith = [
-      `declarations: [${className}SearchComponent,`,
-      `InitializeModuleGuard, } from '@onecx/portal-integration-angular'`,
+      `declarations: [${resourceClassName}SearchComponent,`,      
       `EffectsModule.forFeature([])`,
-      `EffectsModule.forFeature([${className}SearchEffects,`,
+      `EffectsModule.forFeature([${resourceClassName}SearchEffects,`,
       `from '@ngrx/effects';
-    import { ${className}SearchEffects } from './pages/${fileName}-search/${fileName}-search.effects';
-    import { ${className}SearchComponent } from './pages/${fileName}-search/${fileName}-search.component';`,
+    import { FloatLabelModule } from 'primeng/floatlabel'
+    import { InputTextModule } from 'primeng/inputtext'
+    import { ${resourceClassName}SearchEffects } from './pages/${resourceFileName}-search/${resourceFileName}-search.effects';
+    import { ${resourceClassName}SearchComponent } from './pages/${resourceFileName}-search/${resourceFileName}-search.component';`,
+    `imports: [
+      FloatLabelModule,
+      InputTextModule,`
     ];
 
     safeReplace(
-      `Integrating ${className}SearchComponent into ${fileName} module"`,
+      `Integrating ${resourceClassName}SearchComponent into ${featureName} module"`,
       moduleFilePath,
       find,
       replaceWith,

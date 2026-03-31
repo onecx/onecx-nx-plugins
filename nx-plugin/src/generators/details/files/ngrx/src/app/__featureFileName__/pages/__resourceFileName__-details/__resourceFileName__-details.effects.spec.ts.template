@@ -1,0 +1,305 @@
+import { TestBed } from '@angular/core/testing';
+import { HttpResponse } from '@angular/common/http';
+import { ActivatedRoute, provideRouter, Router } from '@angular/router';
+import { provideMockActions } from '@ngrx/effects/testing';
+import { Action, Store } from '@ngrx/store';
+import { MockStore, provideMockStore } from '@ngrx/store/testing';
+import { firstValueFrom, of, ReplaySubject, throwError } from 'rxjs';
+import {
+  routerNavigatedAction,
+  RouterNavigatedPayload,
+  SerializedRouterStateSnapshot,
+} from '@ngrx/router-store';
+
+import { PortalDialogService } from '@onecx/angular-accelerator';
+import { PortalMessageService } from '@onecx/angular-integration-interface';
+
+import { 
+  <%= resource %>, 
+  <%= serviceName %>,
+  Update<%= resource %>Response,
+} from 'src/app/shared/generated';
+import { selectBackNavigationPossible } from 'src/app/shared/selectors/onecx.selectors';
+import { <%= resourcePropertyName %>DetailsActions } from './<%= resourceFileName %>-details.actions';
+import { <%= resourceClassName %>DetailsEffects } from './<%= resourceFileName %>-details.effects';
+import { initialState } from './<%= resourceFileName %>-details.reducers';
+
+jest.mock('@onecx/ngrx-accelerator', () => {
+  const actual = jest.requireActual('@onecx/ngrx-accelerator');
+  return {
+    ...actual,
+    filterForNavigatedTo: () => (source: unknown) => source,
+    filterOutQueryParamsHaveNotChanged: () => (source: unknown) => source,
+  };
+});
+
+describe('<%= resourceClassName %>DetailsEffects', () => {
+  let actions$: ReplaySubject<Action>;
+  let effects: <%= resourceClassName %>DetailsEffects;
+  let store: MockStore<Store>;
+  let router: Partial<jest.Mocked<Router>>;
+  let route: ActivatedRoute;
+  const <%= resourcePropertyName %>Service = { get<%= resource %>ById: jest.fn(), update<%= resource %>ById: jest.fn() };
+  let portalDialogService: Partial<jest.Mocked<PortalDialogService>>;
+  let messageService: Partial<jest.Mocked<PortalMessageService>>;
+
+  beforeEach(async () => {
+    jest.resetAllMocks();
+    actions$ = new ReplaySubject(1);
+
+    router = {
+      navigate: jest.fn().mockReturnValue(Promise.resolve(true)),
+      parseUrl: jest.fn(),
+      events: of(),
+    };
+
+    portalDialogService = {
+      openDialog: jest.fn(),
+    };
+
+    messageService = {
+      success: jest.fn(),
+      error: jest.fn(),
+    };
+
+    route = {
+      queryParams: of({}),
+      snapshot: { queryParams: {} },
+    } as ActivatedRoute;
+
+    await TestBed.configureTestingModule({
+      providers: [
+        <%= resourceClassName %>DetailsEffects,
+        provideRouter([]),
+        provideMockStore({
+          initialState: { <%= resourcePropertyName %>Search: initialState },
+        }),
+        provideMockActions(() => actions$),
+        { provide: ActivatedRoute, useValue: route },
+        { provide: Router, useValue: router },
+        { provide: <%= serviceName %>, useValue: <%= resourcePropertyName %>Service },
+        { provide: PortalDialogService, useValue: portalDialogService },
+        { provide: PortalMessageService, useValue: messageService },
+      ],
+    }).compileComponents();
+
+    store = TestBed.inject(MockStore);
+    effects = TestBed.inject(<%= resourceClassName %>DetailsEffects);
+  });
+
+  describe('navigatedToDetailsPage$', () => {
+    it('should dispatch navigatedToDetailsPage with the route id', async () => {
+      const selectSpy = jest
+        .spyOn(store, 'select')
+        .mockReturnValueOnce(of('test-123'));
+
+      actions$.next(
+        routerNavigatedAction({
+          payload: {} as RouterNavigatedPayload<SerializedRouterStateSnapshot>,
+        })
+      );
+      const action = await firstValueFrom(effects.navigatedToDetailsPage$);
+
+      expect(action).toEqual(
+        <%= resourcePropertyName %>DetailsActions.navigatedToDetailsPage({ id: 'test-123' })
+      );
+      expect(selectSpy).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  describe('load<%= resourceClassName %>ById$', () => {
+    it('should dispatch <%= resourcePropertyName %>DetailsReceived on success with id', async () => {
+      const mockId = '123';
+      const mockDetails = { id: mockId } as <%= resource %>;
+      <%= resourcePropertyName %>Service.get<%= resource %>ById.mockReturnValue(of({ resource: mockDetails }));
+
+      actions$.next(<%= resourcePropertyName %>DetailsActions.navigatedToDetailsPage({ id: mockId }));
+      const action = await firstValueFrom(effects.load<%= resourceClassName %>ById$);
+
+      expect(action).toEqual(
+        <%= resourcePropertyName %>DetailsActions.<%= resourcePropertyName %>DetailsReceived({ details: mockDetails })
+      );
+      expect(<%= resourcePropertyName %>Service.get<%= resource %>ById).toHaveBeenCalledTimes(1);
+      expect(<%= resourcePropertyName %>Service.get<%= resource %>ById).toHaveBeenCalledWith({ id: mockId });
+    });
+
+    it('should dispatch <%= resourcePropertyName %>DetailsLoadingFailedMissingId on error', async () => {
+      const mockError = 'Missing ID';
+      <%= resourcePropertyName %>Service.get<%= resource %>ById.mockReturnValue(throwError(() => mockError));
+
+      actions$.next(
+        <%= resourcePropertyName %>DetailsActions.navigatedToDetailsPage({ id: undefined })
+      );
+      const action = await firstValueFrom(effects.load<%= resourceClassName %>ById$);
+
+      expect(action).toEqual(
+        <%= resourcePropertyName %>DetailsActions.<%= resourcePropertyName %>DetailsLoadingFailedMissingId({ error: mockError })
+      );
+      expect(<%= resourcePropertyName %>Service.get<%= resourceClassName %>ById).not.toHaveBeenCalled();
+    });
+
+    it('should dispatch <%= resourcePropertyName %>DetailsLoadingFailed on error', async () => {
+      const mockError = 'something went wrong';
+      <%= resourcePropertyName %>Service.get<%= resource %>ById.mockReturnValue(throwError(() => mockError));
+
+      actions$.next(
+        <%= resourcePropertyName %>DetailsActions.navigatedToDetailsPage({ id: 'abc' })
+      );
+      const action = await firstValueFrom(effects.load<%= resourceClassName %>ById$);
+
+      expect(action).toEqual(
+        <%= resourcePropertyName %>DetailsActions.<%= resourcePropertyName %>DetailsLoadingFailed({ error: mockError })
+      );
+      expect(<%= resourcePropertyName %>Service.get<%= resourceClassName %>ById).toHaveBeenCalled();
+    });
+  });
+
+  <%_ if(editMode){ _%>
+  describe('cancelButtonNotDirty$', () => {
+    it('should dispatch cancelEditNotDirty', async () => {
+      actions$.next(<%= resourcePropertyName %>DetailsActions.cancelButtonClicked({ dirty: false }));
+      const action = await firstValueFrom(effects.cancelButtonNotDirty$);
+
+      expect(action).toEqual(<%= resourcePropertyName %>DetailsActions.cancelEditNotDirty());
+    });
+  });
+
+  describe('cancelButtonClickedDirty$', () => {
+    it('should dispatch cancelEditConfirmClicked', async () => {
+      (portalDialogService.openDialog as jest.Mock).mockReturnValueOnce(
+        of({ button: 'primary' })
+      );
+
+      actions$.next(<%= resourcePropertyName %>DetailsActions.cancelButtonClicked({ dirty: true }));
+      const action = await firstValueFrom(effects.cancelButtonClickedDirty$);
+
+      expect(action).toEqual(<%= resourcePropertyName %>DetailsActions.cancelEditConfirmClicked());
+      expect(portalDialogService.openDialog).toHaveBeenCalledTimes(1);
+      expect(portalDialogService.openDialog).toHaveBeenCalledWith(
+        '<%= resourceConstantName%>_DETAILS.CANCEL.HEADER',
+        '<%= resourceConstantName%>_DETAILS.CANCEL.MESSAGE',
+        '<%= resourceConstantName%>_DETAILS.CANCEL.CONFIRM'
+      );
+    });
+
+    it('should dispatch cancelEditBackClicked', async () => {
+      (portalDialogService.openDialog as jest.Mock).mockReturnValueOnce(
+        of({ button: 'secondary' })
+      );
+
+      actions$.next(<%= resourcePropertyName %>DetailsActions.cancelButtonClicked({ dirty: true }));
+      const action = await firstValueFrom(effects.cancelButtonClickedDirty$);
+
+      expect(action).toEqual(<%= resourcePropertyName %>DetailsActions.cancelEditBackClicked());
+      expect(portalDialogService.openDialog).toHaveBeenCalledTimes(1);
+      expect(portalDialogService.openDialog).toHaveBeenCalledWith(
+        '<%= resourceConstantName%>_DETAILS.CANCEL.HEADER',
+        '<%= resourceConstantName%>_DETAILS.CANCEL.MESSAGE',
+        '<%= resourceConstantName%>_DETAILS.CANCEL.CONFIRM'
+      );
+    });
+  });
+
+  describe('saveButtonClicked$', () => {
+    it('should dispatch update<%= resource %>Succeeded', async () => {
+      const mockDetails = { id: '123' } as <%= resource %>;
+      const selectSpy = jest
+        .spyOn(store, 'select')
+        .mockReturnValueOnce(of(mockDetails));
+      <%= resourcePropertyName %>Service.update<%= resource %>ById.mockReturnValueOnce(of({}));
+
+      actions$.next(
+        <%= resourcePropertyName %>DetailsActions.saveButtonClicked({ details: mockDetails })
+      );
+      const action = await firstValueFrom(effects.saveButtonClicked$);
+
+      expect(action).toEqual(<%= resourcePropertyName %>DetailsActions.update<%= resource %>Succeeded());
+      expect(selectSpy).toHaveBeenCalledTimes(1);
+      expect(<%= resourcePropertyName %>Service.update<%= resource %>ById).toHaveBeenCalledTimes(1);
+      expect(messageService.success).toHaveBeenCalledWith({
+        summaryKey: '<%= resourceConstantName%>_DETAILS.UPDATE.SUCCESS',
+      });
+    });
+
+    it('should dispatch update<%= resource %>Cancelled', async () => {
+      const mockDetails = { id: '123' } as <%= resource %>;
+      const selectSpy = jest
+        .spyOn(store, 'select')
+        .mockReturnValueOnce(of(undefined));
+      <%= resourcePropertyName %>Service.update<%= resource %>ById.mockReturnValueOnce(of({}));
+
+      actions$.next(
+        <%= resourcePropertyName %>DetailsActions.saveButtonClicked({ details: mockDetails })
+      );
+      const action = await firstValueFrom(effects.saveButtonClicked$);
+
+      expect(action).toEqual(<%= resourcePropertyName %>DetailsActions.update<%= resourceClassName %>Cancelled());
+      expect(selectSpy).toHaveBeenCalledTimes(1);
+      expect(<%= resourcePropertyName %>Service.update<%= resource %>ById).not.toHaveBeenCalled();
+      expect(messageService.success).not.toHaveBeenCalled();
+    });
+
+    it('should dispatch update<%= resourceClassName %>Failed', async () => {
+      const mockError = 'update<%= resourceClassName %> failed';
+      const mockDetails = { id: '123' } as <%= resource %>;
+      const selectSpy = jest
+        .spyOn(store, 'select')
+        .mockReturnValueOnce(of(mockDetails));
+      <%= resourcePropertyName %>Service.update<%= resource %>ById.mockReturnValueOnce(throwError(() => mockError));
+
+      actions$.next(
+        <%= resourcePropertyName %>DetailsActions.saveButtonClicked({ details: mockDetails })
+      );
+      const action = await firstValueFrom(effects.saveButtonClicked$);
+
+      expect(action).toEqual(
+        <%= resourcePropertyName %>DetailsActions.update<%= resourceClassName %>Failed({ error: mockError })
+      );
+      expect(selectSpy).toHaveBeenCalledTimes(1);
+      expect(<%= resourcePropertyName %>Service.update<%= resource %>ById).toHaveBeenCalledTimes(1);
+      expect(messageService.error).toHaveBeenCalledWith({
+        summaryKey: '<%= resourceConstantName%>_DETAILS.UPDATE.ERROR',
+      });
+    });
+  });
+  <%_ } _%>
+
+  describe('displayError$', () => {
+    it('should display error message when DetailsLoadingFailed action is dispatched', async () => {
+      actions$.next(
+        <%= resourcePropertyName %>DetailsActions.<%= resourcePropertyName %>DetailsLoadingFailed({
+          error: 'Test error',
+        })
+      );
+      await firstValueFrom(effects.displayError$);
+
+      expect(messageService.error).toHaveBeenCalled();
+    });
+  });
+
+  describe('navigateBack$', () => {
+    it('should dispatch backNavigationStarted', async () => {
+      const selectSpy = jest
+        .spyOn(store, 'select')
+        .mockReturnValueOnce(of(selectBackNavigationPossible));
+
+      actions$.next(<%= resourcePropertyName %>DetailsActions.navigateBackButtonClicked());
+      const action = await firstValueFrom(effects.navigateBack$);
+
+      expect(action).toEqual(<%= resourcePropertyName %>DetailsActions.backNavigationStarted());
+      expect(selectSpy).toHaveBeenCalledTimes(1);
+    });
+
+    it('should dispatch backNavigationFailed', async () => {
+      const selectSpy = jest
+        .spyOn(store, 'select')
+        .mockReturnValueOnce(of(false));
+
+      actions$.next(<%= resourcePropertyName %>DetailsActions.navigateBackButtonClicked());
+      const action = await firstValueFrom(effects.navigateBack$);
+
+      expect(action).toEqual(<%= resourcePropertyName %>DetailsActions.backNavigationFailed());
+      expect(selectSpy).toHaveBeenCalledTimes(1);
+    });
+  });
+});

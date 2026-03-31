@@ -1,5 +1,5 @@
 {
-  "<%= featureConstantName %>_DELETE": {
+  "<%= resourceConstantName %>_DELETE": {
     "HEADER": "ACTION: Add Translation",
     "MESSAGE": "ACTION: Add Translation",
     "CONFIRM": "ACTION: Add Translation",

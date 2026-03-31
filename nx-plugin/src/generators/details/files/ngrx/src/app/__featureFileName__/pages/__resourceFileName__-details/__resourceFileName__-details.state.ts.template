@@ -1,0 +1,11 @@
+import { <%= resource %> } from 'src/app/shared/generated';
+
+export interface <%= resourceClassName %>DetailsState {
+    details: <%= resource %> | undefined;
+    detailsLoadingIndicator: boolean;
+    detailsLoaded: boolean;
+    <%_ if(editMode){ _%>
+    editMode: boolean;
+    isSubmitting: boolean;
+    <%_ } _%>
+}

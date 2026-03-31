@@ -7,17 +7,19 @@ export class FeatureRoutesStep
   implements GeneratorStep<DetailsGeneratorSchema>
 {
   process(tree: Tree, options: DetailsGeneratorSchema): void {
-    const fileName = names(options.featureName).fileName;
-    const className = names(options.featureName).className;
-    const routesFilePath = `src/app/${fileName}/${fileName}.routes.ts`;
+    const featureFileName = names(options.featureName).fileName;
+    const resourceFileName = names(options.resource).fileName;
+    const featureClassName = names(options.featureName).className;
+    const resourceClassName = names(options.resource).className;
+    const routesFilePath = `src/app/${featureFileName}/${featureFileName}.routes.ts`;
     const find = [/^/, 'routes: Routes = ['];
     const replaceWith = [
-      `import { ${className}DetailsComponent } from './pages/${fileName}-details/${fileName}-details.component';`,
-      `routes: Routes = [ { path: 'details/:id', component: ${className}DetailsComponent, pathMatch: 'full' },`,
+      `import { ${resourceClassName}DetailsComponent } from './pages/${resourceFileName}-details/${resourceFileName}-details.component';`,
+      `routes: Routes = [ { path: 'details/:id', component: ${resourceClassName}DetailsComponent, pathMatch: 'full' },`,
     ];
 
     safeReplace(
-      `Add details route to ${fileName}Routes`,
+      `Add details route to ${featureClassName}Routes`,
       routesFilePath,
       find,
       replaceWith,

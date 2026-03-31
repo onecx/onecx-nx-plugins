@@ -1,5 +1,5 @@
 {
   "<%= className %>": {
-    "ARIA-LABEL": "<%= className %> App"
+    "ARIA_LABEL": "<%= className %> App"
   }
 }

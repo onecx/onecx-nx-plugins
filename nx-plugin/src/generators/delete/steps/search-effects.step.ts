@@ -1,19 +1,21 @@
 import { Tree, names } from '@nx/devkit';
+
 import { GeneratorStep } from '../../shared/generator.utils';
 import { safeReplace } from '../../shared/safeReplace';
 import { DeleteGeneratorSchema } from '../schema';
 
 export class SearchEffectsStep implements GeneratorStep<DeleteGeneratorSchema> {
   process(tree: Tree, options: DeleteGeneratorSchema): void {
-    const fileName = names(options.featureName).fileName;
-    const className = names(options.featureName).className;
-    const propertyName = names(options.featureName).propertyName;
-    const constantName = names(options.featureName).constantName;
-    const filePath = `src/app/${fileName}/pages/${fileName}-search/${fileName}-search.effects.ts`;
+    const featureFileName = names(options.featureName).fileName;
+    const resourceFileName = names(options.resource).fileName;
+    const resourceClassName = names(options.resource).className;
+    const resourcePropertyName = names(options.resource).propertyName;
+    const resourceConstantName = names(options.resource).constantName;
+    const filePath = `src/app/${featureFileName}/pages/${resourceFileName}-search/${resourceFileName}-search.effects.ts`;
 
     const find = [/^/, 'searchByUrl$'];
     const replaceWith = [
-      `import { PortalDialogService, DialogState } from '@onecx/portal-integration-angular';` +
+      `import { PortalDialogService, DialogState } from '@onecx/angular-accelerator';` +
         `import { mergeMap } from 'rxjs';` +
         `import {
         ${options.resource},
@@ -23,32 +25,32 @@ export class SearchEffectsStep implements GeneratorStep<DeleteGeneratorSchema> {
       refreshSearchAfterDelete$ = createEffect(() => {
         return this.actions$.pipe(
           ofType(
-            ${className}SearchActions.delete${className}Succeeded,
+            ${resourcePropertyName}SearchActions.delete${resourceClassName}Succeeded,
           ),
-          concatLatestFrom(() => this.store.select(${propertyName}SearchSelectors.selectCriteria)),
+          concatLatestFrom(() => this.store.select(${resourcePropertyName}SearchSelectors.selectCriteria)),
           switchMap(([, searchCriteria]) => this.performSearch(searchCriteria))
         );
       });
 
       deleteButtonClicked$ = createEffect(() => {
       return this.actions$.pipe(
-        ofType(${className}SearchActions.delete${className}ButtonClicked),
+        ofType(${resourcePropertyName}SearchActions.delete${resourceClassName}ButtonClicked),
         concatLatestFrom(() =>
-          this.store.select(${propertyName}SearchSelectors.selectResults)
+          this.store.select(${resourcePropertyName}SearchSelectors.selectResults)
         ),
         map(([action, results]) => {
           return results.find((item) => item.id == action.id);
         }),
         mergeMap((itemToDelete) => {
           return this.portalDialogService.openDialog<unknown>(
-            '${constantName}_DELETE.HEADER',
-            '${constantName}_DELETE.MESSAGE',
+            '${resourceConstantName}_DELETE.HEADER',
+            '${resourceConstantName}_DELETE.MESSAGE',
             {
-              key: '${constantName}_DELETE.CONFIRM',
+              key: '${resourceConstantName}_DELETE.CONFIRM',
               icon: PrimeIcons.CHECK,
             },
             {
-              key: '${constantName}_DELETE.CANCEL',
+              key: '${resourceConstantName}_DELETE.CANCEL',
               icon: PrimeIcons.TIMES,
             }
           )
@@ -62,29 +64,23 @@ export class SearchEffectsStep implements GeneratorStep<DeleteGeneratorSchema> {
         }),
         switchMap(([dialogResult, itemToDelete]) => {
           if (!dialogResult || dialogResult.button == 'secondary') {
-            return of(${className}SearchActions.delete${className}Cancelled());
+            return of(${resourcePropertyName}SearchActions.delete${resourceClassName}Cancelled());
           }
           if (!itemToDelete) {
             throw new Error('Item to delete not found!');
           }
 
-          return this.${propertyName}Service
-            .delete${options.resource}(itemToDelete.id)
+          return this.${resourcePropertyName}Service
+            .delete${resourceClassName}ById({ id: itemToDelete.id })
             .pipe(
               map(() => {
-                this.messageService.success({
-                  summaryKey: '${constantName}_DELETE.SUCCESS',
-                });
-                return ${className}SearchActions.delete${className}Succeeded();
+                this.messageService.success({ summaryKey: '${resourceConstantName}_DELETE.SUCCESS' });
+                return ${resourcePropertyName}SearchActions.delete${resourceClassName}Succeeded();
               }),
               catchError((error) => {
-                this.messageService.error({
-                  summaryKey: '${constantName}_DELETE.ERROR',
-                });
+                this.messageService.error({ summaryKey: '${resourceConstantName}_DELETE.ERROR' });
                 return of(
-                  ${className}SearchActions.delete${className}Failed({
-                    error,
-                  })
+                  ${resourcePropertyName}SearchActions.delete${resourceClassName}Failed({ error })
                 );
               })
             );
@@ -101,7 +97,7 @@ export class SearchEffectsStep implements GeneratorStep<DeleteGeneratorSchema> {
           private portalDialogService: PortalDialogService,`);
     }
     safeReplace(
-      `Modify ${className}SearchEffects to include delete effects`,
+      `Modify ${resourceClassName}SearchEffects to include delete effects`,
       filePath,
       find,
       replaceWith,

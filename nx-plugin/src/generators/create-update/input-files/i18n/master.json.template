@@ -1,5 +1,5 @@
 {
-  "<%= featureConstantName %>_CREATE_UPDATE": {
+  "<%= resourceConstantName %>_CREATE_UPDATE": {
     "ACTION": {
       "CREATE": "Erstellen"
     },

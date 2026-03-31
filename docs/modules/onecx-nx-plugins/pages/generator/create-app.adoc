@@ -20,7 +20,8 @@ You will need to further develop and customize the application to meet your spec
 == Generate a UI App
 
 The generator supports three flavors of projects: *angular*, *with NgRx* and *without NgRx*. +
-It is **recommended to use the NgRx** flavor, because it leads to better structured projects and the state management is already in place.
+It is **recommended to use the NgRx** flavor, because it leads to better structured projects and the state management is already in place. +
+The creation of a new workspace takes a while, as the generator sets up a complete Angular application with all necessary dependencies and configurations.
 
 .Generate the UI App with following commands
 [source,bash]
@@ -38,26 +39,47 @@ include::partial$_parameter.adoc[tag=flavor]
 include::partial$_parameter.adoc[tag=product]
 endif::[]
 
-The generator will create a new workspace folder with the specified product name and set up the OneCX UI App according to the chosen flavor. +
+The generator creates a new directory with the specified product name and sets up the OneCX UI App according to the chosen flavor. +
+Please note that the product name from your command is used as base of some essential application parts as following:
+
+=== Key Naming Conventions
+* `onecx-<product>-ui` +
+  project naming +
+  remote name for module federation +
+  Helm chart name for deployment and microservice registration in OneCX
+* `OneCX<product>Module` +
+  Module name
+* `ocx-<product>-component` +
+  Tag name for integration the web component into the DOM
+* `onecx-apps/onecx-<product>-ui` +
+  Repository name for docker image repository
+* `/mfe/<product>/` +
+  Base path for the microfrontend application, used within OneCX for integration purposes
+
+
 Next step may xref:./create-feature.adoc[create a feature module].
 
-[TIP]
+[NOTE]
 ====
 The generated app contains the dependency for the OneCX Nx Plugin. +
-This allows you to easily add new features, components, and services within your app's user interface using the OneCX Nx plugin functions..
+This allows you to easily add new features, components, and services within your app's user interface using the OneCX Nx plugin functions.
 ====
 
+ifdef::env-site[]
+include::_integrate-into-onecx.adoc[leveloffset=+1]
+endif::[]
 
 == Example
 
-.Create a UI App named "bookstore" with NgRx support
+The following commands create a new workspace directory named "bookstore" with the necessary structure and configurations for a OneCX UI App using NgRx. This can take a while, as the generator sets up a complete Angular application with all necessary dependencies and configurations.
+
+.Create a UI App named "bookstore" (product) with NgRx support
 [source,bash]
 ----
 npx @onecx/create-workspace ngrx bookstore
 cd bookstore
 npm install
 ----
-This command will generate a new workspace folder named "bookstore" with the necessary structure and configurations for a OneCX UI App using NgRx.
 
 .Excerpt of generated files and directories for the NgRx *bookstore* UI App
 image::generated_workspace_bookstore.png[width=200]

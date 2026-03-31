@@ -1,10 +1,10 @@
 {
-  "<%= featureConstantName %>_CREATE_UPDATE": {
+  "<%= resourceConstantName %>_CREATE_UPDATE": {
     "ACTION": {
       "CREATE": "Erstellen"
     },
     "CREATE": {
-      "HEADER": "Neues <%= featureClassName %> erstellen",
+      "HEADER": "Neues <%= resourceClassName %> erstellen",
       "SUCCESS": "Erstellung erfolgreich",
       "ERROR": "Erstellung fehlgeschlagen",      
       "FORM": {
@@ -13,7 +13,7 @@
       }
     },
     "UPDATE": {
-      "HEADER": "<%= featureClassName %> bearbeiten",
+      "HEADER": "<%= resourceClassName %> bearbeiten",
       "SUCCESS": "Aktualisierung erfolgreich",
       "ERROR": "Aktualisierung fehlgeschlagen",      
       "FORM": {

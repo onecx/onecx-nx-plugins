@@ -1,0 +1,74 @@
+import { createReducer, on } from '@ngrx/store';
+import { <%= resourcePropertyName %>DetailsActions } from './<%= resourceFileName %>-details.actions';
+import { <%= resourceClassName %>DetailsState } from './<%= resourceFileName %>-details.state';
+
+export const initialState: <%= resourceClassName %>DetailsState = {
+  details: undefined,
+  detailsLoadingIndicator: true,
+  detailsLoaded: false,
+  <%_ if(editMode){ _%> 
+  editMode: false,
+  isSubmitting: false,
+  <%_ } _%> 
+};
+
+export const <%= resourcePropertyName %>DetailsReducer = createReducer(
+  initialState,
+  on(
+    <%= resourcePropertyName %>DetailsActions.<%= resourcePropertyName %>DetailsReceived,
+    (state: <%= resourceClassName %>DetailsState, { details }): <%= resourceClassName %>DetailsState => ({
+      ...state,
+      details,
+      detailsLoadingIndicator: false,
+      detailsLoaded: true,
+    })
+  ),
+  on(
+    <%= resourcePropertyName %>DetailsActions.<%= resourcePropertyName %>DetailsLoadingFailed,
+    (state: <%= resourceClassName %>DetailsState): <%= resourceClassName %>DetailsState => ({
+      ...state,
+      details: undefined,
+      detailsLoadingIndicator: false,
+      detailsLoaded: false,
+    })
+  ),
+  on(
+    <%= resourcePropertyName %>DetailsActions.navigatedToDetailsPage,
+    (): <%= resourceClassName %>DetailsState => ({
+      ...initialState,
+      detailsLoadingIndicator: true,
+    })
+  )<%_ if(editMode){ _%>,
+  on(
+    <%= resourcePropertyName %>DetailsActions.editButtonClicked,
+    (state: <%= resourceClassName %>DetailsState): <%= resourceClassName %>DetailsState => ({
+      ...state,
+      editMode: true,
+    })
+  ),
+  on(
+    <%= resourcePropertyName %>DetailsActions.saveButtonClicked,
+    (state: <%= resourceClassName %>DetailsState): <%= resourceClassName %>DetailsState => ({
+      ...state,
+      isSubmitting: true
+    })
+  ),
+  on(
+    <%= resourcePropertyName %>DetailsActions.cancelEditConfirmClicked,
+    <%= resourcePropertyName %>DetailsActions.cancelEditNotDirty,
+    <%= resourcePropertyName %>DetailsActions.update<%= resourceClassName %>Cancelled,
+    <%= resourcePropertyName %>DetailsActions.update<%= resourceClassName %>Succeeded,
+    (state: <%= resourceClassName %>DetailsState): <%= resourceClassName %>DetailsState => ({
+      ...state,
+      editMode: false,
+    })
+  ),
+  on(
+    <%= resourcePropertyName %>DetailsActions.update<%= resourceClassName %>Failed,
+    (state: <%= resourceClassName %>DetailsState): <%= resourceClassName %>DetailsState => ({
+      ...state,
+      isSubmitting: false
+    })
+  ),
+  <%_ } _%> 
+);

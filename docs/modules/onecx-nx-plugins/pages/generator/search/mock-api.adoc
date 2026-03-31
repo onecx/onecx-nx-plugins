@@ -1,0 +1,78 @@
+ifdef::env-site[]
+include::partial$_attributes.adoc[]
+endif::[]
+:imagesdir: ../../../images
+
+= Mock API
+
+What is a Mock API?::
+A Mock API is a simulated version of a real API that allows developers to test and develop their applications without needing access to a live backend. It provides predefined responses to API requests, enabling frontend teams to work independently of backend systems, enabling faster load times, predictable responses, and controlled performance testing.
+
+Using a Mock API provides a more realistic testing environment, as it simulates the actual API interactions that your app will have with a backend service. There are different ways to prepare Mock APIs. +
+Here we use {node_js_link}.
+
+
+== Mock Server with Node.js
+
+Copy the following code snippet to your project to create a simple in-memory data service that provides simulated data for your UI app. This example assumes you have an entity called "*Book*" and you want to provide simulated data for it. Save the file e.g. as `bookstore-mock-server.js`.
+
+.Simulated data example via node mock server
+[%collapsible]
+====
+ifdef::env-site[]
+include::partial$_mock-server.adoc[]
+endif::[]
+====
+
+.Start the server with the following command
+[source,bash]
+----
+node bookstore-mock-server.js
+----
+
+The server will start and listen for incoming requests on port 3000.
+
+.Example output when the server is running and a request is made to the /book/search endpoint
+image::mock_server_running.png[]
+
+
+== Using the Mock API
+To use the Mock API for your generated UI app, you need to configure your app to point to the mock server's URL (e.g. \http://localhost:3000) instead of a real backend URL. Due to the generated UI app is a Webpack application, the generator has also created a `proxy.conf.js` file that configures the mapping of API paths to backend URLs. This file is located in the root directory of your Angular project.
+
+[horizontal]
+Directory:: `<root-of-ui-app>`
+File::      `proxy.conf`
+
+.Excerpt of the generated `proxy.conf` with the BFF URL
+[source, javascript]
+----
+...
+const PROXY_CONFIG = {
+  '/bff': {
+    target: 'http://bookstore-bff',
+    secure: false,
+    pathRewrite: { '^.*/bff': '' },
+    changeOrigin: true,
+    logLevel: 'debug',
+    onProxyRes: onProxyRes
+  }
+}
+----
+
+Replace the real BFF URL `\http://bookstore-bff` with the Mock server URL `\http://localhost:3000`.
+
+.Use the mock server URL as target URL of the BFF
+[source, javascript]
+----
+...
+const PROXY_CONFIG = {
+  '/bff': {
+    target: 'http://localhost:3000',
+    secure: false,
+    pathRewrite: { '^.*/bff': '' },
+    changeOrigin: true,
+    logLevel: 'debug',
+    onProxyRes: onProxyRes
+  }
+}
+----
