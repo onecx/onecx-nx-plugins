@@ -1,4 +1,5 @@
 import { Tree, names } from '@nx/devkit';
+
 import { GeneratorStep } from '../../shared/generator.utils';
 import { safeReplace } from '../../shared/safeReplace';
 import { SearchGeneratorSchema } from '../../search/schema';
@@ -7,17 +8,20 @@ export class SearchEffectsSpecStep
   implements GeneratorStep<SearchGeneratorSchema>
 {
   process(tree: Tree, options: SearchGeneratorSchema): void {
-    const className = names(options.featureName).className;
-    const filePath = `src/app/${names(options.featureName).fileName}/pages/${
-      names(options.featureName).fileName
-    }-search/${names(options.featureName).fileName}-search.effects.spec.ts`;
+    const featureFileName = names(options.featureName).fileName;
+    const resourceFileName = names(options.resource).fileName;
+    const propertyName = names(options.resource).propertyName;
+    const filePath = `src/app/${featureFileName}/pages/${resourceFileName}-search/${resourceFileName}-search.effects.spec.ts`;
 
     const specToAppend = `
       describe('navigateToOrderDetailsPage$', () => {
 
         it('should navigate to details page with correct URL structure', (done) => {
           const testId = 'test-123';
-          const navigateSpy = router ? jest.spyOn(router, 'navigate') : { mock: { calls: [] }, toHaveBeenCalledWith: () => {} };
+          const navigateSpy = router 
+            ? jest.spyOn(router, 'navigate')
+            // eslint-disable-next-line @typescript-eslint/no-empty-function
+            : { mock: { calls: [] }, toHaveBeenCalledWith: () => {} };
 
           effects.navigateToOrderDetailsPage$.pipe(take(1)).subscribe(() => {
             if (router) {
@@ -26,19 +30,19 @@ export class SearchEffectsSpecStep
             done();
           });
 
-          actions$.next(${className}SearchActions.detailsButtonClicked({ id: testId }));
+          actions$.next(${propertyName}SearchActions.detailsButtonClicked({ id: testId }));
         });
 
         it('should dynamically clear query params and fragment from URL on navigateToOrderDetailsPage$', (done) => {
           const testId = 'test-456';
-          const mockUrlTree: any = { 
+          const mockUrlTree = { 
             toString: jest.fn(() => '/search'), 
             queryParams: { a: 1 }, 
             fragment: 'frag' 
           };
           (router.parseUrl as jest.Mock).mockReturnValue(mockUrlTree);
 
-          const emissions: Array<{ queryParams: any, fragment: any }> = [];
+          const emissions: Array<{ queryParams: unknown, fragment: unknown }> = [];
           emissions.push({ queryParams: { ...mockUrlTree.queryParams }, fragment: mockUrlTree.fragment });
 
           effects.navigateToOrderDetailsPage$.pipe(take(1)).subscribe(() => {
@@ -51,7 +55,7 @@ export class SearchEffectsSpecStep
             done();
           });
 
-          actions$.next(${className}SearchActions.detailsButtonClicked({ id: testId }));
+          actions$.next(${propertyName}SearchActions.detailsButtonClicked({ id: testId }));
         });
       });
     `;

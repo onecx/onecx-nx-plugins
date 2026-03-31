@@ -1,14 +1,17 @@
 {
-  "name": "onecx",
-  "version": "8.0.0-rc.1",
-  "license": "MIT",
+  "name": "onecx-nx-plugins",
+  "private": true,
+  "version": "6.1.0",
+  "license": "Apache-2.0",
+  "contributors": [
+    "OneCX Development Team <onecx_dev@1000kit.org>"
+  ],
   "scripts": {
     "build": "nx run nx-plugin:build && nx run create-workspace:build",
     "build-copy": "npm run build && node copy-build.js",
     "test": "nx run nx-plugin-e2e:e2e",
     "lint": "npx nx affected -t lint"
   },
-  "private": true,
   "dependencies": {
     "@nx/angular": "^19.8.14",
     "@nx/devkit": "^19.8.14",

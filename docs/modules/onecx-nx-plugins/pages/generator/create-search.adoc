@@ -12,7 +12,7 @@ Components can represent anything from a simple button or form field to complex 
 
 Search Component and Entity/Resource::
 The Search Component is a specific type of component that provides a user interface for searching and displaying results based on a certain entity or resource. +
-The entity or resource represents the data model that the search component interacts with. THerefore, the resource is the base parameter for the generation of a search component.
+The entity or resource represents the data model that the search component interacts with. Therefore, the resource is the base parameter for the generation of a search component.
 
 
 == Generate a Search Component

@@ -1,0 +1,164 @@
+import { ActivatedRoute, Router } from '@angular/router';
+import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { concatLatestFrom } from '@ngrx/operators'
+import { Action, Store } from '@ngrx/store';
+import { routerNavigatedAction } from '@ngrx/router-store';
+import { catchError, map, of, switchMap, tap, filter } from 'rxjs';
+import {  
+  <%= serviceName %>, 
+} from '../../../shared/generated';
+import { PortalMessageService } from '@onecx/angular-integration-interface';
+import {
+  ExportDataService,
+} from '@onecx/angular-accelerator';
+import {
+  filterForNavigatedTo,
+  filterOutQueryParamsHaveNotChanged
+} from '@onecx/ngrx-accelerator';
+
+import {  
+    <%= serviceName %>, 
+} from 'src/app/shared/generated';
+
+import { Injectable, inject } from '@angular/core';
+import { Action, Store } from '@ngrx/store';
+import equal from 'fast-deep-equal';
+
+import { <%= resourcePropertyName %>SearchActions } from './<%= resourceFileName %>-search.actions';
+import { <%= resourceClassName %>SearchComponent } from './<%= resourceFileName %>-search.component';
+import { <%= resourcePropertyName %>SearchCriteriasSchema } from './<%= resourceFileName %>-search.parameters';
+import { select<%= resourceClassName %>SearchViewModel, <%= resourcePropertyName %>SearchSelectors } from './<%= resourceFileName %>-search.selectors';
+
+
+@Injectable()
+export class <%= resourceClassName %>SearchEffects {
+  private readonly actions$ = inject(Actions);
+  private readonly route = inject(ActivatedRoute);
+  private readonly <%= resourcePropertyName %>Service = inject(<%= serviceName %>);
+  private readonly router = inject(Router);
+  private readonly store = inject(Store);
+  private readonly messageService = inject(PortalMessageService);
+  private readonly exportDataService = inject(ExportDataService);
+
+  syncParamsToUrl$ = createEffect(
+    () => {
+      return this.actions$.pipe(
+        ofType(
+          <%= resourcePropertyName %>SearchActions.searchButtonClicked,
+          <%= resourcePropertyName %>SearchActions.resetButtonClicked,
+        ),
+        concatLatestFrom(() => [
+          this.store.select(<%= resourcePropertyName %>SearchSelectors.selectCriteria),
+          this.route.queryParams,
+        ]),
+        tap(([, criteria, queryParams]) => {
+          const results = <%= resourcePropertyName %>SearchCriteriasSchema.safeParse(queryParams);
+          if (results.success && !equal(criteria, results.data)) {
+            const params = {
+              ...criteria,
+              //TODO: Move to docs to explain how to only put the date part in the URL in case you have date and not datetime
+              //exampleDate: criteria.exampleDate?.toISOString()?.slice(0, 10)
+            };
+            this.router.navigate([], {
+              relativeTo: this.route,
+              queryParams: params,
+              replaceUrl: true,
+              onSameUrlNavigation: 'ignore',
+            });
+          }
+        }),
+      );
+    },
+    { dispatch: false },
+  );
+
+  searchByUrl$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(routerNavigatedAction),
+      filterForNavigatedTo(this.router, <%= resourceClassName %>SearchComponent),
+      filterOutQueryParamsHaveNotChanged(this.router, <%= resourcePropertyName %>SearchCriteriasSchema, true),
+      concatLatestFrom(() =>
+        this.store.select(<%= resourcePropertyName %>SearchSelectors.selectCriteria),
+      ),
+      switchMap(([,searchCriteria]) => this.performSearch(searchCriteria)),
+    );
+  });
+
+  performSearch(searchCriteria: Record<string, string | number | boolean | Date | undefined>) {
+    return this.<%= resourcePropertyName %>Service.search<%= resource %>Items(
+      {
+        ...Object.entries(searchCriteria).reduce(
+          (acc, [key, value]) => ({
+            ...acc,
+            [key]: value instanceof Date ? value.toISOString() : value,
+          }),
+          {},
+        ),
+      }
+    ).pipe(
+          map(({ stream, size, number, totalElements, totalPages}) =>
+            <%= resourcePropertyName %>SearchActions.<%= resourcePropertyName %>SearchResultsReceived(
+              {
+                stream,
+                size,
+                number,
+                totalElements,
+                totalPages
+              }
+            )
+          ),
+          catchError((error) =>
+            of(
+              <%= resourcePropertyName %>SearchActions.<%= resourcePropertyName %>SearchResultsLoadingFailed(
+                {
+                  error,
+                }
+              )
+            )
+          )
+        )
+  }
+
+  exportData$ = createEffect(
+    () => {
+      return this.actions$.pipe(
+        ofType(<%= resourcePropertyName %>SearchActions.exportButtonClicked),
+        concatLatestFrom(() =>
+          this.store.select(select<%= resourceClassName %>SearchViewModel)
+        ),
+        map(([, viewModel]) => {
+          this.exportDataService.exportCsv(
+            viewModel.resultComponentState?.displayedColumns ?? [],
+            viewModel.results,
+            'export_<%= resourcePropertyName %>.csv'
+          );
+        })
+      );
+    },
+    { dispatch: false }
+  );
+
+  errorMessages: { action: Action; key: string }[] = [
+    {
+      action:
+        <%= resourcePropertyName %>SearchActions.<%= resourcePropertyName %>SearchResultsLoadingFailed,
+      key: '<%= resourceConstantName %>_SEARCH.ERROR_MESSAGES.SEARCH_RESULTS_LOADING_FAILED',
+    }
+  ];
+
+  displayError$ = createEffect(
+    () => {
+      return this.actions$.pipe(
+        tap((action) => {
+          const e = this.errorMessages.find(
+            (e) => e.action.type === action.type
+          );
+          if (e) {
+            this.messageService.error({ summaryKey: e.key });
+          }
+        })
+      );
+    },
+    { dispatch: false }
+  );
+}

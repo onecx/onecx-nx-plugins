@@ -1,41 +1,41 @@
 import { Tree, joinPathFragments, names } from '@nx/devkit';
+
+import { COMMENT_KEY, OpenAPIUtil } from '../../shared/openapi/openapi.utils';
 import { GeneratorStep } from '../../shared/generator.utils';
 import { CreateUpdateGeneratorSchema } from '../schema';
-import { COMMENT_KEY, OpenAPIUtil } from '../../shared/openapi/openapi.utils';
 import { createCreateEndpoint, createUpdateEndpoint } from '../endpoint.util';
 
 export class GeneralOpenAPIStep
   implements GeneratorStep<CreateUpdateGeneratorSchema>
 {
   process(tree: Tree, options: CreateUpdateGeneratorSchema): void {
-    const openApiFolderPath = 'src/assets/swagger';
-    const openApiFiles = tree.children(openApiFolderPath);
-    const bffOpenApiPath = openApiFiles.find((f) => f.endsWith('-bff.yaml'));
+    const openApiFolderPath = 'src/assets/api';
+    const bffOpenApiPath = 'openapi-bff.yaml';
     const bffOpenApiContent = tree.read(
       joinPathFragments(openApiFolderPath, bffOpenApiPath),
       'utf8'
     );
 
     const resource = options.resource;
-    const propertyName = names(options.featureName).propertyName;
+    const propertyName = names(options.resource).propertyName;
     const createRequestName = options.createRequestName;
     const createResponseName = options.createResponseName;
     const updateRequestName = options.updateRequestName;
     const updateResponseName = options.updateResponseName;
-    const apiServiceName = options.apiServiceName;
 
     const apiUtil = new OpenAPIUtil(bffOpenApiContent);
     // Paths
-    apiUtil.paths().set(`/${propertyName}`, {
+    apiUtil.paths().set(`/${propertyName}s`, {
       ...createCreateEndpoint(
         {
           type: 'post',
           operationId: `create${resource}`,
-          tags: [apiServiceName],
+          tags: [propertyName],
           description: `This operation performs a create.`,
         },
         {
           resource: resource,
+          propertyName: propertyName,
           createRequestName: createRequestName,
           createResponseName: createResponseName,
         }
@@ -43,17 +43,18 @@ export class GeneralOpenAPIStep
     });
 
     apiUtil.paths().set(
-      `/${propertyName}/{id}`,
+      `/${propertyName}s/{id}`,
       {
         ...createUpdateEndpoint(
           {
             type: 'put',
-            operationId: `update${resource}`,
-            tags: [apiServiceName],
+            operationId: `update${resource}ById`,
+            tags: [propertyName],
             description: `This operation performs an update.`,
           },
           {
             resource: resource,
+            propertyName: propertyName,
             updateRequestSchema: updateRequestName,
             updateResponseSchema: updateResponseName,
           }
@@ -71,7 +72,6 @@ export class GeneralOpenAPIStep
         type: 'object',
         properties: {
           dataObject: {
-            type: 'object',
             $ref: `#/components/schemas/${resource}`,
           },
         },
@@ -80,7 +80,6 @@ export class GeneralOpenAPIStep
         type: 'object',
         properties: {
           dataObject: {
-            type: 'object',
             $ref: `#/components/schemas/${resource}`,
           },
         },
@@ -89,22 +88,18 @@ export class GeneralOpenAPIStep
         type: 'object',
         properties: {
           dataObject: {
-            type: 'object',
             $ref: `#/components/schemas/${resource}`,
           },
-          [COMMENT_KEY]:
-            'ACTION C1: modify resource or use flat list here. https://onecx.github.io/docs/documentation/current/onecx-nx-plugins:generator/create-update/extend-form-fields.html#action-1',
+          [COMMENT_KEY]: 'ACTION C1: modify resource or use flat list here',
         },
       })
       .set(`${options.updateResponseName}`, {
         type: 'object',
         properties: {
           dataObject: {
-            type: 'object',
             $ref: `#/components/schemas/${resource}`,
           },
-          [COMMENT_KEY]:
-            'ACTION C1: modify resource or use flat list here. https://onecx.github.io/docs/documentation/current/onecx-nx-plugins:generator/create-update/extend-form-fields.html#action-1',
+          [COMMENT_KEY]: 'ACTION C1: modify resource or use flat list here',
         },
       });
 
@@ -162,6 +157,6 @@ export class GeneralOpenAPIStep
     );
   }
   getTitle(): string {
-    return 'Adapting OpenAPI';
+    return 'Adapting OpenAPI (create/update)';
   }
 }

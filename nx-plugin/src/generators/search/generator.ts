@@ -10,13 +10,13 @@ import {
 } from '@nx/devkit';
 import { execSync } from 'child_process';
 import * as ora from 'ora';
+
 import { SearchActionsStep } from '../details/steps/search-actions.step';
 import { SearchComponentStep } from '../details/steps/search-component.step';
 import { SearchEffectsStep } from '../details/steps/search-effects.step';
 import { SearchHTMLStep } from '../details/steps/search-html.step';
-import { SearchTestsStep } from '../details/steps/search-tests.step';
-import { GeneratorProcessor } from '../shared/generator.utils';
-import processParams, { GeneratorParameter } from '../shared/parameters.utils';
+import { SearchComponentTestsStep } from '../details/steps/search-component-spec.step';
+
 import { SearchGeneratorSchema } from './schema';
 import { AppModuleStep } from './steps/app-module.step';
 import { AppReducerStep } from './steps/app-reducer.step';
@@ -27,6 +27,9 @@ import { FeatureStateStep } from './steps/feature-state.step';
 import { GeneralOpenAPIStep } from './steps/general-openapi.step';
 import { GeneralPermissionsStep } from './steps/general-permissions.step';
 import { GeneralTranslationsStep } from './steps/general-translations.step';
+
+import { GeneratorProcessor } from '../shared/generator.utils';
+import processParams, { GeneratorParameter } from '../shared/parameters.utils';
 import { ValidateFeatureModuleStep } from '../shared/steps/validate-feature-module.step';
 import { toPascalCase } from '../shared/naming.utils';
 
@@ -39,24 +42,13 @@ const PARAMETERS: GeneratorParameter<SearchGeneratorSchema>[] = [
     prompt: 'Do you want to customize the names for the generated API?',
   },
   {
-    key: 'apiServiceName',
-    type: 'text',
-    required: 'interactive',
-    default: (values) => {
-      return `${names(values.featureName).className}BffService`;
-    },
-    prompt: 'Provide a name for your API service (e.g. BookBffService): ',
-    showInSummary: true,
-    showRules: [{ showIf: (values) => values.customizeNamingForAPI }],
-  },
-  {
     key: 'resource',
     type: 'text',
     required: 'interactive',
     default: (values) => {
       return `${names(values.featureName).className}`;
     },
-    prompt: 'Provide a name for your Resource (e.g. Book): ',
+    prompt: 'Provide a name for the Resource (e.g. Book): ',
     showInSummary: true,
     showRules: [{ showIf: (values) => values.customizeNamingForAPI }],
   },
@@ -65,10 +57,9 @@ const PARAMETERS: GeneratorParameter<SearchGeneratorSchema>[] = [
     type: 'text',
     required: 'interactive',
     default: (values) => {
-      return `Search${names(values.featureName).className}Request`;
+      return `Search${names(values.resource).className}Request`;
     },
-    prompt:
-      'Provide a name for your Search Request (e.g. SearchBookRequest): ',
+    prompt: 'Provide a name for the Search Request (e.g. SearchBookRequest): ',
     showInSummary: true,
     showRules: [{ showIf: (values) => values.customizeNamingForAPI }],
   },
@@ -77,12 +68,18 @@ const PARAMETERS: GeneratorParameter<SearchGeneratorSchema>[] = [
     type: 'text',
     required: 'interactive',
     default: (values) => {
-      return `Search${names(values.featureName).className}Response`;
+      return `Search${names(values.resource).className}Response`;
     },
     prompt:
-      'Provide a name for your Search Response (e.g. SearchBookResponse): ',
+      'Provide a name for the Search Response (e.g. SearchBookResponse): ',
     showInSummary: true,
     showRules: [{ showIf: (values) => values.customizeNamingForAPI }],
+  },
+  {
+    key: 'serviceName',
+    type: 'text',
+    required: 'never',
+    default: (values) => GeneratorProcessor.getServiceName(`${names(values.resource).className}`),
   },
   {
     key: 'standalone',
@@ -102,7 +99,7 @@ export async function searchGenerator(
   );
   Object.assign(options, parameters);
 
-  const spinner = ora(`Adding search to ${options.featureName}`).start();
+  const spinner = ora(`Adding search to feature "${options.featureName}"`).start();
   const directory = '.';
 
   const featureNames = names(options.featureName);
@@ -112,7 +109,6 @@ export async function searchGenerator(
   const apiModelPlural = apiModelPascal.endsWith('s')
     ? apiModelPascal
     : apiModelPascal + 's';
-
 
   const isNgRx = !!Object.keys(
     readJson(tree, 'package.json').dependencies
@@ -135,23 +131,36 @@ export async function searchGenerator(
     };
   }
 
+  // get workspace name to be used for unique ids in UI elements
+  const projectConfig = tree.read('project.json');
+  let workspaceName = '';
+  if (projectConfig) {
+    const projectJson = JSON.parse(projectConfig.toString());
+    workspaceName = projectJson.name; // or the relevant property
+  }
+
   generateFiles(
     tree,
     joinPathFragments(__dirname, './files/ngrx'),
     `${directory}/`,
     {
       ...options,
+      workspaceName: workspaceName,
       featureFileName: names(options.featureName).fileName,
       featurePropertyName: names(options.featureName).propertyName,
       featureClassName: names(options.featureName).className,
       featureConstantName: names(options.featureName).constantName,
       resource: options.resource,
-      serviceName: options.apiServiceName,
+      resourceClassName: names(options.resource).className,
+      resourceConstantName: names(options.resource).constantName,
+      resourceFileName: names(options.resource).fileName,
+      resourcePropertyName: names(options.resource).propertyName,
+      serviceName: options.serviceName,
       searchRequestName: options.searchRequestName,
       searchResponseName: options.searchResponseName,
       standalone: options.standalone,
       apiModelPascal,
-      apiModelPlural
+      apiModelPlural,
     }
   );
 
@@ -167,14 +176,16 @@ export async function searchGenerator(
   generatorProcessor.addStep(new GeneralPermissionsStep());
 
   // Optionally extend search with features to navigate to details (if details were generated beforehand)
-  const fileName = names(options.featureName).fileName;
-  const htmlDetailsFilePath = `src/app/${fileName}/pages/${fileName}-details/${fileName}-details.component.html`;
+  const featureFileName = names(options.featureName).fileName;
+  const resourceFileName = names(options.resource).fileName;
+  const htmlDetailsFilePath = `src/app/${featureFileName}/pages/${resourceFileName}-details/${resourceFileName}-details.component.html`;
+
   if (tree.exists(htmlDetailsFilePath)) {
     generatorProcessor.addStep(new SearchHTMLStep());
     generatorProcessor.addStep(new SearchComponentStep());
     generatorProcessor.addStep(new SearchActionsStep());
     generatorProcessor.addStep(new SearchEffectsStep());
-    generatorProcessor.addStep(new SearchTestsStep());
+    generatorProcessor.addStep(new SearchComponentTestsStep());
   }
 
   generatorProcessor.run(tree, options, spinner);
@@ -184,24 +195,26 @@ export async function searchGenerator(
   spinner.succeed();
 
   return () => {
+    let cmd = '';
+    function log(command: string) {
+      console.log('');
+      console.log('generate search ==> ' + command);
+    }
     installPackagesTask(tree);
-    execSync('npm run apigen', {
-      cwd: tree.root,
-      stdio: 'inherit',
-    });
+    cmd = 'npm run apigen ';
+    log(cmd);
+    execSync(cmd, { cwd: tree.root, stdio: 'inherit' });
     const files = tree
       .listChanges()
       .map((c) => c.path)
       .filter((p) => p.endsWith('.ts'))
       .join(' ');
-    execSync('npx organize-imports-cli ' + files, {
-      cwd: tree.root,
-      stdio: 'inherit',
-    });
-    execSync('npx prettier --write ' + files, {
-      cwd: tree.root,
-      stdio: 'inherit',
-    });
+    cmd = 'npx --yes organize-imports-cli ';
+    log(cmd);
+    execSync(cmd + files, { cwd: tree.root, stdio: 'inherit' });
+    cmd = 'npx prettier --write ';
+    log(cmd);
+    execSync(cmd + files, { cwd: tree.root, stdio: 'inherit' });
   };
 }
 

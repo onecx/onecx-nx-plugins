@@ -1,4 +1,5 @@
 import { Tree, names } from '@nx/devkit';
+
 import { GeneratorStep } from '../../shared/generator.utils';
 import { safeReplace } from '../../shared/safeReplace';
 import { DeleteGeneratorSchema } from '../schema';
@@ -7,24 +8,26 @@ export class SearchComponentStep
   implements GeneratorStep<DeleteGeneratorSchema>
 {
   process(tree: Tree, options: DeleteGeneratorSchema): void {
-    const fileName = names(options.featureName).fileName;
-    const className = names(options.featureName).className;
-    const filePath = `src/app/${fileName}/pages/${fileName}-search/${fileName}-search.component.ts`;
+    const featureFileName = names(options.featureName).fileName;
+    const resourceFileName = names(options.resource).fileName;
+    const resourceClassName = names(options.resource).className;
+    const resourcePropertyName = names(options.resource).propertyName;
+    const filePath = `src/app/${featureFileName}/pages/${resourceFileName}-search/${resourceFileName}-search.component.ts`;
 
-    const find = [`} from '@onecx/portal-integration-angular';`, 'resetSearch'];
+    const find = [`} from '@onecx/angular-accelerator';`, 'resetSearch'];
     const replaceWith = [
       `RowListGridData
-    } from '@onecx/portal-integration-angular';`,
+    } from '@onecx/angular-accelerator';`,
       `
     delete({ id }: RowListGridData) {
-      this.store.dispatch(${className}SearchActions.delete${className}ButtonClicked({ id }));
+      this.store.dispatch(${resourcePropertyName}SearchActions.delete${resourceClassName}ButtonClicked({ id }));
     }
 
     resetSearch`,
     ];
 
     safeReplace(
-      `Add delete method to ${className}SearchComponent`,
+      `Add delete method to ${resourceClassName}SearchComponent`,
       filePath,
       find,
       replaceWith,

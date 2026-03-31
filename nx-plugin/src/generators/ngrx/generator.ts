@@ -8,20 +8,50 @@ import {
   joinPathFragments,
   names,
 } from '@nx/devkit';
-
 import { execSync } from 'child_process';
 import * as ora from 'ora';
+
+import processParams, { GeneratorParameter } from '../shared/parameters.utils';
 import angularGenerator from '../angular/generator';
 import { safeReplace } from '../shared/safeReplace';
 import { NgrxGeneratorSchema } from './schema';
+
+// set default options for the generator
+const PARAMETERS: GeneratorParameter<NgrxGeneratorSchema>[] = [
+  {
+    key: 'standalone',
+    type: 'boolean',
+    required: 'never',
+    default: false,
+  },
+  {
+    key: 'chatty',
+    type: 'boolean',
+    required: 'never',
+    default: false,
+  },
+];
 
 export async function ngrxGenerator(
   tree: Tree,
   options: NgrxGeneratorSchema
 ): Promise<GeneratorCallback> {
+  function log(command: unknown) {
+    if (options.chatty) {
+      console.log('');
+      console.log('generate ngrx ==> ' + command);
+    }
+  }
+  const parameters = await processParams<NgrxGeneratorSchema>(
+    PARAMETERS,
+    options
+  );
+  Object.assign(options, parameters);
   const directory = '.';
-  let angularGeneratorCallback;
+  let angularGeneratorCallback: GeneratorCallback | undefined = undefined;
+
   if (!options.skipInitAngular) {
+    log('generate Angular app');
     angularGeneratorCallback = await angularGenerator(tree, options);
   }
 
@@ -37,6 +67,7 @@ export async function ngrxGenerator(
     }
   );
 
+  log('addDependenciesToPackageJson');
   addDependenciesToPackageJson(
     tree,
     {
@@ -58,30 +89,29 @@ export async function ngrxGenerator(
 
   return async () => {
     if (angularGeneratorCallback) {
+      log('angularGeneratorCallback');
       await angularGeneratorCallback();
     }
+    // exclude steps made by the Angular generator to avoid redundant formatting and package installations
+    if (options.skipInitAngular) {
+      let cmd = '';
+      const files = tree
+        .listChanges()
+        .map((c) => c.path)
+        .filter((p) => p.endsWith('.ts'))
+        .join(' ');
+      cmd = 'npx prettier --write ';
+      log(cmd);
+      execSync(cmd + files, { cwd: tree.root, stdio: 'inherit' });
 
-    installPackagesTask(tree, true);
-
-    const files = tree
-      .listChanges()
-      .map((c) => c.path)
-      .filter((p) => p.endsWith('.ts'))
-      .join(' ');
-    execSync('npx organize-imports-cli ' + files, {
-      cwd: tree.root,
-      stdio: 'inherit',
-    });
-    execSync('npx prettier --write ' + files, {
-      cwd: tree.root,
-      stdio: 'inherit',
-    });
-
-    installPackagesTask(tree, true);
+      log('installPackagesTask ');
+      installPackagesTask(tree);
+    }
   };
 }
 
 function addModulesToAppModule(tree: Tree) {
+  console.log('addModulesToAppModule ');
   addImportsToAppModule(tree);
   safeReplace(
     `Update AppModule with NgRx setup`,
@@ -104,7 +134,7 @@ function addModulesToAppModule(tree: Tree) {
 }
 
 function addImportsToAppModule(tree: Tree) {
-  const find = [`from '@angular/common';`, `PortalCoreModule,`, `NgModule`];
+  const find = [`from '@angular/common'`, `NgModule`];
   const replaceWith = [
     `from '@angular/common';
     import { StoreModule } from '@ngrx/store';
@@ -113,10 +143,7 @@ function addImportsToAppModule(tree: Tree) {
     import { LetDirective } from '@ngrx/component';
     import { EffectsModule } from '@ngrx/effects';
     import { StoreRouterConnectingModule } from '@ngrx/router-store';
-    import { environment } from 'src/environments/environment';
     `,
-    `PortalCoreModule,
-     APP_CONFIG,`,
     `NgModule, isDevMode`,
   ];
   safeReplace(

@@ -1,5 +1,5 @@
-import { <%= remoteModuleName %>Module } from './app/<%= remoteModuleFileName %>-app.remote.module';
 import { bootstrapModule } from '@onecx/angular-webcomponents'
 import { environment } from 'src/environments/environment'
+import { OneCX<%= remoteModuleName %>Module } from './app/onecx-<%= remoteModuleFileName %>.remote.module';
 
-bootstrapModule(<%= remoteModuleName %>Module, 'microfrontend', environment.production)
+bootstrapModule(OneCX<%= remoteModuleName %>Module, 'microfrontend', environment.production)

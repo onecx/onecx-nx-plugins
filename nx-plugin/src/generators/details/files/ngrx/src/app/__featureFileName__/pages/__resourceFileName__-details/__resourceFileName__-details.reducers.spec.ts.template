@@ -1,0 +1,122 @@
+import { <%= resourcePropertyName %>DetailsActions } from './<%= resourceFileName %>-details.actions';
+import { <%= resourcePropertyName %>DetailsReducer, initialState } from './<%= resourceFileName %>-details.reducers';
+
+describe('<%= resourcePropertyName %>DetailsReducer', () => {
+  it('should set details on <%= resourcePropertyName %>DetailsReceived', () => {
+    const details = { id: '1' };
+    const action = <%= resourcePropertyName %>DetailsActions.<%= resourcePropertyName %>DetailsReceived({
+      details,
+    });
+    const nextState = <%= resourcePropertyName %>DetailsReducer(initialState, action);
+
+    expect(nextState).toEqual({
+      ...initialState,
+      details,
+      detailsLoaded: true,
+      detailsLoadingIndicator: false,
+    });
+  });
+
+  it('should handle <%= resourcePropertyName %>DetailsLoadingFailed action', () => {
+    const action = <%= resourcePropertyName %>DetailsActions.<%= resourcePropertyName %>DetailsLoadingFailed({
+      error: null,
+    });
+    const nextState = <%= resourcePropertyName %>DetailsReducer(initialState, action);
+
+    expect(nextState).toEqual({
+      ...initialState,
+      details: undefined,
+      detailsLoaded: false,
+      detailsLoadingIndicator: false,
+    });
+  });
+
+  it('should handle navigatedToDetailsPage action', () => {
+    const action = <%= resourcePropertyName %>DetailsActions.navigatedToDetailsPage({ id: '1' });
+    const nextState = <%= resourcePropertyName %>DetailsReducer(initialState, action);
+
+    expect(nextState).toEqual({
+      ...initialState,
+    });
+  });
+
+  <%_ if(editMode){ _%>
+  it('should set editMode true on editButtonClicked', () => {
+    const action = <%= resourcePropertyName %>DetailsActions.editButtonClicked();
+    const nextState = <%= resourcePropertyName %>DetailsReducer(initialState, action);
+
+    expect(nextState).toEqual({
+      ...initialState,
+      editMode: true,
+    });
+  });
+
+  it('should set isSubmitting true on saveButtonClicked', () => {
+    const details = { id: '1' };
+    const action = <%= resourcePropertyName %>DetailsActions.saveButtonClicked({ details });
+    const nextState = <%= resourcePropertyName %>DetailsReducer(initialState, action);
+
+    expect(nextState).toEqual({
+      ...initialState,
+      isSubmitting: true,
+    });
+  });
+
+  it('should set editMode false on cancelEditConfirmClicked', () => {
+    const newState = { ...initialState, editMode: true };
+    const action = <%= resourcePropertyName %>DetailsActions.cancelEditConfirmClicked();
+    const nextState = <%= resourcePropertyName %>DetailsReducer(newState, action);
+
+    expect(nextState).toEqual({
+      ...initialState,
+      editMode: false,
+    });
+  });
+
+  it('should set editMode false on cancelEditNotDirty', () => {
+    const newState = { ...initialState, editMode: true };
+    const action = <%= resourcePropertyName %>DetailsActions.cancelEditNotDirty();
+    const nextState = <%= resourcePropertyName %>DetailsReducer(newState, action);
+
+    expect(nextState).toEqual({
+      ...initialState,
+      editMode: false,
+    });
+  });
+
+  it('should set editMode false on update<%= resourceClassName %>Cancelled', () => {
+    const newState = { ...initialState, editMode: true };
+    const action = <%= resourcePropertyName %>DetailsActions.update<%= resourceClassName %>Cancelled();
+    const nextState = <%= resourcePropertyName %>DetailsReducer(newState, action);
+
+    expect(nextState).toEqual({
+      ...initialState,
+      editMode: false,
+    });
+  });
+
+  it('should set editMode false on update<%= resourceClassName %>Succeeded', () => {
+    const newState = { ...initialState, editMode: true };
+    const action = <%= resourcePropertyName %>DetailsActions.update<%= resourceClassName %>Succeeded();
+    const nextState = <%= resourcePropertyName %>DetailsReducer(newState, action);
+
+    expect(nextState).toEqual({
+      ...initialState,
+      editMode: false,
+    });
+  });
+
+  it('should handle update<%= resourceClassName %>Failed action', () => {
+    const newState = { ...initialState, isSubmitting: true };
+    const action = <%= resourcePropertyName %>DetailsActions.update<%= resourceClassName %>Failed({
+      error: null,
+    });
+    const nextState = <%= resourcePropertyName %>DetailsReducer(newState, action);
+
+    expect(nextState).toEqual({
+      ...initialState,
+      isSubmitting: false,
+    });
+  });
+  <%_ } _%>
+});

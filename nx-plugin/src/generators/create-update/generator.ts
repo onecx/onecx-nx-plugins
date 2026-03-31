@@ -34,24 +34,13 @@ const PARAMETERS: GeneratorParameter<CreateUpdateGeneratorSchema>[] = [
     prompt: 'Do you want to customize the names for the generated API?',
   },
   {
-    key: 'apiServiceName',
-    type: 'text',
-    required: 'interactive',
-    default: (values) => {
-      return `${names(values.featureName).className}BffService`;
-    },
-    prompt: 'Provide a name for your API service (e.g. BookBffService): ',
-    showInSummary: true,
-    showRules: [{ showIf: (values) => values.customizeNamingForAPI }],
-  },
-  {
     key: 'resource',
     type: 'text',
     required: 'interactive',
     default: (values) => {
       return `${names(values.featureName).className}`;
     },
-    prompt: 'Provide a name for your Resource (e.g. Book): ',
+    prompt: 'Provide a name for the Resource (e.g. Book): ',
     showInSummary: true,
     showRules: [{ showIf: (values) => values.customizeNamingForAPI }],
   },
@@ -60,10 +49,9 @@ const PARAMETERS: GeneratorParameter<CreateUpdateGeneratorSchema>[] = [
     type: 'text',
     required: 'interactive',
     default: (values) => {
-      return `Create${names(values.featureName).className}Request`;
+      return `Create${names(values.resource).className}Request`;
     },
-    prompt:
-      'Provide a name for your create request (e.g. CreateBookRequest): ',
+    prompt: 'Provide a name for the create request (e.g. CreateBookRequest): ',
     showInSummary: true,
     showRules: [{ showIf: (values) => values.customizeNamingForAPI }],
   },
@@ -72,10 +60,10 @@ const PARAMETERS: GeneratorParameter<CreateUpdateGeneratorSchema>[] = [
     type: 'text',
     required: 'interactive',
     default: (values) => {
-      return `Create${names(values.featureName).className}Response`;
+      return `Create${names(values.resource).className}Response`;
     },
     prompt:
-      'Provide a name for your create response (e.g. CreateBookResponse): ',
+      'Provide a name for the create response (e.g. CreateBookResponse): ',
     showInSummary: true,
     showRules: [{ showIf: (values) => values.customizeNamingForAPI }],
   },
@@ -84,10 +72,9 @@ const PARAMETERS: GeneratorParameter<CreateUpdateGeneratorSchema>[] = [
     type: 'text',
     required: 'interactive',
     default: (values) => {
-      return `Update${names(values.featureName).className}Request`;
+      return `Update${names(values.resource).className}Request`;
     },
-    prompt:
-      'Provide a name for your update request (e.g. UpdateBookRequest): ',
+    prompt: 'Provide a name for the update request (e.g. UpdateBookRequest): ',
     showInSummary: true,
     showRules: [{ showIf: (values) => values.customizeNamingForAPI }],
   },
@@ -96,12 +83,18 @@ const PARAMETERS: GeneratorParameter<CreateUpdateGeneratorSchema>[] = [
     type: 'text',
     required: 'interactive',
     default: (values) => {
-      return `Update${names(values.featureName).className}Response`;
+      return `Update${names(values.resource).className}Response`;
     },
     prompt:
-      'Provide a name for your update response (e.g. UpdateBookResponse): ',
+      'Provide a name for the update response (e.g. UpdateBookResponse): ',
     showInSummary: true,
     showRules: [{ showIf: (values) => values.customizeNamingForAPI }],
+  },
+  {
+    key: 'serviceName',
+    type: 'text',
+    required: 'never',
+    default: (values) => GeneratorProcessor.getServiceName(`${names(values.resource).className}`),
   },
   {
     key: 'standalone',
@@ -156,11 +149,10 @@ export async function createUpdateGenerator(
       featureClassName: names(options.featureName).className,
       featureConstantName: names(options.featureName).constantName,
       resource: options.resource,
-      serviceName: options.apiServiceName,
-      createRequestName: options.createRequestName,
-      createResponseName: options.createResponseName,
-      updateRequestName: options.updateRequestName,
-      updateResponseName: options.updateResponseName,
+      resourceFileName: names(options.resource).fileName,
+      resourcePropertyName: names(options.resource).propertyName,
+      resourceClassName: names(options.resource).className,
+      resourceConstantName: names(options.resource).constantName,
     }
   );
 
@@ -170,8 +162,10 @@ export async function createUpdateGenerator(
   generatorProcessor.addStep(new GeneralTranslationsStep());
   generatorProcessor.addStep(new GeneralOpenAPIStep());
 
-  const fileName = names(options.featureName).fileName;
-  const htmlDetailsFilePath = `src/app/${fileName}/pages/${fileName}-search/dialogs/${fileName}-create-update/${fileName}-create-update.component.html`;
+  const featureFileName = names(options.featureName).fileName;
+  const resourceFileName = names(options.resource).fileName;
+
+  const htmlDetailsFilePath = `src/app/${featureFileName}/pages/${resourceFileName}-search/dialogs/${resourceFileName}-create-update/${resourceFileName}-create-update.component.html`;
   if (tree.exists(htmlDetailsFilePath)) {
     generatorProcessor.addStep(new SearchActionsStep());
     generatorProcessor.addStep(new SearchEffectsStep());
@@ -188,23 +182,25 @@ export async function createUpdateGenerator(
 
   return () => {
     installPackagesTask(tree);
-    execSync('npm run apigen', {
-      cwd: tree.root,
-      stdio: 'inherit',
-    });
+    let cmd = '';
+    function log(command: string) {
+      console.log('');
+      console.log('generate create/update ==> ' + command);
+    }
+    cmd = 'npm run apigen ';
+    log(cmd);
+    execSync(cmd, { cwd: tree.root, stdio: 'inherit' });
     const files = tree
       .listChanges()
       .map((c) => c.path)
       .filter((p) => p.endsWith('.ts'))
       .join(' ');
-    execSync('npx organize-imports-cli ' + files, {
-      cwd: tree.root,
-      stdio: 'inherit',
-    });
-    execSync('npx prettier --write ' + files, {
-      cwd: tree.root,
-      stdio: 'inherit',
-    });
+    cmd = 'npx --yes organize-imports-cli ';
+    log(cmd);
+    execSync(cmd + files, { cwd: tree.root, stdio: 'inherit' });
+    cmd = 'npx prettier --write ';
+    log(cmd);
+    execSync(cmd + files, { cwd: tree.root, stdio: 'inherit' });
   };
 }
 

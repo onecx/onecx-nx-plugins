@@ -1,0 +1,59 @@
+import { createSelector } from '@ngrx/store';
+
+import { RowListGridData } from '@onecx/angular-accelerator';
+import { createChildSelectors } from '@onecx/ngrx-accelerator';
+
+import { <%= resource %> } from 'src/app/shared/generated';
+import { <%= featurePropertyName %>Feature } from '../../<%= featureFileName %>.reducers';
+import { initialState } from './<%= resourceFileName %>-search.reducers';
+import { <%= resourceClassName %>SearchViewModel } from './<%= resourceFileName %>-search.viewmodel';
+
+export const <%= resourcePropertyName %>SearchSelectors = createChildSelectors(
+  <%= featurePropertyName %>Feature.selectSearch,
+  initialState
+);
+
+export const selectResults = createSelector(
+  <%= resourcePropertyName %>SearchSelectors.selectResults,
+  (results: <%= resource %>[]): RowListGridData[] => {
+    return results.map((item) => ({      
+      imagePath: '',
+      ...item,
+      // ACTION S7: Create a mapping of the items and their corresponding translation keys
+    }));
+  }
+);
+
+
+export const select<%= resourceClassName %>SearchViewModel = createSelector(
+  <%= resourcePropertyName %>SearchSelectors.selectColumns,
+  <%= resourcePropertyName %>SearchSelectors.selectCriteria,
+  selectResults,  
+  <%= resourcePropertyName %>SearchSelectors.selectResultComponentState,
+  <%= resourcePropertyName %>SearchSelectors.selectSearchHeaderComponentState,
+  <%= resourcePropertyName %>SearchSelectors.selectDiagramComponentState,
+  <%= resourcePropertyName %>SearchSelectors.selectChartVisible,  
+  <%= resourcePropertyName %>SearchSelectors.selectSearchLoadingIndicator,
+  <%= resourcePropertyName %>SearchSelectors.selectSearchExecuted, 
+  (
+    columns,
+    searchCriteria, 
+    results,
+    resultComponentState,
+    searchHeaderComponentState,
+    diagramComponentState,
+    chartVisible,
+    searchLoadingIndicator,
+    searchExecuted
+    ): <%= resourceClassName %>SearchViewModel => ({
+    columns,
+    searchCriteria,
+    results,
+    resultComponentState,
+    searchHeaderComponentState,
+    diagramComponentState,
+    chartVisible,
+    searchLoadingIndicator,
+    searchExecuted
+  })
+);

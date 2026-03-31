@@ -1,9 +1,10 @@
 export interface SearchGeneratorSchema {
-  featureName: string;
   customizeNamingForAPI: boolean;
-  apiServiceName: string;
+  existStrategy: 'skip';
+  featureName: string;
   resource: string;
   searchRequestName: string;
   searchResponseName: string;
+  serviceName: string;
   standalone?: boolean;
 }

@@ -1,4 +1,5 @@
 import { Tree, names } from '@nx/devkit';
+
 import { GeneratorStep } from '../../shared/generator.utils';
 import { safeReplace } from '../../shared/safeReplace';
 import { CreateUpdateGeneratorSchema } from '../schema';
@@ -7,9 +8,10 @@ export class SearchActionsStep
   implements GeneratorStep<CreateUpdateGeneratorSchema>
 {
   process(tree: Tree, options: CreateUpdateGeneratorSchema): void {
-    const fileName = names(options.featureName).fileName;
-    const filePath = `src/app/${fileName}/pages/${fileName}-search/${fileName}-search.actions.ts`;
-    const actionName = names(options.featureName).fileName.replaceAll('-', ' ');
+    const featureFileName = names(options.featureName).fileName;
+    const resourceFileName = names(options.resource).fileName;
+    const filePath = `src/app/${featureFileName}/pages/${resourceFileName}-search/${resourceFileName}-search.actions.ts`;
+    const actionName = names(options.resource).fileName.replaceAll('-', ' ');
 
     safeReplace(
       `Add ${actionName} event handlers for create, edit, and error scenarios`,
@@ -35,6 +37,6 @@ export class SearchActionsStep
     );
   }
   getTitle(): string {
-    return 'Adapting Search Actions';
+    return 'Adapting Search Actions (create/update)';
   }
 }

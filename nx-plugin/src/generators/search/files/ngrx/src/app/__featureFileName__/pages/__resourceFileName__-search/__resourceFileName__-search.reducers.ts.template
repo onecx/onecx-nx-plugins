@@ -1,0 +1,120 @@
+import { createReducer, on } from '@ngrx/store';
+
+import { <%= resourcePropertyName %>SearchActions } from './<%= resourceFileName %>-search.actions';
+import { <%= resourceClassName %>SearchState } from './<%= resourceFileName %>-search.state';
+import { <%= resourceClassName %>SearchCriteria } from './<%= resourceFileName %>-search.parameters';
+import { <%= resourcePropertyName %>SearchColumns } from './<%= resourceFileName %>-search.columns';
+import {
+  routerNavigatedAction,
+  RouterNavigatedAction,
+} from '@ngrx/router-store';
+import { <%= resourcePropertyName %>SearchCriteriasSchema } from './<%= resourceFileName %>-search.parameters';
+
+export const initialState: <%= resourceClassName %>SearchState = {
+  columns: <%= resourcePropertyName %>SearchColumns,
+  results: [],    
+  chartVisible: false,
+  resultComponentState: null,
+  searchHeaderComponentState: null,
+  diagramComponentState: null,
+  searchLoadingIndicator: false,
+  criteria: {},
+  searchExecuted: false,
+};
+
+export const <%= resourcePropertyName %>SearchReducer = createReducer(
+  initialState,
+  on(
+    routerNavigatedAction,
+    (state: <%= resourceClassName %>SearchState, action: RouterNavigatedAction) => {
+      const results = <%= resourcePropertyName %>SearchCriteriasSchema.safeParse(
+        action.payload.routerState.root.queryParams,
+      );
+      if (results.success) {
+        return {
+          ...state,
+          criteria: results.data,
+          searchLoadingIndicator:
+            Object.keys(action.payload.routerState.root.queryParams).length !=
+            0,
+        };
+      }
+      return state;
+    }
+  ),
+  on(
+    <%= resourcePropertyName %>SearchActions.resetButtonClicked,
+    (state: <%= resourceClassName %>SearchState): <%= resourceClassName %>SearchState => ({
+      ...state,
+      results: initialState.results,
+      criteria: {},
+      searchExecuted: false,
+    })
+  ),
+  on(
+     <%= resourcePropertyName %>SearchActions.searchButtonClicked,    
+    (
+      state:  <%= resourceClassName %>SearchState,
+      { searchCriteria },
+    ):  <%= resourceClassName %>SearchState => ({
+      ...state,
+      searchLoadingIndicator: true,
+      criteria: searchCriteria,
+    }),
+  ),
+  on(
+    <%= resourcePropertyName %>SearchActions.<%= resourcePropertyName %>SearchResultsReceived,
+    (
+      state: <%= resourceClassName %>SearchState,
+      { stream }
+    ): <%= resourceClassName %>SearchState => ({
+      ...state,
+      results: stream,
+      searchLoadingIndicator: false,
+      searchExecuted: true,
+    })
+  ),
+  on(
+    <%= resourcePropertyName %>SearchActions.<%= resourcePropertyName %>SearchResultsLoadingFailed,
+    (state: <%= resourceClassName %>SearchState): <%= resourceClassName %>SearchState => ({
+      ...state,
+      results: [],
+      searchLoadingIndicator: false,
+    })
+  ), 
+  on(
+    <%= resourcePropertyName %>SearchActions.chartVisibilityToggled,
+    (
+      (state: <%= resourceClassName %>SearchState): <%= resourceClassName %>SearchState => ({
+      ...state,
+      chartVisible: !state.chartVisible
+    })
+    )
+  ),
+  on(
+    <%= resourcePropertyName %>SearchActions.resultComponentStateChanged,
+    (
+      state: <%= resourceClassName %>SearchState, resultComponentState
+    ): <%= resourceClassName %>SearchState => ({
+      ...state,
+      resultComponentState,
+    })
+  ),
+  on(
+    <%= resourcePropertyName %>SearchActions.searchHeaderComponentStateChanged,
+    (
+      state: <%= resourceClassName %>SearchState,
+      searchHeaderComponentState
+    ): <%= resourceClassName %>SearchState => ({
+      ...state,
+      searchHeaderComponentState,
+    })
+  ),
+  on(
+    <%= resourcePropertyName %>SearchActions.diagramComponentStateChanged,
+    (state: <%= resourceClassName %>SearchState, diagramComponentState): <%= resourceClassName %>SearchState => ({
+      ...state,
+      diagramComponentState,
+    })
+  )
+);

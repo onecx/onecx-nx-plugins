@@ -1,0 +1,9 @@
+import { ComponentHarness } from '@angular/cdk/testing';
+import { PageHeaderHarness, DataTableHarness } from '@onecx/angular-accelerator/testing';
+
+export class <%= resourceClassName %>DetailsHarness extends ComponentHarness {
+  static hostSelector = 'app-<%= resourceFileName %>-details';
+
+  getHeader = this.locatorFor(PageHeaderHarness);
+  getDataTable = this.locatorFor(DataTableHarness);
+}
