@@ -16,11 +16,11 @@ export class SearchEffectsStep implements GeneratorStep<DeleteGeneratorSchema> {
     const find = [/^/, 'searchByUrl$'];
     const replaceWith = [
       `import { PortalDialogService, DialogState } from '@onecx/angular-accelerator';` +
-        `import { mergeMap } from 'rxjs';` +
-        `import {
+      `import { filter, mergeMap } from 'rxjs';` +
+      `import {
         ${options.resource},
       } from 'src/app/shared/generated';` +
-        `import { PrimeIcons } from 'primeng/api';`,
+      `import { PrimeIcons } from 'primeng/api';`,
       `
       refreshSearchAfterDelete$ = createEffect(() => {
         return this.actions$.pipe(
@@ -55,6 +55,7 @@ export class SearchEffectsStep implements GeneratorStep<DeleteGeneratorSchema> {
             }
           )
           .pipe(
+            filter((state): state is DialogState<unknown> => state !== null),
             map(
               (state): [DialogState<unknown>, ${options.resource} | undefined] => {
                 return [state, itemToDelete];
