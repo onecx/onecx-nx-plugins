@@ -34,7 +34,8 @@ import { Actions, EffectsModule, EffectsRunner, EffectSources } from '@ngrx/effe
 import { AngularAuthModule } from '@onecx/angular-auth';
 import { initializeRouter, createAppEntrypoint } from '@onecx/angular-webcomponents';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { provideNavigatedEventStoreConnector } from '@onecx/ngrx-accelerator';
+import { provideNavigatedEventStoreConnector } from '@onecx/ngrx-integration-interface';
+
 
 import { commonImports } from './app.module';
 import { AppEntrypointComponent } from './app-entrypoint.component';

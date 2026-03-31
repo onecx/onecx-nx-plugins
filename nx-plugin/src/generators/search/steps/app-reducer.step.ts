@@ -10,14 +10,15 @@ export class AppReducerStep implements GeneratorStep<SearchGeneratorSchema> {
     const propertyName = names(_options.featureName).propertyName;
     const find = [
       "import { ActionReducerMap, MetaReducer } from '@ngrx/store'",
-      "import { oneCxReducer } from '@onecx/ngrx-accelerator'",
+      "import { oneCxReducer } from '@onecx/ngrx-integration-interface'",
       "export const metaReducers: MetaReducer<State>[] = isDevMode() ? [] : []",
     ];
     const replaceWith = [
       `import { ActionReducer, ActionReducerMap, MetaReducer } from '@ngrx/store';
        import { localStorageSync } from 'ngrx-store-localstorage';`,
-      `import { lazyLoadingMergeReducer, oneCxReducer } from '@onecx/ngrx-accelerator';`,
-`export function localStorageSyncReducer(reducer: ActionReducer<State>): ActionReducer<State> {
+      `import { lazyLoadingMergeReducer, } from '@onecx/ngrx-accelerator';
+       import { oneCxReducer } from "@onecx/ngrx-integration-interface"`,
+      `export function localStorageSyncReducer(reducer: ActionReducer<State>): ActionReducer<State> {
   return localStorageSync({
     keys: [
       {
