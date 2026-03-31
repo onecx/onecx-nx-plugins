@@ -41,7 +41,7 @@
               <label class="ocx-required-label" for="<%= resourceConstantName.toLowerCase() %>_detail_id">
                 {{ '<%= resourceConstantName %>_DETAILS.FORM.ID' | translate }}
               </label>
-            </span>
+            </p-floatlabel>
           </div>          
         </form>
       </div>

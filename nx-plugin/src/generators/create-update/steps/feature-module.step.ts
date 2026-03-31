@@ -15,11 +15,16 @@ export class FeatureModuleStep
       featureFileName,
       featureFileName + '.module.ts'
     );
-    const find = ['declarations: [', /^/];
+    const find = ['declarations: [', /^/, `imports: [`];
     const replaceWith = [
       `declarations: [${resourceClassName}CreateUpdateComponent,`,
-      `import { ${resourceClassName}CreateUpdateComponent } from './pages/${resourceFileName}-search/dialogs/${resourceFileName}-create-update/${resourceFileName}-create-update.component';
+      `import { FloatLabelModule } from 'primeng/floatlabel';
+       import { InputTextModule } from 'primeng/inputtext';
+       import { ${resourceClassName}CreateUpdateComponent } from './pages/${resourceFileName}-search/dialogs/${resourceFileName}-create-update/${resourceFileName}-create-update.component';
        import { providePortalDialogService } from '@onecx/angular-accelerator';`,
+      `imports: [
+      FloatLabelModule,
+      InputTextModule,`
     ];
     const moduleContent = tree.read(moduleFilePath, 'utf8');
     if (!moduleContent.includes('providePortalDialogService()')) {
