@@ -1,7 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { APP_INITIALIZER, NgModule } from '@angular/core';
 import {
-  HttpClient,
   provideHttpClient,
   withInterceptorsFromDi,
 } from '@angular/common/http';
@@ -17,14 +16,14 @@ import {
   AngularAcceleratorModule,
   providePortalDialogService,
 } from '@onecx/angular-accelerator';
-import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { provideMissingTranslationHandler, provideTranslateLoader, provideTranslateService } from '@ngx-translate/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CommonModule } from '@angular/common';
 import { apiConfigProvider } from 'src/app/shared/utils/apiConfigProvider.utils'
 import { AngularAuthModule } from '@onecx/angular-auth';
 import { Configuration } from 'src/app/shared/generated'
-import { createTranslateLoader } from '@onecx/angular-utils';
 import { environment } from 'src/environments/environment'
+import { OnecxTranslateLoader, MultiLanguageMissingTranslationHandler } from '@onecx/angular-utils';
 
 export const commonImports = [CommonModule];
 
@@ -37,14 +36,6 @@ export const commonImports = [CommonModule];
     AppRoutingModule,
     AngularAcceleratorModule,
     AngularAuthModule,
-    TranslateModule.forRoot({
-      isolate: true,
-      loader: {
-        provide: TranslateLoader,
-        useFactory: createTranslateLoader,
-        deps: [HttpClient, AppStateService],
-      }
-    })
   ],
   providers: [
     provideHttpClient(withInterceptorsFromDi()),
@@ -54,6 +45,11 @@ export const commonImports = [CommonModule];
       useFactory: apiConfigProvider,
       deps: [ConfigurationService, AppStateService],
     },    
+    provideTranslateService({
+      defaultLanguage: 'en',
+      loader: provideTranslateLoader(OnecxTranslateLoader),
+      missingTranslationHandler: provideMissingTranslationHandler(MultiLanguageMissingTranslationHandler)
+    }),
   ],
   bootstrap: [AppComponent]
 })
