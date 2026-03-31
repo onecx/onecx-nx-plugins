@@ -71,12 +71,12 @@ export async function ngrxGenerator(
   addDependenciesToPackageJson(
     tree,
     {
-      '@ngrx/effects': '^15.4.0',
-      '@ngrx/router-store': '^15.4.0',
-      '@ngrx/store': '^15.4.0',
-      '@ngrx/component': '^15.4.0',
-      '@ngrx/store-devtools': '^15.3.0',
-      zod: '^3.22.1',
+      '@ngrx/effects': '^20.0.0',
+      '@ngrx/router-store': '^20.0.0',
+      '@ngrx/store': '^20.0.0',
+      '@ngrx/component': '^20.0.0',
+      '@ngrx/store-devtools': '^20.0.0',
+      zod: '^4.0.0',
     },
     {}
   );
