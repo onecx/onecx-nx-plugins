@@ -1,6 +1,6 @@
 # OneCX Nx Plugins
 
-This is the repository for OneCX UI App Generator. It is build with [Nx](https://www.npmjs.com/package/nx).
+This is the repository for OneCX UI App Generator (v6). It is build with [Nx](https://www.npmjs.com/package/nx).
 
 Learn more about [Nx generators](https://nx.dev/plugin-features/use-code-generators).
 
