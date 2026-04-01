@@ -90,16 +90,6 @@ describe('nx-plugin', () => {
       cwd: projectDirectory,
       stdio: 'inherit',
     });
-    execSync(`nx run build --skip-nx-cache`, {
-      cwd: projectDirectory,
-      stdio: 'inherit',
-      env: process.env,
-    });
-    execSync(`nx run test --skip-nx-cache`, {
-      cwd: projectDirectory,
-      stdio: 'inherit',
-      env: process.env,
-    });
   });
 
   beforeEach(() => {
@@ -117,8 +107,6 @@ describe('nx-plugin', () => {
         `nx generate @onecx/nx-plugin:feature ${featureName} --resource=${resourceName} ${parameterString}`,
         tcOption
       );
-      execSync(`nx run build --skip-nx-cache`, tcOption);
-      execSync(`nx run test --skip-nx-cache`, tcOption);
     });
 
     it('should add a search page', () => {
@@ -130,8 +118,6 @@ describe('nx-plugin', () => {
         `nx generate @onecx/nx-plugin:search ${featureName} --resource=${resourceName} ${parameterString}`,
         tcOption
       );
-      execSync(`nx run build --skip-nx-cache`, tcOption);
-      execSync(`nx run test --skip-nx-cache`, tcOption);
     });
 
     it('should add a details page', () => {
@@ -146,8 +132,6 @@ describe('nx-plugin', () => {
         `nx generate @onecx/nx-plugin:details ${featureName} --resource=${resourceName} ${parameterString}`,
         tcOption
       );
-      execSync(`nx run build --skip-nx-cache`, tcOption);
-      execSync(`nx run test --skip-nx-cache --coverage`, tcOption);
     });
 
     it('should add a create-update dialog', () => {
@@ -161,8 +145,6 @@ describe('nx-plugin', () => {
         `nx generate @onecx/nx-plugin:create-update ${featureName} --resource=${resourceName} ${parameterString} --verbose`,
         tcOption
       );
-      execSync(`nx run build --skip-nx-cache`, tcOption);
-      execSync(`nx run test --skip-nx-cache --coverage`, tcOption);
     });
 
     it('should add a delete dialog', () => {
@@ -174,8 +156,6 @@ describe('nx-plugin', () => {
         `nx generate @onecx/nx-plugin:delete ${featureName} --resource=${resourceName} ${parameterString} --verbose`,
         tcOption
       );
-      execSync(`nx run build --skip-nx-cache`, tcOption);
-      execSync(`nx run test --skip-nx-cache --coverage`, tcOption);
     });
 
     it('should add an empty ngrx-page', () => {
@@ -198,7 +178,6 @@ describe('nx-plugin', () => {
         `nx generate @onecx/nx-plugin:ngrx-page ${featureName} ${parameterString}`,
         tcOption
       );
-      execSync(`nx run build --skip-nx-cache`, tcOption);
     });
   });
 
@@ -214,8 +193,6 @@ describe('nx-plugin', () => {
         `nx generate @onecx/nx-plugin:feature ${featureNameCustom} ${parameterString} --verbose`,
         tcOption
       );
-      execSync(`nx run build --skip-nx-cache`, tcOption);
-      execSync(`nx run test --skip-nx-cache`, tcOption);
     });
 
     it('should add a custom named search page', () => {
@@ -231,17 +208,15 @@ describe('nx-plugin', () => {
         `nx generate @onecx/nx-plugin:search ${featureNameCustom} ${parameterString} --verbose`,
         tcOption
       );
-      execSync(`nx run build --skip-nx-cache`, tcOption);
-      execSync(`nx run test --skip-nx-cache --coverage`, tcOption);
     });
 
     it('should add a custom named details page', () => {
-      const tcOption = { ...option, cwd: projectDirectory };      
+      const tcOption = { ...option, cwd: projectDirectory };
       const parameterString = getParameterAsString([
         { key: 'editMode', value: 'true' },
-        { key: 'allowDelete', value: 'true' },
         { key: 'updateRequestName', value: 'CustomDataObjectUpdateRequest' },
         { key: 'updateResponseName', value: 'CustomDataObjectUpdateResponse' },
+        { key: 'allowDelete', value: 'true' },
         { key: 'resource', value: 'CustomDataObject' },
         { key: 'getResponseName', value: 'CustomDataObjectGetResponse' },
       ]);
@@ -251,8 +226,6 @@ describe('nx-plugin', () => {
         `nx generate @onecx/nx-plugin:details ${featureNameCustom} ${parameterString} --verbose`,
         tcOption
       );
-      execSync(`nx run build --skip-nx-cache`, tcOption);
-      execSync(`nx run test --skip-nx-cache --coverage`, tcOption);
     });
 
     it('should add a custom named create-update dialog', () => {
@@ -270,8 +243,6 @@ describe('nx-plugin', () => {
         `nx generate @onecx/nx-plugin:create-update ${featureNameCustom} ${parameterString} --verbose`,
         tcOption
       );
-      execSync(`nx run build --skip-nx-cache`, tcOption);
-      execSync(`nx run test --skip-nx-cache --coverage`, tcOption);
     });
 
     it('should add a custom named delete dialog', () => {
@@ -287,8 +258,6 @@ describe('nx-plugin', () => {
         `nx generate @onecx/nx-plugin:delete ${featureNameCustom} ${parameterString} --verbose`,
         tcOption
       );
-      execSync(`nx run build --skip-nx-cache`, tcOption);
-      execSync(`nx run test --skip-nx-cache --coverage`, tcOption);
     });
   });
 
@@ -306,9 +275,15 @@ describe('nx-plugin', () => {
         `nx generate @onecx/nx-plugin:pre-commit-validation ${parameterString} --verbose`,
         tcOption
       );
-      execSync(`nx run build --skip-nx-cache`, tcOption);
-      execSync(`nx run test --skip-nx-cache --coverage`, tcOption);
     });
+  });
+
+  it('should build and test once after all generators', () => {
+    const tcOption = { ...option, cwd: projectDirectory };
+    console.log('### ==> final build + test ###############################');
+
+    execSync(`nx run build --skip-nx-cache`, tcOption);
+    execSync(`nx run test --skip-nx-cache`, tcOption);
   });
 });
 
