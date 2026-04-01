@@ -236,8 +236,10 @@ describe('nx-plugin', () => {
     });
 
     it('should add a custom named details page', () => {
-      const tcOption = { ...option, cwd: projectDirectory };
+      const tcOption = { ...option, cwd: projectDirectory };      
       const parameterString = getParameterAsString([
+        { key: 'editMode', value: 'true' },
+        { key: 'allowDelete', value: 'true' },
         { key: 'resource', value: 'CustomDataObject' },
         { key: 'getResponseName', value: 'CustomDataObjectGetResponse' },
       ]);
