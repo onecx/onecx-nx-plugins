@@ -101,7 +101,7 @@ export class <%= resourceClassName %>DetailsComponent implements OnInit {
               titleKey: '<%= resourceConstantName %>_DETAILS.GENERAL.DELETE',
               labelKey: '<%= resourceConstantName %>_DETAILS.GENERAL.DELETE',
               icon: PrimeIcons.TRASH,
-              show: 'asOverflow',
+              show: 'always',
               btnClass: '',
               conditional: true,
               <%_ if(editMode){ _%>
