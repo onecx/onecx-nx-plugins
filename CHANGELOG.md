@@ -1,3 +1,16 @@
+## [6.2.0](https://github.com/onecx/onecx-nx-plugins/compare/v6.1.0...v6.2.0) (2026-04-02)
+
+### Features
+
+* updates ([06d3fc3](https://github.com/onecx/onecx-nx-plugins/commit/06d3fc3745b2821cb2219ff854a26ef603762c65))
+
+### Bug Fixes
+
+* package-lock ([ffa7424](https://github.com/onecx/onecx-nx-plugins/commit/ffa74244509161bbec849f3f693348264e84fdf1))
+* release-config ([37688af](https://github.com/onecx/onecx-nx-plugins/commit/37688af84982b379c9b1f5183c1a7c6df8145e0d))
+* test e2e ([4d4dfb6](https://github.com/onecx/onecx-nx-plugins/commit/4d4dfb6914b80ad0dd349475d8ef2ec7e50af876))
+* test generation and delete button ([4b6accc](https://github.com/onecx/onecx-nx-plugins/commit/4b6accca3eb8994d327a2358e04858423f70fe7d))
+
 ## [6.1.0](https://github.com/onecx/onecx-nx-plugins/compare/v6.0.0...v6.1.0) (2026-02-16)
 
 ### Features
