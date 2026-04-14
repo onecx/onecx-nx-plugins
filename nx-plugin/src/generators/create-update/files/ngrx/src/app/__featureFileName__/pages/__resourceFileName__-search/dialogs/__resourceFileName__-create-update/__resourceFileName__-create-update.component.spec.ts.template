@@ -8,7 +8,8 @@ import {
   AngularAcceleratorModule,
   BreadcrumbService,
 } from '@onecx/angular-accelerator';
-import { TranslateTestingModule } from 'ngx-translate-testing';
+import { TranslateModule } from '@ngx-translate/core'
+import { provideTranslateTestingService } from '@onecx/angular-accelerator/testing'
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { InputTextModule } from 'primeng/inputtext';
 import { distinctUntilChanged, filter, skip, take, toArray } from 'rxjs'
@@ -45,15 +46,16 @@ describe('<%= resourceClassName%>CreateUpdateComponent', () => {
         FormsModule,
         LetDirective,
         ReactiveFormsModule,
-        TranslateTestingModule.withTranslations({
-          de: require('../../../../../../assets/i18n/de.json'),
-          en: require('../../../../../../assets/i18n/en.json')
-        }).withDefaultLanguage('en'),
+        TranslateModule.forRoot(),
       ],
       providers: [
         provideHttpClientTesting(),
         BreadcrumbService,
         { provide: ActivatedRoute, useValue: mockActivatedRoute },
+        provideTranslateTestingService({
+          de: require('../../../../../../assets/i18n/de.json'),
+          en: require('../../../../../../assets/i18n/en.json')
+        })
       ],
     }).compileComponents();
 
