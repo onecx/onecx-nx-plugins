@@ -1,4 +1,4 @@
-import { CUSTOM_ELEMENTS_SCHEMA, provideNgReflectAttributes } from '@angular/core'
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core'
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
@@ -108,7 +108,6 @@ describe('<%= resourceClassName %>DetailsComponent', () => {
       providers: [
         provideHttpClient(),
         provideHttpClientTesting(),
-        provideNgReflectAttributes(),
         PermissionService,
         provideMockStore({
           initialState: { <%= resourcePropertyName %>: { details: initialState } },
@@ -196,9 +195,14 @@ describe('<%= resourceClassName %>DetailsComponent', () => {
     const backAction = await pageHeader.getInlineActionButtonByLabel('Back');
     expect(backAction).toBeTruthy();
 
-    const moreAction = await pageHeader.getInlineActionButtonByIcon(
-      PrimeIcons.ELLIPSIS_V
-    );
+    let moreAction = null
+    for (const btn of inlineActions) {
+      const iconSpan = await btn.getIconSpan()
+      if (iconSpan && await iconSpan.checkHasClass('pi-ellipsis-v')) {
+        moreAction = btn
+        break
+      }
+    }
     expect(moreAction).toBeTruthy();  
   });
   <% }else{ %>
@@ -307,9 +311,15 @@ describe('<%= resourceClassName %>DetailsComponent', () => {
     jest.spyOn(store, 'dispatch');
 
     const pageHeader = await <%= resourcePropertyName %>Details.getHeader();
-    const moreAction = await pageHeader.getInlineActionButtonByIcon(
-      PrimeIcons.ELLIPSIS_V
-    );
+    const allActions = await pageHeader.getInlineActionButtons()
+    let moreAction = null
+    for (const btn of allActions) {
+      const iconSpan = await btn.getIconSpan()
+      if (iconSpan && await iconSpan.checkHasClass('pi-ellipsis-v')) {
+        moreAction = btn
+        break
+      }
+    }
     await moreAction?.click();
 
     expect(moreAction).toBeTruthy();
