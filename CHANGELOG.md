@@ -1,8 +1,19 @@
+## [7.1.0-rc.1](https://github.com/onecx/onecx-nx-plugins/compare/v7.0.0...v7.1.0-rc.1) (2026-04-02)
+
+### Features
+
+* refactor generator ([7118010](https://github.com/onecx/onecx-nx-plugins/commit/711801026370c02669e28f60465957d08c9d01d5))
+
+### Bug Fixes
+
+* test e2e ([c04b29d](https://github.com/onecx/onecx-nx-plugins/commit/c04b29dbea191fe680dbbf5d203d1f7a83ffab6f))
+* test generation and delete button ([c805987](https://github.com/onecx/onecx-nx-plugins/commit/c80598752d7f851a9d0c827926aef933c829d9d0))
+
 ## [7.0.0-rc.1](https://github.com/onecx/onecx-nx-plugins/compare/v6.0.0...v7.0.0-rc.1) (2026-02-04)
 
-### ⚠ BREAKING CHANGES
+### Features
 
-* release v6 rc (#314)
+* update to angular 19 ([#287](https://github.com/onecx/onecx-nx-plugins/issues/287)) ([01b8fe4](https://github.com/onecx/onecx-nx-plugins/commit/01b8fe46afa6ed08b94c9f59c8fcc4585e353afe))
 
 ### Chores
 
@@ -21,7 +32,7 @@
 ## [6.0.0](https://github.com/onecx/onecx-nx-plugins/compare/v5.9999.0...v6.0.0) (2026-02-04)
 
 ### ⚠ BREAKING CHANGES
-
+W
 * add release config for v6 (#313)
 
 ### Chores
