@@ -113,7 +113,6 @@ export async function angularGenerator(
       '@ngx-translate/core': '^17.0.0',
       '@ngx-translate/http-loader': '^17.0.0',
       '@angular-architects/module-federation': '^20.0.0',
-      'keycloak-angular': '^20.0.0',
       'ngrx-store-localstorage': '^20.0.0',
       '@ngrx/component': '^20.0.0',
       '@ngrx/effects': '^20.0.0',
