@@ -11,9 +11,9 @@
 
 ## [7.0.0-rc.1](https://github.com/onecx/onecx-nx-plugins/compare/v6.0.0...v7.0.0-rc.1) (2026-02-04)
 
-### Features
+### ⚠ BREAKING CHANGES
 
-* update to angular 19 ([#287](https://github.com/onecx/onecx-nx-plugins/issues/287)) ([01b8fe4](https://github.com/onecx/onecx-nx-plugins/commit/01b8fe46afa6ed08b94c9f59c8fcc4585e353afe))
+* release v6 rc (#314)
 
 ### Chores
 
@@ -32,7 +32,7 @@
 ## [6.0.0](https://github.com/onecx/onecx-nx-plugins/compare/v5.9999.0...v6.0.0) (2026-02-04)
 
 ### ⚠ BREAKING CHANGES
-W
+
 * add release config for v6 (#313)
 
 ### Chores
