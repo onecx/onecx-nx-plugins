@@ -131,19 +131,25 @@ export async function angularGenerator(
       '@angular/platform-browser': angularVersion,
       '@angular/platform-browser-dynamic': angularVersion,
       '@angular/router': angularVersion,
-      '@nx/angular': '^19.8.14',
-      '@nx/devkit': '^19.8.14',
-      '@nx/plugin': '^19.8.14',
       primeflex: '^3.3.1',
       primeicons: '^7.0.0',
       primeng: '^20.3.0',
       '@primeng/themes': '^20.0.0',
+      'keycloak-js': '^24.0.0',
+      '@ngneat/until-destroy': '^9.2.0',
+      'd3-scale-chromatic': '^3.0.0',
+      'ts-semaphore': '^1.1.1',
+      'chart.js': '^4.4.0',
     },
     {
-      '@nx/angular': '^22.0.2',
-      '@nx/devkit': '^22.0.2',
-      '@nx/plugin': '^22.0.2',
-      '@nx/module-federation': '^22.0.2',
+      '@nx/angular': '22.0.2',
+      '@nx/devkit': '22.0.2',
+      '@nx/jest': '22.0.2',
+      '@nx/js': '22.0.2',
+      '@nx/web': '22.0.2',
+      '@nx/workspace': '22.0.2',
+      '@nx/plugin': '22.0.2',
+      '@nx/module-federation': '22.0.2',
       '@openapitools/openapi-generator-cli': '^2.16.3',
       'ngx-translate-testing': '^7.0.0',
       'modify-source-webpack-plugin': '^4.1.0',
@@ -180,7 +186,6 @@ export async function angularGenerator(
     }
   );
 
-  addOverridesToPackageJson(tree);
   adaptTsConfig(tree, options);
   adaptProjectConfiguration(tree, options);
   adaptJestConfig(tree);
@@ -206,6 +211,10 @@ export async function angularGenerator(
     log(cmd);
     execSync(cmd, { cwd: tree.root, stdio: 'inherit' });
     cmd = 'mv -f jest.config.ts.org jest.config.ts';
+    log(cmd);
+    execSync(cmd, { cwd: tree.root, stdio: 'inherit' });
+
+    cmd = 'npm install';
     log(cmd);
     execSync(cmd, { cwd: tree.root, stdio: 'inherit' });
 
@@ -242,17 +251,6 @@ function addExtensionsToPackageJson(tree: Tree) {
   });
 }
 
-function addOverridesToPackageJson(tree: Tree) {
-  updateJson(tree, 'package.json', (pkgJson) => {
-    pkgJson.overrides = {
-      'jest-environment-jsdom': {
-        jsdom: '26.0.0',
-        'rrweb-cssom': '0.8.0',
-      },
-    };
-    return pkgJson;
-  });
-}
 
 function addScriptsToPackageJson(tree: Tree, options: AngularGeneratorSchema) {
   updateJson(tree, 'package.json', (pkgJson) => {
