@@ -135,6 +135,11 @@ export async function angularGenerator(
       primeicons: '^7.0.0',
       primeng: '^20.3.0',
       '@primeng/themes': '^20.0.0',
+      'keycloak-js': '^24.0.0',
+      '@ngneat/until-destroy': '^9.2.0',
+      'd3-scale-chromatic': '^3.0.0',
+      'ts-semaphore': '^1.1.1',
+      'chart.js': '^4.4.0',
     },
     {
       '@nx/angular': '22.0.2',
@@ -206,6 +211,10 @@ export async function angularGenerator(
     log(cmd);
     execSync(cmd, { cwd: tree.root, stdio: 'inherit' });
     cmd = 'mv -f jest.config.ts.org jest.config.ts';
+    log(cmd);
+    execSync(cmd, { cwd: tree.root, stdio: 'inherit' });
+
+    cmd = 'npm install';
     log(cmd);
     execSync(cmd, { cwd: tree.root, stdio: 'inherit' });
 
