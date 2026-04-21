@@ -5,7 +5,10 @@ import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { AngularAcceleratorModule } from '@onecx/angular-accelerator';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateTestingModule } from 'ngx-translate-testing';
-import { ShellCoreModule } from '@onecx/shell-core';
+import {
+  StandaloneShellModule,
+  provideStandaloneProviders
+} from '@onecx/angular-standalone-shell';
 import { provideHttpClient } from '@angular/common/http';
 
 describe('AppComponent', () => {
@@ -15,12 +18,12 @@ describe('AppComponent', () => {
       imports: [
         RouterTestingModule,              
         AngularAcceleratorModule,
-        ShellCoreModule,
+        StandaloneShellModule,
         TranslateTestingModule.withTranslations('en', require('./../assets/i18n/en.json'))
           .withTranslations('de', require('./../assets/i18n/de.json'))
           .withDefaultLanguage('en'),
       ],
-      providers: [provideHttpClient(), provideHttpClientTesting()]        
+      providers: [provideStandaloneProviders(), provideHttpClient(), provideHttpClientTesting()]        
     }).compileComponents();
   });
 

@@ -61,7 +61,7 @@ const config = withModuleFederationPlugin({
       requiredVersion: 'auto',
       includeSecondaries: true,
     },
-    '@onecx/shell-core': {
+    '@onecx/angular-standalone-shell': {
       requiredVersion: 'auto',
       includeSecondaries: true,
     },
