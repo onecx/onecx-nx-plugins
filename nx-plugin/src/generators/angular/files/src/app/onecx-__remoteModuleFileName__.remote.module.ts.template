@@ -46,10 +46,6 @@ import {
   provideThemeConfig,
   provideAngularUtils
 } from '@onecx/angular-utils';
-import {
-  StandaloneShellModule,
-  provideStandaloneProviders
-} from '@onecx/angular-standalone-shell';
 import { Configuration } from 'src/app/shared/generated';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { apiConfigProvider } from 'src/app/shared/utils/apiConfigProvider.utils';
@@ -75,7 +71,6 @@ effectProvidersForWorkaround.forEach(p => p.ɵprov.providedIn = null);
     BrowserModule,
     BrowserAnimationsModule,
     AngularAuthModule,
-    StandaloneShellModule,
     StoreModule.forRoot(reducers, { metaReducers }),
     EffectsModule.forRoot(effectProvidersForWorkaround),
     StoreRouterConnectingModule.forRoot(),
@@ -101,7 +96,6 @@ effectProvidersForWorkaround.forEach(p => p.ɵprov.providedIn = null);
   ],
   exports: [],
   providers: [
-    provideStandaloneProviders(),
     {
       provide: Configuration,
       useFactory: apiConfigProvider,
