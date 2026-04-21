@@ -105,7 +105,7 @@ export async function angularGenerator(
       '@onecx/angular-remote-components': oneCXLibVersion,
       '@onecx/angular-webcomponents': oneCXLibVersion,
       '@onecx/angular-utils': oneCXLibVersion,
-      '@onecx/angular-standalone-shell': oneCXLibVersion,   // added standalone shell module as dependency
+      '@onecx/angular-standalone-shell': oneCXLibVersion,
       '@onecx/integration-interface': oneCXLibVersion,
       '@onecx/angular-integration-interface': oneCXLibVersion,
       '@onecx/ngrx-accelerator': oneCXLibVersion,
