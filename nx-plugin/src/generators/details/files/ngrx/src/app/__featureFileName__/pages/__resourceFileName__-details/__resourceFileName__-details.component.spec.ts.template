@@ -29,7 +29,7 @@ import {
   provideUserServiceMock,
   UserServiceMock,
 } from '@onecx/angular-integration-interface/mocks';
-import { TranslatePipe, TranslateService } from '@ngx-translate/core';
+import { TranslateModule, TranslatePipe, TranslateService } from '@ngx-translate/core'
 import {
   PermissionService,
   PortalPageComponent,
@@ -42,6 +42,7 @@ import { <%= resourceClassName %>DetailsComponent } from './<%= resourceFileName
 import { <%= resourceClassName %>DetailsHarness } from './<%= resourceFileName %>-details.harness';
 import { <%= resourceClassName %>DetailsViewModel } from './<%= resourceFileName %>-details.viewmodel';
 import { select<%= resourceClassName %>DetailsViewModel } from './<%= resourceFileName %>-details.selectors';
+import { provideTranslateTestingService } from '@onecx/angular-accelerator/testing'
 
 describe('<%= resourceClassName %>DetailsComponent', () => {
   const origAddEventListener = window.addEventListener;
@@ -101,10 +102,7 @@ describe('<%= resourceClassName %>DetailsComponent', () => {
         PortalPageComponent,
         LetDirective,
         ReactiveFormsModule,
-        TranslateTestingModule.withTranslations({
-          de: require('../../../../assets/i18n/de.json'),
-          en: require('../../../../assets/i18n/en.json')
-        }).withDefaultLanguage('en')
+        TranslateModule.forRoot(),
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
       providers: [
@@ -125,6 +123,10 @@ describe('<%= resourceClassName %>DetailsComponent', () => {
           provide: TranslationConnectionService,
           useValue: { init: jest.fn(), destroy: jest.fn() },
         },
+        provideTranslateTestingService({
+          de: require('../../../../assets/i18n/de.json'),
+          en: require('../../../../assets/i18n/en.json')
+        })
       ],
     }).compileComponents();
 
@@ -146,6 +148,9 @@ describe('<%= resourceClassName %>DetailsComponent', () => {
       base<%= resourceClassName %>DetailsViewModel
     );
     store.refreshState();
+
+    const translateService = TestBed.inject(TranslateService)
+    translateService.use('en')
 
     fixture = TestBed.createComponent(<%= resourceClassName %>DetailsComponent);
     component = fixture.componentInstance;
@@ -190,9 +195,14 @@ describe('<%= resourceClassName %>DetailsComponent', () => {
     const backAction = await pageHeader.getInlineActionButtonByLabel('Back');
     expect(backAction).toBeTruthy();
 
-    const moreAction = await pageHeader.getInlineActionButtonByIcon(
-      PrimeIcons.ELLIPSIS_V
-    );
+    let moreAction = null
+    for (const btn of inlineActions) {
+      const iconSpan = await btn.getIconSpan()
+      if (iconSpan && await iconSpan.checkHasClass('pi-ellipsis-v')) {
+        moreAction = btn
+        break
+      }
+    }
     expect(moreAction).toBeTruthy();  
   });
   <% }else{ %>
@@ -301,9 +311,15 @@ describe('<%= resourceClassName %>DetailsComponent', () => {
     jest.spyOn(store, 'dispatch');
 
     const pageHeader = await <%= resourcePropertyName %>Details.getHeader();
-    const moreAction = await pageHeader.getInlineActionButtonByIcon(
-      PrimeIcons.ELLIPSIS_V
-    );
+    const allActions = await pageHeader.getInlineActionButtons()
+    let moreAction = null
+    for (const btn of allActions) {
+      const iconSpan = await btn.getIconSpan()
+      if (iconSpan && await iconSpan.checkHasClass('pi-ellipsis-v')) {
+        moreAction = btn
+        break
+      }
+    }
     await moreAction?.click();
 
     expect(moreAction).toBeTruthy();

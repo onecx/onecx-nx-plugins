@@ -93,8 +93,8 @@ export async function angularGenerator(
   addScriptsToPackageJson(tree, options);
   addExtensionsToPackageJson(tree);
 
-  const oneCXLibVersion = '^6.17.0';
-  const angularVersion = '^19.0.7';
+  const oneCXLibVersion = '^7.4.0';
+  const angularVersion = '^20.3.9';
 
   addDependenciesToPackageJson(
     tree,
@@ -109,20 +109,20 @@ export async function angularGenerator(
       '@onecx/integration-interface': oneCXLibVersion,
       '@onecx/angular-integration-interface': oneCXLibVersion,
       '@onecx/ngrx-accelerator': oneCXLibVersion,
-      '@onecx/shell-core': oneCXLibVersion,
-      '@ngx-translate/core': '^16.0.4',
-      '@ngx-translate/http-loader': '^8.0.0',
-      '@angular-architects/module-federation': '^18.0.4',
-      'ngrx-store-localstorage': '^19.0.0',
-      '@ngrx/component': '^19.0.1',
-      '@ngrx/effects': '^19.0.1',
-      '@ngrx/router-store': '^19.0.1',
-      '@ngrx/store': '^19.0.1',
-      '@ngrx/store-devtools': '^19.0.1',
+      "@onecx/ngrx-integration-interface": oneCXLibVersion,
+      '@ngx-translate/core': '^17.0.0',
+      '@ngx-translate/http-loader': '^17.0.0',
+      '@angular-architects/module-federation': '^20.0.0',
+      'ngrx-store-localstorage': '^20.0.0',
+      '@ngrx/component': '^20.0.0',
+      '@ngrx/effects': '^20.0.0',
+      '@ngrx/router-store': '^20.0.0',
+      '@ngrx/store': '^20.0.0',
+      '@ngrx/store-devtools': '^20.0.0',
       '@webcomponents/webcomponentsjs': '^2.8.0',
       'zone.js': '~0.15.0',
       '@angular/animations': angularVersion,
-      '@angular/cdk': angularVersion,
+      '@angular/cdk': '^20.0.0',
       '@angular/common': angularVersion,
       '@angular/compiler': angularVersion,
       '@angular/core': angularVersion,
@@ -131,19 +131,20 @@ export async function angularGenerator(
       '@angular/platform-browser': angularVersion,
       '@angular/platform-browser-dynamic': angularVersion,
       '@angular/router': angularVersion,
-      '@nx/angular': '^19.8.14',
-      '@nx/devkit': '^19.8.14',
-      '@nx/plugin': '^19.8.14',
       primeflex: '^3.3.1',
       primeicons: '^7.0.0',
-      primeng: '^19.1.0',
-      '@primeng/themes': '^19.0.6',
+      primeng: '^20.3.0',
+      '@primeng/themes': '^20.0.0',
     },
     {
-      '@nx/angular': '^20.4.0',
-      '@nx/devkit': '^20.4.0',
-      '@nx/plugin': '^20.4.0',
-      '@nx/module-federation': '^20.4.0',
+      '@nx/angular': '22.0.2',
+      '@nx/devkit': '22.0.2',
+      '@nx/jest': '22.0.2',
+      '@nx/js': '22.0.2',
+      '@nx/web': '22.0.2',
+      '@nx/workspace': '22.0.2',
+      '@nx/plugin': '22.0.2',
+      '@nx/module-federation': '22.0.2',
       '@openapitools/openapi-generator-cli': '^2.16.3',
       'ngx-translate-testing': '^7.0.0',
       'modify-source-webpack-plugin': '^4.1.0',
@@ -161,26 +162,25 @@ export async function angularGenerator(
       '@angular-eslint/schematics': '^18.4.3',
       '@angular-eslint/template-parser': '^18.4.3',
       '@eslint/js': '^8.57.1',
-      '@nx/eslint': '19.8.14',
-      '@nx/eslint-plugin': '19.8.14',
-      eslint: '^8.57.1',
-      'eslint-config-prettier': '^9.1.0',
+      '@nx/eslint': '22.0.2',
+      '@nx/eslint-plugin': '22.0.2',
+      eslint: '^9.8.0',
+      'eslint-config-prettier': '^10.0.0',
       'eslint-plugin-import': '2.31.0',
       'eslint-plugin-prettier': '^5.2.1',
-      jest: '^29.7.0',
-      'jest-environment-jsdom': '^29.7.0',
-      'jest-preset-angular': '~14.5.1',
+      jest: '^30.0.0',
+      'jest-environment-jsdom': '^30.0.0',
+      'jest-preset-angular': '^16.0.0',
       'jest-sonar': '^0.2.16',
       'jest-sonar-reporter': '^2.0.0',
-      nx: '19.8.14',
+      nx: '22.0.2',
       prettier: '^3.5.3',
       'sonar-scanner': '^3.1.0',
-      typescript: '~5.5.4',
+      typescript: '^5.9.0',
       webpack: '5.95.0',
     }
   );
 
-  addOverridesToPackageJson(tree);
   adaptTsConfig(tree, options);
   adaptProjectConfiguration(tree, options);
   adaptJestConfig(tree);
@@ -208,7 +208,6 @@ export async function angularGenerator(
     cmd = 'mv -f jest.config.ts.org jest.config.ts';
     log(cmd);
     execSync(cmd, { cwd: tree.root, stdio: 'inherit' });
-
     cmd = 'npm run apigen ';
     log(cmd);
     execSync(cmd, { cwd: tree.root, stdio: 'inherit' });
@@ -242,17 +241,6 @@ function addExtensionsToPackageJson(tree: Tree) {
   });
 }
 
-function addOverridesToPackageJson(tree: Tree) {
-  updateJson(tree, 'package.json', (pkgJson) => {
-    pkgJson.overrides = {
-      'jest-environment-jsdom': {
-        jsdom: '26.0.0',
-        'rrweb-cssom': '0.8.0',
-      },
-    };
-    return pkgJson;
-  });
-}
 
 function addScriptsToPackageJson(tree: Tree, options: AngularGeneratorSchema) {
   updateJson(tree, 'package.json', (pkgJson) => {
@@ -335,11 +323,6 @@ function adaptProjectConfiguration(
         glob: '**/*',
         input: './node_modules/@onecx/angular-utils/assets/',
         output: '/onecx-angular-utils/assets/',
-      },
-      {
-        glob: '**/*',
-        input: './node_modules/@onecx/shell-core/assets/',
-        output: '/onecx-shell-core/assets/',
       },
     ],
     styles: [

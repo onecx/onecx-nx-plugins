@@ -161,6 +161,7 @@ export class <%= resourceClassName %>DetailsEffects {
             }
           )
           .pipe(
+            filter((state): state is DialogState<unknown> => state !== null),
             map((state): [DialogState<unknown>, <%= resource %> | undefined] => {
               return [state, itemToDelete];
             })

@@ -5,8 +5,7 @@ import { safeReplace } from '../../shared/safeReplace';
 import { CreateUpdateGeneratorSchema } from '../schema';
 
 export class SearchTestsStep
-  implements GeneratorStep<CreateUpdateGeneratorSchema>
-{
+  implements GeneratorStep<CreateUpdateGeneratorSchema> {
   process(tree: Tree, options: CreateUpdateGeneratorSchema): void {
     const featureFileName = names(options.featureName).fileName;
     const resourceFileName = names(options.resource).fileName;
@@ -16,7 +15,7 @@ export class SearchTestsStep
 
     const content = tree.read(filePath, 'utf8') ?? '';
 
-    if (!content.includes(`PrimeIcons`) ) {
+    if (!content.includes(`PrimeIcons`)) {
       safeReplace(
         `Add PrimeIcons import to ${resourceClassName}SearchComponent spec`,
         filePath,
@@ -62,7 +61,7 @@ export class SearchTestsStep
           expect(rowActionButtons?.length).toBeGreaterThan(0);
           let editButton;
           for (const actionButton of rowActionButtons ?? []) {
-            const icon = await actionButton.getAttribute('ng-reflect-icon');
+            const icon = await actionButton.getAttribute('icon');
             expect(icon).toBeTruthy();
             if (icon === 'pi pi-pencil') {
               editButton = actionButton;
@@ -81,7 +80,7 @@ export class SearchTestsStep
         jest.spyOn(store, 'dispatch');
 
         const header = await ${resourcePropertyName}Search.getHeader();
-        const createButton = await (await header.getPageHeader()).getInlineActionButtonByIcon(PrimeIcons.PLUS);
+        const createButton = await (await header.getPageHeader()).getInlineActionButtonByLabel('Create')
 
         expect(createButton).toBeTruthy();
         await createButton?.click();
@@ -95,8 +94,8 @@ export class SearchTestsStep
     safeReplace(
       `Add create/update effect tests to search effects spec file. Look for the marker comment '// <<SPEC-EXTENSIONS-MARKER-!!!-DO-NOT-REMOVE-!!!>>' in ${filePath} and insert the test code above it.`,
       filePath,
-      [ '// <<SPEC-EXTENSIONS-MARKER-!!!-DO-NOT-REMOVE-!!!>>' ],
-      [ snippet + '  // <<SPEC-EXTENSIONS-MARKER-!!!-DO-NOT-REMOVE-!!!>>' ],
+      ['// <<SPEC-EXTENSIONS-MARKER-!!!-DO-NOT-REMOVE-!!!>>'],
+      [snippet + '  // <<SPEC-EXTENSIONS-MARKER-!!!-DO-NOT-REMOVE-!!!>>'],
       tree
     );
   }
