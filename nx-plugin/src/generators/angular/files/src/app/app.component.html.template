@@ -1,5 +1,5 @@
 <% if(!standalone){ %> 
-<ocx-shell-portal-viewport></ocx-shell-portal-viewport>
+<ocx-standalone-shell-viewport></ocx-standalone-shell-viewport>
 <% }else{ %>
 <router-outlet></router-outlet>
 <% } %>

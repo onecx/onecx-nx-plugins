@@ -24,7 +24,10 @@ import { apiConfigProvider } from 'src/app/shared/utils/apiConfigProvider.utils'
 import { AngularAuthModule } from '@onecx/angular-auth';
 import { Configuration } from 'src/app/shared/generated'
 import { createTranslateLoader } from '@onecx/angular-utils';
-import { ShellCoreModule } from '@onecx/shell-core';
+import {
+  StandaloneShellModule,
+  provideStandaloneProviders
+} from '@onecx/angular-standalone-shell';
 import { environment } from 'src/environments/environment'
 
 export const commonImports = [CommonModule];
@@ -38,7 +41,7 @@ export const commonImports = [CommonModule];
     AppRoutingModule,
     AngularAcceleratorModule,
     AngularAuthModule,
-    ShellCoreModule,
+    StandaloneShellModule,
     TranslateModule.forRoot({
       isolate: true,
       loader: {
@@ -49,6 +52,7 @@ export const commonImports = [CommonModule];
     })
   ],
   providers: [
+    provideStandaloneProviders(),
     provideHttpClient(withInterceptorsFromDi()),
     { provide: APP_CONFIG, useValue: environment },
     {
