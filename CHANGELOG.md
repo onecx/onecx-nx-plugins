@@ -1,3 +1,18 @@
+## [6.3.0](https://github.com/onecx/onecx-nx-plugins/compare/v6.2.0...v6.3.0) (2026-04-23)
+
+### Features
+
+* bump node-version + add impl. prompt ([88fdc44](https://github.com/onecx/onecx-nx-plugins/commit/88fdc44807703f946d39fc0587131061040a232e))
+* upgrade generator to libs 6.20.0 ([#334](https://github.com/onecx/onecx-nx-plugins/issues/334)) ([dfed4cc](https://github.com/onecx/onecx-nx-plugins/commit/dfed4cc1b14ac2dfe6b6ab90a09ebb6379c882a9))
+
+### Bug Fixes
+
+* v6 standalone mode ([#333](https://github.com/onecx/onecx-nx-plugins/issues/333)) ([0af7c6a](https://github.com/onecx/onecx-nx-plugins/commit/0af7c6ad2ff5258e8760ee4c84f3d3a227b4d4f1))
+
+### Chores
+
+* remove kc dependencies ([#327](https://github.com/onecx/onecx-nx-plugins/issues/327)) ([62a2301](https://github.com/onecx/onecx-nx-plugins/commit/62a2301a3d6d0c318ad6219df165ad8bc42e854f))
+
 ## [6.2.0](https://github.com/onecx/onecx-nx-plugins/compare/v6.1.0...v6.2.0) (2026-04-02)
 
 ### Features
