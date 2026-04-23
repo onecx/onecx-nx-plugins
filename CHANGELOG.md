@@ -1,3 +1,14 @@
+## [7.1.0-rc.2](https://github.com/onecx/onecx-nx-plugins/compare/v7.1.0-rc.1...v7.1.0-rc.2) (2026-04-23)
+
+### Features
+
+* angular 20 migration ([#332](https://github.com/onecx/onecx-nx-plugins/issues/332)) ([8735f92](https://github.com/onecx/onecx-nx-plugins/commit/8735f92100ab42e36d415d4467218848cca58706)), closes [#315](https://github.com/onecx/onecx-nx-plugins/issues/315) [#318](https://github.com/onecx/onecx-nx-plugins/issues/318) [#318](https://github.com/onecx/onecx-nx-plugins/issues/318) [#320](https://github.com/onecx/onecx-nx-plugins/issues/320) [#287](https://github.com/onecx/onecx-nx-plugins/issues/287) [#289](https://github.com/onecx/onecx-nx-plugins/issues/289) [#325](https://github.com/onecx/onecx-nx-plugins/issues/325)
+* bump node-version + add impl. prompt ([c73a555](https://github.com/onecx/onecx-nx-plugins/commit/c73a5551d459c9086229331887a2e71b20b258c1))
+
+### Chores
+
+* remove kc dependencies ([#326](https://github.com/onecx/onecx-nx-plugins/issues/326)) ([3919e76](https://github.com/onecx/onecx-nx-plugins/commit/3919e7624ce21c485f2237a5c4b2d46eb39b9ab3))
+
 ## [7.1.0-rc.1](https://github.com/onecx/onecx-nx-plugins/compare/v7.0.0...v7.1.0-rc.1) (2026-04-02)
 
 ### Features
