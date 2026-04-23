@@ -76,6 +76,10 @@ const config = withModuleFederationPlugin({
     '@onecx/integration-interface': {
       requiredVersion: 'auto',
       includeSecondaries: true,
+    },
+    '@onecx/angular-standalone-shell': {
+      requiredVersion: 'auto',
+      includeSecondaries: true,
     }
   }),  
 });
