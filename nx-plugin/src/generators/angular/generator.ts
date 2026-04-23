@@ -33,7 +33,7 @@ const PARAMETERS: GeneratorParameter<AngularGeneratorSchema>[] = [
     type: 'boolean',
     required: 'never',
     default: false,
-  }
+  },
 ];
 
 export async function angularGenerator(
@@ -61,7 +61,6 @@ export async function angularGenerator(
     style: 'scss',
     tags: ``,
     routing: false,
-    projectNameAndRootFormat: 'as-provided',
     e2eTestRunner: E2eTestRunner.None,
   });
 
@@ -195,8 +194,8 @@ export async function angularGenerator(
     log(cmd);
     execSync(cmd, { cwd: tree.root, stdio: 'inherit' });
 
-    // Replace the generated solution for gitignore and jest testing, 
-    // because they do not fit the needs of the generated application and 
+    // Replace the generated solution for gitignore and jest testing,
+    // because they do not fit the needs of the generated application and
     // would require manual adjustments after generation otherwise.
     cmd = 'mv -f .gitignore.org .gitignore';
     log(cmd);
@@ -260,7 +259,9 @@ function addScriptsToPackageJson(tree: Tree, options: AngularGeneratorSchema) {
       'apigen'
     ] = `openapi-generator-cli generate -i src/assets/api/openapi-bff.yaml -c apigen.yaml -o src/app/shared/generated -g typescript-angular --type-mappings AnyType=object`;
     pkgJson.scripts['start'] = 'nx serve --host 0.0.0.0 --disable-host-check';
-    pkgJson.scripts['build'] = `nx build && cp dist/${options['name']}/styles.*.css dist/${options['name']}/styles.css`;
+    pkgJson.scripts[
+      'build'
+    ] = `nx build && cp dist/${options['name']}/styles.*.css dist/${options['name']}/styles.css`;
     pkgJson.scripts[
       'postbuild'
     ] = `mv "$(find dist/${options['name']} -maxdepth 1 -type f -name 'styles.*.css' | head -n 1)" dist/${options['name']}/styles.css`;
@@ -313,11 +314,11 @@ function adaptProjectConfiguration(
     publicHost: 'http://localhost:4200',
     proxyConfig: 'proxy.conf.js',
     headers: {
-      "Allow": "GET, POST, PUT, DELETE, PATCH, OPTIONS",
-      "Access-Control-Allow-Origin": "*",
-      "Access-Control-Allow-Headers": "*",
-      "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, PATCH, OPTIONS"
-    }
+      Allow: 'GET, POST, PUT, DELETE, PATCH, OPTIONS',
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Headers': '*',
+      'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, PATCH, OPTIONS',
+    },
   };
   config.targets['build'].executor = '@nx/angular:webpack-browser';
   config.targets['build'].options = {
@@ -345,8 +346,8 @@ function adaptProjectConfiguration(
       {
         input: 'src/styles.scss',
         bundleName: 'styles',
-        inject: true
-      }
+        inject: true,
+      },
     ],
     customWebpackConfig: {
       path: 'webpack.config.js',
