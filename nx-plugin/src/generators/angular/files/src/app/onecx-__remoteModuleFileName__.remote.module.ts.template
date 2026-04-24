@@ -3,10 +3,10 @@ import {
   withInterceptorsFromDi,
 } from '@angular/common/http';
 import { BrowserModule } from '@angular/platform-browser'
-<% if(!standalone){ %>
-import { CommonModule } from '@angular/common';
-<% } else { %>
+<% if(standalone){ %>
 import { commonImports } from './app.module';
+<% } else { %>
+import { CommonModule } from '@angular/common';
 <% } %>
 import {
   DoBootstrap,
