@@ -11,7 +11,7 @@ on:
       - develop
       - v5
   schedule:
-    - cron: "0 1 * * *"
+    - cron: '0 1 * * *'
 jobs:
   main:
     runs-on: ubuntu-latest
@@ -23,7 +23,7 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 24
 
       - uses: nrwl/nx-set-shas@v4
 
