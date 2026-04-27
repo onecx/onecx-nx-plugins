@@ -71,9 +71,14 @@ export async function angularGenerator(
     }
   );
 
-  // If standalone, remove unwanted files
   if (options.standalone) {
     tree.delete(`${directory}/scripts/load-permissions.sh`);
+  }else{
+    tree.delete(`${directory}/src/app/app.module.ts`);
+    tree.delete(`${directory}/src/app/app.component.html`);
+    tree.delete(`${directory}/src/app/app.component.scss`);
+    tree.delete(`${directory}/src/app/app.component.spec.ts`);
+    tree.delete(`${directory}/src/app/app.component.ts`);
   }
 
   const oneCXLibVersion = '^5.47.0';
