@@ -118,7 +118,6 @@ export async function angularGenerator(
       '@onecx/integration-interface': oneCXLibVersion,
       '@onecx/angular-integration-interface': oneCXLibVersion,
       '@onecx/ngrx-accelerator': oneCXLibVersion,
-      '@onecx/shell-core': oneCXLibVersion,
       '@ngx-translate/core': '^16.0.4',
       '@ngx-translate/http-loader': '^8.0.0',
       '@angular-architects/module-federation': '^18.0.4',

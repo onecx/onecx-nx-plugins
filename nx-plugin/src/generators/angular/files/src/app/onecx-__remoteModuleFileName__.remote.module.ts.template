@@ -50,7 +50,6 @@ import {
   provideThemeConfig,
   provideAngularUtils
 } from '@onecx/angular-utils';
-import { ShellCoreModule } from '@onecx/shell-core';
 import { Configuration } from 'src/app/shared/generated';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { apiConfigProvider } from 'src/app/shared/utils/apiConfigProvider.utils';
@@ -80,7 +79,6 @@ export const commonImports = [CommonModule];
     BrowserModule,
     BrowserAnimationsModule,
     AngularAuthModule,
-    ShellCoreModule,
     StoreModule.forRoot(reducers, { metaReducers }),
     EffectsModule.forRoot(effectProvidersForWorkaround),
     StoreRouterConnectingModule.forRoot(),
