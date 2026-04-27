@@ -4,6 +4,11 @@ import {
   withInterceptorsFromDi,
 } from '@angular/common/http';
 import { BrowserModule } from '@angular/platform-browser'
+<% if(standalone){ %>
+import { commonImports } from './app.module';
+<% } else { %>
+import { CommonModule } from '@angular/common';
+<% } %>
 import {
   DoBootstrap,
   Injector,
@@ -36,7 +41,6 @@ import { initializeRouter, createAppEntrypoint } from '@onecx/angular-webcompone
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { provideNavigatedEventStoreConnector } from '@onecx/ngrx-accelerator';
 
-import { commonImports } from './app.module';
 import { AppEntrypointComponent } from './app-entrypoint.component';
 import { metaReducers, reducers } from './app.reducers';
 
@@ -58,6 +62,10 @@ const effectProvidersForWorkaround = [
   Actions,
 ];
 effectProvidersForWorkaround.forEach(p => p.ɵprov.providedIn = null);
+
+<% if(!standalone){ %>
+export const commonImports = [CommonModule];
+<% } %>
 
 @NgModule({
   declarations: [
