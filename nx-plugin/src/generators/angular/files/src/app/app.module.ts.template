@@ -24,6 +24,11 @@ import { AngularAuthModule } from '@onecx/angular-auth';
 import { Configuration } from 'src/app/shared/generated'
 import { environment } from 'src/environments/environment'
 import { OnecxTranslateLoader, MultiLanguageMissingTranslationHandler } from '@onecx/angular-utils';
+import {
+  StandaloneShellModule,
+  provideStandaloneProviders
+} from '@onecx/angular-standalone-shell';
+
 
 export const commonImports = [CommonModule];
 
@@ -31,6 +36,7 @@ export const commonImports = [CommonModule];
   declarations: [AppComponent],
   imports: [
     ...commonImports,
+    StandaloneShellModule,
     BrowserModule,
     BrowserAnimationsModule,
     AppRoutingModule,
@@ -38,6 +44,7 @@ export const commonImports = [CommonModule];
     AngularAuthModule,
   ],
   providers: [
+    provideStandaloneProviders(),
     provideHttpClient(withInterceptorsFromDi()),
     { provide: APP_CONFIG, useValue: environment },
     {
