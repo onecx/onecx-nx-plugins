@@ -14,14 +14,14 @@ export class FeatureModuleStep implements GeneratorStep<SearchGeneratorSchema> {
     );
     const find = [
       'declarations: [',
-      `} from '@onecx/portal-integration-angular'`,
+      `PortalCoreModule } from '@onecx/portal-integration-angular'`,
       'EffectsModule.forFeature()',
       'EffectsModule.forFeature([',
       `from '@ngrx/effects';`,
     ];
     const replaceWith = [
       `declarations: [${className}SearchComponent,`,
-      `InitializeModuleGuard, } from '@onecx/portal-integration-angular'`,
+      `PortalCoreModule, InitializeModuleGuard } from '@onecx/portal-integration-angular'`,
       `EffectsModule.forFeature([])`,
       `EffectsModule.forFeature([${className}SearchEffects,`,
       `from '@ngrx/effects';

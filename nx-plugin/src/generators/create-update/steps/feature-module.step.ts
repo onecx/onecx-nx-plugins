@@ -25,7 +25,7 @@ export class FeatureModuleStep
     declarations:`,
     ];
     const moduleContent = tree.read(moduleFilePath, 'utf8');
-    if (!moduleContent.includes('providePortalDialogService()')) {
+    if (moduleContent && !moduleContent.includes('providePortalDialogService()')) {
       find.push('declarations:');
       replaceWith.push(`
     providers: [providePortalDialogService()],

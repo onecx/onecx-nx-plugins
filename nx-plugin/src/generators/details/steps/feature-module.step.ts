@@ -11,14 +11,14 @@ export class FeatureModuleStep
     const moduleFilePath = `src/app/${fileName}/${fileName}.module.ts`;
     const find = [
       'declarations: [',
-      `} from '@onecx/portal-integration-angular'`,
+      `PortalCoreModule } from '@onecx/portal-integration-angular'`,
       'EffectsModule.forFeature()',
       'EffectsModule.forFeature([',
       `from '@ngrx/effects';`,
     ];
     const replaceWith = [
       `declarations: [${className}DetailsComponent,`,
-      `InitializeModuleGuard, } from '@onecx/portal-integration-angular'`,
+      `PortalCoreModule, InitializeModuleGuard } from '@onecx/portal-integration-angular'`,
       `EffectsModule.forFeature([])`,
       `EffectsModule.forFeature([${className}DetailsEffects,`,
       `from '@ngrx/effects';
@@ -37,7 +37,7 @@ export class FeatureModuleStep
 
     if (options.editMode || options.allowDelete) {
       const moduleContent = tree.read(moduleFilePath, 'utf8');
-      if (!moduleContent.includes('providePortalDialogService()')) {
+      if (moduleContent && !moduleContent.includes('providePortalDialogService()')) {
         find.push('declarations:');
         replaceWith.push(`
     providers: [providePortalDialogService()],
