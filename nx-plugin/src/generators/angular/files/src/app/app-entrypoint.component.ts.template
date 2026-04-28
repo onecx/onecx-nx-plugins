@@ -1,24 +1,33 @@
-import { Component, OnInit, inject } from '@angular/core'
+import { Component, effect, inject } from '@angular/core'
+import { toSignal } from '@angular/core/rxjs-interop'
 import { TranslateService } from '@ngx-translate/core'
-import { PrimeNG } from 'primeng/config';
-import { merge, mergeMap } from 'rxjs'
+import { PrimeNG } from 'primeng/config'
+import { merge, startWith, switchMap } from 'rxjs'
 
 @Component({
   selector: 'app-root',
   templateUrl: './app-entrypoint.component.html',
   standalone: false
 })
-export class AppEntrypointComponent implements OnInit {
-  private readonly translateService = inject(TranslateService);
-  private readonly config = inject(PrimeNG);
+export class AppEntrypointComponent {
+  private readonly translateService = inject(TranslateService)
+  private readonly config = inject(PrimeNG)
 
-  ngOnInit(): void {
+  private readonly translation = toSignal(
     merge(
       this.translateService.onLangChange,
       this.translateService.onTranslationChange,
-      this.translateService.onDefaultLangChange
-    )
-      .pipe(mergeMap(() => this.translateService.get('primeng')))
-      .subscribe((res) => this.config.setTranslation(res))
+      this.translateService.onFallbackLangChange
+    ).pipe(
+        startWith(null),
+        switchMap(() => this.translateService.get('primeng'))
+      )
+  )
+
+  constructor() {
+    effect(() => {
+      const translations = this.translation()
+      if (translations && typeof translations === 'object' && !Array.isArray(translations)) this.config.setTranslation(translations)
+    })
   }
 }

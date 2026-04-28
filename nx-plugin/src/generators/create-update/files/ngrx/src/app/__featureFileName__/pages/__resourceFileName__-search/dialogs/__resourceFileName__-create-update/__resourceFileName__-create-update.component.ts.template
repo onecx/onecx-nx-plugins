@@ -1,11 +1,7 @@
-import {
-  Component,
-  EventEmitter,
-  Input,
-  OnInit,
-} from '@angular/core';
+import { Component, effect, EventEmitter, input, OnInit, signal } from '@angular/core';
+
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { map } from 'rxjs';
+import { Subject } from 'rxjs';
 
 import {
   DialogPrimaryButtonDisabled,
@@ -15,12 +11,13 @@ import {
 
 import { <%= resource%> } from 'src/app/shared/generated';
 import { <%= resourceClassName%>CreateUpdateViewModel } from './<%= resourceFileName %>-create-update.viewmodel';
+import { toSignal } from '@angular/core/rxjs-interop'
 
 @Component({
   selector: 'app-<%= resourceFileName %>-create-update',
   templateUrl: './<%= resourceFileName %>-create-update.component.html',
   styleUrls: ['./<%= resourceFileName %>-create-update.component.scss'],
-  standalone: false,
+  standalone: false
 })
 export class <%= resourceClassName%>CreateUpdateComponent 
   implements
@@ -29,40 +26,48 @@ export class <%= resourceClassName%>CreateUpdateComponent
     DialogButtonClicked<<%= resourceClassName%>CreateUpdateComponent>,
     OnInit {
 
-  @Input() public vm: <%= resourceClassName%>CreateUpdateViewModel = {
-    itemToEdit: undefined,
-  };
-  
+  vm = input<<%= resourceClassName%>CreateUpdateViewModel>({
+    itemToEdit: undefined
+  })
+
+  formStatus = signal(false)
+
   public formGroup: FormGroup;  
   
-  primaryButtonEnabled: EventEmitter<boolean> = new EventEmitter();
-  dialogResult: <%= resource %> | undefined = undefined;;
+  primaryButtonEnabled = new Subject<boolean>()
+  primaryButtonEnabledEvent = new EventEmitter<boolean>()
+
+  dialogResult: <%= resource %> | undefined = undefined
 
   constructor() {
     this.formGroup = new FormGroup({
       changeMe: new FormControl(null, [Validators.maxLength(255)]),
       // ACTION C3: Add form fields
-    });
-    this.formGroup.statusChanges
-      .pipe(
-        map((status) => {
-          return status === 'VALID';
-        })
-      )
-      .subscribe(this.primaryButtonEnabled);
+    })
+
+    this.formStatus.set(this.formGroup.status === 'VALID')
+
+    this.formGroup.statusChanges.subscribe(() => {
+      this.formStatus.set(this.formGroup.status === 'VALID')
+    })
+
+    effect(() => {
+      this.primaryButtonEnabled.next(formStatus())
+      this.primaryButtonEnabledEvent.emit(formStatus())
+    })
   }
 
   ocxDialogButtonClicked() {
     this.dialogResult = {
-      ...this.vm.itemToEdit,
+      ...this.vm()?.itemToEdit,
       ...this.formGroup.value,
     };
   }
 
   ngOnInit() {
-    if (this.vm.itemToEdit) {
+    if (this.vm()?.itemToEdit) {
       this.formGroup.patchValue({
-        ...this.vm.itemToEdit,
+        ...this.vm().itemToEdit,
       });
     }
   }

@@ -1,21 +1,20 @@
-import { Component, OnInit, inject } from '@angular/core';
-import { Store } from '@ngrx/store';
-import { Observable, map } from 'rxjs'
-import { TranslatePipe } from '@ngx-translate/core';
+import { Component, OnInit, inject, effect, computed } from '@angular/core'
+import { Store } from '@ngrx/store'
+import { toSignal } from '@angular/core/rxjs-interop'
+import { TranslatePipe } from '@ngx-translate/core'
 import {
   Action,
   BreadcrumbService,
   ObjectDetailItem,
-} from '@onecx/angular-accelerator';
+} from '@onecx/angular-accelerator'
 
-import { select<%= resourceClassName %>DetailsViewModel } from './<%= resourceFileName %>-details.selectors';
-import { <%= resourcePropertyName %>DetailsActions } from './<%= resourceFileName %>-details.actions';
+import { select<%= resourceClassName %>DetailsViewModel } from './<%= resourceFileName %>-details.selectors'
+import { <%= resourcePropertyName %>DetailsActions } from './<%= resourceFileName %>-details.actions'
+import { PrimeIcons } from 'primeng/api';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import {
   <%= resourceClassName %>DetailsViewModel
 } from './<%= resourceFileName %>-details.viewmodel';
-import { PrimeIcons } from 'primeng/api';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
-
 @Component({
   selector: 'app-<%= resourceFileName %>-details',
   templateUrl: './<%= resourceFileName %>-details.component.html',
@@ -23,27 +22,25 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
   standalone: false,
 })
 export class <%= resourceClassName %>DetailsComponent implements OnInit {
-  private readonly store = inject(Store);
-  private readonly breadcrumbService = inject(BreadcrumbService);
+  private readonly store = inject(Store)
+  private readonly breadcrumbService = inject(BreadcrumbService)
 
-  viewModel$: Observable<<%= resourceClassName %>DetailsViewModel> = this.store.select(select<%= resourceClassName %>DetailsViewModel);
-  headerLabels$: Observable<ObjectDetailItem[]> = this.viewModel$.pipe(
-    map((vm) => {
-      const labels: ObjectDetailItem[] = [
-        //ACTION D1: Add header values here
-        {
-          label: '<%= featureConstantName %>_DETAILS.FORM.ID',
-          labelPipe: TranslatePipe,
-          value: vm.details?.id,
-        },
-      ];
-      return labels;
-    })
-  );
+  viewModel = toSignal<<%= resourceClassName %>DetailsViewModel>(this.store.select(select<%= resourceClassName %>DetailsViewModel), { initialValue: null })
 
-  headerActions$: Observable<Action[]> = this.viewModel$.pipe(
-      map((vm) => {
-        const actions: Action[] = [
+  headerLabels = computed(() => {
+    const vm = this.viewModel()
+    const labels: ObjectDetailItem[] = [{
+      label: '<%= featureConstantName %>_DETAILS.FORM.ID',
+      labelPipe: TranslatePipe,
+      value: vm?.details?.id
+    }]
+
+    return labels
+  })
+
+  headerActions = computed(() => {
+    const vm = this.viewModel() || {}
+    const actions: Action[] = [
           {
             titleKey: '<%= resourceConstantName %>_DETAILS.GENERAL.BACK',
             labelKey: '<%= resourceConstantName %>_DETAILS.GENERAL.BACK',
@@ -123,8 +120,7 @@ export class <%= resourceClassName %>DetailsComponent implements OnInit {
           },
         ];
         return actions;
-      })
-    );
+  })
 
   <%_ if(editMode){ _%>
   public formGroup: FormGroup
@@ -135,21 +131,24 @@ export class <%= resourceClassName %>DetailsComponent implements OnInit {
      this.formGroup = new FormGroup({
       id: new FormControl(null, [Validators.maxLength(255)]),
     })
-    this.formGroup.disable();
+    this.formGroup.disable()
 
-    this.viewModel$.subscribe((vm) => {
-      if (!vm.editMode) {
-        this.formGroup.patchValue({
-          id: vm.details?.id
-        })
-        this.formGroup.markAsPristine();
-      }
+    effect(() => {
+      const vm = this.viewModel()
+        if (!vm) return;
 
-      if (vm.editMode) {
-        this.formGroup.enable()
-      } else {
-        this.formGroup.disable()
-      }
+        if (!vm.editMode) {
+            this.formGroup.patchValue({
+                id: vm.details?.id
+            })
+            this.formGroup.markAsPristine()
+        }
+
+        if (vm.editMode) {
+            this.formGroup.enable()
+        } else {
+            this.formGroup.disable()
+        }
     })
   }
   <%_ } _%>

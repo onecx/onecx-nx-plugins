@@ -1,7 +1,6 @@
 <ocx-portal-page 
   <% if(!standalone){ %> permission="<%= resourceConstantName %>#SEARCH" <% } %>
-  [helpArticleId]="'<%= resourceConstantName %>_SEARCH.HELP_ARTICLE_ID' | translate" 
-  *ngrxLet="viewModel$; let vm"
+  [helpArticleId]="'<%= resourceConstantName %>_SEARCH.HELP_ARTICLE_ID' | translate"
 >
   <ocx-search-header
     [header]="'<%= resourceConstantName %>_SEARCH.HEADER' | translate"
@@ -9,9 +8,9 @@
     (searched)="search(<%= resourcePropertyName %>SearchFormGroup)"
     (resetted)="resetSearch()"
     [manualBreadcrumbs]="true"
-    [actions]="(headerActions$ | async) ?? []"        
+    [actions]="headerActions()"        
     (componentStateChanged)="searchHeaderComponentStateChanged($event)"
-    [viewMode]="vm.searchHeaderComponentState?.activeViewMode ?? 'basic'"
+    [viewMode]="viewModel()?.searchHeaderComponentState?.activeViewMode ?? 'basic'"
     [attr.aria-label]="'<%= resourceConstantName%>_SEARCH.ARIA_LABEL' | translate"
   >
     <form [formGroup]="<%= resourcePropertyName %>SearchFormGroup">
@@ -46,36 +45,36 @@
   <ocx-content-container layout="horizontal">
     <ocx-content class="w-full">
       <ocx-interactive-data-view
-        [data]="vm.results"
-        [columns]="vm.columns"
+        [data]="viewModel()?.results ?? []"
+        [columns]="viewModel()?.columns ?? []"
         [emptyResultsMessage]="'<%= resourceConstantName %>_SEARCH.EMPTY_RESULTS' | translate"
         (componentStateChanged)="resultComponentStateChanged($event)"
-        [layout]="vm.resultComponentState?.layout ?? 'list'"
+        [layout]="viewModel()?.resultComponentState?.layout ?? 'list'"
         [supportedViewLayouts]="['list', 'table']"
-        [page]="vm.resultComponentState?.activePage ?? 0"
-        [pageSize]="vm.resultComponentState?.pageSize"
-        [filters]="vm.resultComponentState?.filters ?? []"
-        [sortField]="vm.resultComponentState?.sorting?.sortColumn"
-        [sortDirection]="vm.resultComponentState?.sorting?.sortDirection ?? defaultDataSortDirection"
-        [selectedRows]="vm.resultComponentState?.selectedRows?? []"
-        [defaultGroupKey]="vm.resultComponentState?.activeColumnGroupKey ?? ''"
-        [actionColumnPosition]="vm.resultComponentState?.actionColumnConfig?.position?? 'right'"
-        [frozenActionColumn]="vm.resultComponentState?.actionColumnConfig?.frozen ?? false"
+        [page]="viewModel()?.resultComponentState?.activePage ?? 0"
+        [pageSize]="viewModel()?.resultComponentState?.pageSize"
+        [filters]="viewModel()?.resultComponentState?.filters ?? []"
+        [sortField]="viewModel()?.resultComponentState?.sorting?.sortColumn"
+        [sortDirection]="viewModel()?.resultComponentState?.sorting?.sortDirection ?? defaultDataSortDirection"
+        [selectedRows]="viewModel()?.resultComponentState?.selectedRows?? []"
+        [defaultGroupKey]="viewModel()?.resultComponentState?.activeColumnGroupKey ?? ''"
+        [actionColumnPosition]="viewModel()?.resultComponentState?.actionColumnConfig?.position?? 'right'"
+        [frozenActionColumn]="viewModel()?.resultComponentState?.actionColumnConfig?.frozen ?? false"
         [attr.aria-label]="'<%= resourceConstantName%>_SEARCH.RESULTS.NAME' | translate"
       >
       </ocx-interactive-data-view>
     </ocx-content>
-    @if (vm.results.length > 0 && vm.chartVisible && (diagramColumn$ | async)) {
+    @if ((viewModel()?.results?.length ?? 0) > 0 && viewModel()?.chartVisible && diagramColumn()) {
     <ocx-content class="w-full lg:w-3">
       <div
         class="flex flex-column md:flex-row lg:flex-column justify-content-center"
       >
-        @if (diagramColumn$ | async; as diagramColumn) {
+        @if (diagramColumn()) {
         <ocx-group-by-count-diagram          
-          [data]="vm.results"
-          [column]="diagramColumn"
+          [data]="viewModel()?.results ?? []"
+          [column]="diagramColumn()"
           sumKey="<%= resourceConstantName %>_SEARCH.DIAGRAM.SUM"
-          [diagramType]="vm.diagramComponentState?.activeDiagramType ?? defaultDiagramType"
+          [diagramType]="viewModel()?.diagramComponentState?.activeDiagramType ?? defaultDiagramType"
           (componentStateChanged)="diagramComponentStateChanged($event)"
           [attr.aria-label]="'<%= resourceConstantName %>_SEARCH.DIAGRAM.NAME' | translate"
         ></ocx-group-by-count-diagram>

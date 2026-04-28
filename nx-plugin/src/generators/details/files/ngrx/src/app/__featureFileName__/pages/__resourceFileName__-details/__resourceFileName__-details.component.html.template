@@ -1,21 +1,20 @@
 <ocx-portal-page
   <% if(!standalone){ %> permission="<%= resourceConstantName %>#VIEW" <% } %>
-  [helpArticleId]="'<%= resourceConstantName %>_DETAILS.HELP_ARTICLE_ID' | translate" 
-  *ngrxLet="viewModel$; let vm"
->
-  @if (vm.detailsLoadingIndicator) {
+  [helpArticleId]="'<%= resourceConstantName %>_DETAILS.HELP_ARTICLE_ID' | translate"
+  >
+  @if (viewModel()?.detailsLoadingIndicator) {
     <ocx-loading-indicator> </ocx-loading-indicator>
   }
-  @if (!vm.detailsLoaded && !vm.detailsLoadingIndicator) {
+  @if (!viewModel()?.detailsLoaded && !viewModel()?.detailsLoadingIndicator) {
     <ocx-error> </ocx-error>
   }
-  @if (vm.detailsLoaded && !vm.detailsLoadingIndicator) {
+  @if (viewModel()?.detailsLoaded && !viewModel()?.detailsLoadingIndicator) {
   <div>  
   <ocx-page-header
     [header]="'<%= resourceConstantName %>_DETAILS.HEADER' | translate"
     [subheader]="'<%= resourceConstantName %>_DETAILS.SUB_HEADER' | translate"
-    [objectDetails]="(headerLabels$ | async) ?? []"
-    [actions]="(headerActions$ | async) ?? []"
+    [objectDetails]="headerLabels()"
+    [actions]="headerActions()"
     [disableDefaultActions]="true"
     [manualBreadcrumbs]="true"
     [attr.aria-label]="'<%= resourceConstantName%>_DETAILS.FORM.NAME' | translate"

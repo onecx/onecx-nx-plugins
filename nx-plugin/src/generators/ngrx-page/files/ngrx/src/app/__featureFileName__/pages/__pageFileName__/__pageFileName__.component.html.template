@@ -1,5 +1,4 @@
-<ocx-portal-page 
-  *ngrxLet="viewModel$; let vm"
+<ocx-portal-page
   role="main"
   permission="<%= pageConstantName %>#VIEW" %>
   helpArticleId="PAGE_<%= featureConstantName %>_<%= pageConstantName %>" 
