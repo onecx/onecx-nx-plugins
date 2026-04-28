@@ -52,8 +52,8 @@ export class <%= resourceClassName%>CreateUpdateComponent
     })
 
     effect(() => {
-      this.primaryButtonEnabled.next(formStatus())
-      this.primaryButtonEnabledEvent.emit(formStatus())
+      this.primaryButtonEnabled.next(this.formStatus())
+      this.primaryButtonEnabledEvent.emit(this.formStatus())
     })
   }
 

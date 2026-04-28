@@ -39,16 +39,16 @@ export class <%= resourceClassName %>DetailsComponent implements OnInit {
   })
 
   headerActions = computed(() => {
-    const vm = this.viewModel() || {}
+    const vm = this.viewModel()
     const actions: Action[] = [
           {
             titleKey: '<%= resourceConstantName %>_DETAILS.GENERAL.BACK',
             labelKey: '<%= resourceConstantName %>_DETAILS.GENERAL.BACK',
             show: 'always',
-            disabled: !vm.backNavigationPossible,
+            disabled: !vm?.backNavigationPossible,
             permission: '<%= resourceConstantName %>#BACK',
             <%_ if(editMode){ _%> 
-            showCondition: !vm.editMode,
+            showCondition: !vm?.editMode,
             <%_ } _%>
             actionCallback: () => {
               this.store.dispatch(
@@ -63,7 +63,7 @@ export class <%= resourceClassName %>DetailsComponent implements OnInit {
             show: 'always',
             icon: PrimeIcons.PENCIL,
             conditional: true,
-            showCondition: !vm.editMode,
+            showCondition: !vm?.editMode,
             actionCallback: () => {
               this.edit()
             }
@@ -74,8 +74,8 @@ export class <%= resourceClassName %>DetailsComponent implements OnInit {
             show: 'always',
             icon: PrimeIcons.TIMES,
             conditional: true,
-            showCondition: vm.editMode,
-            disabled: vm.isSubmitting,
+            showCondition: vm?.editMode,
+            disabled: vm?.isSubmitting,
             actionCallback: () => {
               this.cancel()
             }
@@ -86,8 +86,8 @@ export class <%= resourceClassName %>DetailsComponent implements OnInit {
             show: 'always',
             icon: PrimeIcons.SAVE,
             conditional: true,
-            disabled: vm.isSubmitting,
-            showCondition: vm.editMode,
+            disabled: vm?.isSubmitting,
+            showCondition: vm?.editMode,
             actionCallback: () => {
               this.save()
             }
@@ -102,7 +102,7 @@ export class <%= resourceClassName %>DetailsComponent implements OnInit {
               btnClass: '',
               conditional: true,
               <%_ if(editMode){ _%>
-              showCondition: !vm.editMode,
+              showCondition: !vm?.editMode,
               <%_ } _%> 
               actionCallback: () => {
                 this.delete()
@@ -137,14 +137,14 @@ export class <%= resourceClassName %>DetailsComponent implements OnInit {
       const vm = this.viewModel()
         if (!vm) return;
 
-        if (!vm.editMode) {
+        if (!vm?.editMode) {
             this.formGroup.patchValue({
-                id: vm.details?.id
+                id: vm?.details?.id
             })
             this.formGroup.markAsPristine()
         }
 
-        if (vm.editMode) {
+        if (vm?.editMode) {
             this.formGroup.enable()
         } else {
             this.formGroup.disable()

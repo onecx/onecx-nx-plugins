@@ -78,7 +78,7 @@ export class <%= resourceClassName %>SearchComponent implements OnInit {
   diagramColumn = computed(() =>
     this.viewModel()?.columns.find(
       (e) => e.id === this.diagramColumnId
-    ) as DiagramColumn | undefined
+    ) as DiagramColumn
   )
   public <%= resourcePropertyName %>SearchFormGroup: FormGroup = this.formBuilder.group(
       {
