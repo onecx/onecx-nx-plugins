@@ -27,7 +27,10 @@ export class AppEntrypointComponent {
   constructor() {
     effect(() => {
       const translations = this.translation()
-      if (translations && typeof translations === 'object' && !Array.isArray(translations)) this.config.setTranslation(translations)
+      if (translations && typeof translations === 'object' && !Array.isArray(translations))
+      {
+        this.config.setTranslation(translations)
+      }
     })
   }
 }

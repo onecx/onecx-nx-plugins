@@ -137,14 +137,14 @@ export class <%= resourceClassName %>DetailsComponent implements OnInit {
       const vm = this.viewModel()
         if (!vm) return;
 
-        if (!vm?.editMode) {
+        if (!vm.editMode) {
             this.formGroup.patchValue({
                 id: vm?.details?.id
             })
             this.formGroup.markAsPristine()
         }
 
-        if (vm?.editMode) {
+        if (vm.editMode) {
             this.formGroup.enable()
         } else {
             this.formGroup.disable()

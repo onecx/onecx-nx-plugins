@@ -41,7 +41,7 @@ export class <%= resourceClassName %>SearchComponent implements OnInit {
   calendars = viewChildren(DatePicker)
   viewModel = toSignal<<%= resourceClassName %>SearchViewModel>(
     this.store.select(select<%= resourceClassName %>SearchViewModel),
-    { initialValue: undefined }
+    { initialValue: null }
   )
 
   headerActions = computed(() => {

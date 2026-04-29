@@ -1,7 +1,6 @@
 import { Component, effect, EventEmitter, input, OnInit, signal } from '@angular/core';
 
-import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Subject } from 'rxjs';
+import { FormControl, FormGroup, Validators, FormControlStatus } from '@angular/forms';
 
 import {
   DialogPrimaryButtonDisabled,
@@ -30,12 +29,15 @@ export class <%= resourceClassName%>CreateUpdateComponent
     itemToEdit: undefined
   })
 
-  formStatus = signal(false)
+  formStatus = toSignal(this.form.statusChanges, {
+    initialValue: this.form.status
+  })
 
-  public formGroup: FormGroup;  
+  public formGroup: FormGroup;
+  public formStatus: Signal<FormControlStatus>;
   
-  primaryButtonEnabled = new Subject<boolean>()
-  primaryButtonEnabledEvent = new EventEmitter<boolean>()
+  
+  primaryButtonEnabled: EventEmitter<boolean> = new EventEmitter();
 
   dialogResult: <%= resource %> | undefined = undefined
 
@@ -45,15 +47,13 @@ export class <%= resourceClassName%>CreateUpdateComponent
       // ACTION C3: Add form fields
     })
 
-    this.formStatus.set(this.formGroup.status === 'VALID')
-
-    this.formGroup.statusChanges.subscribe(() => {
-      this.formStatus.set(this.formGroup.status === 'VALID')
-    })
+    this.formStatus = toSignal(this.form.statusChanges, {
+      initialValue: this.form.status
+    });
 
     effect(() => {
-      this.primaryButtonEnabled.next(this.formStatus())
-      this.primaryButtonEnabledEvent.emit(this.formStatus())
+      const isValid = this.formStatus() === 'VALID';
+      this.primaryButtonEnabled.emit(isValid)
     })
   }
 
