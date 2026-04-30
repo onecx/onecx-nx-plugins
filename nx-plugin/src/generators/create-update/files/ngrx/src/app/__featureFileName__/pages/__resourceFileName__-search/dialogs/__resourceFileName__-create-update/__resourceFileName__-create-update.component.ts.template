@@ -29,10 +29,6 @@ export class <%= resourceClassName%>CreateUpdateComponent
     itemToEdit: undefined
   })
 
-  formStatus = toSignal(this.form.statusChanges, {
-    initialValue: this.form.status
-  })
-
   public formGroup: FormGroup;
   public formStatus: Signal<FormControlStatus>;
   
@@ -47,8 +43,8 @@ export class <%= resourceClassName%>CreateUpdateComponent
       // ACTION C3: Add form fields
     })
 
-    this.formStatus = toSignal(this.form.statusChanges, {
-      initialValue: this.form.status
+    this.formStatus = toSignal(this.formGroup.statusChanges, {
+      initialValue: this.formGroup.status
     });
 
     effect(() => {

@@ -1,4 +1,4 @@
-import { Component, computed, effect, inject, LOCALE_ID, OnInit, viewChildren } from '@angular/core'
+import { Component, computed, effect, inject, LOCALE_ID, OnInit, viewChildren, Signal } from '@angular/core'
 import { FormBuilder, FormGroup } from '@angular/forms'
 import { Store } from '@ngrx/store'
 import { PrimeIcons } from 'primeng/api'
@@ -104,7 +104,7 @@ export class <%= resourceClassName %>SearchComponent implements OnInit {
       {
         titleKey: '<%= resourceConstantName %>_SEARCH.BREADCRUMB',
         labelKey: '<%= resourceConstantName %>_SEARCH.BREADCRUMB',
-        routerLink: '//<%= resourceFileName %>'
+        routerLink: '/<%= resourceFileName %>'
       }
     ])
   }
