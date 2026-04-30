@@ -1,4 +1,4 @@
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core'
+import { CUSTOM_ELEMENTS_SCHEMA, signal } from '@angular/core'
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
@@ -297,6 +297,7 @@ describe('<%= resourceClassName %>DetailsComponent', () => {
       details: { id: '123' },
     });
     store.refreshState();
+    fixture.detectChanges()
 
     expect(markAsPristineSpy).toHaveBeenCalledTimes(1);
     expect(disableSpy).toHaveBeenCalledTimes(1);
@@ -327,7 +328,7 @@ describe('<%= resourceClassName %>DetailsComponent', () => {
   });
 
   it('should display item details in page header', async () => {
-    component.headerLabels$ = of([
+    component.headerLabels = signal([
        {
         label: '<%= resourceConstantName %>_DETAILS.FORM.ID',
         labelPipe: TranslatePipe,

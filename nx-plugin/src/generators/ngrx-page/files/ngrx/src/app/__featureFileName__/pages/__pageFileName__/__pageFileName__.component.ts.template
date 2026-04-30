@@ -1,9 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
 
 import { select<%= pageClassName %>ViewModel } from './<%= pageFileName %>.selectors';
 import { <%= pageClassName %>ViewModel } from './<%= pageFileName %>.viewmodel';
+import { toSignal } from '@angular/core/rxjs-interop'
 
 @Component({
   selector: 'app-<%= pageFileName %>',
@@ -12,12 +12,9 @@ import { <%= pageClassName %>ViewModel } from './<%= pageFileName %>.viewmodel';
   standalone: false,
 })
 export class <%= pageClassName %>Component {
-  viewModel$: Observable<<%= pageClassName %>ViewModel>;
-
-  constructor(
-    private readonly store: Store,
-  ) {
-    this.viewModel$ = this.store.select(select<%= pageClassName %>ViewModel);
-  }
-
+  private readonly store = inject(Store)
+  viewModel = toSignal<<%= pageClassName %>ViewModel>(
+    this.store.select(select<%= pageClassName %>ViewModel),
+    { initialValue: null }
+  )
 }
