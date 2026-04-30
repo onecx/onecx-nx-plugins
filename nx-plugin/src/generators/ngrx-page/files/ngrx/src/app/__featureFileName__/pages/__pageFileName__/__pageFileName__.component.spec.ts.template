@@ -1,5 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core'
 import { LetDirective } from '@ngrx/component';
+import { TranslateModule } from '@ngx-translate/core';
 import { StoreModule } from '@ngrx/store';
 import { <%= pageClassName %>Component } from './<%= pageFileName %>.component';
 
@@ -10,6 +12,7 @@ describe('<%= pageClassName %>Component', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [<%= pageClassName %>Component],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
       imports: [LetDirective, StoreModule.forRoot({}), TranslateModule.forRoot()],
     }).compileComponents();
 
