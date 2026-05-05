@@ -59,6 +59,7 @@ The next steps involve adapting the search component to your specific requiremen
 . xref:./search/search-results.adoc[Configure Search Results]
 . xref:./search/result-diagram.adoc[Configure Result Diagram]
 . xref:./search/header-actions.adoc[Configure Header Actions]
+. xref:./search/search-tests.adoc[Configure Search Tests]
 . xref:./search/mock-api.adoc[Prepare Mock Data]
 
 .All places that need to be adapted are marked with an action box like this one

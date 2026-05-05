@@ -1,0 +1,108 @@
+ifdef::env-site[]
+include::partial$_attributes.adoc[]
+endif::[]
+:imagesdir: ../../../images
+
+:page_header_url: xref:documentation:onecx-portal-ui-libs:components/page-header.adoc
+:search_header_url: xref:documentation:onecx-portal-ui-libs:components/search-header.adoc
+
+= Configure Search Tests
+
+[#action-11]
+== ACTION S11
+
+Configure Search Tests::
+In alignment to the adaptations made in the search component, you will also need to adapt the generated tests for the search component. +
+This includes updating the test data and expected results in the spec files to reflect the changes made to the search component, such as the column definitions and the structure of the search results. +
+This ensures that the tests accurately validate the functionality of the search component based on the customized implementation.
+
+[discrete]
+=== Template: Search Selectors Test
+
+[horizontal]
+Directory:: `<root-of-ui-app>/src/app/<feature>/pages/<resource>-search`
+File::      `<resource>-search.selectors.spec.ts`
+
+.ACTION S11 in `+<resource>-search.selectors.spec.ts+`
+[%collapsible]
+====
+[source, javascript]
+----
+describe('<%= resourceClassName %>Search selectors', () => {
+  describe('selectResults projector', () => {
+    // ACTION S11: Update test data
+    const cases = [
+      {
+        desc: 'should map results to RowListGridData[]',
+        input: [
+          { id: '1', changeMe: 'A' },
+          { id: '2', changeMe: 'B' }
+        ],
+        expected: [
+          { imagePath: '', id: '1', changeMe: 'A' },
+          { imagePath: '', id: '2', changeMe: 'B' }
+        ]
+      },
+      {
+        desc: 'should use empty string fallback when item.id is falsy',
+        input: [
+          { id: '', changeMe: 'A' },
+          { id: '', changeMe: 'B' },
+          { id: '', changeMe: 'C' }
+        ],
+        expected: [
+          { imagePath: '', id: '', changeMe: 'A' },
+          { imagePath: '', id: '', changeMe: 'B' },
+          { imagePath: '', id: '', changeMe: 'C' }
+        ]
+      }
+    ]
+...
+----
+====
+
+
+[discrete]
+=== Example
+
+[horizontal]
+Directory:: `bookstore/src/app/book/pages/book-search`
+File::      `book-search.selectors.spec.ts`
+  
+.ACTION S11 in `+book-search.selectors.spec.ts+`
+[%collapsible]
+====
+[source, javascript]
+----
+describe('BookSearch selectors', () => {
+  describe('selectResults projector', () => {
+    // ACTION S11: Update test data
+    const cases = [
+      {
+        desc: 'should map results to RowListGridData[]',
+        input: [
+          { id: '1', bookTitle: 'Book A', bookType: 'crime' },
+          { id: '2', bookTitle: 'Book B' }
+        ] as Book[],
+        expected: [
+          { imagePath: '', id: '1', bookTitle: 'Book A', bookType: 'BOOK_SEARCH.RESULTS.BOOK_TYPES.CRIME' },
+          { imagePath: '', id: '2', bookTitle: 'Book B', bookType: '' }
+        ]
+      },
+      {
+        desc: 'should use empty string fallback when item.id is falsy',
+        input: [
+          { id: '', bookType: 'crime', bookTitle: 'Book A' },
+          { id: '', bookType: 'mystery', bookTitle: 'Book B' },
+          { id: '', bookType: 'fantasy', bookTitle: 'Book C' }
+        ] as Book[],
+        expected: [
+          { imagePath: '', id: '', bookType: 'BOOK_SEARCH.RESULTS.BOOK_TYPES.CRIME', bookTitle: 'Book A' },
+          { imagePath: '', id: '', bookType: 'BOOK_SEARCH.RESULTS.BOOK_TYPES.MYSTERY', bookTitle: 'Book B' },
+          { imagePath: '', id: '', bookType: 'BOOK_SEARCH.RESULTS.BOOK_TYPES.FANTASY', bookTitle: 'Book C' }
+        ]
+      }
+    ]
+...
+----
+====
