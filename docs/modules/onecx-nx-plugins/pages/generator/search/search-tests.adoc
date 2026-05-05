@@ -170,3 +170,16 @@ describe('BookSearch selectors', () => {
 ...
 ----
 ====
+
+'''
+
+=== Execute Tests
+After adapting the tests, you can execute them to ensure that they are working correctly and validating the functionality of the search component as expected. +
+Use the following command to run the tests for the search component:
+
+[source, bash]
+----
+npm run test
+----
+This will execute the test suite and provide feedback on the success or failure of the tests based on the adapted test cases and expected results. +
+Make sure to review the test results and address any issues that may arise to ensure that your search component is functioning correctly and meets the desired requirements.
