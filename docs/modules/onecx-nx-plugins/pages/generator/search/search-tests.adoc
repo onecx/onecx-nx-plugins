@@ -12,12 +12,77 @@ endif::[]
 == ACTION S11
 
 Configure Search Tests::
-In alignment to the adaptations made in the search component, you will also need to adapt the generated tests for the search component. +
-This includes updating the test data and expected results in the spec files to reflect the changes made to the search component, such as the column definitions and the structure of the search results. +
+In alignment to the adaptations made in the search component, you will also need to adapt the generated tests for the search component. This includes updating the test data and expected results in the spec files to reflect the changes made to the search component, such as the column definitions and the structure of the search results. +
 This ensures that the tests accurately validate the functionality of the search component based on the customized implementation.
 
-[discrete]
-=== Template: Search Selectors Test
+'''
+
+=== Search Component
+
+==== Template
+
+Replace all occurrences of `changeMe` in the generated search component spec file with the actual property name used in the search criteria and search results. +
+Update the test data in the spec file to reflect the expected structure and values based on the customized search component implementation.
+
+[horizontal]
+Directory:: `<root-of-ui-app>/src/app/<feature>/pages/<resource>-search`
+File::      `<resource>-search.component.spec.ts`
+
+.ACTION S11 in `+<resource>-search.component.spec.ts+`
+[%collapsible]
+====
+[source, javascript]
+----
+  const base<%= resourceClassName %>SearchViewModel: <%= resourceClassName %>SearchViewModel = {
+    columns: <%= resourcePropertyName %>SearchColumns,
+    searchCriteria: { changeMe: '0' },
+    searchExecuted: true,
+    results: [],
+    searchLoadingIndicator: false,
+    diagramComponentState: null,
+    resultComponentState: null,
+    searchHeaderComponentState: null,
+    chartVisible: false,
+  };
+...
+----
+26 occurances of `changeMe` must be replaced by `bookTitle`.
+====
+
+==== Example: Book Search
+
+[horizontal]
+Directory:: `bookstore/src/app/book/pages/book-search`
+File::      `book-search.component.spec.ts`
+  
+.ACTION S11 in `+book-search.component.spec.ts+`
+[%collapsible]
+====
+[source, javascript]
+----
+  const baseBookSearchViewModel: BookSearchViewModel = {
+    columns: bookSearchColumns,
+    searchCriteria: { bookTitle: '0' },
+    searchExecuted: true,
+    results: [],
+    searchLoadingIndicator: false,
+    diagramComponentState: null,
+    resultComponentState: null,
+    searchHeaderComponentState: null,
+    chartVisible: false
+  }
+...
+----
+26 occurances of `changeMe` were replaced by `bookTitle`.
+====
+
+'''
+
+=== Search Selectors
+
+==== Template
+Replace all occurrences of `changeMe` in the generated search selectors spec file with the actual property name used in the search results. +
+Update the test data in the spec file to reflect the expected structure and values based on the customized search component implementation.
 
 [horizontal]
 Directory:: `<root-of-ui-app>/src/app/<feature>/pages/<resource>-search`
@@ -62,8 +127,7 @@ describe('<%= resourceClassName %>Search selectors', () => {
 ====
 
 
-[discrete]
-=== Example
+==== Example: Book Search
 
 [horizontal]
 Directory:: `bookstore/src/app/book/pages/book-search`

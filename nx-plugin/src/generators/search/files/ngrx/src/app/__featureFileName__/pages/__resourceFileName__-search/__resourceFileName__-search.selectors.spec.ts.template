@@ -3,7 +3,6 @@ import * as selectors from './<%= resourceFileName %>-search.selectors'
 
 describe('<%= resourceClassName %>Search selectors', () => {
   describe('selectResults projector', () => {
-    // ACTION S11: Update test data
     const cases = [
       {
         desc: 'should map results to RowListGridData[]',
