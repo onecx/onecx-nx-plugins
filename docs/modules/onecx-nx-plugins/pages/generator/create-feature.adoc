@@ -6,8 +6,7 @@ endif::[]
 = Create a Feature Module
 
 What is a Feature Module?::
-A Feature Module is a modular unit of functionality that encapsulates a specific feature or set of related features within an UI Application. It is designed to promote code reusability, maintainability, and separation of concerns by grouping related components, services, and state management logic together. +
-In Angular, feature modules are NgModules for the purpose of organizing code.
+include::partial$_glossary.adoc[tag=feature-module]
 
 [NOTE]
 ====
@@ -61,6 +60,7 @@ You can further customize the routing configuration as needed after the generati
 
 == Example
 
+=== Create a Feature Module
 Create a feature module *book* inside the application named *bookstore* to manage book data. +
 Execute the following command with the *bookstore* application as current working directory. Define the resource name as *Book* to generate a feature module for managing the entity *Book*.
 
@@ -75,6 +75,10 @@ The preset resource name *Book* will be used to derive the names for the generat
 
 .Excerpt of generated files and directories
 image::generated_feature_book.png[width=200]
+
+=== Routing
+The generator will add a new route to the application's main routing module (e.g. `app-routing.module.ts`) to lazy load the *book* feature module when the `/book/` route is accessed. +
+You can further customize the routing configuration as needed after the generation, e.g., to add child routes for different components within the *book* feature module.
 
 .Routing Configuration in app-routing.module.ts
 [source,javascript]

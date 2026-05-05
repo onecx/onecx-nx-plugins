@@ -1,0 +1,46 @@
+# tag::ui-app[]
+A UI App is a microfrontend application built using modern web technologies such as {angular_link} or {react_link}. Such application is designed to seamlessly integrate with the OneCX platform, providing a consistent user experience across different modules and features. +
+Within the OneCX ecosystem, a UI App typically serves as the *front-end interface* for users to interact with various functionalities offered by OneCX. It can be a standalone application or part of a larger suite of applications, and it communicates with backend services to fetch and display data, handle user inputs, and perform various operations.
+# end::ui-app[]
+
+
+# tag::feature[]
+A feature is a specific functionality or capability within an application that serves a particular purpose or addresses a specific user need. It represents a distinct aspect of the application's functionality and can be developed, tested, and deployed independently. 
+
+In the context of the OneCX App Generator, a feature typically corresponds to a *feature module* in an {angular_link} application, which encapsulates all the components, services, and state management related to that specific feature.
+
+When it is defined as `+<Feature>+`, please start the name of your entity with a capital letter, in other cases defined as `+<feature>+` use lowercase.
+# end::feature[]
+
+
+# tag::feature-module[]
+A feature Module is a modular unit of functionality that encapsulates a specific feature or set of related features within an UI Application. It is designed to promote code reusability, maintainability, and separation of concerns by grouping related components, services, and state management logic together. +
+In {angular_link}, feature modules are *NgModules* for the purpose of organizing code.
+# end::feature-module[]
+
+
+# tag::entity[]
+An *entity* (*resource*) is a representation of a real-world object or concept that is relevant to the application's domain. It typically corresponds to a data model that defines the structure and properties of the entity, as well as the operations that can be performed on it. +
+The name is usually equal to <<feature, <Feature> >>. +
+The *entity/resource* is used in various places, e.g. for search results, details view, create and update requests. As it is shared, be cautious while making changes to it. If the *entity/resource* differs for different use cases, you can define multiple *entity/resources* in the <<entity-schema, <Entity Schema> >> and adjust the endpoints accordingly.
+# end::entity[]
+
+
+# tag::entity-schema[]
+An entity schema defines the structure of an *entity/resource*, including its properties and their types. It is used to ensure that the data for the entity is consistent and follows a defined format. The schema definition follows the OpenAPI specification. This is the basis for processing feature data, e.g., for searching, displaying, and modifying it. +
+At OneCX, we explicitly follow an *API-first approach*. In practice, this means that the {openapi_spec_link} file is created first, in which entities and the paths for requests/responses are described. The *OpenAPI* file serves as the basis for the implementation of the backend services and the frontend components.
+# end::entity-schema[]
+
+
+# tag::permission[]
+Permissions are a way *to control access* to certain features or actions within an application. They allow you to define who can perform specific actions based on their roles or other criteria. By configuring *permissions*, you can ensure that only authorized users can access sensitive data or perform critical operations, enhancing the security and integrity of your application. +
+The *permissions* are defined in the `values.yaml` file of the {helm_link} chart. This file contains a section for permissions where you can specify the actions that users can perform on different entities. +
+The `values.yaml` file is used by the OneCX permission operator during deployment to create the necessary permissions in the {permission_management_ref}.
+# end::permission[]
+
+
+# tag::component[]
+A Component is a reusable building block of the user interface in a UI Application. 
+It encapsulates the structure, behavior, and presentation of a specific part of the UI, allowing developers to create modular and maintainable applications. +
+Components can represent anything from a simple button or form field to complex data-driven views.
+# end::component[]
