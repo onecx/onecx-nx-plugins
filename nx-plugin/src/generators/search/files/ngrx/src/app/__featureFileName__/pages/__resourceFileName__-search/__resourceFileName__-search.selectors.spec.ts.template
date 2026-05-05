@@ -7,25 +7,25 @@ describe('<%= resourceClassName %>Search selectors', () => {
       {
         desc: 'should map results to RowListGridData[]',
         input: [
-          { id: '1', changeMe: 'A' },
-          { id: '2', changeMe: 'B' }
+          { id: '1', name: 'A', description: 'desc', vdb: 'vdb1', vdbCollection: 'c1' },
+          { id: '2', name: 'B', description: 'desc2', vdb: 'vdb2', vdbCollection: 'c2' }
         ],
         expected: [
-          { imagePath: '', id: '1', changeMe: 'A' },
-          { imagePath: '', id: '2', changeMe: 'B' }
+          { imagePath: '', id: '1', name: 'A', description: 'desc', vdb: 'vdb1', vdbCollection: 'c1' },
+          { imagePath: '', id: '2', name: 'B', description: 'desc2', vdb: 'vdb2', vdbCollection: 'c2' }
         ]
       },
       {
         desc: 'should use empty string fallback when item.id is falsy',
         input: [
-          { id: '', changeMe: 'A' },
-          { id: '', changeMe: 'B' },
-          { id: '', changeMe: 'C' }
+          { id: '', name: 'A', description: 'desc' },
+          { id: '', name: 'B', description: 'desc2' },
+          { id: '', name: 'C', description: 'desc3' }
         ],
         expected: [
-          { imagePath: '', id: '', changeMe: 'A' },
-          { imagePath: '', id: '', changeMe: 'B' },
-          { imagePath: '', id: '', changeMe: 'C' }
+          { imagePath: '', id: '', name: 'A', description: 'desc' },
+          { imagePath: '', id: '', name: 'B', description: 'desc2' },
+          { imagePath: '', id: '', name: 'C', description: 'desc3' }
         ]
       }
     ]
