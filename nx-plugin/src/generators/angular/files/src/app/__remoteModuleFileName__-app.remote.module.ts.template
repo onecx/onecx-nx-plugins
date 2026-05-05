@@ -18,7 +18,11 @@ import {
   PortalCoreModule
 } from '@onecx/portal-integration-angular';
 import { routes } from './app-routing.module';
+<% if(standalone){ %>
 import { commonImports } from './app.module';
+<% } else { %>
+import { CommonModule } from '@angular/common';
+<% } %>
 import { metaReducers, reducers } from './app.reducers';
 import { Configuration } from './shared/generated';
 import { SharedModule } from './shared/shared.module';
@@ -45,6 +49,10 @@ const effectProvidersForWorkaround = [
   Actions,
 ];
 effectProvidersForWorkaround.forEach(p => p.ɵprov.providedIn = null);
+
+<% if(!standalone){ %>
+export const commonImports = [CommonModule];
+<% } %>
 
 @NgModule({
   declarations: [

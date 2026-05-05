@@ -156,7 +156,9 @@ export async function searchGenerator(
   );
 
   const generatorProcessor = new GeneratorProcessor();
-  generatorProcessor.addStep(new AppModuleStep());
+  if(options.standalone){
+    generatorProcessor.addStep(new AppModuleStep());
+  }
   generatorProcessor.addStep(new AppReducerStep());
   generatorProcessor.addStep(new FeatureModuleStep());
   generatorProcessor.addStep(new FeatureRoutesStep());
