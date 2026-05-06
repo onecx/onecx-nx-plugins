@@ -6,11 +6,7 @@ endif::[]
 = Configure Permissions
 
 What are permissions?::
-Permissions are a way to control access to certain features or actions within an application. They allow you to define who can perform specific actions based on their roles or other criteria. By configuring permissions, you can ensure that only authorized users can access sensitive data or perform critical operations, enhancing the security and integrity of your application.
-
-Location of Permission definitions in UI App::
-The permissions are defined in the `values.yaml` file of the Helm chart. This file contains a section for permissions where you can specify the actions that users can perform on different entities. +
-The `values.yaml` file is used by the OneCX permission operator during deployment to create the necessary permissions in the {permission_management_ref}.
+include::partial$_glossary.adoc[tag=permission]
 
 Predefined Permissions for the Entity/Resource::
 The generator creates a set of predefined permissions for the entity/resource on feature generation: +
