@@ -85,6 +85,7 @@ describe('<%= resourceClassName %>SearchComponent', () => {
       data: {},
     },
   };
+  // ACTION S11: Change test data in the whole document
   const base<%= resourceClassName %>SearchViewModel: <%= resourceClassName %>SearchViewModel = {
     columns: <%= resourcePropertyName %>SearchColumns,
     searchCriteria: { changeMe: '0' },
@@ -190,44 +191,13 @@ describe('<%= resourceClassName %>SearchComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it.skip('should dispatch resetButtonClicked action on resetSearch', async () => {
-    const doneFn = jest.fn();
-    store.overrideSelector(select<%= resourceClassName %>SearchViewModel, {
-      ...base<%= resourceClassName %>SearchViewModel,
-      results: [
-        {
-          id: '1',
-          imagePath: '',
-          changeMe: 'val_1',
-        },
-      ],
-      columns: [
-        {
-          columnType: ColumnType.STRING,
-          id: 'changeMe',
-          nameKey: '<%= resourceConstantName %>_SEARCH.RESULTS.CHANGE_ME',
-          filterable: true,
-          sortable: true,
-          predefinedGroupKeys: [
-            '<%= resourceConstantName %>_SEARCH.PREDEFINED_GROUP.DEFAULT',
-            '<%= resourceConstantName %>_SEARCH.PREDEFINED_GROUP.EXTENDED',
-            '<%= resourceConstantName %>_SEARCH.PREDEFINED_GROUP.FULL'
-          ],
-        },
-      ],
-    });
-    store.refreshState();
+  it('should dispatch resetButtonClicked action on resetSearch', (done) => {
+    store.scannedActions$.pipe(ofType(<%= resourcePropertyName %>SearchActions.resetButtonClicked)).subscribe(() => {
+      done()
+    })
 
-    store.scannedActions$
-      .pipe(ofType(<%= resourcePropertyName %>SearchActions.resetButtonClicked))
-      .subscribe(() => {
-        doneFn();
-      });
-
-    const searchHeader = await <%= resourcePropertyName %>Search.getHeader();
-    await searchHeader.clickResetButton();
-    expect(doneFn).toHaveBeenCalledTimes(1);
-  });
+    component.resetSearch()
+  })
 
   it('should have 2 overFlow header actions when search config is disabled', async () => {
     const searchHeader = await <%= resourcePropertyName %>Search.getHeader();
