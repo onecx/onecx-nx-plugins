@@ -5,26 +5,39 @@ endif::[]
 
 = Glossary
 
-A collection of essential terms and concepts related to the OneCX App Generator, providing clear definitions and explanations to help users understand the key components and functionalities of the generator. This glossary serves as a reference guide for users to familiarize themselves with the terminology used throughout the documentation and in the context of generating feature modules with the OneCX App Generator.
+A collection of essential terms and concepts in the context of the *OneCX UI App Generator*.
+
+[#ui-app]
+== UI App
+include::partial$_glossary.adoc[tag=ui-app]
+
 
 [#feature]
 == Feature
+include::partial$_glossary.adoc[tag=feature]
 
-A feature is a specific functionality or capability within an application that serves a particular purpose or addresses a specific user need. It represents a distinct aspect of the application's functionality and can be developed, tested, and deployed independently. +In the context of the OneCX App Generator, a feature typically corresponds to a feature module in an Angular application, which encapsulates all the components, services, and state management related to that specific feature.
 
-When it is defined as `+<Feature>+`, please start the name of your entity with a capital letter, in other cases defined as `+<feature>+` use lowercase.
+[#feature-module]
+== Feature Module
+include::partial$_glossary.adoc[tag=feature-module]
 
 
 [#entity]
 [#resource]
-== Resource / Entity Schema
+== Entity / Resource
+include::partial$_glossary.adoc[tag=entity]
 
-The resource is a schema definition in the OpenAPI specification. It defines the properties of your entity and is named usually equal to <<feature, <Feature> >>. The resource is used in various places, e.g. for search results, details view, create and update requests. As it is shared, be cautious while making changes to it. If the resource differs for different use cases, you can define multiple resources in the OpenAPI specification and adjust the endpoints accordingly.
+
+[#entity-schema]
+== Entity Schema
+include::partial$_glossary.adoc[tag=entity-schema]
 
 
 [#permission]
 == Permission
-Permissions are a way to control access to certain features or actions within an application. They allow you to define who can perform specific actions based on their roles or other criteria. By configuring permissions, you can ensure that only authorized users can access sensitive data or perform critical operations, enhancing the security and integrity of your application.
+include::partial$_glossary.adoc[tag=permission]
 
-The permissions are defined in the `values.yaml` file of the Helm chart. This file contains a section for permissions where you can specify the actions that users can perform on different entities. +
-The `values.yaml` file is used by the OneCX permission operator during deployment to create the necessary permissions in the {permission_management_ref}.
+
+[#component]
+== Component
+include::partial$_glossary.adoc[tag=component]

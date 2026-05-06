@@ -42,3 +42,4 @@
 :nx_link:                         link:https://nx.dev/[Nx]
 :ngrx_link:                       link:https://ngrx.io/[NgRx]
 :node_js_link:                    link:https://nodejs.org/en[Node.js]
+:helm_link:                       link:https://helm.sh/[Helm]

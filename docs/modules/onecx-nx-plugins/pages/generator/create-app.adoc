@@ -6,13 +6,11 @@ endif::[]
 = Create a UI App
 
 What is a UI App?::
-A UI App is a microfrontend application built using modern web technologies such as {angular_link} or {react_link}. Such application is designed to seamlessly integrate with the OneCX platform, providing a consistent user experience across different modules and features.
-+
-Within the OneCX ecosystem, a UI App typically serves as the front-end interface for users to interact with various functionalities offered by OneCX. It can be a standalone application or part of a larger suite of applications, and it communicates with backend services to fetch and display data, handle user inputs, and perform various operations.
+include::partial$_glossary.adoc[tag=ui-app]
 
 [NOTE]
 ====
-The UI App created with the OneCX App Generator is only the base of a functional application. +
+The UI App created with the OneCX App Generator is only the base of a functional UI application. 
 You will need to further develop and customize the application to meet your specific requirements and business logic.
 ====
 
@@ -44,8 +42,8 @@ Please note that the product name from your command is used as base of some esse
 
 === Key Naming Conventions
 * `onecx-<product>-ui` +
-  project naming +
-  remote name for module federation +
+  Project name +
+  Remote name for module federation +
   Helm chart name for deployment and microservice registration in OneCX
 * `OneCX<product>Module` +
   Module name
@@ -71,7 +69,7 @@ endif::[]
 
 == Example
 
-The following commands create a new workspace directory named "bookstore" with the necessary structure and configurations for a OneCX UI App using NgRx. This can take a while, as the generator sets up a complete Angular application with all necessary dependencies and configurations.
+The following commands create a new workspace directory named "bookstore" with the necessary structure and configurations for a OneCX UI App using {ngrx_link}. This can take a while, as the generator sets up a complete {angular_link} application with all necessary dependencies and configurations.
 
 .Create a UI App named "bookstore" (product) with NgRx support
 [source,bash]
