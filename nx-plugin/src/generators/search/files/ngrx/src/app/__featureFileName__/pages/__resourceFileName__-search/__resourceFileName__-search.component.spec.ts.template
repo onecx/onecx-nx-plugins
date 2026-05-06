@@ -196,7 +196,7 @@ describe('<%= resourceClassName %>SearchComponent', () => {
   });
 
   it('should dispatch resetButtonClicked action on resetSearch', (done) => {
-    store.scannedActions$.pipe(ofType(bookSearchActions.resetButtonClicked)).subscribe(() => {
+    store.scannedActions$.pipe(ofType(<%= resourcePropertyName %>SearchActions.resetButtonClicked)).subscribe(() => {
       done()
     })
 
