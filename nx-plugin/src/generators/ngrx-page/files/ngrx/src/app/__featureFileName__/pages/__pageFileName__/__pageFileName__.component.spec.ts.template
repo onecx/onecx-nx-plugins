@@ -1,8 +1,11 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core'
 import { LetDirective } from '@ngrx/component';
 import { TranslateModule } from '@ngx-translate/core';
 import { StoreModule } from '@ngrx/store';
+import { PermissionService, PortalPageComponent } from '@onecx/angular-utils'
+import { AngularAcceleratorModule } from '@onecx/angular-accelerator'
+import { provideRouter } from '@angular/router'
+import { BreadcrumbModule } from 'primeng/breadcrumb'
 import { <%= pageClassName %>Component } from './<%= pageFileName %>.component';
 
 describe('<%= pageClassName %>Component', () => {
@@ -12,8 +15,15 @@ describe('<%= pageClassName %>Component', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [<%= pageClassName %>Component],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA],
-      imports: [LetDirective, StoreModule.forRoot({}), TranslateModule.forRoot()],
+      providers: [PermissionService, provideRouter([])],
+      imports: [
+        LetDirective,
+        StoreModule.forRoot({}),
+        TranslateModule.forRoot(),
+        PortalPageComponent,
+        BreadcrumbModule,
+        AngularAcceleratorModule],
+      
     }).compileComponents();
 
     fixture = TestBed.createComponent(<%= pageClassName %>Component);
