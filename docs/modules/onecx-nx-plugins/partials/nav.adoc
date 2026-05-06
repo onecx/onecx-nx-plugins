@@ -20,4 +20,6 @@
 ** xref:documentation:onecx-nx-plugins:generator/create-ngrx-page.adoc[Create NgRx Page]
 ** xref:documentation:onecx-nx-plugins:ngrx/pre-commit-validation.adoc[Pre-Commit Validation]
 
+** xref:documentation:onecx-nx-plugins:generator/configure-tsconfig-paths.adoc[Configure TypeScript Path Aliases]
+
 ** xref:documentation:onecx-nx-plugins:generator/glossary.adoc[Glossary]
