@@ -69,7 +69,6 @@
       <div
         class="flex flex-column md:flex-row lg:flex-column justify-content-center"
       >
-        @if (diagramColumn()) {
         <ocx-group-by-count-diagram          
           [data]="viewModel()?.results ?? []"
           [column]="diagramColumn()"
@@ -78,7 +77,6 @@
           (componentStateChanged)="diagramComponentStateChanged($event)"
           [attr.aria-label]="'<%= resourceConstantName %>_SEARCH.DIAGRAM.NAME' | translate"
         ></ocx-group-by-count-diagram>
-        }
       </div>
     </ocx-content>
   }
