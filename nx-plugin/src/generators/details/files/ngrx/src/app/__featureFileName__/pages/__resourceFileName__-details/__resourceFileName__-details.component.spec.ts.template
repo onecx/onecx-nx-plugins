@@ -1,4 +1,4 @@
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core'
+import { signal } from '@angular/core'
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
@@ -14,6 +14,8 @@ import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { Store, StoreModule } from '@ngrx/store';
 import { TranslateTestingModule } from 'ngx-translate-testing'
 import { PrimeIcons } from 'primeng/api';
+import { FloatLabelModule } from 'primeng/floatlabel'
+import { InputTextModule } from 'primeng/inputtext'
 import { ReactiveFormsModule } from '@angular/forms';
 import { of } from 'rxjs';
 import { UserService } from '@onecx/angular-integration-interface';
@@ -103,8 +105,9 @@ describe('<%= resourceClassName %>DetailsComponent', () => {
         LetDirective,
         ReactiveFormsModule,
         TranslateModule.forRoot(),
+        FloatLabelModule,
+        InputTextModule
       ],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA],
       providers: [
         provideHttpClient(),
         provideHttpClientTesting(),
@@ -297,6 +300,7 @@ describe('<%= resourceClassName %>DetailsComponent', () => {
       details: { id: '123' },
     });
     store.refreshState();
+    fixture.detectChanges()
 
     expect(markAsPristineSpy).toHaveBeenCalledTimes(1);
     expect(disableSpy).toHaveBeenCalledTimes(1);
@@ -327,7 +331,7 @@ describe('<%= resourceClassName %>DetailsComponent', () => {
   });
 
   it('should display item details in page header', async () => {
-    component.headerLabels$ = of([
+    component.headerLabels = signal([
        {
         label: '<%= resourceConstantName %>_DETAILS.FORM.ID',
         labelPipe: TranslatePipe,

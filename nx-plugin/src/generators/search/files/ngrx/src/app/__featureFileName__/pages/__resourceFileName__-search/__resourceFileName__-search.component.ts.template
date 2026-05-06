@@ -1,30 +1,21 @@
-import {
-  Component,
-  inject,
-  LOCALE_ID,
-  OnInit,
-  QueryList,
-  ViewChildren,
-} from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
-import { Store } from '@ngrx/store';
-import { Observable, map } from 'rxjs';
-import { PrimeIcons } from 'primeng/api';
-import { DatePicker } from 'primeng/datepicker';
-
-import { isValidDate } from '@onecx/accelerator';
+import { Component, computed, effect, inject, LOCALE_ID, OnInit, viewChildren, Signal } from '@angular/core'
+import { FormBuilder, FormGroup } from '@angular/forms'
+import { Store } from '@ngrx/store'
+import { PrimeIcons } from 'primeng/api'
+import { DatePicker } from 'primeng/datepicker'
+import { toSignal } from '@angular/core/rxjs-interop'
+import { isValidDate } from '@onecx/accelerator'
 import {
   Action,
   BreadcrumbService,
   buildSearchCriteria,
   DataSortDirection,
-  DataTableColumn,
+  DiagramColumn,
   DiagramComponentState,
   DiagramType,
-  ExportDataService,  
   InteractiveDataViewComponentState,
   SearchHeaderComponentState,
-} from '@onecx/angular-accelerator';
+} from '@onecx/angular-accelerator'
 
 import { <%= resourcePropertyName %>SearchActions } from './<%= resourceFileName %>-search.actions';
 import {
@@ -46,13 +37,15 @@ export class <%= resourceClassName %>SearchComponent implements OnInit {
   private readonly store = inject(Store);
   private readonly formBuilder = inject(FormBuilder);
   readonly locale = inject(LOCALE_ID);
-  private readonly exportDataService = inject(ExportDataService);
 
-  @ViewChildren(DatePicker) calendars!: QueryList<DatePicker>;
-  viewModel$: Observable<<%= resourceClassName %>SearchViewModel> = this.store.select(select<%= resourceClassName %>SearchViewModel);
-  
-  // ACTION S10: Update header actions
-  headerActions$: Observable<Action[]> = this.viewModel$.pipe(map((vm) => {
+  calendars = viewChildren(DatePicker)
+  viewModel = toSignal<<%= resourceClassName %>SearchViewModel>(
+    this.store.select(select<%= resourceClassName %>SearchViewModel),
+    { initialValue: null }
+  )
+
+  headerActions = computed(() => {
+        const vm = this.viewModel()
         const actions: Action[] = [
           {
             labelKey: '<%= resourceConstantName %>_SEARCH.HEADER_ACTIONS.EXPORT_ALL',
@@ -62,11 +55,11 @@ export class <%= resourceClassName %>SearchComponent implements OnInit {
             actionCallback: () => this.exportItems(),
           },
           {
-            labelKey: vm.chartVisible
+            labelKey: vm?.chartVisible
               ? '<%= resourceConstantName %>_SEARCH.HEADER_ACTIONS.HIDE_CHART'
               : '<%= resourceConstantName %>_SEARCH.HEADER_ACTIONS.SHOW_CHART',
             icon: PrimeIcons.EYE,
-            titleKey: vm.chartVisible
+            titleKey: vm?.chartVisible
               ? '<%= resourceConstantName %>_SEARCH.HEADER_ACTIONS.HIDE_CHART'
               : '<%= resourceConstantName %>_SEARCH.HEADER_ACTIONS.SHOW_CHART',
             show: 'asOverflow',
@@ -74,8 +67,7 @@ export class <%= resourceClassName %>SearchComponent implements OnInit {
           },
         ]      
         return actions
-      })
-    );
+  })
 
 
   defaultDataSortDirection = DataSortDirection.NONE
@@ -83,8 +75,11 @@ export class <%= resourceClassName %>SearchComponent implements OnInit {
   
   // ACTION S9: Select the column to be displayed in the diagram
   diagramColumnId = 'id';
-  diagramColumn$: Observable<DataTableColumn> = this.viewModel$.pipe(map((vm) =>vm.columns.find((e) => e.id === this.diagramColumnId) as DataTableColumn));
-
+  diagramColumn = computed(() =>
+    this.viewModel()?.columns.find(
+      (e) => e.id === this.diagramColumnId
+    ) as DiagramColumn
+  )
   public <%= resourcePropertyName %>SearchFormGroup: FormGroup = this.formBuilder.group(
       {
         ...Object.fromEntries(
@@ -95,17 +90,23 @@ export class <%= resourceClassName %>SearchComponent implements OnInit {
       } satisfies Record<keyof <%= resourceClassName %>SearchCriteria, unknown>,
     );
 
-  ngOnInit() {
+  constructor() {
+    effect(() => {
+      const vm = this.viewModel()
+      if (vm?.searchCriteria) {
+        this.<%= resourcePropertyName %>SearchFormGroup.patchValue(vm.searchCriteria)
+      }
+    })
+  }
+
+  ngOnInit() { 
     this.breadcrumbService.setItems([
       {
         titleKey: '<%= resourceConstantName %>_SEARCH.BREADCRUMB',
         labelKey: '<%= resourceConstantName %>_SEARCH.BREADCRUMB',
-        routerLink: '/<%= resourceFileName %>',
-      },
-    ]);
-    this.viewModel$.subscribe((vm) =>
-      this.<%= resourcePropertyName %>SearchFormGroup.patchValue(vm.searchCriteria),
-    );
+        routerLink: '/<%= resourceFileName %>'
+      }
+    ])
   }
 
   resultComponentStateChanged(state: InteractiveDataViewComponentState) {    
@@ -123,7 +124,7 @@ export class <%= resourceClassName %>SearchComponent implements OnInit {
   search(formValue: FormGroup) {
     const searchCriteria = buildSearchCriteria(
       formValue.getRawValue(),
-      this.calendars,
+      this.calendars(),
       { removeNullValues: true }
     );
     this.store.dispatch(
