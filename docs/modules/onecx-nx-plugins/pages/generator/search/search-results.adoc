@@ -189,6 +189,7 @@ Files::     `de.json` / `en.json`
   "BOOK_SEARCH": {
     ...
     "RESULTS": {
+      "OUTPUT_FIELDS": "ACTION S8: Adjust translation keys for result columns",
       "BOOK_TITLE": "Book Title",
       "BOOK_TYPE": "Book Type",
       "BOOK_TYPES": {
@@ -202,7 +203,7 @@ Files::     `de.json` / `en.json`
     }
   }
 ----
-Refer to the {onecx_ui_translations_ref}[Multi-Language Cookbook] for more information.
+Refer to the {onecx_ui_translations_ref}[Multi-Language Guide] for more information.
 ====
 
 .Adjust translations in `+de.json+`
@@ -213,6 +214,7 @@ Refer to the {onecx_ui_translations_ref}[Multi-Language Cookbook] for more infor
   "BOOK_SEARCH": {
     ...
     "RESULTS": {
+      "OUTPUT_FIELDS": "ACTION S8: Adjust translation keys for result columns",
       "BOOK_TITLE": "Buchtitel",
       "BOOK_TYPE": "Buchtyp",
       "BOOK_TYPES": {

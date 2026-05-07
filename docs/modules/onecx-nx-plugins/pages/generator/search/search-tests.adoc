@@ -46,7 +46,6 @@ File::      `<resource>-search.component.spec.ts`
   };
 ...
 ----
-26 occurances of `changeMe` must be replaced by `bookTitle`.
 ====
 
 ==== Example: Book Search
@@ -73,7 +72,63 @@ File::      `book-search.component.spec.ts`
   }
 ...
 ----
-26 occurances of `changeMe` were replaced by `bookTitle`.
+24 occurances of `changeMe` were replaced by `bookTitle`. +
+7 occurances of `CHANGE_ME` were replaced by `BOOK_TITLE`.
+====
+
+
+'''
+
+=== Search Effects
+
+==== Template
+
+Replace all occurrences of `changeMe` in the generated search effects spec file with the actual property name used in the search criteria and search results. +
+Update the test data in the spec file to reflect the expected structure and values based on the customized search component implementation.
+
+[horizontal]
+Directory:: `<root-of-ui-app>/src/app/<feature>/pages/<resource>-search`
+File::      `<resource>-search.effects.spec.ts`
+
+.ACTION S11 in `+<resource>-search.effects.spec.ts+`
+[%collapsible]
+====
+[source, javascript]
+----
+...
+----
+26 occurances of `changeMe` must be replaced by `bookTitle`.
+====
+
+==== Example: Book Effects
+
+[horizontal]
+Directory:: `bookstore/src/app/book/pages/book-search`
+File::      `book-search.effects.spec.ts`
+  
+.ACTION S11 in `+book-search.effects.spec.ts+`
+[%collapsible]
+====
+[source, javascript]
+----
+// ACTION S11: Change test data in the whole document
+describe('BookSearchEffects', () => {
+  let actions$: ReplaySubject<Action>
+  let effects: BookSearchEffects
+  let store: MockStore<Store>
+  let router: jest.Mocked<Router>
+  let route: ActivatedRoute
+  let bookService: jest.Mocked<BookAPIService>
+  let portalDialogService: jest.Mocked<PortalDialogService>
+  let messageService: jest.Mocked<PortalMessageService>
+  let exportDataService: jest.Mocked<ExportDataService>
+
+  const mockCriteria: BookSearchCriteria = { bookTitle: 'test' }
+
+...
+----
+6 occurances of `changeMe` were replaced by `bookTitle`. +
+2 occurances of `CHANGE_ME` were replaced by `BOOK_TITLE`.
 ====
 
 '''
@@ -160,14 +215,15 @@ describe('BookSearch selectors', () => {
           { id: '', bookType: 'fantasy', bookTitle: 'Book C' }
         ] as Book[],
         expected: [
-          { imagePath: '', id: '', bookType: 'BOOK_SEARCH.RESULTS.BOOK_TYPES.CRIME', bookTitle: 'Book A' },
-          { imagePath: '', id: '', bookType: 'BOOK_SEARCH.RESULTS.BOOK_TYPES.MYSTERY', bookTitle: 'Book B' },
-          { imagePath: '', id: '', bookType: 'BOOK_SEARCH.RESULTS.BOOK_TYPES.FANTASY', bookTitle: 'Book C' }
+          { imagePath: '', id: '', bookTitle: 'Book A', bookType: 'BOOK_SEARCH.RESULTS.BOOK_TYPES.CRIME' },
+          { imagePath: '', id: '', bookTitle: 'Book B', bookType: 'BOOK_SEARCH.RESULTS.BOOK_TYPES.MYSTERY' },
+          { imagePath: '', id: '', bookTitle: 'Book C', bookType: 'BOOK_SEARCH.RESULTS.BOOK_TYPES.FANTASY' }
         ]
       }
     ]
 ...
 ----
+11 occurances of `changeMe` were replaced by `bookTitle`.
 ====
 
 
@@ -225,6 +281,7 @@ describe('bookSearchReducer', () => {
   })
 ...
 ----
+3 occurances of `changeMe` were replaced by `bookTitle`.
 ====
 
 
@@ -240,3 +297,6 @@ npm run test
 ----
 This will execute the test suite and provide feedback on the success or failure of the tests based on the adapted test cases and expected results. +
 Make sure to review the test results and address any issues that may arise to ensure that your search component is functioning correctly and meets the desired requirements.
+
+.Test results
+image::test_result_search.png[]

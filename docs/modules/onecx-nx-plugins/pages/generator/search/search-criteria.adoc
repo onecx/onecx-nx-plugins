@@ -310,6 +310,7 @@ Files::      `de.json`, `en.json`
     "SUB_HEADER": "Searching and displaying of Books",
     ...
     "CRITERIA": {
+      "INPUT_FIELDS": "ACTION S4: Adjust translation keys for input fields",
       "BOOK_TITLE": {
         "LABEL": "Title",
         "ARIA_LABEL": "Title",
@@ -331,6 +332,7 @@ Where *BOOK_TITLE* is the criteria added to the `+SearchBookRequest+`.
     "SUB_HEADER": "Suchen und Anzeigen von Büchern",
     ...
     "CRITERIA": {
+      "INPUT_FIELDS": "ACTION S4: Adjust translation keys for input fields",
       "BOOK_TITLE": {
         "LABEL": "Titel",
         "ARIA_LABEL": "Buchtitel",
