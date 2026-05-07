@@ -126,7 +126,6 @@ describe('<%= resourceClassName %>Search selectors', () => {
 ----
 ====
 
-
 ==== Example: Book Search
 
 [horizontal]
@@ -170,6 +169,64 @@ describe('BookSearch selectors', () => {
 ...
 ----
 ====
+
+
+'''
+
+=== Search Reducers
+
+==== Template
+Replace all occurrences of `changeMe` in the generated search reducers spec file with the actual property name used in the search results. +
+Update the test data in the spec file to reflect the expected structure and values based on the customized search component implementation.
+
+[horizontal]
+Directory:: `<root-of-ui-app>/src/app/<feature>/pages/<resource>-search`
+File::      `<resource>-search.reducers.spec.ts`
+
+.ACTION S11 in `+<resource>-search.reducers.spec.ts+`
+[%collapsible]
+====
+[source, javascript]
+----
+// ACTION S11: Change test data in the whole document
+describe('<%= resourcePropertyName %>SearchReducer', () => {
+  it('should reset results and criteria on resetButtonClicked', () => {
+    const preState = { ...reducers.initialState, results: [{ id: '1' }], criteria: { changeMe: 'val' } }
+    const action = <%= resourcePropertyName %>SearchActions.resetButtonClicked()
+    const nextState = reducers.<%= resourcePropertyName %>SearchReducer(preState, action)
+
+    expect(nextState.results).toEqual([])
+    expect(nextState.criteria).toEqual({})
+  })
+...
+----
+====
+
+==== Example: Book Reducers
+
+[horizontal]
+Directory:: `bookstore/src/app/book/pages/book-search`
+File::      `book-search.reducers.spec.ts`
+  
+.ACTION S11 in `+book-search.reducers.spec.ts+`
+[%collapsible]
+====
+[source, javascript]
+----
+// ACTION S11: Change test data in the whole document
+describe('bookSearchReducer', () => {
+  it('should reset results and criteria on resetButtonClicked', () => {
+    const preState = { ...reducers.initialState, results: [{ id: '1' }], criteria: { bookTitle: 'val' } }
+    const action = bookSearchActions.resetButtonClicked()
+    const nextState = reducers.bookSearchReducer(preState, action)
+
+    expect(nextState.results).toEqual([])
+    expect(nextState.criteria).toEqual({})
+  })
+...
+----
+====
+
 
 '''
 

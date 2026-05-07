@@ -195,7 +195,7 @@ Files::     `de.json` / `en.json`
         "CRIME": "Crime",
         "DRAMA": "Drama",
         "FANTASY": "Fantasy",
-        "PROSA": "Prosa",
+        "PROSA": "Prose",
         "SCIENCE": "Science"
       },
       "NAME": "Search Results"
