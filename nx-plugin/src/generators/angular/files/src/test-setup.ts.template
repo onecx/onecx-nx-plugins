@@ -1,5 +1,12 @@
 import { setupZoneTestEnv } from 'jest-preset-angular/setup-env/zone'
 
+Object.defineProperty(HTMLElement.prototype, 'innerText', {
+  get() {
+    return this.textContent ?? ''
+  },
+  configurable: true
+})
+
 setupZoneTestEnv({
   errorOnUnknownElements: true,
   errorOnUnknownProperties: true
