@@ -16,12 +16,7 @@ import {
   filterOutQueryParamsHaveNotChanged
 } from '@onecx/ngrx-accelerator';
 
-import {  
-    <%= serviceName %>, 
-} from 'src/app/shared/generated';
-
 import { Injectable, inject } from '@angular/core';
-import { Action, Store } from '@ngrx/store';
 import equal from 'fast-deep-equal';
 
 import { <%= resourcePropertyName %>SearchActions } from './<%= resourceFileName %>-search.actions';
