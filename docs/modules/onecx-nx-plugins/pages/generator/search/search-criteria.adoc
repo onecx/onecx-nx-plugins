@@ -234,16 +234,16 @@ File::      `book-search.component.html`
               type="text"
               class="w-18rem"
               formControlName="bookTitle"
-              [pTooltip]="'HELP_SEARCH.CRITERIA.BOOK_TITLE.TOOLTIP' | translate"
+              [pTooltip]="'BOOK_SEARCH.CRITERIA.BOOK_TITLE.TOOLTIP' | translate"
               tooltipPosition="top"
               tooltipEvent="hover"
               role="main"
               [attr.aria-label]="
-                'HELP_SEARCH.CRITERIA.BOOK_TITLE.ARIA_LABEL' | translate
+                'BOOK_SEARCH.CRITERIA.BOOK_TITLE.ARIA_LABEL' | translate
               "
             />
             <label for="bookstore_book_search_book_title" style="white-space: nowrap">
-              {{ 'HELP_SEARCH.CRITERIA.BOOK_TITLE.LABEL' | translate }}</label
+              {{ 'BOOK_SEARCH.CRITERIA.BOOK_TITLE.LABEL' | translate }}</label
             >
           </span>
         </div>
