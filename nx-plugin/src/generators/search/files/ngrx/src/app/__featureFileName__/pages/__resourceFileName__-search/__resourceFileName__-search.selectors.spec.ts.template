@@ -1,8 +1,6 @@
 import { ColumnType } from '@onecx/angular-accelerator'
 import * as selectors from './<%= resourceFileName %>-search.selectors'
 
-import { <%= resourceClassName %> } from 'src/app/shared/generated'
-
 // ACTION S11: Change test data in the whole document
 describe('<%= resourceClassName %>Search selectors', () => {
   describe('selectResults projector', () => {
@@ -12,7 +10,7 @@ describe('<%= resourceClassName %>Search selectors', () => {
         input: [
           { id: '1', changeMe: 'A' },
           { id: '2', changeMe: 'B' }
-        ] as <%= resourceClassName %>[],
+        ] as never[],
         expected: [
           { imagePath: '', id: '1', changeMe: 'A' },
           { imagePath: '', id: '2', changeMe: 'B' }
@@ -24,7 +22,7 @@ describe('<%= resourceClassName %>Search selectors', () => {
           { id: '', changeMe: 'A' },
           { id: '', changeMe: 'B' },
           { id: '', changeMe: 'C' }
-        ] as <%= resourceClassName %>[],
+        ] as never[],
         expected: [
           { imagePath: '', id: '', changeMe: 'A' },
           { imagePath: '', id: '', changeMe: 'B' },

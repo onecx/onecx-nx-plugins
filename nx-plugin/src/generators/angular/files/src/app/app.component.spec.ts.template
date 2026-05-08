@@ -1,4 +1,3 @@
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core'
 import { TestBed } from '@angular/core/testing';
 import { AppComponent } from './app.component';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
@@ -19,8 +18,9 @@ describe('AppComponent', () => {
         RouterTestingModule,              
         AngularAcceleratorModule,
         StandaloneShellModule,
-        TranslateTestingModule.withTranslations('en', require('./../assets/i18n/en.json'))
-          .withTranslations('de', require('./../assets/i18n/de.json'))
+        TranslateTestingModule
+          .withTranslations('en', require('./src/assets/i18n/en.json'))
+          .withTranslations('de', require('./src/assets/i18n/de.json'))
           .withDefaultLanguage('en'),
       ],
       providers: [provideStandaloneProviders(), provideHttpClient(), provideHttpClientTesting()]        
