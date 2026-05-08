@@ -32,6 +32,7 @@
         "SEARCH_CONFIGS_LOADING_FAILED": "Suchkonfigurationen konnten nicht geladen werden."
     },
     "RESULTS": {
+      "OUTPUT_FIELDS": "ACTION S8: Adjust translation keys for result columns",
       "CHANGE_ME": "Ändere mich",
       "NAME": "Suchergebnisse"
     },

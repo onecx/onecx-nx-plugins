@@ -32,7 +32,16 @@
         "SEARCH_CONFIGS_LOADING_FAILED": "Loading search configurations failed."
     },
     "RESULTS": {
-      "CHANGE_ME": "Change Me",
+      "OUTPUT_FIELDS": "ACTION S8: Adjust translation keys for result columns",
+      "BOOK_TITLE": "Book Title",
+      "BOOK_TYPE": "Book Type",
+      "BOOK_TYPES": {
+        "CRIME": "Crime",
+        "DRAMA": "Drama",
+        "FANTASY": "Fantasy",
+        "PROSA": "Prose",
+        "SCIENCE": "Science"
+      },
       "NAME": "Search Results"
     },
     "CRITERIA": {

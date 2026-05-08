@@ -127,8 +127,8 @@ describe('<%= resourceClassName %>SearchComponent', () => {
         InputTextModule,
         StoreModule.forRoot({}),
         TranslateTestingModule.withTranslations({
-          de: require('../../../../assets/i18n/de.json'),
-          en: require('../../../../assets/i18n/en.json')
+          de: require('./src/assets/i18n/de.json'),
+          en: require('./src/assets/i18n/en.json')
         }).withDefaultLanguage('en'),
         NoopAnimationsModule,
       ],
@@ -317,9 +317,7 @@ describe('<%= resourceClassName %>SearchComponent', () => {
   it('should dispatch viewModeChanged action on view mode changes', async () => {
     jest.spyOn(store, 'dispatch');
 
-    component.searchHeaderComponentStateChanged({
-      activeViewMode: 'advanced',
-    });
+    component.searchHeaderComponentStateChanged({ activeViewMode: 'advanced' });
 
     expect(store.dispatch).toHaveBeenCalledWith(
       <%= resourcePropertyName %>SearchActions.searchHeaderComponentStateChanged({
@@ -328,7 +326,7 @@ describe('<%= resourceClassName %>SearchComponent', () => {
     );
   });
 
-  it.skip('should dispatch displayedColumnsChanged on data view column change', async () => {
+  it('should dispatch displayedColumnsChanged on data view column change', async () => {
     jest.spyOn(store, 'dispatch');
     const columns = [
       {
@@ -348,16 +346,11 @@ describe('<%= resourceClassName %>SearchComponent', () => {
       ...base<%= resourceClassName %>SearchViewModel,
       results: [],
       columns: columns,
-      displayedColumns: columns,
+      resultComponentState: { layout: 'table' }
     });
     store.refreshState();
   
-    const interactiveDataView =
-      await <%= resourcePropertyName %>Search.getSearchResults();        
-    await (
-      await interactiveDataView.getDataLayoutSelection()
-    ).selectTableLayout();
-
+    const interactiveDataView = await <%= resourcePropertyName %>Search.getSearchResults();        
     const columnGroupSelector = await interactiveDataView?.getCustomGroupColumnSelector();
     expect(columnGroupSelector).toBeTruthy();
 
