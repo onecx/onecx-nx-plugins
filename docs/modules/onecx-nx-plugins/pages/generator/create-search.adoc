@@ -110,6 +110,10 @@ ifdef::env-site[]
 include::_integrate-into-onecx.adoc[leveloffset=+2]
 endif::[]
 
+=== Start Backend Service
+To have the search component working, you need to have a backend service running that provides the necessary API endpoints for the search functionality. +
+Make sure to start the backend service that corresponds to the generated search component. +
+In case you don't have a real backend service available, you can prepare mock data and use it with the generated search component, see xref:./search/mock-api.adoc[Prepare Mock Data and Use It].
 
 === Preview
 In the following image, the search component (as generated including the post-generation steps) is integrated into the application unchanged, exactly as it was generated.

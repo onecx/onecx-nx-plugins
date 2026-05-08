@@ -86,25 +86,25 @@ This marker is used as a placeholder for future extensions by newly generated co
 
 == Example
 
-=== Create a Search Component
+=== Create a Detail Component
 
-Create a search component for books inside the *book* feature module. +
+Create a detail component for books inside the *book* feature module. +
 Execute the following command with the *bookstore* application as current working directory.
 
-.Create a Search Component for Books, preset resource/entity name
+.Create a Detail Component for a Book, preset resource/entity name
 [source,bash]
 ----
-nx generate @onecx/nx-plugin:search book --resource=Book
+nx generate @onecx/nx-plugin:detail book --resource=Book
 ----
 
-This command will generate a new search component *book-search* within the specified feature module with the necessary structure and configurations. With the presetted resource/entity name *Book*, the generator will also preset the API service name to *BookAPIService* used by the generated search component. This should correspond to the created schema in OpenAPI file, see step before.
+This command will generate a new detail component *book-detail* within the specified feature module with the necessary structure and configurations. With the presetted resource/entity name *Book*, the generator will also preset the API service name to *BookAPIService* used by the generated detail component. This should correspond to the created schema in OpenAPI file, see step before.
 
 .Excerpt of generated files and directories
-image::generated_feature_book_search.png[width=250]
+image::generated_feature_book_detail.png[width=250]
 
-=== Configure the Search
-The generated search component provides a basic structure for searching and displaying results based on the specified resource/entity. +
-You can further configure the search criteria, search results, result diagram, and header actions according to your specific requirements, following the xref:#post-generation-steps[Post Generation Steps].
+=== Configure the Detail
+The generated detail component provides a basic structure for displaying and managing the details of the specified resource/entity. +
+You can further configure the detail view, form controls, and actions according to your specific requirements, following the xref:#post-generation-steps[Post Generation Steps].
 
 ifdef::env-site[]
 include::_integrate-into-onecx.adoc[leveloffset=+2]
@@ -112,12 +112,12 @@ endif::[]
 
 
 === Preview
-In the following image, the search component (as generated including the post-generation steps) is integrated into the application unchanged, exactly as it was generated.
+In the following image, the detail component (as generated including the post-generation steps) is integrated into the application unchanged, exactly as it was generated.
 
-.Search UI after integration into the application
-image::generated_book_search_component_org.png[]
+.Detail UI after integration into the application
+image::generated_book_detail_component_org.png[]
 
-After little adaptations to the search criteria and search results, the search component can look like this:
+After little adaptations to the detail view and form controls, the detail component can look like this:
 
-.Search UI with adapted search
-image::generated_book_search_component_example.png[]
+.Detail UI with adapted detail view
+image::generated_book_detail_component_example.png[]
