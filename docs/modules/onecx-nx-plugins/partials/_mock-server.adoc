@@ -7,7 +7,7 @@ const app = express();
 app.use(express.json());
 
 
-const apiNames = ["book"];
+const apiNames = ["books"];
 const generateBooks = (count) => {
   let results = [];
   for (let i = 0; i < count; i++) {
@@ -31,7 +31,7 @@ const generateBooks = (count) => {
 };
 
 // Book Endpoints
-app.post("/book/search", (req, res) => {
+app.post("/books/search", (req, res) => {
   const bookTitle = req.body.bookTitle;
 
   res.send(
@@ -40,7 +40,7 @@ app.post("/book/search", (req, res) => {
 });
 
 
-app.get(`/book/:id`, (req, res) => {
+app.get(`/books/:id`, (req, res) => {
   res.send({
     book: {
       creationDate: "2026-02-12T05:08:08.080Z",

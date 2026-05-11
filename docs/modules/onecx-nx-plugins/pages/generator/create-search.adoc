@@ -121,7 +121,7 @@ In the following image, the search component (as generated including the post-ge
 .Search UI after integration into the application
 image::generated_book_search_component_org.png[]
 
-After little adaptations to the search criteria and search results, the search component can look like this:
+After adjusting the search criteria and search results for the bookstore example and starting the backend service, the search component can look like this:
 
-.Search UI with adapted search
+.Search UI with adapted search and example data
 image::generated_book_search_component_example.png[]
