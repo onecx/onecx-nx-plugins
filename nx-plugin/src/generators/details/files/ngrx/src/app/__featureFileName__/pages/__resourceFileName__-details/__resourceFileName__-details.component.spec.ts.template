@@ -136,8 +136,7 @@ describe('<%= resourceClassName %>DetailsComponent', () => {
       '<%= resourceConstantName %>#IMPORT',
       '<%= resourceConstantName %>#EXPORT',
       '<%= resourceConstantName %>#VIEW',
-      '<%= resourceConstantName %>#SEARCH',
-      '<%= resourceConstantName %>#BACK',
+      '<%= resourceConstantName %>#SEARCH'
     ]);
 
     store = TestBed.inject(MockStore);

@@ -165,8 +165,7 @@ describe('<%= resourceClassName %>SearchComponent', () => {
       "<%= resourceConstantName %>#IMPORT",
       "<%= resourceConstantName %>#EXPORT",
       "<%= resourceConstantName %>#VIEW",
-      "<%= resourceConstantName %>#SEARCH",
-      "<%= resourceConstantName %>#BACK"
+      "<%= resourceConstantName %>#SEARCH"
     ])
        
     formBuilder = TestBed.inject(FormBuilder);
