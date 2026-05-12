@@ -102,7 +102,7 @@ const config = withModuleFederationPlugin({
       requiredVersion: 'auto',
       includeSecondaries: true,
     },    
-    '@ngrx/router': {
+    '@ngrx/router-store': {
       requiredVersion: 'auto',
       includeSecondaries: true,
     },    
