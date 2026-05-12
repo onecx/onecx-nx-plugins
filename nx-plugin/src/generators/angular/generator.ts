@@ -180,7 +180,6 @@ export async function angularGenerator(
       'eslint-config-prettier': '^10.0.0',
       'eslint-plugin-import': '2.31.0',
       'eslint-plugin-prettier': '^5.2.1',
-      //'@happy-dom/jest-environment': '^20.0.10',
       jest: '^30.0.0',
       'jest-environment-jsdom': '^30.0.0',
       'jest-preset-angular': '16.1.4',

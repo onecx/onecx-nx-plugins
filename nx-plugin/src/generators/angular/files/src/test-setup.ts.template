@@ -1,5 +1,6 @@
 import { setupZoneTestEnv } from 'jest-preset-angular/setup-env/zone'
 
+// JSDOM does not implement `innerText` which is used by Angular's testing utilities. This causes tests to fail with:
 Object.defineProperty(HTMLElement.prototype, 'innerText', {
   get() {
     return this.textContent ?? ''
