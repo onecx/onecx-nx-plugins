@@ -38,6 +38,14 @@ const config = withModuleFederationPlugin({
       requiredVersion: 'auto',
       includeSecondaries: true,
     },
+    '@angular/animations': {
+      requiredVersion: 'auto',
+      includeSecondaries: true,
+    },
+    '@angular/cdk': {
+      requiredVersion: 'auto',
+      includeSecondaries: true,
+    },
     primeng: {
       requiredVersion: 'auto',
       includeSecondaries: true
@@ -82,6 +90,34 @@ const config = withModuleFederationPlugin({
       requiredVersion: 'auto',
       includeSecondaries: true,
     },
+    '@onecx/ngrx-accelerator': {
+      requiredVersion: 'auto',
+      includeSecondaries: true,
+    },    
+    '@ngrx/component': {
+      requiredVersion: 'auto',
+      includeSecondaries: true,
+    },    
+    '@ngrx/effects': {
+      requiredVersion: 'auto',
+      includeSecondaries: true,
+    },    
+    '@ngrx/router': {
+      requiredVersion: 'auto',
+      includeSecondaries: true,
+    },    
+    '@ngrx/store': {
+      requiredVersion: 'auto',
+      includeSecondaries: true,
+    },  
+    '@ngrx/store-devtools': {
+      requiredVersion: 'auto',
+      includeSecondaries: true,
+    },
+    'ngrx-store-localstorage': {
+      requiredVersion: 'auto',
+      includeSecondaries: true,
+    },    
     '@ngx-translate/core': {
       requiredVersion: 'auto',
     },
