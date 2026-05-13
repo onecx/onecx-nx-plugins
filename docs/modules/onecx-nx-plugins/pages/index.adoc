@@ -83,7 +83,7 @@ Here is an overview of the application parts that can be generated using the One
 ** xref:generator/create-feature.adoc[Feature Module]
 *** xref:generator/create-schema.adoc[Entity Schema and OpenAPI]
 *** xref:generator/create-search.adoc[Search Component]
-*** Details Page
+*** xref:generator/create-details.adoc[Details Component]
 *** Create/Update Dialog
 *** Delete Dialog
 *** xref:generator/create-ngrx-page.adoc[Simple NgRx Page]

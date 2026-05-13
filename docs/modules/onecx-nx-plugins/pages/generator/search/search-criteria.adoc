@@ -62,8 +62,7 @@ File::      `openapi-bff.yaml`
           type: string
         # " ACTION S1: Add additional properties"
 ----
-
-Where *changeMe* is here the example search criteria to be replaced. This criteria corresponds to the property added to the `+Search<Feature>Request+`.
+Where *changeMe* is here the example search criteria to be replaced.
 ====
 
 [discrete]
@@ -97,10 +96,11 @@ File::      `openapi-bff.yaml`
           maximum: 255
         # "ACTION S1: Add additional properties"
 ----
-
-Where e.g. *bookTitle* is a search criteria, same as the one added to the `+SearchBookRequest+`.
+Where e.g. *bookTitle* is a search criteria.
 ====
 
+[NOTE]
+====
 After adding the new criteria to the OpenAPI specification, you need to regenerate the API client code to reflect these changes in your application.
 
 .Generate the API client code
@@ -108,6 +108,7 @@ After adding the new criteria to the OpenAPI specification, you need to regenera
 ----
 npm run apigen
 ----
+====
 
 
 [#action-2]

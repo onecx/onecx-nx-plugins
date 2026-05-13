@@ -6,7 +6,9 @@ endif::[]
 = Create a Search Component
 
 What is a Component?::
+ifdef::env-site[]
 include::partial$_glossary.adoc[tag=component]
+endif::[]
 
 Search Component and Entity/Resource::
 The Search Component is a specific type of component that provides a user interface for searching and displaying results based on a certain entity or resource. +
