@@ -1,20 +1,22 @@
 import { Component, OnInit, inject } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { Observable, map } from 'rxjs'
 import { TranslatePipe } from '@ngx-translate/core';
+import { PrimeIcons } from 'primeng/api';
+
 import {
   Action,
   BreadcrumbService,
   ObjectDetailItem,
 } from '@onecx/angular-accelerator';
 
+import { <%= resourceClassName %> } from 'src/app/shared/generated';
 import { select<%= resourceClassName %>DetailsViewModel } from './<%= resourceFileName %>-details.selectors';
 import { <%= resourcePropertyName %>DetailsActions } from './<%= resourceFileName %>-details.actions';
 import {
   <%= resourceClassName %>DetailsViewModel
 } from './<%= resourceFileName %>-details.viewmodel';
-import { PrimeIcons } from 'primeng/api';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-<%= resourceFileName %>-details',
@@ -27,7 +29,7 @@ export class <%= resourceClassName %>DetailsComponent implements OnInit {
   private readonly breadcrumbService = inject(BreadcrumbService);
 
   viewModel$: Observable<<%= resourceClassName %>DetailsViewModel> = this.store.select(select<%= resourceClassName %>DetailsViewModel);
-  headerLabels$: Observable<ObjectDetailItem[]> = this.viewModel$.pipe(
+  objectDetails$: Observable<ObjectDetailItem[]> = this.viewModel$.pipe(
     map((vm) => {
       const labels: ObjectDetailItem[] = [
         //ACTION D1: Add header values here
@@ -130,22 +132,25 @@ export class <%= resourceClassName %>DetailsComponent implements OnInit {
   <%_ if(editMode){ _%>
   public formGroup: FormGroup
   <%_ } _%>
+  private currentDetails: <%= resourceClassName %> | undefined
 
   <%_ if(editMode){ _%>
   constructor() {
      this.formGroup = new FormGroup({
+      //ACTION D1: Add form fields here
       id: new FormControl(null, [Validators.maxLength(255)]),
     })
     this.formGroup.disable();
 
     this.viewModel$.subscribe((vm) => {
+      this.currentDetails = vm.details
       if (!vm.editMode) {
         this.formGroup.patchValue({
+          //ACTION D1: Add form fields here
           id: vm.details?.id
         })
         this.formGroup.markAsPristine();
       }
-
       if (vm.editMode) {
         this.formGroup.enable()
       } else {
@@ -179,7 +184,7 @@ export class <%= resourceClassName %>DetailsComponent implements OnInit {
   save() {
     this.store.dispatch(<%= resourcePropertyName %>DetailsActions.saveButtonClicked(
       {
-        details: this.formGroup.value
+        details: { ...this.currentDetails, ...this.formGroup.value }
       }
     ))
   }

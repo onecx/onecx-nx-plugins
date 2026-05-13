@@ -1,5 +1,6 @@
 {
   "<%= resourceConstantName %>_DETAILS": {
+    "CHANGE_ME": "ACTION D3: Adjust translation keys for details header",
     "HEADER": "<%= resourceClassName %> Details",
     "SUB_HEADER": "Anzeigen von <%= resourceClassName %> Details",
     "HELP_ARTICLE_ID": "Hilfeartikel",
@@ -17,8 +18,8 @@
       "SAVE": "Speichern"
     },
     "FORM": {
-      "ID": "ID",
-      "NAME": "Seitenkopf mit Details"
+      "FORM_FIELDS": "ACTION D3: Adjust translation keys for the form",
+      "ID": "ID"
     },
     "CANCEL": {
       "HEADER": "Abbruch bestätigen",
@@ -26,15 +27,17 @@
       "CONFIRM": "Bestätigen"
     },
     "UPDATE": {
+      "CHANGE_ME": "ACTION D3: Adjust translation keys for update dialog",
+      "HEADER": "<%= resourceClassName %> ändern",
       "SUCCESS": "Speichern erfolgreich",         
       "ERROR": "Speichern fehlgeschlagen",
       "FORM": {
         "SAVE": "Speichern",
         "CANCEL": "Abbrechen"
-      },
-      "HEADER": "<%= resourceClassName %> ändern"
+      }
     },
     "DELETE": {
+      "CHANGE_ME": "ACTION D3: Adjust translation keys for delete confirmation dialog",
       "HEADER": "<%= resourceClassName %> löschen",
       "MESSAGE": "Bitte bestätigen Sie, dass Sie <%= resourceClassName %> löschen möchten.",
       "CONFIRM": "Bestätigen",

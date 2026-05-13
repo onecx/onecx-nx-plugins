@@ -106,7 +106,7 @@ export class GeneralOpenAPIStep implements GeneratorStep<DetailsGeneratorSchema>
         .set(`${options.updateRequestName}`, {
           type: 'object',
           properties: {
-            dataObject: {
+            resource: {
               $ref: `#/components/schemas/${resource}`,
             },
           },
@@ -114,7 +114,7 @@ export class GeneralOpenAPIStep implements GeneratorStep<DetailsGeneratorSchema>
         .set(`${options.updateResponseName}`, {
           type: 'object',
           properties: {
-            dataObject: {
+            resource: {
               $ref: `#/components/schemas/${resource}`,
             },
             [COMMENT_KEY]: 'ACTION DE1: modify resource or use flat list here',
