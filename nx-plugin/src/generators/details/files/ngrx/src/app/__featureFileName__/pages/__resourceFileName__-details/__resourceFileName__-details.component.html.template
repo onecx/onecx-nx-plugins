@@ -32,14 +32,14 @@
             <input
               pInputText
               type="text"
-              id="<%= resourceConstantName.toLowerCase() %>_detail_id"
+              id="<%= resourceConstantName.toLowerCase() %>_detail_change_me"
               class="w-full pt-3 pb-2 text-responsive"
-              formControlName="id"
+              formControlName="changeMe"
               required
               aria-required="true"
             />
-            <label class="ocx-required-label" for="<%= resourceConstantName.toLowerCase() %>_detail_id">
-              {{ '<%= resourceConstantName %>_DETAILS.FORM.ID' | translate }}
+            <label class="ocx-required-label" for="<%= resourceConstantName.toLowerCase() %>_detail_change_me">
+              {{ '<%= resourceConstantName %>_DETAILS.FORM.CHANGE_ME' | translate }}
             </label>
           </p-floatlabel>
         </form>

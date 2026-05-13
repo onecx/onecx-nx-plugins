@@ -22,7 +22,7 @@ export class GeneralOpenAPIStep
     const searchRequestName = options.searchRequestName;
     const searchResponseName = options.searchResponseName;
 
-    const apiUtil = new OpenAPIUtil(bffOpenApiContent);
+    const apiUtil = new OpenAPIUtil(bffOpenApiContent ?? '');
     const res = apiUtil
       .paths()
       .set(
@@ -70,6 +70,9 @@ export class GeneralOpenAPIStep
           id: {
             type: 'string',
             readOnly: true,
+          },
+          changeMe: {
+            type: 'string'
           },
           [COMMENT_KEY]: 'ACTION E: Add entity properties',
         },

@@ -34,9 +34,9 @@ export class <%= resourceClassName %>DetailsComponent implements OnInit {
       const labels: ObjectDetailItem[] = [
         //ACTION D1: Add header values here
         {
-          label: '<%= featureConstantName %>_DETAILS.FORM.ID',
+          label: '<%= featureConstantName %>_DETAILS.FORM.CHANGE_ME',
           labelPipe: TranslatePipe,
-          value: vm.details?.id,
+          value: vm.details?.changeMe,
         },
       ];
       return labels;
@@ -138,7 +138,7 @@ export class <%= resourceClassName %>DetailsComponent implements OnInit {
   constructor() {
      this.formGroup = new FormGroup({
       //ACTION D1: Add form fields here
-      id: new FormControl(null, [Validators.maxLength(255)]),
+      changeMe: new FormControl(null, [Validators.maxLength(255)]),
     })
     this.formGroup.disable();
 
@@ -147,7 +147,7 @@ export class <%= resourceClassName %>DetailsComponent implements OnInit {
       if (!vm.editMode) {
         this.formGroup.patchValue({
           //ACTION D1: Add form fields here
-          id: vm.details?.id
+          changeMe: vm.details?.changeMe
         })
         this.formGroup.markAsPristine();
       }

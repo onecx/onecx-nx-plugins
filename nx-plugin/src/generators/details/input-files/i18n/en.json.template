@@ -19,7 +19,7 @@
     },
     "FORM": {
       "FORM_FIELDS": "ACTION D3: Adjust translation keys for the form",
-      "ID": "ID"
+      "CHANGE_ME": "Change Me"
     },
     "CANCEL": {
       "HEADER": "Confirm cancellation",

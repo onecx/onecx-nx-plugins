@@ -261,7 +261,7 @@ describe('<%= resourceClassName %>DetailsComponent', () => {
     jest.spyOn(store, 'dispatch');
     // ACTION D11: Adjust form field names and values according to your implementation
     const <%= resourcePropertyName%> = { id: '123' }
-    const <%= resourcePropertyName%>Form = { id: '123' }
+    const <%= resourcePropertyName%>Form = { changeMe: 'title' }
 
     store.overrideSelector(select<%= resourceClassName%>DetailsViewModel, {
       ...base<%= resourceClassName%>DetailsViewModel,
@@ -316,9 +316,9 @@ describe('<%= resourceClassName %>DetailsComponent', () => {
   it('should display item details in page header', async () => {
     component.objectDetails$ = of([
        {
-        label: '<%= resourceConstantName %>_DETAILS.FORM.ID',
+        label: '<%= resourceConstantName %>_DETAILS.FORM.CHANGE_ME',
         labelPipe: TranslatePipe,
-        value: 'test id',
+        value: 'test',
       },
       {
         label: 'first',
@@ -343,10 +343,10 @@ describe('<%= resourceClassName %>DetailsComponent', () => {
     const objectDetails = await pageHeader.getObjectInfos();
     expect(objectDetails.length).toBe(5);
 
-    const idLabel = TestBed.inject(TranslateService).instant('<%= resourceConstantName %>_DETAILS.FORM.ID');
-    const testDetailItem = await pageHeader.getObjectInfoByLabel(idLabel);
-    expect(await testDetailItem?.getLabel()).toEqual(idLabel);
-    expect(await testDetailItem?.getValue()).toEqual('test id');
+    const label = TestBed.inject(TranslateService).instant('<%= resourceConstantName %>_DETAILS.FORM.CHANGE_ME');
+    const testDetailItem = await pageHeader.getObjectInfoByLabel(label);
+    expect(await testDetailItem?.getLabel()).toEqual(label);
+    expect(await testDetailItem?.getValue()).toEqual('test');
     expect(await testDetailItem?.getIcon()).toBeUndefined();
 
     const firstDetailItem = await pageHeader.getObjectInfoByLabel('first');
@@ -375,7 +375,7 @@ describe('<%= resourceClassName %>DetailsComponent', () => {
     const disableSpy = jest.spyOn(component.formGroup, 'disable');
 
     // ACTION D11: Adjust form field names and values according to your implementation
-    const <%= resourcePropertyName%>Form = { id: '123' }
+    const <%= resourcePropertyName%>Form = { changeMe: 'title' }
     const <%= resourcePropertyName%> = { id: '123', ...<%= resourcePropertyName%>Form }
 
     store.overrideSelector(select<%= resourceClassName%>DetailsViewModel, {

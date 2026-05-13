@@ -1,6 +1,7 @@
 import { Tree, joinPathFragments, names } from '@nx/devkit';
-import { GeneratorStep } from '../../shared/generator.utils';
+
 import { DetailsGeneratorSchema } from '../schema';
+import { GeneratorStep } from '../../shared/generator.utils';
 import { COMMENT_KEY, OpenAPIUtil } from '../../shared/openapi/openapi.utils';
 import { createUpdateEndpoint } from '../../create-update/endpoint.util';
 
@@ -16,7 +17,7 @@ export class GeneralOpenAPIStep implements GeneratorStep<DetailsGeneratorSchema>
     const resource = options.resource;
     const propertyName = names(options.resource).propertyName;
     const getResponseName = options.getResponseName;
-    const apiUtil = new OpenAPIUtil(bffOpenApiContent);
+    const apiUtil = new OpenAPIUtil(bffOpenApiContent ?? '');
 
     const updateRequestName = options.updateRequestName;
     const updateResponseName = options.updateResponseName;
@@ -158,20 +159,25 @@ export class GeneralOpenAPIStep implements GeneratorStep<DetailsGeneratorSchema>
       );
     }
 
-    apiUtil.schemas().set(resource, {
-      type: 'object',
-      required: ['id', 'modificationCount'],
-      properties: {
-        modificationCount: {
-          type: 'integer',
-          format: 'int32',
+    apiUtil
+      .schemas()
+      .set(resource, {
+        type: 'object',
+        required: ['id'],
+        properties: {
+          modificationCount: {
+            type: 'integer',
+            format: 'int32',
+          },
+          id: {
+            type: 'string',
+          },
+          changeMe: {
+            type: 'string',
+          },
+          [COMMENT_KEY]: 'ACTION: add additional properties here',
         },
-        id: {
-          type: 'string',
-        },
-        [COMMENT_KEY]: 'ACTION: add additional properties here',
-      },
-    });
+      });
 
     apiUtil.schemas().set('ProblemDetailResponse', {
       type: 'object',
