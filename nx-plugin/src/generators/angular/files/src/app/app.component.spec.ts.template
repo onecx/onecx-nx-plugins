@@ -6,17 +6,23 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { provideHttpClient } from '@angular/common/http';
 import { TranslateModule } from '@ngx-translate/core'
 import { provideTranslateTestingService } from '@onecx/angular-accelerator/testing'
+import {
+  StandaloneShellModule,
+  provideStandaloneProviders
+} from '@onecx/angular-standalone-shell';
 
 describe('AppComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations:[AppComponent],
       imports: [
+        StandaloneShellModule,
         RouterTestingModule,              
         AngularAcceleratorModule,
-        TranslateModule.forRoot(),
+        TranslateModule.forRoot()
       ],
       providers: [
+        provideStandaloneProviders(),
         provideHttpClient(), 
         provideHttpClientTesting(), 
         provideTranslateTestingService({

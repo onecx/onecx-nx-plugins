@@ -84,6 +84,15 @@ export async function angularGenerator(
       standalone: options.standalone,
     }
   );
+
+  if (!options.standalone) {
+    tree.delete(`${directory}/src/app/app.module.ts`);
+    tree.delete(`${directory}/src/app/app.component.html`);
+    tree.delete(`${directory}/src/app/app.component.scss`);
+    tree.delete(`${directory}/src/app/app.component.spec.ts`);
+    tree.delete(`${directory}/src/app/app.component.ts`);
+  }
+
   const generatorProcessor = new GeneratorProcessor();
   generatorProcessor.addStep(new GeneralOpenAPIStep());
 
@@ -105,7 +114,7 @@ export async function angularGenerator(
       '@onecx/angular-remote-components': oneCXLibVersion,
       '@onecx/angular-webcomponents': oneCXLibVersion,
       '@onecx/angular-utils': oneCXLibVersion,
-      '@onecx/angular-standalone-shell': oneCXLibVersion,
+      ...(options.standalone ? { '@onecx/angular-standalone-shell': oneCXLibVersion } : {}),
       '@onecx/integration-interface': oneCXLibVersion,
       '@onecx/angular-integration-interface': oneCXLibVersion,
       '@onecx/ngrx-accelerator': oneCXLibVersion,

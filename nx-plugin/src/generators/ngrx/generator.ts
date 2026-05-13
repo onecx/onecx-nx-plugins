@@ -81,7 +81,9 @@ export async function ngrxGenerator(
     {}
   );
 
-  addModulesToAppModule(tree);
+  if (options.standalone) {
+    addModulesToAppModule(tree);
+  }
 
   await formatFiles(tree);
 

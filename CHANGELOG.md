@@ -1,3 +1,24 @@
+## [7.1.0](https://github.com/onecx/onecx-nx-plugins/compare/v7.0.0...v7.1.0) (2026-05-05)
+
+### Features
+
+* angular 20 migration ([#332](https://github.com/onecx/onecx-nx-plugins/issues/332)) ([8735f92](https://github.com/onecx/onecx-nx-plugins/commit/8735f92100ab42e36d415d4467218848cca58706)), closes [#315](https://github.com/onecx/onecx-nx-plugins/issues/315) [#318](https://github.com/onecx/onecx-nx-plugins/issues/318) [#318](https://github.com/onecx/onecx-nx-plugins/issues/318) [#320](https://github.com/onecx/onecx-nx-plugins/issues/320) [#287](https://github.com/onecx/onecx-nx-plugins/issues/287) [#289](https://github.com/onecx/onecx-nx-plugins/issues/289) [#325](https://github.com/onecx/onecx-nx-plugins/issues/325)
+* bump node-version + add impl. prompt ([c73a555](https://github.com/onecx/onecx-nx-plugins/commit/c73a5551d459c9086229331887a2e71b20b258c1))
+* refactor generator ([7118010](https://github.com/onecx/onecx-nx-plugins/commit/711801026370c02669e28f60465957d08c9d01d5))
+
+### Bug Fixes
+
+* release config and package lock version ([408322e](https://github.com/onecx/onecx-nx-plugins/commit/408322e65252402ab0cec97eb7dfd3889f974251))
+* test e2e ([c04b29d](https://github.com/onecx/onecx-nx-plugins/commit/c04b29dbea191fe680dbbf5d203d1f7a83ffab6f))
+* test generation and delete button ([c805987](https://github.com/onecx/onecx-nx-plugins/commit/c80598752d7f851a9d0c827926aef933c829d9d0))
+* v7 removed unused files when standalone mode is false ([#335](https://github.com/onecx/onecx-nx-plugins/issues/335)) ([9397a9e](https://github.com/onecx/onecx-nx-plugins/commit/9397a9e7e4f81fd9c1522e867943e4d339ffdd0d))
+
+### Chores
+
+* **release:** -v7.1.0-rc.1 [skip ci] ([52e0490](https://github.com/onecx/onecx-nx-plugins/commit/52e0490d0fe88c5291fc5b13bacfde8475dabaed))
+* **release:** -v7.1.0-rc.2 [skip ci] ([86fbd8d](https://github.com/onecx/onecx-nx-plugins/commit/86fbd8df4dcfb39a9c02d402f6fdbf9a8207e7fe))
+* remove kc dependencies ([#326](https://github.com/onecx/onecx-nx-plugins/issues/326)) ([3919e76](https://github.com/onecx/onecx-nx-plugins/commit/3919e7624ce21c485f2237a5c4b2d46eb39b9ab3))
+
 ## [7.1.0-rc.2](https://github.com/onecx/onecx-nx-plugins/compare/v7.1.0-rc.1...v7.1.0-rc.2) (2026-04-23)
 
 ### Features
