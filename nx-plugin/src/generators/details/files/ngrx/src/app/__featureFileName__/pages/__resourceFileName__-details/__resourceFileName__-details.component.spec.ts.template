@@ -285,19 +285,19 @@ describe('<%= resourceClassName %>DetailsComponent', () => {
 
   it('should dispatch deleteButtonClicked action on delete button click', async () => {
     jest.spyOn(store, 'dispatch')
-    store.overrideSelector(selectBookDetailsViewModel, {
-      ...baseBookDetailsViewModel,
+    store.overrideSelector(select<%= resourceClassName%>DetailsViewModel, {
+      ...base<%= resourceClassName%>DetailsViewModel,
       editMode: false
     })
     store.refreshState()
 
-    const pageHeader = await bookDetails.getHeader()
+    const pageHeader = await <%= resourcePropertyName%>Details.getHeader()
     const deleteAction = await pageHeader.getInlineActionButtonByLabel('Delete')
     await deleteAction?.click()
 
     expect(deleteAction).toBeTruthy()
     expect(store.dispatch).toHaveBeenCalledTimes(1)
-    expect(store.dispatch).toHaveBeenCalledWith(bookDetailsActions.deleteButtonClicked())
+    expect(store.dispatch).toHaveBeenCalledWith(<%= resourcePropertyName%>DetailsActions.deleteButtonClicked())
   })
 
   it('should dispatch no action on more button click', async () => {

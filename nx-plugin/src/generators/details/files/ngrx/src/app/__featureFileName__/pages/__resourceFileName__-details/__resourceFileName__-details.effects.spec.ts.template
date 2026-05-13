@@ -278,7 +278,7 @@ describe('<%= resourceClassName %>DetailsEffects', () => {
       expect(selectSpy).toHaveBeenCalledTimes(1)
       expect(<%= resourcePropertyName %>Service.delete<%= resourceClassName %>ById).toHaveBeenCalledWith({ id: '123' })
       expect(messageService.success).toHaveBeenCalledWith({
-        summaryKey: 'BOOK_DETAILS.DELETE.SUCCESS'
+        summaryKey: '<%= resourceConstantName %>_DETAILS.DELETE.SUCCESS'
       })
     })
 
@@ -309,7 +309,7 @@ describe('<%= resourceClassName %>DetailsEffects', () => {
       expect(selectSpy).toHaveBeenCalledTimes(1)
       expect(<%= resourcePropertyName %>Service.delete<%= resourceClassName %>ById).toHaveBeenCalledWith({ id: '123' })
       expect(messageService.error).toHaveBeenCalledWith({
-        summaryKey: 'BOOK_DETAILS.DELETE.ERROR'
+        summaryKey: '<%= resourceConstantName %>_DETAILS.DELETE.ERROR'
       })
     })
 
