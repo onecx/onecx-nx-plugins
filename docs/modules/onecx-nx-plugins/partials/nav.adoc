@@ -14,6 +14,9 @@
 *** xref:documentation:onecx-nx-plugins:generator/search/mock-api.adoc[Mock API]
 
 ** xref:documentation:onecx-nx-plugins:generator/create-detail-dialog.adoc[Create Detail Dialog]
+*** xref:documentation:onecx-nx-plugins:generator/details/detail-properties.adoc[Detail Properties]
+*** xref:documentation:onecx-nx-plugins:generator/details/detail-tests.adoc[Detail Tests]
+
 ** xref:documentation:onecx-nx-plugins:generator/create-update-dialog.adoc[Create Create/Update Dialog]
 ** xref:documentation:onecx-nx-plugins:generator/delete-dialog.adoc[Create Delete Dialog]
 

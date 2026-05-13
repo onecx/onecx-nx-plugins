@@ -6,7 +6,9 @@ endif::[]
 = Create a Detail Component
 
 What is a Component?::
+ifdef::env-site[]
 include::partial$_glossary.adoc[tag=component]
+endif::[]
 
 Detail Component and Entity/Resource::
 The Detail Component is a specific type of component that provides a user interface for displaying detailed information about a certain entity or resource. +
@@ -22,7 +24,7 @@ When a resource name is specified with the `--resource` option, the generator wi
 .Create a detail component with the following command, preset resource/entity name
 [source,bash]
 ----
-nx generate <namespace>/nx-plugin:detail <feature> --resource=<resource>
+nx generate <namespace>/nx-plugin:details <feature> --resource=<resource>
 ----
  
 with:
@@ -34,9 +36,11 @@ include::partial$_parameter.adoc[tag=resource]
 endif::[]
 
 Next, *you will be asked* if you would like to adapt the names for the generation. +
-If you answer *No*, the generator will use the preset resource name (if specified) or derive the name from feature name. This is the fastest way. +
-If you answer *Yes*, you can specify a name for the resource/entity and the API components. This can be helpful if you want to customize an existing API.
+[horizontal]
+NO:: If you answer *No*, the generator will use the preset resource name (if specified) or derive the name from feature name. This is the fastest way.
+YES:: If you answer *Yes*, you can specify a name for the resource/entity and the API components. This can be helpful if you want to customize an existing API.
 
+Next questions will be about the use of actions within the search result page to manipulate the data. We recommend to answer *Yes* to at least the question about the edit action, as this will generate an edit button in the detail view which is a common use case for detail pages. +
 The generator creates a new detail component within the specified feature module and set up the necessary structure and configurations.
 
 .Example: Detail component for books - answering "Yes" to specify adjustments
@@ -55,32 +59,28 @@ image::generated_feature_book_detail_book_yes.png[]
 == Post-Generation Steps
 The next steps involve adapting the detail component to your specific requirements and integrating it into other parts of the application. All parts that need to be adapted after the generation are described in the following sections.
 
-. xref:./search/search-criteria.adoc[Configure Search Criteria]
-. xref:./search/search-results.adoc[Configure Search Results]
-. xref:./search/result-diagram.adoc[Configure Result Diagram]
-. xref:./search/header-actions.adoc[Configure Header Actions]
-. xref:./search/search-tests.adoc[Configure Search Tests]
-. xref:./search/mock-api.adoc[Prepare Mock Data]
+. xref:./details/detail-properties.adoc[Configure Detail Properties]
+. xref:./details/detail-tests.adoc[Configure Detail Tests]
 
 .All places that need to be adapted are marked with an action box like this one
 [source, javascript]
 ----
-ACTION S<NUMBER>: <Short Description>
+ACTION D<NUMBER>: <Short Description>
 ----
 
 [TIP]
-Search in your IDE for the string `*ACTION S*` to quickly find all places that need to be adapted.
+Search in your IDE for the string `*ACTION D*` to quickly find all places that need to be adapted.
 
 
 [NOTE]
 ====
-.The generator uses the following Extension Marker in the search component spec file
+.The generator uses the following Extension Marker in the detail component spec file
 [source, text]
 ----
 <<SPEC-EXTENSIONS-MARKER-!!!-DO-NOT-REMOVE-!!!>>
 ----
 
-This marker is used as a placeholder for future extensions by newly generated components. Do not remove the marker from the code, as doing so will prevent these future generated functions and tests from being added to the Search Page Spec File.
+This marker is used as a placeholder for future extensions by newly generated components. Do not remove the marker from the code, as doing so will prevent these future generated functions and tests from being added to the Detail Page Spec File.
 ====
 
 
@@ -94,7 +94,7 @@ Execute the following command with the *bookstore* application as current workin
 .Create a Detail Component for a Book, preset resource/entity name
 [source,bash]
 ----
-nx generate @onecx/nx-plugin:detail book --resource=Book
+nx generate @onecx/nx-plugin:details book --resource=Book
 ----
 
 This command will generate a new detail component *book-detail* within the specified feature module with the necessary structure and configurations. With the presetted resource/entity name *Book*, the generator will also preset the API service name to *BookAPIService* used by the generated detail component. This should correspond to the created schema in OpenAPI file, see step before.
@@ -106,18 +106,20 @@ image::generated_feature_book_detail.png[width=250]
 The generated detail component provides a basic structure for displaying and managing the details of the specified resource/entity. +
 You can further configure the detail view, form controls, and actions according to your specific requirements, following the xref:#post-generation-steps[Post Generation Steps].
 
-ifdef::env-site[]
-include::_integrate-into-onecx.adoc[leveloffset=+2]
-endif::[]
-
 
 === Preview
-In the following image, the detail component (as generated including the post-generation steps) is integrated into the application unchanged, exactly as it was generated.
+In the following image, the search result view was extended with a VIEW action.
 
-.Detail UI after integration into the application
+.Search UI after creation of detail component with VIEW action
+image::generated_book_search_component_with_actions.png[]
+
+The detail component is displayed when clicking on the VIEW button in the search result view. +
+The detail component is generated with a basic layout and structure, which can be further customized and enhanced based on the specific requirements of your application. The generated component includes a detail view for displaying the details of the resource/entity and form controls for editing the details, which can be adapted to fit the data structure and user interface needs of your application.
+
+.Detail UI after generation
 image::generated_book_detail_component_org.png[]
 
-After little adaptations to the detail view and form controls, the detail component can look like this:
+After adaptations to the detail view and form controls, the detail component can look like this:
 
 .Detail UI with adapted detail view
 image::generated_book_detail_component_example.png[]

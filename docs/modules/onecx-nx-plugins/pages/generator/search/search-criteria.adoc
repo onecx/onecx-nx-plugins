@@ -130,12 +130,11 @@ File::      `<resource>-search.parameters.ts`
 [source, javascript]
 ----
 export const <feature>SearchCriteriasSchema = z.object({
-  bookTitle: z.string().optional(),
+  changeMe: z.string().optional(),
   // ACTION S2: Define members for the <resource>SearchCriteriasSchema here
 } satisfies Partial<Record<keyof SearchCustomerManagementRequest, ZodTypeAny>>);
 ----
-
-Where *bookTitle* is an additional search criteria added to the `+Search<Feature>Request+`.
+Where *changeMe* is an placeholder for an additional search criteria.
 ====
 
 [discrete]
@@ -155,7 +154,6 @@ export const bookSearchCriteriasSchema = z.object({
   // ACTION S2: Define members for the bookSearchCriteriasSchema here
 } satisfies Partial<Record<keyof SearchBookRequest, ZodTypeAny>>);
 ----
-
 Where *bookTitle* is the criteria added to the `+SearchBookRequest+`.
 ====
 
@@ -208,8 +206,7 @@ File::      `<resource>-search.component.html`
       </div>
     </form>
 ----
-
-Where *changeMe* is an additional search criteria added to the `+Search<Feature>Request+`.
+Where *changeMe* is a placeholder for an additional search criteria added to the `+Search<Feature>Request+`.
 ====
 
 [discrete]
@@ -251,7 +248,6 @@ File::      `book-search.component.html`
       </div>
     </form>
 ----
-
 Where *bookTitle* is the criteria added to the `+SearchBookRequest+`.
 ====
 
@@ -290,7 +286,7 @@ Files::      `de.json`, `en.json`
     }
   }
 ----
-Where *CHANGE_ME* is an search criteria.
+Where *CHANGE_ME* is a placeholder for a search criteria.
 ====
 
 [discrete]
@@ -317,6 +313,7 @@ Files::      `de.json`, `en.json`
         "TOOLTIP": "Book title"
       }
     }
+    ...
   }
 ----
 Where *BOOK_TITLE* is the criteria added to the `+SearchBookRequest+`.
@@ -339,6 +336,7 @@ Where *BOOK_TITLE* is the criteria added to the `+SearchBookRequest+`.
         "TOOLTIP": "Buchtitel"
       }
     }
+    ...
   }
 ----
 ====

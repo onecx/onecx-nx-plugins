@@ -287,7 +287,7 @@ describe('bookSearchReducer', () => {
 
 '''
 
-=== Execute Tests
+== Execute Tests
 After adapting the tests, you can execute them to ensure that they are working correctly and validating the functionality of the search component as expected. +
 Use the following command to run the tests for the search component:
 
