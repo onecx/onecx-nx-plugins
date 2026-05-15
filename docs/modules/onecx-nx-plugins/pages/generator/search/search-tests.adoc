@@ -48,7 +48,9 @@ File::      `<resource>-search.component.spec.ts`
 ----
 ====
 
-==== Example: Book Search
+'''
+
+==== Example: Book Search Component
 
 [horizontal]
 Directory:: `bookstore/src/app/book/pages/book-search`
@@ -57,6 +59,7 @@ File::      `book-search.component.spec.ts`
 .ACTION S11 in `+book-search.component.spec.ts+`
 [%collapsible]
 ====
+Replace all occurrences of *changeMe* with *bookTitle* and *CHANGE_ME* with *BOOK_TITLE*.
 [source, javascript]
 ----
   const baseBookSearchViewModel: BookSearchViewModel = {
@@ -100,6 +103,8 @@ File::      `<resource>-search.effects.spec.ts`
 26 occurances of `changeMe` must be replaced by `bookTitle`.
 ====
 
+'''
+
 ==== Example: Book Effects
 
 [horizontal]
@@ -109,6 +114,7 @@ File::      `book-search.effects.spec.ts`
 .ACTION S11 in `+book-search.effects.spec.ts+`
 [%collapsible]
 ====
+Replace all occurrences of *changeMe* with *bookTitle* and *CHANGE_ME* with *BOOK_TITLE*.
 [source, javascript]
 ----
 // ACTION S11: Change test data in the whole document
@@ -130,102 +136,6 @@ describe('BookSearchEffects', () => {
 6 occurances of `changeMe` were replaced by `bookTitle`. +
 2 occurances of `CHANGE_ME` were replaced by `BOOK_TITLE`.
 ====
-
-'''
-
-=== Search Selectors
-
-==== Template
-Replace all occurrences of `changeMe` in the generated search selectors spec file with the actual property name used in the search results. +
-Update the test data in the spec file to reflect the expected structure and values based on the customized search component implementation.
-
-[horizontal]
-Directory:: `<root-of-ui-app>/src/app/<feature>/pages/<resource>-search`
-File::      `<resource>-search.selectors.spec.ts`
-
-.ACTION S11 in `+<resource>-search.selectors.spec.ts+`
-[%collapsible]
-====
-[source, javascript]
-----
-describe('<%= resourceClassName %>Search selectors', () => {
-  describe('selectResults projector', () => {
-    // ACTION S11: Update test data
-    const cases = [
-      {
-        desc: 'should map results to RowListGridData[]',
-        input: [
-          { id: '1', changeMe: 'A' },
-          { id: '2', changeMe: 'B' }
-        ],
-        expected: [
-          { imagePath: '', id: '1', changeMe: 'A' },
-          { imagePath: '', id: '2', changeMe: 'B' }
-        ]
-      },
-      {
-        desc: 'should use empty string fallback when item.id is falsy',
-        input: [
-          { id: '', changeMe: 'A' },
-          { id: '', changeMe: 'B' },
-          { id: '', changeMe: 'C' }
-        ],
-        expected: [
-          { imagePath: '', id: '', changeMe: 'A' },
-          { imagePath: '', id: '', changeMe: 'B' },
-          { imagePath: '', id: '', changeMe: 'C' }
-        ]
-      }
-    ]
-...
-----
-====
-
-==== Example: Book Search
-
-[horizontal]
-Directory:: `bookstore/src/app/book/pages/book-search`
-File::      `book-search.selectors.spec.ts`
-  
-.ACTION S11 in `+book-search.selectors.spec.ts+`
-[%collapsible]
-====
-[source, javascript]
-----
-describe('BookSearch selectors', () => {
-  describe('selectResults projector', () => {
-    // ACTION S11: Update test data
-    const cases = [
-      {
-        desc: 'should map results to RowListGridData[]',
-        input: [
-          { id: '1', bookTitle: 'Book A', bookType: 'crime' },
-          { id: '2', bookTitle: 'Book B' }
-        ] as Book[],
-        expected: [
-          { imagePath: '', id: '1', bookTitle: 'Book A', bookType: 'BOOK_SEARCH.RESULTS.BOOK_TYPES.CRIME' },
-          { imagePath: '', id: '2', bookTitle: 'Book B', bookType: '' }
-        ]
-      },
-      {
-        desc: 'should use empty string fallback when item.id is falsy',
-        input: [
-          { id: '', bookType: 'crime', bookTitle: 'Book A' },
-          { id: '', bookType: 'mystery', bookTitle: 'Book B' },
-          { id: '', bookType: 'fantasy', bookTitle: 'Book C' }
-        ] as Book[],
-        expected: [
-          { imagePath: '', id: '', bookTitle: 'Book A', bookType: 'BOOK_SEARCH.RESULTS.BOOK_TYPES.CRIME' },
-          { imagePath: '', id: '', bookTitle: 'Book B', bookType: 'BOOK_SEARCH.RESULTS.BOOK_TYPES.MYSTERY' },
-          { imagePath: '', id: '', bookTitle: 'Book C', bookType: 'BOOK_SEARCH.RESULTS.BOOK_TYPES.FANTASY' }
-        ]
-      }
-    ]
-...
-----
-11 occurances of `changeMe` were replaced by `bookTitle`.
-====
-
 
 '''
 
@@ -258,6 +168,8 @@ describe('<%= resourcePropertyName %>SearchReducer', () => {
 ----
 ====
 
+'''
+
 ==== Example: Book Reducers
 
 [horizontal]
@@ -267,6 +179,7 @@ File::      `book-search.reducers.spec.ts`
 .ACTION S11 in `+book-search.reducers.spec.ts+`
 [%collapsible]
 ====
+Replace all occurrences of *changeMe* with *bookTitle*.
 [source, javascript]
 ----
 // ACTION S11: Change test data in the whole document
@@ -284,6 +197,120 @@ describe('bookSearchReducer', () => {
 3 occurances of `changeMe` were replaced by `bookTitle`.
 ====
 
+'''
+
+=== Search Selectors
+
+==== Template
+Replace all occurrences of `changeMe` in the generated search selectors spec file with the actual property name used in the search results. +
+Update the test data in the spec file to reflect the expected structure and values based on the customized search component implementation.
+
+[horizontal]
+Directory:: `<root-of-ui-app>/src/app/<feature>/pages/<resource>-search`
+File::      `<resource>-search.selectors.spec.ts`
+
+.ACTION S11 in `+<resource>-search.selectors.spec.ts+`
+[%collapsible]
+====
+[source, javascript]
+----
+describe('<%= resourceClassName %>Search selectors', () => {
+  describe('selectResults projector', () => {
+    // ACTION S11: Adjust test data
+    const cases = [
+      {
+        desc: 'should map results to RowListGridData[]',
+        input: [
+          { id: '1', changeMe: 'A' },
+          { id: '2', changeMe: 'B' }
+        ],
+        expected: [
+          { imagePath: '', id: '1', changeMe: 'A' },
+          { imagePath: '', id: '2', changeMe: 'B' }
+        ]
+      },
+      {
+        desc: 'should use empty string fallback when item.id is falsy',
+        input: [
+          { id: '', changeMe: 'A' },
+          { id: '', changeMe: 'B' },
+          { id: '', changeMe: 'C' }
+        ],
+        expected: [
+          { imagePath: '', id: '', changeMe: 'A' },
+          { imagePath: '', id: '', changeMe: 'B' },
+          { imagePath: '', id: '', changeMe: 'C' }
+        ]
+      }
+    ]
+...
+    // ACTION S11: Adjust test data
+    const columns = [{ id: 'changeMe', nameKey: 'Col 1', columnType: ColumnType.STRING }]
+    const searchCriteria = {
+      pageNumber: 1,
+      pageSize: 10,
+      changeMe: 'A'
+    }
+    const results = [{ imagePath: '', id: '1', changeMe: 'A test' }]
+...
+----
+====
+
+'''
+
+==== Example: Book Search Selectors
+
+[horizontal]
+Directory:: `bookstore/src/app/book/pages/book-search`
+File::      `book-search.selectors.spec.ts`
+  
+.ACTION S11 in `+book-search.selectors.spec.ts+`
+[%collapsible]
+====
+[source, javascript]
+----
+describe('BookSearch selectors', () => {
+  describe('selectResults projector', () => {
+    // ACTION S11: Update test data
+    const cases = [
+      {
+        desc: 'should map results to RowListGridData[]',
+        input: [
+          { id: '1', bookTitle: 'Book A', bookType: 'crime' },
+          { id: '2', bookTitle: 'Book B' }
+        ] as never[],
+        expected: [
+          { imagePath: '', id: '1', bookTitle: 'Book A', bookType: 'BOOK_SEARCH.RESULTS.BOOK_TYPES.CRIME' },
+          { imagePath: '', id: '2', bookTitle: 'Book B', bookType: '' }
+        ]
+      },
+      {
+        desc: 'should use empty string fallback when item.id is falsy',
+        input: [
+          { id: '', bookType: 'crime', bookTitle: 'Book A' },
+          { id: '', bookType: 'mystery', bookTitle: 'Book B' },
+          { id: '', bookType: 'fantasy', bookTitle: 'Book C' }
+        ] as never[],
+        expected: [
+          { imagePath: '', id: '', bookTitle: 'Book A', bookType: 'BOOK_SEARCH.RESULTS.BOOK_TYPES.CRIME' },
+          { imagePath: '', id: '', bookTitle: 'Book B', bookType: 'BOOK_SEARCH.RESULTS.BOOK_TYPES.MYSTERY' },
+          { imagePath: '', id: '', bookTitle: 'Book C', bookType: 'BOOK_SEARCH.RESULTS.BOOK_TYPES.FANTASY' }
+        ]
+      }
+    ]
+...
+    // ACTION S11: Adjust test data
+    const columns = [{ id: 'bookTitle', nameKey: 'Col 1', columnType: ColumnType.STRING }]
+    const searchCriteria = {
+      pageNumber: 1,
+      pageSize: 10,
+      bookTitle: 'A'
+    }
+    const results = [{ imagePath: '', id: '1', bookTitle: 'A test', bookType: 'BOOK_SEARCH.RESULTS.BOOK_TYPES.CRIME' }]
+...
+----
+13 occurances of `changeMe` were replaced by `bookTitle` and some other properties.
+====
 
 '''
 

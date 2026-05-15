@@ -8,8 +8,7 @@
 ** xref:documentation:onecx-nx-plugins:generator/create-search.adoc[Create Search Page]
 *** xref:documentation:onecx-nx-plugins:generator/search/search-criteria.adoc[Search Criteria]
 *** xref:documentation:onecx-nx-plugins:generator/search/search-results.adoc[Search Results]
-*** xref:documentation:onecx-nx-plugins:generator/search/result-diagram.adoc[Result Diagram]
-*** xref:documentation:onecx-nx-plugins:generator/search/header-actions.adoc[Header Actions]
+*** xref:documentation:onecx-nx-plugins:generator/search/search-add-ons.adoc[Search Add-ons]
 *** xref:documentation:onecx-nx-plugins:generator/search/search-tests.adoc[Search Tests]
 *** xref:documentation:onecx-nx-plugins:generator/search/mock-api.adoc[Mock API]
 
@@ -24,3 +23,4 @@
 ** xref:documentation:onecx-nx-plugins:ngrx/pre-commit-validation.adoc[Pre-Commit Validation]
 
 ** xref:documentation:onecx-nx-plugins:generator/glossary.adoc[Glossary]
+** xref:documentation:onecx-nx-plugins:generator/development.adoc[Development]

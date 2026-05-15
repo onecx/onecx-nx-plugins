@@ -8,8 +8,12 @@ endif::[]
 
 The OneCX UI App Generator is a powerful tool that simplifies the development of UI applications within the OneCX framework. It automates the creation of key UI components, ensuring consistency and adherence to best practices.
 
-In addition to generation, significant parts still need to be created or modified manually by the user. +
-To clearly explain how the generator works and the necessary adjustments, the following *example* is used in this documentation: *an application to manage Books*. The Bookstore application allows users to search for books, view details about them, and manage their properties.
+*In addition to generation,* significant parts still need to be created or modified manually by the user. Such parts are highlighted in the documentation as *ACTION*. These actions indicate where and what adjustments are necessary to complete the generated code.
+
+*To clearly explain* how the generator works and the necessary adjustments, this guide uses a practical example: an *application to manage Books*. The *Bookstore* application allows users to search for books, view details about them, and manage their properties.
+
+In case you want to take part of the development of the generator or want to use it locally without installing it globally from npm, see the xref:generator/development.adoc[Development Guide] for instructions on how to get the generator and set up the development environment.
+
 
 == Prerequisites
 
@@ -47,15 +51,17 @@ npm install -g @nrwl/cli
 npm install
 ----
 
-=== Knowledge of Angular and Nx
-The OneCX UI App Generator is built on top of {angular_link} and {nx_link}, so a basic understanding of these technologies is essential to effectively use the generator and customize the generated code.
+=== Basic Knowledge helps
 
+Angular and Nx::
+The OneCX UI App Generator is built on top of {angular_link} and {nx_link}, so a basic understanding of these technologies is essential to effectively use the generator and customize the generated code.
++
 Familiarity with {angular_link} concepts such as components, modules, services, and state management (e.g., {ngrx_link}) will help you understand the structure of the generated code and how to extend it.
 
-=== Knowledge of App Integration
+Local App Integration::
 The easiest way to integrate the generated App into local running OneCX is to follow the {onecx_local_env_docs_ref} guidelines in {onecx_local_env_extend_ref}. This ensures that the components are correctly registered and accessible within the application.
 
-=== Knowledge of OpenAPI Specification
+OpenAPI Specification::
 The generator relies on the OpenAPI specification to define the API endpoints and data models. Understanding how to read and modify OpenAPI YAML files is crucial for customizing the API interactions of the generated components. +
 Use the {swagger_editor_link} to validate the syntax and structure of the OpenAPI file (openapi-bff.yaml) against the {openapi_spec_link}.
 
@@ -68,7 +74,7 @@ image::openapi_swagger_editor_bookstore.png[]
 
 == Generation by Example
 
-Let's explore the capabilities of the OneCX App Generator through a practical example. We will create a simple application to manage books, which includes features such as searching for books, viewing details, and managing their properties. +
+Let's explore the capabilities of the OneCX App Generator through a practical example, the *Bookstore*. We will create a simple application *to manage books*, which includes features such as searching for books, viewing details, and managing their properties. +
 We also provide a simple mock solution to simulate the backend services for the generated components, allowing you to see the generator's output in action without needing a fully functional backend.
 
 The generator offers a range of commands to gradually create various UI components such as applications, function modules, and pages. During the generation of some parts, you will be prompted to specify parameters that determine the structure and naming of the generated components. Occasionally, code adjustments will be necessary to implement business requirements.
@@ -89,7 +95,12 @@ Here is an overview of the application parts that can be generated using the One
 *** xref:generator/create-ngrx-page.adoc[Simple NgRx Page]
 
 
-=== Build the UI App
+[TIP]
+Build the application step by step, roughly following the suggested order above. This iterative approach allows you to understand the structure of the generated code and make necessary adjustments along the way. +
+After generating each part, take the time to review the generated code, run the application, and ensure that everything is working as expected before moving on to the next part (see below for build, lint, test the App). This iterative approach helps in identifying and fixing issues early in the development process, leading to a more robust and maintainable application.
+
+
+=== Build the App
 After generating the UI App and its components, you can build the application. +
 Use the following command to build the application:
 
@@ -103,7 +114,7 @@ npm run build
 image::generated_and_build.png[]
 
 
-=== Lint the UI App
+=== Lint the App
 The generator creates code that adheres to standard linting rules, but it's always a good practice to run the linter after generation to catch any potential issues or inconsistencies. +
 Use the following command to lint the application:
 
@@ -117,7 +128,7 @@ npm run lint
 image::generated_and_lint.png[]
 
 
-=== Test the UI App
+=== Test the App
 
 After generating the application and its components, it's crucial to run the tests to ensure that everything is working as expected. The generator creates basic test cases for the generated components, but you may need to add more tests or adjust the existing ones based on your specific requirements and business logic. +
 Use the following command to run the tests:
@@ -130,30 +141,3 @@ npm run test
 
 .Excerpt of the test output (exemplary for *bookstore* application)
 image::generated_and_test.png[]
-
-
-== Development: Get the Generator
-
-The following is only required if you want to contribute to the development of the generator or want to use the generator locally without installing it globally from npm. If you just want to use the generator, you can install it globally from npm and skip the following steps.
-
-. Clone the *onecx-nx-plugins* repository into a folder on the local machine/inside WSL2
-+
-[source,bash]
-----
-git clone https://github.com/onecx/onecx-nx-plugins.git
-----
-
-. Navigate into the cloned repository and install the dependencies
-+
-[source,bash]
-----
-cd onecx-nx-plugins
-npm install
-----
-
-. Build the OneCX App Generator
-+
-[source,bash]
-----
-npm run build
-----

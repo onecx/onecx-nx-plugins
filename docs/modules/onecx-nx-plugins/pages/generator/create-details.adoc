@@ -122,4 +122,4 @@ image::generated_book_detail_component_org.png[]
 After adaptations to the detail view and form controls, the detail component can look like this:
 
 .Detail UI with adapted detail view
-image::generated_book_detail_component_example.png[]
+image::generated_book_detail_component_book.png[]

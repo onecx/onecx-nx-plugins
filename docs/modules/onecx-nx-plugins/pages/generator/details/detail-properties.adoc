@@ -19,7 +19,7 @@ Directory:: `bookstore/src/app/book/pages/book-details`
 File::      `book-details.component.ts`
 
 [discrete]
-=== Example: Generated Book Details Component
+=== Example: Generated Details in Book Component
 
 .Original `+book-details.component.ts+`
 [%collapsible]
@@ -48,8 +48,10 @@ export class BookDetailsComponent implements OnInit {
 ----
 ====
 
+'''
+
 [discrete]
-=== Example: Book Details Component
+=== Example: Book Details in Book Component
 
 .Book details in `+book-details.component.ts+`
 [%collapsible]
@@ -109,7 +111,7 @@ Directory:: `bookstore/src/app/book/pages/book-details`
 File::      `book-details.component.html`
 
 [discrete]
-=== Example: Generated Book Details Component
+=== Example: Generated Book Details in HTML
 
 .Original `+book-details.component.html+`
 [%collapsible]
@@ -138,8 +140,10 @@ File::      `book-details.component.html`
 ----
 ====
 
+'''
+
 [discrete]
-=== Example: Book Details Component
+=== Example: Book Details in HTML
 
 .Book details in `+book-details.component.html+`
 [%collapsible]
@@ -224,6 +228,8 @@ Files::      `de.json`, `en.json`
 ----
 Here, *ACTION D3* marks translation keys that must be adapted to the context of your application.
 ====
+
+'''
 
 [discrete]
 === Example

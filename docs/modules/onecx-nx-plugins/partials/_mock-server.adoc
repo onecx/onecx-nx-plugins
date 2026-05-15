@@ -8,9 +8,9 @@ app.use(express.json());
 const data = {
   books: [],
 };
-
-
+const bookTypes = ["CRIME", "DRAMA", "FANTASY", "PROSE", "SCIENCE"];
 const apiNames = ["books"];
+
 const generateBooks = (count) => {
   let results = [];
   for (let i = 0; i < count; i++) {
@@ -22,7 +22,7 @@ const generateBooks = (count) => {
       modificationCount: "0",
       id: i,
       bookTitle: "Big Bang and Black Holes - " + i,
-      bookType: "SCIENCE",
+      bookType: bookTypes[i % bookTypes.length],
       bookAuthor: "Stephan Hawking",
       bookIsbn: "978-3-99-123456-" + i,
       bookPrice: "12,80",
@@ -54,7 +54,7 @@ app.get(`/books/:id`, (req, res) => {
       modificationCount: "0",
       id: req.params.id,
       bookTitle: "Big Bang and Black Holes - " + req.params.id,
-      bookType: "SCIENCE",
+      bookType: bookTypes[req.params.id % bookTypes.length],
       bookAuthor: "Stephan Hawking",
       bookIsbn: "978-3-99-123456-" + req.params.id,
       bookPrice: "12,80",

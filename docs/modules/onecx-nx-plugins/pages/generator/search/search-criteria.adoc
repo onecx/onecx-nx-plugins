@@ -22,7 +22,7 @@ Examplarily, a search criteria named `bookTitle` will be used in the URL as `?bo
 ====
 
 
-[#action-1]
+[#action-s1]
 == ACTION S1
 
 Add Criteria to Search Request::
@@ -30,7 +30,7 @@ The `+Search<Feature>Request+` component in the OpenAPI YAML file must be adapte
 More details in {ngrx_search_criteria_ref}[NgRx Search Criteria].
 
 [discrete]
-=== Template: Generated Schema
+=== Template: Generated Search Criteria
 
 [horizontal]
 Directory:: `<root-of-ui-app>/src/assets/api`
@@ -41,12 +41,9 @@ File::      `openapi-bff.yaml`
 ====
 [source, yaml]
 ----
-    Search<Feature>Request:
+    Search<Resource>Request:
       type: object
       properties:
-        id:
-          type: integer
-          format: int32
         pageNumber: 
           type: integer
           format: int32
@@ -60,13 +57,17 @@ File::      `openapi-bff.yaml`
           description: 'The size of the page.'      
         changeMe:
           type: string
-        # " ACTION S1: Add additional properties"
+          maximum: 255
+          description: To be replaced by actual search criteria properties
+        # "ACTION S1: Add search criteria properties"
 ----
 Where *changeMe* is here the example search criteria to be replaced.
 ====
 
+'''
+
 [discrete]
-=== Example
+=== Example: SearchBookRequest in OpenAPI
 
 [horizontal]
 Directory:: `bookstore/src/assets/api`
@@ -94,24 +95,25 @@ File::      `openapi-bff.yaml`
         bookTitle:
           type: string
           maximum: 255
-        # "ACTION S1: Add additional properties"
+        # "ACTION S1: Add search criteria properties"
 ----
-Where e.g. *bookTitle* is a search criteria.
+Where *bookTitle* is a search criteria.
 ====
 
-[NOTE]
+[IMPORTANT]
 ====
-After adding the new criteria to the OpenAPI specification, you need to regenerate the API client code to reflect these changes in your application.
+After adding the new criteria to the OpenAPI specification, you need to regenerate the API client code to reflect these changes in your application. +
+Make sure to run the following command to regenerate the API client based on the modified OpenAPI spec.
+====
 
 .Generate the API client code
 [source, bash]
 ----
 npm run apigen
 ----
-====
 
 
-[#action-2]
+[#action-s2]
 == ACTION S2
 
 Add Search Criteria in TypeScript Schema::
@@ -119,7 +121,7 @@ The criteria you added in "Action S1" now have to be added to the TypeScript sch
 More details in {ngrx_search_criteria_parameter_ref}[NgRx Search Criteria].
 
 [discrete]
-=== Template: Generated Schema
+=== Template: Generated Criteria
 
 [horizontal]
 Directory:: `<root-of-ui-app>/src/app/<feature>/pages/<resource>-search`
@@ -130,7 +132,7 @@ File::      `<resource>-search.parameters.ts`
 ====
 [source, javascript]
 ----
-export const <feature>SearchCriteriasSchema = z.object({
+export const <resource>SearchCriteriasSchema = z.object({
   changeMe: z.string().optional(),
   // ACTION S2: Define members for the <resource>SearchCriteriasSchema here
 } satisfies Partial<Record<keyof SearchCustomerManagementRequest, ZodTypeAny>>);
@@ -138,8 +140,10 @@ export const <feature>SearchCriteriasSchema = z.object({
 Where *changeMe* is an placeholder for an additional search criteria.
 ====
 
+'''
+
 [discrete]
-=== Example
+=== Example: SearchBookRequest in TypeScript
 
 [horizontal]
 Directory:: `bookstore/src/app/book/pages/book-search`
@@ -159,15 +163,15 @@ Where *bookTitle* is the criteria added to the `+SearchBookRequest+`.
 ====
 
 
-[#action-3]
+[#action-s3]
 == ACTION S3
 
-Add input fields in HTML::
+Add search criteria in HTML::
 To make the search criteria usable for the user, you need to add corresponding HTML input fields to the search component's HTML file. +
 More details in {ngrx_search_criteria_html_ref}[Search Criteria HTML] and {ngrx_search_criteria_html_example_ref}[Example input fields].
 
 [discrete]
-=== Template: Generated HTML
+=== Template: Generated Search Criteria in HTML
 
 [horizontal]
 Directory:: `<root-of-ui-app>/src/app/<feature>/pages/<resource>-<search>`
@@ -181,27 +185,24 @@ File::      `<resource>-search.component.html`
     <form [formGroup]="bookSearchFormGroup">
       <div class="grid mt-0 p-fluid">
         <div class="col-12 md:col-3">
-          <span class="p-float-label">
+          <p-floatlabel variant="on">
             <!-- ACTION S3: Change this search criteria -->
             <input
               pInputText
-              id="changeMe"
+              id="bookstore_book_search_criteria_change_me"
               type="text"
               class="w-18rem"
               formControlName="changeMe"
-              [pTooltip]="'CUSTOMER_MANAGEMENT_SEARCH.CRITERIA.CHANGE_ME.TOOLTIP' | translate"
+              [pTooltip]="'BOOK_SEARCH.CRITERIA.CHANGE_ME.TOOLTIP' | translate"
               tooltipPosition="top"
               tooltipEvent="hover"
               role="main"
-              [attr.aria-label]="
-                'CUSTOMER_MANAGEMENT_SEARCH.CRITERIA.CHANGE_ME.ARIA_LABEL'
-                  | translate
-              "
+              [attr.aria-label]="'BOOK_SEARCH.CRITERIA.CHANGE_ME.ARIA_LABEL' | translate"
             />
-            <label for="changeMe" style="white-space: nowrap">
-              {{ 'CUSTOMER_MANAGEMENT_SEARCH.CRITERIA.CHANGE_ME.LABEL' | translate }}
+            <label for="bookstore_book_search_criteria_change_me" class="white-space-nowrap">
+              {{ 'BOOK_SEARCH.CRITERIA.CHANGE_ME.LABEL' | translate }}
             </label>
-          </span>
+          </p-floatlabel>
         </div>
         <!-- ACTION S3: Specify search criteria here -->
       </div>
@@ -210,8 +211,10 @@ File::      `<resource>-search.component.html`
 Where *changeMe* is a placeholder for an additional search criteria added to the `+Search<Feature>Request+`.
 ====
 
+'''
+
 [discrete]
-=== Example
+=== Example: Search Criteria in HTML
 
 [horizontal]
 Directory:: `bookstore/src/app/book/pages/book-search`
@@ -225,10 +228,11 @@ File::      `book-search.component.html`
     <form [formGroup]="bookSearchFormGroup">
       <div class="grid mt-0 p-fluid">
         <div class="col-12 md:col-3">
-          <span class="p-float-label">
+          <p-floatlabel variant="on">
+            <!-- ACTION S3: Change this search criteria -->
             <input
               pInputText
-              id="bookstore_book_search_book_title"
+              id="bookstore_book_search_criteria_book_title"
               type="text"
               class="w-18rem"
               formControlName="bookTitle"
@@ -236,14 +240,12 @@ File::      `book-search.component.html`
               tooltipPosition="top"
               tooltipEvent="hover"
               role="main"
-              [attr.aria-label]="
-                'BOOK_SEARCH.CRITERIA.BOOK_TITLE.ARIA_LABEL' | translate
-              "
+              [attr.aria-label]="'BOOK_SEARCH.CRITERIA.BOOK_TITLE.ARIA_LABEL' | translate"
             />
-            <label for="bookstore_book_search_book_title" style="white-space: nowrap">
-              {{ 'BOOK_SEARCH.CRITERIA.BOOK_TITLE.LABEL' | translate }}</label
-            >
-          </span>
+            <label for="bookstore_book_search_criteria_book_title" class="white-space-nowrap">
+              {{ 'BOOK_SEARCH.CRITERIA.BOOK_TITLE.LABEL' | translate }}
+            </label>
+          </p-floatlabel>
         </div>
         <!-- ACTION S3: Specify search criteria here -->
       </div>
@@ -253,7 +255,7 @@ Where *bookTitle* is the criteria added to the `+SearchBookRequest+`.
 ====
 
 
-[#action-4]
+[#action-s4]
 == ACTION S4
 
 Add Translations::
@@ -265,7 +267,7 @@ More details in {onecx_ui_translations_ref}[Multi-Language].
 
 [horizontal]
 Directory:: `<root-of-ui-app>/src/assets/i18n`
-Files::      `de.json`, `en.json`
+Files::     `en.json` / `de.json`
 
 .Adust translations in `+en.json+`
 [%collapsible]
@@ -290,12 +292,14 @@ Files::      `de.json`, `en.json`
 Where *CHANGE_ME* is a placeholder for a search criteria.
 ====
 
+'''
+
 [discrete]
-=== Example
+=== Example: Book Search Translations
 
 [horizontal]
 Directory:: `bookstore/src/assets/i18n`
-Files::      `de.json`, `en.json`
+Files::     `en.json` / `de.json`
 
 .Example: Translations in `+en.json+`
 [%collapsible]

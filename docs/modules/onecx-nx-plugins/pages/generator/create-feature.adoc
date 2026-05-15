@@ -6,7 +6,9 @@ endif::[]
 = Create a Feature Module
 
 What is a Feature Module?::
+ifdef::env-site[]
 include::partial$_glossary.adoc[tag=feature-module]
+endif::[]
 
 [NOTE]
 ====
@@ -93,3 +95,17 @@ export const routes: Routes = [
   },
 ];
 ----
+
+
+=== Testing
+
+The generator does not create test cases for the feature module itself, but it neverthless it is a good practice to run the tests after generating the feature module to ensure that the existing functionality of the application is not broken and everything is working as expected. +
+Use the following command to run the tests:
+
+[source, bash]
+----
+npm run test
+----
+
+.Test result of the generated feature module
+image::test_result_feature.png[]

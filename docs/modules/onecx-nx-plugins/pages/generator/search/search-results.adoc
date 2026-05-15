@@ -8,20 +8,20 @@ endif::[]
 After generating the base search page, you need to configure how the search results are displayed to the user. +
 The following actions must be taken.
 
-[#action-5]
+[#action-s5]
 == ACTION S5
 
 If not yet done, specify the base entity properties in the OpenAPI specification, see xref:generator/create-schema.adoc[].
 
 
-[#action-6]
+[#action-s6]
 == ACTION S6
 
 Specify Columns in Result table::
 The next step is to configure the columns of the search results table. Here you can define which properties of your entity should be displayed in the results table, as well as their characteristics (e.g. if they are sortable or filterable).
 
 [discrete]
-=== Template: Generated Columns
+=== Template: Generated Search Result Columns
 
 [horizontal]
 Directory:: `<root-of-ui-app>/src/app/<feature>/pages/<resource>-search`
@@ -47,19 +47,20 @@ export const <resource>SearchColumns: DataTableColumn[] = [
   }
   // ACTION S6: Define search results columns
 ];
-
 ----
 Where *changeMe* is a column added to the `+<Resource>SearchColumns+`.
 ====
 
+'''
+
 [discrete]
-=== Example
+=== Example: Book Search Result Columns
 
 [horizontal]
 Directory:: `bookstore/src/app/book/pages/book-search`
 File::      `book-search.columns.ts`
 
-.Example: Book Search Columns
+.Example: Book Search Result Columns
 [%collapsible]
 ====
 [subs=+macros]
@@ -98,7 +99,7 @@ The column *bookType* is only added to the predefined group *FULL*, so it will o
 Refer to the {onecx_ui_datatable_columns_ref}[DataTableColumn overview] for more information.
 
 
-[#action-7]
+[#action-s7]
 == ACTION S7
 
 Mapping from Entity/Resource to Row Item::
@@ -130,8 +131,10 @@ export const selectResults = createSelector(
 ----
 ====
 
+'''
+
 [discrete]
-=== Example
+=== Example: Mapping Book Types
 
 [horizontal]
 Directory:: `bookstore/src/app/book/pages/book-search`
@@ -142,25 +145,22 @@ File::      `book-search.selectors.ts`
 ====
 [source, javascript]
 ----
-export const selectResults = createSelector(
-  BookSearchSelectors.selectResults,
-  (results): RowListGridData[] => {
-    return results.map((item) => ({      
-      imagePath: '',
-      ...item,
-      bookType: item.bookType
-        ? `BOOK_SEARCH.RESULTS.BOOK_TYPES.${item.bookType.toUpperCase()}`
-        : ''
-      // ACTION S7: Create a mapping of the items and their corresponding translation keys
-    }));
-  }
-);
+export const selectResults = createSelector(bookSearchSelectors.selectResults, (results: Book[]): RowListGridData[] => {
+  return results.map((item) => ({
+    imagePath: '',
+    ...item,
+    bookType: item.bookType
+      ? `BOOK_SEARCH.RESULTS.BOOK_TYPES.${item.bookType.toUpperCase()}`
+      : ''
+    // ACTION S7: Create a mapping of the items and their corresponding translation keys
+  }))
+})
 ----
 This example shows how to map a property `+bookType+` to a translation key.
 ====
 
 
-[#action-8]
+[#action-s8]
 == ACTION S8
 
 Add translations for search result data::
@@ -171,15 +171,17 @@ Ensure that all column headers and the mapped values in columns have the necessa
 
 [horizontal]
 Directory:: `<root-of-ui-app>/src/app/assets/i18n`
-Files::     `de.json` / `en.json`
+Files::     `en.json` / `de.json`
 
+
+'''
 
 [discrete]
-=== Example
+=== Example: Translations for Book Search Results
 
 [horizontal]
 Directory:: `bookstore/src/app/assets/i18n`
-Files::     `de.json` / `en.json`
+Files::     `en.json` / `de.json`
 
 .Adjust translations in `+en.json+`
 [%collapsible]
@@ -196,12 +198,11 @@ Files::     `de.json` / `en.json`
         "CRIME": "Crime",
         "DRAMA": "Drama",
         "FANTASY": "Fantasy",
-        "PROSA": "Prose",
+        "PROSE": "Prose",
         "SCIENCE": "Science"
-      },
-      "NAME": "Search Results"
-    }
-  }
+      }
+    },
+    ...
 ----
 Refer to the {onecx_ui_translations_ref}[Multi-Language Guide] for more information.
 ====
@@ -221,11 +222,10 @@ Refer to the {onecx_ui_translations_ref}[Multi-Language Guide] for more informat
         "CRIME": "Krimi",
         "DRAMA": "Drama",
         "FANTASY": "Fantasie",
-        "PROSA": "Prosa",
+        "PROSE": "Prosa",
         "SCIENCE": "Wissenschaft"
-      },
-      "NAME": "Suchergebnisse"
-    }
-  }
+      }
+    },
+  ...
 ----
 ====

@@ -21,7 +21,8 @@ npm run start -- --port=6023 --publicHost=http://localhost:6023
 +
 [source,bash]
 ----
-./toggle-mfes.sh -a bookstore
+./toggle-mfes.sh -a bookstore:6023
 ----
-* Add necessary data to the backend to be able to call the search component (product, permissions, workspace registration, menu entry, etc.)
+* Add necessary data to the backend to be able to call the search component +
+(product, permissions, workspace registration, menu entry, etc.)
 * After making these changes, reload the OneCX UI and navigate to the search component route
