@@ -1,0 +1,20 @@
+import i18n from "./config";
+
+describe("i18n config", () => {
+  it("should initialize with correct resources and language", () => {
+    expect(i18n.language).toBe("en");
+    expect(i18n.options.resources).toBeDefined();
+    expect(i18n.options.resources?.en).toBeDefined();
+    expect(i18n.options.resources?.de).toBeDefined();
+  });
+
+  it("should have interpolation.escapeValue set to false", () => {
+    expect(i18n.options.interpolation?.escapeValue).toBe(false);
+  });
+
+  it("should return translations for en and de namespaces", () => {
+    // These will return the key if not found, but config is loaded
+    expect(i18n.t("translation:someKey", { lng: "en" })).toBeDefined();
+    expect(i18n.t("translation:someKey", { lng: "de" })).toBeDefined();
+  });
+});

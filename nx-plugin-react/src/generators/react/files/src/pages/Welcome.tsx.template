@@ -1,0 +1,16 @@
+import { useTranslation } from 'react-i18next'
+
+export default function Welcome() {
+  const { t } = useTranslation()
+
+  return (
+    <div className="flex flex-column align-items-center justify-content-center min-h-screen">
+      <h1 className="text-4xl font-bold mb-4">
+        {t('welcome.title', 'Welcome to OneCX <%= className %>')}
+      </h1>
+      <p className="text-xl text-color-secondary">
+        {t('welcome.subtitle', 'Your application is ready.')}
+      </p>
+    </div>
+  )
+}

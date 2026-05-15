@@ -1,0 +1,25 @@
+import { describe, it, expect, vi } from 'vitest'
+import { render, screen } from '@testing-library/react'
+import Welcome from './Welcome'
+
+vi.mock('react-i18next', () => ({
+  useTranslation: () => ({
+    t: (key: string, fallback: string) => fallback,
+  }),
+}))
+
+describe('Welcome', () => {
+  it('renders welcome title', () => {
+    render(<Welcome />)
+    expect(
+      screen.getByText('Welcome to OneCX <%= className %>')
+    ).toBeInTheDocument()
+  })
+
+  it('renders subtitle', () => {
+    render(<Welcome />)
+    expect(
+      screen.getByText('Your application is ready.')
+    ).toBeInTheDocument()
+  })
+})

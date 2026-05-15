@@ -14,6 +14,7 @@
   },
   "dependencies": {
     "@nx/angular": "^19.8.14",
+    "@nx/react": "^19.8.14",
     "@nx/devkit": "^19.8.14",
     "@nx/plugin": "^19.8.14",
     "@swc/helpers": "^0.5.12",

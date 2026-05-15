@@ -1,0 +1,8 @@
+import { withApp } from '@onecx/react-utils'
+import AppRouter from './router'
+
+// Wrap routes with portal-aware providers/configuration.
+export default withApp(AppRouter, {
+  PRODUCT_NAME: 'onecx-<%= fileName %>',
+  REMOTES_NAME: 'onecx-<%= fileName %>-ui'
+})

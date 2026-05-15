@@ -2,23 +2,42 @@
 
 import { createWorkspace } from 'create-nx-workspace';
 
+const SUPPORTED_FLAVORS = ['angular', 'react', 'ngrx', 'standalone-ngrx'];
+
+const PLUGIN_MAP: Record<string, string> = {
+  react: '@onecx/nx-plugin-react',
+};
+
+function resolvePlugin(flavor: string): string {
+  return PLUGIN_MAP[flavor] ?? '@onecx/nx-plugin';
+}
+
 async function main() {
   const flavor = process.argv[2]; // TODO: use libraries like yargs or enquirer to set your workspace name
   if (!flavor) {
     throw new Error('Please provide a flavor for the workspace.');
+  }
+  if (!SUPPORTED_FLAVORS.includes(flavor)) {
+    throw new Error(
+      `Unknown flavor "${flavor}". Supported flavors: ${SUPPORTED_FLAVORS.join(
+        ', '
+      )}`
+    );
   }
   const name = process.argv[3]; // TODO: use libraries like yargs or enquirer to set your workspace name
   if (!name) {
     throw new Error('Please provide a name for the workspace.');
   }
 
+  const plugin = resolvePlugin(flavor);
+
   console.log(`Creating the workspace ${name} with the ${flavor} preset`);
 
-  // This assumes "@onecx/nx-plugin" and "create-workspace" are at the same version
+  // This assumes the preset package and "create-workspace" are at the same version
   // eslint-disable-next-line @typescript-eslint/no-var-requires
   const presetVersion = require('../package.json').version;
 
-  await createWorkspace(`@onecx/nx-plugin@${presetVersion}`, {
+  await createWorkspace(`${plugin}@${presetVersion}`, {
     flavor,
     name,
     nxCloud: 'skip',
@@ -27,7 +46,12 @@ async function main() {
     verbose: true,
   });
 
-  console.log(`Successfully created the workspace ${name} with the ${flavor} preset`);
+  console.log(
+    `Successfully created the workspace ${name} with the ${flavor} preset`
+  );
 }
 
-main();
+main().catch((e) => {
+  console.error(e.message);
+  process.exit(1);
+});

@@ -1,0 +1,21 @@
+import { describe, it, expect, vi } from 'vitest'
+
+vi.mock('@onecx/react-utils', () => ({
+  withApp: vi.fn((component, config) => () => ({ component, config })),
+}))
+
+describe('App', () => {
+  it('calls withApp with AppRouter and correct config', async () => {
+    const { withApp } = await import('@onecx/react-utils')
+    const { default: App } = await import('./App')
+
+    expect(withApp).toHaveBeenCalledTimes(1)
+    expect(App()).toEqual({
+      component: expect.any(Function),
+      config: {
+        PRODUCT_NAME: 'onecx-<%= fileName %>',
+        REMOTES_NAME: 'onecx-<%= fileName %>-ui',
+      },
+    })
+  })
+})

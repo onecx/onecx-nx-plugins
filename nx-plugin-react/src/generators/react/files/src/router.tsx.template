@@ -1,0 +1,25 @@
+import { useRoutes } from 'react-router'
+import Welcome from './pages/Welcome'
+import { useAppHref } from '@onecx/react-webcomponents'
+import './i18n/config'
+
+function AppRoutes() {
+  const { href } = useAppHref()
+
+  const routes = [
+    {
+      path: `${href}/`,
+      element: <Welcome />
+    }
+  ]
+
+  const routing = useRoutes(routes)
+
+  if (!href) {
+    return null
+  }
+
+  return routing
+}
+
+export default AppRoutes

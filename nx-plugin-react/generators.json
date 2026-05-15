@@ -1,0 +1,14 @@
+{
+  "generators": {
+    "react": {
+      "factory": "./src/generators/react/generator",
+      "schema": "./src/generators/react/schema.json",
+      "description": "react generator"
+    },
+    "preset": {
+      "factory": "./src/generators/preset/generator",
+      "schema": "./src/generators/preset/schema.json",
+      "description": "preset generator"
+    }
+  }
+}
