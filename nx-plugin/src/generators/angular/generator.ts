@@ -216,6 +216,9 @@ export async function angularGenerator(
     cmd = 'mv -f jest.config.ts.org jest.config.ts';
     log(cmd);
     execSync(cmd, { cwd: tree.root, stdio: 'inherit' });
+    cmd = 'mv -f test-setup.ts.org src/test-setup.ts';
+    log(cmd);
+    execSync(cmd, { cwd: tree.root, stdio: 'inherit' });
 
     cmd = 'npm run apigen ';
     log(cmd);

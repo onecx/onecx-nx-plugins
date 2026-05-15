@@ -35,10 +35,6 @@ export class GeneralOpenAPIStep
           type: 'object',
           required: ['id'],
           properties: {
-            modificationCount: {
-              type: 'integer',
-              format: 'int32',
-            },
             creationDate: {
               $ref: '#/components/schemas/OffsetDateTime',
             },
@@ -52,6 +48,10 @@ export class GeneralOpenAPIStep
             modificationUser: {
               type: 'string',
               readOnly: true,
+            },
+            modificationCount: {
+              type: 'integer',
+              format: 'int32',
             },
             id: {
               type: 'string',

@@ -1,9 +1,9 @@
 import { ColumnType } from '@onecx/angular-accelerator'
 import * as selectors from './<%= resourceFileName %>-search.selectors'
 
-// ACTION S11: Change test data in the whole document
 describe('<%= resourceClassName %>Search selectors', () => {
   describe('selectResults projector', () => {
+    // ACTION S11: Adjust test data
     const cases = [
       {
         desc: 'should map results to RowListGridData[]',
@@ -39,14 +39,14 @@ describe('<%= resourceClassName %>Search selectors', () => {
   })
 
   it('select<%= resourceClassName %>SearchViewModel should combine all selector results', () => {
-    const columns = [{ id: 'col1', nameKey: 'Col 1', columnType: ColumnType.STRING }]
+    // ACTION S11: Adjust test data
+    const columns = [{ id: 'changeMe', nameKey: 'Col 1', columnType: ColumnType.STRING }]
     const searchCriteria = {
-      id: 1,
       pageNumber: 1,
       pageSize: 10,
-      changeMe: 'test'
+      changeMe: 'A'
     }
-    const results = [{ imagePath: '', id: '1', name: 'A' }]
+    const results = [{ imagePath: '', id: '1', changeMe: 'A test' }]
     const chartVisible = true
 
     const result = selectors.select<%= resourceClassName %>SearchViewModel.projector(
