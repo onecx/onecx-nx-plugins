@@ -123,7 +123,7 @@ export class <%= resourceClassName %>SearchComponent implements OnInit {
   search(formValue: FormGroup) {
     const searchCriteria = buildSearchCriteria(
       formValue.getRawValue(),
-      this.calendars,
+      this.calendars.toArray(),
       { removeNullValues: true }
     );
     this.store.dispatch(
