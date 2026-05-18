@@ -1,22 +1,10 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { APP_INITIALIZER, NgModule } from '@angular/core';
-import {
-  HttpClient,
-  provideHttpClient,
-  withInterceptorsFromDi,
-} from '@angular/common/http';
+import { NgModule } from '@angular/core';
+import { HttpClient, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import {
-  AppStateService,
-  APP_CONFIG,
-  ConfigurationService,
-  UserService
-} from '@onecx/angular-integration-interface';
-import {
-  AngularAcceleratorModule,
-  providePortalDialogService,
-} from '@onecx/angular-accelerator';
+import { AppStateService, APP_CONFIG, ConfigurationService } from '@onecx/angular-integration-interface';
+import { AngularAcceleratorModule } from '@onecx/angular-accelerator';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CommonModule } from '@angular/common';

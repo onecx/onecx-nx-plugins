@@ -216,6 +216,9 @@ export async function angularGenerator(
     cmd = 'mv -f jest.config.ts.org jest.config.ts';
     log(cmd);
     execSync(cmd, { cwd: tree.root, stdio: 'inherit' });
+    cmd = 'mv -f test-setup.ts.org src/test-setup.ts';
+    log(cmd);
+    execSync(cmd, { cwd: tree.root, stdio: 'inherit' });
 
     cmd = 'npm run apigen ';
     log(cmd);
@@ -268,7 +271,7 @@ function addScriptsToPackageJson(tree: Tree, options: AngularGeneratorSchema) {
     pkgJson.scripts[
       'apigen'
     ] = `openapi-generator-cli generate -i src/assets/api/openapi-bff.yaml -c apigen.yaml -o src/app/shared/generated -g typescript-angular --type-mappings AnyType=object`;
-    pkgJson.scripts['start'] = 'nx serve --host 0.0.0.0 --disable-host-check';
+    pkgJson.scripts['start'] = 'nx serve';
     pkgJson.scripts['build'] = `nx build && cp dist/${options['name']}/styles.*.css dist/${options['name']}/styles.css`;
     pkgJson.scripts[
       'postbuild'

@@ -8,6 +8,7 @@ import {
 import { <%= resourcePropertyName %>SearchActions } from './<%= resourceFileName %>-search.actions'
 import * as reducers from './<%= resourceFileName %>-search.reducers'
 
+// ACTION S11: Change test data in the whole document
 describe('<%= resourcePropertyName %>SearchReducer', () => {
   it('should reset results and criteria on resetButtonClicked', () => {
     const preState = { ...reducers.initialState, results: [{ id: '1' }], criteria: { changeMe: 'val' } }

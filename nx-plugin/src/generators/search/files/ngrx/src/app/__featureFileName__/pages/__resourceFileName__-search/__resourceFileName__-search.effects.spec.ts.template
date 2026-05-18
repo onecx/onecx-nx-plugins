@@ -33,6 +33,7 @@ jest.mock('@onecx/ngrx-accelerator', () => {
   }
 })
 
+// ACTION S11: Change test data in the whole document
 describe('<%= resourceClassName %>SearchEffects', () => {
   let actions$: ReplaySubject<Action>
   let effects: <%= resourceClassName %>SearchEffects
@@ -160,8 +161,8 @@ describe('<%= resourceClassName %>SearchEffects', () => {
 
       <%= resourcePropertyName %>Service.search<%= apiModelPascal %>Items.mockReturnValue(
         of({
-          stream: [{ id: '1', name: 'Item 1', description: '', imagePath: '' }],
-          content: [{ id: '1', name: 'Item 1', description: '', imagePath: '' }],
+          stream: [{ id: '1', changeMe: 'Item 1' }],
+          content: [{ id: '1', changeMe: 'Item 1', imagePath: '' }],
           size: 10,
           number: 0,
           totalElements: 1,
@@ -219,13 +220,13 @@ describe('<%= resourceClassName %>SearchEffects', () => {
       {
         desc: 'should handle export with empty displayed columns',
         viewModel: { 
-          results: [{ id: '1', name: 'Context 1', description: 'Description 1', imagePath: '' }], resultComponentState: { displayedColumns: undefined }
+          results: [{ id: '1', name: 'Context 1', imagePath: '' }], resultComponentState: { displayedColumns: undefined }
         } as Partial<<%= resourceClassName %>SearchViewModel>
       },
       {
         desc: 'should handle export with null resultComponentState',
         viewModel: {
-          results: [{ id: '1', name: 'Context 1', description: 'Description 1', imagePath: '' }], resultComponentState: null
+          results: [{ id: '1', name: 'Context 1', imagePath: '' }], resultComponentState: null
         } as Partial<<%= resourceClassName %>SearchViewModel>
       }
     ];
@@ -252,8 +253,8 @@ describe('<%= resourceClassName %>SearchEffects', () => {
         }
       ]
       const mockResults: Partial<RowListGridData>[] = [
-        { id: '1', name: 'Context 1', description: 'Description 1' },
-        { id: '2', name: 'Context 2', description: 'Description 2' }
+        { id: '1', name: 'Context 1' },
+        { id: '2', name: 'Context 2' }
       ]
       const mockViewModel = { resultComponentState: { displayedColumns: mockColumns }, results: mockResults }
       store.overrideSelector(select<%= resourceClassName %>SearchViewModel, mockViewModel as <%= resourceClassName %>SearchViewModel)

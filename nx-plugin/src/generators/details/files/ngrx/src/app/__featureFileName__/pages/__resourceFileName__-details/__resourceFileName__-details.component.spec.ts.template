@@ -4,44 +4,40 @@ import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { ReactiveFormsModule } from '@angular/forms';
+import { By } from '@angular/platform-browser';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ActivatedRoute } from '@angular/router';
 import { LetDirective } from '@ngrx/component';
-import { provideHttpClientTesting } from '@angular/common/http/testing';
-import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { By } from '@angular/platform-browser';
-import { MockStore, provideMockStore } from '@ngrx/store/testing';
+import { ofType } from '@ngrx/effects';
 import { Store, StoreModule } from '@ngrx/store';
+import { of } from 'rxjs';
+
+import { MockStore, provideMockStore } from '@ngrx/store/testing';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { TranslateTestingModule } from 'ngx-translate-testing'
 import { PrimeIcons } from 'primeng/api';
-import { ReactiveFormsModule } from '@angular/forms';
-import { of } from 'rxjs';
+
 import { UserService } from '@onecx/angular-integration-interface';
-import { AngularAcceleratorModule, BreadcrumbService } from '@onecx/angular-accelerator';
-import { provideHttpClient } from '@angular/common/http';
-import { <%= featureClassName %>DetailsComponent } from './<%= resourceFileName %>-details.component';
-import { <%= featureClassName %>DetailsHarness } from './<%= resourceFileName %>-details.harness';
-import { initialState } from './<%= resourceFileName %>-details.reducers';
-import { select<%= featureClassName %>DetailsViewModel } from './<%= resourceFileName %>-details.selectors';
-import { <%= featureClassName %>DetailsActions } from './<%= resourceFileName %>-details.actions';
-import { ofType } from '@ngrx/effects';
 import {
   provideUserServiceMock,
   UserServiceMock,
 } from '@onecx/angular-integration-interface/mocks';
-import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import {
   PermissionService,
   PortalPageComponent,
   TranslationConnectionService,
   HAS_PERMISSION_CHECKER,
 } from '@onecx/angular-utils';
+import { AngularAcceleratorModule, BreadcrumbService } from '@onecx/angular-accelerator';
+
+// ACTION D11: Add missing imports here
 import { initialState } from './<%= resourceFileName %>-details.reducers';
-import { <%= resourcePropertyName %>DetailsActions } from './<%= resourceFileName %>-details.actions';
+import { <%= featureClassName %>DetailsActions, <%= resourcePropertyName %>DetailsActions } from './<%= resourceFileName %>-details.actions';
 import { <%= resourceClassName %>DetailsComponent } from './<%= resourceFileName %>-details.component';
-import { <%= resourceClassName %>DetailsHarness } from './<%= resourceFileName %>-details.harness';
+import { <%= featureClassName %>DetailsHarness, <%= resourceClassName %>DetailsHarness } from './<%= resourceFileName %>-details.harness';
 import { <%= resourceClassName %>DetailsViewModel } from './<%= resourceFileName %>-details.viewmodel';
-import { select<%= resourceClassName %>DetailsViewModel } from './<%= resourceFileName %>-details.selectors';
+import { select<%= featureClassName %>DetailsViewModel, select<%= resourceClassName %>DetailsViewModel } from './<%= resourceFileName %>-details.selectors';
+import { <%= featureClassName %>DetailsComponent } from './<%= resourceFileName %>-details.component';
 
 describe('<%= resourceClassName %>DetailsComponent', () => {
   const origAddEventListener = window.addEventListener;
@@ -102,8 +98,8 @@ describe('<%= resourceClassName %>DetailsComponent', () => {
         LetDirective,
         ReactiveFormsModule,
         TranslateTestingModule.withTranslations({
-          de: require('../../../../assets/i18n/de.json'),
-          en: require('../../../../assets/i18n/en.json')
+          de: require('./src/assets/i18n/de.json'),
+          en: require('./src/assets/i18n/en.json')
         }).withDefaultLanguage('en')
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -136,8 +132,7 @@ describe('<%= resourceClassName %>DetailsComponent', () => {
       '<%= resourceConstantName %>#IMPORT',
       '<%= resourceConstantName %>#EXPORT',
       '<%= resourceConstantName %>#VIEW',
-      '<%= resourceConstantName %>#SEARCH',
-      '<%= resourceConstantName %>#BACK',
+      '<%= resourceConstantName %>#SEARCH'
     ]);
 
     store = TestBed.inject(MockStore);
@@ -264,7 +259,18 @@ describe('<%= resourceClassName %>DetailsComponent', () => {
 
   it('should dispatch saveButtonClicked action on edit button click', async () => {
     jest.spyOn(store, 'dispatch');
-    component.formGroup.setValue({ id: '123' });
+    // ACTION D11: Adjust form field names and values according to your implementation
+    const <%= resourcePropertyName%> = { id: '123' }
+    const <%= resourcePropertyName%>Form = { changeMe: 'title' }
+
+    store.overrideSelector(select<%= resourceClassName%>DetailsViewModel, {
+      ...base<%= resourceClassName%>DetailsViewModel,
+      editMode: true,
+      details: <%= resourcePropertyName%>
+    })
+    store.refreshState()
+
+    component.formGroup.setValue(<%= resourcePropertyName%>Form);
 
     const pageHeader = await <%= resourcePropertyName %>Details.getHeader();
     const saveAction = await pageHeader.getInlineActionButtonByLabel('Save');
@@ -273,29 +279,26 @@ describe('<%= resourceClassName %>DetailsComponent', () => {
     expect(saveAction).toBeTruthy();
     expect(store.dispatch).toHaveBeenCalledTimes(1);
     expect(store.dispatch).toHaveBeenCalledWith(
-      <%= resourcePropertyName%>DetailsActions.saveButtonClicked({ details: { id: '123' } })
+      <%= resourcePropertyName%>DetailsActions.saveButtonClicked({ details: { ...<%= resourcePropertyName%>, ...<%= resourcePropertyName%>Form } })
     );
   });
 
-  it('should mark as pristine and disable form when editMode is false', async () => {
-    const markAsPristineSpy = jest.spyOn(component.formGroup, 'markAsPristine');
-    const disableSpy = jest.spyOn(component.formGroup, 'disable');
-
+  it('should dispatch deleteButtonClicked action on delete button click', async () => {
+    jest.spyOn(store, 'dispatch')
     store.overrideSelector(select<%= resourceClassName%>DetailsViewModel, {
       ...base<%= resourceClassName%>DetailsViewModel,
-      editMode: false,
-      details: { id: '123' },
-    });
-    store.refreshState();
+      editMode: false
+    })
+    store.refreshState()
 
-    expect(markAsPristineSpy).toHaveBeenCalledTimes(1);
-    expect(disableSpy).toHaveBeenCalledTimes(1);
-    expect(component.formGroup.pristine).toBe(true);
-    expect(component.formGroup.disabled).toBe(true);
-    expect(component.formGroup.getRawValue()).toEqual({ id: '123' });
-  });
-  <% } %>
+    const pageHeader = await <%= resourcePropertyName%>Details.getHeader()
+    const deleteAction = await pageHeader.getInlineActionButtonByLabel('Delete')
+    await deleteAction?.click()
 
+    expect(deleteAction).toBeTruthy()
+    expect(store.dispatch).toHaveBeenCalledTimes(1)
+    expect(store.dispatch).toHaveBeenCalledWith(<%= resourcePropertyName%>DetailsActions.deleteButtonClicked())
+  })
 
   it('should dispatch no action on more button click', async () => {
     jest.spyOn(store, 'dispatch');
@@ -311,11 +314,11 @@ describe('<%= resourceClassName %>DetailsComponent', () => {
   });
 
   it('should display item details in page header', async () => {
-    component.headerLabels$ = of([
+    component.objectDetails$ = of([
        {
-        label: '<%= resourceConstantName %>_DETAILS.FORM.ID',
+        label: '<%= resourceConstantName %>_DETAILS.FORM.CHANGE_ME',
         labelPipe: TranslatePipe,
-        value: 'test id',
+        value: 'test',
       },
       {
         label: 'first',
@@ -340,10 +343,10 @@ describe('<%= resourceClassName %>DetailsComponent', () => {
     const objectDetails = await pageHeader.getObjectInfos();
     expect(objectDetails.length).toBe(5);
 
-    const idLabel = TestBed.inject(TranslateService).instant('<%= resourceConstantName %>_DETAILS.FORM.ID');
-    const testDetailItem = await pageHeader.getObjectInfoByLabel(idLabel);
-    expect(await testDetailItem?.getLabel()).toEqual(idLabel);
-    expect(await testDetailItem?.getValue()).toEqual('test id');
+    const label = TestBed.inject(TranslateService).instant('<%= resourceConstantName %>_DETAILS.FORM.CHANGE_ME');
+    const testDetailItem = await pageHeader.getObjectInfoByLabel(label);
+    expect(await testDetailItem?.getLabel()).toEqual(label);
+    expect(await testDetailItem?.getValue()).toEqual('test');
     expect(await testDetailItem?.getIcon()).toBeUndefined();
 
     const firstDetailItem = await pageHeader.getObjectInfoByLabel('first');
@@ -366,4 +369,28 @@ describe('<%= resourceClassName %>DetailsComponent', () => {
     expect(await fourthDetailItem?.getValue()).toEqual('fourth value');
     expect(await fourthDetailItem?.getIcon()).toEqual(PrimeIcons.QUESTION);
   });
+
+  it('should mark as pristine and disable form when editMode is false', async () => {
+    const markAsPristineSpy = jest.spyOn(component.formGroup, 'markAsPristine');
+    const disableSpy = jest.spyOn(component.formGroup, 'disable');
+
+    // ACTION D11: Adjust form field names and values according to your implementation
+    const <%= resourcePropertyName%>Form = { changeMe: 'title' }
+    const <%= resourcePropertyName%> = { id: '123', ...<%= resourcePropertyName%>Form }
+
+    store.overrideSelector(select<%= resourceClassName%>DetailsViewModel, {
+      ...base<%= resourceClassName%>DetailsViewModel,
+      editMode: false,
+      details: <%= resourcePropertyName%>,
+    });
+    store.refreshState();
+
+    expect(markAsPristineSpy).toHaveBeenCalledTimes(1);
+    expect(disableSpy).toHaveBeenCalledTimes(1);
+    expect(component.formGroup.pristine).toBe(true);
+    expect(component.formGroup.disabled).toBe(true);
+    expect(component.formGroup.getRawValue()).toEqual(<%= resourcePropertyName%>Form);
+  });
+  <% } %>
+
 });

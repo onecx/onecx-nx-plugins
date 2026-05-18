@@ -12,7 +12,7 @@
     [actions]="(headerActions$ | async) ?? []"        
     (componentStateChanged)="searchHeaderComponentStateChanged($event)"
     [viewMode]="vm.searchHeaderComponentState?.activeViewMode ?? 'basic'"
-    [attr.aria-label]="'<%= resourceConstantName%>_SEARCH.ARIA_LABEL' | translate"
+    [attr.aria-label]="'<%= resourceConstantName%>_SEARCH.HEADER_ARIA_LABEL' | translate"
   >
     <form [formGroup]="<%= resourcePropertyName %>SearchFormGroup">
       <div class="grid mt-0 p-fluid">
@@ -61,7 +61,7 @@
         [defaultGroupKey]="vm.resultComponentState?.activeColumnGroupKey ?? ''"
         [actionColumnPosition]="vm.resultComponentState?.actionColumnConfig?.position?? 'right'"
         [frozenActionColumn]="vm.resultComponentState?.actionColumnConfig?.frozen ?? false"
-        [attr.aria-label]="'<%= resourceConstantName%>_SEARCH.RESULTS.NAME' | translate"
+        [attr.aria-label]="'<%= resourceConstantName%>_SEARCH.RESULTS_ARIA_LABEL' | translate"
       >
       </ocx-interactive-data-view>
     </ocx-content>
@@ -77,7 +77,7 @@
           sumKey="<%= resourceConstantName %>_SEARCH.DIAGRAM.SUM"
           [diagramType]="vm.diagramComponentState?.activeDiagramType ?? defaultDiagramType"
           (componentStateChanged)="diagramComponentStateChanged($event)"
-          [attr.aria-label]="'<%= resourceConstantName %>_SEARCH.DIAGRAM.NAME' | translate"
+          [attr.aria-label]="'<%= resourceConstantName %>_SEARCH.DIAGRAM.ARIA_LABEL' | translate"
         ></ocx-group-by-count-diagram>
         }
       </div>
