@@ -83,14 +83,17 @@ You will see in web browser that your local version is gone (may replaced by the
 Use the locally registered package for a generator step.
 Here the example for **create-workspace**, replace the placeholders accordingly:
 ```
-npm_config_registry=https://localhost:4873 npx @onecx/create-workspace@<version-label> ngrx <workspace-name>
+npm_config_registry=http://localhost:4873 npx --yes @onecx/create-workspace@<version-label> ngrx <workspace-name>
 ```
+
+Always use an explicit `<version-label>` and publish a new version for each local test iteration.
+Reusing the same version can lead to older artifacts being reused from cache.
 
 ### Alternative: Install the package
 
 Install the package in your local project with:
 ```
-npm i @onecx/nx-plugin:0.0.X-local --registry http://localhost:4873
+npm i @onecx/nx-plugin@0.0.X-local --registry http://localhost:4873
 ```
 And then you can use it, for example, to generate a feature:
 ```

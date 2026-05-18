@@ -2,13 +2,14 @@
   <% if(!standalone){ %> permission="<%= resourceConstantName %>#VIEW" <% } %>
   [helpArticleId]="'<%= resourceConstantName %>_DETAILS.HELP_ARTICLE_ID' | translate"
   >
-  @if (viewModel()?.detailsLoadingIndicator) {
+  @let vm = viewModel();
+  @if (vm.detailsLoadingIndicator) {
     <ocx-loading-indicator> </ocx-loading-indicator>
   }
-  @if (!viewModel()?.detailsLoaded && !viewModel()?.detailsLoadingIndicator) {
+  @if (!vm.detailsLoaded && !vm.detailsLoadingIndicator) {
     <ocx-error> </ocx-error>
   }
-  @if (viewModel()?.detailsLoaded && !viewModel()?.detailsLoadingIndicator) {
+  @if (vm.detailsLoaded && !vm.detailsLoadingIndicator) {
   <div>  
   <ocx-page-header
     [header]="'<%= resourceConstantName %>_DETAILS.HEADER' | translate"
