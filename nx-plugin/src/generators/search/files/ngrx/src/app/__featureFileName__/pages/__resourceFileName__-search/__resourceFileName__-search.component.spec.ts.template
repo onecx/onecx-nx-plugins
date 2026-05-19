@@ -150,8 +150,8 @@ describe('<%= resourceClassName %>SearchComponent', () => {
           useValue: { init: jest.fn(), destroy: jest.fn() },
         },
         provideTranslateTestingService({
-          de: require('./src/assets/i18n/de.json'),
-          en: require('./src/assets/i18n/en.json')
+          de: require('../../../../assets/i18n/de.json'),
+          en: require('../../../../assets/i18n/en.json')
         })
       ],
     }).compileComponents();
