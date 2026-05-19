@@ -12,6 +12,26 @@
         "index": 0
       },
       "x-prompt": "What name would you like to use?"
+    },
+    "styles": {
+      "type": "string",
+      "description": "CSS framework to use",
+      "enum": ["primeflex", "tailwind"],
+      "default": "primeflex",
+      "x-prompt": {
+        "message": "Which CSS framework would you like to use?",
+        "type": "list",
+        "items": [
+          { "value": "primeflex", "label": "PrimeFlex" },
+          { "value": "tailwind", "label": "Tailwind CSS" }
+        ]
+      }
+    },
+    "ai": {
+      "type": "boolean",
+      "description": "Add AI agent configuration files",
+      "default": false,
+      "x-prompt": "Would you like to add AI agent configuration files?"
     }
   },
   "required": ["name"]

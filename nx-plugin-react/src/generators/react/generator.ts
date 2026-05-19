@@ -18,12 +18,29 @@ import processParams, { GeneratorParameter } from '../shared/parameters.utils';
 import { GeneratorProcessor } from '../shared/generator.utils';
 import { ReactGeneratorSchema } from './schema';
 import { GeneralOpenAPIStep } from './steps/general-openapi.step';
+import { StylesStep } from './steps/styles.step';
+import { AIStep } from './steps/ai.step';
 
 const PARAMETERS: GeneratorParameter<ReactGeneratorSchema>[] = [
   {
     key: 'chatty',
     type: 'boolean',
     required: 'never',
+    default: false,
+  },
+  {
+    key: 'styles',
+    type: 'select',
+    required: 'interactive',
+    prompt: 'Which CSS framework would you like to use?',
+    default: 'primeflex',
+    choices: ['primeflex', 'tailwind'],
+  },
+  {
+    key: 'ai',
+    type: 'boolean',
+    required: 'interactive',
+    prompt: 'Would you like to add AI agent configuration files?',
     default: false,
   },
 ];
@@ -83,12 +100,25 @@ export async function reactGenerator(
 
   const generatorProcessor = new GeneratorProcessor();
   generatorProcessor.addStep(new GeneralOpenAPIStep());
+  generatorProcessor.addStep(new StylesStep());
+  generatorProcessor.addStep(new AIStep());
 
   generatorProcessor.run(tree, options, spinner);
 
   addBaseToPackageJson(tree, options);
   addScriptsToPackageJson(tree, options);
   addExtensionsToPackageJson(tree);
+
+  if (options.styles === 'tailwind') {
+    addDependenciesToPackageJson(
+      tree,
+      {},
+      {
+        tailwindcss: '^4.0.0',
+        '@tailwindcss/vite': '^4.0.0',
+      }
+    );
+  }
 
   const oneCXLibVersion = '^8.2.0';
   const reactVersion = '^19.0.0';

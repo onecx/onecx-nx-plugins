@@ -24,6 +24,7 @@ export class GeneratorStepError extends Error {
 export interface GeneratorStep<T> {
   process(tree: Tree, options: T): void;
   getTitle(): string;
+  isApplicable?(options: T): boolean;
 }
 
 export class GeneratorProcessor<T> {
@@ -39,6 +40,9 @@ export class GeneratorProcessor<T> {
     this._printErrors = printErrors;
     this.errors = [];
     for (const step of this.steps) {
+      if (step.isApplicable && !step.isApplicable(options)) {
+        continue;
+      }
       if (ora) {
         const stepTitle = step.getTitle().trimEnd();
         ora.info(stepTitle);
