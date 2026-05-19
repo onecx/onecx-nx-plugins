@@ -1,5 +1,5 @@
 {
-  "<%= className %>": {
+  "<%= className.toUpperCase() %>": {
     "ARIA_LABEL": "<%= className %> App"
   }
 }

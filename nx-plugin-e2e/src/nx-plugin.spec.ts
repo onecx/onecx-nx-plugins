@@ -316,7 +316,7 @@ describe('nx-plugin', () => {
  * Creates a test project with @onecx/create-workspace and installs the plugin
  * @returns The directory where the test project was created
  */
-function createTestProject(flavor) {
+function createTestProject(flavor: string) {
   const workingDir = process.env.WORKING_DIR ?? os.tmpdir();
   const projectDirectory = join(workingDir, 'nx-plugin-out', projectName);
 
