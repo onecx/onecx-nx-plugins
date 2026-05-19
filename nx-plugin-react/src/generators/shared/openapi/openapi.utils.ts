@@ -34,7 +34,7 @@ export class OpenAPIUtil {
     return new OpenAPIArraySectionUtil(this, this.yamlContent['servers']);
   }
 
-    /**
+  /**
    * Quick access to the tags section of the YAML
    * @returns interface to add items to the section
    */
@@ -179,7 +179,9 @@ export class OpenAPIArraySectionUtil<T = unknown> {
    */
   add(key: string, value: T, options?: ObjectSetOptions) {
     const existStrategy = options ? options.existStrategy : 'skip';
-    const existingItem = this.sectionContent.find((item: any) => item.name === key);
+    const existingItem = this.sectionContent.find(
+      (item) => (item as Record<string, unknown>)['name'] === key
+    );
     if (existingItem != null) {
       if (existStrategy == 'skip') {
         return this;

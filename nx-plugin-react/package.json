@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@nx/devkit": "19.8.14",
+    "@nx/eslint-plugin": "19.8.14",
     "@nx/react": "19.8.14",
     "enquirer": "^2.3.6",
     "ora": "^5.3.0",

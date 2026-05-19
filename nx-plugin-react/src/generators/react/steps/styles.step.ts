@@ -19,8 +19,4 @@ export class StylesStep implements GeneratorStep<ReactGeneratorSchema> {
   getTitle(): string {
     return 'Adding styles';
   }
-
-  isApplicable(_options: ReactGeneratorSchema): boolean {
-    return true;
-  }
 }

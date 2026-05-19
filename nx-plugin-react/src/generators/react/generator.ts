@@ -106,7 +106,7 @@ export async function reactGenerator(
   generatorProcessor.run(tree, options, spinner);
 
   addBaseToPackageJson(tree, options);
-  addScriptsToPackageJson(tree, options);
+  addScriptsToPackageJson(tree);
   addExtensionsToPackageJson(tree);
 
   if (options.styles === 'tailwind') {
@@ -231,7 +231,7 @@ function addExtensionsToPackageJson(tree: Tree) {
   });
 }
 
-function addScriptsToPackageJson(tree: Tree, _options: ReactGeneratorSchema) {
+function addScriptsToPackageJson(tree: Tree) {
   updateJson(tree, 'package.json', (pkgJson) => {
     pkgJson.scripts = pkgJson.scripts ?? {};
     pkgJson.scripts[
