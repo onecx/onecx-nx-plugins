@@ -102,7 +102,7 @@ export async function angularGenerator(
   addScriptsToPackageJson(tree, options);
   addExtensionsToPackageJson(tree);
 
-  const oneCXLibVersion = '^8.0.0-rc.10';
+  const oneCXLibVersion = '^8.0.0';
   const angularVersion = '21.2.9';
 
   addDependenciesToPackageJson(

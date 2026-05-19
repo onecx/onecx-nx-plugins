@@ -6,7 +6,9 @@ endif::[]
 = Create an Entity Schema
 
 What is an Entity Schema?::
+ifdef::env-site[]
 include::partial$_glossary.adoc[tag=entity-schema]
+endif::[]
 
 Let's begin by describing the entity that can be managed in the generated components. Starting this way makes the subsequent steps easier to understand.
 
@@ -17,7 +19,7 @@ Add Entity Schema::
 After creating the feature module and components, the next step is to define the entity schema in the *OpenAPI* file. This involves adding the base properties of the entity, which will be used to generate the API code for the frontend application.
 
 [discrete]
-=== Template: Generated Schema
+=== Template: Generated Entity Schema
 
 [horizontal]
 Directory:: `<root-of-ui-app>/src/assets/api`
@@ -34,12 +36,8 @@ components:
     <resource/entity name>:
       type: object
       required:
-        - 'modificationCount'
         - 'id'
       properties:
-        modificationCount:
-          format: int32
-          type: integer
         creationDate:
           $ref: '#/components/schemas/OffsetDateTime'
         creationUser:
@@ -48,16 +46,22 @@ components:
           $ref: '#/components/schemas/OffsetDateTime'
         modificationUser:
           type: string
+        modificationCount:
+          format: int32
+          type: integer
         id:
           type: integer
+        changeMe:
+          type: string
         # "ACTION E: Add entity properties"
 ----
 Where below *properties* the properties of the entity are listed.
 ====
 
+'''
 
 [discrete]
-=== Example
+=== Example: Book Entity Schema
 
 [horizontal]
 Directory:: `bookstore/src/assets/api`
@@ -74,12 +78,8 @@ components:
     Book:
       type: object
       required:
-        - 'modificationCount'
         - 'id'
       properties:
-        modificationCount:
-          format: int32
-          type: integer
         creationDate:
           $ref: '#/components/schemas/OffsetDateTime'
         creationUser:
@@ -88,6 +88,9 @@ components:
           $ref: '#/components/schemas/OffsetDateTime'
         modificationUser:
           type: string
+        modificationCount:
+          format: int32
+          type: integer
         id:
           type: string
         bookType:
@@ -99,21 +102,21 @@ components:
         bookIsbn:
           type: string
         bookPrice:
-          type: integer
-          format: int32
+          type: number
+          format: float
         bookPublisher:
           type: string
         bookPublishedDate:
           $ref: '#/components/schemas/OffsetDateTime'
     BookType:
       type: string
-      enum: [ crime, drama, fantasy, prosa, science ]
+      enum: [ CRIME, DRAMA, FANTASY, PROSE, SCIENCE ]
 ----
-Where properties with prefix *book* are added to the entity `+Book+`.
+Where properties with prefix *book* are added to the entity `+Book+` (replaced *changedMe*).
 ====
 
 
-[NOTE]
+[IMPORTANT]
 Each time the *OpenAPI* file is changed, the API code needs to be updated to reflect these changes. +
 To do this, run the the following command in the terminal with the root of the UI application as current working directory.
 
