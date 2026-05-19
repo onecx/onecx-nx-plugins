@@ -136,7 +136,7 @@ export async function reactGenerator(
       '@onecx/integration-interface': oneCXLibVersion,
       react: reactVersion,
       'react-dom': reactVersion,
-      'react-router': '^7.13.0"',
+      'react-router': '^7.13.0',
       'react-i18next': '^17.0.8',
       i18next: '^25.8.0',
       primereact: '^10.9.7',
@@ -190,7 +190,7 @@ export async function reactGenerator(
 
   return async () => {
     await applicationGeneratorCallback();
-    let cmd = 'rm -rf .vscode ';
+    let cmd = 'rm -rf .vscode apps libs';
     log(cmd);
     execSync(cmd, { cwd: tree.root, stdio: 'inherit' });
 
