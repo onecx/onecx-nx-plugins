@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 import { createWorkspace } from 'create-nx-workspace';
+import { readFileSync, existsSync } from 'fs';
 
 const SUPPORTED_FLAVORS = ['angular', 'react', 'ngrx', 'standalone-ngrx'];
 
@@ -53,5 +54,16 @@ async function main() {
 
 main().catch((e) => {
   console.error(e.message);
+
+  const logFileMatch = (e.message as string).match(/Log file:\s*(\S+)/);
+  if (logFileMatch) {
+    const logPath = logFileMatch[1];
+    if (existsSync(logPath)) {
+      console.error('\n── Error details ─────────────────────────────');
+      console.error(readFileSync(logPath, 'utf-8'));
+      console.error('──────────────────────────────────────────────');
+    }
+  }
+
   process.exit(1);
 });

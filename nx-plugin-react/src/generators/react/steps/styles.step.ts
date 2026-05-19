@@ -8,12 +8,9 @@ export class StylesStep implements GeneratorStep<ReactGeneratorSchema> {
       options.styles === 'tailwind'
         ? '../files-styles-tailwind'
         : '../files-styles-primeflex';
-    generateFiles(
-      tree,
-      joinPathFragments(__dirname, templateDir),
-      `${options.name}/`,
-      { ...options }
-    );
+    generateFiles(tree, joinPathFragments(__dirname, templateDir), '.', {
+      ...options,
+    });
   }
 
   getTitle(): string {

@@ -62,7 +62,7 @@ export async function reactGenerator(
   Object.assign(options, parameters);
 
   const spinner = ora('Adding React').start();
-  const directory = options.name;
+  const directory = '.';
 
   const applicationGeneratorCallback = await applicationGenerator(tree, {
     name: options.name,
@@ -137,7 +137,7 @@ export async function reactGenerator(
       react: reactVersion,
       'react-dom': reactVersion,
       'react-router': '^7.13.0"',
-      'react-i18next': '"^16.5.4',
+      'react-i18next': '^17.0.8',
       i18next: '^25.8.0',
       primereact: '^10.9.7',
       primeicons: '^7.0.0',
@@ -181,7 +181,7 @@ export async function reactGenerator(
     }
   );
 
-  adaptTsConfig(tree, options);
+  adaptTsConfig(tree);
   adaptProjectConfiguration(tree, options);
 
   await formatFiles(tree);
@@ -251,9 +251,8 @@ function addScriptsToPackageJson(tree: Tree) {
   });
 }
 
-function adaptTsConfig(tree: Tree, options: ReactGeneratorSchema) {
-  const directory = options.name;
-  const filePath = `${directory}/tsconfig.app.json`;
+function adaptTsConfig(tree: Tree) {
+  const filePath = 'tsconfig.app.json';
 
   updateJson(tree, filePath, (json) => {
     json.files = ['src/main.tsx', 'src/bootstrap.tsx'];

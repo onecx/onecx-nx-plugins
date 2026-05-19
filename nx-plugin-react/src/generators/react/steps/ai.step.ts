@@ -4,12 +4,9 @@ import { ReactGeneratorSchema } from '../schema';
 
 export class AIStep implements GeneratorStep<ReactGeneratorSchema> {
   process(tree: Tree, options: ReactGeneratorSchema): void {
-    generateFiles(
-      tree,
-      joinPathFragments(__dirname, '../files-ai'),
-      `${options.name}/`,
-      { ...options }
-    );
+    generateFiles(tree, joinPathFragments(__dirname, '../files-ai'), '.', {
+      ...options,
+    });
   }
 
   getTitle(): string {
