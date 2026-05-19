@@ -1,6 +1,0 @@
-=== Check for further ACTIONS
-
-:idprefix:
-:idseparator: -
-
-include::documentation:onecx-nx-plugins:partial$actions-check.adoc[]

@@ -6,7 +6,9 @@ endif::[]
 = Configure Permissions
 
 What are permissions?::
+ifdef::env-site[]
 include::partial$_glossary.adoc[tag=permission]
+endif::[]
 
 Predefined Permissions for the Entity/Resource::
 The generator creates a set of predefined permissions for the entity/resource on feature generation: +
@@ -50,3 +52,8 @@ File::      `values.yaml`
             BACK: Navigate back in details of Book item
 ----
 ====
+
+After adding the permissions into the local environment, you can use them within your application to control access to certain features or actions based on the user's roles and permissions.
+
+.Bookstore permissions within the Permission UI
+image::permissions_bookstore_example.png[]

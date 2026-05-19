@@ -46,10 +46,11 @@ File::      `<resource>-search.component.spec.ts`
   };
 ...
 ----
-26 occurances of `changeMe` must be replaced by `bookTitle`.
 ====
 
-==== Example: Book Search
+'''
+
+==== Example: Book Search Component
 
 [horizontal]
 Directory:: `bookstore/src/app/book/pages/book-search`
@@ -58,6 +59,7 @@ File::      `book-search.component.spec.ts`
 .ACTION S11 in `+book-search.component.spec.ts+`
 [%collapsible]
 ====
+Replace all occurrences of *changeMe* with *bookTitle* and *CHANGE_ME* with *BOOK_TITLE*.
 [source, javascript]
 ----
   const baseBookSearchViewModel: BookSearchViewModel = {
@@ -73,7 +75,126 @@ File::      `book-search.component.spec.ts`
   }
 ...
 ----
-26 occurances of `changeMe` were replaced by `bookTitle`.
+24 occurances of `changeMe` were replaced by `bookTitle`. +
+7 occurances of `CHANGE_ME` were replaced by `BOOK_TITLE`.
+====
+
+
+'''
+
+=== Search Effects
+
+==== Template
+
+Replace all occurrences of `changeMe` in the generated search effects spec file with the actual property name used in the search criteria and search results. +
+Update the test data in the spec file to reflect the expected structure and values based on the customized search component implementation.
+
+[horizontal]
+Directory:: `<root-of-ui-app>/src/app/<feature>/pages/<resource>-search`
+File::      `<resource>-search.effects.spec.ts`
+
+.ACTION S11 in `+<resource>-search.effects.spec.ts+`
+[%collapsible]
+====
+[source, javascript]
+----
+...
+----
+26 occurances of `changeMe` must be replaced by `bookTitle`.
+====
+
+'''
+
+==== Example: Book Effects
+
+[horizontal]
+Directory:: `bookstore/src/app/book/pages/book-search`
+File::      `book-search.effects.spec.ts`
+  
+.ACTION S11 in `+book-search.effects.spec.ts+`
+[%collapsible]
+====
+Replace all occurrences of *changeMe* with *bookTitle* and *CHANGE_ME* with *BOOK_TITLE*.
+[source, javascript]
+----
+// ACTION S11: Change test data in the whole document
+describe('BookSearchEffects', () => {
+  let actions$: ReplaySubject<Action>
+  let effects: BookSearchEffects
+  let store: MockStore<Store>
+  let router: jest.Mocked<Router>
+  let route: ActivatedRoute
+  let bookService: jest.Mocked<BookAPIService>
+  let portalDialogService: jest.Mocked<PortalDialogService>
+  let messageService: jest.Mocked<PortalMessageService>
+  let exportDataService: jest.Mocked<ExportDataService>
+
+  const mockCriteria: BookSearchCriteria = { bookTitle: 'test' }
+
+...
+----
+6 occurances of `changeMe` were replaced by `bookTitle`. +
+2 occurances of `CHANGE_ME` were replaced by `BOOK_TITLE`.
+====
+
+'''
+
+=== Search Reducers
+
+==== Template
+Replace all occurrences of `changeMe` in the generated search reducers spec file with the actual property name used in the search results. +
+Update the test data in the spec file to reflect the expected structure and values based on the customized search component implementation.
+
+[horizontal]
+Directory:: `<root-of-ui-app>/src/app/<feature>/pages/<resource>-search`
+File::      `<resource>-search.reducers.spec.ts`
+
+.ACTION S11 in `+<resource>-search.reducers.spec.ts+`
+[%collapsible]
+====
+[source, javascript]
+----
+// ACTION S11: Change test data in the whole document
+describe('<%= resourcePropertyName %>SearchReducer', () => {
+  it('should reset results and criteria on resetButtonClicked', () => {
+    const preState = { ...reducers.initialState, results: [{ id: '1' }], criteria: { changeMe: 'val' } }
+    const action = <%= resourcePropertyName %>SearchActions.resetButtonClicked()
+    const nextState = reducers.<%= resourcePropertyName %>SearchReducer(preState, action)
+
+    expect(nextState.results).toEqual([])
+    expect(nextState.criteria).toEqual({})
+  })
+...
+----
+====
+
+'''
+
+==== Example: Book Reducers
+
+[horizontal]
+Directory:: `bookstore/src/app/book/pages/book-search`
+File::      `book-search.reducers.spec.ts`
+  
+.ACTION S11 in `+book-search.reducers.spec.ts+`
+[%collapsible]
+====
+Replace all occurrences of *changeMe* with *bookTitle*.
+[source, javascript]
+----
+// ACTION S11: Change test data in the whole document
+describe('bookSearchReducer', () => {
+  it('should reset results and criteria on resetButtonClicked', () => {
+    const preState = { ...reducers.initialState, results: [{ id: '1' }], criteria: { bookTitle: 'val' } }
+    const action = bookSearchActions.resetButtonClicked()
+    const nextState = reducers.bookSearchReducer(preState, action)
+
+    expect(nextState.results).toEqual([])
+    expect(nextState.criteria).toEqual({})
+  })
+...
+----
+3 occurances of `changeMe` were replaced by `bookTitle`.
 ====
 
 '''
@@ -95,7 +216,7 @@ File::      `<resource>-search.selectors.spec.ts`
 ----
 describe('<%= resourceClassName %>Search selectors', () => {
   describe('selectResults projector', () => {
-    // ACTION S11: Update test data
+    // ACTION S11: Adjust test data
     const cases = [
       {
         desc: 'should map results to RowListGridData[]',
@@ -123,11 +244,21 @@ describe('<%= resourceClassName %>Search selectors', () => {
       }
     ]
 ...
+    // ACTION S11: Adjust test data
+    const columns = [{ id: 'changeMe', nameKey: 'Col 1', columnType: ColumnType.STRING }]
+    const searchCriteria = {
+      pageNumber: 1,
+      pageSize: 10,
+      changeMe: 'A'
+    }
+    const results = [{ imagePath: '', id: '1', changeMe: 'A test' }]
+...
 ----
 ====
 
+'''
 
-==== Example: Book Search
+==== Example: Book Search Selectors
 
 [horizontal]
 Directory:: `bookstore/src/app/book/pages/book-search`
@@ -147,7 +278,7 @@ describe('BookSearch selectors', () => {
         input: [
           { id: '1', bookTitle: 'Book A', bookType: 'crime' },
           { id: '2', bookTitle: 'Book B' }
-        ] as Book[],
+        ] as never[],
         expected: [
           { imagePath: '', id: '1', bookTitle: 'Book A', bookType: 'BOOK_SEARCH.RESULTS.BOOK_TYPES.CRIME' },
           { imagePath: '', id: '2', bookTitle: 'Book B', bookType: '' }
@@ -159,21 +290,31 @@ describe('BookSearch selectors', () => {
           { id: '', bookType: 'crime', bookTitle: 'Book A' },
           { id: '', bookType: 'mystery', bookTitle: 'Book B' },
           { id: '', bookType: 'fantasy', bookTitle: 'Book C' }
-        ] as Book[],
+        ] as never[],
         expected: [
-          { imagePath: '', id: '', bookType: 'BOOK_SEARCH.RESULTS.BOOK_TYPES.CRIME', bookTitle: 'Book A' },
-          { imagePath: '', id: '', bookType: 'BOOK_SEARCH.RESULTS.BOOK_TYPES.MYSTERY', bookTitle: 'Book B' },
-          { imagePath: '', id: '', bookType: 'BOOK_SEARCH.RESULTS.BOOK_TYPES.FANTASY', bookTitle: 'Book C' }
+          { imagePath: '', id: '', bookTitle: 'Book A', bookType: 'BOOK_SEARCH.RESULTS.BOOK_TYPES.CRIME' },
+          { imagePath: '', id: '', bookTitle: 'Book B', bookType: 'BOOK_SEARCH.RESULTS.BOOK_TYPES.MYSTERY' },
+          { imagePath: '', id: '', bookTitle: 'Book C', bookType: 'BOOK_SEARCH.RESULTS.BOOK_TYPES.FANTASY' }
         ]
       }
     ]
 ...
+    // ACTION S11: Adjust test data
+    const columns = [{ id: 'bookTitle', nameKey: 'Col 1', columnType: ColumnType.STRING }]
+    const searchCriteria = {
+      pageNumber: 1,
+      pageSize: 10,
+      bookTitle: 'A'
+    }
+    const results = [{ imagePath: '', id: '1', bookTitle: 'A test', bookType: 'BOOK_SEARCH.RESULTS.BOOK_TYPES.CRIME' }]
+...
 ----
+13 occurances of `changeMe` were replaced by `bookTitle` and some other properties.
 ====
 
 '''
 
-=== Execute Tests
+== Execute Tests
 After adapting the tests, you can execute them to ensure that they are working correctly and validating the functionality of the search component as expected. +
 Use the following command to run the tests for the search component:
 
@@ -183,3 +324,6 @@ npm run test
 ----
 This will execute the test suite and provide feedback on the success or failure of the tests based on the adapted test cases and expected results. +
 Make sure to review the test results and address any issues that may arise to ensure that your search component is functioning correctly and meets the desired requirements.
+
+.Test results
+image::test_result_search.png[]
