@@ -20,13 +20,13 @@ app:
       specs:
         main:
           productName: *product_name
-          exposedModule: './App'
+          exposedModule: './OneCX<%= className %>RemoteModule'
           description: 'OneCX <%= remoteModuleName %> UI'
           note: 'OneCX <%= remoteModuleName %> UI module auto import via MF operator'
           type: MODULE
           technology: WEBCOMPONENTMODULE
           remoteName: <%= remoteModuleFileName %>
-          tagName: ocx-<%= remoteModuleFileName %>-component
+          tagName: onecx-<%= fileName %>-ui-entrypoint
     # Microservice
     microservice:
       spec:

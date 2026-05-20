@@ -1,0 +1,49 @@
+# OneCX <%= className %> UI
+
+React microfrontend for the OneCX platform.
+
+## Development
+
+```bash
+npm start          # Start dev server at http://localhost:4200
+npm run build      # Production build
+npm test           # Run unit tests
+npm run lint       # Lint
+npm run lint:fix   # Lint with auto-fix
+npm run format     # Format with prettier
+npm run apigen     # Regenerate API client from openapi-bff.yaml
+npm run sonar      # Run SonarQube analysis
+```
+
+## Project structure
+
+```
+src/
+├── app/
+│   └── shared/
+│       └── generated/   # Auto-generated API client (do not edit)
+├── assets/
+│   ├── api/
+│   │   └── openapi-bff.yaml   # BFF OpenAPI spec
+│   └── env.json               # Runtime environment config
+├── environments/
+│   ├── environment.ts          # Development config
+│   └── environment.prod.ts     # Production config
+├── i18n/
+│   └── sources/               # Translation files (en, de)
+├── pages/                     # Page components
+├── App.tsx                    # App root
+├── bootstrap.ts               # Web component entrypoint
+└── router.tsx                 # Application routing
+```
+
+## Module Federation
+
+This app exposes `./OneCX<%= className %>RemoteModule` as a remote module under the name `onecx-<%= fileName %>-ui`.
+
+## Environment variables
+
+| Variable       | Default                        | Description          |
+|----------------|--------------------------------|----------------------|
+| `BFF_URL`      | `http://<%= fileName %>-bff:8080/` | Backend-for-Frontend URL |
+| `APP_BASE_HREF` | `/`                           | App base href        |
