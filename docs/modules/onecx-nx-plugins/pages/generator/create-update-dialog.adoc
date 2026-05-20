@@ -5,7 +5,6 @@
 :idseparator: -
 
 The fastest way to create a create and update dialogs in a feature module is to use the OneCX generator.
-include::partial$generator-check.adoc[]
 
 ******
 To run the generator, execute the following command: 
@@ -13,8 +12,6 @@ To run the generator, execute the following command:
 ----
 nx generate <namespaceOfTheGenerator>/nx-plugin:create-update <feature>
 ----
-
-include::partial$_generator-namespace.adoc[]
 
 * _<feature>_: see xref:./glossary.adoc#feature[here].
 
@@ -24,12 +21,3 @@ This can be useful if you want to adapt to a legacy API.
 When modifying names, assure that you use the same custom names for all generated components of the feature (search, details, create-update, delete) for the data object name, and the api service name as these ones are shared.
 
 ******
-
-After running the generator, the following actions must be taken: 
-
-
-[start=1]
-. xref:./create-update/extend-form-fields.adoc[Extend schema and form fields]
-. xref:./create-update/commit-changes.adoc[Commit the changes]
-
-NOTE: To modify the behavior of the dialogs, please refer to {portal_dialog_service_url}[PortalDialogService docs].

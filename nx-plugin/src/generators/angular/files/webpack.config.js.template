@@ -3,6 +3,7 @@ const {
   share,
   withModuleFederationPlugin,
 } = require('@angular-architects/module-federation/webpack');
+const webpack = require('webpack')
 const config = withModuleFederationPlugin({
   name: 'onecx-<%= remoteModuleFileName %>-ui',
   filename: 'remoteEntry.js',
@@ -87,6 +88,7 @@ const config = withModuleFederationPlugin({
 });
 
 const plugins = config.plugins.filter((plugin) => !(plugin instanceof ModifyEntryPlugin))
+plugins.push(new webpack.DefinePlugin({ ngDevMode: 'false' }))
 
 module.exports = {
   ...config,

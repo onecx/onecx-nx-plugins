@@ -6,7 +6,9 @@ endif::[]
 = Create a Search Component
 
 What is a Component?::
+ifdef::env-site[]
 include::partial$_glossary.adoc[tag=component]
+endif::[]
 
 Search Component and Entity/Resource::
 The Search Component is a specific type of component that provides a user interface for searching and displaying results based on a certain entity or resource. +
@@ -57,8 +59,7 @@ The next steps involve adapting the search component to your specific requiremen
 
 . xref:./search/search-criteria.adoc[Configure Search Criteria]
 . xref:./search/search-results.adoc[Configure Search Results]
-. xref:./search/result-diagram.adoc[Configure Result Diagram]
-. xref:./search/header-actions.adoc[Configure Header Actions]
+. xref:./search/search-add-ons.adoc[Configure Search Add-ons]
 . xref:./search/search-tests.adoc[Configure Search Tests]
 . xref:./search/mock-api.adoc[Prepare Mock Data]
 
@@ -110,6 +111,10 @@ ifdef::env-site[]
 include::_integrate-into-onecx.adoc[leveloffset=+2]
 endif::[]
 
+=== Start Backend Service
+To have the search component working, you need to have a backend service running that provides the necessary API endpoints for the search functionality. +
+Make sure to start the backend service that corresponds to the generated search component. +
+In case you don't have a real backend service available, you can prepare mock data and use it with the generated search component, see xref:./search/mock-api.adoc[Prepare Mock Data and Use It].
 
 === Preview
 In the following image, the search component (as generated including the post-generation steps) is integrated into the application unchanged, exactly as it was generated.
@@ -117,7 +122,7 @@ In the following image, the search component (as generated including the post-ge
 .Search UI after integration into the application
 image::generated_book_search_component_org.png[]
 
-After little adaptations to the search criteria and search results, the search component can look like this:
+After adjusting the search criteria and search results for the bookstore example and starting the backend service, the search component can look like this:
 
-.Search UI with adapted search
-image::generated_book_search_component_example.png[]
+.Search UI with adapted search and example data
+image::generated_book_search_component_books.png[]

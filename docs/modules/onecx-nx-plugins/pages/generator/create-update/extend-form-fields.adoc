@@ -21,10 +21,6 @@ You can modify it, but check xref:generator/glossary.adoc#resource[`here`] for s
 Changes to the response object itself require modification in the response handling. By default other response properties (apart from resource) are ignored.
 ==== 
 
-include::partial$apigen-action.adoc[]
-
-include::partial$remove-action.adoc[]
-
 [#action-2]
 === ACTION C2: Add form fields to html component
 _Adapt in File:_  `+<feature>-create-update.component.html+`
@@ -67,8 +63,6 @@ properties:
 </div>
 ----
 
-include::partial$remove-action.adoc[]
-
 [#action-3]
 === ACTION C3: Add form fields to ts component
 _Adapt in File:_  `+<feature>-create-update.component.ts+`
@@ -102,7 +96,5 @@ this.formGroup = new FormGroup({
     ...
 });
 ----
-
-include::partial$remove-action.adoc[]
 
 NOTE: To configure the dialog or modify its contents, please refer to the {portal_dialog_service_url}[PortalDialogService docs].

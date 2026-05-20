@@ -4,7 +4,6 @@
 :idseparator: -
 
 The fastest way to validate code changes for linting issues, conventional commits messages and potential secrets in the code is by using the OneCX generator.
-include::documentation:onecx-nx-plugins:partial$generator-check.adoc[]
 
 ******
 To run the generator, execute the following command: 
@@ -12,7 +11,6 @@ To run the generator, execute the following command:
 nx generate <namespaceOfTheGenerator>/nx-plugin:pre-commit-validation
 ----
 
-include::documentation:onecx-nx-plugins:partial$_generator-namespace.adoc[]
 
 TIP: Next, the CLI will ask if you want to enable validation checks with three questions: Lint-check, Conventional Commits message check and scanning for blacklisted words in the code.
 For each check, you can choose "yes" or "no". 
