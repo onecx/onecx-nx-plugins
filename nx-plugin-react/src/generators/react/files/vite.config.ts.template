@@ -73,6 +73,7 @@ const mfConfig: ModuleFederationOptions = {
   },
 };
 export default defineConfig(({ mode }) => {
+  const isTest = mode === 'test'
   return {
     root: __dirname,
     base: mode === "production" ? "/mfe/onecx-<%= fileName %>/" : "/",
@@ -90,7 +91,7 @@ export default defineConfig(({ mode }) => {
         ],
       }),
       react(),
-      federation(mfConfig),
+      ...(isTest ? [] : [federation(mfConfig)])
     ],
     server: {
       proxy: {
@@ -105,7 +106,7 @@ export default defineConfig(({ mode }) => {
       globals: true,
       testTimeout: 10000,
       environment: "jsdom",
-      setupFiles: "./src/setupTests.tsx",
+      setupFiles: "./src/setupTests.ts",
       coverage: {
         reporter: ["text", "html", "cobertura"],
         all: true,

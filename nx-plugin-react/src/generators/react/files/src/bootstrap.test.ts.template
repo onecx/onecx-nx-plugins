@@ -7,12 +7,12 @@ vi.mock('@onecx/react-webcomponents', () => ({
 
 describe('bootstrap.ts', () => {
   it('calls init and createViteAppWebComponent with correct params', async () => {
-    // Reset modules so bootstrap.ts runs fresh
-    await import('./bootstrap.ts')
+    // Reset modules so bootstrap runs fresh
+    await import('./bootstrap')
     const { createViteAppWebComponent } = await import(
       '@onecx/react-webcomponents'
     )
-    const { default: App } = await import('./App.tsx')
+    const { default: App } = await import('./App')
 
     expect(createViteAppWebComponent).toHaveBeenCalledWith(App, 'onecx-<%= fileName %>-ui-entrypoint')
   })
