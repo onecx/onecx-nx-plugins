@@ -236,7 +236,7 @@ function addScriptsToPackageJson(tree: Tree) {
     pkgJson.scripts = pkgJson.scripts ?? {};
     pkgJson.scripts[
       'apigen'
-    ] = `openapi-generator-cli generate -i src/assets/api/openapi-bff.yaml -c apigen.yaml -o src/app/shared/generated -g typescript-fetch --type-mappings AnyType=object`;
+    ] = `openapi-generator-cli generate -i src/assets/api/openapi-bff.yaml -c apigen.yaml -o src/api/generated -g typescript-fetch --type-mappings AnyType=object`;
     pkgJson.scripts['start'] = 'nx serve --host 0.0.0.0';
     pkgJson.scripts['build'] = `nx build`;
     pkgJson.scripts['clean'] =

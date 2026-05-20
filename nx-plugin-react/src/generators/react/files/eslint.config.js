@@ -27,7 +27,7 @@ module.exports = [
       'Dockerfile',
       '*.log',
       '*.sh',
-      'src/app/shared/generated/**',
+      'src/api/generated/**',
       'src/**/*.ico',
       'src/**/*.svg'
     ]
@@ -41,7 +41,7 @@ module.exports = [
   {
     files: ['**/*.ts', '**/*.tsx'],
     rules: {
-      "@typescript-eslint/no-unused-vars": ["error", { "vars": "all", "args": "none" }],
+      '@typescript-eslint/no-unused-vars': ['error', { vars: 'all', args: 'none' }],
       '@typescript-eslint/no-explicit-any': 'warn',
       'react-hooks/rules-of-hooks': 'error',
       'react-hooks/exhaustive-deps': 'warn'
