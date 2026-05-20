@@ -1,12 +1,11 @@
 /// <reference types='vitest' />
 import { defineConfig } from "vite";
-import react from "@vitejs/plugin-react";
+import react from "@vitejs/plugin-react";<% if (styles === 'tailwind') { %>
+import tailwindcss from "@tailwindcss/vite";<% } %>
 import { viteStaticCopy } from "vite-plugin-static-copy";
 import { dependencies } from "./package.json";
 import path from "path";
 import { federation, type ModuleFederationOptions } from '@module-federation/vite'
-
-/// <reference types='ModuleFederationOptions' />
 const mfConfig: ModuleFederationOptions = {
   name: "onecx-<%= fileName %>-ui",
   filename: "remoteEntry.js",
@@ -90,7 +89,8 @@ export default defineConfig(({ mode }) => {
           },
         ],
       }),
-      react(),
+      react(),<% if (styles === 'tailwind') { %>
+      tailwindcss(),<% } %>
       ...(isTest ? [] : [federation(mfConfig)])
     ],
     server: {

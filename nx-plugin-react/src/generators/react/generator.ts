@@ -116,6 +116,7 @@ export async function reactGenerator(
       {
         tailwindcss: '^4.0.0',
         '@tailwindcss/vite': '^4.0.0',
+        'tailwindcss-primeui': '^0.3.0',
       }
     );
   }
