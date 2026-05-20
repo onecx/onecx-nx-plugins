@@ -6,6 +6,14 @@ import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ActivatedRoute } from '@angular/router';
 
+// Mock ResizeObserver for primeng FrozenColumn (not available in Jest)
+class ResizeObserverMock {
+  observe() {}
+  unobserve() {}
+  disconnect() {}
+}
+global.ResizeObserver = ResizeObserverMock;
+
 import { ofType } from '@ngrx/effects';
 import { LetDirective } from '@ngrx/component';
 import { Store, StoreModule } from '@ngrx/store';
