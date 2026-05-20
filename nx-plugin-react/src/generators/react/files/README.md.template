@@ -19,9 +19,8 @@ npm run sonar      # Run SonarQube analysis
 
 ```
 src/
-├── app/
-│   └── shared/
-│       └── generated/   # Auto-generated API client (do not edit)
+├── api/
+│   └── generated/       # Auto-generated API client (do not edit)
 ├── assets/
 │   ├── api/
 │   │   └── openapi-bff.yaml   # BFF OpenAPI spec

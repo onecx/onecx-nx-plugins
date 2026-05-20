@@ -256,7 +256,7 @@ function adaptTsConfig(tree: Tree) {
   const filePath = 'tsconfig.app.json';
 
   updateJson(tree, filePath, (json) => {
-    json.files = ['src/main.tsx', 'src/bootstrap.tsx'];
+    json.files = ['src/main.tsx', 'src/bootstrap.ts'];
     json.compilerOptions = json.compilerOptions ?? {};
     json.compilerOptions.jsx = 'react-jsx';
     return json;
