@@ -121,7 +121,7 @@ export async function angularGenerator(
       "@onecx/ngrx-integration-interface": oneCXLibVersion,
       '@ngx-translate/core': '^17.0.0',
       '@ngx-translate/http-loader': '^17.0.0',
-      '@angular-architects/module-federation': '^20.0.0',
+      "@module-federation/enhanced": "^2.4.0",
       'ngrx-store-localstorage': '^20.1.0',
       '@ngrx/component': '21.1.0',
       '@ngrx/effects': '21.1.0',

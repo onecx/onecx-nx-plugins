@@ -1,0 +1,74 @@
+const { getOneCXSharedRecommendations } = require('@onecx/accelerator')
+const fs = require('fs')
+const path = require('path')
+
+const pkg = require('./package.json')
+const { Console } = require('console')
+const { dependencies } = pkg
+
+
+const EXPORTS_BLACKLIST = ['.', './package.json']
+
+const DEPENDENCY_BLACKLIST = [
+  '@nx/angular',
+  '@nx/module-federation',
+  '@module-federation/enhanced',
+  '@module-federation/runtime-core',
+  '@module-federation/dts-plugin'
+]
+
+function removeExportPrefix(str) {
+  return str.replace('./', '')
+}
+
+function generatePackages(dependency) {
+  if (DEPENDENCY_BLACKLIST.includes(dependency)) {
+    return []
+  }
+
+  const requiredVersion = dependencies[dependency]
+  const result = [{ name: dependency, requiredVersion }]
+
+  const dependencyPackagePath = path.join('node_modules', dependency, 'package.json')
+  if (fs.existsSync(dependencyPackagePath)) {
+    const dependencyPackage = require(dependencyPackagePath)
+    if (dependencyPackage.exports) {
+      const exportKeys = Object.keys(dependencyPackage.exports)
+      for (const exportKey of exportKeys) {
+        if (EXPORTS_BLACKLIST.includes(exportKey)) continue
+        const fullPackage = `${dependency}/${removeExportPrefix(exportKey)}`
+        result.push({ name: fullPackage, requiredVersion })
+      }
+    }
+  }
+
+  return result
+}
+
+const sharedEntries = {}
+
+for (const libName of Object.keys(dependencies)) {
+
+  const packages = generatePackages(libName)
+  
+  for (const { name, requiredVersion } of packages) {
+    const result = getOneCXSharedRecommendations(name, {
+      requiredVersion,
+      shareScope: 'angular_21'
+    })
+    if (result !== false) {
+      sharedEntries[name] = result
+    }
+  }
+}
+
+module.exports = {
+  name: 'onecx-<%= remoteModuleFileName %>-ui',
+  filename: 'remoteEntry.js',
+  library: { type: 'module' },
+  exposes: {
+    './OneCX<%= remoteModuleName %>Module': './src/main.ts'
+  },
+  shared: sharedEntries,
+  shareScope: 'angular_21',
+};
