@@ -119,6 +119,8 @@ export default defineConfig(({ mode }) => {
           "src/**/global.d.ts",
           "src/api/*",
           "src/assets/*",
+          "src/environments/*",
+          "**/__mocks__/*",
         ],
       },
     },

@@ -5,15 +5,15 @@ const mockUseRoutes = vi.fn()
 const mockUseAppHref = vi.fn()
 
 vi.mock('react-router', () => ({
-  useRoutes: mockUseRoutes,
+  useRoutes: mockUseRoutes
 }))
 
 vi.mock('@onecx/react-webcomponents', () => ({
-  useAppHref: mockUseAppHref,
+  useAppHref: mockUseAppHref
 }))
 
 vi.mock('./pages/Welcome', () => ({
-  default: () => null,
+  default: () => null
 }))
 
 vi.mock('./i18n/config', () => ({}))
@@ -45,13 +45,14 @@ describe('AppRoutes', () => {
     mockUseAppHref.mockReturnValue({ href: '/app' })
     mockUseRoutes.mockReturnValue(<div>routes</div>)
 
-    await import('./router')
+    const { default: AppRoutes } = await import('./router')
+    render(<AppRoutes />)
 
     expect(mockUseRoutes).toHaveBeenCalledWith([
       {
         path: '/app/',
-        element: expect.any(Object),
-      },
+        element: expect.any(Object)
+      }
     ])
   })
 })

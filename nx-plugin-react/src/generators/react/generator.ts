@@ -121,7 +121,7 @@ export async function reactGenerator(
     );
   }
 
-  const oneCXLibVersion = '^8.2.0';
+  const oneCXLibVersion = '^8.2.2';
   const reactVersion = '^19.0.0';
   const nxVersion = '22.0.2';
 
@@ -259,6 +259,7 @@ function adaptTsConfig(tree: Tree) {
     json.files = ['src/main.tsx', 'src/bootstrap.ts'];
     json.compilerOptions = json.compilerOptions ?? {};
     json.compilerOptions.jsx = 'react-jsx';
+    json.compilerOptions.resolveJsonModule = true;
     return json;
   });
 }

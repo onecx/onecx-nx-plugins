@@ -1,8 +1,12 @@
 import { vi } from 'vitest'
 
-
 vi.mock('@onecx/react-webcomponents', () => ({
-  createViteAppWebComponent: vi.fn()
+  createViteAppWebComponent: vi.fn(),
+  useAppHref: vi.fn(() => ({ href: '' }))
+}))
+
+vi.mock('@onecx/react-utils', () => ({
+  withApp: vi.fn((component) => component)
 }))
 
 describe('bootstrap.ts', () => {
