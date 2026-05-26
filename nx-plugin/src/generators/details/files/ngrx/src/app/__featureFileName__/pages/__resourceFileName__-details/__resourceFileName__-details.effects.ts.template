@@ -119,14 +119,13 @@ export class <%= resourceClassName %>DetailsEffects {
         } as <%= updateRequestName %>;
         return this.<%= resourcePropertyName %>Service.update<%= resourceClassName %>ById(
           { id: itemToEditId, <%= updateRequestPropertyName %>: itemToEdit }).pipe(
-          mergeMap(() => {
+          map((response) => {
             this.messageService.success({
               summaryKey: '<%= resourceConstantName%>_DETAILS.UPDATE.SUCCESS',
             });
-            return [
-              <%= resourcePropertyName %>DetailsActions.<%= resourcePropertyName %>DetailsReceived({ details: updatedItem as <%= resourceClassName %> }),
-              <%= resourcePropertyName %>DetailsActions.update<%= resourceClassName %>Succeeded()
-            ]
+            return <%= resourcePropertyName %>DetailsActions.update<%= resourceClassName %>Succeeded({
+              details: response.resource
+            });
           }),
           catchError((error) => {
             this.messageService.error({
