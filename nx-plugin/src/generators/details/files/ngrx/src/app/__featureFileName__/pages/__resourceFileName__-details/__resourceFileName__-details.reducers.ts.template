@@ -57,10 +57,18 @@ export const <%= resourcePropertyName %>DetailsReducer = createReducer(
     <%= resourcePropertyName %>DetailsActions.cancelEditConfirmClicked,
     <%= resourcePropertyName %>DetailsActions.cancelEditNotDirty,
     <%= resourcePropertyName %>DetailsActions.update<%= resourceClassName %>Cancelled,
-    <%= resourcePropertyName %>DetailsActions.update<%= resourceClassName %>Succeeded,
     (state: <%= resourceClassName %>DetailsState): <%= resourceClassName %>DetailsState => ({
       ...state,
       editMode: false,
+    })
+  ),
+  on(
+    <%= resourcePropertyName %>DetailsActions.update<%= resourceClassName %>Succeeded,
+    (state: <%= resourceClassName %>DetailsState, { details }): <%= resourceClassName %>DetailsState => ({
+      ...state,
+      details,
+      editMode: false,
+      isSubmitting: false,
     })
   ),
   on(

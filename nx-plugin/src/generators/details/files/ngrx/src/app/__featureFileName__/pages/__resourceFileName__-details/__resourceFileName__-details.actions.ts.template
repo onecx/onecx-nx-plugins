@@ -11,7 +11,7 @@ export const <%= resourcePropertyName %>DetailsActions = createActionGroup({
     <%_ if(editMode){ _%>
     'Edit mode set': props<{ editMode: boolean }>(),    
     'Update <%= resourceClassName %> cancelled': emptyProps(),
-    'Update <%= resourceClassName %> succeeded': emptyProps(),
+    'Update <%= resourceClassName %> succeeded': props<{ details: <%= resource %> }>(),
     'Update <%= resourceClassName %> failed': props<{ error: string | null }>(),
     'Delete <%= resourceClassName %> cancelled': emptyProps(),
     'Delete <%= resourceClassName %> succeeded': emptyProps(),
