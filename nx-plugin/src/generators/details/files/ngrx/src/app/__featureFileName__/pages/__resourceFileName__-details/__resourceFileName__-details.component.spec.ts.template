@@ -33,9 +33,9 @@ import { AngularAcceleratorModule, BreadcrumbService } from '@onecx/angular-acce
 
 // ACTION D11: Add missing imports here
 import { initialState } from './<%= resourceFileName %>-details.reducers';
-import { <%= featureClassName %>DetailsActions, <%= resourcePropertyName %>DetailsActions } from './<%= resourceFileName %>-details.actions';
+import { <%= resourcePropertyName %>DetailsActions } from './<%= resourceFileName %>-details.actions';
 import { <%= resourceClassName %>DetailsComponent } from './<%= resourceFileName %>-details.component';
-import { <%= featureClassName %>DetailsHarness, <%= resourceClassName %>DetailsHarness } from './<%= resourceFileName %>-details.harness';
+import { <%= resourceClassName %>DetailsHarness } from './<%= resourceFileName %>-details.harness';
 import { <%= resourceClassName %>DetailsViewModel } from './<%= resourceFileName %>-details.viewmodel';
 import { select<%= resourceClassName %>DetailsViewModel } from './<%= resourceFileName %>-details.selectors';
 import { provideTranslateTestingService } from '@onecx/angular-accelerator/testing'
