@@ -9,7 +9,7 @@ import {
   Tree,
 } from '@nx/devkit';
 import { execSync } from 'child_process';
-import ora from 'ora';
+import * as ora from 'ora';
 
 import { GeneratorProcessor } from '../../shared/generator.utils';
 import processParams, {
