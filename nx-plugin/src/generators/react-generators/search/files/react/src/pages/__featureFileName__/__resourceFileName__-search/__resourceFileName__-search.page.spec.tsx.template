@@ -1,0 +1,34 @@
+import { fireEvent, render, screen } from '@testing-library/react';
+
+import { <%= resourceClassName %>SearchPage } from './<%= resourceFileName %>-search.page';
+
+describe('<%= resourceClassName %>SearchPage', () => {
+  it('renders page header', () => {
+    render(<<%= resourceClassName %>SearchPage />);
+
+    expect(screen.getByText('<%= resourceClassName %> Search')).toBeTruthy();
+  });
+
+  it('filters results on search', () => {
+    render(<<%= resourceClassName %>SearchPage />);
+
+    fireEvent.change(screen.getByPlaceholderText('Search by value'), {
+      target: { value: 'beta' },
+    });
+    fireEvent.click(screen.getByRole('button', { name: 'Search' }));
+
+    expect(screen.getByText('Beta')).toBeTruthy();
+  });
+
+  it('resets criteria and results', () => {
+    render(<<%= resourceClassName %>SearchPage />);
+
+    fireEvent.change(screen.getByPlaceholderText('Search by value'), {
+      target: { value: 'alpha' },
+    });
+    fireEvent.click(screen.getByRole('button', { name: 'Search' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Reset' }));
+
+    expect(screen.queryByText('Alpha')).toBeNull();
+  });
+});

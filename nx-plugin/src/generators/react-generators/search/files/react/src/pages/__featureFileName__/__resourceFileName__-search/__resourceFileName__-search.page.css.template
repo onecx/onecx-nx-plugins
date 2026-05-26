@@ -1,0 +1,13 @@
+.<%= resourceFileName %>-search-page {
+  display: grid;
+  gap: 1rem;
+}
+
+.<%= resourceFileName %>-search-page__header {
+  margin: 0;
+}
+
+.<%= resourceFileName %>-search-page__hint {
+  margin: 0;
+  color: #5f6b7a;
+}

@@ -1,0 +1,7 @@
+export interface <%= resourceClassName %>SearchCriteria {
+  changeMe: string;
+}
+
+export const initial<%= resourceClassName %>SearchCriteria: <%= resourceClassName %>SearchCriteria = {
+  changeMe: '',
+};
