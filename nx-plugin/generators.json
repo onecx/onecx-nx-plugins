@@ -46,6 +46,11 @@
       "schema": "./src/generators/feature/schema.json",
       "description": "feature generator"
     },
+    "react-feature": {
+      "factory": "./src/generators/react-generators/feature/generator",
+      "schema": "./src/generators/react-generators/feature/schema.json",
+      "description": "react feature generator"
+    },
     "standalone-ngrx": {
       "factory": "./src/generators/standalone/ngrx/generator",
       "schema": "./src/generators/standalone/ngrx/schema.json",
