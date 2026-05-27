@@ -1,4 +1,4 @@
-import { FC, useMemo, useState } from 'react';
+import { FC, useState } from 'react';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { Message } from 'primereact/message';
@@ -7,16 +7,10 @@ import {
   <%= resourceClassName %>SearchFilters,
 } from '../../../components/<%= featureFileName %>/<%= resourceFileName %>-search/<%= resourceFileName %>-search-filters.component';
 import {
-  initial<%= resourceClassName %>SearchCriteria,
-} from './<%= resourceFileName %>-search.criteria';
-import {
   <%= resourcePropertyName %>SearchColumns,
-} from './<%= resourceFileName %>-search.columns';
-import {
   <%= resourceClassName %>SearchRow,
-  <%= resourceClassName %>SearchViewModel,
-} from './<%= resourceFileName %>-search.viewmodel';
-import './<%= resourceFileName %>-search.page.css';
+  initial<%= resourceClassName %>SearchCriteria,
+} from './<%= resourceFileName %>-search.types';
 
 const ALL_<%= resourceConstantName %>_ITEMS: <%= resourceClassName %>SearchRow[] = [
   { id: '1', changeMe: 'Alpha' },
@@ -30,19 +24,9 @@ export const <%= resourceClassName %>SearchPage: FC = () => {
   const [loading, setLoading] = useState(false);
   const [searchExecuted, setSearchExecuted] = useState(false);
 
-  const viewModel: <%= resourceClassName %>SearchViewModel = useMemo(
-    () => ({
-      criteria,
-      results,
-      loading,
-      searchExecuted,
-    }),
-    [criteria, results, loading, searchExecuted]
-  );
-
   const handleSearch = () => {
     setLoading(true);
-    const term = viewModel.criteria.changeMe.trim().toLowerCase();
+    const term = criteria.changeMe.trim().toLowerCase();
     const filtered =
       term.length === 0
         ? ALL_<%= resourceConstantName %>_ITEMS
@@ -64,15 +48,15 @@ export const <%= resourceClassName %>SearchPage: FC = () => {
   };
 
   return (
-    <section className="<%= resourceFileName %>-search-page">
-      <h1 className="<%= resourceFileName %>-search-page__header"><%= resourceClassName %> Search</h1>
-      <p className="<%= resourceFileName %>-search-page__hint">
+    <section style={{ display: 'grid', gap: '1rem' }}>
+      <h1 style={{ margin: 0 }}><%= resourceClassName %> Search</h1>
+      <p style={{ margin: 0, color: '#5f6b7a' }}>
         Search and browse <%= resourceClassName %> items.
       </p>
 
       <<%= resourceClassName %>SearchFilters
-        value={viewModel.criteria.changeMe}
-        loading={viewModel.loading}
+        value={criteria.changeMe}
+        loading={loading}
         onValueChange={(value) =>
           setCriteria((current) => ({ ...current, changeMe: value }))
         }
@@ -80,13 +64,13 @@ export const <%= resourceClassName %>SearchPage: FC = () => {
         onReset={handleReset}
       />
 
-      {viewModel.searchExecuted && viewModel.results.length === 0 ? (
+      {searchExecuted && results.length === 0 ? (
         <Message severity="info" text="No results found." />
       ) : null}
 
       <DataTable
-        value={viewModel.results}
-        loading={viewModel.loading}
+        value={results}
+        loading={loading}
         emptyMessage="Run a search to see results"
         paginator
         rows={10}

@@ -1,9 +1,20 @@
-import { <%= resourceClassName %>SearchRow } from './<%= resourceFileName %>-search.viewmodel';
+export interface <%= resourceClassName %>SearchCriteria {
+  changeMe: string;
+}
+
+export interface <%= resourceClassName %>SearchRow {
+  id: string;
+  changeMe: string;
+}
 
 export interface SearchColumn<T extends object> {
   field: keyof T;
   header: string;
 }
+
+export const initial<%= resourceClassName %>SearchCriteria: <%= resourceClassName %>SearchCriteria = {
+  changeMe: '',
+};
 
 export const <%= resourcePropertyName %>SearchColumns: SearchColumn<<%= resourceClassName %>SearchRow>[] = [
   {
