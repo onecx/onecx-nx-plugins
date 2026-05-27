@@ -4,8 +4,7 @@ import { FeatureGeneratorSchema } from '../schema';
 import { COMMENT_KEY, OpenAPIUtil } from '../../shared/openapi/openapi.utils';
 
 export class GeneralOpenAPIStep
-  implements GeneratorStep<FeatureGeneratorSchema>
-{
+  implements GeneratorStep<FeatureGeneratorSchema> {
   process(tree: Tree, options: FeatureGeneratorSchema): void {
     const openApiFolderPath = 'src/assets/api';
     const bffOpenApiPath = 'openapi-bff.yaml';
@@ -17,7 +16,7 @@ export class GeneralOpenAPIStep
     const resource = options.resource;
     const propertyName = names(options.resource).propertyName;
 
-    const apiUtil = new OpenAPIUtil(bffOpenApiContent);
+    const apiUtil = new OpenAPIUtil(bffOpenApiContent ?? '');
     const res = apiUtil
       .tags()
       .add(`${propertyName}`,
@@ -31,16 +30,11 @@ export class GeneralOpenAPIStep
       )
       .done()
       .schemas()
-      .set(
-        `${resource}`,
+      .set(`${resource}`,
         {
           type: 'object',
           required: ['id'],
           properties: {
-            modificationCount: {
-              type: 'integer',
-              format: 'int32',
-            },
             creationDate: {
               $ref: '#/components/schemas/OffsetDateTime',
             },
@@ -55,9 +49,16 @@ export class GeneralOpenAPIStep
               type: 'string',
               readOnly: true,
             },
+            modificationCount: {
+              type: 'integer',
+              format: 'int32',
+            },
             id: {
               type: 'string',
               readOnly: true,
+            },
+            changeMe: {
+              type: 'string'
             },
             [COMMENT_KEY]: 'ACTION E: Add entity properties',
           },

@@ -1,3 +1,4 @@
+import { Injectable, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Action, Store } from '@ngrx/store';
@@ -7,15 +8,16 @@ import { PrimeIcons } from 'primeng/api';
 import { catchError, filter, map, mergeMap, of, switchMap, tap } from 'rxjs';
 
 import { filterForNavigatedTo } from '@onecx/ngrx-accelerator';
-import { Injectable, inject } from '@angular/core';
 import { PortalMessageService } from '@onecx/angular-integration-interface';
 import { PortalDialogService, DialogState } from '@onecx/angular-accelerator';
+
 import { <%= updateRequestName%>, <%= resource %>, <%= serviceName %> } from '../../../shared/generated';
 import { selectBackNavigationPossible } from 'src/app/shared/selectors/onecx.selectors';
 import { selectRouteParam, selectUrl } from 'src/app/shared/selectors/router.selectors';
 import { <%= resourcePropertyName %>DetailsActions } from './<%= resourceFileName %>-details.actions';
 import { <%= resourceClassName %>DetailsComponent } from './<%= resourceFileName %>-details.component';
 import { <%= resourcePropertyName %>DetailsSelectors } from './<%= resourceFileName %>-details.selectors';
+
 @Injectable()
 export class <%= resourceClassName %>DetailsEffects {
   private actions$ = inject(Actions);
@@ -113,15 +115,17 @@ export class <%= resourceClassName %>DetailsEffects {
           return of(<%= resourcePropertyName %>DetailsActions.update<%= resourceClassName %>Cancelled());
         }
         const itemToEdit = {
-          dataObject: updatedItem,
+          resource: updatedItem,
         } as <%= updateRequestName %>;
         return this.<%= resourcePropertyName %>Service.update<%= resourceClassName %>ById(
           { id: itemToEditId, <%= updateRequestPropertyName %>: itemToEdit }).pipe(
-          map(() => {
+          map((response) => {
             this.messageService.success({
               summaryKey: '<%= resourceConstantName%>_DETAILS.UPDATE.SUCCESS',
             });
-            return <%= resourcePropertyName %>DetailsActions.update<%= resourceClassName %>Succeeded();
+            return <%= resourcePropertyName %>DetailsActions.update<%= resourceClassName %>Succeeded({
+              details: response.resource
+            });
           }),
           catchError((error) => {
             this.messageService.error({

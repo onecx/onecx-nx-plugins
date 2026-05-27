@@ -22,7 +22,7 @@ export class GeneralOpenAPIStep
     const searchRequestName = options.searchRequestName;
     const searchResponseName = options.searchResponseName;
 
-    const apiUtil = new OpenAPIUtil(bffOpenApiContent);
+    const apiUtil = new OpenAPIUtil(bffOpenApiContent ?? '');
     const res = apiUtil
       .paths()
       .set(
@@ -49,10 +49,6 @@ export class GeneralOpenAPIStep
         type: 'object',
         required: ['id'],
         properties: {
-          modificationCount: {
-            type: 'integer',
-            format: 'int32',
-          },
           creationDate: {
             $ref: '#/components/schemas/OffsetDateTime',
           },
@@ -67,9 +63,16 @@ export class GeneralOpenAPIStep
             type: 'string',
             readOnly: true,
           },
+          modificationCount: {
+            type: 'integer',
+            format: 'int32',
+          },
           id: {
             type: 'string',
             readOnly: true,
+          },
+          changeMe: {
+            type: 'string'
           },
           [COMMENT_KEY]: 'ACTION E: Add entity properties',
         },
@@ -91,10 +94,6 @@ export class GeneralOpenAPIStep
             default: 100,
             maximum: 1000,
             description: 'The size of the page',
-          },
-          id: {
-            type: 'integer',
-            format: 'int32',
           },
           changeMe: {
             type: 'string',
