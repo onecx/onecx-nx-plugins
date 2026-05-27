@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import { type FC, useState } from 'react';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { Message } from 'primereact/message';
@@ -8,7 +8,7 @@ import {
 } from '../../../components/<%= featureFileName %>/<%= resourceFileName %>-search/<%= resourceFileName %>-search-filters.component';
 import {
   <%= resourcePropertyName %>SearchColumns,
-  <%= resourceClassName %>SearchRow,
+  type <%= resourceClassName %>SearchRow,
   initial<%= resourceClassName %>SearchCriteria,
 } from './<%= resourceFileName %>-search.types';
 
