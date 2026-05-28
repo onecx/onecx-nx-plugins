@@ -117,20 +117,14 @@ export async function featureGenerator(
 function adaptAppRouting(tree: Tree, options: ReactFeatureGeneratorSchema) {
   const fileName = names(options.name).fileName;
   const className = names(options.name).className;
-  const candidateRouteFiles = [
-    'src/routes.tsx',
-    'src/router.tsx',
-    'src/app/routes.tsx',
-    'src/app/router.tsx',
-  ].filter((p) => tree.exists(p));
+  const routingFilePath = 'src/router.tsx';
 
-  if (candidateRouteFiles.length === 0) {
+  if (!tree.exists(routingFilePath)) {
     console.warn(
-      'No React route file found. Expected one of: src/routes.tsx, src/router.tsx, src/app/routes.tsx, src/app/router.tsx, src/main.tsx, src/App.tsx. Skipping routing adaptation.'
+      'Route file src/router.tsx not found. Skipping routing adaptation.'
     );
     return;
   }
-  const routingFilePath = candidateRouteFiles[0];
 
   safeReplace(
     `add ${className} feature`,

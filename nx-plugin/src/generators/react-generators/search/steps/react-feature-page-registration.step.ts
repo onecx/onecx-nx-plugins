@@ -2,6 +2,7 @@ import { Tree, names } from '@nx/devkit';
 
 import { GeneratorStep } from '../../../shared/generator.utils';
 import { SearchGeneratorSchema } from '../schema';
+import { safeReplace } from '../../../shared/safeReplace';
 
 export class ReactFeaturePageRegistrationStep
   implements GeneratorStep<SearchGeneratorSchema>
@@ -23,20 +24,19 @@ export class ReactFeaturePageRegistrationStep
       return;
     }
 
-    let updatedContent = content;
-
     if (!content.includes(`${resourceClassName}SearchPage`)) {
-      updatedContent = `${importLine}\n${updatedContent}`;
+      const importLine = `import { ${resourceClassName}SearchPage } from './${resourceFileName}-search/${resourceFileName}-search.page';`;
+      const updatedContent = `${importLine}\n${content}`;
+      tree.write(indexFilePath, updatedContent);
     }
 
-    if (!content.includes(`<${resourceClassName}SearchPage`)) {
-      updatedContent = updatedContent.replace(
-        /(&lt;div&gt;|<div>)[\s\S]*?(&lt;\/div&gt;|<\/div>)/,
-        `<${resourceClassName}SearchPage />`
-      );
-    }
-
-    tree.write(indexFilePath, updatedContent);
+    safeReplace(
+      'Replace feature placeholder with SearchPage',
+      indexFilePath,
+      [/(<div>|&lt;div&gt;)[\s\S]*?(<\/div>|&lt;\/div&gt;)/],
+      [`<${resourceClassName}SearchPage />`],
+      tree
+    );
   }
 
   getTitle(): string {
