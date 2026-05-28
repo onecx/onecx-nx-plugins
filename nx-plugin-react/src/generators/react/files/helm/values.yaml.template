@@ -1,0 +1,41 @@
+productName: &product_name onecx-<%= fileName %>
+product:
+  info:
+    data:
+      name: *product_name
+      description: "OneCX <%= fileName %> UI"
+      displayName: "OneCX <%= fileName %>"
+      basePath: "/onecx-<%= fileName %>"
+app:
+  name: onecx-<%= fileName %>-ui
+  image:
+    repository: 'onecx-apps/onecx-<%= fileName %>-ui'
+  routing:
+    enabled: true
+    path: /mfe/<%= propertyName %>/
+  operator:
+    # Microfrontend
+    microfrontend:
+      enabled: true
+      specs:
+        main:
+          productName: *product_name
+          exposedModule: './OneCX<%= className %>RemoteModule'
+          description: 'OneCX <%= remoteModuleName %> UI'
+          note: 'OneCX <%= remoteModuleName %> UI module auto import via MF operator'
+          type: MODULE
+          technology: WEBCOMPONENTMODULE
+          remoteName: <%= remoteModuleFileName %>
+          tagName: onecx-<%= fileName %>-ui-entrypoint
+    # Microservice
+    microservice:
+      spec:
+        productName: *product_name
+        name: OneCX <%= remoteModuleName %> UI
+        description: OneCX <%= remoteModuleName %> Frontend
+    # Permission
+    permission:
+      enabled: true
+      spec:
+        permissions:
+        # ACTION P: Adjust permissions for the entity

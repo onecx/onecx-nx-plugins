@@ -1,0 +1,130 @@
+/// <reference types='vitest' />
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react";<% if (styles === 'tailwind') { %>
+import tailwindcss from "@tailwindcss/vite";<% } %>
+import { viteStaticCopy } from "vite-plugin-static-copy";
+import { dependencies } from "./package.json";
+import path from "node:path";
+import { federation, type ModuleFederationOptions } from "@module-federation/vite"
+
+const mfConfig: ModuleFederationOptions = {
+  name: "onecx-<%= fileName %>-ui",
+  filename: "remoteEntry.js",
+  exposes: {
+    "./OneCX<%= className %>RemoteModule": "./src/bootstrap.ts",
+  },
+   shared: {
+    react: {
+      requiredVersion: dependencies.react,
+      singleton: true,
+    },
+    "react-dom": {
+      requiredVersion: dependencies["react-dom"],
+      singleton: true,
+    },
+    "react-router": {
+      requiredVersion: dependencies["react-router"],
+      singleton: true,
+    },
+    i18next: {
+      requiredVersion: dependencies.i18next,
+      singleton: true,
+    },
+    "react-i18next": {
+      requiredVersion: dependencies["react-i18next"],
+      singleton: true,
+    },
+    primereact: {
+      requiredVersion: dependencies.primereact,
+      singleton: true,
+    },
+    "@onecx/accelerator": {
+      requiredVersion: dependencies["@onecx/accelerator"],
+      singleton: true,
+    },
+    "@onecx/integration-interface": {
+      requiredVersion: dependencies["@onecx/integration-interface"],
+      singleton: true,
+    },
+    "@onecx/react-utils": {
+      requiredVersion: dependencies["@onecx/react-utils"],
+      singleton: true,
+    },
+    "@onecx/react-remote-components": {
+      requiredVersion: dependencies["@onecx/react-remote-components"],
+      singleton: true,
+    },
+    "@onecx/react-integration-interface": {
+      requiredVersion: dependencies["@onecx/react-integration-interface"],
+      singleton: true,
+    },
+    "@onecx/react-webcomponents": {
+      requiredVersion: dependencies["@onecx/react-webcomponents"],
+      singleton: true,
+    },
+    "@onecx/react-auth": {
+      requiredVersion: dependencies["@onecx/react-auth"],
+      singleton: true,
+    },
+  },
+};
+export default defineConfig(({ mode }) => {
+  const isTest = mode === 'test'
+  return {
+    root: __dirname,
+    base: mode === "production" ? "/mfe/onecx-<%= fileName %>/" : "/",
+    plugins: [
+      viteStaticCopy({
+        targets: [
+          {
+            src: path.resolve(__dirname, "./src/assets/styles.css"),
+            dest: "", // this will place it directly under /mfe/onecx-<%= fileName %>-ui/
+          },
+          {
+            src: path.resolve(__dirname, "./src/assets/env.json"),
+            dest: "assets",
+          },
+        ],
+      }),
+     ...(isTest ? [] : [federation(mfConfig)]),
+      react(),<% if (styles === 'tailwind') { %>
+      tailwindcss(),<% } %>
+    ],
+    build: {
+      rollupOptions: {
+        external: ['chart.js', 'chart.js/auto', 'quill']
+      }
+    },
+    server: {
+      proxy: {
+        "/api": {
+          target: "http://localhost:8080",
+          changeOrigin: true,
+          rewrite: (path) => path.replace(/^\/api/, ""),
+        },
+      },
+    },
+    test: {
+      globals: true,
+      testTimeout: 10000,
+      environment: "jsdom",
+      setupFiles: "./src/setupTests.ts",
+      coverage: {
+        reporter: ["text", "html", "cobertura"],
+        all: true,
+        include: ["src/**/*.{ts,tsx}"],
+        exclude: [
+          "**/*.test.{ts,tsx}",
+          "src/main.tsx",
+          "src/vite-env.d.ts",
+          "src/**/custom-types.d.ts",
+          "src/**/global.d.ts",
+          "src/api/*",
+          "src/assets/*",
+          "src/environments/*",
+          "**/__mocks__/*",
+        ],
+      },
+    },
+  };
+});

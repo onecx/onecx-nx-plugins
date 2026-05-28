@@ -1,0 +1,21 @@
+apiVersion: v2
+name: <%= fileName %>
+version: 0.0.0
+description: <%= fileName %> UI
+home: https://github.com/onecx-apps/<%= fileName %>
+keywords:
+  - <%= fileName %>
+sources:
+  - https://github.com/onecx-apps/<%= fileName %>
+maintainers:
+  - name: # ACTION: add name of maintainer
+    email: # ACTION: add email of maintainer
+dependencies:
+  - name: helm-product
+    version: ^0
+    repository: oci://ghcr.io/onecx/charts
+    alias: product
+  - name: helm-angular-app
+    version: ^0
+    repository: oci://ghcr.io/onecx/charts
+    alias: app
