@@ -133,18 +133,11 @@ function adaptAppRouting(tree: Tree, options: ReactFeatureGeneratorSchema) {
   const routingFilePath = candidateRouteFiles[0];
 
   safeReplace(
-    'extend react import',
-    routingFilePath,
-    'import { useMemo } from "react";',
-    'import { useMemo, lazy } from "react";',
-    tree
-  );
-  safeReplace(
-    `add ${className} lazy feature`,
+    `add ${className} feature`,
     routingFilePath,
     'import "./i18n/config";',
     `import "./i18n/config";
-const ${className}Feature = lazy(() => import('./app/${fileName}'));`,
+     import ${className}Feature from "./pages/${fileName}";`,
     tree
   );
 
