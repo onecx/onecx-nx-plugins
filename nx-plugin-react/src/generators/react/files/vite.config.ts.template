@@ -4,8 +4,9 @@ import react from "@vitejs/plugin-react";<% if (styles === 'tailwind') { %>
 import tailwindcss from "@tailwindcss/vite";<% } %>
 import { viteStaticCopy } from "vite-plugin-static-copy";
 import { dependencies } from "./package.json";
-import path from "path";
-import { federation, type ModuleFederationOptions } from '@module-federation/vite'
+import path from "node:path";
+import { federation, type ModuleFederationOptions } from "@module-federation/vite"
+
 const mfConfig: ModuleFederationOptions = {
   name: "onecx-<%= fileName %>-ui",
   filename: "remoteEntry.js",
@@ -35,10 +36,6 @@ const mfConfig: ModuleFederationOptions = {
     },
     primereact: {
       requiredVersion: dependencies.primereact,
-      singleton: true,
-    },
-    primeicons: {
-      requiredVersion: dependencies.primeicons,
       singleton: true,
     },
     "@onecx/accelerator": {
@@ -89,10 +86,15 @@ export default defineConfig(({ mode }) => {
           },
         ],
       }),
+     ...(isTest ? [] : [federation(mfConfig)]),
       react(),<% if (styles === 'tailwind') { %>
       tailwindcss(),<% } %>
-      ...(isTest ? [] : [federation(mfConfig)])
     ],
+    build: {
+      rollupOptions: {
+        external: ['chart.js', 'chart.js/auto', 'quill']
+      }
+    },
     server: {
       proxy: {
         "/api": {

@@ -27,11 +27,21 @@
         ]
       }
     },
-    "ai": {
-      "type": "boolean",
-      "description": "Add AI agent configuration files",
-      "default": false,
-      "x-prompt": "Would you like to add AI agent configuration files?"
+    "aiTool": {
+      "type": "string",
+      "description": "Which AI tool to configure (none to skip)",
+      "enum": ["none", "agents", "copilot", "both"],
+      "default": "none",
+      "x-prompt": {
+        "message": "Would you like to add AI agent configuration files?",
+        "type": "list",
+        "items": [
+          { "value": "none", "label": "No" },
+          { "value": "agents", "label": ".agents (Cursor / Windsurf)" },
+          { "value": "copilot", "label": "GitHub Copilot" },
+          { "value": "both", "label": "Both" }
+        ]
+      }
     }
   },
   "required": ["name"]

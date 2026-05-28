@@ -4,9 +4,22 @@ import { ReactGeneratorSchema } from '../schema';
 
 export class AIStep implements GeneratorStep<ReactGeneratorSchema> {
   process(tree: Tree, options: ReactGeneratorSchema): void {
-    generateFiles(tree, joinPathFragments(__dirname, '../files-ai'), '.', {
-      ...options,
-    });
+    const tool = options.aiTool ?? 'none';
+    if (tool === 'agents' || tool === 'both') {
+      generateFiles(tree, joinPathFragments(__dirname, '../files-ai'), '.', {
+        ...options,
+      });
+    }
+    if (tool === 'copilot' || tool === 'both') {
+      generateFiles(
+        tree,
+        joinPathFragments(__dirname, '../files-ai-copilot'),
+        '.',
+        {
+          ...options,
+        }
+      );
+    }
   }
 
   getTitle(): string {
@@ -14,6 +27,6 @@ export class AIStep implements GeneratorStep<ReactGeneratorSchema> {
   }
 
   isApplicable(options: ReactGeneratorSchema): boolean {
-    return options.ai === true;
+    return options.aiTool !== 'none' && options.aiTool !== undefined;
   }
 }

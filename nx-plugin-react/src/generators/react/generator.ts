@@ -37,11 +37,12 @@ const PARAMETERS: GeneratorParameter<ReactGeneratorSchema>[] = [
     choices: ['primeflex', 'tailwind'],
   },
   {
-    key: 'ai',
-    type: 'boolean',
+    key: 'aiTool',
+    type: 'select',
     required: 'interactive',
     prompt: 'Would you like to add AI agent configuration files?',
-    default: false,
+    default: 'none',
+    choices: ['none', 'agents', 'copilot', 'both'],
   },
 ];
 
@@ -121,9 +122,9 @@ export async function reactGenerator(
     );
   }
 
-  const oneCXLibVersion = '^8.2.2';
+  const oneCXLibVersion = '^8.3.1';
   const reactVersion = '^19.0.0';
-  const nxVersion = '22.0.2';
+  const nxVersion = '22.7.4';
 
   addDependenciesToPackageJson(
     tree,
@@ -135,10 +136,11 @@ export async function reactGenerator(
       '@onecx/react-webcomponents': oneCXLibVersion,
       '@onecx/react-auth': oneCXLibVersion,
       '@onecx/integration-interface': oneCXLibVersion,
+      '@r2wc/react-to-web-component': '^2.1.0',
       react: reactVersion,
       'react-dom': reactVersion,
       'react-router': '^7.13.0',
-      'react-i18next': '^17.0.8',
+      'react-i18next': '^16.5.4',
       i18next: '^25.8.0',
       primereact: '^10.9.7',
       primeicons: '^7.0.0',
@@ -155,7 +157,11 @@ export async function reactGenerator(
       '@nx/eslint': nxVersion,
       '@nx/eslint-plugin': nxVersion,
       '@openapitools/openapi-generator-cli': '^2.16.3',
-      '@vitejs/plugin-react': '^4.4.0',
+      '@swc-node/register': '~1.11.1',
+      '@swc/cli': '~0.3.12',
+      '@swc/core': '^1.15.8',
+      '@swc/helpers': '~0.5.11',
+      '@vitejs/plugin-react': '^5.1.1',
       '@eslint/js': '^8.57.1',
       eslint: '^9.8.0',
       'eslint-config-prettier': '^10.0.0',
@@ -164,14 +170,14 @@ export async function reactGenerator(
       'eslint-plugin-react': '^7.37.0',
       'eslint-plugin-react-hooks': '^5.0.0',
       nx: nxVersion,
-      prettier: '^3.5.3',
+      prettier: '^3.7.4',
       'sonar-scanner': '^3.1.0',
-      typescript: '^5.9.0',
-      vite: '^6.0.0',
-      vitest: '^3.0.0',
-      '@vitest/coverage-v8': '^3.0.0',
-      jsdom: '^26.0.0',
-      '@module-federation/vite': '^1.0.0',
+      typescript: '^5.9.3',
+      vite: '^7.1.7',
+      vitest: '^4.0.16',
+      '@vitest/coverage-v8': '^4.0.16',
+      jsdom: '^27.0.1',
+      '@module-federation/vite': '^1.9.4',
       'vite-plugin-static-copy': '^2.0.0',
       '@testing-library/dom': '^10.0.0',
       '@testing-library/jest-dom': '^6.0.0',
@@ -253,9 +259,19 @@ function addScriptsToPackageJson(tree: Tree) {
 }
 
 function adaptTsConfig(tree: Tree) {
-  const filePath = 'tsconfig.app.json';
+  updateJson(tree, 'tsconfig.json', (json) => {
+    json.compilerOptions = json.compilerOptions ?? {};
+    json.compilerOptions.target = 'ES2022';
+    json.compilerOptions.module = 'ESNext';
+    json.compilerOptions.lib = ['ES2022', 'dom'];
+    json.compilerOptions.moduleResolution = 'bundler';
+    json.compilerOptions.resolveJsonModule = true;
+    delete json.compilerOptions.emitDecoratorMetadata;
+    delete json.compilerOptions.experimentalDecorators;
+    return json;
+  });
 
-  updateJson(tree, filePath, (json) => {
+  updateJson(tree, 'tsconfig.app.json', (json) => {
     json.files = ['src/main.tsx', 'src/bootstrap.ts'];
     json.compilerOptions = json.compilerOptions ?? {};
     json.compilerOptions.jsx = 'react-jsx';
