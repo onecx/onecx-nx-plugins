@@ -19,9 +19,9 @@ describe('nx-plugin', () => {
   beforeAll(() => {
     projectDirectory = createTestProject('ngrx');
 
-    // Upgrade Nx to version 22.0.2 to match the plugin's peer dependencies
-    console.log('Upgrading Nx to version 22.0.2...');
-    execSync(`npx nx migrate 22.0.2`, {
+    // Upgrade Nx to version 22.7.1 to match the plugin's @nx/* package versions
+    console.log('Upgrading Nx to version 22.7.1...');
+    execSync(`npx nx migrate 22.7.1`, {
       cwd: projectDirectory,
       stdio: 'inherit',
       env: { ...process.env, NX_NO_CLOUD: 'true', CI: 'true' },
