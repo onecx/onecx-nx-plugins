@@ -99,7 +99,7 @@ export const commonImports = [CommonModule];
       return initializerFn();
     }),
     provideNavigatedEventStoreConnector(),
-    provideThemeConfig(),
+    provideThemeConfig({ maxVersion: 2 }),
     provideAngularUtils(),
     provideTranslateService({
       defaultLanguage: 'en',
