@@ -162,11 +162,13 @@ export async function reactGenerator(
       '@swc/core': '^1.15.8',
       '@swc/helpers': '~0.5.11',
       '@vitejs/plugin-react': '^5.1.1',
+      '@vitest/ui': '^4.1.7',
       '@eslint/js': '^8.57.1',
       eslint: '^9.8.0',
       'eslint-config-prettier': '^10.0.0',
       'eslint-plugin-import': '2.31.0',
       'eslint-plugin-prettier': '^5.2.1',
+      'eslint-plugin-jsx-a11y': '^6.10.0',
       'eslint-plugin-react': '^7.37.0',
       'eslint-plugin-react-hooks': '^5.0.0',
       nx: nxVersion,
@@ -174,11 +176,11 @@ export async function reactGenerator(
       'sonar-scanner': '^3.1.0',
       typescript: '^5.9.3',
       vite: '^7.1.7',
-      vitest: '^4.0.16',
-      '@vitest/coverage-v8': '^4.0.16',
+      vitest: '^4.1.7',
+      '@vitest/coverage-v8': '^4.1.7',
       jsdom: '^27.0.1',
       '@module-federation/vite': '^1.9.4',
-      'vite-plugin-static-copy': '^2.0.0',
+      'vite-plugin-static-copy': '^4.1.0',
       '@testing-library/dom': '^10.0.0',
       '@testing-library/jest-dom': '^6.0.0',
       '@testing-library/react': '^16.0.0',
@@ -225,6 +227,16 @@ function addBaseToPackageJson(tree: Tree, options: ReactGeneratorSchema) {
     pkgJson.name = 'onecx-' + names(options.name).fileName + '-ui';
     pkgJson.private = true;
     pkgJson.license = 'Apache-2.0';
+
+    // Nx adds the preset package to dependencies automatically – move it to devDependencies
+    const pluginKey = '@onecx/nx-plugin-react';
+    const pluginVersion = pkgJson.dependencies?.[pluginKey];
+    if (pluginVersion) {
+      delete pkgJson.dependencies[pluginKey];
+      pkgJson.devDependencies = pkgJson.devDependencies ?? {};
+      pkgJson.devDependencies[pluginKey] = pluginVersion;
+    }
+
     return pkgJson;
   });
 }
