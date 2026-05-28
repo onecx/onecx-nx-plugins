@@ -25,7 +25,6 @@ export class AppEntrypointComponent {
   )
 
   constructor() {
-    console.log("Hi from app entry");
     effect(() => {
       const translations = this.translation()
       if (translations && typeof translations === 'object' && !Array.isArray(translations))
