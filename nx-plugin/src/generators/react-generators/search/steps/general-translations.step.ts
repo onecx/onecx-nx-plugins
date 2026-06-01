@@ -11,7 +11,7 @@ export class GeneralTranslationsStep
   implements GeneratorStep<SearchGeneratorSchema>
 {
   process(tree: Tree, options: SearchGeneratorSchema): void {
-    const folderPath = 'src/assets/i18n/';
+    const folderPath = 'src/i18n/sources';
     const templateJsonPath = path.resolve(
       __dirname,
       '../input-files/i18n/master.json.template'

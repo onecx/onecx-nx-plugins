@@ -1,46 +1,44 @@
 {
   "<%= resourceConstantName %>_SEARCH": {
-    "CHANGE_ME": "ACTION S4: Adjust translation keys for search header",
     "HEADER": "<%= resourceClassName %> Search",
-    "SUB_HEADER": "Searching and displaying of <%= resourceClassName %>s",
+    "SUB_HEADER": "Find <%= resourceClassName %> items by criteria",
     "ARIA_LABEL": "Page Header with Search",
-    "HELP_ARTICLE_ID": "Help Article",
     "EMPTY_RESULTS": "No results.",
     "BREADCRUMB": "Search",
-    "DIAGRAM": {
-      "SUM": "Total",
-      "NAME": "Diagram for Search Results"
-    },
     "HEADER_ACTIONS": {
-      "EXPORT_ALL": "Export all",
-      "SHOW_CHART": "Show chart",
-      "HIDE_CHART": "Hide chart",
-      "CREATE_SEARCH_CONFIG": "Create search configuration",
-      "UPDATE_SEARCH_CONFIG": "Update search configuration",
-      "DIALOG_CONFIRM": "Confirm",
-      "DIALOG_CANCEL": "Cancel"
-    },
-    "PREDEFINED_GROUP": {
-      "DEFAULT": "Default",
-      "EXTENDED": "Extended",
-      "FULL": "Full"
-    },
-    "ERROR_MESSAGES": {
-      "SEARCH_RESULTS_LOADING_FAILED": "Loading search results failed.",
-      "SEARCH_CONFIG_CREATION_FAILED": "Create search configuration failed.",
-      "SEARCH_CONFIG_UPDATE_FAILED": "Update search configuration failed.",
-      "SEARCH_CONFIGS_LOADING_FAILED": "Loading search configurations failed."
+      "NAVIGATE_UNREACHABLE": "Navigate unreachable"
     },
     "RESULTS": {
-      "CHANGE_ME": "Change Me",
+      "ID": "ID",
+      "TITLE": "Title",
+      "STATUS": "Status",
+      "PRIORITY": "Priority",
+      "OWNER": "Owner",
+      "DESCRIPTION": "Description",
+      "ACTIONS": "Actions",
+      "COLUMN_GROUP": "Column Group",
+      "COLUMN_SETTINGS": "Column Settings",
       "NAME": "Search Results"
     },
     "CRITERIA": {
-      "INPUT_FIELDS": "ACTION S4: Adjust translation keys for input fields",
-      "CHANGE_ME": {
-        "LABEL": "Change Me",
-        "ARIA_LABEL": "Change Me",
-        "TOOLTIP": "Change Me"
+      "ACTIONS": {
+        "SEARCH": "Search",
+        "RESET": "Reset"
+      },
+      "QUERY": {
+        "LABEL": "Query",
+        "PLACEHOLDER": "Search by id, title, or description",
+        "ARIA_LABEL": "Search query"
+      },
+      "STATUS": {
+        "LABEL": "Status",
+        "PLACEHOLDER": "Select status",
+        "ARIA_LABEL": "Status"
+      },
+      "OWNER": {
+        "LABEL": "Owner",
+        "PLACEHOLDER": "Search by owner",
+        "ARIA_LABEL": "Owner"
       }
     }
   }
