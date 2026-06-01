@@ -1,34 +1,68 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 
+jest.mock('react-i18next', () => ({
+  useTranslation: () => ({
+    t: (key: string) => key,
+  }),
+}));
+
 import { <%= resourceClassName %>SearchPage } from './<%= resourceFileName %>-search.page';
 
 describe('<%= resourceClassName %>SearchPage', () => {
   it('renders page header', () => {
     render(<<%= resourceClassName %>SearchPage />);
 
-    expect(screen.getByText('<%= resourceClassName %> Search')).toBeTruthy();
+    expect(screen.getByText('<%= resourceConstantName %>_SEARCH.HEADER')).toBeTruthy();
   });
 
   it('filters results on search', () => {
     render(<<%= resourceClassName %>SearchPage />);
 
-    fireEvent.change(screen.getByPlaceholderText('Search by value'), {
+    fireEvent.change(screen.getByLabelText('<%= resourceConstantName %>_SEARCH.CRITERIA.QUERY.ARIA_LABEL'), {
       target: { value: 'beta' },
     });
-    fireEvent.click(screen.getByRole('button', { name: 'Search' }));
+    fireEvent.click(
+      screen.getByRole('button', {
+        name: '<%= resourceConstantName %>_SEARCH.CRITERIA.ACTIONS.SEARCH',
+      })
+    );
 
-    expect(screen.getByText('Beta')).toBeTruthy();
+    expect(screen.getByText('Billing summary report')).toBeTruthy();
   });
 
   it('resets criteria and results', () => {
     render(<<%= resourceClassName %>SearchPage />);
 
-    fireEvent.change(screen.getByPlaceholderText('Search by value'), {
-      target: { value: 'alpha' },
-    });
-    fireEvent.click(screen.getByRole('button', { name: 'Search' }));
-    fireEvent.click(screen.getByRole('button', { name: 'Reset' }));
+    fireEvent.change(
+      screen.getByLabelText('<%= resourceConstantName %>_SEARCH.CRITERIA.QUERY.ARIA_LABEL'),
+      {
+        target: { value: 'billing' },
+      }
+    );
+    fireEvent.click(
+      screen.getByRole('button', {
+        name: '<%= resourceConstantName %>_SEARCH.CRITERIA.ACTIONS.SEARCH',
+      })
+    );
 
-    expect(screen.queryByText('Alpha')).toBeNull();
+    expect(screen.getByText('Billing summary report')).toBeTruthy();
+
+    fireEvent.click(
+      screen.getByRole('button', {
+        name: '<%= resourceConstantName %>_SEARCH.CRITERIA.ACTIONS.RESET',
+      })
+    );
+
+    expect(screen.queryByText('Billing summary report')).toBeNull();
+  });
+
+  it('renders unreachable navigation button', () => {
+    render(<<%= resourceClassName %>SearchPage />);
+
+    expect(
+      screen.getByRole('button', {
+        name: '<%= resourceConstantName %>_SEARCH.HEADER_ACTIONS.NAVIGATE_UNREACHABLE',
+      })
+    ).toBeTruthy();
   });
 });

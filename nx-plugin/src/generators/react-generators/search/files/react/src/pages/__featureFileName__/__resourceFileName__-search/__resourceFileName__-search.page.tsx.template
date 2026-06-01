@@ -1,92 +1,143 @@
-import { type FC, useState } from 'react';
-import { DataTable } from 'primereact/datatable';
-import { Column } from 'primereact/column';
-import { Message } from 'primereact/message';
+import { type FC, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import {
-  <%= resourceClassName %>SearchFilters,
-} from '../../../components/<%= featureFileName %>/<%= resourceFileName %>-search/<%= resourceFileName %>-search-filters.component';
+  Content,
+  ContentContainer,
+  type InteractiveDataViewComponentState,
+  type InteractiveDataViewLayout,
+} from '../../../components/accelerator';
 import {
-  <%= resourcePropertyName %>SearchColumns,
   type <%= resourceClassName %>SearchRow,
   initial<%= resourceClassName %>SearchCriteria,
 } from './<%= resourceFileName %>-search.types';
+import <%= resourceClassName %>SearchHeaderSection from '../../../components/<%= featureFileName %>/<%= resourceFileName %>-search/<%= resourceFileName %>-search-header-section.component';
+import <%= resourceClassName %>SearchResultsSection from '../../../components/<%= featureFileName %>/<%= resourceFileName %>-search/<%= resourceFileName %>-search-results-section.component';
 
 const ALL_<%= resourceConstantName %>_ITEMS: <%= resourceClassName %>SearchRow[] = [
-  { id: '1', changeMe: 'Alpha' },
-  { id: '2', changeMe: 'Beta' },
-  { id: '3', changeMe: 'Gamma' },
+  {
+    id: 'T-1001',
+    title: 'Customer onboarding workflow',
+    status: 'Open',
+    priority: 'High',
+    owner: 'Alex Morgan',
+    description: 'Set up onboarding workflow for new enterprise customers.',
+  },
+  {
+    id: 'T-1002',
+    title: 'Billing summary report',
+    status: 'In Progress',
+    priority: 'Medium',
+    owner: 'Priya Singh',
+    description: 'Generate monthly billing summary with regional breakdown.',
+  },
+  {
+    id: 'T-1003',
+    title: 'SLA alerting rules',
+    status: 'Closed',
+    priority: 'Low',
+    owner: 'Diego Alvarez',
+    description: 'Finalize SLA alerting rules and notify stakeholders.',
+  },
 ];
 
 export const <%= resourceClassName %>SearchPage: FC = () => {
+  const { t } = useTranslation();
+
   const [criteria, setCriteria] = useState(initial<%= resourceClassName %>SearchCriteria);
-  const [results, setResults] = useState<<%= resourceClassName %>SearchRow[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [searchExecuted, setSearchExecuted] = useState(false);
+  const [appliedCriteria, setAppliedCriteria] = useState(
+    initial<%= resourceClassName %>SearchCriteria
+  );
+  const [columnGroup, setColumnGroup] = useState('default');
+  const [layout, setLayout] = useState<InteractiveDataViewLayout>('table');
+  const [, setInteractiveDataViewState] = useState<
+    InteractiveDataViewComponentState
+  >({
+    layout: 'table',
+    selectedColumnGroup: 'default',
+  });
+
+  const results = useMemo(() => {
+    const queryTerm = appliedCriteria.query.trim().toLowerCase();
+    const ownerTerm = appliedCriteria.owner.trim().toLowerCase();
+
+    return ALL_<%= resourceConstantName %>_ITEMS.filter((item) => {
+      const matchesQuery =
+        queryTerm.length === 0 ||
+        item.id.toLowerCase().includes(queryTerm) ||
+        item.title.toLowerCase().includes(queryTerm) ||
+        item.description.toLowerCase().includes(queryTerm);
+
+      const matchesStatus =
+        appliedCriteria.status.length === 0 ||
+        item.status === appliedCriteria.status;
+
+      const matchesOwner =
+        ownerTerm.length === 0 || item.owner.toLowerCase().includes(ownerTerm);
+
+      return matchesQuery && matchesStatus && matchesOwner;
+    });
+  }, [appliedCriteria]);
 
   const handleSearch = () => {
-    setLoading(true);
-    const term = criteria.changeMe.trim().toLowerCase();
-    const filtered =
-      term.length === 0
-        ? ALL_<%= resourceConstantName %>_ITEMS
-        : ALL_<%= resourceConstantName %>_ITEMS.filter(
-            (item) =>
-              item.changeMe.toLowerCase().includes(term) ||
-              item.id.toLowerCase().includes(term)
-          );
-    setResults(filtered);
-    setSearchExecuted(true);
-    setLoading(false);
+    setAppliedCriteria(criteria);
   };
 
   const handleReset = () => {
     setCriteria(initial<%= resourceClassName %>SearchCriteria);
-    setResults([]);
-    setSearchExecuted(false);
-    setLoading(false);
+    setAppliedCriteria(initial<%= resourceClassName %>SearchCriteria);
+  };
+
+  const handleInteractiveDataViewStateChange = (
+    state: InteractiveDataViewComponentState
+  ) => {
+    setInteractiveDataViewState(state);
+  };
+
+  const handleViewItem = (item: <%= resourceClassName %>SearchRow) => {
+    if (typeof window !== 'undefined') {
+      window.alert(`Viewing item: ${item.id}`);
+    }
+  };
+
+  const handleEditItem = (item: <%= resourceClassName %>SearchRow) => {
+    if (typeof window !== 'undefined') {
+      window.alert(`Editing item: ${item.id}`);
+    }
+  };
+
+  const handleDeleteItem = (item: <%= resourceClassName %>SearchRow) => {
+    if (typeof window !== 'undefined') {
+      window.alert(`Deleting item: ${item.id}`);
+    }
   };
 
   return (
-    <section style={{ display: 'grid', gap: '1rem' }}>
-      <h1 style={{ margin: 0 }}><%= resourceClassName %> Search</h1>
-      <p style={{ margin: 0, color: '#5f6b7a' }}>
-        Search and browse <%= resourceClassName %> items.
-      </p>
-
-      <<%= resourceClassName %>SearchFilters
-        value={criteria.changeMe}
-        loading={loading}
-        onValueChange={(value) =>
-          setCriteria((current) => ({ ...current, changeMe: value }))
-        }
-        onSearch={handleSearch}
+    <section className="flex flex-column gap-3">
+      <<%= resourceClassName %>SearchHeaderSection
+        criteria={criteria}
+        onCriteriaChange={setCriteria}
         onReset={handleReset}
+        onSearch={handleSearch}
+        t={t}
       />
 
-      {searchExecuted && results.length === 0 ? (
-        <Message severity="info" text="No results found." />
-      ) : null}
-
-      <DataTable
-        value={results}
-        loading={loading}
-        emptyMessage="Run a search to see results"
-        paginator
-        rows={10}
-        rowsPerPageOptions={[10, 25, 50]}
-        dataKey="id"
-        stripedRows
-      >
-        {<%= resourcePropertyName %>SearchColumns.map((column) => (
-          <Column
-            key={String(column.field)}
-            field={String(column.field)}
-            header={column.header}
-            sortable
+      <ContentContainer layout="horizontal">
+        <Content className="w-full">
+          <<%= resourceClassName %>SearchResultsSection
+            columnGroup={columnGroup}
+            layout={layout}
+            onInteractiveDataViewStateChange={handleInteractiveDataViewStateChange}
+            onColumnGroupChange={setColumnGroup}
+            onDeleteItem={handleDeleteItem}
+            onEditItem={handleEditItem}
+            onLayoutChange={setLayout}
+            onViewItem={handleViewItem}
+            results={results}
+            t={t}
           />
-        ))}
-      </DataTable>
+        </Content>
+      </ContentContainer>
     </section>
   );
 };
