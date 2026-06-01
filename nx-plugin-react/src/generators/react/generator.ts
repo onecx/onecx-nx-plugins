@@ -187,6 +187,8 @@ export async function reactGenerator(
       '@types/react': '^19.0.0',
       '@types/react-dom': '^19.0.0',
       '@types/node': '^22.0.0',
+      '@types/postcss-import': '^14.0.3',
+      'postcss-import': '^16.1.1',
     }
   );
 
