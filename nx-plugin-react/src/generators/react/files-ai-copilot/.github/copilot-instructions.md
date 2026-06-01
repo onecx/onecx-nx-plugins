@@ -60,6 +60,17 @@
 
 ---
 
+<% if (styles === 'tailwind') { %>
+## Tailwind CSS
+
+- Use Tailwind utility classes for layout, spacing, and responsive behavior instead of bespoke CSS when possible.
+- Leverage Tailwind's flex/grid utilities (e.g., `flex`, `gap-2`, `grid`, `col-span-6`) for structure and alignment.
+- Keep custom CSS minimal and focused on component-specific visuals that Tailwind cannot express.
+- Use Tailwind's spacing scale consistently (`p-`, `m-`, `gap-`) to avoid arbitrary pixel values.
+- Apply responsive prefixes (`sm:`, `md:`, `lg:`, `xl:`, `2xl:`) for adaptive layouts.
+- Configure custom design tokens in `tailwind.config.ts` to maintain design consistency across the codebase.
+- Prefer `@apply` in component CSS only for repeated utility combinations – avoid overusing it.
+<% } else { %>
 ## PrimeFlex
 
 - Use PrimeFlex utility classes for layout, spacing, and responsive behavior instead of bespoke CSS when possible.
@@ -67,6 +78,7 @@
 - Keep custom CSS focused on component-specific visuals that PrimeFlex cannot express.
 - Use PrimeFlex spacing scale consistently (`p-`, `m-`, `gap-`) to avoid arbitrary pixel values.
 - Apply responsive variants (`sm:`, `md:`, `lg:`, `xl:`) for adaptive layouts.
+<% } %>
 
 ---
 

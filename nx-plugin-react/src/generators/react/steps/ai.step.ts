@@ -9,6 +9,12 @@ export class AIStep implements GeneratorStep<ReactGeneratorSchema> {
       generateFiles(tree, joinPathFragments(__dirname, '../files-ai'), '.', {
         ...options,
       });
+      this.removeUnusedStyleRule(
+        tree,
+        options.styles,
+        '.agents/rules/frontend-styling-primeflex.mdc',
+        '.agents/rules/frontend-styling-tailwind.mdc'
+      );
     }
     if (tool === 'copilot' || tool === 'both') {
       generateFiles(
@@ -19,6 +25,25 @@ export class AIStep implements GeneratorStep<ReactGeneratorSchema> {
           ...options,
         }
       );
+      this.removeUnusedStyleRule(
+        tree,
+        options.styles,
+        '.github/instructions/frontend-styling-primeflex.instructions.md',
+        '.github/instructions/frontend-styling-tailwind.instructions.md'
+      );
+    }
+  }
+
+  private removeUnusedStyleRule(
+    tree: Tree,
+    styles: string,
+    primflexFile: string,
+    tailwindFile: string
+  ): void {
+    if (styles === 'tailwind') {
+      tree.delete(primflexFile);
+    } else {
+      tree.delete(tailwindFile);
     }
   }
 
