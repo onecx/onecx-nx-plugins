@@ -14,24 +14,24 @@ export class ReactFeatureRoutesStep
     const resourceFileName = names(options.resource).fileName;
     const resourceClassName = names(options.resource).className;
     const pageComponentName = `${resourceClassName}SearchPage`;
-    const routeFilePath = 'src/App.tsx';
+    const routeFilePath = 'src/router.tsx';
 
     if (!tree.exists(routeFilePath)) {
       throw new GeneratorStepError(
-        'React route file not found. Expected src/App.tsx'
+        'React route file not found. Expected src/router.tsx'
       );
     }
 
     const content = tree.read(routeFilePath, 'utf8');
     if (!content) {
-      throw new GeneratorStepError('React route file src/App.tsx is empty.');
+      throw new GeneratorStepError('React route file src/router.tsx is empty.');
     }
 
-    if (content.includes(`element={<${pageComponentName} />}`)) {
+    if (content.includes(`element: <${pageComponentName} />`)) {
       return;
     }
 
-    const importPath = `./pages/${featureFileName}/${resourceFileName}-search/${resourceFileName}-search.page`;
+    const importPath = `./pages/${featureFileName}/index.ts`;
     const withImport = this.ensureImport(content, pageComponentName, importPath);
     const updated = this.injectRoute(
       withImport,
@@ -41,7 +41,7 @@ export class ReactFeatureRoutesStep
 
     if (!updated) {
       throw new GeneratorStepError(
-        'src/App.tsx found but no <Routes> tag matched. Please add route manually.'
+        'src/router.tsx found but no return array matched. Please add route manually.'
       );
     }
 
@@ -53,12 +53,12 @@ export class ReactFeatureRoutesStep
     resourceFileName: string,
     pageComponentName: string
   ): string | null {
-    const routesJsxPattern = /<Routes[^>]*>/;
-    if (routesJsxPattern.test(content)) {
+    const routeArrayPattern = /return\s*\[/;
+    if (routeArrayPattern.test(content)) {
       return content.replace(
-        routesJsxPattern,
+        routeArrayPattern,
         (match) =>
-          `${match}\n      <Route path={\`\${href}/${resourceFileName}-search\`} element={<${pageComponentName} />} />`
+          `${match}\n      {\n        path: \`\${href}/${resourceFileName}-search\`,\n        element: <${pageComponentName} />,\n      },`
       );
     }
 
@@ -71,13 +71,13 @@ export class ReactFeatureRoutesStep
     relativeImport: string
   ): string {
     if (
-      content.includes(`import ${pageComponentName} from '${relativeImport}';`) ||
-      content.includes(`import ${pageComponentName} from "${relativeImport}";`)
+      content.includes(`import { ${pageComponentName} } from '${relativeImport}';`) ||
+      content.includes(`import { ${pageComponentName} } from "${relativeImport}";`)
     ) {
       return content;
     }
 
-    const importLine = `import ${pageComponentName} from '${relativeImport}';`;
+    const importLine = `import { ${pageComponentName} } from '${relativeImport}';`;
     const importRegex = /^import\s.+?;$/gm;
     const matches = Array.from(content.matchAll(importRegex));
 
