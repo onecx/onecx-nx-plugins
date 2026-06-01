@@ -128,7 +128,7 @@ export async function searchGenerator(
       __dirname,
       './files/react/src/components/__featureFileName__/__resourceFileName__-search'
     ),
-    `${directory}/src/components`,
+    `${directory}/src/components/${resourceNames.fileName}`,
     templateVariables
   );
 

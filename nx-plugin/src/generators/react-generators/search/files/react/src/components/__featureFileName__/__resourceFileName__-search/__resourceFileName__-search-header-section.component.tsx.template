@@ -4,8 +4,8 @@ import { InputText } from 'primereact/inputtext';
 import { type FC } from 'react';
 import { type useTranslation } from 'react-i18next';
 
-import { SearchHeader } from '../../../components/accelerator';
-import { type <%= resourceClassName %>SearchCriteria } from '../../../pages/<%= featureFileName %>/<%= resourceFileName %>-search/<%= resourceFileName %>-search.types';
+import { SearchHeader } from '../accelerator';
+import { type <%= resourceClassName %>SearchCriteria } from '../../pages/<%= featureFileName %>/<%= resourceFileName %>-search/<%= resourceFileName %>-search.types';
 
 const SEARCH_PREFIX = '<%= resourceConstantName %>_SEARCH';
 

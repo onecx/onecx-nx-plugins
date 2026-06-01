@@ -11,8 +11,8 @@ import {
   type <%= resourceClassName %>SearchRow,
   initial<%= resourceClassName %>SearchCriteria,
 } from './<%= resourceFileName %>-search.types';
-import <%= resourceClassName %>SearchHeaderSection from '../../../components/<%= featureFileName %>/<%= resourceFileName %>-search/<%= resourceFileName %>-search-header-section.component';
-import <%= resourceClassName %>SearchResultsSection from '../../../components/<%= featureFileName %>/<%= resourceFileName %>-search/<%= resourceFileName %>-search-results-section.component';
+import <%= resourceClassName %>SearchHeaderSection from '../../../components/<%= resourceFileName %>/<%= resourceFileName %>-search-header-section.component';
+import <%= resourceClassName %>SearchResultsSection from '../../../components/<%= resourceFileName %>/<%= resourceFileName %>-search-results-section.component';
 
 const ALL_<%= resourceConstantName %>_ITEMS: <%= resourceClassName %>SearchRow[] = [
   {

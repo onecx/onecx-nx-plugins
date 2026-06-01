@@ -31,7 +31,7 @@ export class ReactFeatureRoutesStep
       return;
     }
 
-    const importPath = `./pages/${featureFileName}/index.ts`;
+    const importPath = `./pages/${featureFileName}/${resourceFileName}-search/${resourceFileName}-search.page`;
     const withImport = this.ensureImport(content, pageComponentName, importPath);
     const updated = this.injectRoute(
       withImport,
@@ -71,13 +71,13 @@ export class ReactFeatureRoutesStep
     relativeImport: string
   ): string {
     if (
-      content.includes(`import { ${pageComponentName} } from '${relativeImport}';`) ||
-      content.includes(`import { ${pageComponentName} } from "${relativeImport}";`)
+      content.includes(`import ${pageComponentName} from '${relativeImport}';`) ||
+      content.includes(`import ${pageComponentName} from "${relativeImport}";`)
     ) {
       return content;
     }
 
-    const importLine = `import { ${pageComponentName} } from '${relativeImport}';`;
+    const importLine = `import ${pageComponentName} from '${relativeImport}';`;
     const importRegex = /^import\s.+?;$/gm;
     const matches = Array.from(content.matchAll(importRegex));
 

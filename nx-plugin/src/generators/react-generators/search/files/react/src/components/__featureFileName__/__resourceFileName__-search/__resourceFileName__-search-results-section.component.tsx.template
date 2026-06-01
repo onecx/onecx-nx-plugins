@@ -5,11 +5,11 @@ import {
   InteractiveDataView,
   type InteractiveDataViewComponentState,
   type InteractiveDataViewLayout,
-} from '../../../components/accelerator';
+} from '../accelerator';
 import {
   <%= resourcePropertyName %>SearchColumns,
   type <%= resourceClassName %>SearchRow,
-} from '../../../pages/<%= featureFileName %>/<%= resourceFileName %>-search/<%= resourceFileName %>-search.types';
+} from '../../pages/<%= featureFileName %>/<%= resourceFileName %>-search/<%= resourceFileName %>-search.types';
 
 const SEARCH_PREFIX = '<%= resourceConstantName %>_SEARCH';
 const COLUMN_GROUP_OPTIONS = [{ label: 'Default', value: 'default' }];
