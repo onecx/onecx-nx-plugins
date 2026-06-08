@@ -262,7 +262,8 @@ describe('<%= resourceClassName %>DetailsEffects', () => {
     });
   });
   <%_ } _%>
-
+  
+  <%_ if(allowDelete){ _%>
   describe('deleteButtonClicked$', () => {
     it('should dispatch delete<%= resourceClassName %>Succeeded when dialog confirmed and delete succeeds', async () => {
       const mockDetails = { id: '123' }
@@ -321,6 +322,7 @@ describe('<%= resourceClassName %>DetailsEffects', () => {
       await expect(firstValueFrom(effects.deleteButtonClicked$)).rejects.toThrow('Item to delete not found!')
     })
   })
+  <%_ } _%>
 
   describe('delete<%= resourceClassName %>Succeeded$', () => {
     it('should navigate to parent URL on delete success', async () => {
