@@ -293,6 +293,7 @@ describe('<%= resourceClassName %>DetailsComponent', () => {
     );
   });
 
+  <%_ if(allowDelete){ _%>
   it('should dispatch deleteButtonClicked action on delete button click', async () => {
     jest.spyOn(store, 'dispatch')
     store.overrideSelector(select<%= resourceClassName%>DetailsViewModel, {
@@ -309,6 +310,7 @@ describe('<%= resourceClassName %>DetailsComponent', () => {
     expect(store.dispatch).toHaveBeenCalledTimes(1)
     expect(store.dispatch).toHaveBeenCalledWith(<%= resourcePropertyName%>DetailsActions.deleteButtonClicked())
   })
+  <%_ } _%>
 
   it('should dispatch no action on more button click', async () => {
     jest.spyOn(store, 'dispatch');

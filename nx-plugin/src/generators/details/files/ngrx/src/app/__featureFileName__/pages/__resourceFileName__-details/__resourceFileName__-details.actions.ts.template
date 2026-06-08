@@ -23,7 +23,7 @@ export const <%= resourcePropertyName %>DetailsActions = createActionGroup({
     'Save button clicked': props<{ details: <%= resource %> }>(),
     'Cancel button clicked': props<{ dirty: boolean }>(),
     <%_ } _%>
-    <%_ if(allowDelete){ _%>     
+    <%_ if(allowDelete){ _%>
     'Delete button clicked': emptyProps(),
     <%_ } _%>
     'Navigate back button clicked': emptyProps(),
