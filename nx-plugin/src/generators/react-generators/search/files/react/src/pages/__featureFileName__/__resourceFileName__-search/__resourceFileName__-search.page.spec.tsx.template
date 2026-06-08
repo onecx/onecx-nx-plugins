@@ -1,6 +1,24 @@
 import { fireEvent, render, screen } from '@testing-library/react';
-
+import { describe, it, expect, vi } from 'vitest';
 import { <%= resourceClassName %>SearchPage } from './<%= resourceFileName %>-search.page';
+
+// Mock useAppHref
+vi.mock('../../../../libs/react-webcomponents/src/lib/routing.utils', () => ({
+  useAppHref: () => ({ href: '' }),
+}));
+
+// Mock useConfiguration hook
+vi.mock('@onecx/react-integration-interface', () => ({
+  useConfiguration: () => ({
+    portal: {
+      microfrontend: {
+        profile: {
+          theme: 'default',
+        },
+      },
+    },
+  }),
+}));
 
 describe('<%= resourceClassName %>SearchPage', () => {
   it('renders page header', () => {

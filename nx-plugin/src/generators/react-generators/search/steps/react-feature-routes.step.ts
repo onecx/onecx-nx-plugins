@@ -14,11 +14,11 @@ export class ReactFeatureRoutesStep
     const resourceFileName = names(options.resource).fileName;
     const resourceClassName = names(options.resource).className;
     const pageComponentName = `${resourceClassName}SearchPage`;
-    const routeFilePath = 'src/App.tsx';
+    const routeFilePath = 'src/router.tsx';
 
     if (!tree.exists(routeFilePath)) {
       throw new GeneratorStepError(
-        'React route file not found. Expected src/App.tsx'
+        'React route file not found. Expected src/router.tsx'
       );
     }
 

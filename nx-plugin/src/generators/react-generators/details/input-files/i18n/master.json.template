@@ -1,0 +1,21 @@
+{
+  "<%= resourceConstantName %>_DETAILS": {
+    "BREADCRUMB": "<%= resourceClassName %> Details",
+    "GENERAL": {
+      "BACK": "Back",
+      <%_ if(editMode){ _%>
+      "EDIT": "Edit",
+      "CANCEL": "Cancel",
+      "SAVE": "Save",
+      <%_ } _%>
+      <%_ if(allowDelete){ _%>
+      "DELETE": "Delete",
+      <%_ } _%>
+      "MORE": "More"
+    },
+    "FORM": {
+      "ID": "ID",
+      "MODIFICATION_COUNT": "Modification Count"
+    }
+  }
+}

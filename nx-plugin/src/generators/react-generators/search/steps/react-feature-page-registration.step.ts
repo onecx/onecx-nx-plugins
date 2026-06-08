@@ -13,7 +13,6 @@ export class ReactFeaturePageRegistrationStep
     const resourceClassName = names(options.resource).className;
 
     const indexFilePath = `src/pages/${featureFileName}/index.tsx`;
-    const importLine = `import { ${resourceClassName}SearchPage } from './${resourceFileName}-search/${resourceFileName}-search.page';`;
 
     if (!tree.exists(indexFilePath)) {
       return;

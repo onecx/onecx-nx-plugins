@@ -1,0 +1,99 @@
+import { useState, useCallback } from 'react';
+import { <%= serviceName %> } from '../../../api/api';
+
+export interface <%= resourceClassName %>Details {
+  id: string;
+  modificationCount: number;
+  // ACTION: Add additional properties here
+}
+
+export interface <%= resourceClassName %>DetailsViewModel {
+  details: <%= resourceClassName %>Details | undefined;
+  loading: boolean;
+  error: string | null;
+  <%_ if(editMode){ _%>
+  isSubmitting: boolean;
+  updateDetails: (details: <%= resourceClassName %>Details) => Promise<boolean>;
+  <%_ } _%>
+  <%_ if(allowDelete){ _%>
+  deleteDetails: () => Promise<boolean>;
+  <%_ } _%>
+  fetchDetails: (id: string) => Promise<void>;
+}
+
+export const use<%= resourceClassName %>Details = (
+  _id: string | undefined
+): <%= resourceClassName %>DetailsViewModel => {
+  const [details, setDetails] = useState<<%= resourceClassName %>Details | undefined>();
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  <%_ if(editMode){ _%>
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  <%_ } _%>
+
+  const <%= resourcePropertyName %>Service = new <%= serviceName %>();
+
+  const fetchDetails = useCallback(async (itemId: string) => {
+    setLoading(true);
+    setError(null);
+    try {
+      const response = await <%= resourcePropertyName %>Service.get<%= resource %>ById(itemId);
+      setDetails((response.data as any).resource as <%= resourceClassName %>Details);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to fetch details');
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  <%_ if(editMode){ _%>
+  const updateDetails = useCallback(async (updatedDetails: <%= resourceClassName %>Details) => {
+    if (!details?.id) return false;
+    
+    setIsSubmitting(true);
+    setError(null);
+    try {
+      await <%= resourcePropertyName %>Service.update<%= resource %>ById(details.id, updatedDetails as any);
+      setDetails(updatedDetails);
+      return true;
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to update details');
+      return false;
+    } finally {
+      setIsSubmitting(false);
+    }
+  }, [details]);
+  <%_ } _%>
+
+  <%_ if(allowDelete){ _%>
+  const deleteDetails = useCallback(async () => {
+    if (!details?.id) return false;
+    
+    setIsSubmitting(true);
+    setError(null);
+    try {
+      await <%= resourcePropertyName %>Service.delete<%= resource %>ById(details.id);
+      return true;
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to delete details');
+      return false;
+    } finally {
+      setIsSubmitting(false);
+    }
+  }, [details]);
+  <%_ } _%>
+
+  return {
+    details,
+    loading,
+    error,
+    <%_ if(editMode){ _%>
+    isSubmitting,
+    updateDetails,
+    <%_ } _%>
+    <%_ if(allowDelete){ _%>
+    deleteDetails,
+    <%_ } _%>
+    fetchDetails,
+  };
+};
