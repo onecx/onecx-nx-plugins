@@ -322,7 +322,7 @@ describe('<%= resourceClassName %>DetailsEffects', () => {
       await expect(firstValueFrom(effects.deleteButtonClicked$)).rejects.toThrow('Item to delete not found!')
     })
   })
-  <%_ } _%>
+  
 
   describe('delete<%= resourceClassName %>Succeeded$', () => {
     it('should navigate to parent URL on delete success', async () => {
@@ -340,6 +340,7 @@ describe('<%= resourceClassName %>DetailsEffects', () => {
       expect(router.navigate).toHaveBeenCalledWith(['/<%= resourcePropertyName %>s'])
     })
   })
+  <%_ } _%>
 
   describe('displayError$', () => {
     it('should display error message when DetailsLoadingFailed action is dispatched', async () => {
