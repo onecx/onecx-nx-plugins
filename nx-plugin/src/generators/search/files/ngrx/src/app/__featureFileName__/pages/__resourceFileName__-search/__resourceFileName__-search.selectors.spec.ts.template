@@ -1,16 +1,16 @@
 import { ColumnType } from '@onecx/angular-accelerator'
 import * as selectors from './<%= resourceFileName %>-search.selectors'
 
-// ACTION S11: Change test data in the whole document
 describe('<%= resourceClassName %>Search selectors', () => {
   describe('selectResults projector', () => {
+    // ACTION S11: Adjust test data
     const cases = [
       {
         desc: 'should map results to RowListGridData[]',
         input: [
           { id: '1', changeMe: 'A' },
           { id: '2', changeMe: 'B' }
-        ],
+        ] as never[],
         expected: [
           { imagePath: '', id: '1', changeMe: 'A' },
           { imagePath: '', id: '2', changeMe: 'B' }
@@ -22,7 +22,7 @@ describe('<%= resourceClassName %>Search selectors', () => {
           { id: '', changeMe: 'A' },
           { id: '', changeMe: 'B' },
           { id: '', changeMe: 'C' }
-        ],
+        ] as never[],
         expected: [
           { imagePath: '', id: '', changeMe: 'A' },
           { imagePath: '', id: '', changeMe: 'B' },
@@ -39,14 +39,14 @@ describe('<%= resourceClassName %>Search selectors', () => {
   })
 
   it('select<%= resourceClassName %>SearchViewModel should combine all selector results', () => {
-    const columns = [{ id: 'col1', nameKey: 'Col 1', columnType: ColumnType.STRING }]
+    // ACTION S11: Adjust test data
+    const columns = [{ id: 'changeMe', nameKey: 'Col 1', columnType: ColumnType.STRING }]
     const searchCriteria = {
-      id: 1,
       pageNumber: 1,
       pageSize: 10,
-      changeMe: 'test'
+      changeMe: 'A'
     }
-    const results = [{ imagePath: '', id: '1', name: 'A', description: 'desc', vdb: 'vdb1', vdbCollection: 'c1' }]
+    const results = [{ imagePath: '', id: '1', changeMe: 'A test' }]
     const chartVisible = true
 
     const result = selectors.select<%= resourceClassName %>SearchViewModel.projector(

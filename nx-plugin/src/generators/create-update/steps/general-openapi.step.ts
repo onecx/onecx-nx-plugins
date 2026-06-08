@@ -71,7 +71,7 @@ export class GeneralOpenAPIStep
       .set(`${options.createRequestName}`, {
         type: 'object',
         properties: {
-          dataObject: {
+          resource: {
             $ref: `#/components/schemas/${resource}`,
           },
         },
@@ -79,7 +79,7 @@ export class GeneralOpenAPIStep
       .set(`${options.updateRequestName}`, {
         type: 'object',
         properties: {
-          dataObject: {
+          resource: {
             $ref: `#/components/schemas/${resource}`,
           },
         },
@@ -87,7 +87,7 @@ export class GeneralOpenAPIStep
       .set(`${options.createResponseName}`, {
         type: 'object',
         properties: {
-          dataObject: {
+          resource: {
             $ref: `#/components/schemas/${resource}`,
           },
           [COMMENT_KEY]: 'ACTION C1: modify resource or use flat list here',
@@ -96,7 +96,7 @@ export class GeneralOpenAPIStep
       .set(`${options.updateResponseName}`, {
         type: 'object',
         properties: {
-          dataObject: {
+          resource: {
             $ref: `#/components/schemas/${resource}`,
           },
           [COMMENT_KEY]: 'ACTION C1: modify resource or use flat list here',

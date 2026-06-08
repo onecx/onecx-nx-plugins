@@ -75,7 +75,7 @@ export class SearchEffectsStep
           }
           const itemToEditId = dialogResult.result.id;
           const itemToEdit = {
-              dataObject: dialogResult.result
+              resource: dialogResult.result
           } as ${options.updateRequestName};
           return this.${resourcePropertyName}Service
             .update${resourceClassName}ById({id: itemToEditId, ${updateRequestPropertyName}: itemToEdit})
@@ -130,7 +130,7 @@ export class SearchEffectsStep
               throw new Error('DialogResult was not set as expected!');
             }
             const toCreateItem = {
-              dataObject: dialogResult.result
+              resource: dialogResult.result
             } as ${options.createRequestName};
             return this.${resourcePropertyName}Service
               .create${resourceClassName}({${createRequestPropertyName}: toCreateItem})
@@ -161,7 +161,7 @@ export class SearchEffectsStep
     ];
     const content = tree.read(filePath, 'utf8');
     if (
-      !content.includes(
+      !content?.includes(
         'private readonly portalDialogService = inject(PortalDialogService)'
       )
     ) {
