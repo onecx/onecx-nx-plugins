@@ -263,6 +263,7 @@ describe('<%= resourceClassName %>DetailsEffects', () => {
   });
   <%_ } _%>
 
+  <%_ if(allowDelete){ _%>
   describe('deleteButtonClicked$', () => {
     it('should dispatch delete<%= resourceClassName %>Succeeded when dialog confirmed and delete succeeds', async () => {
       const mockDetails = { id: '123' }
@@ -338,6 +339,7 @@ describe('<%= resourceClassName %>DetailsEffects', () => {
       expect(router.navigate).toHaveBeenCalledWith(['/<%= resourcePropertyName %>s'])
     })
   })
+  <%_ } _%>
 
   describe('displayError$', () => {
     it('should display error message when DetailsLoadingFailed action is dispatched', async () => {
