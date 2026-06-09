@@ -8,6 +8,7 @@ const projectName = 'test-project';
 const featureName = 'test-feature';
 const featureNameCustom = 'test-custom-feature';
 const resourceName = 'TestResource';
+const nxMigrationTarget = '20.8.4';
 
 /**
  * checkAndBreak wraps a test body so that, once any preceding test in the
@@ -43,8 +44,8 @@ describe('nx-plugin', () => {
   beforeAll(() => {
     projectDirectory = createTestProject('ngrx');
 
-    console.log('Upgrading Nx to version 22.0.2...');
-    execSync(`npx nx migrate 22.0.2`, {
+    console.log(`Upgrading Nx to version ${nxMigrationTarget}...`);
+    execSync(`npx nx migrate ${nxMigrationTarget}`, {
       cwd: projectDirectory,
       stdio: 'inherit',
       env: { ...process.env, NX_NO_CLOUD: 'true', CI: 'true' },
