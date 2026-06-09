@@ -8,6 +8,7 @@ const projectName = 'test-project';
 const featureName = 'test-feature';
 const featureNameCustom = 'test-custom-feature';
 const resourceName = 'TestResource';
+const nxMigrationTarget = '20.8.4';
 
 describe('nx-plugin', () => {
   let projectDirectory: string;
@@ -19,9 +20,9 @@ describe('nx-plugin', () => {
   beforeAll(() => {
     projectDirectory = createTestProject('ngrx');
 
-    // Upgrade Nx to version 20.4.0 to match the plugin's peer dependencies
-    console.log('Upgrading Nx to version 20.4.0...');
-    execSync(`npx nx migrate 20.4.0`, {
+    // Upgrade Nx to a version compatible with the generated Angular 19 workspace.
+    console.log(`Upgrading Nx to version ${nxMigrationTarget}...`);
+    execSync(`npx nx migrate ${nxMigrationTarget}`, {
       cwd: projectDirectory,
       stdio: 'inherit',
       env: { ...process.env, NX_NO_CLOUD: 'true', CI: 'true' },

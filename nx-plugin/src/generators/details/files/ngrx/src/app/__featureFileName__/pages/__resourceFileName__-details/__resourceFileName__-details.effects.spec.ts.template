@@ -208,12 +208,11 @@ describe('<%= resourceClassName %>DetailsEffects', () => {
       actions$.next(
         <%= resourcePropertyName %>DetailsActions.saveButtonClicked({ details: mockDetails })
       );
-      const actions = await firstValueFrom(effects.saveButtonClicked$.pipe(take(2), toArray()))
+      const action = await firstValueFrom(effects.saveButtonClicked$);
 
-      expect(actions).toEqual([
-        <%= resourcePropertyName %>DetailsActions.<%= resourcePropertyName %>DetailsReceived({ details: mockDetails }),
-        <%= resourcePropertyName %>DetailsActions.update<%= resource %>Succeeded()
-      ]);
+      expect(action).toEqual(
+        <%= resourcePropertyName %>DetailsActions.update<%= resource %>Succeeded({ details: mockDetails })
+      );
       expect(selectSpy).toHaveBeenCalledTimes(1);
       expect(<%= resourcePropertyName %>Service.update<%= resource %>ById).toHaveBeenCalledTimes(1);
       expect(messageService.success).toHaveBeenCalledWith({
@@ -264,6 +263,7 @@ describe('<%= resourceClassName %>DetailsEffects', () => {
   });
   <%_ } _%>
 
+  <%_ if(allowDelete){ _%>
   describe('deleteButtonClicked$', () => {
     it('should dispatch delete<%= resourceClassName %>Succeeded when dialog confirmed and delete succeeds', async () => {
       const mockDetails = { id: '123' }
@@ -339,6 +339,7 @@ describe('<%= resourceClassName %>DetailsEffects', () => {
       expect(router.navigate).toHaveBeenCalledWith(['/<%= resourcePropertyName %>s'])
     })
   })
+  <%_ } _%>
 
   describe('displayError$', () => {
     it('should display error message when DetailsLoadingFailed action is dispatched', async () => {

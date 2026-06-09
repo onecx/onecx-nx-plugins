@@ -95,14 +95,17 @@ describe('<%= resourcePropertyName %>DetailsReducer', () => {
     });
   });
 
-  it('should set editMode false on update<%= resourceClassName %>Succeeded', () => {
-    const newState = { ...initialState, editMode: true };
-    const action = <%= resourcePropertyName %>DetailsActions.update<%= resourceClassName %>Succeeded();
+  it('should update details and set editMode false on update<%= resourceClassName %>Succeeded', () => {
+    const details = { id: '1' };
+    const newState = { ...initialState, editMode: true, isSubmitting: true };
+    const action = <%= resourcePropertyName %>DetailsActions.update<%= resourceClassName %>Succeeded({ details });
     const nextState = <%= resourcePropertyName %>DetailsReducer(newState, action);
 
     expect(nextState).toEqual({
       ...initialState,
+      details,
       editMode: false,
+      isSubmitting: false,
     });
   });
 

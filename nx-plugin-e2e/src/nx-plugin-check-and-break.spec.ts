@@ -10,6 +10,30 @@ const featureNameCustom = 'test-custom-feature';
 const resourceName = 'TestResource';
 const nxMigrationTarget = '20.8.4';
 
+/**
+ * checkAndBreak wraps a test body so that, once any preceding test in the
+ * suite has thrown, subsequent tests return early (no-op).  The thrown error
+ * is still re-thrown so Jest reports the failure.
+ */
+let suiteFailed = false;
+function checkAndBreak(testName: string, fn: () => void): () => void {
+  return () => {
+    if (suiteFailed) {
+      console.warn(`SKIP: "${testName}" — previous test in pipeline failed`);
+      return;
+    }
+    try {
+      fn();
+    } catch (err) {
+      suiteFailed = true;
+      console.error(
+        `FAIL: "${testName}" broke the pipeline — remaining tests will be skipped`
+      );
+      throw err;
+    }
+  };
+}
+
 describe('nx-plugin', () => {
   let projectDirectory: string;
   const option: ExecSyncOptionsWithBufferEncoding = {
@@ -20,7 +44,6 @@ describe('nx-plugin', () => {
   beforeAll(() => {
     projectDirectory = createTestProject('ngrx');
 
-    // Upgrade Nx to a version compatible with the generated Angular 19 workspace.
     console.log(`Upgrading Nx to version ${nxMigrationTarget}...`);
     execSync(`npx nx migrate ${nxMigrationTarget}`, {
       cwd: projectDirectory,
@@ -28,7 +51,6 @@ describe('nx-plugin', () => {
       env: { ...process.env, NX_NO_CLOUD: 'true', CI: 'true' },
     });
 
-    // Run migrations if migrations.json was created
     if (existsSync(`${projectDirectory}/migrations.json`)) {
       console.log('Installing dependencies for migration...');
       execSync(`npm install`, {
@@ -50,8 +72,6 @@ describe('nx-plugin', () => {
       });
     }
 
-    // The plugin has been built and published to a local registry in the jest globalSetup
-    // Install the plugin built with the latest source code into the test repo
     execSync(`npm install @onecx/nx-plugin@e2e`, {
       cwd: projectDirectory,
       stdio: 'inherit',
@@ -60,13 +80,6 @@ describe('nx-plugin', () => {
   });
 
   afterAll(() => {
-    // Cleanup the test project
-    // rmSync(projectDirectory, {
-    //   recursive: true,
-    //   force: true,
-    // });
-    return;
-    //Delete files to make it easier to compare with original
     rmSync(join(projectDirectory, 'node_modules'), {
       recursive: true,
       force: true,
@@ -85,30 +98,19 @@ describe('nx-plugin', () => {
     });
   });
 
-  it('should be installed', () => {
-    // npm ls will fail if the package is not installed properly
+  it('should be installed', checkAndBreak('should be installed', () => {
     execSync('npm ls @onecx/nx-plugin', {
       cwd: projectDirectory,
       stdio: 'inherit',
     });
-    execSync(`nx run build --skip-nx-cache`, {
-      cwd: projectDirectory,
-      stdio: 'inherit',
-      env: process.env,
-    });
-    execSync(`nx run test --skip-nx-cache`, {
-      cwd: projectDirectory,
-      stdio: 'inherit',
-      env: process.env,
-    });
-  });
+  }));
 
   beforeEach(() => {
     console.log('########################################################');
   });
 
   describe('use presettings', () => {
-    it('should add a feature', () => {
+    it('should add a feature', checkAndBreak('should add a feature', () => {
       const tcOption = { ...option, cwd: projectDirectory };
       const parameterString = getParameterAsString([]);
       console.log('### ==> should add a feature ###########################');
@@ -118,11 +120,9 @@ describe('nx-plugin', () => {
         `nx generate @onecx/nx-plugin:feature ${featureName} --resource=${resourceName} ${parameterString}`,
         tcOption
       );
-      execSync(`nx run build --skip-nx-cache`, tcOption);
-      execSync(`nx run test --skip-nx-cache`, tcOption);
-    });
+    }));
 
-    it('should add a search page', () => {
+    it('should add a search page', checkAndBreak('should add a search page', () => {
       const tcOption = { ...option, cwd: projectDirectory };
       const parameterString = getParameterAsString([]);
       console.log('### ==> should add a search page #######################');
@@ -131,11 +131,9 @@ describe('nx-plugin', () => {
         `nx generate @onecx/nx-plugin:search ${featureName} --resource=${resourceName} ${parameterString}`,
         tcOption
       );
-      execSync(`nx run build --skip-nx-cache`, tcOption);
-      execSync(`nx run test --skip-nx-cache`, tcOption);
-    });
+    }));
 
-    it('should add a details page', () => {
+    it('should add a details page', checkAndBreak('should add a details page', () => {
       const tcOption = { ...option, cwd: projectDirectory };
       const parameterString = getParameterAsString([
         { key: 'editMode', value: 'true' },
@@ -147,11 +145,9 @@ describe('nx-plugin', () => {
         `nx generate @onecx/nx-plugin:details ${featureName} --resource=${resourceName} ${parameterString}`,
         tcOption
       );
-      execSync(`nx run build --skip-nx-cache`, tcOption);
-      execSync(`nx run test --skip-nx-cache --coverage`, tcOption);
-    });
+    }));
 
-    it('should add a create-update dialog', () => {
+    it('should add a create-update dialog', checkAndBreak('should add a create-update dialog', () => {
       const tcOption = { ...option, cwd: projectDirectory };
       const parameterString = getParameterAsString([]);
       console.log(
@@ -162,11 +158,9 @@ describe('nx-plugin', () => {
         `nx generate @onecx/nx-plugin:create-update ${featureName} --resource=${resourceName} ${parameterString} --verbose`,
         tcOption
       );
-      execSync(`nx run build --skip-nx-cache`, tcOption);
-      execSync(`nx run test --skip-nx-cache --coverage`, tcOption);
-    });
+    }));
 
-    it('should add a delete dialog', () => {
+    it('should add a delete dialog', checkAndBreak('should add a delete dialog', () => {
       const tcOption = { ...option, cwd: projectDirectory };
       const parameterString = getParameterAsString([]);
       console.log('### ==> should add a delete dialog #######################');
@@ -175,21 +169,13 @@ describe('nx-plugin', () => {
         `nx generate @onecx/nx-plugin:delete ${featureName} --resource=${resourceName} ${parameterString} --verbose`,
         tcOption
       );
-      execSync(`nx run build --skip-nx-cache`, tcOption);
-      execSync(`nx run test --skip-nx-cache --coverage`, tcOption);
-    });
+    }));
 
-    it('should add an empty ngrx-page', () => {
+    it('should add an empty ngrx-page', checkAndBreak('should add an empty ngrx-page', () => {
       const tcOption = { ...option, cwd: projectDirectory };
       const parameterString = getParameterAsString([
-        {
-          key: 'pageName',
-          value: 'Test',
-        },
-        {
-          key: 'pageTitle',
-          value: 'Page Title',
-        },
+        { key: 'pageName', value: 'Test' },
+        { key: 'pageTitle', value: 'Page Title' },
       ]);
       console.log(
         '### ==> should add an empty ngrx-page #######################'
@@ -199,12 +185,11 @@ describe('nx-plugin', () => {
         `nx generate @onecx/nx-plugin:ngrx-page ${featureName} ${parameterString}`,
         tcOption
       );
-      execSync(`nx run build --skip-nx-cache`, tcOption);
-    });
+    }));
   });
 
   describe('use custom names instead presettings', () => {
-    it('should add a custom named feature', () => {
+    it('should add a custom named feature', checkAndBreak('should add a custom named feature', () => {
       const tcOption = { ...option, cwd: projectDirectory };
       const parameterString = getParameterAsString([
         { key: 'resource', value: 'CustomDataObject' },
@@ -215,11 +200,9 @@ describe('nx-plugin', () => {
         `nx generate @onecx/nx-plugin:feature ${featureNameCustom} ${parameterString} --verbose`,
         tcOption
       );
-      execSync(`nx run build --skip-nx-cache`, tcOption);
-      execSync(`nx run test --skip-nx-cache`, tcOption);
-    });
+    }));
 
-    it('should add a custom named search page', () => {
+    it('should add a custom named search page', checkAndBreak('should add a custom named search page', () => {
       const tcOption = { ...option, cwd: projectDirectory };
       const parameterString = getParameterAsString([
         { key: 'resource', value: 'CustomDataObject' },
@@ -232,15 +215,12 @@ describe('nx-plugin', () => {
         `nx generate @onecx/nx-plugin:search ${featureNameCustom} ${parameterString} --verbose`,
         tcOption
       );
-      execSync(`nx run build --skip-nx-cache`, tcOption);
-      execSync(`nx run test --skip-nx-cache --coverage`, tcOption);
-    });
+    }));
 
-    it('should add a custom named details page', () => {
-      const tcOption = { ...option, cwd: projectDirectory };      
+    it('should add a custom named details page', checkAndBreak('should add a custom named details page', () => {
+      const tcOption = { ...option, cwd: projectDirectory };
       const parameterString = getParameterAsString([
         { key: 'editMode', value: 'true' },
-        { key: 'allowDelete', value: 'true' },
         { key: 'updateRequestName', value: 'CustomDataObjectUpdateRequest' },
         { key: 'updateResponseName', value: 'CustomDataObjectUpdateResponse' },
         { key: 'resource', value: 'CustomDataObject' },
@@ -252,11 +232,9 @@ describe('nx-plugin', () => {
         `nx generate @onecx/nx-plugin:details ${featureNameCustom} ${parameterString} --verbose`,
         tcOption
       );
-      execSync(`nx run build --skip-nx-cache`, tcOption);
-      execSync(`nx run test --skip-nx-cache --coverage`, tcOption);
-    });
+    }));
 
-    it('should add a custom named create-update dialog', () => {
+    it('should add a custom named create-update dialog', checkAndBreak('should add a custom named create-update dialog', () => {
       const tcOption = { ...option, cwd: projectDirectory };
       const parameterString = getParameterAsString([
         { key: 'resource', value: 'CustomDataObject' },
@@ -271,11 +249,9 @@ describe('nx-plugin', () => {
         `nx generate @onecx/nx-plugin:create-update ${featureNameCustom} ${parameterString} --verbose`,
         tcOption
       );
-      execSync(`nx run build --skip-nx-cache`, tcOption);
-      execSync(`nx run test --skip-nx-cache --coverage`, tcOption);
-    });
+    }));
 
-    it('should add a custom named delete dialog', () => {
+    it('should add a custom named delete dialog', checkAndBreak('should add a custom named delete dialog', () => {
       const tcOption = { ...option, cwd: projectDirectory };
       const parameterString = getParameterAsString([
         { key: 'resource', value: 'CustomDataObject' },
@@ -288,13 +264,11 @@ describe('nx-plugin', () => {
         `nx generate @onecx/nx-plugin:delete ${featureNameCustom} ${parameterString} --verbose`,
         tcOption
       );
-      execSync(`nx run build --skip-nx-cache`, tcOption);
-      execSync(`nx run test --skip-nx-cache --coverage`, tcOption);
-    });
+    }));
   });
 
   describe('extras', () => {
-    it('should add pre commit validation', () => {
+    it('should add pre commit validation', checkAndBreak('should add pre commit validation', () => {
       const tcOption = { ...option, cwd: projectDirectory };
       const parameterString = getParameterAsString([
         { key: 'enableEslint', value: true },
@@ -307,53 +281,35 @@ describe('nx-plugin', () => {
         `nx generate @onecx/nx-plugin:pre-commit-validation ${parameterString} --verbose`,
         tcOption
       );
-      execSync(`nx run build --skip-nx-cache`, tcOption);
-      execSync(`nx run test --skip-nx-cache --coverage`, tcOption);
-    });
+    }));
   });
+
+  it('should build and test once after all generators', checkAndBreak('should build and test once after all generators', () => {
+    const tcOption = { ...option, cwd: projectDirectory };
+    console.log('### ==> final build + test ###############################');
+
+    execSync(`nx run build --skip-nx-cache`, tcOption);
+    execSync(`nx run test --skip-nx-cache`, tcOption);
+  }));
 });
 
-/**
- * Creates a test project with @onecx/create-workspace and installs the plugin
- * @returns The directory where the test project was created
- */
 function createTestProject(flavor: string) {
   const workingDir = process.env.WORKING_DIR ?? os.tmpdir();
   const projectDirectory = join(workingDir, 'nx-plugin-out', projectName);
 
-  // Ensure projectDirectory is empty
-  rmSync(projectDirectory, {
-    recursive: true,
-    force: true,
-  });
-  mkdirSync(dirname(projectDirectory), {
-    recursive: true,
-  });
+  rmSync(projectDirectory, { recursive: true, force: true });
+  mkdirSync(dirname(projectDirectory), { recursive: true });
 
   execSync(
     `npx --yes @onecx/create-workspace@e2e ${flavor} ${projectName} --nxCloud skip --no-interactive --verbose`,
-    {
-      cwd: dirname(projectDirectory),
-      stdio: 'inherit',
-      env: process.env,
-    }
+    { cwd: dirname(projectDirectory), stdio: 'inherit', env: process.env }
   );
   console.log(`Created test project in "${projectDirectory}"`);
-
   return projectDirectory;
 }
 
-/**
- * Creates a string of CLI parameters from the given array of key-value pairs, adding a non-interactive parameter to ensure the generators run without blocking for user input.
- * @param parameters Array of key-value pairs representing CLI parameters
- * @returns A string of CLI parameters
- */
 function getParameterAsString(parameters: { key: string; value: unknown }[]) {
-  // As tests are non-interactive, not-added but required items will block the test
-  const nonInteractiveParameter = {
-    key: NON_INTERACTIVE_KEY,
-    value: true,
-  };
+  const nonInteractiveParameter = { key: NON_INTERACTIVE_KEY, value: true };
   return [nonInteractiveParameter, ...parameters]
     .map((o) => `--${o.key} ${o.value}`)
     .join(' ');

@@ -9,7 +9,9 @@
   "scripts": {
     "build": "nx run nx-plugin:build && nx run create-workspace:build",
     "build-copy": "npm run build && node copy-build.js",
-    "test": "nx run nx-plugin-e2e:e2e",
+    "test": "nx run nx-plugin-e2e:e2e --testFile=nx-plugin.spec.ts",
+    "test:quick": "nx run nx-plugin-e2e:e2e --testFile=nx-plugin-quick.spec.ts",
+    "test:pipeline": "nx run nx-plugin-e2e:e2e --testFile=nx-plugin-check-and-break.spec.ts",
     "lint": "npx nx affected -t lint"
   },
   "dependencies": {

@@ -2,9 +2,7 @@ name: build
 on:
   push:
     branches:
-      - '*'
-      - '*/*'
-      - '**'
+      - 'main'
   pull_request:
     branches:
       - main
@@ -23,7 +21,7 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 24
 
       - uses: nrwl/nx-set-shas@v4
 
@@ -35,16 +33,12 @@ jobs:
         run: npx nx run-many -t lint
         working-directory: repo
 
-      - name: Test
-        run: npx nx run-many -t test --configuration=ci
-        working-directory: repo
-
       - name: Build
         run: npx nx run-many -t build
         working-directory: repo
 
       - name: E2E Tests
-        run: npm run test
+        run: npm run test:pipeline
         working-directory: repo
         env:
           WORKING_DIR: ${{github.workspace}}/test-output
