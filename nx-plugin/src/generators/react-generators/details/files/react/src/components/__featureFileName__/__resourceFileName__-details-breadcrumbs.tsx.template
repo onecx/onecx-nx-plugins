@@ -1,0 +1,52 @@
+import type { CSSProperties, FC } from 'react';
+
+interface <%= resourceClassName %>DetailsBreadcrumbsProps {
+  rootLabel: string;
+  currentLabel: string;
+  onRootClick: () => void;
+}
+
+const breadcrumbStyle: CSSProperties = {
+  fontSize: '0.875rem',
+  color: '#6c757d',
+  padding: '0.5rem 1.5rem',
+  borderBottom: '1px solid #dee2e6',
+  display: 'flex',
+  alignItems: 'center',
+};
+
+const homeIconStyle: CSSProperties = {
+  marginRight: '0.5rem',
+  cursor: 'pointer',
+};
+
+const rootLabelStyle: CSSProperties = {
+  cursor: 'pointer',
+};
+
+const chevronStyle: CSSProperties = {
+  margin: '0 0.5rem',
+  fontSize: '0.75rem',
+};
+
+export const <%= resourceClassName %>DetailsBreadcrumbs: FC<<%= resourceClassName %>DetailsBreadcrumbsProps> = ({
+  rootLabel,
+  currentLabel,
+  onRootClick,
+}) => {
+  return (
+    <div style={breadcrumbStyle}>
+      <i className="pi pi-home" style={homeIconStyle} onClick={onRootClick} />
+
+      <span style={rootLabelStyle} onClick={onRootClick}>
+        {rootLabel}
+      </span>
+
+      <i className="pi pi-chevron-right" style={chevronStyle} />
+
+      <span>{currentLabel}</span>
+    </div>
+  );
+};
+
+export default <%= resourceClassName %>DetailsBreadcrumbs;

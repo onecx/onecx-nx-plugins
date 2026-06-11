@@ -1,0 +1,81 @@
+import { InputText } from 'primereact/inputtext';
+import type { CSSProperties, FC } from 'react';
+import type { <%= resourceClassName %>DetailsFormData } from '../../pages/<%= featureFileName %>/<%= resourceFileName %>-details/<%= resourceFileName %>-details.types';
+
+interface <%= resourceClassName %>DetailsFormProps {
+  details: {
+    id: string;
+    modificationCount: number;
+  };
+  formData: <%= resourceClassName %>DetailsFormData;
+  editMode: boolean;
+  onChange: (field: keyof <%= resourceClassName %>DetailsFormData, value: string | number) => void;
+}
+
+const contentStyle: CSSProperties = {
+  padding: '1.5rem',
+};
+
+const fieldContainerStyle: CSSProperties = {
+  marginTop: '0.75rem',
+  marginBottom: '0.25rem',
+};
+
+const labelStyle: CSSProperties = {
+  display: 'block',
+  marginBottom: '0.25rem',
+  fontSize: '0.75rem',
+  fontWeight: 'bold',
+  color: '#343a40',
+};
+
+const secondLabelStyle: CSSProperties = {
+  ...labelStyle,
+  marginTop: '1rem',
+};
+
+const inputStyle: CSSProperties = {
+  width: '100%',
+};
+
+export const <%= resourceClassName %>DetailsForm: FC<<%= resourceClassName %>DetailsFormProps> = ({
+  details,
+  formData,
+  editMode,
+  onChange,
+}) => {
+  return (
+    <div style={contentStyle}>
+      <div style={fieldContainerStyle}>
+        <label htmlFor="id" style={labelStyle}>
+          ID
+        </label>
+
+        <InputText
+          id="id"
+          disabled
+          value={details.id ?? ''}
+          style={inputStyle}
+        />
+      </div>
+
+      <div style={fieldContainerStyle}>
+        <label htmlFor="modificationCount" style={secondLabelStyle}>
+          Modification Count
+        </label>
+
+        <InputText
+          id="modificationCount"
+          disabled={!editMode}
+          value={String(formData.modificationCount ?? '')}
+          onChange={(e) =>
+            onChange('modificationCount', parseInt(e.target.value, 10) || 0)
+          }
+          style={inputStyle}
+        />
+      </div>
+    </div>
+  );
+};
+
+export default <%= resourceClassName %>DetailsForm;

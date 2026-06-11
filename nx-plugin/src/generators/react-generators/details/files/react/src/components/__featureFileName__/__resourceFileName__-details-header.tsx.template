@@ -1,0 +1,140 @@
+import { Button } from 'primereact/button';
+import type { CSSProperties, FC } from 'react';
+import { <%= resourceClassName %>DetailsBreadcrumbs } from './<%= resourceFileName %>-details-breadcrumbs';
+
+export interface <%= resourceClassName %>DetailsHeaderAction {
+  labelKey: string;
+  icon?: string;
+  disabled?: boolean;
+  severity?: 'secondary' | 'danger' | 'success' | 'info' | 'warning';
+  actionCallback: () => void;
+}
+
+interface <%= resourceClassName %>DetailsHeaderProps {
+  title: string;
+  subtitle: string;
+  breadcrumbLabel: string;
+  breadcrumbCurrentLabel: string;
+  infoLabel: string;
+  infoValue: string;
+  actions: <%= resourceClassName %>DetailsHeaderAction[];
+  onBack: () => void;
+}
+
+const containerStyle: CSSProperties = {
+  border: '1px solid #dee2e6',
+  borderRadius: '4px',
+  overflow: 'hidden',
+  backgroundColor: '#ffffff',
+  marginTop: '1rem',
+};
+
+const headerRowStyle: CSSProperties = {
+  display: 'flex',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+  padding: '1rem 1.5rem',
+  backgroundColor: '#f4f6f8',
+  borderBottom: '1px solid #dee2e6',
+  gap: '1rem',
+};
+
+const leftSideStyle: CSSProperties = {
+  display: 'flex',
+  alignItems: 'center',
+  gap: '1rem',
+};
+
+const tileStyle: CSSProperties = {
+  width: '40px',
+  height: '40px',
+  backgroundColor: '#23415f',
+  borderRadius: '2px',
+  flexShrink: 0,
+};
+
+const titleStyle: CSSProperties = {
+  fontSize: '1.25rem',
+  fontWeight: 600,
+  color: 'black',
+};
+
+const subtitleStyle: CSSProperties = {
+  fontSize: '0.875rem',
+  color: '#6c757d',
+};
+
+const actionsStyle: CSSProperties = {
+  display: 'flex',
+  gap: '0.5rem',
+  flexWrap: 'wrap',
+  justifyContent: 'flex-end',
+};
+
+const infoRowStyle: CSSProperties = {
+  padding: '0.75rem 1.5rem',
+  borderTop: '1px solid #dee2e6',
+};
+
+const infoLabelStyle: CSSProperties = {
+  color: '#6c757d',
+  fontSize: '0.875rem',
+  marginRight: '0.5rem',
+};
+
+const infoValueStyle: CSSProperties = {
+  fontWeight: 500,
+};
+
+export const <%= resourceClassName %>DetailsHeader: FC<<%= resourceClassName %>DetailsHeaderProps> = ({
+  title,
+  subtitle,
+  breadcrumbLabel,
+  breadcrumbCurrentLabel,
+  infoLabel,
+  infoValue,
+  actions,
+  onBack,
+}) => {
+  return (
+    <div style={containerStyle}>
+      <<%= resourceClassName %>DetailsBreadcrumbs
+        rootLabel={breadcrumbLabel}
+        currentLabel={breadcrumbCurrentLabel}
+        onRootClick={onBack}
+      />
+
+      <div style={headerRowStyle}>
+        <div style={leftSideStyle}>
+          <div style={tileStyle} />
+
+          <div>
+            <div style={titleStyle}>{title}</div>
+            <div style={subtitleStyle}>{subtitle}</div>
+          </div>
+        </div>
+
+        <div style={actionsStyle}>
+          {actions.map((action, index) => (
+            <Button
+              key={`${action.labelKey}-${index}`}
+              label={action.labelKey || undefined}
+              icon={action.icon}
+              onClick={action.actionCallback}
+              disabled={action.disabled}
+              severity={action.severity}
+              size="small"
+            />
+          ))}
+        </div>
+      </div>
+
+      <div style={infoRowStyle}>
+        <span style={infoLabelStyle}>{infoLabel}</span>
+        <span style={infoValueStyle}>{infoValue}</span>
+      </div>
+    </div>
+  );
+};
+
+export default <%= resourceClassName %>DetailsHeader;

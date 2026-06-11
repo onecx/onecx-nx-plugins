@@ -1,11 +1,7 @@
 import { type FC, useState, useEffect, useMemo } from 'react';
 import { useParams, useNavigate } from 'react-router';
-import { Button } from 'primereact/button';
 import { Message } from 'primereact/message';
 import { ProgressSpinner } from 'primereact/progressspinner';
-import { InputText } from 'primereact/inputtext';
-import { InputNumber } from 'primereact/inputnumber';
-import { ConfirmDialog } from 'primereact/confirmdialog';
 import { useAppHref } from '../../../../libs/react-webcomponents/src/lib/routing.utils';
 
 import {
@@ -14,22 +10,11 @@ import {
 } from './<%= resourceFileName %>-details.hook';
 import type { <%= resourceClassName %>DetailsFormData } from './<%= resourceFileName %>-details.types';
 
-interface Action {
-  titleKey: string;
-  labelKey: string;
-  icon?: string;
-  show: 'always' | 'never';
-  disabled?: boolean;
-  permission?: string;
-  showCondition?: boolean;
-  severity?: 'secondary' | 'danger' | 'success' | 'info' | 'warning';
-  actionCallback: () => void;
-}
-
-interface ObjectDetailItem {
-  label: string;
-  value: string | number | undefined;
-}
+import <%= resourceClassName %>DetailsDialogs from '../../../components/<%= featureFileName %>/<%= resourceFileName %>-details-dialogs';
+import <%= resourceClassName %>DetailsForm from '../../../components/<%= featureFileName %>/<%= resourceFileName %>-details-form';
+import <%= resourceClassName %>DetailsHeader, {
+  type <%= resourceClassName %>DetailsHeaderAction,
+} from '../../../components/<%= featureFileName %>/<%= resourceFileName %>-details-header';
 
 export const <%= resourceClassName %>DetailsPage: FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -151,54 +136,28 @@ export const <%= resourceClassName %>DetailsPage: FC = () => {
   };
   <%_ } _%>
 
-  // Object detail items for header
-  const headerLabels = useMemo<ObjectDetailItem[]>(() => {
-    return [
-      {
-        label: 'ID',
-        value: details?.id,
-      },
-    ];
-  }, [details]);
-
   // Structured actions with permissions and conditions
-  const headerActions = useMemo<Action[]>(() => {
-    const actions: Action[] = [
+  const headerActions = useMemo<<%= resourceClassName %>DetailsHeaderAction[]>(() => {
+    const actions: <%= resourceClassName %>DetailsHeaderAction[] = [
       {
-        titleKey: 'Back',
         labelKey: 'Back',
-        show: 'always',
-        permission: '<%= resourceConstantName %>#BACK',
-        <%_ if(editMode){ _%>
-        showCondition: !editMode,
-        <%_ } _%>
         actionCallback: handleBack,
       },
       <%_ if(editMode){ _%>
       {
-        titleKey: 'Edit',
         labelKey: 'Edit',
-        show: 'always',
         icon: 'pi pi-pencil',
-        showCondition: !editMode,
         actionCallback: handleEdit,
       },
       {
-        titleKey: 'Cancel',
         labelKey: 'Cancel',
-        show: 'always',
         icon: 'pi pi-times',
-        showCondition: editMode,
         disabled: isSubmitting,
-        severity: 'secondary',
         actionCallback: handleCancel,
       },
       {
-        titleKey: 'Save',
         labelKey: 'Save',
-        show: 'always',
         icon: 'pi pi-save',
-        showCondition: editMode,
         disabled: isSubmitting,
         severity: 'success',
         actionCallback: handleSave,
@@ -206,22 +165,14 @@ export const <%= resourceClassName %>DetailsPage: FC = () => {
       <%_ } _%>
       <%_ if(allowDelete){ _%>
       {
-        titleKey: 'Delete',
         labelKey: 'Delete',
         icon: 'pi pi-trash',
-        show: 'always',
-        <%_ if(editMode){ _%>
-        showCondition: !editMode,
-        <%_ } _%>
-        severity: 'danger',
         actionCallback: handleDelete,
       },
       <%_ } _%>
       {
-        titleKey: 'More',
         labelKey: '',
         icon: 'pi pi-ellipsis-v',
-        show: 'always',
         actionCallback: () => {
           // TODO: add callback
         },
@@ -232,12 +183,18 @@ export const <%= resourceClassName %>DetailsPage: FC = () => {
 
   // Filter actions based on show condition and permissions
   const visibleActions = useMemo(() => {
-    return headerActions.filter(
-      (action) =>
-        action.show === 'always' &&
-        (action.showCondition === undefined || action.showCondition === true)
-    );
-  }, [headerActions]);
+    return headerActions.filter((action) => {
+      <%_ if(editMode){ _%>
+      if (action.labelKey === 'Edit' && editMode) return false;
+      if (action.labelKey === 'Cancel' && !editMode) return false;
+      if (action.labelKey === 'Save' && !editMode) return false;
+      <%_ } _%>
+      <%_ if(allowDelete){ _%>
+      if (action.labelKey === 'Delete' && editMode) return false;
+      <%_ } _%>
+      return true;
+    });
+  }, [headerActions, editMode]);
 
   if (loading) {
     return (
@@ -273,134 +230,59 @@ export const <%= resourceClassName %>DetailsPage: FC = () => {
   }
 
   return (
-    <section style={{ display: 'grid', gap: '1rem' }}>
-      {/* Breadcrumb */}
-      <div style={{ fontSize: '0.875rem', color: '#6c757d', marginBottom: '0.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-        <i className="pi pi-home" style={{ cursor: 'pointer' }} onClick={handleBack}></i>
-        <span style={{ cursor: 'pointer' }} onClick={handleBack}>
-          <%= featureClassName %>
-        </span>
-        <i className="pi pi-chevron-right" style={{ fontSize: '0.75rem' }}></i>
-        <span>Details</span>
-      </div>
+    <section
+      style={{
+        display: 'grid',
+        gap: '0.5rem',
+        padding: '0.2rem 0.5rem 0.5rem 0.5rem',
+      }}
+    >
+      <<%= resourceClassName %>DetailsHeader
+        title="<%= resourceClassName %> Details"
+        subtitle="Display of <%= resourceClassName %> Details"
+        breadcrumbLabel="<%= featureClassName %>"
+        breadcrumbCurrentLabel="Details"
+        infoLabel="ID:"
+        infoValue={details.id}
+        actions={visibleActions}
+        onBack={handleBack}
+      />
 
-      {/* Header with title, object details, and actions */}
-      <div style={{ 
-        display: 'flex', 
-        justifyContent: 'space-between', 
-        alignItems: 'flex-start',
-        padding: '1.5rem',
-        borderRadius: '8px',
-        backgroundColor: '#ffffff',
-        border: '1px solid #dee2e6',
-        boxShadow: '0 1px 3px rgba(0,0,0,0.1)'
-      }}>
-        <div style={{ flex: 1 }}>
-          <h1 style={{ margin: '0 0 1rem 0', fontSize: '1.5rem', fontWeight: '600' }}>
-            <%= resourceClassName %> Details
-          </h1>
-          
-          {/* Object detail items */}
-          <div style={{ display: 'flex', gap: '2rem', flexWrap: 'wrap' }}>
-            {headerLabels.map((item, index) => (
-              <div key={index} style={{ display: 'flex', gap: '0.5rem' }}>
-                <span style={{ color: '#6c757d', fontWeight: '500' }}>{item.label}:</span>
-                <span style={{ fontWeight: '600' }}>{item.value ?? '-'}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Action buttons */}
-        <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', justifyContent: 'flex-end' }}>
-          {visibleActions.map((action, index) => (
-            <Button
-              key={index}
-              label={action.labelKey}
-              icon={action.icon}
-              onClick={action.actionCallback}
-              disabled={action.disabled}
-              severity={action.severity}
-              style={{ marginLeft: index > 0 ? '0.5rem' : 0 }}
-            />
-          ))}
-        </div>
-      </div>
-
-      {/* Important details white square */}
-      <div style={{ 
-        padding: '1.5rem', 
-        borderRadius: '8px', 
-        backgroundColor: '#ffffff',
-        border: '1px solid #dee2e6',
-        boxShadow: '0 1px 3px rgba(0,0,0,0.1)',
-        marginTop: '0.5rem'
-      }}>
-        <div style={{ marginBottom: '1rem' }}>
-          <strong style={{ color: '#343a40' }}>ID:</strong> {details.id}
-        </div>
-        {/* ACTION: Add additional important detail properties here if needed */}
-      </div>
-
-      {/* Content */}
-      <div className="surface-section mt-3 mb-1 mx-3" style={{ 
-        padding: '1.5rem', 
-        borderRadius: '8px', 
-        backgroundColor: '#ffffff',
-        border: '1px solid #dee2e6',
-        boxShadow: '0 1px 3px rgba(0,0,0,0.1)'
-      }}>
+      <<%= resourceClassName %>DetailsForm
+        details={{
+          id: details.id,
+          modificationCount: details.modificationCount,
+        }}
         <%_ if(editMode){ _%>
-        <div className="mt-3 mb-1">
-          <label htmlFor="modificationCount" style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 'bold', color: '#343a40' }}>
-            Modification Count
-          </label>
-          <InputText
-            id="modificationCount"
-            value={
-              formData.modificationCount
-                ? formData.modificationCount.toString()
-                : ""
-            }
-            onChange={(e) => handleInputChange('modificationCount', parseInt(e.target.value) || 0)}
-            style={{ width: '100%' }}
-          />
-        </div>
-        <%_ } else { _%>
-        <div style={{ marginBottom: '1rem' }}>
-          <strong style={{ color: '#343a40' }}>Modification Count:</strong> {details.modificationCount}
-        </div>
+        formData={formData}
+        editMode={editMode}
+        onChange={handleInputChange}
         <%_ } _%>
-        {/* ACTION: Add additional detail fields here */}
-      </div>
+        <%_ if(!editMode){ _%>
+        formData={{
+          id: details.id,
+          modificationCount: details.modificationCount,
+        }}
+        editMode={false}
+        onChange={() => {}}
+        <%_ } _%>
+      />
 
-      {/* Confirmation Dialogs */}
-      <%_ if(editMode){ _%>
-      <ConfirmDialog
-        visible={showCancelConfirm}
-        message="You have unsaved changes. Are you sure you want to cancel?"
-        header="Confirm Cancellation"
-        icon="pi pi-exclamation-triangle"
-        accept={confirmCancel}
-        reject={rejectCancel}
-        acceptLabel="Yes"
-        rejectLabel="No"
+      <<%= resourceClassName %>DetailsDialogs
+        <%_ if(editMode){ _%>
+        showCancelConfirm={showCancelConfirm}
+        onConfirmCancel={confirmCancel}
+        onRejectCancel={rejectCancel}
+        <%_ } _%>
+        <%_ if(allowDelete){ _%>
+        showDeleteConfirm={showDeleteConfirm}
+        onConfirmDelete={confirmDelete}
+        onRejectDelete={rejectDelete}
+        <%_ } _%>
       />
-      <%_ } _%>
-      <%_ if(allowDelete){ _%>
-      <ConfirmDialog
-        visible={showDeleteConfirm}
-        message="Are you sure you want to delete this item?"
-        header="Confirm Deletion"
-        icon="pi pi-exclamation-triangle"
-        accept={confirmDelete}
-        reject={rejectDelete}
-        acceptLabel="Yes"
-        rejectLabel="No"
-      />
-      <%_ } _%>
     </section>
   );
+
 };
 
 export default <%= resourceClassName %>DetailsPage;
