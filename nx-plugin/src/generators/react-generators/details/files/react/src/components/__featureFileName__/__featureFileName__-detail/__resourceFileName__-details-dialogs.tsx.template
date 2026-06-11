@@ -1,5 +1,4 @@
 import { ConfirmDialog } from 'primereact/confirmdialog';
-import type { FC } from 'react';
 
 interface <%= resourceClassName %>DetailsDialogsProps {
   <%_ if(editMode){ _%>
@@ -14,7 +13,7 @@ interface <%= resourceClassName %>DetailsDialogsProps {
   <%_ } _%>
 }
 
-export const <%= resourceClassName %>DetailsDialogs: FC<<%= resourceClassName %>DetailsDialogsProps> = ({
+export const <%= resourceClassName %>DetailsDialogs = ({
   <%_ if(editMode){ _%>
   showCancelConfirm,
   onConfirmCancel,
@@ -25,7 +24,7 @@ export const <%= resourceClassName %>DetailsDialogs: FC<<%= resourceClassName %>
   onConfirmDelete,
   onRejectDelete,
   <%_ } _%>
-}) => {
+}: <%= resourceClassName %>DetailsDialogsProps) => {
   return (
     <>
       <%_ if(editMode){ _%>

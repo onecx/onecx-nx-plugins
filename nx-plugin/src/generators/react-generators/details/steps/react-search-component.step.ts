@@ -17,7 +17,10 @@ export class ReactSearchComponentStep
       return;
     }
 
+    const content = tree.read(filePath, 'utf8');
+
     // Add useAppHref import
+    if (!content.includes('useAppHref')) {
     safeReplace(
       `Add useAppHref import to ${resourceClassName}SearchPage`,
       filePath,
@@ -25,8 +28,10 @@ export class ReactSearchComponentStep
       'from "react";\nimport { useAppHref } from "../../../../libs/react-webcomponents/src/lib/routing.utils";',
       tree
     );
+    }
 
     // Add href const after useState declarations
+    if (!content.includes('const { href } = useAppHref()')) {
     safeReplace(
       `Add href const to ${resourceClassName}SearchPage`,
       filePath,
@@ -34,8 +39,10 @@ export class ReactSearchComponentStep
       'const [searchExecuted, setSearchExecuted] = useState(false);\n  const { href } = useAppHref();',
       tree
     );
+    }
 
     // Add details function to component
+    if (!content.includes('const handleDetails = (id: string) =>')) {
     const findMethod = 'const handleReset = () => {';
     const replaceWithMethod = `const handleDetails = (id: string) => {
       window.location.href = \`\${href}/${featureFileName}/\${id}\`;
@@ -50,8 +57,10 @@ export class ReactSearchComponentStep
       replaceWithMethod,
       tree
     );
+    }
 
     // Add onRowClick to DataTable in JSX
+    if (!content.includes('onRowClick')) {
     const findTemplate = '<DataTable';
     const replaceWithTemplate = `<DataTable
         onRowClick={(e) => {
@@ -67,6 +76,7 @@ export class ReactSearchComponentStep
       replaceWithTemplate,
       tree
     );
+    }
   }
 
   getTitle(): string {

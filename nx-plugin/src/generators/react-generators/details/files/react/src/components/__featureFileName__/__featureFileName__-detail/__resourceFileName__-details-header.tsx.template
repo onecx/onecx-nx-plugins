@@ -1,0 +1,113 @@
+import { Button } from 'primereact/button';
+import { <%= resourceClassName %>DetailsBreadcrumbs } from './<%= resourceFileName %>-details-breadcrumbs';
+
+export interface <%= resourceClassName %>DetailsHeaderAction {
+  labelKey: string;
+  icon?: string;
+  disabled?: boolean;
+  severity?: 'secondary' | 'danger' | 'success' | 'info' | 'warning';
+  actionCallback: () => void;
+}
+
+interface <%= resourceClassName %>DetailsHeaderProps {
+  title: string;
+  subtitle: string;
+  breadcrumbLabel: string;
+  breadcrumbCurrentLabel: string;
+  infoLabel: string;
+  infoValue: string;
+  actions: <%= resourceClassName %>DetailsHeaderAction[];
+  onBack: () => void;
+}
+
+export const <%= resourceClassName %>DetailsHeader = ({
+  title,
+  subtitle,
+  breadcrumbLabel,
+  breadcrumbCurrentLabel,
+  infoLabel,
+  infoValue,
+  actions,
+  onBack,
+}: <%= resourceClassName %>DetailsHeaderProps) => {
+  return (
+    <div
+      style={{
+        border: '1px solid #dee2e6',
+        borderRadius: '4px',
+        overflow: 'hidden',
+        backgroundColor: '#ffffff',
+        marginTop: '1rem',
+      }}
+    >
+      <<%= resourceClassName %>DetailsBreadcrumbs
+        rootLabel={breadcrumbLabel}
+        currentLabel={breadcrumbCurrentLabel}
+        onRootClick={onBack}
+      />
+
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          padding: '1rem 1.5rem',
+          backgroundColor: '#f4f6f8',
+          borderBottom: '1px solid #dee2e6',
+          gap: '1rem',
+        }}
+      >
+        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+          <div
+            style={{
+              width: '40px',
+              height: '40px',
+              backgroundColor: '#23415f',
+              borderRadius: '2px',
+              flexShrink: 0,
+            }}
+          />
+
+          <div>
+            <div style={{ fontSize: '1.25rem', fontWeight: 600, color: 'black' }}>
+              {title}
+            </div>
+            <div style={{ fontSize: '0.875rem', color: '#6c757d' }}>
+              {subtitle}
+            </div>
+          </div>
+        </div>
+
+        <div
+          style={{
+            display: 'flex',
+            gap: '0.5rem',
+            flexWrap: 'wrap',
+            justifyContent: 'flex-end',
+          }}
+        >
+          {actions.map((action, index) => (
+            <Button
+              key={`${action.labelKey}-${index}`}
+              label={action.labelKey || undefined}
+              icon={action.icon}
+              onClick={action.actionCallback}
+              disabled={action.disabled}
+              severity={action.severity}
+              size="small"
+            />
+          ))}
+        </div>
+      </div>
+
+      <div style={{ padding: '0.75rem 1.5rem', borderTop: '1px solid #dee2e6' }}>
+        <span style={{ color: '#6c757d', fontSize: '0.875rem', marginRight: '0.5rem' }}>
+          {infoLabel}
+        </span>
+        <span style={{ fontWeight: 500 }}>{infoValue}</span>
+      </div>
+    </div>
+  );
+};
+
+export default <%= resourceClassName %>DetailsHeader;

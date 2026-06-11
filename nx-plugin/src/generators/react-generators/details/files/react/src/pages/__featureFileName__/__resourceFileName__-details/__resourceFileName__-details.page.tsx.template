@@ -1,4 +1,4 @@
-import { type FC, useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useParams, useNavigate } from 'react-router';
 import { Message } from 'primereact/message';
 import { ProgressSpinner } from 'primereact/progressspinner';
@@ -10,13 +10,13 @@ import {
 } from './<%= resourceFileName %>-details.hook';
 import type { <%= resourceClassName %>DetailsFormData } from './<%= resourceFileName %>-details.types';
 
-import <%= resourceClassName %>DetailsDialogs from '../../../components/<%= featureFileName %>/<%= resourceFileName %>-details-dialogs';
-import <%= resourceClassName %>DetailsForm from '../../../components/<%= featureFileName %>/<%= resourceFileName %>-details-form';
+import <%= resourceClassName %>DetailsDialogs from '../../../components/<%= featureFileName %>/<%= featureFileName %>-detail/<%= resourceFileName %>-details-dialogs';
+import <%= resourceClassName %>DetailsForm from '../../../components/<%= featureFileName %>/<%= featureFileName %>-detail/<%= resourceFileName %>-details-form';
 import <%= resourceClassName %>DetailsHeader, {
   type <%= resourceClassName %>DetailsHeaderAction,
-} from '../../../components/<%= featureFileName %>/<%= resourceFileName %>-details-header';
+} from '../../../components/<%= featureFileName %>/<%= featureFileName %>-detail/<%= resourceFileName %>-details-header';
 
-export const <%= resourceClassName %>DetailsPage: FC = () => {
+export const <%= resourceClassName %>DetailsPage = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { href } = useAppHref();
@@ -26,7 +26,7 @@ export const <%= resourceClassName %>DetailsPage: FC = () => {
     id: '',
     modificationCount: 0,
   });
-  const [isDirty, setIsDirty] = useState(false);
+  const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
   const [showCancelConfirm, setShowCancelConfirm] = useState(false);
   <%_ } _%>
   <%_ if(allowDelete){ _%>
@@ -60,13 +60,13 @@ export const <%= resourceClassName %>DetailsPage: FC = () => {
         id: details.id,
         modificationCount: details.modificationCount,
       });
-      setIsDirty(false);
+      setHasUnsavedChanges(false);
     }
   }, [details, editMode]);
   <%_ } _%>
 
   const handleBack = () => {
-  navigate(`${href}/<%= featureFileName %>`);
+    navigate(`${href}/<%= featureFileName %>`);
   };
 
   <%_ if(editMode){ _%>
@@ -75,7 +75,7 @@ export const <%= resourceClassName %>DetailsPage: FC = () => {
   };
 
   const handleCancel = () => {
-    if (isDirty) {
+    if (hasUnsavedChanges) {
       setShowCancelConfirm(true);
     } else {
       setEditMode(false);
@@ -84,7 +84,7 @@ export const <%= resourceClassName %>DetailsPage: FC = () => {
 
   const confirmCancel = () => {
     setEditMode(false);
-    setIsDirty(false);
+    setHasUnsavedChanges(false);
     if (details) {
       setFormData({
         id: details.id,
@@ -107,14 +107,14 @@ export const <%= resourceClassName %>DetailsPage: FC = () => {
       const success = await updateDetails(updatedDetails);
       if (success) {
         setEditMode(false);
-        setIsDirty(false);
+        setHasUnsavedChanges(false);
       }
     }
   };
 
   const handleInputChange = (field: keyof <%= resourceClassName %>DetailsFormData, value: string | number) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
-    setIsDirty(true);
+    setHasUnsavedChanges(true);
   };
   <%_ } _%>
 
@@ -282,7 +282,6 @@ export const <%= resourceClassName %>DetailsPage: FC = () => {
       />
     </section>
   );
-
 };
 
 export default <%= resourceClassName %>DetailsPage;
