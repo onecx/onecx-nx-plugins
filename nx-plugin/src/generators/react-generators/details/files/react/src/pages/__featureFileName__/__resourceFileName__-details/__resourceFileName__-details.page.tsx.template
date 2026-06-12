@@ -136,7 +136,6 @@ export const <%= resourceClassName %>DetailsPage = () => {
   };
   <%_ } _%>
 
-  // Structured actions with permissions and conditions
   const headerActions = useMemo<<%= resourceClassName %>DetailsHeaderAction[]>(() => {
     const actions: <%= resourceClassName %>DetailsHeaderAction[] = [
       {
@@ -181,7 +180,6 @@ export const <%= resourceClassName %>DetailsPage = () => {
     return actions;
   }, [details, editMode, isSubmitting, handleBack, handleEdit, handleCancel, handleSave, handleDelete]);
 
-  // Filter actions based on show condition and permissions
   const visibleActions = useMemo(() => {
     return headerActions.filter((action) => {
       <%_ if(editMode){ _%>

@@ -3,27 +3,27 @@ import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { <%= resourceClassName %>DetailsPage } from './<%= resourceFileName %>-details.page';
 import { use<%= resourceClassName %>Details } from './<%= resourceFileName %>-details.hook';
 
-// Mock the hook
 vi.mock('./<%= resourceFileName %>-details.hook');
 
-// Mock useAppHref
 vi.mock('../../../../libs/react-webcomponents/src/lib/routing.utils', () => ({
   useAppHref: () => ({ href: '' }),
 }));
 
-// Mock react-router
 vi.mock('react-router', async () => {
   const actual = await vi.importActual('react-router');
   return {
     ...actual,
     useNavigate: vi.fn(),
     useParams: vi.fn(),
+    MemoryRouter: (actual as any).MemoryRouter,
+    Routes: (actual as any).Routes,
+    Route: (actual as any).Route,
   };
 });
 
 describe('<%= resourceClassName %>DetailsPage', () => {
   const mockNavigate = vi.fn();
-  let useNavigate: any, useParams: any, BrowserRouter: any, Routes: any, Route: any;
+  let useNavigate: any, useParams: any, MemoryRouter: any, Routes: any, Route: any;
 
   beforeEach(async () => {
     vi.clearAllMocks();
@@ -43,25 +43,25 @@ describe('<%= resourceClassName %>DetailsPage', () => {
       deleteDetails: vi.fn().mockResolvedValue(true),
       <%_ } _%>
     });
-    
+
     const router = await import('react-router');
     useNavigate = router.useNavigate;
     useParams = router.useParams;
-    BrowserRouter = router.BrowserRouter;
+    MemoryRouter = router.MemoryRouter;
     Routes = router.Routes;
     Route = router.Route;
-    
+
     vi.mocked(useNavigate).mockReturnValue(mockNavigate);
-    vi.mocked(useParams).mockReturnValue({ id: 'test-id' });
+    vi.mocked(useParams).mockReturnValue({ featureName: '<%= featureFileName %>', id: 'test-id' });
   });
 
   const renderComponent = () => {
     return render(
-      <BrowserRouter>
+      <MemoryRouter initialEntries={['/<%= featureFileName %>/test-id']}>
         <Routes>
           <Route path="/:featureName/:id" element={<<%= resourceClassName %>DetailsPage />} />
         </Routes>
-      </BrowserRouter>
+      </MemoryRouter>
     );
   };
 
