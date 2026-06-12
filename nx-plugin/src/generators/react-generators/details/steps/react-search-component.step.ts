@@ -30,8 +30,22 @@ export class ReactSearchComponentStep
     );
     }
 
+    // Re-read content after potential modifications
+    const updatedContent = tree.read(filePath, 'utf8');
+
+    // Add Button import after the primereact imports
+    if (!updatedContent.includes('from \'primereact/button\'') && !updatedContent.includes('from "primereact/button"')) {
+      safeReplace(
+        `Add Button import to ${resourceClassName}SearchPage`,
+        filePath,
+        /from ['"]primereact\/message['"];/,
+        "from 'primereact/message';\nimport { Button } from 'primereact/button';",
+        tree
+      );
+    }
+
     // Add href const after useState declarations
-    if (!content.includes('const { href } = useAppHref()')) {
+    if (!updatedContent.includes('const { href } = useAppHref()')) {
     safeReplace(
       `Add href const to ${resourceClassName}SearchPage`,
       filePath,
@@ -42,7 +56,7 @@ export class ReactSearchComponentStep
     }
 
     // Add details function to component
-    if (!content.includes('const handleDetails = (id: string) =>')) {
+    if (!updatedContent.includes('const handleDetails = (id: string) =>')) {
     const findMethod = 'const handleReset = () => {';
     const replaceWithMethod = `const handleDetails = (id: string) => {
       window.location.href = \`\${href}/${featureFileName}/\${id}\`;
@@ -59,23 +73,31 @@ export class ReactSearchComponentStep
     );
     }
 
-    // Add onRowClick to DataTable in JSX
-    if (!content.includes('onRowClick')) {
-    const findTemplate = '<DataTable';
-    const replaceWithTemplate = `<DataTable
-        onRowClick={(e) => {
-          if (e.data?.id) {
-            handleDetails(e.data.id);
-          }
-        }}`;
+    // Add Actions column to DataTable
+    if (!updatedContent.includes('pi pi-eye')) {
+      const findColumns = '        ))}';
+      const replaceWithColumns = `        ))}
 
-    safeReplace(
-      `Add onRowClick event to ${resourceClassName}SearchPage DataTable`,
-      filePath,
-      findTemplate,
-      replaceWithTemplate,
-      tree
-    );
+        <Column
+          header="Actions"
+          body={(rowData) => (
+            <Button
+              icon="pi pi-eye"
+              rounded
+              text
+              aria-label="View Details"
+              onClick={() => handleDetails(rowData.id)}
+            />
+          )}
+        />`;
+
+      safeReplace(
+        `Add Actions column to ${resourceClassName}SearchPage DataTable`,
+        filePath,
+        findColumns,
+        replaceWithColumns,
+        tree
+      );
     }
   }
 
