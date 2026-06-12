@@ -1,3 +1,17 @@
+## [6.4.0](https://github.com/onecx/onecx-nx-plugins/compare/v6.3.0...v6.4.0) (2026-06-12)
+
+### Features
+
+* improve generation of search and detail components including tests ([#359](https://github.com/onecx/onecx-nx-plugins/issues/359)) ([5d379f8](https://github.com/onecx/onecx-nx-plugins/commit/5d379f89b18390ad379102238c6827cccca3b488))
+
+### Bug Fixes
+
+* duplicated action usage ([#372](https://github.com/onecx/onecx-nx-plugins/issues/372)) ([4680812](https://github.com/onecx/onecx-nx-plugins/commit/46808123ee23960fa7b5fde21eecc237dd228192))
+* fix and improve search test templates ([#344](https://github.com/onecx/onecx-nx-plugins/issues/344)) ([#346](https://github.com/onecx/onecx-nx-plugins/issues/346)) ([e8d0c94](https://github.com/onecx/onecx-nx-plugins/commit/e8d0c94d6cf6fad9d8c786621593171e30aa813d))
+* v6 ci-workflow from v5 to v* ([#367](https://github.com/onecx/onecx-nx-plugins/issues/367)) ([8fd496e](https://github.com/onecx/onecx-nx-plugins/commit/8fd496e35a3d88433284533c0accf4534abbd989))
+* v6 removed unused files when standalone mode is false ([#337](https://github.com/onecx/onecx-nx-plugins/issues/337)) ([eca8a66](https://github.com/onecx/onecx-nx-plugins/commit/eca8a667cd05fd9ffe713f3b695556a17e3f27d8))
+* v6 updated webpack.config.template ([#362](https://github.com/onecx/onecx-nx-plugins/issues/362)) ([f1ced95](https://github.com/onecx/onecx-nx-plugins/commit/f1ced95cad72c20c2323eba1f6dff84d2f1e36a0))
+
 ## [6.3.0](https://github.com/onecx/onecx-nx-plugins/compare/v6.2.0...v6.3.0) (2026-04-23)
 
 ### Features
