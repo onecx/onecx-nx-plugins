@@ -1,3 +1,20 @@
+## [7.2.0](https://github.com/onecx/onecx-nx-plugins/compare/v7.1.0...v7.2.0) (2026-06-12)
+
+### Features
+
+* improved overall code ([#370](https://github.com/onecx/onecx-nx-plugins/issues/370)) ([38e387b](https://github.com/onecx/onecx-nx-plugins/commit/38e387b3972743e6c869337ac249d527f08b96f1))
+* optimized pipeline test execution ([b1e56f9](https://github.com/onecx/onecx-nx-plugins/commit/b1e56f92342d38aeff29dd8f5c216c9a27382745))
+
+### Bug Fixes
+
+* fix and improve search test templates ([#344](https://github.com/onecx/onecx-nx-plugins/issues/344)) ([#345](https://github.com/onecx/onecx-nx-plugins/issues/345)) ([94b3ffc](https://github.com/onecx/onecx-nx-plugins/commit/94b3ffca1a79c1ec0c97ef769b9bd6ddfc6dd8a2))
+* v7 ci-workflow from v5 to v* ([#366](https://github.com/onecx/onecx-nx-plugins/issues/366)) ([41e5534](https://github.com/onecx/onecx-nx-plugins/commit/41e5534f10c0f020d64ac960d534c01d6d40d43b))
+* v7 updated webpack.config.template ([#363](https://github.com/onecx/onecx-nx-plugins/issues/363)) ([f9d2278](https://github.com/onecx/onecx-nx-plugins/commit/f9d2278adcfa9ad0ee06596b384452397a76c6ba))
+
+### Chores
+
+* setup release config ([a21ae3c](https://github.com/onecx/onecx-nx-plugins/commit/a21ae3c0becbd6941013c488deb743d044f143ea))
+
 ## [7.1.0](https://github.com/onecx/onecx-nx-plugins/compare/v7.0.0...v7.1.0) (2026-05-05)
 
 ### Features
