@@ -1,28 +1,55 @@
+// ACTION S3: Define/adjust the search criteria
 export interface <%= resourceClassName %>SearchCriteria {
-  changeMe: string;
+  query: string;
+  status: '' | 'Open' | 'In Progress' | 'Closed';
+  owner: string;
 }
 
 export interface <%= resourceClassName %>SearchRow {
   id: string;
-  changeMe: string;
+  title: string;
+  status: 'Open' | 'In Progress' | 'Closed';
+  priority: 'High' | 'Medium' | 'Low';
+  owner: string;
+  description: string;
 }
 
 export interface SearchColumn<T extends object> {
   field: keyof T;
-  header: string;
+  headerKey: string;
 }
 
+// ACTION S3: Adjust the initial search criteria values
 export const initial<%= resourceClassName %>SearchCriteria: <%= resourceClassName %>SearchCriteria = {
-  changeMe: '',
+  query: '',
+  status: '',
+  owner: '',
 };
 
+// ACTION S6: Define search results columns
 export const <%= resourcePropertyName %>SearchColumns: SearchColumn<<%= resourceClassName %>SearchRow>[] = [
   {
     field: 'id',
-    header: 'ID',
+    headerKey: '<%= resourceConstantName %>_SEARCH.RESULTS.ID',
   },
   {
-    field: 'changeMe',
-    header: 'Change Me',
+    field: 'title',
+    headerKey: '<%= resourceConstantName %>_SEARCH.RESULTS.TITLE',
+  },
+  {
+    field: 'status',
+    headerKey: '<%= resourceConstantName %>_SEARCH.RESULTS.STATUS',
+  },
+  {
+    field: 'priority',
+    headerKey: '<%= resourceConstantName %>_SEARCH.RESULTS.PRIORITY',
+  },
+  {
+    field: 'owner',
+    headerKey: '<%= resourceConstantName %>_SEARCH.RESULTS.OWNER',
+  },
+  {
+    field: 'description',
+    headerKey: '<%= resourceConstantName %>_SEARCH.RESULTS.DESCRIPTION',
   },
 ];

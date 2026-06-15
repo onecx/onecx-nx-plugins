@@ -24,10 +24,10 @@ export class ReactFeatureRoutesStep
 
     const content = tree.read(routeFilePath, 'utf8');
     if (!content) {
-      throw new GeneratorStepError('React route file src/App.tsx is empty.');
+      throw new GeneratorStepError('React route file src/router.tsx is empty.');
     }
 
-    if (content.includes(`element={<${pageComponentName} />}`)) {
+    if (content.includes(`element: <${pageComponentName} />`)) {
       return;
     }
 
@@ -41,7 +41,7 @@ export class ReactFeatureRoutesStep
 
     if (!updated) {
       throw new GeneratorStepError(
-        'src/App.tsx found but no <Routes> tag matched. Please add route manually.'
+        'src/router.tsx found but no return array matched. Please add route manually.'
       );
     }
 
@@ -53,12 +53,12 @@ export class ReactFeatureRoutesStep
     resourceFileName: string,
     pageComponentName: string
   ): string | null {
-    const routesJsxPattern = /<Routes[^>]*>/;
-    if (routesJsxPattern.test(content)) {
+    const routeArrayPattern = /return\s*\[/;
+    if (routeArrayPattern.test(content)) {
       return content.replace(
-        routesJsxPattern,
+        routeArrayPattern,
         (match) =>
-          `${match}\n      <Route path={\`\${href}/${resourceFileName}-search\`} element={<${pageComponentName} />} />`
+          `${match}\n      {\n        path: \`\${href}/${resourceFileName}-search\`,\n        element: <${pageComponentName} />,\n      },`
       );
     }
 

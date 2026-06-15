@@ -1,0 +1,143 @@
+import { Dropdown } from 'primereact/dropdown';
+import { FloatLabel } from 'primereact/floatlabel';
+import { InputText } from 'primereact/inputtext';
+import { type FC } from 'react';
+import { type useTranslation } from 'react-i18next';
+
+import { SearchHeader } from '../accelerator';
+import { type <%= resourceClassName %>SearchCriteria } from '../../pages/<%= featureFileName %>/<%= resourceFileName %>-search/<%= resourceFileName %>-search.types';
+
+const SEARCH_PREFIX = '<%= resourceConstantName %>_SEARCH';
+
+const STATUS_OPTIONS: Array<{
+  label: string;
+  value: <%= resourceClassName %>SearchCriteria['status'];
+}> = [
+  { label: 'Select status...', value: '' },
+  { label: 'Open', value: 'Open' },
+  { label: 'In Progress', value: 'In Progress' },
+  { label: 'Closed', value: 'Closed' },
+];
+
+type Translate = ReturnType<typeof useTranslation>['t'];
+
+export type <%= resourceClassName %>SearchHeaderSectionProps = {
+  criteria: <%= resourceClassName %>SearchCriteria;
+  onCriteriaChange: (nextCriteria: <%= resourceClassName %>SearchCriteria) => void;
+  onReset: () => void;
+  onSearch: () => void;
+  chartVisible: boolean;
+  onExportAll: () => void;
+  onToggleChart: () => void;
+  t: Translate;
+};
+
+export const <%= resourceClassName %>SearchHeaderSection: FC<<%= resourceClassName %>SearchHeaderSectionProps> = ({
+  criteria,
+  onCriteriaChange,
+  onReset,
+  onSearch,
+  chartVisible,
+  onExportAll,
+  onToggleChart,
+  t,
+}) => (
+  <SearchHeader
+    ariaLabel={t(`${SEARCH_PREFIX}.ARIA_LABEL`)}
+    // ACTION S2: wire the breadcrumb home/items to your portal base route (the `href` MFE base) if needed
+    breadcrumbHome={{ icon: 'pi pi-home', url: '/' }}
+    breadcrumbItems={[{ label: t(`${SEARCH_PREFIX}.BREADCRUMB`) }]}
+    header={t(`${SEARCH_PREFIX}.HEADER`)}
+    subheader={t(`${SEARCH_PREFIX}.SUB_HEADER`)}
+    actions={[
+      {
+        id: 'export-all',
+        label: t(`${SEARCH_PREFIX}.HEADER_ACTIONS.EXPORT_ALL`),
+        icon: 'pi pi-download',
+        show: 'asOverflow',
+        onClick: onExportAll,
+      },
+      {
+        id: 'toggle-chart',
+        label: chartVisible
+          ? t(`${SEARCH_PREFIX}.HEADER_ACTIONS.HIDE_CHART`)
+          : t(`${SEARCH_PREFIX}.HEADER_ACTIONS.SHOW_CHART`),
+        icon: 'pi pi-eye',
+        show: 'asOverflow',
+        onClick: onToggleChart,
+      },
+    ]}
+    onReset={onReset}
+    onSearch={onSearch}
+    resetLabel={t(`${SEARCH_PREFIX}.CRITERIA.ACTIONS.RESET`)}
+    searchLabel={t(`${SEARCH_PREFIX}.CRITERIA.ACTIONS.SEARCH`)}
+  >
+    {/* ACTION S3: Specify search criteria fields */}
+    <div className="w-full md:w-15rem md:flex-none">
+      <FloatLabel>
+        <InputText
+          id="<%= resourceFileName %>-search-query"
+          value={criteria.query}
+          placeholder={t(`${SEARCH_PREFIX}.CRITERIA.QUERY.PLACEHOLDER`)}
+          aria-label={t(`${SEARCH_PREFIX}.CRITERIA.QUERY.ARIA_LABEL`)}
+          className="w-full"
+          onChange={(event) =>
+            onCriteriaChange({
+              ...criteria,
+              query: event.target.value,
+            })
+          }
+        />
+        <label htmlFor="<%= resourceFileName %>-search-query">
+          {t(`${SEARCH_PREFIX}.CRITERIA.QUERY.LABEL`)}
+        </label>
+      </FloatLabel>
+    </div>
+
+    <div className="w-full md:w-15rem md:flex-none">
+      <FloatLabel>
+        <Dropdown
+          id="<%= resourceFileName %>-search-status"
+          value={criteria.status}
+          options={STATUS_OPTIONS}
+          optionLabel="label"
+          optionValue="value"
+          className="w-full"
+          aria-label={t(`${SEARCH_PREFIX}.CRITERIA.STATUS.ARIA_LABEL`)}
+          onChange={(event) =>
+            onCriteriaChange({
+              ...criteria,
+              status: event.value as <%= resourceClassName %>SearchCriteria['status'],
+            })
+          }
+        />
+        <label htmlFor="<%= resourceFileName %>-search-status">
+          {t(`${SEARCH_PREFIX}.CRITERIA.STATUS.LABEL`)}
+        </label>
+      </FloatLabel>
+    </div>
+
+    <div className="w-full md:w-15rem md:flex-none">
+      <FloatLabel>
+        <InputText
+          id="<%= resourceFileName %>-search-owner"
+          value={criteria.owner}
+          placeholder={t(`${SEARCH_PREFIX}.CRITERIA.OWNER.PLACEHOLDER`)}
+          aria-label={t(`${SEARCH_PREFIX}.CRITERIA.OWNER.ARIA_LABEL`)}
+          className="w-full"
+          onChange={(event) =>
+            onCriteriaChange({
+              ...criteria,
+              owner: event.target.value,
+            })
+          }
+        />
+        <label htmlFor="<%= resourceFileName %>-search-owner">
+          {t(`${SEARCH_PREFIX}.CRITERIA.OWNER.LABEL`)}
+        </label>
+      </FloatLabel>
+    </div>
+  </SearchHeader>
+);
+
+export default <%= resourceClassName %>SearchHeaderSection;

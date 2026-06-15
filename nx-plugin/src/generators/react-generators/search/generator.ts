@@ -104,21 +104,47 @@ export async function searchGenerator(
   const featureNames = names(options.featureName);
   const resourceNames = names(options.resource);
 
+  const templateVariables = {
+    ...options,
+    featureFileName: featureNames.fileName,
+    featureClassName: featureNames.className,
+    featurePropertyName: featureNames.propertyName,
+    resourceFileName: resourceNames.fileName,
+    resourceClassName: resourceNames.className,
+    resourcePropertyName: resourceNames.propertyName,
+    resourceConstantName: resourceNames.constantName,
+  };
+
   generateFiles(
     tree,
-    joinPathFragments(__dirname, './files/react'),
-    `${directory}/`,
-    {
-      ...options,
-      featureFileName: featureNames.fileName,
-      featureClassName: featureNames.className,
-      featurePropertyName: featureNames.propertyName,
-      resourceFileName: resourceNames.fileName,
-      resourceClassName: resourceNames.className,
-      resourcePropertyName: resourceNames.propertyName,
-      resourceConstantName: resourceNames.constantName,
-    }
+    joinPathFragments(__dirname, './files/react/src/pages'),
+    `${directory}/src/pages`,
+    templateVariables
   );
+
+  generateFiles(
+    tree,
+    joinPathFragments(
+      __dirname,
+      './files/react/src/components/__featureFileName__/__resourceFileName__-search'
+    ),
+    `${directory}/src/components/${resourceNames.fileName}`,
+    templateVariables
+  );
+
+  const acceleratorIndexPath = 'src/components/accelerator/index.ts';
+  if (!tree.exists(acceleratorIndexPath)) {
+    generateFiles(
+      tree,
+      joinPathFragments(__dirname, './files/react/src/components/accelerator'),
+      `${directory}/src/components/accelerator`,
+      templateVariables
+    );
+  } else {
+    spinner.info(
+      'Skipping shared accelerator generation because src/components/accelerator already exists.'
+    );
+  }
 
   const generatorProcessor = new GeneratorProcessor<SearchGeneratorSchema>();
   generatorProcessor.addStep(new ReactFeaturePageRegistrationStep());
