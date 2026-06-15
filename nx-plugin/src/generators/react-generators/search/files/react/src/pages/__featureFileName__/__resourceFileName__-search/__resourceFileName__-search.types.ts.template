@@ -1,3 +1,4 @@
+// ACTION S3: Define/adjust the search criteria
 export interface <%= resourceClassName %>SearchCriteria {
   query: string;
   status: '' | 'Open' | 'In Progress' | 'Closed';
@@ -18,12 +19,14 @@ export interface SearchColumn<T extends object> {
   headerKey: string;
 }
 
+// ACTION S3: Adjust the initial search criteria values
 export const initial<%= resourceClassName %>SearchCriteria: <%= resourceClassName %>SearchCriteria = {
   query: '',
   status: '',
   owner: '',
 };
 
+// ACTION S6: Define search results columns
 export const <%= resourcePropertyName %>SearchColumns: SearchColumn<<%= resourceClassName %>SearchRow>[] = [
   {
     field: 'id',
