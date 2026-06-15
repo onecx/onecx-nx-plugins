@@ -21,6 +21,7 @@ export const <%= resourceClassName %>DetailsBreadcrumbs = ({
       }}
     >
       <i
+        data-testid="home-icon"
         className="pi pi-home"
         style={{ marginRight: '0.5rem', cursor: 'pointer' }}
         onClick={onRootClick}
@@ -30,7 +31,11 @@ export const <%= resourceClassName %>DetailsBreadcrumbs = ({
         {rootLabel}
       </span>
 
-      <i className="pi pi-chevron-right" style={{ margin: '0 0.5rem', fontSize: '0.75rem' }} />
+      <i
+        data-testid="chevron-icon"
+        className="pi pi-chevron-right"
+        style={{ margin: '0 0.5rem', fontSize: '0.75rem' }}
+      />
 
       <span>{currentLabel}</span>
     </div>

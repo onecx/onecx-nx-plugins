@@ -1,0 +1,210 @@
+import { render, screen, fireEvent } from '@testing-library/react';
+import { describe, it, expect, vi } from 'vitest';
+import { <%= resourceClassName %>DetailsHeader } from './<%= resourceFileName %>-details-header';
+
+describe('<%= resourceClassName %>DetailsHeader', () => {
+  const mockOnBack = vi.fn();
+  const mockActionCallback = vi.fn();
+  const mockActions = [
+    {
+      labelKey: 'Edit',
+      icon: 'pi pi-pencil',
+      disabled: false,
+      actionCallback: mockActionCallback,
+    },
+    {
+      labelKey: 'Delete',
+      icon: 'pi pi-trash',
+      disabled: false,
+      severity: 'danger' as const,
+      actionCallback: mockActionCallback,
+    },
+  ];
+
+  beforeEach(() => {
+    mockOnBack.mockClear();
+    mockActionCallback.mockClear();
+  });
+
+  it('should render header with title and subtitle', () => {
+    render(
+      <<%= resourceClassName %>DetailsHeader
+        title="Book Details"
+        subtitle="View and edit book information"
+        breadcrumbLabel="Books"
+        breadcrumbCurrentLabel="Book Details"
+        infoLabel="ID"
+        infoValue="123"
+        actions={[]}
+        onBack={mockOnBack}
+      />
+    );
+
+    expect(screen.getAllByText('Book Details')).toHaveLength(2);
+    expect(screen.getByText('View and edit book information')).toBeInTheDocument();
+  });
+
+  it('should render breadcrumb labels', () => {
+    render(
+      <<%= resourceClassName %>DetailsHeader
+        title="Book Details"
+        subtitle="View and edit book information"
+        breadcrumbLabel="Books"
+        breadcrumbCurrentLabel="Book Details"
+        infoLabel="ID"
+        infoValue="123"
+        actions={[]}
+        onBack={mockOnBack}
+      />
+    );
+
+    expect(screen.getByText('Books')).toBeInTheDocument();
+    expect(screen.getAllByText('Book Details')).toHaveLength(2);
+  });
+
+  it('should render info label and value', () => {
+    render(
+      <<%= resourceClassName %>DetailsHeader
+        title="Book Details"
+        subtitle="View and edit book information"
+        breadcrumbLabel="Books"
+        breadcrumbCurrentLabel="Book Details"
+        infoLabel="ID"
+        infoValue="123"
+        actions={[]}
+        onBack={mockOnBack}
+      />
+    );
+
+    expect(screen.getByText('ID')).toBeInTheDocument();
+    expect(screen.getByText('123')).toBeInTheDocument();
+  });
+
+  it('should call onBack when breadcrumb is clicked', () => {
+    render(
+      <<%= resourceClassName %>DetailsHeader
+        title="Book Details"
+        subtitle="View and edit book information"
+        breadcrumbLabel="Books"
+        breadcrumbCurrentLabel="Book Details"
+        infoLabel="ID"
+        infoValue="123"
+        actions={[]}
+        onBack={mockOnBack}
+      />
+    );
+
+    fireEvent.click(screen.getByText('Books'));
+    expect(mockOnBack).toHaveBeenCalledTimes(1);
+  });
+
+  it('should render action buttons', () => {
+    render(
+      <<%= resourceClassName %>DetailsHeader
+        title="Book Details"
+        subtitle="View and edit book information"
+        breadcrumbLabel="Books"
+        breadcrumbCurrentLabel="Book Details"
+        infoLabel="ID"
+        infoValue="123"
+        actions={mockActions}
+        onBack={mockOnBack}
+      />
+    );
+
+    expect(screen.getByText('Edit')).toBeInTheDocument();
+    expect(screen.getByText('Delete')).toBeInTheDocument();
+  });
+
+  it('should call action callback when action button is clicked', () => {
+    render(
+      <<%= resourceClassName %>DetailsHeader
+        title="Book Details"
+        subtitle="View and edit book information"
+        breadcrumbLabel="Books"
+        breadcrumbCurrentLabel="Book Details"
+        infoLabel="ID"
+        infoValue="123"
+        actions={mockActions}
+        onBack={mockOnBack}
+      />
+    );
+
+    fireEvent.click(screen.getByText('Edit'));
+    expect(mockActionCallback).toHaveBeenCalledTimes(1);
+  });
+
+  it('should render disabled action button when disabled is true', () => {
+    const disabledActions = [
+      {
+        labelKey: 'Edit',
+        icon: 'pi pi-pencil',
+        disabled: true,
+        actionCallback: mockActionCallback,
+      },
+    ];
+
+    render(
+      <<%= resourceClassName %>DetailsHeader
+        title="Book Details"
+        subtitle="View and edit book information"
+        breadcrumbLabel="Books"
+        breadcrumbCurrentLabel="Book Details"
+        infoLabel="ID"
+        infoValue="123"
+        actions={disabledActions}
+        onBack={mockOnBack}
+      />
+    );
+
+    const editButton = screen.getByRole('button', { name: 'Edit' });
+    expect(editButton).toBeInTheDocument();
+    expect(editButton).toBeDisabled();
+  });
+
+  it('should render icon-only button when labelKey is not provided', () => {
+    const iconOnlyActions = [
+      {
+        labelKey: '',
+        icon: 'pi pi-pencil',
+        disabled: false,
+        actionCallback: mockActionCallback,
+      },
+    ];
+
+    render(
+      <<%= resourceClassName %>DetailsHeader
+        title="Book Details"
+        subtitle="View and edit book information"
+        breadcrumbLabel="Books"
+        breadcrumbCurrentLabel="Book Details"
+        infoLabel="ID"
+        infoValue="123"
+        actions={iconOnlyActions}
+        onBack={mockOnBack}
+      />
+    );
+
+    const button = screen.getByRole('button');
+    expect(button).toBeInTheDocument();
+    expect(button.querySelector('.pi-pencil')).toBeInTheDocument();
+  });
+
+  it('should render without actions when actions array is empty', () => {
+    render(
+      <<%= resourceClassName %>DetailsHeader
+        title="Book Details"
+        subtitle="View and edit book information"
+        breadcrumbLabel="Books"
+        breadcrumbCurrentLabel="Book Details"
+        infoLabel="ID"
+        infoValue="123"
+        actions={[]}
+        onBack={mockOnBack}
+      />
+    );
+
+    expect(screen.queryByText('Edit')).not.toBeInTheDocument();
+    expect(screen.queryByText('Delete')).not.toBeInTheDocument();
+  });
+});
