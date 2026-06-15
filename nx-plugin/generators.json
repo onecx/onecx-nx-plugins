@@ -26,6 +26,11 @@
       "schema": "./src/generators/details/schema.json",
       "description": "details generator"
     },
+    "react-details": {
+      "factory": "./src/generators/react-generators/details/generator",
+      "schema": "./src/generators/react-generators/details/schema.json",
+      "description": "react details generator"
+    },
     "search": {
       "factory": "./src/generators/search/generator",
       "schema": "./src/generators/search/schema.json",

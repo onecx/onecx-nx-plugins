@@ -1,0 +1,285 @@
+import { useState, useEffect, useMemo } from 'react';
+import { useParams, useNavigate } from 'react-router';
+import { Message } from 'primereact/message';
+import { ProgressSpinner } from 'primereact/progressspinner';
+import { useAppHref } from '../../../../libs/react-webcomponents/src/lib/routing.utils';
+
+import {
+  <%= resourceClassName %>DetailsViewModel,
+  use<%= resourceClassName %>Details,
+} from './<%= resourceFileName %>-details.hook';
+import type { <%= resourceClassName %>DetailsFormData } from './<%= resourceFileName %>-details.types';
+
+import <%= resourceClassName %>DetailsDialogs from '../../../components/<%= featureFileName %>/<%= featureFileName %>-detail/<%= resourceFileName %>-details-dialogs';
+import <%= resourceClassName %>DetailsForm from '../../../components/<%= featureFileName %>/<%= featureFileName %>-detail/<%= resourceFileName %>-details-form';
+import <%= resourceClassName %>DetailsHeader, {
+  type <%= resourceClassName %>DetailsHeaderAction,
+} from '../../../components/<%= featureFileName %>/<%= featureFileName %>-detail/<%= resourceFileName %>-details-header';
+
+export const <%= resourceClassName %>DetailsPage = () => {
+  const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
+  const { href } = useAppHref();
+  <%_ if(editMode){ _%>
+  const [editMode, setEditMode] = useState(false);
+  const [formData, setFormData] = useState<<%= resourceClassName %>DetailsFormData>({
+    id: '',
+    modificationCount: 0,
+  });
+  const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
+  const [showCancelConfirm, setShowCancelConfirm] = useState(false);
+  <%_ } _%>
+  <%_ if(allowDelete){ _%>
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  <%_ } _%>
+
+  const {
+    details,
+    loading,
+    error,
+    <%_ if(editMode){ _%>
+    isSubmitting,
+    updateDetails,
+    <%_ } _%>
+    <%_ if(allowDelete){ _%>
+    deleteDetails,
+    <%_ } _%>
+    fetchDetails,
+  } = use<%= resourceClassName %>Details(id);
+
+  useEffect(() => {
+    if (id) {
+      fetchDetails(id);
+    }
+  }, [id, fetchDetails]);
+
+  <%_ if(editMode){ _%>
+  useEffect(() => {
+    if (details && !editMode) {
+      setFormData({
+        id: details.id,
+        modificationCount: details.modificationCount,
+      });
+      setHasUnsavedChanges(false);
+    }
+  }, [details, editMode]);
+  <%_ } _%>
+
+  const handleBack = () => {
+    navigate(`${href}/<%= featureFileName %>`);
+  };
+
+  <%_ if(editMode){ _%>
+  const handleEdit = () => {
+    setEditMode(true);
+  };
+
+  const handleCancel = () => {
+    if (hasUnsavedChanges) {
+      setShowCancelConfirm(true);
+    } else {
+      setEditMode(false);
+    }
+  };
+
+  const confirmCancel = () => {
+    setEditMode(false);
+    setHasUnsavedChanges(false);
+    if (details) {
+      setFormData({
+        id: details.id,
+        modificationCount: details.modificationCount,
+      });
+    }
+    setShowCancelConfirm(false);
+  };
+
+  const rejectCancel = () => {
+    setShowCancelConfirm(false);
+  };
+
+  const handleSave = async () => {
+    if (details) {
+      const updatedDetails = {
+        ...details,
+        ...formData,
+      };
+      const success = await updateDetails(updatedDetails);
+      if (success) {
+        setEditMode(false);
+        setHasUnsavedChanges(false);
+      }
+    }
+  };
+
+  const handleInputChange = (field: keyof <%= resourceClassName %>DetailsFormData, value: string | number) => {
+    setFormData((prev) => ({ ...prev, [field]: value }));
+    setHasUnsavedChanges(true);
+  };
+  <%_ } _%>
+
+  <%_ if(allowDelete){ _%>
+  const handleDelete = () => {
+    setShowDeleteConfirm(true);
+  };
+
+  const confirmDelete = async () => {
+    const success = await deleteDetails();
+    if (success) {
+      navigate(`${href}/<%= featureFileName %>`);
+    }
+    setShowDeleteConfirm(false);
+  };
+
+  const rejectDelete = () => {
+    setShowDeleteConfirm(false);
+  };
+  <%_ } _%>
+
+  const headerActions = useMemo<<%= resourceClassName %>DetailsHeaderAction[]>(() => {
+    const actions: <%= resourceClassName %>DetailsHeaderAction[] = [
+      {
+        labelKey: 'Back',
+        actionCallback: handleBack,
+      },
+      <%_ if(editMode){ _%>
+      {
+        labelKey: 'Edit',
+        icon: 'pi pi-pencil',
+        actionCallback: handleEdit,
+      },
+      {
+        labelKey: 'Cancel',
+        icon: 'pi pi-times',
+        disabled: isSubmitting,
+        actionCallback: handleCancel,
+      },
+      {
+        labelKey: 'Save',
+        icon: 'pi pi-save',
+        disabled: isSubmitting,
+        severity: 'success',
+        actionCallback: handleSave,
+      },
+      <%_ } _%>
+      <%_ if(allowDelete){ _%>
+      {
+        labelKey: 'Delete',
+        icon: 'pi pi-trash',
+        actionCallback: handleDelete,
+      },
+      <%_ } _%>
+      {
+        labelKey: '',
+        icon: 'pi pi-ellipsis-v',
+        actionCallback: () => {
+          // TODO: add callback
+        },
+      },
+    ];
+    return actions;
+  }, [details, editMode, isSubmitting, handleBack, handleEdit, handleCancel, handleSave, handleDelete]);
+
+  const visibleActions = useMemo(() => {
+    return headerActions.filter((action) => {
+      <%_ if(editMode){ _%>
+      if (action.labelKey === 'Edit' && editMode) return false;
+      if (action.labelKey === 'Cancel' && !editMode) return false;
+      if (action.labelKey === 'Save' && !editMode) return false;
+      <%_ } _%>
+      <%_ if(allowDelete){ _%>
+      if (action.labelKey === 'Delete' && editMode) return false;
+      <%_ } _%>
+      return true;
+    });
+  }, [headerActions, editMode]);
+
+  if (loading) {
+    return (
+      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '4rem', gap: '1rem' }}>
+        <ProgressSpinner />
+        <p style={{ color: '#6c757d' }}>Loading details...</p>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div style={{ padding: '2rem' }}>
+        <Message
+          severity="error"
+          text={`Error loading details: ${error}`}
+          style={{ margin: '1rem 0' }}
+        />
+      </div>
+    );
+  }
+
+  if (!details) {
+    return (
+      <div style={{ padding: '2rem' }}>
+        <Message
+          severity="info"
+          text="No details found"
+          style={{ margin: '1rem 0' }}
+        />
+      </div>
+    );
+  }
+
+  return (
+    <section
+      style={{
+        display: 'grid',
+        gap: '0.5rem',
+        padding: '0.2rem 0.5rem 0.5rem 0.5rem',
+      }}
+    >
+      <<%= resourceClassName %>DetailsHeader
+        title="<%= resourceClassName %> Details"
+        subtitle="Display of <%= resourceClassName %> Details"
+        breadcrumbLabel="<%= featureClassName %>"
+        breadcrumbCurrentLabel="Details"
+        infoLabel="ID:"
+        infoValue={details.id}
+        actions={visibleActions}
+        onBack={handleBack}
+      />
+
+      <<%= resourceClassName %>DetailsForm
+        details={{
+          id: details.id,
+          modificationCount: details.modificationCount,
+        }}
+        <%_ if(editMode){ _%>
+        formData={formData}
+        editMode={editMode}
+        onChange={handleInputChange}
+        <%_ } _%>
+        <%_ if(!editMode){ _%>
+        formData={{
+          id: details.id,
+          modificationCount: details.modificationCount,
+        }}
+        editMode={false}
+        onChange={() => {}}
+        <%_ } _%>
+      />
+
+      <<%= resourceClassName %>DetailsDialogs
+        <%_ if(editMode){ _%>
+        showCancelConfirm={showCancelConfirm}
+        onConfirmCancel={confirmCancel}
+        onRejectCancel={rejectCancel}
+        <%_ } _%>
+        <%_ if(allowDelete){ _%>
+        showDeleteConfirm={showDeleteConfirm}
+        onConfirmDelete={confirmDelete}
+        onRejectDelete={rejectDelete}
+        <%_ } _%>
+      />
+    </section>
+  );
+};
+
+export default <%= resourceClassName %>DetailsPage;

@@ -1,23 +1,23 @@
 import { fireEvent, render, screen } from '@testing-library/react';
-
+ 
 jest.mock('react-i18next', () => ({
   useTranslation: () => ({
     t: (key: string) => key,
   }),
 }));
-
+ 
 import { <%= resourceClassName %>SearchPage } from './<%= resourceFileName %>-search.page';
-
+ 
 describe('<%= resourceClassName %>SearchPage', () => {
   it('renders page header', () => {
     render(<<%= resourceClassName %>SearchPage />);
-
+ 
     expect(screen.getByText('<%= resourceConstantName %>_SEARCH.HEADER')).toBeTruthy();
   });
-
+ 
   it('filters results on search', () => {
     render(<<%= resourceClassName %>SearchPage />);
-
+ 
     fireEvent.change(screen.getByLabelText('<%= resourceConstantName %>_SEARCH.CRITERIA.QUERY.ARIA_LABEL'), {
       target: { value: 'beta' },
     });
@@ -26,13 +26,13 @@ describe('<%= resourceClassName %>SearchPage', () => {
         name: '<%= resourceConstantName %>_SEARCH.CRITERIA.ACTIONS.SEARCH',
       })
     );
-
+ 
     expect(screen.getByText('Billing summary report')).toBeTruthy();
   });
-
+ 
   it('resets criteria and results', () => {
     render(<<%= resourceClassName %>SearchPage />);
-
+ 
     fireEvent.change(
       screen.getByLabelText('<%= resourceConstantName %>_SEARCH.CRITERIA.QUERY.ARIA_LABEL'),
       {
@@ -44,21 +44,21 @@ describe('<%= resourceClassName %>SearchPage', () => {
         name: '<%= resourceConstantName %>_SEARCH.CRITERIA.ACTIONS.SEARCH',
       })
     );
-
+ 
     expect(screen.getByText('Billing summary report')).toBeTruthy();
-
+ 
     fireEvent.click(
       screen.getByRole('button', {
         name: '<%= resourceConstantName %>_SEARCH.CRITERIA.ACTIONS.RESET',
       })
     );
-
+ 
     expect(screen.queryByText('Billing summary report')).toBeNull();
   });
-
+ 
   it('renders the header actions overflow menu trigger', () => {
     render(<<%= resourceClassName %>SearchPage />);
-
+ 
     expect(
       screen.getByRole('button', {
         name: 'More actions',
