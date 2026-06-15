@@ -10,5 +10,21 @@ export type {
   InteractiveDataViewOption,
   InteractiveDataViewProps,
 } from './InteractiveDataView';
+export { PageHeader } from './PageHeader';
+export type { Action, BreadcrumbItem, PageHeaderProps } from './PageHeader';
+export { PortalPage } from './PortalPage';
+export type { PortalPageProps } from './PortalPage';
 export { SearchHeader } from './SearchHeader';
 export type { SearchHeaderAction, SearchHeaderProps } from './SearchHeader';
+export {
+  IfPermission,
+  PermissionsProvider,
+  usePermissions,
+} from './usePermissions';
+export type {
+  IfPermissionProps,
+  PermissionChecker,
+  PermissionInput,
+  PermissionsContextValue,
+  PermissionsProviderProps,
+} from './usePermissions';

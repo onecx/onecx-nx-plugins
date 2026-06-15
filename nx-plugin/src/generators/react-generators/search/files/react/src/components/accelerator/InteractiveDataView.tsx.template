@@ -4,6 +4,8 @@ import { DataTable } from 'primereact/datatable';
 import { Dropdown } from 'primereact/dropdown';
 import { type ReactNode, useEffect, useRef } from 'react';
 
+import { usePermissions, type PermissionInput } from './usePermissions';
+
 export type InteractiveDataViewLayout = 'grid' | 'list' | 'table';
 
 export type InteractiveDataViewColumn<T extends object> = {
@@ -52,6 +54,12 @@ export type InteractiveDataViewProps<T extends object> = {
   toolbarContentEnd?: ReactNode;
   toolbarContentStart?: ReactNode;
   viewLabel?: string;
+  /** Permission required to show the view row action. Omit to always show. */
+  viewPermission?: PermissionInput;
+  /** Permission required to show the edit row action. Omit to always show. */
+  editPermission?: PermissionInput;
+  /** Permission required to show the delete row action. Omit to always show. */
+  deletePermission?: PermissionInput;
 };
 
 export function InteractiveDataView<T extends object>({
@@ -83,9 +91,16 @@ export function InteractiveDataView<T extends object>({
   toolbarContentEnd,
   toolbarContentStart,
   viewLabel = 'View',
+  viewPermission,
+  editPermission,
+  deletePermission,
 }: InteractiveDataViewProps<T>) {
+  const { hasPermission } = usePermissions();
   const componentStateChangeRef = useRef(onComponentStateChange);
-  const hasRowActions = !!onViewItem || !!onEditItem || !!onDeleteItem;
+  const canView = !!onViewItem && hasPermission(viewPermission);
+  const canEdit = !!onEditItem && hasPermission(editPermission);
+  const canDelete = !!onDeleteItem && hasPermission(deletePermission);
+  const hasRowActions = canView || canEdit || canDelete;
   const showColumnTools =
     !!columnGroupLabel ||
     !!columnGroupOptions?.length ||
@@ -200,27 +215,27 @@ export function InteractiveDataView<T extends object>({
 
                 return (
                   <div className="flex gap-2">
-                    {onViewItem ? (
+                    {canView ? (
                       <Button
                         type="button"
                         icon="pi pi-eye"
                         text
                         rounded
                         aria-label={viewLabel}
-                        onClick={() => onViewItem(rowData)}
+                        onClick={() => onViewItem?.(rowData)}
                       />
                     ) : null}
-                    {onEditItem ? (
+                    {canEdit ? (
                       <Button
                         type="button"
                         icon="pi pi-pencil"
                         text
                         rounded
                         aria-label={editLabel}
-                        onClick={() => onEditItem(rowData)}
+                        onClick={() => onEditItem?.(rowData)}
                       />
                     ) : null}
-                    {onDeleteItem ? (
+                    {canDelete ? (
                       <Button
                         type="button"
                         icon="pi pi-trash"
@@ -228,7 +243,7 @@ export function InteractiveDataView<T extends object>({
                         rounded
                         severity="danger"
                         aria-label={deleteLabel}
-                        onClick={() => onDeleteItem(rowData)}
+                        onClick={() => onDeleteItem?.(rowData)}
                       />
                     ) : null}
                   </div>

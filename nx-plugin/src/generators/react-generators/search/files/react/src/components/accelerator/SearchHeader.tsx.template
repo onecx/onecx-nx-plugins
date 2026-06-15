@@ -1,22 +1,15 @@
 import { Button } from 'primereact/button';
-import { BreadCrumb } from 'primereact/breadcrumb';
-import { type FC, type KeyboardEvent, type PropsWithChildren } from 'react';
+import { type FC, type KeyboardEvent, type PropsWithChildren, type ReactNode } from 'react';
 
-type BreadcrumbItem = {
-  icon?: string;
-  label?: string;
-  url?: string;
-};
+import { PageHeader, type Action, type BreadcrumbItem } from './PageHeader';
 
-export type SearchHeaderAction = {
-  className?: string;
-  disabled?: boolean;
-  icon?: string;
-  id: string;
-  label: string;
-  onClick?: () => void;
-  outlined?: boolean;
-};
+/**
+ * React equivalent of the OneCX Angular `ocx-search-header`, which wraps
+ * `ocx-page-header`. This composes `PageHeader` for the breadcrumb/title/action
+ * chrome (including permission-aware actions) and renders the search criteria
+ * plus search/reset controls as its content.
+ */
+export type SearchHeaderAction = Action;
 
 export type SearchHeaderProps = PropsWithChildren<{
   actions?: SearchHeaderAction[];
@@ -26,15 +19,21 @@ export type SearchHeaderProps = PropsWithChildren<{
   cardClassName?: string;
   header: string;
   headerIconClassName?: string;
+  loading?: boolean;
+  manualBreadcrumbs?: boolean;
   onReset?: () => void;
   onSearch: () => void;
   resetButtonClassName?: string;
   resetIcon?: string;
   resetLabel?: string;
+  /** Reverse the order so Search comes before Reset (OneCX portal config). */
+  searchButtonsReversed?: boolean;
   searchButtonClassName?: string;
   searchIcon?: string;
   searchLabel: string;
   subheader?: string;
+  additionalToolbarContent?: ReactNode;
+  additionalToolbarContentLeft?: ReactNode;
 }>;
 
 const isSearchTrigger = (event: KeyboardEvent<HTMLElement>) => {
@@ -51,120 +50,88 @@ export const SearchHeader: FC<SearchHeaderProps> = ({
   ariaLabel,
   breadcrumbHome,
   breadcrumbItems = [],
-  cardClassName = 'surface-card border-1 surface-border border-round shadow-1 overflow-hidden mb-4',
+  cardClassName,
   children,
   header,
-  headerIconClassName = 'bg-primary border-round-sm',
+  headerIconClassName,
+  loading,
+  manualBreadcrumbs,
   onReset,
   onSearch,
   resetButtonClassName = 'p-button-sm',
   resetIcon = 'pi pi-eraser',
   resetLabel,
+  searchButtonsReversed = false,
   searchButtonClassName = 'p-button-sm',
   searchIcon = 'pi pi-search',
   searchLabel,
   subheader,
+  additionalToolbarContent,
+  additionalToolbarContentLeft,
 }) => {
-  const rootClassName = [cardClassName].filter(Boolean).join(' ');
+  const resetButton = onReset ? (
+    <Button
+      key="reset"
+      icon={resetIcon}
+      label={resetLabel}
+      className={resetButtonClassName}
+      onClick={onReset}
+    />
+  ) : null;
+
+  const searchButton = (
+    <Button
+      key="search"
+      icon={searchIcon}
+      label={searchLabel}
+      className={searchButtonClassName}
+      onClick={onSearch}
+    />
+  );
 
   return (
-    <section className={rootClassName}>
-      {(breadcrumbHome || breadcrumbItems.length > 0) && (
-        <div className="p-3 border-bottom-1 surface-border">
-          <BreadCrumb
-            home={breadcrumbHome}
-            model={breadcrumbItems}
-            className="border-none p-0 bg-transparent"
-          />
-        </div>
-      )}
-
+    <PageHeader
+      header={header}
+      subheader={subheader}
+      ariaLabel={ariaLabel}
+      actions={actions}
+      loading={loading}
+      manualBreadcrumbs={manualBreadcrumbs}
+      breadcrumbHome={breadcrumbHome}
+      breadcrumbItems={breadcrumbItems}
+      cardClassName={cardClassName}
+      figureIconClassName={headerIconClassName}
+      additionalToolbarContent={additionalToolbarContent}
+      additionalToolbarContentLeft={additionalToolbarContentLeft}
+    >
       <div
-        className="surface-ground flex flex-column md:flex-row md:justify-content-between align-items-start md:align-items-center gap-3 p-3"
-        aria-label={ariaLabel}
+        className="flex row-gap-3 column-gap-6 flex-wrap align-items-center"
+        onKeyDown={(event) => {
+          if (!isSearchTrigger(event)) {
+            return;
+          }
+
+          event.preventDefault();
+          onSearch();
+        }}
       >
-        <div className="flex flex-row align-items-center gap-2">
-          <div className="relative flex w-2rem h-2rem md:w-3rem md:h-3rem shrink-0">
-            <span
-              className={[
-                'absolute top-0 left-0 right-0 bottom-0',
-                headerIconClassName,
-              ]
-                .filter(Boolean)
-                .join(' ')}
-              aria-hidden="true"
-            />
-          </div>
-          <div className="flex flex-column align-items-start justify-content-center min-w-0">
-            <h1 className="m-0 p-0 text-base font-bold line-height-3">{header}</h1>
-            {subheader ? (
-              <div className="m-0 p-0 text-sm text-600 line-height-3">
-                {subheader}
-              </div>
-            ) : null}
-          </div>
-        </div>
-
-        {actions.length > 0 ? (
-          <div className="flex h-full gap-2 align-items-center justify-content-between mt-2 md:mt-0">
-            <div className="flex flex-wrap gap-1 sm:gap-2">
-              {actions.map((action) => (
-                <Button
-                  key={action.id}
-                  label={action.label}
-                  icon={action.icon}
-                  outlined={action.outlined}
-                  disabled={action.disabled}
-                  className={action.className}
-                  onClick={action.onClick}
-                />
-              ))}
-            </div>
-          </div>
-        ) : null}
-      </div>
-
-      <div className="border-top-1 surface-border p-3">
-        <div
-          className="flex row-gap-3 column-gap-6 flex-wrap align-items-center"
-          onKeyDown={(event) => {
-            if (!isSearchTrigger(event)) {
-              return;
-            }
-
-            event.preventDefault();
-            onSearch();
-          }}
+        <section
+          className="flex flex-wrap align-items-center gap-3 flex-1"
+          aria-label="Search Criteria"
         >
-          <section
-            className="flex flex-wrap align-items-center gap-3 flex-1"
-            aria-label="Search Criteria"
-          >
-            {children}
-          </section>
+          {children}
+        </section>
 
-          <section
-            className="flex flex-wrap gap-2 flex-row md:ml-auto"
-            aria-label="Search controls"
-          >
-            {onReset ? (
-              <Button
-                icon={resetIcon}
-                label={resetLabel}
-                className={resetButtonClassName}
-                onClick={onReset}
-              />
-            ) : null}
-            <Button
-              icon={searchIcon}
-              label={searchLabel}
-              className={searchButtonClassName}
-              onClick={onSearch}
-            />
-          </section>
-        </div>
+        <section
+          className="flex flex-wrap gap-2 flex-row md:ml-auto"
+          aria-label="Search controls"
+        >
+          {searchButtonsReversed
+            ? [searchButton, resetButton]
+            : [resetButton, searchButton]}
+        </section>
       </div>
-    </section>
+    </PageHeader>
   );
 };
 
