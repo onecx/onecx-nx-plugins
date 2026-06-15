@@ -6,7 +6,9 @@
     "EMPTY_RESULTS": "No results.",
     "BREADCRUMB": "Search",
     "HEADER_ACTIONS": {
-      "NAVIGATE_UNREACHABLE": "Navigate unreachable"
+      "EXPORT_ALL": "Export all",
+      "SHOW_CHART": "Show chart",
+      "HIDE_CHART": "Hide chart"
     },
     "RESULTS": {
       "ID": "ID",

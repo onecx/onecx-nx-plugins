@@ -1,12 +1,14 @@
 {
   "<%= resourceConstantName %>_SEARCH": {
-    "HEADER": "Suche",
+    "HEADER": "<%= resourceClassName %>-Suche",
     "SUB_HEADER": "<%= resourceClassName %>-Elemente nach Kriterien suchen",
     "ARIA_LABEL": "Seitenkopf mit Suche",
     "EMPTY_RESULTS": "Keine Ergebnisse.",
     "BREADCRUMB": "Suche",
     "HEADER_ACTIONS": {
-      "NAVIGATE_UNREACHABLE": "Unerreichbares Ziel öffnen"
+      "EXPORT_ALL": "Alle exportieren",
+      "SHOW_CHART": "Diagramm anzeigen",
+      "HIDE_CHART": "Diagramm ausblenden"
     },
     "RESULTS": {
       "ID": "ID",
