@@ -6,6 +6,7 @@ import {
   ContentContainer,
   type InteractiveDataViewComponentState,
   type InteractiveDataViewLayout,
+  PortalPage,
 } from '../../../components/accelerator';
 import {
   type <%= resourceClassName %>SearchRow,
@@ -14,6 +15,7 @@ import {
 import <%= resourceClassName %>SearchHeaderSection from '../../../components/<%= resourceFileName %>/<%= resourceFileName %>-search-header-section.component';
 import <%= resourceClassName %>SearchResultsSection from '../../../components/<%= resourceFileName %>/<%= resourceFileName %>-search-results-section.component';
 
+// ACTION: Replace this mock data with real search results (temporary until API wiring)
 const ALL_<%= resourceConstantName %>_ITEMS: <%= resourceClassName %>SearchRow[] = [
   {
     id: 'T-1001',
@@ -50,6 +52,7 @@ export const <%= resourceClassName %>SearchPage: FC = () => {
   );
   const [columnGroup, setColumnGroup] = useState('default');
   const [layout, setLayout] = useState<InteractiveDataViewLayout>('table');
+  const [chartVisible, setChartVisible] = useState(false);
   const [, setInteractiveDataViewState] = useState<
     InteractiveDataViewComponentState
   >({
@@ -88,6 +91,18 @@ export const <%= resourceClassName %>SearchPage: FC = () => {
     setAppliedCriteria(initial<%= resourceClassName %>SearchCriteria);
   };
 
+  const handleExportAll = () => {
+    // ACTION S (Phase 3.3): implement CSV export of the current results
+    if (typeof window !== 'undefined') {
+      window.alert('Export all is not implemented yet.');
+    }
+  };
+
+  const handleToggleChart = () => {
+    // ACTION S (Phase 3.2): render the results chart; this only toggles visibility for now
+    setChartVisible((visible) => !visible);
+  };
+
   const handleInteractiveDataViewStateChange = (
     state: InteractiveDataViewComponentState
   ) => {
@@ -113,12 +128,19 @@ export const <%= resourceClassName %>SearchPage: FC = () => {
   };
 
   return (
-    <section className="flex flex-column gap-3">
+    // ACTION S5: the page is gated on the SEARCH permission; the `standalone` flag skips gating for standalone apps
+    <PortalPage
+      <% if (!standalone) { %>permission="<%= resourceConstantName %>#SEARCH"<% } %>
+      ariaLabel={t('<%= resourceConstantName %>_SEARCH.ARIA_LABEL')}
+    >
       <<%= resourceClassName %>SearchHeaderSection
         criteria={criteria}
         onCriteriaChange={setCriteria}
         onReset={handleReset}
         onSearch={handleSearch}
+        chartVisible={chartVisible}
+        onExportAll={handleExportAll}
+        onToggleChart={handleToggleChart}
         t={t}
       />
 
@@ -138,7 +160,7 @@ export const <%= resourceClassName %>SearchPage: FC = () => {
           />
         </Content>
       </ContentContainer>
-    </section>
+    </PortalPage>
   );
 };
 

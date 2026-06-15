@@ -26,6 +26,9 @@ export type <%= resourceClassName %>SearchHeaderSectionProps = {
   onCriteriaChange: (nextCriteria: <%= resourceClassName %>SearchCriteria) => void;
   onReset: () => void;
   onSearch: () => void;
+  chartVisible: boolean;
+  onExportAll: () => void;
+  onToggleChart: () => void;
   t: Translate;
 };
 
@@ -34,19 +37,34 @@ export const <%= resourceClassName %>SearchHeaderSection: FC<<%= resourceClassNa
   onCriteriaChange,
   onReset,
   onSearch,
+  chartVisible,
+  onExportAll,
+  onToggleChart,
   t,
 }) => (
   <SearchHeader
     ariaLabel={t(`${SEARCH_PREFIX}.ARIA_LABEL`)}
-    breadcrumbHome={{ icon: 'pi pi-home', url: '#' }}
-    breadcrumbItems={[{ label: '<%= featureClassName %>' }]}
+    // ACTION S2: wire the breadcrumb home/items to your portal base route (the `href` MFE base) if needed
+    breadcrumbHome={{ icon: 'pi pi-home', url: '/' }}
+    breadcrumbItems={[{ label: t(`${SEARCH_PREFIX}.BREADCRUMB`) }]}
     header={t(`${SEARCH_PREFIX}.HEADER`)}
     subheader={t(`${SEARCH_PREFIX}.SUB_HEADER`)}
     actions={[
       {
-        id: 'navigate-unreachable',
-        label: t(`${SEARCH_PREFIX}.HEADER_ACTIONS.NAVIGATE_UNREACHABLE`),
-        className: 'p-button-sm',
+        id: 'export-all',
+        label: t(`${SEARCH_PREFIX}.HEADER_ACTIONS.EXPORT_ALL`),
+        icon: 'pi pi-download',
+        show: 'asOverflow',
+        onClick: onExportAll,
+      },
+      {
+        id: 'toggle-chart',
+        label: chartVisible
+          ? t(`${SEARCH_PREFIX}.HEADER_ACTIONS.HIDE_CHART`)
+          : t(`${SEARCH_PREFIX}.HEADER_ACTIONS.SHOW_CHART`),
+        icon: 'pi pi-eye',
+        show: 'asOverflow',
+        onClick: onToggleChart,
       },
     ]}
     onReset={onReset}
@@ -54,6 +72,7 @@ export const <%= resourceClassName %>SearchHeaderSection: FC<<%= resourceClassNa
     resetLabel={t(`${SEARCH_PREFIX}.CRITERIA.ACTIONS.RESET`)}
     searchLabel={t(`${SEARCH_PREFIX}.CRITERIA.ACTIONS.SEARCH`)}
   >
+    {/* ACTION S3: Specify search criteria fields */}
     <div className="w-full md:w-15rem md:flex-none">
       <FloatLabel>
         <InputText

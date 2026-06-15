@@ -56,12 +56,12 @@ describe('<%= resourceClassName %>SearchPage', () => {
     expect(screen.queryByText('Billing summary report')).toBeNull();
   });
 
-  it('renders unreachable navigation button', () => {
+  it('renders the header actions overflow menu trigger', () => {
     render(<<%= resourceClassName %>SearchPage />);
 
     expect(
       screen.getByRole('button', {
-        name: '<%= resourceConstantName %>_SEARCH.HEADER_ACTIONS.NAVIGATE_UNREACHABLE',
+        name: 'More actions',
       })
     ).toBeTruthy();
   });
