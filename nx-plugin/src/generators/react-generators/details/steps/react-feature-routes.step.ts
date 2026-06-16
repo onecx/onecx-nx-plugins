@@ -30,20 +30,23 @@ export class ReactFeatureRoutesStep
       routeFilePath,
       'import "./i18n/config";',
       `import "./i18n/config";
-     import ${pageComponentName} from '${importPath}';`,
+import ${pageComponentName} from '${importPath}';`,
       tree
     );
 
+    const routeToAdd = `      {
+        path: \`\${href}/${featureFileName}/:id\`,
+        element: <${pageComponentName} />,
+        handle: {},
+      },`;
+
+    // Add route to the main return array - target the closing bracket of the return array
     safeReplace(
       `Add details route to React router`,
       routeFilePath,
-      '    ];',
-      `    {
-      path: \`\${href}/${featureFileName}/:id\`,
-      element: <${pageComponentName} />,
-      handle: {},
-    },
-    ];`,
+      '    ];\n  }, [href]);',
+      `${routeToAdd}
+    ];\n  }, [href]);`,
       tree
     );
   }

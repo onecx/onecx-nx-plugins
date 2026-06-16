@@ -196,20 +196,20 @@ export const <%= resourceClassName %>DetailsPage = () => {
 
   if (loading) {
     return (
-      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '4rem', gap: '1rem' }}>
+      <div className="flex flex-column align-items-center justify-content-center p-4 gap-2">
         <ProgressSpinner />
-        <p style={{ color: '#6c757d' }}>Loading details...</p>
+        <p className="text-600">Loading details...</p>
       </div>
     );
   }
 
   if (error) {
     return (
-      <div style={{ padding: '2rem' }}>
+      <div className="p-2">
         <Message
           severity="error"
           text={`Error loading details: ${error}`}
-          style={{ margin: '1rem 0' }}
+          className="mb-4"
         />
       </div>
     );
@@ -217,24 +217,18 @@ export const <%= resourceClassName %>DetailsPage = () => {
 
   if (!details) {
     return (
-      <div style={{ padding: '2rem' }}>
+      <div className="p-2">
         <Message
           severity="info"
           text="No details found"
-          style={{ margin: '1rem 0' }}
+          className="mb-4"
         />
       </div>
     );
   }
 
   return (
-    <section
-      style={{
-        display: 'grid',
-        gap: '0.5rem',
-        padding: '0.2rem 0.5rem 0.5rem 0.5rem',
-      }}
-    >
+    <section className="flex flex-column gap-2 p-1">
       <<%= resourceClassName %>DetailsHeader
         title="<%= resourceClassName %> Details"
         subtitle="Display of <%= resourceClassName %> Details"

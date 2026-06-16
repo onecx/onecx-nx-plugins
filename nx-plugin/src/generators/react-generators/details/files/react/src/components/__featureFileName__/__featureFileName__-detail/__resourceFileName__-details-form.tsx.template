@@ -18,17 +18,11 @@ export const <%= resourceClassName %>DetailsForm = ({
   onChange,
 }: <%= resourceClassName %>DetailsFormProps) => {
   return (
-    <div style={{ padding: '1.5rem' }}>
-      <div style={{ marginTop: '0.75rem', marginBottom: '0.25rem' }}>
+    <div className="p-3">
+      <div className="mb-3">
         <label
           htmlFor="id"
-          style={{
-            display: 'block',
-            marginBottom: '0.25rem',
-            fontSize: '0.75rem',
-            fontWeight: 'bold',
-            color: '#343a40',
-          }}
+          className="block mb-1 text-xs font-bold text-900"
         >
           ID
         </label>
@@ -37,21 +31,14 @@ export const <%= resourceClassName %>DetailsForm = ({
           id="id"
           disabled
           value={details.id ?? ''}
-          style={{ width: '100%' }}
+          className="w-full"
         />
       </div>
 
-      <div style={{ marginTop: '0.75rem', marginBottom: '0.25rem' }}>
+      <div className="mb-3">
         <label
           htmlFor="modificationCount"
-          style={{
-            display: 'block',
-            marginBottom: '0.25rem',
-            fontSize: '0.75rem',
-            fontWeight: 'bold',
-            color: '#343a40',
-            marginTop: '1rem',
-          }}
+          className="block mb-1 text-xs font-bold text-900 mt-3"
         >
           Modification Count
         </label>
@@ -63,7 +50,7 @@ export const <%= resourceClassName %>DetailsForm = ({
           onChange={(e) =>
             onChange('modificationCount', parseInt(e.target.value, 10) || 0)
           }
-          style={{ width: '100%' }}
+          className="w-full"
         />
       </div>
     </div>
