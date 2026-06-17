@@ -1,5 +1,7 @@
-import { type FC, useMemo, useState } from 'react';
+import { type FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { Message } from 'primereact/message';
+import { ProgressSpinner } from 'primereact/progressspinner';
 
 import {
   Content,
@@ -8,48 +10,15 @@ import {
   type InteractiveDataViewLayout,
   PortalPage,
 } from '../../../components/accelerator';
-import {
-  type <%= resourceClassName %>SearchRow,
-  initial<%= resourceClassName %>SearchCriteria,
-} from './<%= resourceFileName %>-search.types';
+import { initial<%= resourceClassName %>SearchCriteria } from './<%= resourceFileName %>-search.types';
+import { use<%= resourceClassName %>Search } from './<%= resourceFileName %>-search.hook';
 import <%= resourceClassName %>SearchHeaderSection from '../../../components/<%= resourceFileName %>/<%= resourceFileName %>-search-header-section.component';
 import <%= resourceClassName %>SearchResultsSection from '../../../components/<%= resourceFileName %>/<%= resourceFileName %>-search-results-section.component';
-
-// ACTION: Replace this mock data with real search results (temporary until API wiring)
-const ALL_<%= resourceConstantName %>_ITEMS: <%= resourceClassName %>SearchRow[] = [
-  {
-    id: 'T-1001',
-    title: 'Customer onboarding workflow',
-    status: 'Open',
-    priority: 'High',
-    owner: 'Alex Morgan',
-    description: 'Set up onboarding workflow for new enterprise customers.',
-  },
-  {
-    id: 'T-1002',
-    title: 'Billing summary report',
-    status: 'In Progress',
-    priority: 'Medium',
-    owner: 'Priya Singh',
-    description: 'Generate monthly billing summary with regional breakdown.',
-  },
-  {
-    id: 'T-1003',
-    title: 'SLA alerting rules',
-    status: 'Closed',
-    priority: 'Low',
-    owner: 'Diego Alvarez',
-    description: 'Finalize SLA alerting rules and notify stakeholders.',
-  },
-];
 
 export const <%= resourceClassName %>SearchPage: FC = () => {
   const { t } = useTranslation();
 
   const [criteria, setCriteria] = useState(initial<%= resourceClassName %>SearchCriteria);
-  const [appliedCriteria, setAppliedCriteria] = useState(
-    initial<%= resourceClassName %>SearchCriteria
-  );
   const [columnGroup, setColumnGroup] = useState('default');
   const [layout, setLayout] = useState<InteractiveDataViewLayout>('table');
   const [chartVisible, setChartVisible] = useState(false);
@@ -60,35 +29,19 @@ export const <%= resourceClassName %>SearchPage: FC = () => {
     selectedColumnGroup: 'default',
   });
 
-  const results = useMemo(() => {
-    const queryTerm = appliedCriteria.query.trim().toLowerCase();
-    const ownerTerm = appliedCriteria.owner.trim().toLowerCase();
+  const { results, loading, error, search } = use<%= resourceClassName %>Search();
 
-    return ALL_<%= resourceConstantName %>_ITEMS.filter((item) => {
-      const matchesQuery =
-        queryTerm.length === 0 ||
-        item.id.toLowerCase().includes(queryTerm) ||
-        item.title.toLowerCase().includes(queryTerm) ||
-        item.description.toLowerCase().includes(queryTerm);
-
-      const matchesStatus =
-        appliedCriteria.status.length === 0 ||
-        item.status === appliedCriteria.status;
-
-      const matchesOwner =
-        ownerTerm.length === 0 || item.owner.toLowerCase().includes(ownerTerm);
-
-      return matchesQuery && matchesStatus && matchesOwner;
-    });
-  }, [appliedCriteria]);
+  useEffect(() => {
+    search(initial<%= resourceClassName %>SearchCriteria);
+  }, [search]);
 
   const handleSearch = () => {
-    setAppliedCriteria(criteria);
+    search(criteria);
   };
 
   const handleReset = () => {
     setCriteria(initial<%= resourceClassName %>SearchCriteria);
-    setAppliedCriteria(initial<%= resourceClassName %>SearchCriteria);
+    search(initial<%= resourceClassName %>SearchCriteria);
   };
 
   const handleExportAll = () => {
@@ -128,15 +81,29 @@ export const <%= resourceClassName %>SearchPage: FC = () => {
 
       <ContentContainer layout="horizontal">
         <Content className="w-full">
-          <<%= resourceClassName %>SearchResultsSection
-            columnGroup={columnGroup}
-            layout={layout}
-            onInteractiveDataViewStateChange={handleInteractiveDataViewStateChange}
-            onColumnGroupChange={setColumnGroup}
-            onLayoutChange={setLayout}
-            results={results}
-            t={t}
-          />
+          {error ? (
+            <Message
+              severity="error"
+              text={t('<%= resourceConstantName %>_SEARCH.ERROR_MESSAGES.SEARCH_RESULTS_LOADING_FAILED')}
+              className="w-full mb-3"
+            />
+          ) : null}
+
+          {loading ? (
+            <div className="flex justify-content-center p-5">
+              <ProgressSpinner />
+            </div>
+          ) : (
+            <<%= resourceClassName %>SearchResultsSection
+              columnGroup={columnGroup}
+              layout={layout}
+              onInteractiveDataViewStateChange={handleInteractiveDataViewStateChange}
+              onColumnGroupChange={setColumnGroup}
+              onLayoutChange={setLayout}
+              results={results}
+              t={t}
+            />
+          )}
         </Content>
       </ContentContainer>
     </PortalPage>

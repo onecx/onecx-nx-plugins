@@ -165,6 +165,10 @@ export async function searchGenerator(
       console.log('generate react search ==> ' + command);
     }
 
+    cmd = 'npm run apigen ';
+    log(cmd);
+    execSync(cmd, { cwd: tree.root, stdio: 'inherit' });
+
     installPackagesTask(tree);
 
     const files = tree

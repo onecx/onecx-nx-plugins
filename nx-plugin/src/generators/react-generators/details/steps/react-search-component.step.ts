@@ -41,7 +41,7 @@ export class ReactSearchComponentStep
     // Add the view handler that navigates to the details page
     if (!tree.read(filePath, 'utf8')?.includes('const handleViewItem =')) {
       const findMethod = 'const handleReset = () => {';
-      const replaceWithMethod = `const handleViewItem = (item: ${resourceClassName}SearchRow) => {
+      const replaceWithMethod = `const handleViewItem = (item: { id: string }) => {
     window.location.href = \`\${href}/${featureFileName}/\${item.id}\`;
   };
 

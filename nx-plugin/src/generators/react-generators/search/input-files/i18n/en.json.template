@@ -12,35 +12,23 @@
     },
     "RESULTS": {
       "ID": "ID",
-      "TITLE": "Title",
-      "STATUS": "Status",
-      "PRIORITY": "Priority",
-      "OWNER": "Owner",
-      "DESCRIPTION": "Description",
       "ACTIONS": "Actions",
       "COLUMN_GROUP": "Column Group",
       "COLUMN_SETTINGS": "Column Settings",
       "NAME": "Search Results"
+    },
+    "ERROR_MESSAGES": {
+      "SEARCH_RESULTS_LOADING_FAILED": "Search results could not be loaded."
     },
     "CRITERIA": {
       "ACTIONS": {
         "SEARCH": "Search",
         "RESET": "Reset"
       },
-      "QUERY": {
-        "LABEL": "Query",
-        "PLACEHOLDER": "Search by id, title, or description",
-        "ARIA_LABEL": "Search query"
-      },
-      "STATUS": {
-        "LABEL": "Status",
-        "PLACEHOLDER": "Select status",
-        "ARIA_LABEL": "Status"
-      },
-      "OWNER": {
-        "LABEL": "Owner",
-        "PLACEHOLDER": "Search by owner",
-        "ARIA_LABEL": "Owner"
+      "CHANGE_ME": {
+        "LABEL": "Change Me",
+        "PLACEHOLDER": "To be replaced by actual search criteria",
+        "ARIA_LABEL": "Change Me"
       }
     }
   }
