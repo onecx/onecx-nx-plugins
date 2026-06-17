@@ -25,6 +25,7 @@ export const <%= resourceClassName %>DetailsPage = () => {
   const [formData, setFormData] = useState<<%= resourceClassName %>DetailsFormData>({
     id: '',
     modificationCount: 0,
+    // ACTION D1: Add additional form field initializations here
   });
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
   const [showCancelConfirm, setShowCancelConfirm] = useState(false);
@@ -59,6 +60,7 @@ export const <%= resourceClassName %>DetailsPage = () => {
       setFormData({
         id: details.id,
         modificationCount: details.modificationCount,
+        // ACTION D5: Add additional form field initializations here
       });
       setHasUnsavedChanges(false);
     }
@@ -89,6 +91,7 @@ export const <%= resourceClassName %>DetailsPage = () => {
       setFormData({
         id: details.id,
         modificationCount: details.modificationCount,
+        // ACTION D5: Add additional form field initializations here
       });
     }
     setShowCancelConfirm(false);
@@ -173,7 +176,7 @@ export const <%= resourceClassName %>DetailsPage = () => {
         labelKey: '',
         icon: 'pi pi-ellipsis-v',
         actionCallback: () => {
-          // TODO: add callback
+          // ACTION D4: Add callback for additional header actions
         },
       },
     ];

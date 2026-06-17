@@ -19,6 +19,7 @@
     "FORM": {
       "ID": "ID",
       "NAME": "Seitenkopf mit Details"
+      // ACTION D3: Add additional form field translation keys here
     },
     "CANCEL": {
       "HEADER": "Abbruch bestätigen",

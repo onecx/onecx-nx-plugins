@@ -35,6 +35,7 @@ export const <%= resourceClassName %>DetailsForm = ({
         />
       </div>
 
+      {/* ACTION D2: Add additional form fields here */}
       <div className="mb-3">
         <label
           htmlFor="modificationCount"

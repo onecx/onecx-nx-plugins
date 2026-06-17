@@ -1,9 +1,6 @@
 import { Tree, joinPathFragments, names } from '@nx/devkit';
 
-import {
-  GeneratorStep,
-  GeneratorStepError,
-} from '../../../shared/generator.utils';
+import { GeneratorStep } from '../../../shared/generator.utils';
 import { COMMENT_KEY, OpenAPIUtil } from '../../../shared/openapi/openapi.utils';
 import { SearchGeneratorSchema } from '../schema';
 import { createSearchEndpoint } from '../endpoint.util';
@@ -14,14 +11,20 @@ export class GeneralOpenAPIStep
   process(tree: Tree, options: SearchGeneratorSchema): void {
     const openApiFolderPath = 'src/assets/api';
     const bffOpenApiPath = 'openapi-bff.yaml';
-    const bffOpenApiContent = tree.read(
+    let bffOpenApiContent = tree.read(
       joinPathFragments(openApiFolderPath, bffOpenApiPath),
       'utf8'
     );
+
+    // Create the file if it doesn't exist
     if (!bffOpenApiContent) {
-      throw new GeneratorStepError(
-        `OpenAPI file not found or empty: ${joinPathFragments(openApiFolderPath, bffOpenApiPath)}`
+      const templatePath = joinPathFragments(
+        'nx-plugin/src/generators/react-generators/files/src/assets/api',
+        'openapi-bff.yaml.template'
       );
+      const defaultOpenApiContent = tree.read(templatePath, 'utf8');
+      tree.write(joinPathFragments(openApiFolderPath, bffOpenApiPath), defaultOpenApiContent);
+      bffOpenApiContent = defaultOpenApiContent;
     }
 
     const resource = options.resource;

@@ -1,11 +1,11 @@
 export interface <%= resourceClassName %>Details {
   id: string;
   modificationCount: number;
-  // ACTION: Add additional properties here
+  // ACTION D1: Add additional detail properties here
 }
 
 export interface <%= resourceClassName %>DetailsFormData {
   id: string;
   modificationCount: number;
-  // ACTION: Add additional form fields here
+  // ACTION D1: Add additional form field properties here
 }
