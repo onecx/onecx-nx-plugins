@@ -17,85 +17,52 @@ export class ReactSearchComponentStep
       return;
     }
 
-    const content = tree.read(filePath, 'utf8');
-
-    // Add useAppHref import
-    if (!content.includes('useAppHref')) {
-    safeReplace(
-      `Add useAppHref import to ${resourceClassName}SearchPage`,
-      filePath,
-      'from "react";',
-      'from "react";\nimport { useAppHref } from "../../../../libs/react-webcomponents/src/lib/routing.utils";',
-      tree
-    );
-    }
-
-    // Re-read content after potential modifications
-    const updatedContent = tree.read(filePath, 'utf8');
-
-    // Add Button import after the primereact imports
-    if (!updatedContent.includes('from \'primereact/button\'') && !updatedContent.includes('from "primereact/button"')) {
+    if (!tree.read(filePath, 'utf8')?.includes('useAppHref')) {
       safeReplace(
-        `Add Button import to ${resourceClassName}SearchPage`,
+        `Add useAppHref import to ${resourceClassName}SearchPage`,
         filePath,
-        /from ['"]primereact\/message['"];/,
-        "from 'primereact/message';\nimport { Button } from 'primereact/button';",
+        "import { useTranslation } from 'react-i18next';",
+        `import { useTranslation } from 'react-i18next';\nimport { useAppHref } from '../../../../libs/react-webcomponents/src/lib/routing.utils';`,
         tree
       );
     }
 
-    // Add href const after useState declarations
-    if (!updatedContent.includes('const { href } = useAppHref()')) {
-    safeReplace(
-      `Add href const to ${resourceClassName}SearchPage`,
-      filePath,
-      'const [searchExecuted, setSearchExecuted] = useState(false);',
-      'const [searchExecuted, setSearchExecuted] = useState(false);\n  const { href } = useAppHref();',
-      tree
-    );
+    // Add href const after the useTranslation hook
+    if (!tree.read(filePath, 'utf8')?.includes('const { href } = useAppHref()')) {
+      safeReplace(
+        `Add href const to ${resourceClassName}SearchPage`,
+        filePath,
+        'const { t } = useTranslation();',
+        'const { t } = useTranslation();\n  const { href } = useAppHref();',
+        tree
+      );
     }
 
-    // Add details function to component
-    if (!updatedContent.includes('const handleDetails = (id: string) =>')) {
-    const findMethod = 'const handleReset = () => {';
-    const replaceWithMethod = `const handleDetails = (id: string) => {
-      window.location.href = \`\${href}/${featureFileName}/\${id}\`;
-    };
+    // Add the view handler that navigates to the details page
+    if (!tree.read(filePath, 'utf8')?.includes('const handleViewItem =')) {
+      const findMethod = 'const handleReset = () => {';
+      const replaceWithMethod = `const handleViewItem = (item: ${resourceClassName}SearchRow) => {
+    window.location.href = \`\${href}/${featureFileName}/\${item.id}\`;
+  };
 
-    const handleReset = () => {`;
-
-    safeReplace(
-      `Add details function to ${resourceClassName}SearchPage`,
-      filePath,
-      findMethod,
-      replaceWithMethod,
-      tree
-    );
-    }
-
-    // Add Actions column to DataTable
-    if (!updatedContent.includes('pi pi-eye')) {
-      const findColumns = '        ))}';
-      const replaceWithColumns = `        ))}
-
-        <Column
-          header="Actions"
-          body={(rowData) => (
-            <Button
-              icon="pi pi-eye"
-              rounded
-              text
-              aria-label="View Details"
-              onClick={() => handleDetails(rowData.id)}
-            />
-          )}
-        />`;
+  const handleReset = () => {`;
 
       safeReplace(
-        `Add Actions column to ${resourceClassName}SearchPage DataTable`,
+        `Add view handler to ${resourceClassName}SearchPage`,
         filePath,
-        findColumns,
-        replaceWithColumns,
+        findMethod,
+        replaceWithMethod,
+        tree
+      );
+    }
+
+    // Wire the view handler into the results section
+    if (!tree.read(filePath, 'utf8')?.includes('onViewItem={handleViewItem}')) {
+      safeReplace(
+        `Add onViewItem prop to ${resourceClassName}SearchResultsSection`,
+        filePath,
+        'results={results}',
+        'onViewItem={handleViewItem}\n            results={results}',
         tree
       );
     }

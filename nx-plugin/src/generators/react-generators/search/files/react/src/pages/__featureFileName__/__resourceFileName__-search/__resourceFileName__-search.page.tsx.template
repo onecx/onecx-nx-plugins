@@ -109,24 +109,6 @@ export const <%= resourceClassName %>SearchPage: FC = () => {
     setInteractiveDataViewState(state);
   };
 
-  const handleViewItem = (item: <%= resourceClassName %>SearchRow) => {
-    if (typeof window !== 'undefined') {
-      window.alert(`Viewing item: ${item.id}`);
-    }
-  };
-
-  const handleEditItem = (item: <%= resourceClassName %>SearchRow) => {
-    if (typeof window !== 'undefined') {
-      window.alert(`Editing item: ${item.id}`);
-    }
-  };
-
-  const handleDeleteItem = (item: <%= resourceClassName %>SearchRow) => {
-    if (typeof window !== 'undefined') {
-      window.alert(`Deleting item: ${item.id}`);
-    }
-  };
-
   return (
     // ACTION S5: the page is gated on the SEARCH permission; the `standalone` flag skips gating for standalone apps
     <PortalPage
@@ -151,10 +133,7 @@ export const <%= resourceClassName %>SearchPage: FC = () => {
             layout={layout}
             onInteractiveDataViewStateChange={handleInteractiveDataViewStateChange}
             onColumnGroupChange={setColumnGroup}
-            onDeleteItem={handleDeleteItem}
-            onEditItem={handleEditItem}
             onLayoutChange={setLayout}
-            onViewItem={handleViewItem}
             results={results}
             t={t}
           />
