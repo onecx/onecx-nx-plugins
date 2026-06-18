@@ -3,4 +3,5 @@ export interface ReactGeneratorSchema {
   chatty?: boolean;
   styles?: 'primeflex' | 'tailwind';
   aiTool?: 'none' | 'agents' | 'copilot' | 'both';
+  stateManagement?: 'none' | 'zustand';
 }

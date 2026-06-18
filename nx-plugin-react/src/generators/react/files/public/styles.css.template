@@ -1,0 +1,6 @@
+<% if (styles === 'tailwind') { %>@import 'tailwindcss';
+@import 'tailwindcss-primeui';
+<% } else { %>@import 'primereact/resources/themes/lara-light-cyan/theme.css';
+@import 'primeflex/primeflex.min.css';
+<% } %>@import 'primeicons/primeicons.css';
+@import '../src/index.css';

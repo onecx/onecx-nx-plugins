@@ -1,4 +1,0 @@
-@import 'primereact/resources/themes/lara-light-cyan/theme.css';
-@import 'primeflex/primeflex.min.css';
-@import 'primeicons/primeicons.css';
-@import '../index.css';

@@ -20,6 +20,7 @@ import { ReactGeneratorSchema } from './schema';
 import { GeneralOpenAPIStep } from './steps/general-openapi.step';
 import { StylesStep } from './steps/styles.step';
 import { AIStep } from './steps/ai.step';
+import { StateManagementStep } from './steps/state-management.step';
 
 const PARAMETERS: GeneratorParameter<ReactGeneratorSchema>[] = [
   {
@@ -43,6 +44,14 @@ const PARAMETERS: GeneratorParameter<ReactGeneratorSchema>[] = [
     prompt: 'Would you like to add AI agent configuration files?',
     default: 'none',
     choices: ['none', 'agents', 'copilot', 'both'],
+  },
+  {
+    key: 'stateManagement',
+    type: 'select',
+    required: 'interactive',
+    prompt: 'Would you like to add state management?',
+    default: 'none',
+    choices: ['none', 'zustand'],
   },
 ];
 
@@ -103,12 +112,17 @@ export async function reactGenerator(
   generatorProcessor.addStep(new GeneralOpenAPIStep());
   generatorProcessor.addStep(new StylesStep());
   generatorProcessor.addStep(new AIStep());
+  generatorProcessor.addStep(new StateManagementStep());
 
   generatorProcessor.run(tree, options, spinner);
 
   addBaseToPackageJson(tree, options);
   addScriptsToPackageJson(tree);
   addExtensionsToPackageJson(tree);
+
+  if (options.stateManagement === 'zustand') {
+    addDependenciesToPackageJson(tree, { zustand: '^5.0.0' }, {});
+  }
 
   if (options.styles === 'tailwind') {
     addDependenciesToPackageJson(
@@ -122,7 +136,7 @@ export async function reactGenerator(
     );
   }
 
-  const oneCXLibVersion = '^8.3.1';
+  const oneCXLibVersion = '^9.0.0-rc.8';
   const reactVersion = '^19.0.0';
   const nxVersion = '22.7.4';
 
@@ -257,7 +271,7 @@ function addScriptsToPackageJson(tree: Tree) {
     pkgJson.scripts = pkgJson.scripts ?? {};
     pkgJson.scripts[
       'apigen'
-    ] = `openapi-generator-cli generate -i src/assets/api/openapi-bff.yaml -c apigen.yaml -o src/api/generated -g typescript-fetch --type-mappings AnyType=object`;
+    ] = `openapi-generator-cli generate -i src/assets/api/openapi-bff.yaml -o src/api/generated -g typescript-fetch --type-mappings AnyType=object --additional-properties=removeOperationIdPrefix=true,removeOperationIdPrefixCount=2`;
     pkgJson.scripts['start'] = 'nx serve --host 0.0.0.0';
     pkgJson.scripts['build'] = `nx build`;
     pkgJson.scripts['clean'] =

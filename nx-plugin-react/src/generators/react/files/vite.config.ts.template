@@ -77,22 +77,19 @@ export default defineConfig(({ mode }) => {
       viteStaticCopy({
         targets: [
           {
-            src: path.resolve(__dirname, "./src/assets/styles.css"),
-            dest: "", // this will place it directly under /mfe/onecx-<%= fileName %>-ui/
-          },
-          {
             src: path.resolve(__dirname, "./src/assets/env.json"),
             dest: "assets",
           },
         ],
-          {
+      }),
+      {
         name: "process-app-styles",
         apply: "build",
         async closeBundle() {
           const postcss = (await import("postcss")).default;
           const postcssImport = (await import("postcss-import")).default;
 
-          const cssPath = path.resolve(__dirname, "./src/assets/styles.css");
+          const cssPath = path.resolve(__dirname, "./public/styles.css");
           const sourceCss = fs.readFileSync(cssPath, "utf8");
 
           const result = await postcss([postcssImport()]).process(sourceCss, {
@@ -104,7 +101,6 @@ export default defineConfig(({ mode }) => {
           fs.writeFileSync(path.resolve(outDir, "styles.css"), result.css);
         },
       },
-      }),
      ...(isTest ? [] : [federation(mfConfig)]),
       react(),<% if (styles === 'tailwind') { %>
       tailwindcss(),<% } %>
