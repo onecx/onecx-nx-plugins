@@ -1,8 +1,5 @@
 import { Tree, joinPathFragments } from '@nx/devkit';
-import {
-  GeneratorStep,
-  GeneratorStepError,
-} from '../../shared/generator.utils';
+import { GeneratorStep } from '../../shared/generator.utils';
 import { ReactGeneratorSchema } from '../schema';
 import { OpenAPIUtil } from '../../shared/openapi/openapi.utils';
 
@@ -16,9 +13,7 @@ export class GeneralOpenAPIStep implements GeneratorStep<ReactGeneratorSchema> {
     );
 
     if (!bffOpenApiContent) {
-      throw new GeneratorStepError(
-        `OpenAPI file not found at ${openApiFolderPath}/${bffOpenApiPath} – skipping OpenAPI step.`
-      );
+      return;
     }
 
     const resource = options.name;
@@ -36,5 +31,9 @@ export class GeneralOpenAPIStep implements GeneratorStep<ReactGeneratorSchema> {
   }
   getTitle(): string {
     return 'Adapting OpenAPI';
+  }
+
+  isApplicable(_options: ReactGeneratorSchema): boolean {
+    return true;
   }
 }

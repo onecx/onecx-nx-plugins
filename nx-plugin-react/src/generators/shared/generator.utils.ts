@@ -22,7 +22,7 @@ export class GeneratorStepError extends Error {
 }
 
 export interface GeneratorStep<T> {
-  process(tree: Tree, options: T): void;
+  process(tree: Tree, options: T): void | Promise<void>;
   getTitle(): string;
   isApplicable?(options: T): boolean;
 }
@@ -48,7 +48,7 @@ export class GeneratorProcessor<T> {
         ora.info(stepTitle);
       }
       try {
-        step.process(tree, options);
+        await step.process(tree, options);
       } catch (error) {
         if (error instanceof GeneratorStepError) {
           const gsf = error as GeneratorStepError;

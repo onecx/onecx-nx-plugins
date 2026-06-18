@@ -5,10 +5,7 @@ import {
   GeneratorCallback,
   joinPathFragments,
   names,
-  readProjectConfiguration,
   Tree,
-  updateJson,
-  updateProjectConfiguration,
 } from '@nx/devkit';
 import { applicationGenerator } from '@nx/react';
 import { execSync } from 'child_process';
@@ -21,6 +18,12 @@ import { GeneralOpenAPIStep } from './steps/general-openapi.step';
 import { StylesStep } from './steps/styles.step';
 import { AIStep } from './steps/ai.step';
 import { StateManagementStep } from './steps/state-management.step';
+import {
+  addBaseToPackageJson,
+  addScriptsToPackageJson,
+} from './utils/package-json.utils';
+import { adaptTsConfig } from './utils/ts-config.utils';
+import { adaptProjectConfiguration } from './utils/project-config.utils';
 
 const PARAMETERS: GeneratorParameter<ReactGeneratorSchema>[] = [
   {
@@ -114,27 +117,10 @@ export async function reactGenerator(
   generatorProcessor.addStep(new AIStep());
   generatorProcessor.addStep(new StateManagementStep());
 
-  generatorProcessor.run(tree, options, spinner);
+  await generatorProcessor.run(tree, options, spinner);
 
   addBaseToPackageJson(tree, options);
   addScriptsToPackageJson(tree);
-  addExtensionsToPackageJson(tree);
-
-  if (options.stateManagement === 'zustand') {
-    addDependenciesToPackageJson(tree, { zustand: '^5.0.0' }, {});
-  }
-
-  if (options.styles === 'tailwind') {
-    addDependenciesToPackageJson(
-      tree,
-      {},
-      {
-        tailwindcss: '^4.0.0',
-        '@tailwindcss/vite': '^4.0.0',
-        'tailwindcss-primeui': '^0.3.0',
-      }
-    );
-  }
 
   const oneCXLibVersion = '^9.0.0-rc.8';
   const reactVersion = '^19.0.0';
@@ -161,13 +147,7 @@ export async function reactGenerator(
       primeflex: '^4.0.0',
     },
     {
-      '@nx/react': nxVersion,
       '@nx/vite': nxVersion,
-      '@nx/devkit': nxVersion,
-      '@nx/js': nxVersion,
-      '@nx/web': nxVersion,
-      '@nx/workspace': nxVersion,
-      '@nx/plugin': nxVersion,
       '@nx/eslint': nxVersion,
       '@nx/eslint-plugin': nxVersion,
       '@openapitools/openapi-generator-cli': '^2.16.3',
@@ -215,15 +195,23 @@ export async function reactGenerator(
 
   return async () => {
     await applicationGeneratorCallback();
-    let cmd = 'rm -rf .vscode apps libs';
-    log(cmd);
-    execSync(cmd, { cwd: tree.root, stdio: 'inherit' });
 
-    cmd = 'mv -f .gitignore.org .gitignore';
-    log(cmd);
-    execSync(cmd, { cwd: tree.root, stdio: 'inherit' });
+    const dirsToClean = ['.vscode', 'apps', 'libs'].filter((d) =>
+      tree.exists(d)
+    );
+    if (dirsToClean.length > 0) {
+      const cmd = `rm -rf ${dirsToClean.join(' ')}`;
+      log(cmd);
+      execSync(cmd, { cwd: tree.root, stdio: 'inherit' });
+    }
 
-    cmd = 'npm run apigen ';
+    if (tree.exists('.gitignore.org')) {
+      const cmd = 'mv -f .gitignore.org .gitignore';
+      log(cmd);
+      execSync(cmd, { cwd: tree.root, stdio: 'inherit' });
+    }
+
+    const cmd = 'npm run apigen ';
     log(cmd);
     execSync(cmd, { cwd: tree.root, stdio: 'inherit' });
 
@@ -232,124 +220,10 @@ export async function reactGenerator(
       .map((c) => c.path)
       .filter((p) => p.endsWith('.ts') || p.endsWith('.tsx'))
       .join(' ');
-    cmd = 'npx prettier --write ';
-    log(cmd);
-    execSync(cmd + files, { cwd: tree.root, stdio: 'inherit' });
+    const prettierCmd = 'npx prettier --write ';
+    log(prettierCmd);
+    execSync(prettierCmd + files, { cwd: tree.root, stdio: 'inherit' });
   };
-}
-
-function addBaseToPackageJson(tree: Tree, options: ReactGeneratorSchema) {
-  updateJson(tree, 'package.json', (pkgJson) => {
-    pkgJson.name = 'onecx-' + names(options.name).fileName + '-ui';
-    pkgJson.private = true;
-    pkgJson.license = 'Apache-2.0';
-
-    // Nx adds the preset package to dependencies automatically – move it to devDependencies
-    const pluginKey = '@onecx/nx-plugin-react';
-    const pluginVersion = pkgJson.dependencies?.[pluginKey];
-    if (pluginVersion) {
-      delete pkgJson.dependencies[pluginKey];
-      pkgJson.devDependencies = pkgJson.devDependencies ?? {};
-      pkgJson.devDependencies[pluginKey] = pluginVersion;
-    }
-
-    return pkgJson;
-  });
-}
-
-function addExtensionsToPackageJson(tree: Tree) {
-  updateJson(tree, 'package.json', (pkgJson) => {
-    pkgJson.jestSonar = {
-      reportPath: 'reports',
-    };
-    return pkgJson;
-  });
-}
-
-function addScriptsToPackageJson(tree: Tree) {
-  updateJson(tree, 'package.json', (pkgJson) => {
-    pkgJson.scripts = pkgJson.scripts ?? {};
-    pkgJson.scripts[
-      'apigen'
-    ] = `openapi-generator-cli generate -i src/assets/api/openapi-bff.yaml -o src/api/generated -g typescript-fetch --type-mappings AnyType=object --additional-properties=removeOperationIdPrefix=true,removeOperationIdPrefixCount=2`;
-    pkgJson.scripts['start'] = 'nx serve --host 0.0.0.0';
-    pkgJson.scripts['build'] = `nx build`;
-    pkgJson.scripts['clean'] =
-      'npm cache clean --force && npx clear-npx-cache && rm -rf *.log dist reports .nx .eslintcache ./node_modules/.cache/prettier/.prettier-cache';
-    pkgJson.scripts['format'] = 'nx format:write --uncommitted';
-    pkgJson.scripts['lint'] = 'nx lint';
-    pkgJson.scripts['lint:fix'] = 'nx lint --fix';
-    pkgJson.scripts['sonar'] = 'npx sonar-scanner';
-    pkgJson.scripts['test'] = 'nx test';
-    pkgJson.scripts['test:ci'] = 'nx test --watch=false --code-coverage';
-    return pkgJson;
-  });
-}
-
-function adaptTsConfig(tree: Tree) {
-  updateJson(tree, 'tsconfig.json', (json) => {
-    json.compilerOptions = json.compilerOptions ?? {};
-    json.compilerOptions.target = 'ES2022';
-    json.compilerOptions.module = 'ESNext';
-    json.compilerOptions.lib = ['ES2022', 'dom'];
-    json.compilerOptions.moduleResolution = 'bundler';
-    json.compilerOptions.resolveJsonModule = true;
-    delete json.compilerOptions.emitDecoratorMetadata;
-    delete json.compilerOptions.experimentalDecorators;
-    return json;
-  });
-
-  updateJson(tree, 'tsconfig.app.json', (json) => {
-    json.files = ['src/main.tsx', 'src/bootstrap.ts'];
-    json.compilerOptions = json.compilerOptions ?? {};
-    json.compilerOptions.jsx = 'react-jsx';
-    json.compilerOptions.resolveJsonModule = true;
-    return json;
-  });
-}
-
-function adaptProjectConfiguration(tree: Tree, options: ReactGeneratorSchema) {
-  const config = readProjectConfiguration(tree, options.name);
-  config.targets['serve'].executor = '@nx/vite:dev-server';
-  config.targets['serve'].options = {
-    ...(config.targets['serve'].options ?? {}),
-    host: '0.0.0.0',
-    port: 4200,
-    headers: {
-      Allow: 'GET, POST, PUT, DELETE, PATCH, OPTIONS',
-      'Access-Control-Allow-Origin': '*',
-      'Access-Control-Allow-Headers': '*',
-      'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, PATCH, OPTIONS',
-    },
-  };
-  config.targets['build'].executor = '@nx/vite:build';
-  config.targets['build'].options = {
-    ...(config.targets['build'].options ?? {}),
-    assets: [
-      ...(config.targets['build'].options?.assets ?? []),
-      {
-        glob: '**/*',
-        input: './node_modules/@onecx/react-utils/assets/',
-        output: '/onecx-react-utils/assets/',
-      },
-    ],
-  };
-  config.targets['build'].configurations = {
-    ...(config.targets['build'].configurations ?? {}),
-    production: {
-      ...(config.targets['build'].configurations?.production ?? {}),
-      fileReplacements: [
-        ...(config.targets['build'].configurations?.production
-          ?.fileReplacements ?? []),
-        {
-          replace: 'src/environments/environment.ts',
-          with: 'src/environments/environment.prod.ts',
-        },
-      ],
-    },
-  };
-  config.targets['test'].executor = '@nx/vite:test';
-  updateProjectConfiguration(tree, names(options.name).fileName, config);
 }
 
 export default reactGenerator;

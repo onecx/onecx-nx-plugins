@@ -37,11 +37,11 @@ export class AIStep implements GeneratorStep<ReactGeneratorSchema> {
   private removeUnusedStyleRule(
     tree: Tree,
     styles: string,
-    primflexFile: string,
+    primeflexFile: string,
     tailwindFile: string
   ): void {
     if (styles === 'tailwind') {
-      tree.delete(primflexFile);
+      tree.delete(primeflexFile);
     } else {
       tree.delete(tailwindFile);
     }

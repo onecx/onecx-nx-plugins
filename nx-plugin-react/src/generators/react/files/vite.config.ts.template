@@ -80,27 +80,12 @@ export default defineConfig(({ mode }) => {
             src: path.resolve(__dirname, "./src/assets/env.json"),
             dest: "assets",
           },
+          {
+            src: path.resolve(__dirname, "./src/styles.css"),
+            dest: ".",
+          },
         ],
       }),
-      {
-        name: "process-app-styles",
-        apply: "build",
-        async closeBundle() {
-          const postcss = (await import("postcss")).default;
-          const postcssImport = (await import("postcss-import")).default;
-
-          const cssPath = path.resolve(__dirname, "./public/styles.css");
-          const sourceCss = fs.readFileSync(cssPath, "utf8");
-
-          const result = await postcss([postcssImport()]).process(sourceCss, {
-            from: cssPath,
-          });
-
-          const outDir = path.resolve(__dirname, "dist");
-          fs.mkdirSync(outDir, { recursive: true });
-          fs.writeFileSync(path.resolve(outDir, "styles.css"), result.css);
-        },
-      },
      ...(isTest ? [] : [federation(mfConfig)]),
       react(),<% if (styles === 'tailwind') { %>
       tailwindcss(),<% } %>
