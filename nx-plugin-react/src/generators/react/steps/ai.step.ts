@@ -5,18 +5,7 @@ import { ReactGeneratorSchema } from '../schema';
 export class AIStep implements GeneratorStep<ReactGeneratorSchema> {
   process(tree: Tree, options: ReactGeneratorSchema): void {
     const tool = options.aiTool ?? 'none';
-    if (tool === 'agents' || tool === 'both') {
-      generateFiles(tree, joinPathFragments(__dirname, '../files-ai'), '.', {
-        ...options,
-      });
-      this.removeUnusedStyleRule(
-        tree,
-        options.styles,
-        '.agents/rules/frontend-styling-primeflex.mdc',
-        '.agents/rules/frontend-styling-tailwind.mdc'
-      );
-    }
-    if (tool === 'copilot' || tool === 'both') {
+    if (tool === 'copilot') {
       generateFiles(
         tree,
         joinPathFragments(__dirname, '../files-ai-copilot'),

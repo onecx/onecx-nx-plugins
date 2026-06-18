@@ -22,7 +22,7 @@
     "aiTool": {
       "type": "string",
       "description": "Which AI tool to configure (none to skip)",
-      "enum": ["none", "agents", "copilot", "both"],
+      "enum": ["none", "copilot"],
       "default": "none"
     },
     "stateManagement": {

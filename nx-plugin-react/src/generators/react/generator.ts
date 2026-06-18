@@ -46,7 +46,7 @@ const PARAMETERS: GeneratorParameter<ReactGeneratorSchema>[] = [
     required: 'interactive',
     prompt: 'Would you like to add AI agent configuration files?',
     default: 'none',
-    choices: ['none', 'agents', 'copilot', 'both'],
+    choices: ['none', 'copilot'],
   },
   {
     key: 'stateManagement',
