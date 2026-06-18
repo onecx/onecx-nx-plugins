@@ -1,7 +1,15 @@
-import { names, readProjectConfiguration, Tree, updateProjectConfiguration } from '@nx/devkit';
+import {
+  names,
+  readProjectConfiguration,
+  Tree,
+  updateProjectConfiguration,
+} from '@nx/devkit';
 import { ReactGeneratorSchema } from '../schema';
 
-export function adaptProjectConfiguration(tree: Tree, options: ReactGeneratorSchema) {
+export function adaptProjectConfiguration(
+  tree: Tree,
+  options: ReactGeneratorSchema
+) {
   const projectName = names(options.name).fileName;
   const config = readProjectConfiguration(tree, projectName);
   config.targets['serve'].executor = '@nx/vite:dev-server';
@@ -42,6 +50,6 @@ export function adaptProjectConfiguration(tree: Tree, options: ReactGeneratorSch
       ],
     },
   };
-  config.targets['test'].executor = '@nx/vite:test';
+  config.targets['test'].executor = '@nx/vitest:test';
   updateProjectConfiguration(tree, projectName, config);
 }
