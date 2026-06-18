@@ -95,6 +95,9 @@ export default defineConfig(({ mode }) => {
         external: ['chart.js', 'chart.js/auto', 'quill']
       }
     },
+    optimizeDeps: {
+      exclude: ['chart.js', 'chart.js/auto', 'quill']
+    },
     server: {
       proxy: {
         "/api": {
