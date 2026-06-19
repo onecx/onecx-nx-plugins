@@ -1,7 +1,10 @@
 import { names, Tree, updateJson } from '@nx/devkit';
 import { ReactGeneratorSchema } from '../schema';
 
-export function addBaseToPackageJson(tree: Tree, options: ReactGeneratorSchema) {
+export function addBaseToPackageJson(
+  tree: Tree,
+  options: ReactGeneratorSchema
+) {
   updateJson(tree, 'package.json', (pkgJson) => {
     pkgJson.name = 'onecx-' + names(options.name).fileName + '-ui';
     pkgJson.private = true;
@@ -26,7 +29,10 @@ export function addScriptsToPackageJson(tree: Tree) {
       'apigen'
     ] = `openapi-generator-cli generate -i src/assets/api/openapi-bff.yaml -o src/api/generated -g typescript-fetch --type-mappings AnyType=object --additional-properties=removeOperationIdPrefix=true,removeOperationIdPrefixCount=2`;
     pkgJson.scripts['start'] = 'nx serve';
+    pkgJson.scripts['dev'] = 'vite';
     pkgJson.scripts['build'] = `nx build`;
+    pkgJson.scripts['preview'] = 'vite preview';
+    pkgJson.scripts['preview:host'] = 'vite preview --host';
     pkgJson.scripts['clean'] =
       'npm cache clean --force && npx clear-npx-cache && rm -rf *.log dist reports .nx .eslintcache ./node_modules/.cache/prettier/.prettier-cache';
     pkgJson.scripts['format'] = 'nx format:write --uncommitted';

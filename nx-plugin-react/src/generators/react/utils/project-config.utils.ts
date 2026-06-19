@@ -27,6 +27,7 @@ export function adaptProjectConfiguration(
   config.targets['build'].executor = '@nx/vite:build';
   config.targets['build'].options = {
     ...(config.targets['build'].options ?? {}),
+    outputPath: 'dist',
     assets: [
       ...(config.targets['build'].options?.assets ?? []),
       {
