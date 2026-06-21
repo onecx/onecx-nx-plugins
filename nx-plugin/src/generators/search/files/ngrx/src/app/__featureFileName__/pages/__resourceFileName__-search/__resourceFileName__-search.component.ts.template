@@ -1,4 +1,4 @@
-import { Component, computed, effect, inject, LOCALE_ID, OnInit, ViewChildren, Signal, QueryList } from '@angular/core'
+import { Component, computed, effect, inject, LOCALE_ID, OnInit, viewChildren, Signal } from '@angular/core'
 import { FormBuilder, FormGroup } from '@angular/forms'
 import { Store } from '@ngrx/store'
 import { PrimeIcons } from 'primeng/api'
@@ -38,9 +38,8 @@ export class <%= resourceClassName %>SearchComponent implements OnInit {
   private readonly formBuilder = inject(FormBuilder);
   readonly locale = inject(LOCALE_ID);
 
-  // TODO: use signal after updating libs and pass appropriate value accordingly in buildSearchCriteria.
-  // calendars = viewChildren(DatePicker);
-  @ViewChildren(DatePicker) calendars!: QueryList<DatePicker>
+
+  calendars = viewChildren(DatePicker);
 
   viewModel = toSignal<<%= resourceClassName %>SearchViewModel>(
     this.store.select(select<%= resourceClassName %>SearchViewModel),
@@ -127,7 +126,7 @@ export class <%= resourceClassName %>SearchComponent implements OnInit {
   search(formValue: FormGroup) {
     const searchCriteria = buildSearchCriteria(
       formValue.getRawValue(),
-      this.calendars,
+      Array.from(this.calendars()),
       { removeNullValues: true }
     );
     this.store.dispatch(
