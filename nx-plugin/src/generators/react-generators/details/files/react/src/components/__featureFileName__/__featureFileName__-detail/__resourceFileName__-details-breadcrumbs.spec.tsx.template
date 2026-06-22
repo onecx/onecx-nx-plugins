@@ -12,34 +12,34 @@ describe('<%= resourceClassName %>DetailsBreadcrumbs', () => {
   it('should render breadcrumbs with correct labels', () => {
     render(
       <<%= resourceClassName %>DetailsBreadcrumbs
-        rootLabel="Books"
-        currentLabel="Book Details"
+        rootLabel="Test Feature"
+        currentLabel="Test Details"
         onRootClick={mockOnRootClick}
       />
     );
 
-    expect(screen.getByText('Books')).toBeInTheDocument();
-    expect(screen.getByText('Book Details')).toBeInTheDocument();
+    expect(screen.getByText('Test Feature')).toBeInTheDocument();
+    expect(screen.getByText('Test Details')).toBeInTheDocument();
   });
 
   it('should call onRootClick when root label is clicked', () => {
     render(
       <<%= resourceClassName %>DetailsBreadcrumbs
-        rootLabel="Books"
-        currentLabel="Book Details"
+        rootLabel="Test Feature"
+        currentLabel="Test Details"
         onRootClick={mockOnRootClick}
       />
     );
 
-    fireEvent.click(screen.getByText('Books'));
+    fireEvent.click(screen.getByText('Test Feature'));
     expect(mockOnRootClick).toHaveBeenCalledTimes(1);
   });
 
   it('should call onRootClick when home icon is clicked', () => {
     render(
       <<%= resourceClassName %>DetailsBreadcrumbs
-        rootLabel="Books"
-        currentLabel="Book Details"
+        rootLabel="Test Feature"
+        currentLabel="Test Details"
         onRootClick={mockOnRootClick}
       />
     );
@@ -52,8 +52,8 @@ describe('<%= resourceClassName %>DetailsBreadcrumbs', () => {
   it('should render chevron icon between labels', () => {
     render(
       <<%= resourceClassName %>DetailsBreadcrumbs
-        rootLabel="Books"
-        currentLabel="Book Details"
+        rootLabel="Test Feature"
+        currentLabel="Test Details"
         onRootClick={mockOnRootClick}
       />
     );

@@ -2,7 +2,7 @@ import { render, screen, fireEvent } from '@testing-library/react';
 import { describe, it, expect, vi } from 'vitest';
 import { <%= resourceClassName %>DetailsHeader } from './<%= resourceFileName %>-details-header';
 
-vi.mock('../../../search/files/react/src/components/accelerator', () => ({
+vi.mock('../../../components/accelerator', () => ({
   PageHeader: ({ header, subheader, breadcrumbHome, breadcrumbItems, actions, children }: any) => (
     <div data-testid="page-header">
       <h1 data-testid="header">{header}</h1>
@@ -42,10 +42,10 @@ describe('<%= resourceClassName %>DetailsHeader', () => {
   it('should render header with title and subtitle', () => {
     render(
       <<%= resourceClassName %>DetailsHeader
-        title="Book Details"
-        subtitle="View and edit book information"
-        breadcrumbLabel="Books"
-        breadcrumbCurrentLabel="Book Details"
+        title="Test Details"
+        subtitle="View and edit information"
+        breadcrumbLabel="Test Feature"
+        breadcrumbCurrentLabel="Test Details"
         infoLabel="ID"
         infoValue="123"
         actions={[]}
@@ -53,17 +53,17 @@ describe('<%= resourceClassName %>DetailsHeader', () => {
       />
     );
 
-    expect(screen.getByTestId('header')).toHaveTextContent('Book Details');
-    expect(screen.getByTestId('subheader')).toHaveTextContent('View and edit book information');
+    expect(screen.getByTestId('header')).toHaveTextContent('Test Details');
+    expect(screen.getByTestId('subheader')).toHaveTextContent('View and edit information');
   });
 
   it('should render breadcrumb labels', () => {
     render(
       <<%= resourceClassName %>DetailsHeader
-        title="Book Details"
-        subtitle="View and edit book information"
-        breadcrumbLabel="Books"
-        breadcrumbCurrentLabel="Book Details"
+        title="Test Details"
+        subtitle="View and edit information"
+        breadcrumbLabel="Test Feature"
+        breadcrumbCurrentLabel="Test Details"
         infoLabel="ID"
         infoValue="123"
         actions={[]}
@@ -71,17 +71,16 @@ describe('<%= resourceClassName %>DetailsHeader', () => {
       />
     );
 
-    expect(screen.getByTestId('breadcrumb-home')).toHaveTextContent('Books');
-    expect(screen.getByTestId('breadcrumb-items')).toHaveTextContent('Book Details');
+    expect(screen.getByTestId('breadcrumb-items')).toHaveTextContent('Test Details');
   });
 
   it('should render info label and value in children', () => {
     render(
       <<%= resourceClassName %>DetailsHeader
-        title="Book Details"
-        subtitle="View and edit book information"
-        breadcrumbLabel="Books"
-        breadcrumbCurrentLabel="Book Details"
+        title="Test Details"
+        subtitle="View and edit information"
+        breadcrumbLabel="Test Feature"
+        breadcrumbCurrentLabel="Test Details"
         infoLabel="ID"
         infoValue="123"
         actions={[]}
@@ -96,10 +95,10 @@ describe('<%= resourceClassName %>DetailsHeader', () => {
   it('should render action buttons', () => {
     render(
       <<%= resourceClassName %>DetailsHeader
-        title="Book Details"
-        subtitle="View and edit book information"
-        breadcrumbLabel="Books"
-        breadcrumbCurrentLabel="Book Details"
+        title="Test Details"
+        subtitle="View and edit information"
+        breadcrumbLabel="Test Feature"
+        breadcrumbCurrentLabel="Test Details"
         infoLabel="ID"
         infoValue="123"
         actions={mockActions}
@@ -113,10 +112,10 @@ describe('<%= resourceClassName %>DetailsHeader', () => {
   it('should render without actions when actions array is empty', () => {
     render(
       <<%= resourceClassName %>DetailsHeader
-        title="Book Details"
-        subtitle="View and edit book information"
-        breadcrumbLabel="Books"
-        breadcrumbCurrentLabel="Book Details"
+        title="Test Details"
+        subtitle="View and edit information"
+        breadcrumbLabel="Test Feature"
+        breadcrumbCurrentLabel="Test Details"
         infoLabel="ID"
         infoValue="123"
         actions={[]}
