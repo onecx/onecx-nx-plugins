@@ -1,4 +1,3 @@
-import { Dropdown } from 'primereact/dropdown';
 import { FloatLabel } from 'primereact/floatlabel';
 import { InputText } from 'primereact/inputtext';
 import { type FC } from 'react';
@@ -8,16 +7,6 @@ import { SearchHeader } from '../accelerator';
 import { type <%= resourceClassName %>SearchCriteria } from '../../pages/<%= featureFileName %>/<%= resourceFileName %>-search/<%= resourceFileName %>-search.types';
 
 const SEARCH_PREFIX = '<%= resourceConstantName %>_SEARCH';
-
-const STATUS_OPTIONS: Array<{
-  label: string;
-  value: <%= resourceClassName %>SearchCriteria['status'];
-}> = [
-  { label: 'Select status...', value: '' },
-  { label: 'Open', value: 'Open' },
-  { label: 'In Progress', value: 'In Progress' },
-  { label: 'Closed', value: 'Closed' },
-];
 
 type Translate = ReturnType<typeof useTranslation>['t'];
 
@@ -76,64 +65,20 @@ export const <%= resourceClassName %>SearchHeaderSection: FC<<%= resourceClassNa
     <div className="w-full md:w-15rem md:flex-none">
       <FloatLabel>
         <InputText
-          id="<%= resourceFileName %>-search-query"
-          value={criteria.query}
-          placeholder={t(`${SEARCH_PREFIX}.CRITERIA.QUERY.PLACEHOLDER`)}
-          aria-label={t(`${SEARCH_PREFIX}.CRITERIA.QUERY.ARIA_LABEL`)}
+          id="<%= resourceFileName %>-search-change-me"
+          value={criteria.changeMe}
+          placeholder={t(`${SEARCH_PREFIX}.CRITERIA.CHANGE_ME.PLACEHOLDER`)}
+          aria-label={t(`${SEARCH_PREFIX}.CRITERIA.CHANGE_ME.ARIA_LABEL`)}
           className="w-full"
           onChange={(event) =>
             onCriteriaChange({
               ...criteria,
-              query: event.target.value,
+              changeMe: event.target.value,
             })
           }
         />
-        <label htmlFor="<%= resourceFileName %>-search-query">
-          {t(`${SEARCH_PREFIX}.CRITERIA.QUERY.LABEL`)}
-        </label>
-      </FloatLabel>
-    </div>
-
-    <div className="w-full md:w-15rem md:flex-none">
-      <FloatLabel>
-        <Dropdown
-          id="<%= resourceFileName %>-search-status"
-          value={criteria.status}
-          options={STATUS_OPTIONS}
-          optionLabel="label"
-          optionValue="value"
-          className="w-full"
-          aria-label={t(`${SEARCH_PREFIX}.CRITERIA.STATUS.ARIA_LABEL`)}
-          onChange={(event) =>
-            onCriteriaChange({
-              ...criteria,
-              status: event.value as <%= resourceClassName %>SearchCriteria['status'],
-            })
-          }
-        />
-        <label htmlFor="<%= resourceFileName %>-search-status">
-          {t(`${SEARCH_PREFIX}.CRITERIA.STATUS.LABEL`)}
-        </label>
-      </FloatLabel>
-    </div>
-
-    <div className="w-full md:w-15rem md:flex-none">
-      <FloatLabel>
-        <InputText
-          id="<%= resourceFileName %>-search-owner"
-          value={criteria.owner}
-          placeholder={t(`${SEARCH_PREFIX}.CRITERIA.OWNER.PLACEHOLDER`)}
-          aria-label={t(`${SEARCH_PREFIX}.CRITERIA.OWNER.ARIA_LABEL`)}
-          className="w-full"
-          onChange={(event) =>
-            onCriteriaChange({
-              ...criteria,
-              owner: event.target.value,
-            })
-          }
-        />
-        <label htmlFor="<%= resourceFileName %>-search-owner">
-          {t(`${SEARCH_PREFIX}.CRITERIA.OWNER.LABEL`)}
+        <label htmlFor="<%= resourceFileName %>-search-change-me">
+          {t(`${SEARCH_PREFIX}.CRITERIA.CHANGE_ME.LABEL`)}
         </label>
       </FloatLabel>
     </div>

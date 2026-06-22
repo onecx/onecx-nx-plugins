@@ -12,35 +12,23 @@
     },
     "RESULTS": {
       "ID": "ID",
-      "TITLE": "Titel",
-      "STATUS": "Status",
-      "PRIORITY": "Priorität",
-      "OWNER": "Verantwortlich",
-      "DESCRIPTION": "Beschreibung",
       "ACTIONS": "Aktionen",
       "COLUMN_GROUP": "Spaltengruppe",
       "COLUMN_SETTINGS": "Spalteneinstellungen",
       "NAME": "Suchergebnisse"
+    },
+    "ERROR_MESSAGES": {
+      "SEARCH_RESULTS_LOADING_FAILED": "Suchergebnisse konnten nicht geladen werden."
     },
     "CRITERIA": {
       "ACTIONS": {
         "SEARCH": "Suchen",
         "RESET": "Zurücksetzen"
       },
-      "QUERY": {
-        "LABEL": "Suchbegriff",
-        "PLACEHOLDER": "Nach ID, Titel oder Beschreibung suchen",
-        "ARIA_LABEL": "Suchbegriff"
-      },
-      "STATUS": {
-        "LABEL": "Status",
-        "PLACEHOLDER": "Status auswählen",
-        "ARIA_LABEL": "Status"
-      },
-      "OWNER": {
-        "LABEL": "Verantwortlich",
-        "PLACEHOLDER": "Nach Verantwortlichem suchen",
-        "ARIA_LABEL": "Verantwortlich"
+      "CHANGE_ME": {
+        "LABEL": "Change Me",
+        "PLACEHOLDER": "Durch echte Suchkriterien ersetzen",
+        "ARIA_LABEL": "Change Me"
       }
     }
   }

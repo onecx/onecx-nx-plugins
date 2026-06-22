@@ -15,56 +15,29 @@ import { GeneratorProcessor } from '../../shared/generator.utils';
 import processParams, {
   GeneratorParameter,
 } from '../../shared/parameters.utils';
-import { GeneralOpenAPIStep } from './steps/general-openapi.step';
-import { GeneralPermissionsStep } from './steps/general-permissions.step';
 import { GeneralTranslationsStep } from './steps/general-translations.step';
-import { ReactFeatureRoutesStep } from './steps/react-feature-routes.step';
 import { ReactFeaturePageRegistrationStep } from './steps/react-feature-page-registration.step';
+import { ReactFeatureRoutesStep } from './steps/react-feature-routes.step';
 
-import { SearchGeneratorSchema } from './schema';
+import { ReactPageGeneratorSchema } from './schema';
+import { GeneralPermissionsStep } from './steps/general-permissions.step';
 
-const PARAMETERS: GeneratorParameter<SearchGeneratorSchema>[] = [
+const PARAMETERS: GeneratorParameter<ReactPageGeneratorSchema>[] = [
   {
-    key: 'customizeNamingForAPI',
-    type: 'boolean',
-    required: 'interactive',
-    default: false,
-    prompt: 'Do you want to customize the names for the generated API?',
-  },
-  {
-    key: 'resource',
+    key: 'pageName',
     type: 'text',
-    required: 'interactive',
-    default: (values) => `${names(values.featureName).className}`,
-    prompt: 'Provide a name for the Resource (e.g. Book): ',
+    required: 'always',
+    default: 'Page',
+    prompt: 'Provide a name for the page (e.g. "Book" for BookPage): ',
     showInSummary: true,
-    showRules: [{ showIf: (values) => values.customizeNamingForAPI }],
   },
   {
-    key: 'searchRequestName',
+    key: 'pageTitle',
     type: 'text',
-    required: 'interactive',
-    default: (values) => `Search${names(values.resource).className}Request`,
-    prompt: 'Provide a name for the Search Request (e.g. SearchBookRequest): ',
+    required: 'always',
+    default: 'Page Title',
+    prompt: 'Provide a title for the page: ',
     showInSummary: true,
-    showRules: [{ showIf: (values) => values.customizeNamingForAPI }],
-  },
-  {
-    key: 'searchResponseName',
-    type: 'text',
-    required: 'interactive',
-    default: (values) => `Search${names(values.resource).className}Response`,
-    prompt:
-      'Provide a name for the Search Response (e.g. SearchBookResponse): ',
-    showInSummary: true,
-    showRules: [{ showIf: (values) => values.customizeNamingForAPI }],
-  },
-  {
-    key: 'serviceName',
-    type: 'text',
-    required: 'never',
-    default: (values) =>
-      GeneratorProcessor.getServiceName(`${names(values.resource).className}`),
   },
   {
     key: 'standalone',
@@ -74,18 +47,18 @@ const PARAMETERS: GeneratorParameter<SearchGeneratorSchema>[] = [
   },
 ];
 
-export async function searchGenerator(
+export async function pageGenerator(
   tree: Tree,
-  options: SearchGeneratorSchema
+  options: ReactPageGeneratorSchema
 ): Promise<GeneratorCallback> {
-  const parameters = await processParams<SearchGeneratorSchema>(
+  const parameters = await processParams<ReactPageGeneratorSchema>(
     PARAMETERS,
     options
   );
   Object.assign(options, parameters);
 
   const spinner = ora(
-    `Adding React search to feature "${options.featureName}"`
+    `Adding React page to feature "${options.featureName}"`
   ).start();
 
   const pkg = readJson(tree, 'package.json');
@@ -102,17 +75,21 @@ export async function searchGenerator(
 
   const directory = '.';
   const featureNames = names(options.featureName);
-  const resourceNames = names(options.resource);
+  const pageNames = names(options.pageName);
 
   const templateVariables = {
     ...options,
     featureFileName: featureNames.fileName,
     featureClassName: featureNames.className,
     featurePropertyName: featureNames.propertyName,
-    resourceFileName: resourceNames.fileName,
-    resourceClassName: resourceNames.className,
-    resourcePropertyName: resourceNames.propertyName,
-    resourceConstantName: resourceNames.constantName,
+    featureConstantName: featureNames.constantName,
+    pageFileName: pageNames.fileName,
+    pageClassName: pageNames.className,
+    pagePropertyName: pageNames.propertyName,
+    pageConstantName: pageNames.constantName,
+    pageName: options.pageName,
+    pageTitle: options.pageTitle,
+    standalone: options.standalone,
   };
 
   generateFiles(
@@ -122,21 +99,17 @@ export async function searchGenerator(
     templateVariables
   );
 
-  generateFiles(
-    tree,
-    joinPathFragments(
-      __dirname,
-      './files/react/src/components/__featureFileName__/__resourceFileName__-search'
-    ),
-    `${directory}/src/components/${resourceNames.fileName}`,
-    templateVariables
-  );
-
+  // The page reuses the shared accelerator components (PortalPage, PageHeader,
+  // Content). They are owned by the react-search generator; scaffold them here
+  // only when they are not already present so the page works standalone.
   const acceleratorIndexPath = 'src/components/accelerator/index.ts';
   if (!tree.exists(acceleratorIndexPath)) {
     generateFiles(
       tree,
-      joinPathFragments(__dirname, './files/react/src/components/accelerator'),
+      joinPathFragments(
+        __dirname,
+        '../search/files/react/src/components/accelerator'
+      ),
       `${directory}/src/components/accelerator`,
       templateVariables
     );
@@ -146,28 +119,23 @@ export async function searchGenerator(
     );
   }
 
-  const generatorProcessor = new GeneratorProcessor<SearchGeneratorSchema>();
+  const generatorProcessor = new GeneratorProcessor<ReactPageGeneratorSchema>();
   generatorProcessor.addStep(new ReactFeaturePageRegistrationStep());
   generatorProcessor.addStep(new ReactFeatureRoutesStep());
   generatorProcessor.addStep(new GeneralTranslationsStep());
-  generatorProcessor.addStep(new GeneralOpenAPIStep());
   generatorProcessor.addStep(new GeneralPermissionsStep());
   await generatorProcessor.run(tree, options, spinner, true);
 
   await formatFiles(tree);
-  spinner.succeed('React search generator scaffold is ready.');
+  spinner.succeed('React page generator scaffold is ready.');
 
   return () => {
     let cmd = '';
 
     function log(command: string) {
       console.log('');
-      console.log('generate react search ==> ' + command);
+      console.log('generate react page ==> ' + command);
     }
-
-    cmd = 'npm run apigen ';
-    log(cmd);
-    execSync(cmd, { cwd: tree.root, stdio: 'inherit' });
 
     installPackagesTask(tree);
 
@@ -191,4 +159,4 @@ export async function searchGenerator(
   };
 }
 
-export default searchGenerator;
+export default pageGenerator;

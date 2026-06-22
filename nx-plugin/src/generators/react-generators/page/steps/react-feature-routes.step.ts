@@ -5,15 +5,15 @@ import {
   GeneratorStepError,
 } from '../../../shared/generator.utils';
 import { safeReplace } from '../../../shared/safeReplace';
-import { SearchGeneratorSchema } from '../schema';
+import { ReactPageGeneratorSchema } from '../schema';
 
 export class ReactFeatureRoutesStep
-  implements GeneratorStep<SearchGeneratorSchema>
+  implements GeneratorStep<ReactPageGeneratorSchema>
 {
-  process(tree: Tree, options: SearchGeneratorSchema): void {
+  process(tree: Tree, options: ReactPageGeneratorSchema): void {
     const featureFileName = names(options.featureName).fileName;
-    const resourceFileName = names(options.resource).fileName;
-    const resourceClassName = names(options.resource).className;
+    const pageFileName = names(options.pageName).fileName;
+    const pageClassName = names(options.pageName).className;
     const routeFilePath = 'src/router.tsx';
 
     if (!tree.exists(routeFilePath)) {
@@ -22,16 +22,11 @@ export class ReactFeatureRoutesStep
       );
     }
 
-    const pageComponentName = `${resourceClassName}SearchPage`;
-    const importPath = `./pages/${featureFileName}/${resourceFileName}-search/${resourceFileName}-search.page`;
-
-    const content = tree.read(routeFilePath, 'utf8') ?? '';
-    if (content.includes(`element: <${pageComponentName} />`)) {
-      return;
-    }
+    const pageComponentName = `${pageClassName}Page`;
+    const importPath = `./pages/${featureFileName}/${pageFileName}/${pageFileName}.page`;
 
     safeReplace(
-      `Add search import to React router`,
+      `Add page import to React router`,
       routeFilePath,
       'import "./i18n/config";',
       `import "./i18n/config";
@@ -40,11 +35,11 @@ export class ReactFeatureRoutesStep
     );
 
     safeReplace(
-      `Add search route to React router`,
+      `Add page route to React router`,
       routeFilePath,
       '    ];',
       `    {
-      path: \`\${href}/${resourceFileName}-search\`,
+      path: \`\${href}/${featureFileName}/${pageFileName}\`,
       element: <${pageComponentName} />,
       handle: {},
     },

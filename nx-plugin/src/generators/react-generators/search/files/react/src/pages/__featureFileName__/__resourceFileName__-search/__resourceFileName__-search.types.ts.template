@@ -1,18 +1,12 @@
+import { type <%= resourceClassName %> } from '../../../api/api';
+
 // ACTION S3: Define/adjust the search criteria
 export interface <%= resourceClassName %>SearchCriteria {
-  query: string;
-  status: '' | 'Open' | 'In Progress' | 'Closed';
-  owner: string;
+  changeMe: string;
 }
 
-export interface <%= resourceClassName %>SearchRow {
-  id: string;
-  title: string;
-  status: 'Open' | 'In Progress' | 'Closed';
-  priority: 'High' | 'Medium' | 'Low';
-  owner: string;
-  description: string;
-}
+// Row shape shown in the results table (aligned to the generated <%= resourceClassName %> model)
+export type <%= resourceClassName %>SearchRow = <%= resourceClassName %>;
 
 export interface SearchColumn<T extends object> {
   field: keyof T;
@@ -21,9 +15,7 @@ export interface SearchColumn<T extends object> {
 
 // ACTION S3: Adjust the initial search criteria values
 export const initial<%= resourceClassName %>SearchCriteria: <%= resourceClassName %>SearchCriteria = {
-  query: '',
-  status: '',
-  owner: '',
+  changeMe: '',
 };
 
 // ACTION S6: Define search results columns
@@ -32,24 +24,5 @@ export const <%= resourcePropertyName %>SearchColumns: SearchColumn<<%= resource
     field: 'id',
     headerKey: '<%= resourceConstantName %>_SEARCH.RESULTS.ID',
   },
-  {
-    field: 'title',
-    headerKey: '<%= resourceConstantName %>_SEARCH.RESULTS.TITLE',
-  },
-  {
-    field: 'status',
-    headerKey: '<%= resourceConstantName %>_SEARCH.RESULTS.STATUS',
-  },
-  {
-    field: 'priority',
-    headerKey: '<%= resourceConstantName %>_SEARCH.RESULTS.PRIORITY',
-  },
-  {
-    field: 'owner',
-    headerKey: '<%= resourceConstantName %>_SEARCH.RESULTS.OWNER',
-  },
-  {
-    field: 'description',
-    headerKey: '<%= resourceConstantName %>_SEARCH.RESULTS.DESCRIPTION',
-  },
+  // ACTION S6: add more columns to match your entity
 ];
