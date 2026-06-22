@@ -1,43 +1,50 @@
-import { type FC, type PropsWithChildren } from 'react';
+import { type CSSProperties, type FC, type PropsWithChildren } from 'react';
 
 import { usePermissions, type PermissionInput } from './usePermissions';
 
-/**
- * React equivalent of the OneCX Angular `ocx-portal-page` page wrapper.
- *
- * Provides the page-level semantics: an aria-labelled container and optional
- * permission gating. In Angular the granted permissions come from the portal
- * shell; here they come from `PermissionsProvider` (grant-all by default), so
- * the page renders unchanged until a real permission source is wired at the
- * app root. Pass `permission` to require a permission to view the page; omit it
- * (e.g. for standalone apps) to always render.
- *
- * Note: Angular's `helpArticleId` is intentionally not implemented yet — there
- * is no OneCX React help shell available to back it.
- */
 export type PortalPageProps = PropsWithChildren<{
   permission?: PermissionInput;
   ariaLabel?: string;
   className?: string;
+  style?: CSSProperties;
+  unauthorizedTitle?: string;
   unauthorizedMessage?: string;
 }>;
+
+const CONTAINER_STYLE: CSSProperties = {
+  display: 'block',
+  padding: 'var(--page-padding, 1rem)',
+  height: '100%',
+};
+
+const CONTENT_WRAPPER_STYLE: CSSProperties = {
+  width: '100%',
+  height: '100%',
+};
 
 export const PortalPage: FC<PortalPageProps> = ({
   permission,
   ariaLabel,
-  className = 'flex flex-column gap-3',
+  className,
+  style,
+  unauthorizedTitle = 'Unauthorized',
   unauthorizedMessage = 'You do not have permission to view this page.',
   children,
 }) => {
   const { hasPermission } = usePermissions();
 
   return (
-    <main aria-label={ariaLabel} className={className}>
-      {hasPermission(permission) ? (
-        children
-      ) : (
-        <div className="p-4 text-center text-600">{unauthorizedMessage}</div>
-      )}
+    <main aria-label={ariaLabel} className={className} style={{ ...CONTAINER_STYLE, ...style }}>
+      <div className="content-wrapper" style={CONTENT_WRAPPER_STYLE}>
+        {hasPermission(permission) ? (
+          children
+        ) : (
+          <>
+            <h3>{unauthorizedTitle}</h3>
+            <p>{unauthorizedMessage}</p>
+          </>
+        )}
+      </div>
     </main>
   );
 };
