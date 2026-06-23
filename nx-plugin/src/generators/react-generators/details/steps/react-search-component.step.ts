@@ -17,23 +17,26 @@ export class ReactSearchComponentStep
       return;
     }
 
-    if (!tree.read(filePath, 'utf8')?.includes('useAppHref')) {
+    // Add useNavigate import
+    if (!tree.read(filePath, 'utf8')?.includes('useNavigate')) {
       safeReplace(
-        `Add useAppHref import to ${resourceClassName}SearchPage`,
+        `Add useNavigate import to ${resourceClassName}SearchPage`,
         filePath,
-        "import { useTranslation } from 'react-i18next';",
-        `import { useTranslation } from 'react-i18next';\nimport { useAppHref } from '../../../../libs/react-webcomponents/src/lib/routing.utils';`,
+        'import { useTranslation } from "react-i18next";',
+        'import { useTranslation } from "react-i18next";\nimport { useNavigate } from "react-router";',
         tree
       );
     }
 
-    // Add href const after the useTranslation hook
-    if (!tree.read(filePath, 'utf8')?.includes('const { href } = useAppHref()')) {
+    // Add navigate const after the useTranslation hook
+    if (
+      !tree.read(filePath, 'utf8')?.includes('const navigate = useNavigate()')
+    ) {
       safeReplace(
-        `Add href const to ${resourceClassName}SearchPage`,
+        `Add navigate const to ${resourceClassName}SearchPage`,
         filePath,
         'const { t } = useTranslation();',
-        'const { t } = useTranslation();\n  const { href } = useAppHref();',
+        'const { t } = useTranslation();\n  const navigate = useNavigate();',
         tree
       );
     }
@@ -41,8 +44,8 @@ export class ReactSearchComponentStep
     // Add the view handler that navigates to the details page
     if (!tree.read(filePath, 'utf8')?.includes('const handleViewItem =')) {
       const findMethod = 'const handleReset = () => {';
-      const replaceWithMethod = `const handleViewItem = (item: { id: string }) => {
-    window.location.href = \`\${href}/${featureFileName}/\${item.id}\`;
+      const replaceWithMethod = `const handleViewItem = (item: ${resourceClassName}SearchRow) => {
+    navigate(\`./\${item.id}\`);
   };
 
   const handleReset = () => {`;

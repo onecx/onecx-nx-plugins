@@ -1,9 +1,6 @@
 import { Tree, joinPathFragments, names } from '@nx/devkit';
 
-import {
-  GeneratorStep,
-  GeneratorStepError,
-} from '../../../shared/generator.utils';
+import { GeneratorStep } from '../../../shared/generator.utils';
 import {
   COMMENT_KEY,
   OpenAPIUtil,
@@ -17,17 +14,20 @@ export class GeneralOpenAPIStep
   process(tree: Tree, options: DetailsGeneratorSchema): void {
     const openApiFolderPath = 'src/assets/api';
     const bffOpenApiPath = 'openapi-bff.yaml';
-    const bffOpenApiContent = tree.read(
+    let bffOpenApiContent = tree.read(
       joinPathFragments(openApiFolderPath, bffOpenApiPath),
       'utf8'
     );
+
+    // Create the file if it doesn't exist
     if (!bffOpenApiContent) {
-      throw new GeneratorStepError(
-        `OpenAPI file not found or empty: ${joinPathFragments(
-          openApiFolderPath,
-          bffOpenApiPath
-        )}`
+      const templatePath = joinPathFragments(
+        'nx-plugin/src/generators/react-generators/files/src/assets/api',
+        'openapi-bff.yaml.template'
       );
+      const defaultOpenApiContent = tree.read(templatePath, 'utf8');
+      tree.write(joinPathFragments(openApiFolderPath, bffOpenApiPath), defaultOpenApiContent);
+      bffOpenApiContent = defaultOpenApiContent;
     }
 
     const resource = options.resource;
@@ -132,7 +132,7 @@ export class GeneralOpenAPIStep
             dataObject: {
               $ref: `#/components/schemas/${resource}`,
             },
-            [COMMENT_KEY]: 'ACTION DE1: modify resource or use flat list here',
+            [COMMENT_KEY]: 'ACTION DE1: Modify resource or use flat list here',
           },
         });
     }
@@ -184,7 +184,7 @@ export class GeneralOpenAPIStep
         id: {
           type: 'string',
         },
-        [COMMENT_KEY]: 'ACTION: add additional properties here',
+        [COMMENT_KEY]: 'ACTION D1: Add additional entity properties here',
       },
     });
 

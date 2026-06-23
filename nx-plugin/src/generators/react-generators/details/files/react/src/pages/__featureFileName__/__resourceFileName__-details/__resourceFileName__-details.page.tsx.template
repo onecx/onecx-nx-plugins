@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useParams, useNavigate } from 'react-router';
 import { Message } from 'primereact/message';
 import { ProgressSpinner } from 'primereact/progressspinner';
@@ -9,6 +9,7 @@ import {
   use<%= resourceClassName %>Details,
 } from './<%= resourceFileName %>-details.hook';
 import type { <%= resourceClassName %>DetailsFormData } from './<%= resourceFileName %>-details.types';
+import { use<%= resourceClassName %>DetailsStore } from './<%= resourceFileName %>-details.store';
 
 import <%= resourceClassName %>DetailsDialogs from '../../../components/<%= featureFileName %>/<%= featureFileName %>-detail/<%= resourceFileName %>-details-dialogs';
 import <%= resourceClassName %>DetailsForm from '../../../components/<%= featureFileName %>/<%= featureFileName %>-detail/<%= resourceFileName %>-details-form';
@@ -21,16 +22,23 @@ export const <%= resourceClassName %>DetailsPage = () => {
   const navigate = useNavigate();
   const { href } = useAppHref();
   <%_ if(editMode){ _%>
-  const [editMode, setEditMode] = useState(false);
-  const [formData, setFormData] = useState<<%= resourceClassName %>DetailsFormData>({
-    id: '',
-    modificationCount: 0,
-  });
-  const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
-  const [showCancelConfirm, setShowCancelConfirm] = useState(false);
+  const {
+    editMode,
+    formData,
+    hasUnsavedChanges,
+    showCancelConfirm,
+    setEditMode,
+    setFormData,
+    setHasUnsavedChanges,
+    setShowCancelConfirm,
+    resetFormData,
+  } = use<%= resourceClassName %>DetailsStore();
   <%_ } _%>
   <%_ if(allowDelete){ _%>
-  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const {
+    showDeleteConfirm,
+    setShowDeleteConfirm,
+  } = use<%= resourceClassName %>DetailsStore();
   <%_ } _%>
 
   const {
@@ -56,13 +64,13 @@ export const <%= resourceClassName %>DetailsPage = () => {
   <%_ if(editMode){ _%>
   useEffect(() => {
     if (details && !editMode) {
-      setFormData({
+      resetFormData({
         id: details.id,
         modificationCount: details.modificationCount,
+        // ACTION D5: Add additional form field initializations here
       });
-      setHasUnsavedChanges(false);
     }
-  }, [details, editMode]);
+  }, [details, editMode, resetFormData]);
   <%_ } _%>
 
   const handleBack = () => {
@@ -86,9 +94,10 @@ export const <%= resourceClassName %>DetailsPage = () => {
     setEditMode(false);
     setHasUnsavedChanges(false);
     if (details) {
-      setFormData({
+      resetFormData({
         id: details.id,
         modificationCount: details.modificationCount,
+        // ACTION D5: Add additional form field initializations here
       });
     }
     setShowCancelConfirm(false);
@@ -113,7 +122,7 @@ export const <%= resourceClassName %>DetailsPage = () => {
   };
 
   const handleInputChange = (field: keyof <%= resourceClassName %>DetailsFormData, value: string | number) => {
-    setFormData((prev) => ({ ...prev, [field]: value }));
+    setFormData({ ...formData, [field]: value });
     setHasUnsavedChanges(true);
   };
   <%_ } _%>
@@ -173,7 +182,7 @@ export const <%= resourceClassName %>DetailsPage = () => {
         labelKey: '',
         icon: 'pi pi-ellipsis-v',
         actionCallback: () => {
-          // TODO: add callback
+          // ACTION D4: Add callback for additional header actions
         },
       },
     ];
@@ -196,20 +205,20 @@ export const <%= resourceClassName %>DetailsPage = () => {
 
   if (loading) {
     return (
-      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '4rem', gap: '1rem' }}>
+      <div className="flex flex-column align-items-center justify-content-center p-4 gap-2">
         <ProgressSpinner />
-        <p style={{ color: '#6c757d' }}>Loading details...</p>
+        <p className="text-600">Loading details...</p>
       </div>
     );
   }
 
   if (error) {
     return (
-      <div style={{ padding: '2rem' }}>
+      <div className="p-2">
         <Message
           severity="error"
           text={`Error loading details: ${error}`}
-          style={{ margin: '1rem 0' }}
+          className="mb-4"
         />
       </div>
     );
@@ -217,24 +226,18 @@ export const <%= resourceClassName %>DetailsPage = () => {
 
   if (!details) {
     return (
-      <div style={{ padding: '2rem' }}>
+      <div className="p-2">
         <Message
           severity="info"
           text="No details found"
-          style={{ margin: '1rem 0' }}
+          className="mb-4"
         />
       </div>
     );
   }
 
   return (
-    <section
-      style={{
-        display: 'grid',
-        gap: '0.5rem',
-        padding: '0.2rem 0.5rem 0.5rem 0.5rem',
-      }}
-    >
+    <section className="flex flex-column gap-2 p-1">
       <<%= resourceClassName %>DetailsHeader
         title="<%= resourceClassName %> Details"
         subtitle="Display of <%= resourceClassName %> Details"

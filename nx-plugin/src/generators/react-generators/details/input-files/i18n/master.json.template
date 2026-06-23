@@ -16,6 +16,7 @@
     "FORM": {
       "ID": "ID",
       "MODIFICATION_COUNT": "Modification Count"
+      // ACTION D3: Add additional form field translation keys here
     }
   }
 }

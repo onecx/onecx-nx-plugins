@@ -2,8 +2,10 @@ import { render, screen, waitFor, fireEvent } from '@testing-library/react';
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { <%= resourceClassName %>DetailsPage } from './<%= resourceFileName %>-details.page';
 import { use<%= resourceClassName %>Details } from './<%= resourceFileName %>-details.hook';
+import { use<%= resourceClassName %>DetailsStore } from './<%= resourceFileName %>-details.store';
 
 vi.mock('./<%= resourceFileName %>-details.hook');
+vi.mock('./<%= resourceFileName %>-details.store');
 
 vi.mock('../../../../libs/react-webcomponents/src/lib/routing.utils', () => ({
   useAppHref: () => ({ href: '' }),
@@ -27,10 +29,12 @@ describe('<%= resourceClassName %>DetailsPage', () => {
 
   beforeEach(async () => {
     vi.clearAllMocks();
+
     (use<%= resourceClassName %>Details as any).mockReturnValue({
       details: {
         id: 'test-id',
         modificationCount: 0,
+        // ACTION D11: Adjust test data to match your detail properties
       },
       loading: false,
       error: null,
@@ -41,6 +45,27 @@ describe('<%= resourceClassName %>DetailsPage', () => {
       <%_ } _%>
       <%_ if(allowDelete){ _%>
       deleteDetails: vi.fn().mockResolvedValue(true),
+      <%_ } _%>
+    });
+
+    (use<%= resourceClassName %>DetailsStore as any).mockReturnValue({
+      <%_ if(editMode){ _%>
+      editMode: false,
+      formData: {
+        id: '',
+        modificationCount: 0,
+      },
+      hasUnsavedChanges: false,
+      showCancelConfirm: false,
+      setEditMode: vi.fn(),
+      setFormData: vi.fn(),
+      setHasUnsavedChanges: vi.fn(),
+      setShowCancelConfirm: vi.fn(),
+      resetFormData: vi.fn(),
+      <%_ } _%>
+      <%_ if(allowDelete){ _%>
+      showDeleteConfirm: false,
+      setShowDeleteConfirm: vi.fn(),
       <%_ } _%>
     });
 
@@ -71,6 +96,7 @@ describe('<%= resourceClassName %>DetailsPage', () => {
       loading: true,
       error: null,
       fetchDetails: vi.fn(),
+      // ACTION D11: Adjust test data to match your detail properties
       <%_ if(editMode){ _%>
       isSubmitting: false,
       updateDetails: vi.fn(),
@@ -90,6 +116,7 @@ describe('<%= resourceClassName %>DetailsPage', () => {
       loading: false,
       error: 'Test error',
       fetchDetails: vi.fn(),
+      // ACTION D11: Adjust test data to match your detail properties
       <%_ if(editMode){ _%>
       isSubmitting: false,
       updateDetails: vi.fn(),
@@ -121,50 +148,97 @@ describe('<%= resourceClassName %>DetailsPage', () => {
   });
 
   <%_ if(editMode){ _%>
-  it('should enter edit mode when Edit button is clicked', () => {
+  it('should render edit mode actions when store is in edit mode', () => {
+    (use<%= resourceClassName %>DetailsStore as any).mockReturnValue({
+      editMode: true,
+      formData: {
+        id: 'test-id',
+        modificationCount: 0,
+      },
+      hasUnsavedChanges: false,
+      showCancelConfirm: false,
+      setEditMode: vi.fn(),
+      setFormData: vi.fn(),
+      setHasUnsavedChanges: vi.fn(),
+      setShowCancelConfirm: vi.fn(),
+      resetFormData: vi.fn(),
+      <%_ if(allowDelete){ _%>
+      showDeleteConfirm: false,
+      setShowDeleteConfirm: vi.fn(),
+      <%_ } _%>
+    });
+
     renderComponent();
-    
-    const editButton = screen.getByText('Edit');
-    fireEvent.click(editButton);
 
     expect(screen.getByText('Cancel')).toBeInTheDocument();
     expect(screen.getByText('Save')).toBeInTheDocument();
   });
 
-  it('should cancel edit mode when Cancel button is clicked without changes', () => {
+  it('should cancel edit mode when Cancel button is clicked', () => {
+    const setShowCancelConfirm = vi.fn();
+    const setEditMode = vi.fn();
+    const resetFormData = vi.fn();
+
+    (use<%= resourceClassName %>DetailsStore as any).mockReturnValue({
+      editMode: true,
+      formData: {
+        id: 'test-id',
+        modificationCount: 0,
+      },
+      hasUnsavedChanges: false,
+      showCancelConfirm: false,
+      setEditMode,
+      setFormData: vi.fn(),
+      setHasUnsavedChanges: vi.fn(),
+      setShowCancelConfirm,
+      resetFormData,
+      <%_ if(allowDelete){ _%>
+      showDeleteConfirm: false,
+      setShowDeleteConfirm: vi.fn(),
+      <%_ } _%>
+    });
+
     renderComponent();
-    
-    const editButton = screen.getByText('Edit');
-    fireEvent.click(editButton);
 
     const cancelButton = screen.getByText('Cancel');
     fireEvent.click(cancelButton);
 
-    expect(screen.queryByText('Cancel')).not.toBeInTheDocument();
+    expect(setEditMode).toHaveBeenCalledWith(false);
   });
 
   it('should show confirmation dialog when canceling with unsaved changes', () => {
+    (use<%= resourceClassName %>DetailsStore as any).mockReturnValue({
+      editMode: true,
+      formData: {
+        id: 'test-id',
+        modificationCount: 1,
+      },
+      hasUnsavedChanges: true,
+      showCancelConfirm: true,
+      setEditMode: vi.fn(),
+      setFormData: vi.fn(),
+      setHasUnsavedChanges: vi.fn(),
+      setShowCancelConfirm: vi.fn(),
+      resetFormData: vi.fn(),
+      <%_ if(allowDelete){ _%>
+      showDeleteConfirm: false,
+      setShowDeleteConfirm: vi.fn(),
+      <%_ } _%>
+    });
+
     renderComponent();
-    
-    const editButton = screen.getByText('Edit');
-    fireEvent.click(editButton);
 
-    const input = screen.getByLabelText('Modification Count');
-    fireEvent.change(input, { target: { value: '1' } });
-
-    const cancelButton = screen.getByText('Cancel');
-    fireEvent.click(cancelButton);
-
-    // ConfirmDialog should be visible
     expect(screen.getByText('You have unsaved changes. Are you sure you want to cancel?')).toBeInTheDocument();
   });
 
   it('should save changes when Save button is clicked', async () => {
     const mockUpdateDetails = vi.fn().mockResolvedValue(true);
+
     (use<%= resourceClassName %>Details as any).mockReturnValue({
       details: {
         id: 'test-id',
         modificationCount: 0,
+        // ACTION D11: Adjust test data to match your detail properties
       },
       loading: false,
       error: null,
@@ -176,13 +250,26 @@ describe('<%= resourceClassName %>DetailsPage', () => {
       <%_ } _%>
     });
 
-    renderComponent();
-    
-    const editButton = screen.getByText('Edit');
-    fireEvent.click(editButton);
+    (use<%= resourceClassName %>DetailsStore as any).mockReturnValue({
+      editMode: true,
+      formData: {
+        id: 'test-id',
+        modificationCount: 1,
+      },
+      hasUnsavedChanges: true,
+      showCancelConfirm: false,
+      setEditMode: vi.fn(),
+      setFormData: vi.fn(),
+      setHasUnsavedChanges: vi.fn(),
+      setShowCancelConfirm: vi.fn(),
+      resetFormData: vi.fn(),
+      <%_ if(allowDelete){ _%>
+      showDeleteConfirm: false,
+      setShowDeleteConfirm: vi.fn(),
+      <%_ } _%>
+    });
 
-    const input = screen.getByLabelText('Modification Count');
-    fireEvent.change(input, { target: { value: '1' } });
+    renderComponent();
 
     const saveButton = screen.getByText('Save');
     fireEvent.click(saveButton);
@@ -195,21 +282,38 @@ describe('<%= resourceClassName %>DetailsPage', () => {
 
   <%_ if(allowDelete){ _%>
   it('should show confirmation when Delete button is clicked', () => {
+    (use<%= resourceClassName %>DetailsStore as any).mockReturnValue({
+      <%_ if(editMode){ _%>
+      editMode: false,
+      formData: {
+        id: 'test-id',
+        modificationCount: 0,
+      },
+      hasUnsavedChanges: false,
+      showCancelConfirm: false,
+      setEditMode: vi.fn(),
+      setFormData: vi.fn(),
+      setHasUnsavedChanges: vi.fn(),
+      setShowCancelConfirm: vi.fn(),
+      resetFormData: vi.fn(),
+      <%_ } _%>
+      showDeleteConfirm: true,
+      setShowDeleteConfirm: vi.fn(),
+    });
+
     renderComponent();
-    
-    const deleteButton = screen.getByText('Delete');
-    fireEvent.click(deleteButton);
 
     expect(screen.getByText('Are you sure you want to delete this item?')).toBeInTheDocument();
   });
 
   it('should delete and navigate when confirmed', async () => {
     const mockDeleteDetails = vi.fn().mockResolvedValue(true);
-    
+
     (use<%= resourceClassName %>Details as any).mockReturnValue({
       details: {
         id: 'test-id',
         modificationCount: 0,
+        // ACTION D11: Adjust test data to match your detail properties
       },
       loading: false,
       error: null,
@@ -221,10 +325,26 @@ describe('<%= resourceClassName %>DetailsPage', () => {
       deleteDetails: mockDeleteDetails,
     });
 
+    (use<%= resourceClassName %>DetailsStore as any).mockReturnValue({
+      <%_ if(editMode){ _%>
+      editMode: false,
+      formData: {
+        id: 'test-id',
+        modificationCount: 0,
+      },
+      hasUnsavedChanges: false,
+      showCancelConfirm: false,
+      setEditMode: vi.fn(),
+      setFormData: vi.fn(),
+      setHasUnsavedChanges: vi.fn(),
+      setShowCancelConfirm: vi.fn(),
+      resetFormData: vi.fn(),
+      <%_ } _%>
+      showDeleteConfirm: true,
+      setShowDeleteConfirm: vi.fn(),
+    });
+
     renderComponent();
-    
-    const deleteButton = screen.getByText('Delete');
-    fireEvent.click(deleteButton);
 
     const confirmButton = screen.getByText('Yes');
     fireEvent.click(confirmButton);
