@@ -1,8 +1,19 @@
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { withApp } from '@onecx/react-utils'
-import AppRouter from './router'
+import { AppRoutes } from './router'
+
+const queryClient = new QueryClient()
 
 // Wrap routes with portal-aware providers/configuration.
-export default withApp(AppRouter, {
-  PRODUCT_NAME: 'onecx-<%= fileName %>',
-  REMOTES_NAME: 'onecx-<%= fileName %>-ui'
-})
+const App = withApp(
+  (props) => (
+    <QueryClientProvider client={queryClient}>
+      <AppRoutes {...props} />
+    </QueryClientProvider>
+  ),
+  {
+    PRODUCT_NAME: 'onecx-<%= fileName %>',
+    REMOTES_NAME: 'onecx-<%= fileName %>-ui'
+  }
+)
+export default App

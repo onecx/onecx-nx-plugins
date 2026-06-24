@@ -3,23 +3,18 @@ import Welcome from './pages/Welcome'
 import { useAppHref } from '@onecx/react-webcomponents'
 import './i18n/config'
 
-function AppRoutes() {
+export const AppRoutes = () => {
   const { href } = useAppHref()
+  if (!href) return null
+  return <Routes href={href} />
+}
 
+const Routes = ({ href }: { href: string }) => {
   const routes = [
     {
-      path: `${href}/`,
+      path: `${href}/*`,
       element: <Welcome />
     }
   ]
-
-  const routing = useRoutes(routes)
-
-  if (!href) {
-    return null
-  }
-
-  return routing
+  return useRoutes(routes)
 }
-
-export default AppRoutes

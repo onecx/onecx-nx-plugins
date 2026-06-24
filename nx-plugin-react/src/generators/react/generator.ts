@@ -145,6 +145,9 @@ export async function reactGenerator(
       primereact: '^10.9.7',
       primeicons: '^7.0.0',
       primeflex: '^4.0.0',
+      quill: '^2.0.3',
+      'chart.js': '^4.5.0',
+      '@tanstack/react-query': '^5.62.0',
     },
     {
       '@nx/vite': nxVersion,

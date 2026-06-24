@@ -27,7 +27,7 @@ describe('AppRoutes', () => {
     mockUseAppHref.mockReturnValue({ href: '' })
     mockUseRoutes.mockReturnValue(null)
 
-    const { default: AppRoutes } = await import('./router')
+    const { AppRoutes } = await import('./router')
     const { container } = render(<AppRoutes />)
     expect(container.firstChild).toBeNull()
   })
@@ -36,7 +36,7 @@ describe('AppRoutes', () => {
     mockUseAppHref.mockReturnValue({ href: '/app' })
     mockUseRoutes.mockReturnValue(<div>routes</div>)
 
-    const { default: AppRoutes } = await import('./router')
+    const { AppRoutes } = await import('./router')
     const { container } = render(<AppRoutes />)
     expect(container.firstChild).not.toBeNull()
   })
@@ -45,12 +45,12 @@ describe('AppRoutes', () => {
     mockUseAppHref.mockReturnValue({ href: '/app' })
     mockUseRoutes.mockReturnValue(<div>routes</div>)
 
-    const { default: AppRoutes } = await import('./router')
+    const { AppRoutes } = await import('./router')
     render(<AppRoutes />)
 
     expect(mockUseRoutes).toHaveBeenCalledWith([
       {
-        path: '/app/',
+        path: '/app/*',
         element: expect.any(Object)
       }
     ])

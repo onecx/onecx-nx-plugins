@@ -26,14 +26,6 @@ const mfConfig: ModuleFederationOptions = {
       requiredVersion: dependencies["react-router"],
       singleton: true,
     },
-    i18next: {
-      requiredVersion: dependencies.i18next,
-      singleton: true,
-    },
-    "react-i18next": {
-      requiredVersion: dependencies["react-i18next"],
-      singleton: true,
-    },
     primereact: {
       requiredVersion: dependencies.primereact,
       singleton: true,
@@ -66,6 +58,10 @@ const mfConfig: ModuleFederationOptions = {
       requiredVersion: dependencies["@onecx/react-auth"],
       singleton: true,
     },
+    "@tanstack/react-query": {
+      requiredVersion: dependencies["@tanstack/react-query"],
+      singleton: true,
+    },
   },
 };
 export default defineConfig(({ mode }) => {
@@ -95,10 +91,13 @@ export default defineConfig(({ mode }) => {
         external: ['chart.js', 'chart.js/auto', 'quill']
       }
     },
-    optimizeDeps: {
-      exclude: ['chart.js', 'chart.js/auto', 'quill']
-    },
     server: {
+      hmr: false,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Headers': '*',
+        'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, PATCH, OPTIONS'
+      },
       proxy: {
         "/api": {
           target: "http://localhost:8080",
