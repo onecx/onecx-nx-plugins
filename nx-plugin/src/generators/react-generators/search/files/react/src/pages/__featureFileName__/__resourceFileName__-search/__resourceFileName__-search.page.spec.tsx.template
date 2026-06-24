@@ -1,10 +1,23 @@
+import { type ReactElement } from 'react';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 jest.mock('react-i18next', () => ({
   useTranslation: () => ({
     t: (key: string) => key,
   }),
 }));
+
+const renderWithClient = (ui: ReactElement) => {
+  const queryClient = new QueryClient({
+    defaultOptions: {
+      queries: { retry: false },
+    },
+  });
+  return render(
+    <QueryClientProvider client={queryClient}>{ui}</QueryClientProvider>
+  );
+};
 
 const search<%= resource %>Items = jest.fn();
 
@@ -32,13 +45,13 @@ describe('<%= resourceClassName %>SearchPage', () => {
   });
 
   it('renders page header', () => {
-    render(<<%= resourceClassName %>SearchPage />);
+    renderWithClient(<<%= resourceClassName %>SearchPage />);
 
     expect(screen.getByText('<%= resourceConstantName %>_SEARCH.HEADER')).toBeTruthy();
   });
 
   it('loads results from the api on mount', async () => {
-    render(<<%= resourceClassName %>SearchPage />);
+    renderWithClient(<<%= resourceClassName %>SearchPage />);
 
     await waitFor(() => {
       expect(search<%= resource %>Items).toHaveBeenCalled();
@@ -47,7 +60,7 @@ describe('<%= resourceClassName %>SearchPage', () => {
   });
 
   it('searches with the current criteria', async () => {
-    render(<<%= resourceClassName %>SearchPage />);
+    renderWithClient(<<%= resourceClassName %>SearchPage />);
 
     await waitFor(() => {
       expect(search<%= resource %>Items).toHaveBeenCalledTimes(1);
@@ -71,7 +84,7 @@ describe('<%= resourceClassName %>SearchPage', () => {
   });
 
   it('renders the header actions overflow menu trigger', () => {
-    render(<<%= resourceClassName %>SearchPage />);
+    renderWithClient(<<%= resourceClassName %>SearchPage />);
 
     expect(
       screen.getByRole('button', {

@@ -11,7 +11,7 @@ import {
   PortalPage,
 } from '../../../components/accelerator';
 import { initial<%= resourceClassName %>SearchCriteria } from './<%= resourceFileName %>-search.types';
-import { use<%= resourceClassName %>Search } from './<%= resourceFileName %>-search.hook';
+import { use<%= resourceClassName %>Search } from '../../../hooks/use<%= resourceClassName %>Search/use<%= resourceClassName %>Search';
 import <%= resourceClassName %>SearchHeaderSection from '../../../components/<%= resourceFileName %>/<%= resourceFileName %>-search-header-section.component';
 import <%= resourceClassName %>SearchResultsSection from '../../../components/<%= resourceFileName %>/<%= resourceFileName %>-search-results-section.component';
 
@@ -29,7 +29,7 @@ export const <%= resourceClassName %>SearchPage: FC = () => {
     selectedColumnGroup: 'default',
   });
 
-  const { results, loading, error, search } = use<%= resourceClassName %>Search();
+  const { results, isLoading, isFetching, isError, search } = use<%= resourceClassName %>Search();
 
   useEffect(() => {
     search(initial<%= resourceClassName %>SearchCriteria);
@@ -81,7 +81,7 @@ export const <%= resourceClassName %>SearchPage: FC = () => {
 
       <ContentContainer layout="horizontal">
         <Content className="w-full">
-          {error ? (
+          {isError ? (
             <Message
               severity="error"
               text={t('<%= resourceConstantName %>_SEARCH.ERROR_MESSAGES.SEARCH_RESULTS_LOADING_FAILED')}
@@ -89,20 +89,28 @@ export const <%= resourceClassName %>SearchPage: FC = () => {
             />
           ) : null}
 
-          {loading ? (
+          {isLoading ? (
             <div className="flex justify-content-center p-5">
               <ProgressSpinner />
             </div>
           ) : (
-            <<%= resourceClassName %>SearchResultsSection
-              columnGroup={columnGroup}
-              layout={layout}
-              onInteractiveDataViewStateChange={handleInteractiveDataViewStateChange}
-              onColumnGroupChange={setColumnGroup}
-              onLayoutChange={setLayout}
-              results={results}
-              t={t}
-            />
+            <>
+              {/* Background refetch indicator: previous results stay visible (keepPreviousData) */}
+              {isFetching ? (
+                <div className="flex justify-content-center mb-2">
+                  <ProgressSpinner style={{ width: '2rem', height: '2rem' }} />
+                </div>
+              ) : null}
+              <<%= resourceClassName %>SearchResultsSection
+                columnGroup={columnGroup}
+                layout={layout}
+                onInteractiveDataViewStateChange={handleInteractiveDataViewStateChange}
+                onColumnGroupChange={setColumnGroup}
+                onLayoutChange={setLayout}
+                results={results}
+                t={t}
+              />
+            </>
           )}
         </Content>
       </ContentContainer>
