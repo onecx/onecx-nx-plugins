@@ -18,7 +18,6 @@ import processParams, {
 import { GeneralOpenAPIStep } from './steps/general-openapi.step';
 import { GeneralPermissionsStep } from './steps/general-permissions.step';
 import { GeneralTranslationsStep } from './steps/general-translations.step';
-import { ReactFeatureRoutesStep } from './steps/react-feature-routes.step';
 import { ReactFeaturePageRegistrationStep } from './steps/react-feature-page-registration.step';
 
 import { SearchGeneratorSchema } from './schema';
@@ -146,9 +145,18 @@ export async function searchGenerator(
     );
   }
 
+  if (!tree.exists('src/hooks')) {
+    spinner.info('Creating src/hooks folder for generated hooks.');
+  }
+  generateFiles(
+    tree,
+    joinPathFragments(__dirname, './files/react/src/hooks'),
+    `${directory}/src/hooks`,
+    templateVariables
+  );
+
   const generatorProcessor = new GeneratorProcessor<SearchGeneratorSchema>();
   generatorProcessor.addStep(new ReactFeaturePageRegistrationStep());
-  generatorProcessor.addStep(new ReactFeatureRoutesStep());
   generatorProcessor.addStep(new GeneralTranslationsStep());
   generatorProcessor.addStep(new GeneralOpenAPIStep());
   generatorProcessor.addStep(new GeneralPermissionsStep());
