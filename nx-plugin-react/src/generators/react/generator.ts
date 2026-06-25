@@ -122,7 +122,7 @@ export async function reactGenerator(
   addBaseToPackageJson(tree, options);
   addScriptsToPackageJson(tree);
 
-  const oneCXLibVersion = '^9.0.0-rc.8';
+  const oneCXLibVersion = '^9.0.0-rc.10';
   const reactVersion = '^19.0.0';
   const nxVersion = '22.7.4';
 
