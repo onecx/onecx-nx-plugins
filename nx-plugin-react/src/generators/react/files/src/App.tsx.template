@@ -12,8 +12,6 @@ const App = withApp(
     </QueryClientProvider>
   ),
   {
-    PRODUCT_NAME: 'onecx-<%= fileName %>',
-    REMOTES_NAME: 'onecx-<%= fileName %>-ui'
-  }
+    PRODUCT_NAME: 'onecx-<%= fileName %>'  }
 )
 export default App

@@ -27,9 +27,7 @@ describe('App', () => {
     expect((App as unknown as () => unknown)()).toEqual({
       component: expect.any(Function),
       config: {
-        PRODUCT_NAME: 'onecx-<%= fileName %>',
-        REMOTES_NAME: 'onecx-<%= fileName %>-ui',
-      },
+        PRODUCT_NAME: 'onecx-<%= fileName %>'      },
     })
   })
 })

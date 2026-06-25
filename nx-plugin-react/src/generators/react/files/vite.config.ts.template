@@ -79,6 +79,9 @@ export default defineConfig(({ mode }) => {
           {
             src: path.resolve(__dirname, "./src/styles.css"),
             dest: ".",
+            rename: {
+              stripBase: true
+            }
           },
         ],
       }),
