@@ -6,7 +6,7 @@ import { readFileSync, existsSync } from 'fs';
 const SUPPORTED_FLAVORS = ['angular', 'react', 'ngrx', 'standalone-ngrx'];
 
 const PLUGIN_MAP: Record<string, string> = {
-  react: '@onecx/nx-plugin-react',
+  react: '@onecx/react-generator',
 };
 
 function resolvePlugin(flavor: string): string {

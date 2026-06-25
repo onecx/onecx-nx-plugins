@@ -17,7 +17,7 @@
     "paths": {
       "@onecx/nx-plugin": ["nx-plugin/src/index.ts"],
       "@onecx/release": ["tools/release/src/index.ts"],
-      "nx-plugin-react": ["nx-plugin-react/src/index.ts"]
+      "@onecx/react-generator": ["react-generator/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

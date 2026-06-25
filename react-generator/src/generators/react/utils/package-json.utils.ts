@@ -10,7 +10,7 @@ export function addBaseToPackageJson(
     pkgJson.private = true;
     pkgJson.license = 'Apache-2.0';
 
-    const pluginKey = '@onecx/nx-plugin-react';
+    const pluginKey = '@onecx/react-generator';
     const pluginVersion = pkgJson.dependencies?.[pluginKey];
     if (pluginVersion) {
       delete pkgJson.dependencies[pluginKey];
