@@ -1,0 +1,36 @@
+{
+  "$schema": "http://json-schema.org/schema",
+  "$id": "React",
+  "title": "",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "",
+      "$default": {
+        "$source": "argv",
+        "index": 0
+      },
+      "x-prompt": "What name would you like to use?"
+    },
+    "styles": {
+      "type": "string",
+      "description": "CSS framework to use",
+      "enum": ["primeflex", "tailwind"],
+      "default": "primeflex"
+    },
+    "aiTool": {
+      "type": "string",
+      "description": "Which AI tool to configure (none to skip)",
+      "enum": ["none", "copilot"],
+      "default": "none"
+    },
+    "stateManagement": {
+      "type": "string",
+      "description": "State management library to use",
+      "enum": ["none", "zustand"],
+      "default": "none"
+    }
+  },
+  "required": ["name"]
+}

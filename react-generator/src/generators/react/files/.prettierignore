@@ -1,0 +1,22 @@
+# Add files here to ignore them from prettier formatting
+.nx
+.husky
+.docusaurus
+.github
+.scannerwork
+.dockerignore
+.prettierignore
+.browserslistrc
+.eslintcache
+dist
+helm
+nginx
+reports
+node_modules
+LICENSE
+CHANGELOG.md
+README.md
+Dockerfile
+*.log
+*.sh
+src/api/generated/**

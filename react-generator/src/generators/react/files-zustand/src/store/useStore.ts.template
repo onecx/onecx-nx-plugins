@@ -1,0 +1,23 @@
+import { create } from 'zustand'
+import { environment } from '../../environments/environment'
+
+interface AppConfig {
+  apiPrefix: string
+  production: boolean
+}
+
+interface AppState {
+  appConfig: AppConfig
+  setAppConfig: (config: Partial<AppConfig>) => void
+}
+
+export const useAppStore = create<AppState>((set) => ({
+  appConfig: {
+    apiPrefix: environment.apiPrefix,
+    production: environment.production,
+  },
+  setAppConfig: (config) =>
+    set((state) => ({
+      appConfig: { ...state.appConfig, ...config },
+    })),
+}))

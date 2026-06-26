@@ -1,0 +1,19 @@
+{
+  "generators": {
+    "react": {
+      "factory": "./src/generators/react/generator",
+      "schema": "./src/generators/react/schema.json",
+      "description": "react generator"
+    },
+    "preset": {
+      "factory": "./src/generators/preset/generator",
+      "schema": "./src/generators/preset/schema.json",
+      "description": "preset generator"
+    },
+    "pre-commit-validation": {
+      "factory": "./src/generators/pre-commit-validation/generator",
+      "schema": "./src/generators/pre-commit-validation/schema.json",
+      "description": "pre-commit-validation generator"
+    }
+  }
+}
