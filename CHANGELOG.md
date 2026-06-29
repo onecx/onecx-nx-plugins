@@ -1,3 +1,13 @@
+## [8.1.0](https://github.com/onecx/onecx-nx-plugins/compare/v8.0.0...v8.1.0) (2026-06-29)
+
+### Features
+
+* add react-generator to build and release pipeline v8 ([#384](https://github.com/onecx/onecx-nx-plugins/issues/384)) ([6f5294f](https://github.com/onecx/onecx-nx-plugins/commit/6f5294f65155e34d8c1edd384fad2f4a9798a988))
+
+### Chores
+
+* release config for v8 ([#381](https://github.com/onecx/onecx-nx-plugins/issues/381)) ([609ea32](https://github.com/onecx/onecx-nx-plugins/commit/609ea329b2284f93608ba285ee877dc73e051be8))
+
 ## [8.0.0](https://github.com/onecx/onecx-nx-plugins/compare/v7.9999.0...v8.0.0) (2026-06-29)
 
 ### ⚠ BREAKING CHANGES
