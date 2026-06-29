@@ -1,3 +1,26 @@
+## [8.0.0](https://github.com/onecx/onecx-nx-plugins/compare/v7.9999.0...v8.0.0) (2026-06-29)
+
+### ⚠ BREAKING CHANGES
+
+* release generator v8 (#375)
+
+### Features
+
+* angular 21generator ([#348](https://github.com/onecx/onecx-nx-plugins/issues/348)) ([02e7301](https://github.com/onecx/onecx-nx-plugins/commit/02e730124f3670277ab9dfa2959e45098a3b7f11))
+* migrate to signals ([#339](https://github.com/onecx/onecx-nx-plugins/issues/339)) ([88ea9ef](https://github.com/onecx/onecx-nx-plugins/commit/88ea9ef23cd9cc18b4395b1cc665e96a3dbb99eb)), closes [#343](https://github.com/onecx/onecx-nx-plugins/issues/343) [#344](https://github.com/onecx/onecx-nx-plugins/issues/344)
+
+### Bug Fixes
+
+* fix and improve search test templates ([#344](https://github.com/onecx/onecx-nx-plugins/issues/344)) ([79ec11d](https://github.com/onecx/onecx-nx-plugins/commit/79ec11db50be2c93014a9ea505de69a95b94a08a))
+* review comments ([#373](https://github.com/onecx/onecx-nx-plugins/issues/373)) ([66d0670](https://github.com/onecx/onecx-nx-plugins/commit/66d06700b1adb194ba0698d3123e26e38d825a68))
+* v8 ci-workflow from v5 to v* ([#364](https://github.com/onecx/onecx-nx-plugins/issues/364)) ([84be7cc](https://github.com/onecx/onecx-nx-plugins/commit/84be7cc4569b33fcd740d1541845aa1bce6ed76f))
+
+### Chores
+
+* fix release config ([#376](https://github.com/onecx/onecx-nx-plugins/issues/376)) ([ab12524](https://github.com/onecx/onecx-nx-plugins/commit/ab12524d082d634cbc40bb4697996b61adc8d571))
+* release generator v8 ([#375](https://github.com/onecx/onecx-nx-plugins/issues/375)) ([cb54ee5](https://github.com/onecx/onecx-nx-plugins/commit/cb54ee5dcdec9e14bbafa7d19fa7261dd74d6d9a))
+* **release:** -v7.10000.0-rc.1 [skip ci] ([743ce04](https://github.com/onecx/onecx-nx-plugins/commit/743ce046e7686fe832851b23b1da380c84bad9a5))
+
 ## [7.10000.0-rc.1](https://github.com/onecx/onecx-nx-plugins/compare/v7.9999.0...v7.10000.0-rc.1) (2026-06-26)
 
 ### Features
