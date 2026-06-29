@@ -1,3 +1,13 @@
+## [9.0.0-rc.1](https://github.com/onecx/onecx-nx-plugins/compare/v8.0.0...v9.0.0-rc.1) (2026-06-29)
+
+### ⚠ BREAKING CHANGES
+
+* release v9 rc (#379)
+
+### Chores
+
+* release v9 rc ([#379](https://github.com/onecx/onecx-nx-plugins/issues/379)) ([2cbb4ef](https://github.com/onecx/onecx-nx-plugins/commit/2cbb4ef3b846ab4ed9c9982f4a6f2c6618768380))
+
 ## [8.0.0](https://github.com/onecx/onecx-nx-plugins/compare/v7.9999.0...v8.0.0) (2026-06-29)
 
 ### ⚠ BREAKING CHANGES
