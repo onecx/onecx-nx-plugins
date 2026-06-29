@@ -1,0 +1,6 @@
+<% if (styles === 'tailwind') { %>@import 'tailwindcss';
+@import 'tailwindcss-primeui';
+<% } else { %>@import '@onecx/react-utils/prime-base-theme.css';
+<% } %>@import 'primeicons/primeicons.css';
+<% if (styles !== 'tailwind') { %>@import 'primeflex/primeflex.min.css';
+<% } %>@import './index.css';

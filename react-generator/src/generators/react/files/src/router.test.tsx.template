@@ -1,0 +1,58 @@
+import { describe, it, expect, vi, beforeEach } from 'vitest'
+import { render } from '@testing-library/react'
+
+const mockUseRoutes = vi.fn()
+const mockUseAppHref = vi.fn()
+
+vi.mock('react-router', () => ({
+  useRoutes: mockUseRoutes
+}))
+
+vi.mock('@onecx/react-webcomponents', () => ({
+  useAppHref: mockUseAppHref
+}))
+
+vi.mock('./pages/Welcome', () => ({
+  default: () => null
+}))
+
+vi.mock('./i18n/config', () => ({}))
+
+describe('AppRoutes', () => {
+  beforeEach(() => {
+    vi.clearAllMocks()
+  })
+
+  it('returns null when href is not available', async () => {
+    mockUseAppHref.mockReturnValue({ href: '' })
+    mockUseRoutes.mockReturnValue(null)
+
+    const { AppRoutes } = await import('./router')
+    const { container } = render(<AppRoutes />)
+    expect(container.firstChild).toBeNull()
+  })
+
+  it('renders routes when href is available', async () => {
+    mockUseAppHref.mockReturnValue({ href: '/app' })
+    mockUseRoutes.mockReturnValue(<div>routes</div>)
+
+    const { AppRoutes } = await import('./router')
+    const { container } = render(<AppRoutes />)
+    expect(container.firstChild).not.toBeNull()
+  })
+
+  it('passes correct routes to useRoutes', async () => {
+    mockUseAppHref.mockReturnValue({ href: '/app' })
+    mockUseRoutes.mockReturnValue(<div>routes</div>)
+
+    const { AppRoutes } = await import('./router')
+    render(<AppRoutes />)
+
+    expect(mockUseRoutes).toHaveBeenCalledWith([
+      {
+        path: '/app/*',
+        element: expect.any(Object)
+      }
+    ])
+  })
+})

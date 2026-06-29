@@ -1,0 +1,13 @@
+---
+trigger: always_on
+---
+## FRONTEND
+
+### Guidelines for REACT
+
+#### PRIMEREACT
+
+- Use PrimeReact components as the default UI building blocks instead of custom HTML when possible
+- Prefer PrimeReact layout and form components (e.g., `Card`, `Button`, `InputText`, `DataTable`) for consistent styling
+- Keep custom components thin wrappers around PrimeReact to avoid duplicating behavior
+- When extending, follow PrimeReact theming and pass-through props rather than overriding styles directly

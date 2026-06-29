@@ -12,6 +12,7 @@ app:
       specs:
         main:
           exposedModule: './OneCX<%= remoteModuleName %>Module'        
+          shareScope: angular_21       
           description: 'OneCX <%= remoteModuleName %> UI'
           note: 'OneCX <%= remoteModuleName %> UI module auto import via MF operator'
           type: MODULE

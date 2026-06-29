@@ -1,0 +1,39 @@
+import { useTranslation } from 'react-i18next'
+
+const links = [
+  { label: 'OneCX GitHub', href: 'https://github.com/onecx' },
+  { label: 'OneCX NPM packages', href: 'https://www.npmjs.com/search?q=%40onecx' },
+  { label: 'PrimeReact', href: 'https://primereact.org' },
+  { label: 'Tailwind CSS', href: 'https://tailwindcss.com' },
+  { label: 'React', href: 'https://react.dev' },
+  { label: 'Nx', href: 'https://nx.dev' },
+  { label: 'Vite', href: 'https://vitejs.dev' },
+]
+
+export default function Welcome() {
+  const { t } = useTranslation()
+
+  return (
+    <div className="flex flex-col items-center justify-center min-h-screen gap-4">
+      <h1 className="text-4xl font-bold mb-2">
+        {t('welcome.title', 'Welcome to OneCX <%= className %>')}
+      </h1>
+      <p className="text-xl text-muted-color mb-4">
+        {t('welcome.subtitle', 'Your application is ready.')}
+      </p>
+      <div className="flex flex-wrap gap-3 justify-center">
+        {links.map(({ label, href }) => (
+          <a
+            key={href}
+            href={href}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="p-button p-button-outlined p-button-sm"
+          >
+            {label}
+          </a>
+        ))}
+      </div>
+    </div>
+  )
+}

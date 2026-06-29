@@ -1,0 +1,6 @@
+{
+  "welcome": {
+    "title": "Willkommen bei OneCX <%= className %>",
+    "subtitle": "Ihre Anwendung ist bereit."
+  }
+}

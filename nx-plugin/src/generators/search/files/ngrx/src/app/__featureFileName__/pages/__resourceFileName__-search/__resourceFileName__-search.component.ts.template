@@ -38,7 +38,9 @@ export class <%= resourceClassName %>SearchComponent implements OnInit {
   private readonly formBuilder = inject(FormBuilder);
   readonly locale = inject(LOCALE_ID);
 
-  calendars = viewChildren(DatePicker)
+
+  calendars = viewChildren(DatePicker);
+
   viewModel = toSignal<<%= resourceClassName %>SearchViewModel>(
     this.store.select(select<%= resourceClassName %>SearchViewModel),
     { initialValue: null }

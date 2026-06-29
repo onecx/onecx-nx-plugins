@@ -1,0 +1,40 @@
+import { describe, it, expect, vi } from 'vitest'
+import { render, screen } from '@testing-library/react'
+import Welcome from './Welcome'
+
+vi.mock('react-i18next', () => ({
+  useTranslation: () => ({
+    t: (key: string, fallback: string) => fallback,
+  }),
+}))
+
+describe('Welcome', () => {
+  it('renders welcome title', () => {
+    render(<Welcome />)
+    expect(
+      screen.getByText('Welcome to OneCX <%= className %>')
+    ).toBeInTheDocument()
+  })
+
+  it('renders subtitle', () => {
+    render(<Welcome />)
+    expect(
+      screen.getByText('Your application is ready.')
+    ).toBeInTheDocument()
+  })
+
+  it('renders documentation links', () => {
+    render(<Welcome />)
+    const onecxLink = screen.getByRole('link', { name: 'OneCX GitHub' })
+    expect(onecxLink).toBeInTheDocument()
+    expect(onecxLink).toHaveAttribute('href', 'https://github.com/onecx')
+    expect(onecxLink).toHaveAttribute('target', '_blank')
+    expect(onecxLink).toHaveAttribute('rel', 'noopener noreferrer')
+  })
+
+  it('renders all documentation links', () => {
+    render(<Welcome />)
+    const links = screen.getAllByRole('link')
+    expect(links.length).toBeGreaterThanOrEqual(5)
+  })
+})
