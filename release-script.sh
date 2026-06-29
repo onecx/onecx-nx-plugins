@@ -13,20 +13,20 @@ then
 fi
 
 # List of publishable packages in this repository
-packages=("nx-plugin" "create-workspace")
+packages=("nx-plugin" "create-workspace" "react-generator")
 
 for package in "${packages[@]}"; do
     packageJsonDataLib=$(cat $package/package.json)
     libPackageVersion=$(echo "$packageJsonDataLib" | jq -r '.version')
-    
+
     # Update @onecx dependencies to use the new version
     packageJsonDataLib=$(echo "$packageJsonDataLib" | sed -E 's/(@onecx[^"]+?": *?")([^"]+)"/\1^'$1'"/')
     echo $packageJsonDataLib > $package/package.json
-    
+
     # Update package version and run release target if version changed
     if [[ $libPackageVersion != $1 ]]
     then
         npx -p replace-json-property rjp $package/package.json version $1
         npx nx run $package:release
-    fi  
+    fi
 done

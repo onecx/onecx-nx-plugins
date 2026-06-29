@@ -7,7 +7,7 @@
     "OneCX Development Team <onecx_dev@1000kit.org>"
   ],
   "scripts": {
-    "build": "nx run nx-plugin:build && nx run create-workspace:build",
+    "build": "nx run nx-plugin:build && nx run create-workspace:build && nx run react-generator:build",
     "build-copy": "npm run build && node copy-build.js",
     "test": "nx run nx-plugin-e2e:e2e",
     "lint": "npx nx affected -t lint",

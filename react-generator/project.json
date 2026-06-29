@@ -46,6 +46,16 @@
       "options": {
         "jestConfig": "react-generator/jest.config.ts"
       }
+    },
+    "publish": {
+      "command": "node tools/scripts/publish.mjs react-generator {args.ver} {args.tag}",
+      "dependsOn": ["build"]
+    },
+    "release": {
+      "executor": "@onecx/release:update-build-publish",
+      "options": {
+        "libName": "react-generator"
+      }
     }
   }
 }
