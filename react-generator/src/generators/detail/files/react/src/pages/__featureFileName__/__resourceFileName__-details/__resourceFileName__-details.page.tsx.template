@@ -2,7 +2,10 @@ import { useEffect, useMemo } from 'react';
 import { useParams, useNavigate } from 'react-router';
 import { Message } from 'primereact/message';
 import { ProgressSpinner } from 'primereact/progressspinner';
+import { Toast } from 'primereact/toast';
+import { useRef } from 'react';
 import { useAppHref } from '../../../../libs/react-webcomponents/src/lib/routing.utils';
+import { <%= serviceName %> } from '../../../api/api';
 
 import {
   <%= resourceClassName %>DetailsViewModel,
@@ -21,6 +24,7 @@ export const <%= resourceClassName %>DetailsPage = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { href } = useAppHref();
+  const toast = useRef<Toast>(null);
   <%_ if(editMode){ _%>
   const {
     editMode,
@@ -41,6 +45,8 @@ export const <%= resourceClassName %>DetailsPage = () => {
   } = use<%= resourceClassName %>DetailsStore();
   <%_ } _%>
 
+  const <%= resourcePropertyName %>Service = useMemo(() => new <%= serviceName %>(), []);
+
   const {
     details,
     loading,
@@ -50,10 +56,11 @@ export const <%= resourceClassName %>DetailsPage = () => {
     updateDetails,
     <%_ } _%>
     <%_ if(allowDelete){ _%>
+    isDeleting,
     deleteDetails,
     <%_ } _%>
     fetchDetails,
-  } = use<%= resourceClassName %>Details(id);
+  } = use<%= resourceClassName %>Details(<%= resourcePropertyName %>Service);
 
   useEffect(() => {
     if (id) {
@@ -67,7 +74,7 @@ export const <%= resourceClassName %>DetailsPage = () => {
       resetFormData({
         id: details.id,
         modificationCount: details.modificationCount,
-        // ACTION D5: Add additional form field initializations here
+        // ACTION D4: Add additional form field initializations here
       });
     }
   }, [details, editMode, resetFormData]);
@@ -97,7 +104,7 @@ export const <%= resourceClassName %>DetailsPage = () => {
       resetFormData({
         id: details.id,
         modificationCount: details.modificationCount,
-        // ACTION D5: Add additional form field initializations here
+        // ACTION D4: Add additional form field initializations here
       });
     }
     setShowCancelConfirm(false);
@@ -115,8 +122,21 @@ export const <%= resourceClassName %>DetailsPage = () => {
       };
       const success = await updateDetails(updatedDetails);
       if (success) {
+        toast.current?.show({
+          severity: 'success',
+          summary: 'Success',
+          detail: '<%= resourceClassName %> updated successfully',
+          life: 3000,
+        });
         setEditMode(false);
         setHasUnsavedChanges(false);
+      } else {
+        toast.current?.show({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'Failed to update <%= resourceClassName %>',
+          life: 3000,
+        });
       }
     }
   };
@@ -135,7 +155,20 @@ export const <%= resourceClassName %>DetailsPage = () => {
   const confirmDelete = async () => {
     const success = await deleteDetails();
     if (success) {
+      toast.current?.show({
+        severity: 'success',
+        summary: 'Success',
+        detail: '<%= resourceClassName %> deleted successfully',
+        life: 3000,
+      });
       navigate(`${href}/<%= featureFileName %>`);
+    } else {
+      toast.current?.show({
+        severity: 'error',
+        summary: 'Error',
+        detail: 'Failed to delete <%= resourceClassName %>',
+        life: 3000,
+      });
     }
     setShowDeleteConfirm(false);
   };
@@ -175,19 +208,13 @@ export const <%= resourceClassName %>DetailsPage = () => {
       {
         labelKey: 'Delete',
         icon: 'pi pi-trash',
+        disabled: isDeleting,
         actionCallback: handleDelete,
       },
       <%_ } _%>
-      {
-        labelKey: '',
-        icon: 'pi pi-ellipsis-v',
-        actionCallback: () => {
-          // ACTION D4: Add callback for additional header actions
-        },
-      },
     ];
     return actions;
-  }, [details, editMode, isSubmitting, handleBack, handleEdit, handleCancel, handleSave, handleDelete]);
+  }, [details, editMode, isSubmitting, <%_ if(allowDelete){ _%>isDeleting, <%_ } _%>handleBack, handleEdit, handleCancel, handleSave, handleDelete]);
 
   const visibleActions = useMemo(() => {
     return headerActions.filter((action) => {
@@ -238,6 +265,7 @@ export const <%= resourceClassName %>DetailsPage = () => {
 
   return (
     <section className="flex flex-column gap-2 p-1">
+      <Toast ref={toast} />
       <<%= resourceClassName %>DetailsHeader
         title="<%= resourceClassName %> Details"
         subtitle="Display of <%= resourceClassName %> Details"

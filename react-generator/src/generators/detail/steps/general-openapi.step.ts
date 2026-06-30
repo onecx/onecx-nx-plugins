@@ -1,12 +1,12 @@
 import { Tree, joinPathFragments, names } from '@nx/devkit';
 
-import { GeneratorStep } from '../../../shared/generator.utils';
+import { GeneratorStep } from '../../shared/generator.utils';
 import {
   COMMENT_KEY,
   OpenAPIUtil,
-} from '../../../shared/openapi/openapi.utils';
+} from '../../shared/openapi/openapi.utils';
 import { DetailsGeneratorSchema } from '../schema';
-import { createUpdateEndpoint } from '../../../create-update/endpoint.util';
+import { createUpdateEndpoint } from '../endpoint.util';
 
 export class GeneralOpenAPIStep
   implements GeneratorStep<DetailsGeneratorSchema>
@@ -22,7 +22,7 @@ export class GeneralOpenAPIStep
     // Create the file if it doesn't exist
     if (!bffOpenApiContent) {
       const templatePath = joinPathFragments(
-        'nx-plugin/src/generators/react-generators/files/src/assets/api',
+        'react-generator/src/generators/files/src/assets/api',
         'openapi-bff.yaml.template'
       );
       const defaultOpenApiContent = tree.read(templatePath, 'utf8');

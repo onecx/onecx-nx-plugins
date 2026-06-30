@@ -30,6 +30,7 @@
     "@nx/eslint-plugin": "^19.8.14",
     "@nx/jest": "^19.8.14",
     "@nx/js": "^19.8.14",
+    "@phenomnomnominal/tsquery": "^6.2.0",
     "@semantic-release/changelog": "^6.0.3",
     "@semantic-release/commit-analyzer": "^13.0.1",
     "@semantic-release/exec": "^7.1.0",

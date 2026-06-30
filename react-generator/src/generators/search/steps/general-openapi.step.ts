@@ -19,7 +19,7 @@ export class GeneralOpenAPIStep
     // Create the file if it doesn't exist
     if (!bffOpenApiContent) {
       const templatePath = joinPathFragments(
-        'nx-plugin/src/generators/react-generators/files/src/assets/api',
+        'react-generator/src/generators/files/src/assets/api',
         'openapi-bff.yaml.template'
       );
       const defaultOpenApiContent = tree.read(templatePath, 'utf8');

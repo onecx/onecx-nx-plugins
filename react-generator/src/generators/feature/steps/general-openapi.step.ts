@@ -1,10 +1,10 @@
 import { Tree, joinPathFragments, names } from '@nx/devkit';
-import { GeneratorStep } from '../../../shared/generator.utils';
+import { GeneratorStep } from '../../shared/generator.utils';
 import { ReactFeatureGeneratorSchema } from '../schema';
 import {
   COMMENT_KEY,
   OpenAPIUtil,
-} from '../../../shared/openapi/openapi.utils';
+} from '../../shared/openapi/openapi.utils';
 
 export class GeneralOpenAPIStep
   implements GeneratorStep<ReactFeatureGeneratorSchema>
@@ -20,7 +20,7 @@ export class GeneralOpenAPIStep
     // Create the file if it doesn't exist
     if (!bffOpenApiContent) {
       const templatePath = joinPathFragments(
-        'nx-plugin/src/generators/react-generators/files/src/assets/api',
+        'react-generator/src/generators/files/src/assets/api',
         'openapi-bff.yaml.template'
       );
       const defaultOpenApiContent = tree.read(templatePath, 'utf8');

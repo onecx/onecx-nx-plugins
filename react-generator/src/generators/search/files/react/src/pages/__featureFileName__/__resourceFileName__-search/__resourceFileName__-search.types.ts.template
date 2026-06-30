@@ -1,4 +1,4 @@
-import { type <%= resourceClassName %> } from '../../../api/api';
+import { type <%= resourceClassName %> } from '../../../api';
 
 // ACTION S3: Define/adjust the search criteria
 export interface <%= resourceClassName %>SearchCriteria {

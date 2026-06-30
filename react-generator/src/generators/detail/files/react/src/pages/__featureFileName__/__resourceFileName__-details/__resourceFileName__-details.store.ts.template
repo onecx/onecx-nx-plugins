@@ -37,7 +37,7 @@ export const use<%= resourceClassName %>DetailsStore = create<<%= resourceClassN
     formData: {
       id: details.id,
       modificationCount: details.modificationCount,
-      // ACTION D5: Add additional form field initializations here
+      // ACTION D4: Add additional form field initializations here
     },
     hasUnsavedChanges: false,
   }),

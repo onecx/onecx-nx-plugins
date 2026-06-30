@@ -24,6 +24,16 @@
       "factory": "./src/generators/page/generator",
       "schema": "./src/generators/page/schema.json",
       "description": "react page generator"
+    },
+    "react-feature": {
+      "factory": "./src/generators/feature/generator",
+      "schema": "./src/generators/feature/schema.json",
+      "description": "react feature generator"
+    },
+    "react-details": {
+      "factory": "./src/generators/detail/generator",
+      "schema": "./src/generators/detail/schema.json",
+      "description": "react details generator"
     }
   }
 }

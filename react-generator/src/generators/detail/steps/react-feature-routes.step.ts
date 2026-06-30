@@ -3,8 +3,8 @@ import { Tree, names } from '@nx/devkit';
 import {
   GeneratorStep,
   GeneratorStepError,
-} from '../../../shared/generator.utils';
-import { safeReplace } from '../../../shared/safeReplace';
+} from '../../shared/generator.utils';
+import { replacePlaceholder } from '../../shared/replacePlaceholder';
 import { DetailsGeneratorSchema } from '../schema';
 
 export class ReactFeatureRoutesStep
@@ -25,29 +25,12 @@ export class ReactFeatureRoutesStep
     const pageComponentName = `${resourceClassName}DetailsPage`;
     const importPath = `./pages/${featureFileName}/${resourceFileName}-details/${resourceFileName}-details.page`;
 
-    safeReplace(
-      `Add details import to React router`,
+    replacePlaceholder(
+      tree,
       routeFilePath,
-      'import "./i18n/config";',
-      `import "./i18n/config";
-import ${pageComponentName} from '${importPath}';`,
-      tree
-    );
-
-    const routeToAdd = `      {
-        path: \`\${href}/${featureFileName}/:id\`,
-        element: <${pageComponentName} />,
-        handle: {},
-      },`;
-
-    // Add route to the main return array - target the closing bracket of the return array
-    safeReplace(
-      `Add details route to React router`,
-      routeFilePath,
-      '    ];\n  }, [href]);',
-      `${routeToAdd}
-    ];\n  }, [href]);`,
-      tree
+      pageComponentName,
+      `import ${pageComponentName} from '${importPath}';`,
+      `${featureFileName}/:id`
     );
   }
 

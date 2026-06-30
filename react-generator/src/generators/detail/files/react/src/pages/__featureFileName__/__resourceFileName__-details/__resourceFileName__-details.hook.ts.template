@@ -11,13 +11,14 @@ export interface <%= resourceClassName %>DetailsViewModel {
   updateDetails: (details: <%= resourceClassName %>Details) => Promise<boolean>;
   <%_ } _%>
   <%_ if(allowDelete){ _%>
+  isDeleting: boolean;
   deleteDetails: () => Promise<boolean>;
   <%_ } _%>
   fetchDetails: (id: string) => Promise<void>;
 }
 
 export const use<%= resourceClassName %>Details = (
-  _id: string | undefined
+  service?: <%= serviceName %>
 ): <%= resourceClassName %>DetailsViewModel => {
   const [details, setDetails] = useState<<%= resourceClassName %>Details | undefined>();
   const [loading, setLoading] = useState(false);
@@ -25,21 +26,25 @@ export const use<%= resourceClassName %>Details = (
   <%_ if(editMode){ _%>
   const [isSubmitting, setIsSubmitting] = useState(false);
   <%_ } _%>
+  <%_ if(allowDelete){ _%>
+  const [isDeleting, setIsDeleting] = useState(false);
+  <%_ } _%>
 
-  const <%= resourcePropertyName %>Service = new <%= serviceName %>();
+  const <%= resourcePropertyName %>Service = service ?? new <%= serviceName %>();
 
   const fetchDetails = useCallback(async (itemId: string) => {
     setLoading(true);
     setError(null);
     try {
       const response = await <%= resourcePropertyName %>Service.get<%= resource %>ById(itemId);
-      setDetails((response.data as any).resource as <%= resourceClassName %>Details);
+      setDetails(response.data.resource as <%= resourceClassName %>Details);
     } catch (err) {
+      setDetails(undefined);
       setError(err instanceof Error ? err.message : 'Failed to fetch details');
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [<%= resourcePropertyName %>Service]);
 
   <%_ if(editMode){ _%>
   const updateDetails = useCallback(async (updatedDetails: <%= resourceClassName %>Details) => {
@@ -48,7 +53,13 @@ export const use<%= resourceClassName %>Details = (
     setIsSubmitting(true);
     setError(null);
     try {
-      await <%= resourcePropertyName %>Service.update<%= resource %>ById(details.id, updatedDetails as any);
+      // ACTION D12: Adjust request structure to match your API signature
+      // The API expects: update<%= resource %>ById(id: string, updateRequest: Update<%= resourceClassName %>Request)
+      // You may need to transform updatedDetails to match the UpdateRequest structure
+      await <%= resourcePropertyName %>Service.update<%= resource %>ById(
+        details.id,
+        updatedDetails as any
+      );
       setDetails(updatedDetails);
       return true;
     } catch (err) {
@@ -57,14 +68,14 @@ export const use<%= resourceClassName %>Details = (
     } finally {
       setIsSubmitting(false);
     }
-  }, [details]);
+  }, [details, <%= resourcePropertyName %>Service]);
   <%_ } _%>
 
   <%_ if(allowDelete){ _%>
   const deleteDetails = useCallback(async () => {
     if (!details?.id) return false;
     
-    setIsSubmitting(true);
+    setIsDeleting(true);
     setError(null);
     try {
       await <%= resourcePropertyName %>Service.delete<%= resource %>ById(details.id);
@@ -73,9 +84,9 @@ export const use<%= resourceClassName %>Details = (
       setError(err instanceof Error ? err.message : 'Failed to delete details');
       return false;
     } finally {
-      setIsSubmitting(false);
+      setIsDeleting(false);
     }
-  }, [details]);
+  }, [details, <%= resourcePropertyName %>Service]);
   <%_ } _%>
 
   return {
@@ -87,6 +98,7 @@ export const use<%= resourceClassName %>Details = (
     updateDetails,
     <%_ } _%>
     <%_ if(allowDelete){ _%>
+    isDeleting,
     deleteDetails,
     <%_ } _%>
     fetchDetails,

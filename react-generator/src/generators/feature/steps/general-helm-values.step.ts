@@ -1,8 +1,8 @@
 import { joinPathFragments, names, Tree } from '@nx/devkit';
 
 import { ReactFeatureGeneratorSchema } from '../schema';
-import { GeneratorStep } from '../../../shared/generator.utils';
-import { COMMENT_KEY, HelmValuesUtil } from '../../../shared/helm/helm.utils';
+import { GeneratorStep } from '../../shared/generator.utils';
+import { COMMENT_KEY, HelmValuesUtil } from '../../shared/helm/helm.utils';
 
 export class GeneralPermissionStep
   implements GeneratorStep<ReactFeatureGeneratorSchema>
