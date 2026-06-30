@@ -16,13 +16,13 @@
       "description": "pre-commit-validation generator"
     },
     "react-search": {
-      "factory": "./src/generators/react-generators/search/generator",
-      "schema": "./src/generators/react-generators/search/schema.json",
+      "factory": "./src/generators/search/generator",
+      "schema": "./src/generators/search/schema.json",
       "description": "react-search generator"
     },
     "react-page": {
-      "factory": "./src/generators/react-generators/page/generator",
-      "schema": "./src/generators/react-generators/page/schema.json",
+      "factory": "./src/generators/page/generator",
+      "schema": "./src/generators/page/schema.json",
       "description": "react page generator"
     }
   }
