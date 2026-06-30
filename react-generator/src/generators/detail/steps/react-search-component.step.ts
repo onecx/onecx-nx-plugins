@@ -20,7 +20,7 @@ export class ReactSearchComponentStep
     // Add useNavigate import
     if (!tree.read(filePath, 'utf8')?.includes('useNavigate')) {
       const useTranslationImportRegex =
-        /import\s*\{\s*useTranslation\s*\}\s*from\s*['\"]react-i18next['\"];?/;
+        /import\s*\{\s*useTranslation\s*\}\s*from\s*['"]react-i18next['"];?/;
       replacePlaceholder(
         tree,
         filePath,
@@ -59,7 +59,7 @@ export class ReactSearchComponentStep
     // Use a regex-based replacement so small formatting differences don't break generation.
     if (!tree.read(filePath, 'utf8')?.includes(`type ${resourceClassName}SearchRow`)) {
       const searchTypesImportRegex = new RegExp(
-        `import\\s*\\{([^}]*)\\}\\s*from\\s*['\"]\\./${resourceFileName}-search\\.types['\"];?`
+        `import\\s*\\{([^}]*)\\}\\s*from\\s*['"]\\./${resourceFileName}-search\\.types['"];?`
       );
       replacePlaceholder(
         tree,
