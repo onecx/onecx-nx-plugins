@@ -106,6 +106,17 @@ export function replacePlaceholder(
     return;
   }
 
+  const featurePlaceholderRegex =
+    /<div>\s*[^<]*feature - add pages using search generator or other generators\s*<\/div>/;
+  if (featurePlaceholderRegex.test(withImport)) {
+    const replaced = withImport.replace(
+      featurePlaceholderRegex,
+      `<${pageComponent} />`
+    );
+    tree.write(indexFilePath, replaced);
+    return;
+  }
+
   const ast = tsquery.ast(withImport, indexFilePath, ScriptKind.TSX);
   const strictPlaceholders = tsquery(
     ast,
@@ -118,17 +129,6 @@ export function replacePlaceholder(
   const placeholder = strictPlaceholders[0] ?? broadPlaceholders[0];
 
   if (!placeholder) {
-    const fallbackRegex =
-      /<div>[\s\S]*?feature - add pages using search generator or other generators<\/div>/;
-    if (fallbackRegex.test(withImport)) {
-      const fallbackContent = withImport.replace(
-        fallbackRegex,
-        `<${pageComponent} />`
-      );
-      tree.write(indexFilePath, fallbackContent);
-      return;
-    }
-
     const comment = `// Generator Failure occurred!
 // The goal of the generation was to: Replace the <div> placeholder with ${pageComponent}
 //

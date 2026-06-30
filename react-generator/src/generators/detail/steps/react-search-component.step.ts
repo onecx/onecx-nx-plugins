@@ -19,6 +19,8 @@ export class ReactSearchComponentStep
 
     // Add useNavigate import
     if (!tree.read(filePath, 'utf8')?.includes('useNavigate')) {
+      const useTranslationImportRegex =
+        /import\s*\{\s*useTranslation\s*\}\s*from\s*['\"]react-i18next['\"];?/;
       replacePlaceholder(
         tree,
         filePath,
@@ -26,9 +28,9 @@ export class ReactSearchComponentStep
         '',
         {
           goal: `Add useNavigate import to ${resourceClassName}SearchPage`,
-          find: 'import { useTranslation } from "react-i18next";',
+          find: useTranslationImportRegex,
           replaceWith:
-            'import { useTranslation } from "react-i18next";\nimport { useNavigate } from "react-router";',
+            "import { useTranslation } from 'react-i18next';\nimport { useNavigate } from 'react-router';",
         }
       );
     }
@@ -37,6 +39,8 @@ export class ReactSearchComponentStep
     if (
       !tree.read(filePath, 'utf8')?.includes('const navigate = useNavigate()')
     ) {
+      const useTranslationHookRegex =
+        /const\s*\{\s*t\s*\}\s*=\s*useTranslation\(\);/;
       replacePlaceholder(
         tree,
         filePath,
@@ -44,7 +48,7 @@ export class ReactSearchComponentStep
         '',
         {
           goal: `Add navigate const to ${resourceClassName}SearchPage`,
-          find: 'const { t } = useTranslation();',
+          find: useTranslationHookRegex,
           replaceWith:
             'const { t } = useTranslation();\n  const navigate = useNavigate();',
         }
