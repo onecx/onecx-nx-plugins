@@ -5,7 +5,7 @@ endif::[]
 
 = Map the API and Prepare Mock Data
 
-The React search page fetches its data through a generated `+<Resource>APIService+`, called from the `+use<Resource>Search+` hook. This page describes how to map the search criteria to the API request, how the search endpoint is defined in the OpenAPI file, and how to provide mock data while no real backend is available.
+The React search page fetches its data through a generated `+<Resource>Api+`, called from the `+use<Resource>Search+` hook. This page describes how to map the search criteria to the API request, how the search endpoint is defined in the OpenAPI file, and how to provide mock data while no real backend is available.
 
 
 [#action-s1]
@@ -23,7 +23,7 @@ File::      `+use<Resource>Search.ts+`
 [source, typescript]
 ----
 const fetch<Resource>SearchResults = async (
-  <resource>Service: <Resource>APIService,
+  <resource>Service: <Resource>Api,
   criteria: <Resource>SearchCriteria
 ): Promise<<Resource>SearchRow[]> => {
   // ACTION S1: map the criteria to the generated search request
@@ -72,7 +72,7 @@ Add your entity properties to the `+Search<Resource>Request+` (criteria) and to 
 
 [IMPORTANT]
 ====
-After adjusting the OpenAPI specification, regenerate the typed API client so the changes are reflected in `+<Resource>APIService+`.
+After adjusting the OpenAPI specification, regenerate the typed API client so the changes are reflected in `+<Resource>Api+`.
 ====
 
 .Generate the API client code
@@ -108,4 +108,4 @@ image::react_mock_server_running.png[]
 
 
 == Using the Mock API
-Point your application's BFF base URL to the mock server (e.g. `\http://localhost:3000`) instead of the real backend, so the generated `+<Resource>APIService+` calls the mock endpoints. Adjust the configured BFF/proxy target of your React UI app accordingly.
+Point your application's BFF base URL to the mock server (e.g. `\http://localhost:3000`) instead of the real backend, so the generated `+<Resource>Api+` calls the mock endpoints. Adjust the configured BFF/proxy target of your React UI app accordingly.

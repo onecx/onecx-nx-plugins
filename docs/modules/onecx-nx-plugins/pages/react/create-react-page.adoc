@@ -24,7 +24,7 @@ The current working directory must be the root of an existing OneCX React UI App
 .Create a React page with the following command
 [source,bash]
 ----
-nx generate <namespace>/nx-plugin:react-page <feature>
+nx generate <namespace>/react-generator:react-page <feature>
 ----
 
 with:
@@ -125,7 +125,7 @@ Execute the following command with the *bookstore* application as current workin
 .Create a React Page for Books
 [source,bash]
 ----
-nx generate @onecx/nx-plugin:react-page book
+nx generate @onecx/react-generator:react-page book
 ----
 
 When prompted, enter `+Book+` as the page name and `+Books+` as the page title. The generator creates `+BookPage+` under `+src/pages/book/book+`, registers it and adds a route.
