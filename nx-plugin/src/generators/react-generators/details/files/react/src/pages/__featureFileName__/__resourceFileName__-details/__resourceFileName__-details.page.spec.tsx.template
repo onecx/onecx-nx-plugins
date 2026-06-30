@@ -44,6 +44,7 @@ describe('<%= resourceClassName %>DetailsPage', () => {
       updateDetails: vi.fn().mockResolvedValue(true),
       <%_ } _%>
       <%_ if(allowDelete){ _%>
+      isDeleting: false,
       deleteDetails: vi.fn().mockResolvedValue(true),
       <%_ } _%>
     });
@@ -102,6 +103,7 @@ describe('<%= resourceClassName %>DetailsPage', () => {
       updateDetails: vi.fn(),
       <%_ } _%>
       <%_ if(allowDelete){ _%>
+      isDeleting: false,
       deleteDetails: vi.fn(),
       <%_ } _%>
     });
@@ -122,6 +124,7 @@ describe('<%= resourceClassName %>DetailsPage', () => {
       updateDetails: vi.fn(),
       <%_ } _%>
       <%_ if(allowDelete){ _%>
+      isDeleting: false,
       deleteDetails: vi.fn(),
       <%_ } _%>
     });
@@ -246,6 +249,7 @@ describe('<%= resourceClassName %>DetailsPage', () => {
       isSubmitting: false,
       updateDetails: mockUpdateDetails,
       <%_ if(allowDelete){ _%>
+      isDeleting: false,
       deleteDetails: vi.fn(),
       <%_ } _%>
     });
@@ -282,6 +286,23 @@ describe('<%= resourceClassName %>DetailsPage', () => {
 
   <%_ if(allowDelete){ _%>
   it('should show confirmation when Delete button is clicked', () => {
+    (use<%= resourceClassName %>Details as any).mockReturnValue({
+      details: {
+        id: 'test-id',
+        modificationCount: 0,
+        // ACTION D11: Adjust test data to match your detail properties
+      },
+      loading: false,
+      error: null,
+      fetchDetails: vi.fn(),
+      <%_ if(editMode){ _%>
+      isSubmitting: false,
+      updateDetails: vi.fn(),
+      <%_ } _%>
+      isDeleting: false,
+      deleteDetails: vi.fn(),
+    });
+
     (use<%= resourceClassName %>DetailsStore as any).mockReturnValue({
       <%_ if(editMode){ _%>
       editMode: false,
@@ -322,6 +343,7 @@ describe('<%= resourceClassName %>DetailsPage', () => {
       isSubmitting: false,
       updateDetails: vi.fn(),
       <%_ } _%>
+      isDeleting: false,
       deleteDetails: mockDeleteDetails,
     });
 

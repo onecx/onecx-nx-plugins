@@ -14,7 +14,7 @@ import { GeneratorProcessor } from '../../shared/generator.utils';
 import processParams, {
   GeneratorParameter,
 } from '../../shared/parameters.utils';
-import { safeReplace } from '../../shared/safeReplace';
+import { replacePlaceholder } from '../../shared/replacePlaceholder';
 import { GeneralOpenAPIStep } from './steps/general-openapi.step';
 import { GeneralPermissionStep } from './steps/general-helm-values.step';
 
@@ -126,27 +126,34 @@ function adaptAppRouting(tree: Tree, options: ReactFeatureGeneratorSchema) {
     return;
   }
 
-  safeReplace(
-    `add ${className} feature`,
+  const content = tree.read(routingFilePath, 'utf8') ?? '';
+  if (content.includes(`element: <${className}Feature />`)) {
+    return;
+  }
+
+  replacePlaceholder(
+    tree,
     routingFilePath,
-    'import "./i18n/config";',
-    `import "./i18n/config";
-     import ${className}Feature from "./pages/${fileName}";`,
-    tree
+    `${className}Feature`,
+    `import ${className}Feature from "./pages/${fileName}";`,
+    fileName
   );
 
-  safeReplace(
-    `add route ${className}`,
-    routingFilePath,
-    '    ];',
-    `    {
-      path: \`\${href}/${fileName}\`,
-      element: <${className}Feature />,
-      handle: {},
-    },
-    ];`,
-    tree
-  );
+  if (
+    !(tree.read(routingFilePath, 'utf8') ?? '').includes(
+      `import ${className}Feature from "./pages/${fileName}";`
+    )
+  ) {
+    throw new Error(
+      `Could not insert feature import into ${routingFilePath}. Please add import ${className}Feature manually.`
+    );
+  }
+
+  if (!(tree.read(routingFilePath, 'utf8') ?? '').includes(`path: \`\${href}/${fileName}\``)) {
+    throw new Error(
+      `Could not insert feature route into ${routingFilePath}. Please add path \`\${href}/${fileName}\` manually.`
+    );
+  }
 }
 
 export default featureGenerator;

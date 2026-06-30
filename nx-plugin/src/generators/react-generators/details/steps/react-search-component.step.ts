@@ -1,7 +1,7 @@
 import { Tree, names } from '@nx/devkit';
 
 import { GeneratorStep } from '../../../shared/generator.utils';
-import { safeReplace } from '../../../shared/safeReplace';
+import { replacePlaceholder } from '../../../shared/replacePlaceholder';
 import { DetailsGeneratorSchema } from '../schema';
 
 export class ReactSearchComponentStep
@@ -19,12 +19,17 @@ export class ReactSearchComponentStep
 
     // Add useNavigate import
     if (!tree.read(filePath, 'utf8')?.includes('useNavigate')) {
-      safeReplace(
-        `Add useNavigate import to ${resourceClassName}SearchPage`,
+      replacePlaceholder(
+        tree,
         filePath,
-        'import { useTranslation } from "react-i18next";',
-        'import { useTranslation } from "react-i18next";\nimport { useNavigate } from "react-router";',
-        tree
+        '',
+        '',
+        {
+          goal: `Add useNavigate import to ${resourceClassName}SearchPage`,
+          find: 'import { useTranslation } from "react-i18next";',
+          replaceWith:
+            'import { useTranslation } from "react-i18next";\nimport { useNavigate } from "react-router";',
+        }
       );
     }
 
@@ -32,12 +37,36 @@ export class ReactSearchComponentStep
     if (
       !tree.read(filePath, 'utf8')?.includes('const navigate = useNavigate()')
     ) {
-      safeReplace(
-        `Add navigate const to ${resourceClassName}SearchPage`,
+      replacePlaceholder(
+        tree,
         filePath,
-        'const { t } = useTranslation();',
-        'const { t } = useTranslation();\n  const navigate = useNavigate();',
-        tree
+        '',
+        '',
+        {
+          goal: `Add navigate const to ${resourceClassName}SearchPage`,
+          find: 'const { t } = useTranslation();',
+          replaceWith:
+            'const { t } = useTranslation();\n  const navigate = useNavigate();',
+        }
+      );
+    }
+
+    // Add SearchRow type import used by handleViewItem.
+    // Use a regex-based replacement so small formatting differences don't break generation.
+    if (!tree.read(filePath, 'utf8')?.includes(`type ${resourceClassName}SearchRow`)) {
+      const searchTypesImportRegex = new RegExp(
+        `import\\s*\\{([^}]*)\\}\\s*from\\s*['\"]\\./${resourceFileName}-search\\.types['\"];?`
+      );
+      replacePlaceholder(
+        tree,
+        filePath,
+        '',
+        '',
+        {
+          goal: `Add ${resourceClassName}SearchRow type import to ${resourceClassName}SearchPage`,
+          find: searchTypesImportRegex,
+          replaceWith: `import {$1, type ${resourceClassName}SearchRow } from './${resourceFileName}-search.types';`,
+        }
       );
     }
 
@@ -50,23 +79,31 @@ export class ReactSearchComponentStep
 
   const handleReset = () => {`;
 
-      safeReplace(
-        `Add view handler to ${resourceClassName}SearchPage`,
+      replacePlaceholder(
+        tree,
         filePath,
-        findMethod,
-        replaceWithMethod,
-        tree
+        '',
+        '',
+        {
+          goal: `Add view handler to ${resourceClassName}SearchPage`,
+          find: findMethod,
+          replaceWith: replaceWithMethod,
+        }
       );
     }
 
     // Wire the view handler into the results section
     if (!tree.read(filePath, 'utf8')?.includes('onViewItem={handleViewItem}')) {
-      safeReplace(
-        `Add onViewItem prop to ${resourceClassName}SearchResultsSection`,
+      replacePlaceholder(
+        tree,
         filePath,
-        'results={results}',
-        'onViewItem={handleViewItem}\n            results={results}',
-        tree
+        '',
+        '',
+        {
+          goal: `Add onViewItem prop to ${resourceClassName}SearchResultsSection`,
+          find: 'results={results}',
+          replaceWith: 'onViewItem={handleViewItem}\n            results={results}',
+        }
       );
     }
   }
