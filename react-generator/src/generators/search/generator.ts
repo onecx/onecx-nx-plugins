@@ -11,10 +11,10 @@ import {
 import { execSync } from 'child_process';
 import * as ora from 'ora';
 
-import { GeneratorProcessor } from '../../shared/generator.utils';
+import { GeneratorProcessor } from '../shared/generator.utils';
 import processParams, {
   GeneratorParameter,
-} from '../../shared/parameters.utils';
+} from '../shared/parameters.utils';
 import { GeneralOpenAPIStep } from './steps/general-openapi.step';
 import { GeneralPermissionsStep } from './steps/general-permissions.step';
 import { GeneralTranslationsStep } from './steps/general-translations.step';

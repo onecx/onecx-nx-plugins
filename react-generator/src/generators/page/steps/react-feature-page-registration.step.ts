@@ -1,7 +1,7 @@
 import { Tree, names } from '@nx/devkit';
 
-import { GeneratorStep } from '../../../shared/generator.utils';
-import { replacePlaceholder } from '../../../shared/replacePlaceholder';
+import { GeneratorStep } from '../../shared/generator.utils';
+import { replacePlaceholder } from '../../shared/replacePlaceholder';
 import { ReactPageGeneratorSchema } from '../schema';
 
 export class ReactFeaturePageRegistrationStep

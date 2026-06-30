@@ -3,8 +3,8 @@ import { Tree, names } from '@nx/devkit';
 import {
   GeneratorStep,
   GeneratorStepError,
-} from '../../../shared/generator.utils';
-import { safeReplace } from '../../../shared/safeReplace';
+} from '../../shared/generator.utils';
+import { safeReplace } from '../../shared/safeReplace';
 import { ReactPageGeneratorSchema } from '../schema';
 
 export class ReactFeatureRoutesStep

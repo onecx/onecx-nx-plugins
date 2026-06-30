@@ -11,10 +11,10 @@ import {
 import { execSync } from 'child_process';
 import * as ora from 'ora';
 
-import { GeneratorProcessor } from '../../shared/generator.utils';
+import { GeneratorProcessor } from '../shared/generator.utils';
 import processParams, {
   GeneratorParameter,
-} from '../../shared/parameters.utils';
+} from '../shared/parameters.utils';
 import { GeneralTranslationsStep } from './steps/general-translations.step';
 import { ReactFeaturePageRegistrationStep } from './steps/react-feature-page-registration.step';
 import { ReactFeatureRoutesStep } from './steps/react-feature-routes.step';

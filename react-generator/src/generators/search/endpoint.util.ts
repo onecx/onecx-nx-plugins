@@ -1,4 +1,4 @@
-import { OpenAPIDefault } from '../../shared/openapi/models/openapi-default.model';
+import { OpenAPIDefault } from '../shared/openapi/models/openapi-default.model';
 
 interface SearchEndpointParameter {
   resource: string;
