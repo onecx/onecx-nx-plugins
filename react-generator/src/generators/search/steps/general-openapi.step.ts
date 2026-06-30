@@ -1,7 +1,7 @@
 import { Tree, joinPathFragments, names } from '@nx/devkit';
 
-import { GeneratorStep } from '../../../shared/generator.utils';
-import { COMMENT_KEY, OpenAPIUtil } from '../../../shared/openapi/openapi.utils';
+import { GeneratorStep } from '../../shared/generator.utils';
+import { COMMENT_KEY, OpenAPIUtil } from '../../shared/openapi/openapi.utils';
 import { SearchGeneratorSchema } from '../schema';
 import { createSearchEndpoint } from '../endpoint.util';
 

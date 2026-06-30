@@ -3,9 +3,9 @@ import * as fs from 'fs';
 import path = require('path');
 
 import { SearchGeneratorSchema } from '../schema';
-import { GeneratorStep } from '../../../shared/generator.utils';
-import { renderJsonFile } from '../../../shared/renderJsonFile';
-import { deepMerge } from '../../../shared/deepMerge';
+import { GeneratorStep } from '../../shared/generator.utils';
+import { renderJsonFile } from '../../shared/renderJsonFile';
+import { deepMerge } from '../../shared/deepMerge';
 
 export class GeneralTranslationsStep
   implements GeneratorStep<SearchGeneratorSchema>
