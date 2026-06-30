@@ -102,17 +102,29 @@ export function replacePlaceholder(
     return;
   }
 
-  if (content.includes(pageComponent)) {
+  if (withImport.includes(`<${pageComponent}`)) {
     return;
   }
 
   const ast = tsquery.ast(withImport, indexFilePath, ScriptKind.TSX);
-  const [placeholder] = tsquery(
+  const placeholders = tsquery(
     ast,
-    'JsxElement:has(> JsxOpeningElement > Identifier[name="div"])'
+    'JsxElement:has(JsxOpeningElement Identifier[name="div"])'
   );
+  const placeholder = placeholders[0];
 
   if (!placeholder) {
+    const fallbackRegex =
+      /<div>[\s\S]*?feature - add pages using search generator or other generators<\/div>/;
+    if (fallbackRegex.test(withImport)) {
+      const fallbackContent = withImport.replace(
+        fallbackRegex,
+        `<${pageComponent} />`
+      );
+      tree.write(indexFilePath, fallbackContent);
+      return;
+    }
+
     const comment = `// Generator Failure occurred!
 // The goal of the generation was to: Replace the <div> placeholder with ${pageComponent}
 //
