@@ -7,7 +7,6 @@ import {
   names,
   Tree,
 } from '@nx/devkit';
-import { applicationGenerator } from '@nx/react';
 import { execSync } from 'child_process';
 import * as ora from 'ora';
 
@@ -24,6 +23,11 @@ import {
 } from './utils/package-json.utils';
 import { adaptTsConfig } from './utils/ts-config.utils';
 import { adaptProjectConfiguration } from './utils/project-config.utils';
+
+type ApplicationGeneratorFn = (
+  tree: Tree,
+  options: Record<string, unknown>
+) => Promise<GeneratorCallback>;
 
 const PARAMETERS: GeneratorParameter<ReactGeneratorSchema>[] = [
   {
@@ -76,6 +80,10 @@ export async function reactGenerator(
 
   const spinner = ora('Adding React').start();
   const directory = '.';
+
+  const { applicationGenerator } = require('@nx/react') as {
+    applicationGenerator: ApplicationGeneratorFn;
+  };
 
   const applicationGeneratorCallback = await applicationGenerator(tree, {
     name: options.name,

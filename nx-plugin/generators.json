@@ -55,26 +55,6 @@
       "factory": "./src/generators/pre-commit-validation/generator",
       "schema": "./src/generators/pre-commit-validation/schema.json",
       "description": "pre-commit-validation generator"
-    },
-    "react-search": {
-      "factory": "./src/generators/react-generators/search/generator",
-      "schema": "./src/generators/react-generators/search/schema.json",
-      "description": "react-search generator"
-    },
-    "react-page": {
-      "factory": "./src/generators/react-generators/page/generator",
-      "schema": "./src/generators/react-generators/page/schema.json",
-      "description": "react page generator"
-    },
-    "react-feature": {
-      "factory": "./src/generators/react-generators/feature/generator",
-      "schema": "./src/generators/react-generators/feature/schema.json",
-      "description": "react feature generator"
-    },
-    "react-details": {
-      "factory": "./src/generators/react-generators/details/generator",
-      "schema": "./src/generators/react-generators/details/schema.json",
-      "description": "react details generator"
     }
   }
 }
