@@ -62,6 +62,7 @@ module.exports = {
         assets: [
           `nx-plugin/package.json`,
           `create-workspace/package.json`,
+          `react-generator/package.json`,
           `package.json`,
           `CHANGELOG.md`,
         ],
