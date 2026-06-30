@@ -33,7 +33,7 @@ export class GeneralOpenAPIStep implements GeneratorStep<ReactGeneratorSchema> {
     return 'Adapting OpenAPI';
   }
 
-  isApplicable(_options: ReactGeneratorSchema): boolean {
+  isApplicable(): boolean {
     return true;
   }
 }

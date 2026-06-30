@@ -107,11 +107,15 @@ export function replacePlaceholder(
   }
 
   const ast = tsquery.ast(withImport, indexFilePath, ScriptKind.TSX);
-  const placeholders = tsquery(
+  const strictPlaceholders = tsquery(
+    ast,
+    'JsxElement:has(> JsxOpeningElement > Identifier[name="div"])'
+  );
+  const broadPlaceholders = tsquery(
     ast,
     'JsxElement:has(JsxOpeningElement Identifier[name="div"])'
   );
-  const placeholder = placeholders[0];
+  const placeholder = strictPlaceholders[0] ?? broadPlaceholders[0];
 
   if (!placeholder) {
     const fallbackRegex =
