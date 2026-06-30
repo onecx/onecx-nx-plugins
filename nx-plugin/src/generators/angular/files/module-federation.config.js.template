@@ -1,0 +1,16 @@
+const { getOneCXSharedRecommendations, getOneCXSharedLibraryConfig } = require('@onecx/build-utils');
+const pkg = require('./package.json')
+const { dependencies } = pkg
+
+const sharedEntries = getOneCXSharedLibraryConfig(dependencies, true);
+
+module.exports = {
+  name: 'onecx-<%= remoteModuleFileName %>-ui',
+  filename: 'remoteEntry.js',
+  library: { type: 'module' },
+  exposes: {
+    './OneCX<%= remoteModuleName %>Module': './src/main.ts'
+  },
+  shared: sharedEntries,
+  shareScope: 'angular_21',
+};

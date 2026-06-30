@@ -1,6 +1,6 @@
 {
   "name": "@onecx/nx-plugin",
-  "version": "7.1.0",
+  "version": "9.0.0-rc.1",
   "license": "Apache-2.0",
   "contributors": [],
   "repository": {
@@ -11,6 +11,7 @@
     "@nx/devkit": "^19.8.14",
     "@nx/angular": "^19.8.14",
     "@nx/eslint-plugin": "^19.8.14",
+    "@phenomnomnominal/tsquery": "^6.2.0",
     "ejs": "^3.1.9",
     "enquirer": "^2.3.6",
     "ora": "^5.3.0",

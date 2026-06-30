@@ -1,7 +1,7 @@
 import { Tree, names } from '@nx/devkit';
 
 import { GeneratorStep } from '../../../shared/generator.utils';
-import { safeReplace } from '../../../shared/safeReplace';
+import { replacePlaceholder } from '../../../shared/replacePlaceholder';
 import { ReactPageGeneratorSchema } from '../schema';
 
 export class ReactFeaturePageRegistrationStep
@@ -13,29 +13,10 @@ export class ReactFeaturePageRegistrationStep
     const pageClassName = names(options.pageName).className;
 
     const indexFilePath = `src/pages/${featureFileName}/index.tsx`;
+    const pageComponent = `${pageClassName}Page`;
+    const importLine = `import { ${pageComponent} } from './${pageFileName}/${pageFileName}.page';`;
 
-    if (!tree.exists(indexFilePath)) {
-      return;
-    }
-
-    const content = tree.read(indexFilePath, 'utf8');
-    if (!content) {
-      return;
-    }
-
-    if (!content.includes(`${pageClassName}Page`)) {
-      const importLine = `import { ${pageClassName}Page } from './${pageFileName}/${pageFileName}.page';`;
-      const updatedContent = `${importLine}\n${content}`;
-      tree.write(indexFilePath, updatedContent);
-    }
-
-    safeReplace(
-      'Replace feature placeholder with Page',
-      indexFilePath,
-      [/(<div>|&lt;div&gt;)[\s\S]*?(<\/div>|&lt;\/div&gt;)/],
-      [`<${pageClassName}Page />`],
-      tree
-    );
+    replacePlaceholder(tree, indexFilePath, pageComponent, importLine);
   }
 
   getTitle(): string {

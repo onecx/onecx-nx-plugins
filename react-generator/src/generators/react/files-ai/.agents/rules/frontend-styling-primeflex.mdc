@@ -1,0 +1,14 @@
+---
+trigger: always_on
+---
+## FRONTEND
+
+### Guidelines for STYLING
+
+#### PRIMEFLEX
+
+- Use PrimeFlex utility classes for layout, spacing, and responsive behavior instead of bespoke CSS when possible
+- Prefer PrimeFlex grid/flex utilities (e.g., `grid`, `col-12`, `md:col-6`, `flex`, `gap-2`) for structure and alignment
+- Keep custom CSS focused on component-specific visuals that PrimeFlex cannot express
+- Use PrimeFlex spacing scale consistently (`p-`, `m-`, `gap-`) to avoid arbitrary pixel values
+- Apply responsive variants (`sm:`, `md:`, `lg:`, `xl:`) for adaptive layouts

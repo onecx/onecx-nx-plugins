@@ -1,6 +1,6 @@
 module.exports = {
   branches: [
-    'dummy',    
+    'dummy',
     {
       name: 'main',
       channel: 'rc',
@@ -20,6 +20,11 @@ module.exports = {
       name: 'v7',
       range: '7.x.x',
       channel: 'v7-lts',
+    },
+    {
+      name: 'v8',
+      range: '8.x.x',
+      channel: 'v8-lts',
     },
   ],
   preset: 'conventionalcommits',
