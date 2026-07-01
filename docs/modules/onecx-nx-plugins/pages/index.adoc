@@ -141,3 +141,9 @@ npm run test
 
 .Excerpt of the test output (exemplary for *bookstore* application)
 image::generated_and_test.png[]
+
+
+== React Generators
+
+In addition to the Angular generators, the OneCX App Generator provides generators for *React* UI applications. They follow the same iterative approach: generate a part, then adapt the places marked with *ACTION*. +
+See xref:react/index.adoc[React Generators] for the full overview.

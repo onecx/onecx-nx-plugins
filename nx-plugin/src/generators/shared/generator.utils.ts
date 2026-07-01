@@ -99,6 +99,6 @@ export class GeneratorProcessor<T> {
   }
 
   static getServiceName(name: string): string {
-    return name + 'APIService';
+    return name + 'Api';
   }
 }
