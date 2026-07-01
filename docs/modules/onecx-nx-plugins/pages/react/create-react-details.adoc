@@ -64,6 +64,7 @@ The next steps involve adapting the detail page to your specific requirements an
 
 .All places that need to be adapted are marked with an action box like this one
 [source, javascript]
+
 ----
 ACTION D<NUMBER>: <Short Description>
 ----
