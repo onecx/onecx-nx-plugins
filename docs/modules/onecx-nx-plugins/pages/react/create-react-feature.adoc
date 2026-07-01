@@ -6,9 +6,8 @@ endif::[]
 = Create a Feature Module (React)
 
 What is a Feature Module?::
-ifdef::env-site[]
-include::partial$_glossary.adoc[tag=feature-module]
-endif::[]
+A feature Module is a modular unit of functionality that encapsulates a specific feature or set of related features within an UI Application. + 
+It is designed to promote code reusability, maintainability, and separation of concerns by grouping related components, services, and state management logic together.
 
 [NOTE]
 ====
@@ -54,14 +53,13 @@ Next steps may create components, services, and state management logic within th
 
 * `src/pages/<feature>/` +
   Directory for the generated feature entry page and related pages
-* `<Feature>Feature` +
-  Name for the generated feature entry component
 * `/<feature>/` +
   Default *route path* for the application feature, configured in `src/router.tsx`.
 
 === Routing Configuration
 The generator will automatically configure the routing for the generated feature module. +
-It will add a new route to `src/router.tsx` that renders the generated feature entry page component when the specified route is accessed. The generated feature page is intentionally only a placeholder and is typically replaced later by other generators such as the search generator. +
+It will add a new route to `src/router.tsx` that renders the generated feature entry page component when the specified route is accessed. +
+The generated feature page is intentionally only a placeholder and is typically replaced later by other generators such as the search generator. +
 
 The route path will be derived from the feature name, e.g. `/book/` for a feature named "book". +
 You can further customize the routing configuration as needed after the generation.
@@ -70,7 +68,7 @@ You can further customize the routing configuration as needed after the generati
 == Example
 
 === Create a Feature Module
-Create a feature module *book* inside the application named *bookstore* to manage book data. +
+Create a feature module *book* inside an application named *bookstore* to manage book data. +
 Execute the following command with the *bookstore* application as current working directory. Define the resource name as *Book* to generate a feature module for managing the entity *Book*.
 
 .Create a Feature Module named "book" with React
@@ -82,11 +80,8 @@ nx generate @onecx/react-generator:react-feature book --resource=Book
 This command will generate a new feature module named *book* with the necessary structure and configurations.
 The preset resource name *Book* will be used to derive the names for the generated components and services related to managing book data.
 
-.Excerpt of generated files and directories
-image::generated_feature_book.png[width=200]
-
 === Routing
-The generator will add a new route to `src/router.tsx` that renders the generated `BookFeature` placeholder page when the `/book/` route is accessed. This placeholder is later replaced by generators such as `react-search`. +
+The generator will add a new route to `src/router.tsx` that renders the generated book placeholder page when the `/book/` route is accessed. This placeholder is later replaced by generators such as `react-search`. +
 
 You can further customize the routing configuration as needed after the generation.
 
@@ -115,6 +110,3 @@ Use the following command to run the tests:
 ----
 npm run test
 ----
-
-.Test result of the generated feature module
-image::test_result_feature.png[]

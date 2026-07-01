@@ -104,16 +104,16 @@ File::      `<resource>-details.hook.ts`
 ====
 [source, javascript]
 ----
-const updateDetails = useCallback(async (updatedDetails: ResourceDetails) => {
+const updateDetails = useCallback(async (updatedDetails: BookDetails) => {
   if (!details?.id) return false;
   
   setIsSubmitting(true);
   setError(null);
   try {
     // ACTION D12: Adjust request structure to match your API signature
-    // The API expects: updateResourceById(id: string, updateRequest: UpdateResourceRequest)
+    // The API expects: updateBookById(id: string, updateRequest: UpdateBookRequest)
     // You may need to transform updatedDetails to match the UpdateRequest structure
-    await resourceService.updateResourceById(
+    await bookService.updateBookById(
       details.id,
       updatedDetails as any
     );
@@ -125,7 +125,7 @@ const updateDetails = useCallback(async (updatedDetails: ResourceDetails) => {
   } finally {
     setIsSubmitting(false);
   }
-}, [details, resourceService]);
+}, [details, bookService]);
 ----
 ====
 
