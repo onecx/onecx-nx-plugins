@@ -81,6 +81,7 @@ export async function reactGenerator(
   const spinner = ora('Adding React').start();
   const directory = '.';
 
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
   const { applicationGenerator } = require('@nx/react') as {
     applicationGenerator: ApplicationGeneratorFn;
   };
