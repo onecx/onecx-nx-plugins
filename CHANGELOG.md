@@ -1,22 +1,12 @@
-## [9.0.0-rc.2](https://github.com/onecx/onecx-nx-plugins/compare/v9.0.0-rc.1...v9.0.0-rc.2) (2026-06-29)
+## [8.1.0](https://github.com/onecx/onecx-nx-plugins/compare/v8.0.0...v8.1.0) (2026-06-29)
 
 ### Features
 
-* add react-generator to build and release pipeline ([#383](https://github.com/onecx/onecx-nx-plugins/issues/383)) ([9705c0a](https://github.com/onecx/onecx-nx-plugins/commit/9705c0a67921add0d4d9ec293d8eb3ebabe430db))
+* add react-generator to build and release pipeline v8 ([#384](https://github.com/onecx/onecx-nx-plugins/issues/384)) ([6f5294f](https://github.com/onecx/onecx-nx-plugins/commit/6f5294f65155e34d8c1edd384fad2f4a9798a988))
 
 ### Chores
 
-* release config for v8 ([#380](https://github.com/onecx/onecx-nx-plugins/issues/380)) ([85b47eb](https://github.com/onecx/onecx-nx-plugins/commit/85b47ebe026011a4ff524f942c6154925a30310e))
-
-## [9.0.0-rc.1](https://github.com/onecx/onecx-nx-plugins/compare/v8.0.0...v9.0.0-rc.1) (2026-06-29)
-
-### ⚠ BREAKING CHANGES
-
-* release v9 rc (#379)
-
-### Chores
-
-* release v9 rc ([#379](https://github.com/onecx/onecx-nx-plugins/issues/379)) ([2cbb4ef](https://github.com/onecx/onecx-nx-plugins/commit/2cbb4ef3b846ab4ed9c9982f4a6f2c6618768380))
+* release config for v8 ([#381](https://github.com/onecx/onecx-nx-plugins/issues/381)) ([609ea32](https://github.com/onecx/onecx-nx-plugins/commit/609ea329b2284f93608ba285ee877dc73e051be8))
 
 ## [8.0.0](https://github.com/onecx/onecx-nx-plugins/compare/v7.9999.0...v8.0.0) (2026-06-29)
 
