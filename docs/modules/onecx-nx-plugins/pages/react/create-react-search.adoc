@@ -22,12 +22,12 @@ This page describes the *React* search generator (`react-search`). For the Angul
 
 The current working directory must be the root of an existing OneCX React UI Application.
 
-The generator presets the API service name to `+<Resource>APIService+` used by the generated search page, derived from the feature name. This should correspond to the schema created in the OpenAPI file.
+The generator presets the API class name to `+<Resource>Api+` used by the generated search page, derived from the feature name. This should correspond to the schema created in the OpenAPI file.
 
 .Create a React search page with the following command
 [source,bash]
 ----
-nx generate <namespace>/nx-plugin:react-search <feature>
+nx generate <namespace>/react-generator:react-search <feature>
 ----
 
 with:
@@ -86,8 +86,8 @@ The `+src/components/accelerator/+` library is generated *only on the first run*
   Directory for the search page and its related files
 * `<Resource>SearchPage` +
   Name for the search page component
-* `<Resource>APIService` +
-  Name for the generated API service used by the search hook
+* `<Resource>Api` +
+  Name for the generated API class used by the search hook
 * `use<Resource>Search` +
   Name for the React Query search hook
 * `<RESOURCE>_SEARCH` +
@@ -126,10 +126,10 @@ Execute the following command with the *bookstore* application as current workin
 .Create a React Search Page for Books
 [source,bash]
 ----
-nx generate @onecx/nx-plugin:react-search book
+nx generate @onecx/react-generator:react-search book
 ----
 
-This command generates a new search page *book-search* within the *book* feature with the necessary structure and configurations. The generator presets the API service name to *BookAPIService* used by the generated search hook. This should correspond to the created schema in the OpenAPI file.
+This command generates a new search page *book-search* within the *book* feature with the necessary structure and configurations. The generator presets the API class name to *BookApi* used by the generated search hook. This should correspond to the created schema in the OpenAPI file.
 
 // TODO: capture screenshot of generated react search files/directories for the book feature
 .Excerpt of generated files and directories
