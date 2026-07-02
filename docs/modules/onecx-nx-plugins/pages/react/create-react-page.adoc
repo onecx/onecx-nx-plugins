@@ -53,7 +53,7 @@ The generator creates the following files (exemplary for the *book* feature, pag
 ----
 src/pages/<feature>/<page>/
   <page>.page.tsx        # Page component (BookPage)
-  <page>.page.spec.tsx   # Jest/Testing Library tests
+  <page>.page.test.tsx   # Jest/Testing Library tests
 
 src/components/accelerator/   # Shared UI building blocks (generated only if not present)
 ----
