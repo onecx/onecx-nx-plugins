@@ -24,11 +24,6 @@ import {
 import { adaptTsConfig } from './utils/ts-config.utils';
 import { adaptProjectConfiguration } from './utils/project-config.utils';
 
-type ApplicationGeneratorFn = (
-  tree: Tree,
-  options: Record<string, unknown>
-) => Promise<GeneratorCallback>;
-
 const PARAMETERS: GeneratorParameter<ReactGeneratorSchema>[] = [
   {
     key: 'chatty',
@@ -81,10 +76,7 @@ export async function reactGenerator(
   const spinner = ora('Adding React').start();
   const directory = '.';
 
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
-  const { applicationGenerator } = require('@nx/react') as {
-    applicationGenerator: ApplicationGeneratorFn;
-  };
+  const { applicationGenerator } = await import('@nx/react');
 
   const applicationGeneratorCallback = await applicationGenerator(tree, {
     name: options.name,
