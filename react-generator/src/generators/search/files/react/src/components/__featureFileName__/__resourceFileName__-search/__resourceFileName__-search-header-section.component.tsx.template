@@ -33,7 +33,7 @@ export const <%= resourceClassName %>SearchHeaderSection: FC<<%= resourceClassNa
 }) => (
   <SearchHeader
     ariaLabel={t(`${SEARCH_PREFIX}.ARIA_LABEL`)}
-    // ACTION S2: wire the breadcrumb home/items to your portal base route (the `href` MFE base) if needed
+    // ACTION S12: wire the breadcrumb home/items to your portal base route (the `href` MFE base) if needed
     breadcrumbHome={{ icon: 'pi pi-home', url: '/' }}
     breadcrumbItems={[{ label: t(`${SEARCH_PREFIX}.BREADCRUMB`) }]}
     header={t(`${SEARCH_PREFIX}.HEADER`)}

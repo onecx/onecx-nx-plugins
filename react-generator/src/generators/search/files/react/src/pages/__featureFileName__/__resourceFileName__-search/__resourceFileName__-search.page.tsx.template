@@ -45,14 +45,14 @@ export const <%= resourceClassName %>SearchPage: FC = () => {
   };
 
   const handleExportAll = () => {
-    // ACTION S (Phase 3.3): implement CSV export of the current results
+    // ACTION S10: implement CSV export of the current results
     if (typeof window !== 'undefined') {
       window.alert('Export all is not implemented yet.');
     }
   };
 
   const handleToggleChart = () => {
-    // ACTION S (Phase 3.2): render the results chart; this only toggles visibility for now
+    // ACTION S9: render the results chart; this only toggles visibility for now
     setChartVisible((visible) => !visible);
   };
 
@@ -63,7 +63,7 @@ export const <%= resourceClassName %>SearchPage: FC = () => {
   };
 
   return (
-    // ACTION S5: the page is gated on the SEARCH permission; the `standalone` flag skips gating for standalone apps
+    // ACTION S13: the page is gated on the SEARCH permission; the `standalone` flag skips gating for standalone apps
     <PortalPage
       <% if (!standalone) { %>permission="<%= resourceConstantName %>#SEARCH"<% } %>
       ariaLabel={t('<%= resourceConstantName %>_SEARCH.ARIA_LABEL')}

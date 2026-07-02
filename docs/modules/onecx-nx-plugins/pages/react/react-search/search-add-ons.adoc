@@ -8,8 +8,8 @@ endif::[]
 Besides the search criteria and results, the generated React search page contains several add-ons that you may want to adapt: the breadcrumb, the header actions (chart toggle and export), the permission gating and the translations.
 
 
-[#action-s2]
-== ACTION S2 - Breadcrumb
+[#action-s12]
+== ACTION S12 - Breadcrumb
 
 The header section component wires a default breadcrumb. Adjust the home target and items to match your portal base route (the `+href+` MFE base).
 
@@ -17,12 +17,12 @@ The header section component wires a default breadcrumb. Adjust the home target 
 Directory:: `+src/components/<feature>+`
 File::      `+<resource>-search-header-section.component.tsx+`
 
-.ACTION S2 in `+<resource>-search-header-section.component.tsx+`
+.ACTION S12 in `+<resource>-search-header-section.component.tsx+`
 [%collapsible]
 ====
 [source, tsx]
 ----
-    // ACTION S2: wire the breadcrumb home/items to your portal base route (the `href` MFE base) if needed
+    // ACTION S12: wire the breadcrumb home/items to your portal base route (the `href` MFE base) if needed
     breadcrumbHome={{ icon: 'pi pi-home', url: '/' }}
     breadcrumbItems={[{ label: t(`${SEARCH_PREFIX}.BREADCRUMB`) }]}
 ----
@@ -30,8 +30,8 @@ Point `+breadcrumbHome.url+` to your application base route and adjust the items
 ====
 
 
-[#action-s5]
-== ACTION S5 - Permission gating
+[#action-s13]
+== ACTION S13 - Permission gating
 
 The search page is wrapped in a `+PortalPage+` that is gated on the `+<RESOURCE>#SEARCH+` permission. Users without that permission do not see the page content.
 
@@ -39,12 +39,12 @@ The search page is wrapped in a `+PortalPage+` that is gated on the `+<RESOURCE>
 Directory:: `+src/pages/<feature>/<resource>-search+`
 File::      `+<resource>-search.page.tsx+`
 
-.ACTION S5 in `+<resource>-search.page.tsx+`
+.ACTION S13 in `+<resource>-search.page.tsx+`
 [%collapsible]
 ====
 [source, tsx]
 ----
-    // ACTION S5: the page is gated on the SEARCH permission; the `standalone` flag skips gating for standalone apps
+    // ACTION S13: the page is gated on the SEARCH permission; the `standalone` flag skips gating for standalone apps
     <PortalPage
       permission="<RESOURCE>#SEARCH"
       ariaLabel={t('<RESOURCE>_SEARCH.ARIA_LABEL')}
@@ -57,8 +57,8 @@ Generate with `+--standalone+` to skip permission gating for standalone apps (th
 The matching permissions are added to `+helm/values.yaml+` during generation. Make sure the permission exists in your auth system.
 
 
-[#action-phase-3-2]
-== ACTION S (Phase 3.2) - Results chart
+[#action-s9]
+== ACTION S9 - Results chart
 
 The header provides a "Show chart" / "Hide chart" action. The generated handler only toggles visibility; implement the actual chart rendering.
 
@@ -66,13 +66,13 @@ The header provides a "Show chart" / "Hide chart" action. The generated handler 
 Directory:: `+src/pages/<feature>/<resource>-search+`
 File::      `+<resource>-search.page.tsx+`
 
-.ACTION S (Phase 3.2) in `+<resource>-search.page.tsx+`
+.ACTION S9 in `+<resource>-search.page.tsx+`
 [%collapsible]
 ====
 [source, tsx]
 ----
   const handleToggleChart = () => {
-    // ACTION S (Phase 3.2): render the results chart; this only toggles visibility for now
+    // ACTION S9: render the results chart; this only toggles visibility for now
     setChartVisible((visible) => !visible);
   };
 ----
@@ -80,8 +80,8 @@ Render your chart component based on the `+chartVisible+` state and the current 
 ====
 
 
-[#action-phase-3-3]
-== ACTION S (Phase 3.3) - CSV export
+[#action-s10]
+== ACTION S10 - CSV export
 
 The "Export all" header action is stubbed. Implement the CSV export of the current results.
 
@@ -89,13 +89,13 @@ The "Export all" header action is stubbed. Implement the CSV export of the curre
 Directory:: `+src/pages/<feature>/<resource>-search+`
 File::      `+<resource>-search.page.tsx+`
 
-.ACTION S (Phase 3.3) in `+<resource>-search.page.tsx+`
+.ACTION S10 in `+<resource>-search.page.tsx+`
 [%collapsible]
 ====
 [source, tsx]
 ----
   const handleExportAll = () => {
-    // ACTION S (Phase 3.3): implement CSV export of the current results
+    // ACTION S10: implement CSV export of the current results
     if (typeof window !== 'undefined') {
       window.alert('Export all is not implemented yet.');
     }

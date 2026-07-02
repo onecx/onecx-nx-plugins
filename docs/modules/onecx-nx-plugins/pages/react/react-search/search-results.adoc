@@ -15,6 +15,12 @@ Steps to add Search Results columns::
 . Add the matching translation keys for the column headers (see xref:./search-add-ons.adoc[Search Add-ons]).
 
 
+[#action-s5]
+== ACTION S5
+
+If not yet done, specify the base entity properties of your `+<Resource>+` schema in the OpenAPI specification. The generated schema marks the place with `+ACTION E: Add entity properties+`, see xref:./mock-api.adoc[Map the API and Prepare Mock Data].
+
+
 [#action-s6]
 == ACTION S6
 

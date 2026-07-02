@@ -19,7 +19,7 @@ const fetch<%= resourceClassName %>SearchResults = async (
   <%= resourcePropertyName %>Service: <%= serviceName %>,
   criteria: <%= resourceClassName %>SearchCriteria
 ): Promise<<%= resourceClassName %>SearchRow[]> => {
-  // ACTION S1: map the criteria to the generated search request
+  // ACTION S2: map the criteria to the generated search request
   const response = await <%= resourcePropertyName %>Service.search<%= resource %>Items({
     ...criteria,
     pageNumber: 0,

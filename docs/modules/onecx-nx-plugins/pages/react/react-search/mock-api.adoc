@@ -8,8 +8,8 @@ endif::[]
 The React search page fetches its data through a generated `+<Resource>Api+`, called from the `+use<Resource>Search+` hook. This page describes how to map the search criteria to the API request, how the search endpoint is defined in the OpenAPI file, and how to provide mock data while no real backend is available.
 
 
-[#action-s1]
-== ACTION S1 - Map criteria to the search request
+[#action-s2]
+== ACTION S2 - Map criteria to the search request
 
 The hook contains a colocated query function that calls the generated API service. Adjust the mapping so that the criteria object matches the generated `+Search<Resource>Request+`.
 
@@ -17,7 +17,7 @@ The hook contains a colocated query function that calls the generated API servic
 Directory:: `+src/hooks/use<Resource>Search+`
 File::      `+use<Resource>Search.ts+`
 
-.ACTION S1 in `+use<Resource>Search.ts+`
+.ACTION S2 in `+use<Resource>Search.ts+`
 [%collapsible]
 ====
 [source, typescript]
@@ -26,7 +26,7 @@ const fetch<Resource>SearchResults = async (
   <resource>Service: <Resource>Api,
   criteria: <Resource>SearchCriteria
 ): Promise<<Resource>SearchRow[]> => {
-  // ACTION S1: map the criteria to the generated search request
+  // ACTION S2: map the criteria to the generated search request
   const response = await <resource>Service.search<Resource>Items({
     ...criteria,
     pageNumber: 0,
