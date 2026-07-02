@@ -254,8 +254,8 @@ Files::      `de.json`, `en.json`
     },
     "FORM": {
       "ID": "ID",
-      "NAME": "Page Header with Details"
-      // ACTION D3: Add additional form field translation keys here
+      "NAME": "Page Header with Details",
+      "FORM_FIELDS": "ACTION D3: Add additional form field translation keys here"
     },
     "CANCEL": {
       "HEADER": "Confirm cancellation",
@@ -281,7 +281,7 @@ Files::      `de.json`, `en.json`
     }
   }
 ----
-The `+// ACTION D3+` comment in the `FORM` section marks where to add a translation key for each additional form field. Replace the comment with your keys and adapt the default values to your application.
+The `+FORM_FIELDS+` entry in the `FORM` section marks where to add a translation key for each additional form field. It is a placeholder tagged with `+ACTION D3+`: replace it with your own keys and adapt the default values to your application.
 ====
 
 '''

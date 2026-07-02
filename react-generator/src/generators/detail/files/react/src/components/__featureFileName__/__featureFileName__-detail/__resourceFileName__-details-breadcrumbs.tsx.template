@@ -10,31 +10,20 @@ export const <%= resourceClassName %>DetailsBreadcrumbs = ({
   onRootClick,
 }: <%= resourceClassName %>DetailsBreadcrumbsProps) => {
   return (
-    <div
-      style={{
-        fontSize: '0.875rem',
-        color: '#6c757d',
-        padding: '0.5rem 1.5rem',
-        borderBottom: '1px solid #dee2e6',
-        display: 'flex',
-        alignItems: 'center',
-      }}
-    >
+    <div className="flex align-items-center text-sm text-600 py-2 px-4 border-bottom-1 surface-border">
       <i
         data-testid="home-icon"
-        className="pi pi-home"
-        style={{ marginRight: '0.5rem', cursor: 'pointer' }}
+        className="pi pi-home mr-2 cursor-pointer"
         onClick={onRootClick}
       />
 
-      <span style={{ cursor: 'pointer' }} onClick={onRootClick}>
+      <span className="cursor-pointer" onClick={onRootClick}>
         {rootLabel}
       </span>
 
       <i
         data-testid="chevron-icon"
-        className="pi pi-chevron-right"
-        style={{ margin: '0 0.5rem', fontSize: '0.75rem' }}
+        className="pi pi-chevron-right mx-2 text-xs"
       />
 
       <span>{currentLabel}</span>
