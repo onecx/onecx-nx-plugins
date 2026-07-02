@@ -21,8 +21,8 @@ The generated template ships with a single placeholder criteria named `+changeMe
 ====
 
 
-[#action-s3]
-== ACTION S3
+[#action-s2]
+== ACTION S2
 
 Define the Search Criteria (types)::
 The `+<Resource>SearchCriteria+` interface describes the shape of the criteria object. Adjust its members and the initial values to match the fields users should be able to filter on.
@@ -34,17 +34,17 @@ The `+<Resource>SearchCriteria+` interface describes the shape of the criteria o
 Directory:: `+src/pages/<feature>/<resource>-search+`
 File::      `+<resource>-search.types.ts+`
 
-.ACTION S3 in `+<resource>-search.types.ts+`
+.ACTION S2 in `+<resource>-search.types.ts+`
 [%collapsible]
 ====
 [source, typescript]
 ----
-// ACTION S3: Define/adjust the search criteria
+// ACTION S2: Define/adjust the search criteria
 export interface <Resource>SearchCriteria {
   changeMe: string;
 }
 
-// ACTION S3: Adjust the initial search criteria values
+// ACTION S2: Adjust the initial search criteria values
 export const initial<Resource>SearchCriteria: <Resource>SearchCriteria = {
   changeMe: '',
 };
@@ -78,8 +78,8 @@ Where *bookTitle* is the criteria the user can filter on.
 ====
 
 
-[#action-s3-fields]
-== ACTION S3 (input fields)
+[#action-s3]
+== ACTION S3
 
 Render the Search Criteria fields::
 To make the criteria usable, add a corresponding input field for each criteria in the header section component. The generated template marks the place with `+{/* ACTION S3: Specify search criteria fields */}+`.

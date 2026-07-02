@@ -4,7 +4,7 @@ import {
   GeneratorStep,
   GeneratorStepError,
 } from '../../shared/generator.utils';
-import { safeReplace } from '../../shared/safeReplace';
+import { replacePlaceholder } from '../../shared/replacePlaceholder';
 import { ReactPageGeneratorSchema } from '../schema';
 
 export class ReactFeatureRoutesStep
@@ -25,26 +25,12 @@ export class ReactFeatureRoutesStep
     const pageComponentName = `${pageClassName}Page`;
     const importPath = `./pages/${featureFileName}/${pageFileName}/${pageFileName}.page`;
 
-    safeReplace(
-      `Add page import to React router`,
+    replacePlaceholder(
+      tree,
       routeFilePath,
-      'import "./i18n/config";',
-      `import "./i18n/config";
-     import ${pageComponentName} from '${importPath}';`,
-      tree
-    );
-
-    safeReplace(
-      `Add page route to React router`,
-      routeFilePath,
-      '    ];',
-      `    {
-      path: \`\${href}/${featureFileName}/${pageFileName}\`,
-      element: <${pageComponentName} />,
-      handle: {},
-    },
-    ];`,
-      tree
+      pageComponentName,
+      `import ${pageComponentName} from '${importPath}';`,
+      `${featureFileName}/${pageFileName}`
     );
   }
 
