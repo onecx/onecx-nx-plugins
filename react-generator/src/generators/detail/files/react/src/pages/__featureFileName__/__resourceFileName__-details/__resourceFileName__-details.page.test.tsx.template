@@ -7,7 +7,7 @@ import { use<%= resourceClassName %>DetailsStore } from './<%= resourceFileName 
 vi.mock('./<%= resourceFileName %>-details.hook');
 vi.mock('./<%= resourceFileName %>-details.store');
 
-vi.mock('../../../../libs/react-webcomponents/src/lib/routing.utils', () => ({
+vi.mock('@onecx/react-webcomponents', () => ({
   useAppHref: () => ({ href: '' }),
 }));
 
