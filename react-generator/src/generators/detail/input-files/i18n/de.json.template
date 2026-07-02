@@ -14,12 +14,14 @@
       "EDIT": "Bearbeiten",
       "DELETE": "Löschen",
       "CANCEL": "Abbrechen",
-      "SAVE": "Speichern"
+      "SAVE": "Speichern",
+      "YES": "Ja",
+      "NO": "Nein"
     },
     "FORM": {
       "ID": "ID",
-      "NAME": "Seitenkopf mit Details"
-      // ACTION D3: Add additional form field translation keys here
+      "NAME": "Seitenkopf mit Details",
+      "FORM_FIELDS": "ACTION D3: Add additional form field translation keys here"
     },
     "CANCEL": {
       "HEADER": "Abbruch bestätigen",

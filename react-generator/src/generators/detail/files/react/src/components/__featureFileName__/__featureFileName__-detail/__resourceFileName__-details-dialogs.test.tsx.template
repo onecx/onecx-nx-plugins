@@ -2,6 +2,12 @@ import { render, screen } from '@testing-library/react';
 import { describe, it, expect, vi } from 'vitest';
 import { <%= resourceClassName %>DetailsDialogs } from './<%= resourceFileName %>-details-dialogs';
 
+vi.mock('react-i18next', () => ({
+  useTranslation: () => ({
+    t: (key: string) => key,
+  }),
+}));
+
 describe('<%= resourceClassName %>DetailsDialogs', () => {
   <%_ if(editMode){ _%>
   const mockOnConfirmCancel = vi.fn();
@@ -55,8 +61,8 @@ describe('<%= resourceClassName %>DetailsDialogs', () => {
       />
     );
 
-    expect(screen.getByText('Confirm Cancellation')).toBeInTheDocument();
-    expect(screen.getByText('You have unsaved changes. Are you sure you want to cancel?')).toBeInTheDocument();
+    expect(screen.getByText('<%= resourceConstantName %>_DETAILS.CANCEL.HEADER')).toBeInTheDocument();
+    expect(screen.getByText('<%= resourceConstantName %>_DETAILS.CANCEL.MESSAGE')).toBeInTheDocument();
   });
 
   it('should not render cancel confirm dialog when showCancelConfirm is false', () => {
@@ -73,7 +79,7 @@ describe('<%= resourceClassName %>DetailsDialogs', () => {
       />
     );
 
-    expect(screen.queryByText('Confirm Cancellation')).not.toBeInTheDocument();
+    expect(screen.queryByText('<%= resourceConstantName %>_DETAILS.CANCEL.HEADER')).not.toBeInTheDocument();
   });
   <%_ } _%>
 
@@ -92,8 +98,8 @@ describe('<%= resourceClassName %>DetailsDialogs', () => {
       />
     );
 
-    expect(screen.getByText('Confirm Deletion')).toBeInTheDocument();
-    expect(screen.getByText('Are you sure you want to delete this item?')).toBeInTheDocument();
+    expect(screen.getByText('<%= resourceConstantName %>_DETAILS.DELETE.HEADER')).toBeInTheDocument();
+    expect(screen.getByText('<%= resourceConstantName %>_DETAILS.DELETE.MESSAGE')).toBeInTheDocument();
   });
 
   it('should not render delete confirm dialog when showDeleteConfirm is false', () => {
@@ -110,7 +116,7 @@ describe('<%= resourceClassName %>DetailsDialogs', () => {
       />
     );
 
-    expect(screen.queryByText('Confirm Deletion')).not.toBeInTheDocument();
+    expect(screen.queryByText('<%= resourceConstantName %>_DETAILS.DELETE.HEADER')).not.toBeInTheDocument();
   });
   <%_ } _%>
 });
