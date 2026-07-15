@@ -17,7 +17,7 @@ This section covers the React implementation. For Angular, see xref:../../genera
 == ACTION D11
 
 Configure Detail Tests::
-In alignment to the adaptations made in the detail component, you will also need to adapt the generated tests for the detail component. This includes updating the test data and expected results in the spec files to reflect the changes made to the detail component, such as the property definitions and the structure of the detail view. +
+In alignment to the adaptations made in the detail component, you will also need to adapt the generated tests for the detail component. This includes updating the test data and expected results in the test files to reflect the changes made to the detail component, such as the property definitions and the structure of the detail view. +
 This ensures that the tests accurately validate the functionality of the detail component based on the customized implementation.
 
 '''
@@ -27,19 +27,19 @@ This ensures that the tests accurately validate the functionality of the detail 
 ==== Location of Detail Component Tests
 [horizontal]
 Directory:: `<root-of-ui-app>/src/pages/<feature>/<resource>-details`
-File::      `<resource>-details.hook.spec.ts` (hook tests)
-File::      `<resource>-details.page.spec.tsx` (page tests)
+File::      `<resource>-details.hook.test.ts` (hook tests)
+File::      `<resource>-details.page.test.tsx` (page tests)
 
 ==== Tests for the book
 
 [horizontal]
 Directory:: `bookstore/src/pages/book/book-details`
-File::      `book-details.hook.spec.ts`
-File::      `book-details.page.spec.tsx`
+File::      `book-details.hook.test.ts`
+File::      `book-details.page.test.tsx`
 
-Update the test data in the spec file to reflect the expected structure and values based on the customized detail component implementation.
+Update the test data in the test file to reflect the expected structure and values based on the customized detail component implementation.
 
-.ACTION D11 in `+<resource>-details.hook.spec.ts+`
+.ACTION D11 in `+<resource>-details.hook.test.ts+`
 [%collapsible]
 ====
 [source, javascript]
@@ -71,7 +71,7 @@ import { useBookDetails } from './book-details.hook';
 ----
 ====
 
-.ACTION D11 in `+<resource>-details.page.spec.tsx+`
+.ACTION D11 in `+<resource>-details.page.test.tsx+`
 [%collapsible]
 ====
 [source, javascript]

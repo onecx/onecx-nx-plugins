@@ -11,6 +11,12 @@ vi.mock('@onecx/react-webcomponents', () => ({
   useAppHref: () => ({ href: '' }),
 }));
 
+vi.mock('react-i18next', () => ({
+  useTranslation: () => ({
+    t: (key: string) => key,
+  }),
+}));
+
 vi.mock('react-router', async () => {
   const actual = await vi.importActual('react-router');
   return {
@@ -231,7 +237,7 @@ describe('<%= resourceClassName %>DetailsPage', () => {
 
     renderComponent();
 
-    expect(screen.getByText('You have unsaved changes. Are you sure you want to cancel?')).toBeInTheDocument();
+    expect(screen.getByText('<%= resourceConstantName %>_DETAILS.CANCEL.MESSAGE')).toBeInTheDocument();
   });
 
   it('should save changes when Save button is clicked', async () => {
@@ -324,7 +330,7 @@ describe('<%= resourceClassName %>DetailsPage', () => {
 
     renderComponent();
 
-    expect(screen.getByText('Are you sure you want to delete this item?')).toBeInTheDocument();
+    expect(screen.getByText('<%= resourceConstantName %>_DETAILS.DELETE.MESSAGE')).toBeInTheDocument();
   });
 
   it('should delete and navigate when confirmed', async () => {
@@ -368,7 +374,7 @@ describe('<%= resourceClassName %>DetailsPage', () => {
 
     renderComponent();
 
-    const confirmButton = screen.getByText('Yes');
+    const confirmButton = screen.getByText('<%= resourceConstantName %>_DETAILS.GENERAL.YES');
     fireEvent.click(confirmButton);
 
     await waitFor(() => {

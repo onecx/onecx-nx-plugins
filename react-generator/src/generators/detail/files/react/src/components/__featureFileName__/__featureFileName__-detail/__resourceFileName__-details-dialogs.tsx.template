@@ -1,4 +1,5 @@
 import { ConfirmDialog } from 'primereact/confirmdialog';
+import { useTranslation } from 'react-i18next';
 
 interface <%= resourceClassName %>DetailsDialogsProps {
   <%_ if(editMode){ _%>
@@ -25,31 +26,33 @@ export const <%= resourceClassName %>DetailsDialogs = ({
   onRejectDelete,
   <%_ } _%>
 }: <%= resourceClassName %>DetailsDialogsProps) => {
+  const { t } = useTranslation();
+
   return (
     <>
       <%_ if(editMode){ _%>
       <ConfirmDialog
         visible={showCancelConfirm}
-        message="You have unsaved changes. Are you sure you want to cancel?"
-        header="Confirm Cancellation"
+        message={t('<%= resourceConstantName %>_DETAILS.CANCEL.MESSAGE')}
+        header={t('<%= resourceConstantName %>_DETAILS.CANCEL.HEADER')}
         icon="pi pi-exclamation-triangle"
         accept={onConfirmCancel}
         reject={onRejectCancel}
-        acceptLabel="Yes"
-        rejectLabel="No"
+        acceptLabel={t('<%= resourceConstantName %>_DETAILS.GENERAL.YES')}
+        rejectLabel={t('<%= resourceConstantName %>_DETAILS.GENERAL.NO')}
       />
       <%_ } _%>
 
       <%_ if(allowDelete){ _%>
       <ConfirmDialog
         visible={showDeleteConfirm}
-        message="Are you sure you want to delete this item?"
-        header="Confirm Deletion"
+        message={t('<%= resourceConstantName %>_DETAILS.DELETE.MESSAGE')}
+        header={t('<%= resourceConstantName %>_DETAILS.DELETE.HEADER')}
         icon="pi pi-exclamation-triangle"
         accept={onConfirmDelete}
         reject={onRejectDelete}
-        acceptLabel="Yes"
-        rejectLabel="No"
+        acceptLabel={t('<%= resourceConstantName %>_DETAILS.GENERAL.YES')}
+        rejectLabel={t('<%= resourceConstantName %>_DETAILS.GENERAL.NO')}
       />
       <%_ } _%>
     </>

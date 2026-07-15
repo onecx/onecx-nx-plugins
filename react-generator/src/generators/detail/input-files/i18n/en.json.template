@@ -14,12 +14,14 @@
       "EDIT": "Edit",
       "DELETE": "Delete",
       "CANCEL": "Cancel",
-      "SAVE": "Save"
+      "SAVE": "Save",
+      "YES": "Yes",
+      "NO": "No"
     },
     "FORM": {
       "ID": "ID",
-      "NAME": "Page Header with Details"
-      // ACTION D3: Add additional form field translation keys here
+      "NAME": "Page Header with Details",
+      "FORM_FIELDS": "ACTION D3: Add additional form field translation keys here"
     },
     "CANCEL": {
       "HEADER": "Confirm cancellation",
