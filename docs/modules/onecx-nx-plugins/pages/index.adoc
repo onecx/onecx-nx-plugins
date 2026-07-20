@@ -14,6 +14,14 @@ The OneCX UI App Generator is a powerful tool that simplifies the development of
 
 In case you want to take part of the development of the generator or want to use it locally without installing it globally from npm, see the xref:generator/development.adoc[Development Guide] for instructions on how to get the generator and set up the development environment.
 
+[IMPORTANT]
+====
+*Package renamed in version 9.* +
+Starting with version *9.0.0-rc.2*, the Angular generator package has been renamed from `@onecx/nx-plugin` to `@onecx/angular-generator`. +
+Update your generator commands accordingly, e.g. use `nx generate @onecx/angular-generator:feature ...` instead of `nx generate @onecx/nx-plugin:feature ...`. +
+Older versions (v8 and below) continue to use the `@onecx/nx-plugin` package name.
+====
+
 
 == Prerequisites
 

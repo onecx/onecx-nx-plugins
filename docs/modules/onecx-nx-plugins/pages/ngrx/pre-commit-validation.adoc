@@ -8,7 +8,7 @@ The fastest way to validate code changes for linting issues, conventional commit
 ******
 To run the generator, execute the following command: 
 ----
-nx generate <namespaceOfTheGenerator>/nx-plugin:pre-commit-validation
+nx generate <namespaceOfTheGenerator>/angular-generator:pre-commit-validation
 ----
 
 

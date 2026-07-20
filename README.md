@@ -9,9 +9,9 @@ Learn more about [Nx generators](https://nx.dev/plugin-features/use-code-generat
 ```
 npx create-nx-workspace
 npm install @nx/plugin@latest
-nx g @nx/plugin:plugin nx-plugin
-nx generate @nx/plugin:generator angular --project nx-plugin
-nx g create-package create-workspace --project nx-plugin --e2eProject ''
+nx g @nx/plugin:plugin angular-generator
+nx generate @nx/plugin:generator angular --project angular-generator
+nx g create-package create-workspace --project angular-generator --e2eProject ''
 npx nx local-registry
 npx nx run-many --targets publish --ver 1.0.0 --tag latest --skip-nx-cache
 ```
@@ -20,7 +20,7 @@ npx nx run-many --targets publish --ver 1.0.0 --tag latest --skip-nx-cache
 ## Local Development
 
 To use the created generator locally, you can use [Verdaccio](https://verdaccio.org/) which provides a local registry for npm packages. +
-This is primarily useful for changes within the `create_workspace` subproject. If you have only made changes to the `nx-plugin`, copying the build result to the target directory `node_modules` (see below) is simpler and recommended.
+This is primarily useful for changes within the `create_workspace` subproject. If you have only made changes to the `angular-generator`, copying the build result to the target directory `node_modules` (see below) is simpler and recommended.
 
 ### Setup a local Verdaccio Registry
 
@@ -52,14 +52,14 @@ Use `admin` as user name, enter password/email as you want. Onece done you are l
 
 It is recommended to modify the version of the package so it is easier for usage this version later on.
 
-Navigate to the package you want to use (e.g. in `./dist/nx-plugin`) and change the `version` in the `package.json` temporarily to something like `0.0.X-local`.
+Navigate to the package you want to use (e.g. in `./dist/angular-generator`) and change the `version` in the `package.json` temporarily to something like `0.0.X-local`.
 
 Build the generator locally with:
 ```
 npm run build
 ```
 
-Next navigate to the created package (e.g. in `./dist/nx-plugin`) and publish it: 
+Next navigate to the created package (e.g. in `./dist/angular-generator`) and publish it: 
 ```
 npm publish --registry http://localhost:4873/ --tag latest
 ```
@@ -90,17 +90,17 @@ npm_config_registry=https://localhost:4873 npx @onecx/create-workspace@<version-
 
 Install the package in your local project with:
 ```
-npm i @onecx/nx-plugin:0.0.X-local --registry http://localhost:4873
+npm i @onecx/angular-generator:0.0.X-local --registry http://localhost:4873
 ```
 And then you can use it, for example, to generate a feature:
 ```
-nx g @onecx/nx-plugin:feature <feature-name>
+nx g @onecx/angular-generator:feature <feature-name>
 ```
 
 ### Alternative: Copy into node_modules
 Copy the build library into your local project `node_modules` folder:
 ```
-npm run build && cp -r dist/nx-plugin/* ../path/to/test-project/node_modules/@onecx/nx-plugin
+npm run build && cp -r dist/angular-generator/* ../path/to/test-project/node_modules/@onecx/angular-generator
 ```
 
 

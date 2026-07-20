@@ -27,7 +27,7 @@ Directory:: `<root-of-ui-app>`
 .Create a feature module with the following command, preset resource/entity name
 [source,bash]
 ----
-nx generate <namespace>/nx-plugin:feature <feature> --resource=<resource>
+nx generate <namespace>/angular-generator:feature <feature> --resource=<resource>
 ----
  
 with:
@@ -69,7 +69,7 @@ Execute the following command with the *bookstore* application as current workin
 .Create a Feature Module named "book"
 [source,bash]
 ----
-nx generate @onecx/nx-plugin:feature book --resource=Book
+nx generate @onecx/angular-generator:feature book --resource=Book
 ----
 
 This command will generate a new feature module named *book* with the necessary structure and configurations.

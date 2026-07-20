@@ -59,8 +59,9 @@ Next step may xref:./create-feature.adoc[create a feature module].
 
 [NOTE]
 ====
-The generated app contains the dependency for the OneCX Nx Plugin. +
-This allows you to easily add new features, components, and services within your app's user interface using the OneCX Nx plugin functions.
+The generated app contains the dependency for the OneCX Angular Generator (`@onecx/angular-generator`). +
+This allows you to easily add new features, components, and services within your app's user interface using the OneCX Angular Generator functions. +
+(This package was named `@onecx/nx-plugin` prior to version 9.)
 ====
 
 ifdef::env-site[]

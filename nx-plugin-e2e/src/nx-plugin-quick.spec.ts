@@ -51,7 +51,7 @@ describe('nx-plugin', () => {
 
     // The plugin has been built and published to a local registry in the jest globalSetup
     // Install the plugin built with the latest source code into the test repo
-    execSync(`npm install @onecx/nx-plugin@e2e`, {
+    execSync(`npm install @onecx/angular-generator@e2e`, {
       cwd: projectDirectory,
       stdio: 'inherit',
       env: process.env,
@@ -86,7 +86,7 @@ describe('nx-plugin', () => {
 
   it('should be installed', () => {
     // npm ls will fail if the package is not installed properly
-    execSync('npm ls @onecx/nx-plugin', {
+    execSync('npm ls @onecx/angular-generator', {
       cwd: projectDirectory,
       stdio: 'inherit',
     });
@@ -104,7 +104,7 @@ describe('nx-plugin', () => {
       console.log(tcOption);
 
       execSync(
-        `nx generate @onecx/nx-plugin:feature ${featureName} --resource=${resourceName} ${parameterString}`,
+        `nx generate @onecx/angular-generator:feature ${featureName} --resource=${resourceName} ${parameterString}`,
         tcOption
       );
     });
@@ -115,7 +115,7 @@ describe('nx-plugin', () => {
       console.log('### ==> should add a search page #######################');
 
       execSync(
-        `nx generate @onecx/nx-plugin:search ${featureName} --resource=${resourceName} ${parameterString}`,
+        `nx generate @onecx/angular-generator:search ${featureName} --resource=${resourceName} ${parameterString}`,
         tcOption
       );
     });
@@ -129,7 +129,7 @@ describe('nx-plugin', () => {
       console.log('### ==> should add a details page #######################');
 
       execSync(
-        `nx generate @onecx/nx-plugin:details ${featureName} --resource=${resourceName} ${parameterString}`,
+        `nx generate @onecx/angular-generator:details ${featureName} --resource=${resourceName} ${parameterString}`,
         tcOption
       );
     });
@@ -142,7 +142,7 @@ describe('nx-plugin', () => {
       );
 
       execSync(
-        `nx generate @onecx/nx-plugin:create-update ${featureName} --resource=${resourceName} ${parameterString} --verbose`,
+        `nx generate @onecx/angular-generator:create-update ${featureName} --resource=${resourceName} ${parameterString} --verbose`,
         tcOption
       );
     });
@@ -153,7 +153,7 @@ describe('nx-plugin', () => {
       console.log('### ==> should add a delete dialog #######################');
 
       execSync(
-        `nx generate @onecx/nx-plugin:delete ${featureName} --resource=${resourceName} ${parameterString} --verbose`,
+        `nx generate @onecx/angular-generator:delete ${featureName} --resource=${resourceName} ${parameterString} --verbose`,
         tcOption
       );
     });
@@ -175,7 +175,7 @@ describe('nx-plugin', () => {
       );
 
       execSync(
-        `nx generate @onecx/nx-plugin:ngrx-page ${featureName} ${parameterString}`,
+        `nx generate @onecx/angular-generator:ngrx-page ${featureName} ${parameterString}`,
         tcOption
       );
     });
@@ -190,7 +190,7 @@ describe('nx-plugin', () => {
       console.log('### ==> should add a custom named feature ################');
 
       execSync(
-        `nx generate @onecx/nx-plugin:feature ${featureNameCustom} ${parameterString} --verbose`,
+        `nx generate @onecx/angular-generator:feature ${featureNameCustom} ${parameterString} --verbose`,
         tcOption
       );
     });
@@ -205,7 +205,7 @@ describe('nx-plugin', () => {
       console.log('### ==> should add a custom named search page ############');
 
       execSync(
-        `nx generate @onecx/nx-plugin:search ${featureNameCustom} ${parameterString} --verbose`,
+        `nx generate @onecx/angular-generator:search ${featureNameCustom} ${parameterString} --verbose`,
         tcOption
       );
     });
@@ -223,7 +223,7 @@ describe('nx-plugin', () => {
       console.log('### ==> should add a custom named details page ###########');
 
       execSync(
-        `nx generate @onecx/nx-plugin:details ${featureNameCustom} ${parameterString} --verbose`,
+        `nx generate @onecx/angular-generator:details ${featureNameCustom} ${parameterString} --verbose`,
         tcOption
       );
     });
@@ -240,7 +240,7 @@ describe('nx-plugin', () => {
       console.log('### ==> should add a custom named create-update dialog ##');
 
       execSync(
-        `nx generate @onecx/nx-plugin:create-update ${featureNameCustom} ${parameterString} --verbose`,
+        `nx generate @onecx/angular-generator:create-update ${featureNameCustom} ${parameterString} --verbose`,
         tcOption
       );
     });
@@ -255,7 +255,7 @@ describe('nx-plugin', () => {
       console.log('### ==> should add a custom named delete dialog ##########');
 
       execSync(
-        `nx generate @onecx/nx-plugin:delete ${featureNameCustom} ${parameterString} --verbose`,
+        `nx generate @onecx/angular-generator:delete ${featureNameCustom} ${parameterString} --verbose`,
         tcOption
       );
     });
@@ -272,7 +272,7 @@ describe('nx-plugin', () => {
       console.log('### ==> should add pre commit validation #################');
 
       execSync(
-        `nx generate @onecx/nx-plugin:pre-commit-validation ${parameterString} --verbose`,
+        `nx generate @onecx/angular-generator:pre-commit-validation ${parameterString} --verbose`,
         tcOption
       );
     });

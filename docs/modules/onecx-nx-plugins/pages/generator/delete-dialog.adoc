@@ -10,7 +10,7 @@ The fastest way to create a delete dialog in a feature module is to use the OneC
 To run the generator, execute the following command: 
 
 ----
-nx generate <namespaceOfTheGenerator>/nx-plugin:delete <feature>
+nx generate <namespaceOfTheGenerator>/angular-generator:delete <feature>
 ----
 
 

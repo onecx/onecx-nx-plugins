@@ -5,7 +5,7 @@ The fastest way to create an empty ngrx-page is to use the OneCX generator. Some
 To run the generator, execute the following command: 
 
 ----
-nx generate <namespaceOfTheGenerator>/nx-plugin:ngrx-page <feature>
+nx generate <namespaceOfTheGenerator>/angular-generator:ngrx-page <feature>
 ----
 
 *Placeholder*: 

@@ -1,3 +1,7 @@
+### ⚠ BREAKING CHANGES
+
+* The Angular generator package has been renamed from `@onecx/nx-plugin` to `@onecx/angular-generator` (project/folder `nx-plugin` → `angular-generator`). Update generator commands accordingly, e.g. use `nx generate @onecx/angular-generator:feature ...` instead of `nx generate @onecx/nx-plugin:feature ...`.
+
 ## [9.0.0-rc.2](https://github.com/onecx/onecx-nx-plugins/compare/v9.0.0-rc.1...v9.0.0-rc.2) (2026-06-29)
 
 ### Features
