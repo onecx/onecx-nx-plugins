@@ -24,7 +24,7 @@ When a resource name is specified with the `--resource` option, the generator wi
 .Create a detail component with the following command, preset resource/entity name
 [source,bash]
 ----
-nx generate <namespace>/nx-plugin:details <feature> --resource=<resource>
+nx generate <namespace>/angular-generator:details <feature> --resource=<resource>
 ----
  
 with:
@@ -94,7 +94,7 @@ Execute the following command with the *bookstore* application as current workin
 .Create a Detail Component for a Book, preset resource/entity name
 [source,bash]
 ----
-nx generate @onecx/nx-plugin:details book --resource=Book
+nx generate @onecx/angular-generator:details book --resource=Book
 ----
 
 This command will generate a new detail component *book-detail* within the specified feature module with the necessary structure and configurations. With the presetted resource/entity name *Book*, the generator will also preset the API service name to *BookAPIService* used by the generated detail component. This should correspond to the created schema in OpenAPI file, see step before.

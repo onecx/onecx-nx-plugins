@@ -10,7 +10,7 @@ The fastest way to create a create and update dialogs in a feature module is to 
 To run the generator, execute the following command: 
 
 ----
-nx generate <namespaceOfTheGenerator>/nx-plugin:create-update <feature>
+nx generate <namespaceOfTheGenerator>/angular-generator:create-update <feature>
 ----
 
 * _<feature>_: see xref:./glossary.adoc#feature[here].

@@ -25,7 +25,7 @@ Follow these steps:
 .Generate page/component
 [source, bash]
 ----
-nx generate @onecx/nx-plugin:ngrx-page [feature module]
+nx generate @onecx/angular-generator:ngrx-page [feature module]
 ----
 . Follow the prompts to provide details like the page component name and the page title. +
   That's it.
@@ -37,7 +37,7 @@ To create a simple NgRx page named "Hello" under the "Hello World" feature modul
 .Generate page/component
 [source, bash]
 ----
-nx generate @onecx/nx-plugin:ngrx-page hello-world
+nx generate @onecx/angular-generator:ngrx-page hello-world
 ----
 When prompted, you would enter "Hello" as the component name and "Hello World" as the page title. +
 To access the newly created component, navigate to `[text-important]#<your app-base-path>/hello-world/hello#` in your browser.

@@ -10,7 +10,7 @@ const PLUGIN_MAP: Record<string, string> = {
 };
 
 function resolvePlugin(flavor: string): string {
-  return PLUGIN_MAP[flavor] ?? '@onecx/nx-plugin';
+  return PLUGIN_MAP[flavor] ?? '@onecx/angular-generator';
 }
 
 async function main() {

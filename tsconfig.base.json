@@ -15,7 +15,7 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@onecx/nx-plugin": ["nx-plugin/src/index.ts"],
+      "@onecx/angular-generator": ["angular-generator/src/index.ts"],
       "@onecx/release": ["tools/release/src/index.ts"],
       "@onecx/react-generator": ["react-generator/src/index.ts"]
     }

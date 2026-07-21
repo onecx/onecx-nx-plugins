@@ -30,6 +30,6 @@ const sourceDir = path.join(__dirname, 'dist');
 // Copy the compiled output to each path
 paths.forEach((destination) => {
   const destDir = path.resolve(destination);
-  execSync(`cp -r ${sourceDir}/nx-plugin ${destDir}`, { stdio: 'inherit' });
+  execSync(`cp -r ${sourceDir}/angular-generator ${destDir}`, { stdio: 'inherit' });
   console.log(`Copied compiled output to ${destDir}`);
 });

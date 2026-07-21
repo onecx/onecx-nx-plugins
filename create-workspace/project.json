@@ -34,5 +34,5 @@
     }
   },
   "tags": [],
-  "implicitDependencies": ["nx-plugin", "create-workspace"]
+  "implicitDependencies": ["angular-generator", "create-workspace"]
 }
