@@ -1,0 +1,183 @@
+ifdef::env-site[]
+include::partial$_attributes.adoc[]
+endif::[]
+
+= Generator Utils
+
+This page documents the helper utilities available in the `generator-utils` library
+and how to use them when authoring OneCX generators (Angular / React).
+
+The library exports a small set of utilities commonly used by generators:
+
+- `deepMerge` — deep-merge objects
+- `renderJsonFile` — render EJS template and parse JSON
+- `readYaml`, `writeYaml`, `updateYaml` — YAML helpers based on Nx `Tree`
+- `safeReplace` — robust file replacement helper for generator templates
+- `GeneratorStepError` — standard error type for generator steps
+- `HelmValuesUtil` and `PermissionSectionUtil` — helpers to compose Helm `values.yaml`
+- `OpenAPIDefault` — small model describing an OpenAPI operation default
+
+== Build & Test
+
+To build the library:
+
+[source,bash]
+----
+nx build generator-utils
+----
+
+Run unit tests:
+
+[source,bash]
+----
+nx test generator-utils
+----
+
+== API Reference
+
+=== deepMerge
+
+Recursively merges plain objects and concatenates arrays. Later values replace
+earlier values for the same key. This is useful for combining nested
+configuration objects, such as Helm values fragments.
+
+.`deepMerge` syntax
+[source,typescript]
+----
+export function deepMerge(...objects: unknown[]): object
+----
+
+[discrete]
+=== Example
+[source,typescript]
+----
+const merged = deepMerge({a: [1]}, {a: [2], b: {c: 3}});
+// merged: { a: [1, 2], b: { c: 3 } }
+----
+
+=== renderJsonFile
+
+Renders a JSON file containing EJS template syntax and returns the parsed
+object. The file path is also passed to EJS so that included templates can be
+resolved relative to the file.
+
+.`renderJsonFile` syntax
+[source,typescript]
+----
+export function renderJsonFile(
+	filePath: string,
+	options: Record<string, unknown>
+): unknown
+----
+
+[discrete]
+=== Example
+[source,typescript]
+----
+const obj = renderJsonFile('templates/messages.json.ejs', { name: 'Book' });
+----
+
+=== YAML helpers (readYaml / writeYaml / updateYaml)
+
+Read, write and update YAML files through an Nx `Tree`. `readYaml` throws when
+the file does not exist or cannot be parsed. `updateYaml` reads the YAML,
+passes it to the updater and writes the returned value back to the same path.
+
+.`readYaml`, `writeYaml` and `updateYaml` syntax
+[source,typescript]
+----
+export function readYaml<T extends object = object>(tree: Tree, path: string): T
+export function writeYaml<T extends object = object>(
+	tree: Tree,
+	path: string,
+	value: T
+): void
+export function updateYaml<T extends object = object, U extends object = T>(
+	tree: Tree,
+	path: string,
+	updater: (value: T) => U
+): void
+----
+
+[discrete]
+=== Example
+[source,ts]
+----
+updateYaml(tree, 'charts/values.yaml', (v) => ({ ...v, app: { enabled: true } }));
+----
+
+=== safeReplace
+
+Performs guarded textual replacements in a file. It validates that each
+pattern is present and avoids duplicating replacement content. If a
+replacement cannot be applied, it writes a comment to the file describing
+what failed so the author can continue manually.
+
+.`safeReplace` syntax
+[source,typescript]
+----
+export function safeReplace(
+	goal: string,
+	file: string,
+	find: string | RegExp | (string | RegExp)[],
+	replaceWith: string | string[],
+	tree: Tree
+): void
+----
+
+[discrete]
+=== Example
+[source,ts]
+----
+safeReplace(
+	'Insert route',
+	'src/app/app-routing.module.ts',
+	/\/\* ROUTES_PLACEHOLDER \*\//,
+	'const routes = [ ... ];',
+	tree
+);
+----
+
+=== GeneratorStepError
+
+Standard error type used by generator steps. `errorParameters.stopExecution`
+defaults to `false` and can be used by calling code to decide whether to abort
+generation or continue with best-effort behaviour.
+
+.`GeneratorStepError` syntax
+[source,typescript]
+----
+export class GeneratorStepError extends Error {
+	constructor(message: string, parameters?: GeneratorStepErrorParameters)
+}
+----
+
+[discrete]
+=== Example
+[source,ts]
+----
+throw new GeneratorStepError('Missing schema file', { stopExecution: true });
+----
+
+=== HelmValuesUtil and PermissionSectionUtil
+
+Helper to manipulate Helm `values.yaml` content in a programmatic way. The
+utility parses YAML into an object, provides helpers to add permission entries
+and finally serializes back to YAML. It supports inserting comments via a
+special `~comment~` key which is rendered as `#` on finalize().
+
+Key methods include:
+
+- `new HelmValuesUtil(yamlString)` — create helper from YAML string
+- `permissions()` — access permission-specific section builder
+- `full()` — operate on full YAML content
+- `finalize()` — serialize to YAML string (comments restored)
+
+[discrete]
+=== Example
+[source,ts]
+----
+const util = new HelmValuesUtil(fs.readFileSync('values.yaml', 'utf8'));
+util.permissions().set('my-feature', { enabled: true }, { existStrategy: 'replace', comment: 'added by generator' }).done();
+const out = util.finalize();
+----
