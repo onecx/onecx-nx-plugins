@@ -58,10 +58,6 @@ const mfConfig: ModuleFederationOptions = {
       requiredVersion: dependencies["@onecx/react-auth"],
       singleton: true,
     },
-    "@tanstack/react-query": {
-      requiredVersion: dependencies["@tanstack/react-query"],
-      singleton: true,
-    },
     "@r2wc/react-to-web-component": {
       requiredVersion: dependencies["@r2wc/react-to-web-component"],
       singleton: true,
