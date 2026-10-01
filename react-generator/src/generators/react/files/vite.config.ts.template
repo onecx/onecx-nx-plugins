@@ -62,6 +62,10 @@ const mfConfig: ModuleFederationOptions = {
       requiredVersion: dependencies["@tanstack/react-query"],
       singleton: true,
     },
+    "@r2wc/react-to-web-component": {
+      requiredVersion: dependencies["@r2wc/react-to-web-component"],
+      singleton: true,
+    },
   },
 };
 export default defineConfig(({ mode }) => {

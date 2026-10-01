@@ -123,7 +123,7 @@ export async function reactGenerator(
   addBaseToPackageJson(tree, options);
   addScriptsToPackageJson(tree);
 
-  const oneCXLibVersion = '^9.0.0-rc.10';
+  const oneCXLibVersion = '^8.12.0';
   const reactVersion = '^19.0.0';
   const nxVersion = '22.7.4';
 
@@ -137,7 +137,7 @@ export async function reactGenerator(
       '@onecx/react-webcomponents': oneCXLibVersion,
       '@onecx/react-auth': oneCXLibVersion,
       '@onecx/integration-interface': oneCXLibVersion,
-      '@r2wc/react-to-web-component': '^2.1.0',
+      '@r2wc/react-to-web-component': '^2.1.1',
       react: reactVersion,
       'react-dom': reactVersion,
       'react-router': '^7.13.0',
