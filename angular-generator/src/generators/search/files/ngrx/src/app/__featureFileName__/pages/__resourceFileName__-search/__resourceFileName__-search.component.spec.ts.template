@@ -44,10 +44,16 @@ import { <%= resourcePropertyName %>SearchColumns } from './<%= resourceFileName
 import { select<%= resourceClassName %>SearchViewModel } from './<%= resourceFileName %>-search.selectors';
 import { initialState } from './<%= resourceFileName %>-search.reducers';
 
-jest.mock('chart.js/auto', () => ({
-  __esModule: true,
-  default: jest.fn(),
-}));
+jest.mock('chart.js/auto', () => {
+  class MockChart {
+    destroy = jest.fn();
+    update = jest.fn();
+    generateLegend = jest.fn();
+    toBase64Image = jest.fn();
+  }
+
+  return { __esModule: true, default: MockChart };
+});
 
 describe('<%= resourceClassName %>SearchComponent', () => {
   const origAddEventListener = window.addEventListener;
@@ -450,7 +456,7 @@ describe('<%= resourceClassName %>SearchComponent', () => {
       const rows = await dataTable.getActionButtons('list');
       expect(rows.length).toBe(0);
     }
-    expect(fixture.nativeElement.textContent).toContain('No results found')
+    expect(fixture.nativeElement.textContent).toContain('No results.')
   });
 
   it('should not display chart when no results or toggled to not visible', async () => {
