@@ -44,6 +44,17 @@ import { <%= resourcePropertyName %>SearchColumns } from './<%= resourceFileName
 import { select<%= resourceClassName %>SearchViewModel } from './<%= resourceFileName %>-search.selectors';
 import { initialState } from './<%= resourceFileName %>-search.reducers';
 
+jest.mock('chart.js/auto', () => {
+  class MockChart {
+    destroy = jest.fn();
+    update = jest.fn();
+    generateLegend = jest.fn();
+    toBase64Image = jest.fn();
+  }
+
+  return Object.assign(MockChart, { default: MockChart });
+});
+
 describe('<%= resourceClassName %>SearchComponent', () => {
   const origAddEventListener = window.addEventListener;
   const origPostMessage = window.postMessage;
@@ -73,7 +84,6 @@ describe('<%= resourceClassName %>SearchComponent', () => {
   });
 
 
-  HTMLCanvasElement.prototype.getContext = jest.fn();
   let component: <%= resourceClassName %>SearchComponent;
   let fixture: ComponentFixture<<%= resourceClassName %>SearchComponent>;
   let store: MockStore<Store>;
@@ -154,7 +164,8 @@ describe('<%= resourceClassName %>SearchComponent', () => {
           en: require('../../../../assets/i18n/en.json')
         })
       ],
-    }).compileComponents();
+    })
+      .compileComponents();
   });
 
   beforeEach(async () => {
@@ -445,7 +456,7 @@ describe('<%= resourceClassName %>SearchComponent', () => {
       const rows = await dataTable.getActionButtons('list');
       expect(rows.length).toBe(0);
     }
-    expect(fixture.nativeElement.textContent).toContain('No results found')
+    expect(fixture.nativeElement.textContent).toContain('No results.')
   });
 
   it('should not display chart when no results or toggled to not visible', async () => {
