@@ -14,6 +14,7 @@ import { ofType } from '@ngrx/effects';
 import { provideTranslateTestingService } from '@onecx/angular-accelerator/testing'
 import { TranslateModule, TranslateService } from '@ngx-translate/core'
 import { DialogService } from 'primeng/dynamicdialog';
+import { Chart } from 'primeng/chart';
 import { UserService } from '@onecx/angular-integration-interface';
 import {
   AngularAcceleratorModule,
@@ -154,7 +155,13 @@ describe('<%= resourceClassName %>SearchComponent', () => {
           en: require('../../../../assets/i18n/en.json')
         })
       ],
-    }).compileComponents();
+    })
+      .overrideComponent(Chart, {
+        set: {
+          template: '<div></div>',
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(async () => {
