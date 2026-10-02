@@ -52,7 +52,7 @@ jest.mock('chart.js/auto', () => {
     toBase64Image = jest.fn();
   }
 
-  return { __esModule: true, default: MockChart };
+  return Object.assign(MockChart, { default: MockChart });
 });
 
 describe('<%= resourceClassName %>SearchComponent', () => {
