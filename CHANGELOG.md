@@ -1,3 +1,19 @@
+## [9.0.0-rc.3](https://github.com/onecx/onecx-nx-plugins/compare/v9.0.0-rc.2...v9.0.0-rc.3) (2026-10-05)
+
+### Features
+
+* add react generator ([37214f5](https://github.com/onecx/onecx-nx-plugins/commit/37214f5b3b70d33f90aabab97f37cfac709ddfd3))
+* **react-generator:** share r2wc and update OneCX dependencies ([#405](https://github.com/onecx/onecx-nx-plugins/issues/405)) ([5f0457c](https://github.com/onecx/onecx-nx-plugins/commit/5f0457c39f596b68781e77901532ec672effcd39))
+* **react-helm-updates:** align react helm templates with OneCX conventions ([#401](https://github.com/onecx/onecx-nx-plugins/issues/401)) ([6d9a11a](https://github.com/onecx/onecx-nx-plugins/commit/6d9a11aa6a732a9cc3f0d6b11ec568629f8bc783))
+
+### Chores
+
+* **deps:** update js-yaml, @semantic-release/npm, semantic-release to patched versions (security fixes) ([#396](https://github.com/onecx/onecx-nx-plugins/issues/396)) ([7fe7166](https://github.com/onecx/onecx-nx-plugins/commit/7fe71662418cbef154f505696020f4ee783c8576))
+
+### Refactoring
+
+* create seperate package generator-utils to be used for shared files across react and angular generators, rename nx-plugin to angular-generator ([#390](https://github.com/onecx/onecx-nx-plugins/issues/390)) ([320ee6d](https://github.com/onecx/onecx-nx-plugins/commit/320ee6d65809286deba463d50dc22e378a04c924))
+
 ### ⚠ BREAKING CHANGES
 
 * The Angular generator package has been renamed from `@onecx/nx-plugin` to `@onecx/angular-generator` (project/folder `nx-plugin` → `angular-generator`). Update generator commands accordingly, e.g. use `nx generate @onecx/angular-generator:feature ...` instead of `nx generate @onecx/nx-plugin:feature ...`.
