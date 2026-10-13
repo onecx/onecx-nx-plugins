@@ -1,3 +1,13 @@
+## [9.0.0-rc.4](https://github.com/onecx/onecx-nx-plugins/compare/v9.0.0-rc.3...v9.0.0-rc.4) (2026-10-13)
+
+### Bug Fixes
+
+* adjust version to be the same across all publishable packages ([#408](https://github.com/onecx/onecx-nx-plugins/issues/408)) ([cd0dd84](https://github.com/onecx/onecx-nx-plugins/commit/cd0dd849cafcf94d8b5af2a81be97215196835c7))
+
+### Chores
+
+* rename generator-shared to generator-utils in release script ([#407](https://github.com/onecx/onecx-nx-plugins/issues/407)) ([a1bab4e](https://github.com/onecx/onecx-nx-plugins/commit/a1bab4ef593ca9ce58b82164509afb53380ff2ec))
+
 ## [9.0.0-rc.3](https://github.com/onecx/onecx-nx-plugins/compare/v9.0.0-rc.2...v9.0.0-rc.3) (2026-10-05)
 
 ### Features

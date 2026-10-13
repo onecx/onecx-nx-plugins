@@ -1,6 +1,6 @@
 {
   "name": "@onecx/react-generator",
-  "version": "9.0.0-rc.3",
+  "version": "9.0.0-rc.4",
   "license": "Apache-2.0",
   "contributors": [],
   "repository": {
@@ -11,7 +11,7 @@
     "@nx/devkit": "^19.8.14",
     "@nx/eslint-plugin": "^19.8.14",
     "@nx/react": "^19.8.14",
-    "@onecx/generator-utils": "^9.0.0-rc.3",
+    "@onecx/generator-utils": "^9.0.0-rc.4",
     "@phenomnomnominal/tsquery": "^6.2.0",
     "ejs": "^3.1.9",
     "enquirer": "^2.3.6",
