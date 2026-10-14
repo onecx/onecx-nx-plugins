@@ -1,6 +1,6 @@
 import { execSync, ExecSyncOptionsWithBufferEncoding } from 'child_process';
 import { join, dirname } from 'path';
-import { existsSync, mkdirSync, rmSync } from 'fs';
+import { existsSync, mkdirSync, rmSync, readFileSync } from 'fs';
 import * as os from 'os';
 
 const NON_INTERACTIVE_KEY = 'non-interactive';
@@ -100,6 +100,35 @@ describe('nx-plugin', () => {
       stdio: 'inherit',
       env: process.env,
     });
+  });
+
+  it('should scaffold a Rspack-based build/serve setup', () => {
+    // The generated project must use the Rspack executors with an rspackConfig,
+    // and the generated rspack.config.js must use the Rspack entry points.
+    const projectJson = JSON.parse(
+      readFileSync(join(projectDirectory, 'project.json'), 'utf-8')
+    );
+    const buildTarget = projectJson.targets.build;
+    const serveTarget = projectJson.targets.serve;
+    expect(buildTarget.executor).toBe('@nx/rspack:rspack');
+    expect(buildTarget.options.rspackConfig).toBe('rspack.config.js');
+    expect(buildTarget.configurations.production.rspackConfig).toBe(
+      'rspack.prod.config.js'
+    );
+    expect(serveTarget.executor).toBe('@nx/rspack:dev-server');
+    // The Rspack dev-server executor has no disableHostCheck/headers options, so
+    // those must not leak back onto the serve target (they live in the config now).
+    expect(serveTarget.options.headers).toBeUndefined();
+
+    const rspackConfig = readFileSync(
+      join(projectDirectory, 'rspack.config.js'),
+      'utf-8'
+    );
+    expect(rspackConfig).toContain(
+      "@module-federation/enhanced/rspack"
+    );
+    expect(rspackConfig).toContain("require('@rspack/core')");
+    expect(rspackConfig).toContain("getOneCXRspackPatchLoader");
   });
 
   beforeEach(() => {

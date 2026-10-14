@@ -1,0 +1,42 @@
+// Rspack configuration for the generated OneCX Angular application.
+// Replaces the previous webpack.config.js: it uses @rspack/core and the Rspack
+// entry point of @module-federation/enhanced, and wires the OneCX Rspack
+// patch-loader from @onecx/build-utils (fixes the patch-plugin bug where the
+// previously declared modify-source-webpack-plugin devDependency was never used).
+const { ModuleFederationPlugin } = require('@module-federation/enhanced/rspack');
+const { DefinePlugin } = require('@rspack/core');
+const { getOneCXRspackPatchLoader } = require('@onecx/build-utils');
+const isProduction = process.env.NODE_ENV === 'production';
+const mfConfig = require('./module-federation.config');
+
+// The OneCX Rspack patch-loader. Once the @onecx/build-utils patch-loader export
+// (introduced by the shell migration) is available it is appended to module.rules;
+// the guard keeps the generated build working until that export is published.
+const patchLoaderRule =
+  typeof getOneCXRspackPatchLoader === 'function' ? getOneCXRspackPatchLoader() : null;
+
+module.exports = {
+  // The Rspack dev-server executor only accepts host/publicHost/proxyConfig/port/mode/ssl,
+  // so the disableHostCheck/CORS headers previously set on the webpack dev-server target
+  // are moved here (allowedHosts + headers).
+  devServer: {
+    allowedHosts: 'all',
+    headers: {
+      Allow: 'GET, POST, PUT, DELETE, PATCH, OPTIONS',
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Headers': '*',
+      'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, PATCH, OPTIONS',
+    },
+  },
+  plugins: [
+    new ModuleFederationPlugin(mfConfig),
+    new DefinePlugin({ ngDevMode: JSON.stringify(!isProduction) }),
+  ],
+  output: { uniqueName: 'onecx-<%= fileName %>-ui', publicPath: 'auto' },
+  module: {
+    parser: { javascript: { importMeta: false } },
+    rules: patchLoaderRule ? [patchLoaderRule] : [],
+  },
+  experiments: { topLevelAwait: true, outputModule: true },
+  optimization: { runtimeChunk: false, splitChunks: false },
+};
