@@ -1,19 +1,24 @@
 // Rspack configuration for the generated OneCX Angular application.
 // Replaces the previous webpack.config.js: it uses @rspack/core and the Rspack
 // entry point of @module-federation/enhanced, and wires the OneCX Rspack
-// patch-loader from @onecx/build-utils (fixes the patch-plugin bug where the
-// previously declared modify-source-webpack-plugin devDependency was never used).
+// patch-loader (fixes the patch-plugin bug where the previously declared
+// modify-source-webpack-plugin devDependency was never actually used).
 const { ModuleFederationPlugin } = require('@module-federation/enhanced/rspack');
 const { DefinePlugin } = require('@rspack/core');
-const { getOneCXRspackPatchLoader } = require('@onecx/build-utils');
+// The OneCX Rspack patch-loader ships with the generated app (see
+// onecx-rspack-patch-loader.js) and exposes a module rule that patches primeng
+// at bundle time. Wiring it into module.rules below is what gives generated
+// apps real patch-plugin protection out of the box.
+const { getOneCXRspackPatchLoaderRule } = require('./onecx-rspack-patch-loader');
 const isProduction = process.env.NODE_ENV === 'production';
 const mfConfig = require('./module-federation.config');
 
-// The OneCX Rspack patch-loader. Once the @onecx/build-utils patch-loader export
-// (introduced by the shell migration) is available it is appended to module.rules;
-// the guard keeps the generated build working until that export is published.
+// Guarded so a broken/missing loader file can never take the build down: the
+// rule is only appended when the factory is present and returns a rule.
 const patchLoaderRule =
-  typeof getOneCXRspackPatchLoader === 'function' ? getOneCXRspackPatchLoader() : null;
+  typeof getOneCXRspackPatchLoaderRule === 'function'
+    ? getOneCXRspackPatchLoaderRule()
+    : null;
 
 module.exports = {
   // The Rspack dev-server executor only accepts host/publicHost/proxyConfig/port/mode/ssl,
