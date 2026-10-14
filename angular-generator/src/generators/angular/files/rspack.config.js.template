@@ -1,0 +1,47 @@
+// Rspack configuration for the generated OneCX Angular application.
+// Replaces the previous webpack.config.js: it uses @rspack/core and the Rspack
+// entry point of @module-federation/enhanced, and wires the OneCX Rspack
+// patch-loader (fixes the patch-plugin bug where the previously declared
+// modify-source-webpack-plugin devDependency was never actually used).
+const { ModuleFederationPlugin } = require('@module-federation/enhanced/rspack');
+const { DefinePlugin } = require('@rspack/core');
+// The OneCX Rspack patch-loader ships with the generated app (see
+// onecx-rspack-patch-loader.js) and exposes a module rule that patches primeng
+// at bundle time. Wiring it into module.rules below is what gives generated
+// apps real patch-plugin protection out of the box.
+const { getOneCXRspackPatchLoaderRule } = require('./onecx-rspack-patch-loader');
+const isProduction = process.env.NODE_ENV === 'production';
+const mfConfig = require('./module-federation.config');
+
+// Guarded so a broken/missing loader file can never take the build down: the
+// rule is only appended when the factory is present and returns a rule.
+const patchLoaderRule =
+  typeof getOneCXRspackPatchLoaderRule === 'function'
+    ? getOneCXRspackPatchLoaderRule()
+    : null;
+
+module.exports = {
+  // The Rspack dev-server executor only accepts host/publicHost/proxyConfig/port/mode/ssl,
+  // so the disableHostCheck/CORS headers previously set on the webpack dev-server target
+  // are moved here (allowedHosts + headers).
+  devServer: {
+    allowedHosts: 'all',
+    headers: {
+      Allow: 'GET, POST, PUT, DELETE, PATCH, OPTIONS',
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Headers': '*',
+      'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, PATCH, OPTIONS',
+    },
+  },
+  plugins: [
+    new ModuleFederationPlugin(mfConfig),
+    new DefinePlugin({ ngDevMode: JSON.stringify(!isProduction) }),
+  ],
+  output: { uniqueName: 'onecx-<%= fileName %>-ui', publicPath: 'auto' },
+  module: {
+    parser: { javascript: { importMeta: false } },
+    rules: patchLoaderRule ? [patchLoaderRule] : [],
+  },
+  experiments: { topLevelAwait: true, outputModule: true },
+  optimization: { runtimeChunk: false, splitChunks: false },
+};
