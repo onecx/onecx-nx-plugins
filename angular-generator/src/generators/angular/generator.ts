@@ -157,7 +157,6 @@ export async function angularGenerator(
       '@nx/module-federation': '22.7.1',
       '@openapitools/openapi-generator-cli': '^2.16.3',
       'ngx-translate-testing': '^7.0.0',
-      'modify-source-webpack-plugin': '^4.1.0',
       '@schematics/angular': `~${angularVersion.substring(1)}`,
       '@swc-node/register': '~1.11.1',
       '@swc/core': '~1.15.8',
