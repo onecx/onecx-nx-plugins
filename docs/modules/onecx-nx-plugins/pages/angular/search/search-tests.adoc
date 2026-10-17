@@ -47,6 +47,7 @@ File::      `<resource>-search.component.spec.ts`
 ...
 ----
 ====
+The generated component spec also covers the sync of the search form with the store: it verifies that the form is reset when the search criteria in the store change, and that user input is not overwritten when the view model changes but the criteria are still equal.
 
 '''
 

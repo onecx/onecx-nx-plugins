@@ -130,6 +130,7 @@ export async function angularGenerator(
       '@ngrx/store-devtools': '^21.1.0',
       '@webcomponents/webcomponentsjs': '^2.8.0',
       'zone.js': '~0.16.1',
+      'fast-deep-equal': '^3.1.3',
       '@angular/animations': angularVersion,
       '@angular/cdk': angularVersion,
       '@angular/common': angularVersion,

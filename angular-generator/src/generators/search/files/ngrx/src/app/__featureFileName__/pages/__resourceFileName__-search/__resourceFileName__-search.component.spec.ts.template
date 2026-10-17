@@ -214,6 +214,31 @@ describe('<%= resourceClassName %>SearchComponent', () => {
     component.resetSearch()
   })
 
+  it('should reset the form when the search criteria in the store change', () => {
+    store.overrideSelector(select<%= resourceClassName %>SearchViewModel, {
+      ...base<%= resourceClassName %>SearchViewModel,
+      searchCriteria: { changeMe: 'new' }
+    });
+    store.refreshState();
+    fixture.detectChanges();
+
+    expect(component.<%= resourcePropertyName %>SearchFormGroup.value.changeMe).toBe('new');
+  });
+
+  it('should not overwrite user input when the view model changes but the criteria are equal', () => {
+    component.<%= resourcePropertyName %>SearchFormGroup.patchValue({ changeMe: 'typed' });
+    store.overrideSelector(select<%= resourceClassName %>SearchViewModel, {
+      ...base<%= resourceClassName %>SearchViewModel,
+      searchCriteria: { ...base<%= resourceClassName %>SearchViewModel.searchCriteria },
+      results: [],
+      searchLoadingIndicator: true
+    });
+    store.refreshState();
+    fixture.detectChanges();
+
+    expect(component.<%= resourcePropertyName %>SearchFormGroup.value.changeMe).toBe('typed');
+  });
+
   it('should have 2 overFlow header actions when search config is disabled', async () => {
     const searchHeader = await <%= resourcePropertyName %>Search.getHeader();
     const pageHeader = await searchHeader.getPageHeader();

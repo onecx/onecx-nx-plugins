@@ -1,9 +1,11 @@
-import { Component, computed, effect, inject, LOCALE_ID, OnInit, viewChildren, Signal } from '@angular/core'
+import { Component, computed, inject, LOCALE_ID, OnInit, viewChildren, Signal } from '@angular/core'
 import { FormBuilder, FormGroup } from '@angular/forms'
 import { Store } from '@ngrx/store'
 import { PrimeIcons } from 'primeng/api'
 import { DatePicker } from 'primeng/datepicker'
-import { toSignal } from '@angular/core/rxjs-interop'
+import { takeUntilDestroyed, toObservable, toSignal } from '@angular/core/rxjs-interop'
+import { distinctUntilChanged, map } from 'rxjs'
+import deepEqual from 'fast-deep-equal'
 import { isValidDate } from '@onecx/accelerator'
 import {
   Action,
@@ -93,12 +95,18 @@ export class <%= resourceClassName %>SearchComponent implements OnInit {
     );
 
   constructor() {
-    effect(() => {
-      const vm = this.viewModel()
-      if (vm?.searchCriteria) {
-        this.<%= resourcePropertyName %>SearchFormGroup.patchValue(vm.searchCriteria)
-      }
-    })
+    // Only reset the form when the criteria in the store really changed, otherwise typing is overwritten when results arrive.
+    toObservable(this.viewModel)
+      .pipe(
+        map((vm) => vm?.searchCriteria),
+        distinctUntilChanged(deepEqual),
+        takeUntilDestroyed()
+      )
+      .subscribe((searchCriteria) => {
+        if (searchCriteria) {
+          this.<%= resourcePropertyName %>SearchFormGroup.reset(searchCriteria)
+        }
+      })
   }
 
   ngOnInit() { 

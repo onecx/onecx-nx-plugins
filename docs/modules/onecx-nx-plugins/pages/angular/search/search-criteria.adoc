@@ -345,3 +345,36 @@ Where *BOOK_TITLE* is the criteria added to the `+SearchBookRequest+`.
   }
 ----
 ====
+
+
+[#syncing-the-form-with-the-store]
+== Syncing the form with the store
+
+The form of the generated search component is filled from the search criteria that are held in the store. +
+The generated component resets the form only when the criteria in the store really changed, which is detected with `distinctUntilChanged` and `fast-deep-equal` (imported as `deepEqual`). +
+Without this check, every view model update — for example new search results arriving — would re-apply the criteria and overwrite what the user is currently typing.
+
+When the user clicks the Reset button, the store criteria become an empty object `{}`. If the criteria were not empty before, this is a change, so the form is reset with `reset()`, which sets all fields missing from the new criteria to `null` instead of keeping their old value. +
+If the criteria in the store are already `{}` (for example on a fresh page without query parameters, or after an earlier reset), `distinctUntilChanged` sees no change and the form is not cleared, so values the user typed without searching stay in the form. To also clear them in this case, call `reset()` on the form group in `resetSearch()` before dispatching `resetButtonClicked`.
+
+.Form store sync in the generated `+<resource>-search.component.ts+`
+[%collapsible]
+====
+[source, javascript]
+----
+  constructor() {
+    // Only reset the form when the criteria in the store really changed, otherwise typing is overwritten when results arrive.
+    toObservable(this.viewModel)
+      .pipe(
+        map((vm) => vm?.searchCriteria),
+        distinctUntilChanged(deepEqual),
+        takeUntilDestroyed()
+      )
+      .subscribe((searchCriteria) => {
+        if (searchCriteria) {
+          this.<resource>SearchFormGroup.reset(searchCriteria)
+        }
+      })
+  }
+----
+====
