@@ -72,6 +72,7 @@ export async function ngrxGenerator(
     tree,
     {
       '@ngrx/effects': '21.1.0',
+      '@ngrx/operators': '21.1.0',
       '@ngrx/router-store': '21.1.0',
       '@ngrx/store': '21.1.0',
       '@ngrx/component': '21.1.0',

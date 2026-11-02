@@ -54,6 +54,9 @@ describe('Rspack preset output', () => {
       expect(pkg.devDependencies['@rspack/core']).toBeDefined();
       expect(pkg.scripts.build).toBe('nx build');
       expect(pkg.scripts['test:ci']).not.toContain('ChromeHeadless');
+      if (flavor !== 'angular') {
+        expect(pkg.dependencies['@ngrx/operators']).toBe('21.1.0');
+      }
       expect(
         pkg.devDependencies['modify-source-webpack-plugin']
       ).toBeUndefined();
