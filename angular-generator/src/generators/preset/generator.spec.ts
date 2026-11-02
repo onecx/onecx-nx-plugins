@@ -73,12 +73,14 @@ describe('Rspack preset output', () => {
 });
 
 describe('OneCX patch-loader', () => {
-  const loader: ((source: string) => string) & {
+  const loader = jest.requireActual('../angular/files/onecx-patch.loader') as ((
+    source: string
+  ) => string) & {
     getOneCXRspackPatchLoaderRule(): {
       test: RegExp;
       use: { loader: string }[];
     };
-  } = require('../angular/files/onecx-patch.loader');
+  };
 
   it('forwards original DOM arguments and neutralizes style registration', () => {
     const createElementFromPrimeNg = jest.fn();
@@ -97,12 +99,12 @@ describe('OneCX patch-loader', () => {
 
   it('resolves a loader rule scoped to PrimeNG modules', () => {
     const rule = loader.getOneCXRspackPatchLoaderRule();
-    expect(rule.test.test('/node_modules/primeng/fesm2022/primeng-button.mjs')).toBe(
-      true
-    );
-    expect(rule.test.test('/node_modules/@angular/core/fesm2022/core.mjs')).toBe(
-      false
-    );
+    expect(
+      rule.test.test('/node_modules/primeng/fesm2022/primeng-button.mjs')
+    ).toBe(true);
+    expect(
+      rule.test.test('/node_modules/@angular/core/fesm2022/core.mjs')
+    ).toBe(false);
     expect(rule.use[0].loader).toBe(
       require.resolve('../angular/files/onecx-patch.loader')
     );
