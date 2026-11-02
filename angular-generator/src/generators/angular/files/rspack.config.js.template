@@ -6,18 +6,7 @@ const webpackMerge = require('webpack-merge');
 const isProduction = process.env.NODE_ENV === 'production';
 
 const mfConfig = require('./module-federation.config');
-// The OneCX Rspack patch-loader (Candidate A) ships with the generated app and exposes a
-// module rule that patches primeng at bundle time. Appending it to `module.rules` below is
-// what gives generated apps real patch-plugin protection out of the box (the
-// modify-source-webpack-plugin replacement that was previously declared but never wired).
 const { getOneCXRspackPatchLoaderRule } = require('./onecx-patch.loader.js');
-
-// Guarded so a broken/missing loader can never take the build down: the rule is only
-// appended when the factory is present and returns a rule.
-const patchLoaderRule =
-  typeof getOneCXRspackPatchLoaderRule === 'function'
-    ? getOneCXRspackPatchLoaderRule()
-    : null;
 
 /**
  * Rspack configuration for the generated OneCX UI app.
@@ -114,7 +103,7 @@ module.exports = async (_config, args = {}) => {
       // Candidate A: OneCX-specific Rspack source patching. The onecx-patch.loader.js
       // rule (test: /primeng/) rewrites primeng's runtime DOM access at bundle time so
       // module-federation remotes interoperate.
-      rules: patchLoaderRule ? [patchLoaderRule] : [],
+      rules: [getOneCXRspackPatchLoaderRule()],
     },
     output: { uniqueName: 'onecx-<%= fileName %>-ui', publicPath: 'auto' },
     experiments: { topLevelAwait: true, outputModule: true },

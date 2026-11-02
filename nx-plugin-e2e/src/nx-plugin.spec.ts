@@ -20,43 +20,23 @@ describe('nx-plugin', () => {
   beforeAll(() => {
     projectDirectory = createTestProject('ngrx');
 
-    // Upgrade Nx to version 22.7.1 to match the plugin's @nx/* package versions
-    console.log('Upgrading Nx to version 22.7.1...');
-    execSync(`npx nx migrate 22.7.1`, {
-      cwd: projectDirectory,
-      stdio: 'inherit',
-      env: { ...process.env, NX_NO_CLOUD: 'true', CI: 'true' },
-    });
-
-    // Run migrations if migrations.json was created
-    if (existsSync(`${projectDirectory}/migrations.json`)) {
-      console.log('Installing dependencies for migration...');
-      execSync(`npm install`, {
-        cwd: projectDirectory,
-        stdio: 'inherit',
-        env: process.env,
-      });
-      console.log('Running migrations...');
-      execSync(`npx nx migrate --run-migrations`, {
-        cwd: projectDirectory,
-        stdio: 'inherit',
-        env: process.env,
-      });
-      console.log('Cleaning up migration artifacts...');
-      execSync(`rm migrations.json`, {
-        cwd: projectDirectory,
-        stdio: 'inherit',
-        env: process.env,
-      });
-    }
-
-    // The plugin has been built and published to a local registry in the jest globalSetup
-    // Install the plugin built with the latest source code into the test repo
-    execSync(`npm install @onecx/angular-generator@e2e`, {
-      cwd: projectDirectory,
-      stdio: 'inherit',
-      env: process.env,
-    });
+    const project = JSON.parse(
+      readFileSync(join(projectDirectory, 'project.json'), 'utf-8')
+    );
+    expect(project.targets.build.executor).toBe('@nx/rspack:rspack');
+    expect(project.targets.serve.executor).toBe('@nx/rspack:dev-server');
+    expect(existsSync(join(projectDirectory, 'webpack.config.js'))).toBe(false);
+    const installedGenerator = JSON.parse(
+      readFileSync(
+        join(
+          projectDirectory,
+          'node_modules/@onecx/angular-generator/package.json'
+        ),
+        'utf-8'
+      )
+    );
+    expect(installedGenerator.name).toBe('@onecx/angular-generator');
+    expect(installedGenerator.version).toBe('0.0.0-e2e');
   });
 
   afterAll(() => {
@@ -127,7 +107,9 @@ describe('nx-plugin', () => {
   it('should generate a Rspack-based build/serve setup', () => {
     // The generated app must build/serve with the Rspack executors instead of webpack.
     expect(existsSync(join(projectDirectory, 'rspack.config.js'))).toBe(true);
-    expect(existsSync(join(projectDirectory, 'onecx-patch.loader.js'))).toBe(true);
+    expect(existsSync(join(projectDirectory, 'onecx-patch.loader.js'))).toBe(
+      true
+    );
 
     const project = JSON.parse(
       readFileSync(join(projectDirectory, 'project.json'), 'utf-8')
