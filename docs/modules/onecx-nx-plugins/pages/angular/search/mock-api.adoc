@@ -47,15 +47,16 @@ File::      `proxy.conf`
 [source, javascript]
 ----
 ...
-const PROXY_CONFIG = {
-  '/bff': {
+const PROXY_CONFIG = [
+  {
+    context: ['/bff'],
     target: 'http://bookstore-bff',
     secure: false,
     pathRewrite: { '^.*/bff': '' },
     changeOrigin: true,
     logLevel: 'debug',
     onProxyRes: onProxyRes
-  }
+  ]
 }
 ----
 
@@ -65,14 +66,15 @@ Replace the real BFF URL `\http://bookstore-bff` with the Mock server URL `\http
 [source, javascript]
 ----
 ...
-const PROXY_CONFIG = {
-  '/bff': {
+const PROXY_CONFIG = [
+  {
+    context: ['/bff'],
     target: 'http://localhost:3000',
     secure: false,
     pathRewrite: { '^.*/bff': '' },
     changeOrigin: true,
     logLevel: 'debug',
     onProxyRes: onProxyRes
-  }
+  ]
 }
 ----
