@@ -11,7 +11,7 @@ import { LetDirective } from '@ngrx/component';
 import { Store, StoreModule } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { ofType } from '@ngrx/effects';
-import { provideTranslateTestingService } from '@onecx/angular-accelerator/testing'
+import { provideTranslateTestingService } from '@onecx/angular-testing'
 import { TranslateModule, TranslateService } from '@ngx-translate/core'
 import { DialogService } from 'primeng/dynamicdialog';
 import { UserService } from '@onecx/angular-integration-interface';
