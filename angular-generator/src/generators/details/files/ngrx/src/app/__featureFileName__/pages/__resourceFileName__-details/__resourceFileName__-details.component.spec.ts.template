@@ -44,7 +44,7 @@ import { <%= resourceClassName %>DetailsComponent } from './<%= resourceFileName
 import { <%= resourceClassName %>DetailsHarness } from './<%= resourceFileName %>-details.harness';
 import { <%= resourceClassName %>DetailsViewModel } from './<%= resourceFileName %>-details.viewmodel';
 import { select<%= resourceClassName %>DetailsViewModel } from './<%= resourceFileName %>-details.selectors';
-import { provideTranslateTestingService } from '@onecx/angular-accelerator/testing'
+import { provideTranslateTestingService } from '@onecx/angular-testing'
 
 describe('<%= resourceClassName %>DetailsComponent', () => {
   const origAddEventListener = window.addEventListener;

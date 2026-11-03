@@ -9,7 +9,7 @@ import {
   BreadcrumbService,
 } from '@onecx/angular-accelerator';
 import { TranslateModule } from '@ngx-translate/core'
-import { provideTranslateTestingService } from '@onecx/angular-accelerator/testing'
+import { provideTranslateTestingService } from '@onecx/angular-testing'
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { InputTextModule } from 'primeng/inputtext';
 import { distinctUntilChanged, filter, skip, take, toArray } from 'rxjs'
