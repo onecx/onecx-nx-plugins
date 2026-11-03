@@ -100,6 +100,11 @@ module.exports = async (_config, args = {}) => {
       new DefinePlugin({ ngDevMode: JSON.stringify(!isProduction) }),
     ],
     module: {
+      parser: {
+        javascript: {
+          importMeta: true,
+        },
+      },
       // Candidate A: OneCX-specific Rspack source patching. The onecx-patch.loader.js
       // rule (test: /primeng/) rewrites primeng's runtime DOM access at bundle time so
       // module-federation remotes interoperate.
