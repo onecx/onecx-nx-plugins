@@ -52,6 +52,7 @@ describe('Rspack preset output', () => {
         pkg.devDependencies.nx
       );
       expect(pkg.devDependencies['@rspack/core']).toBeDefined();
+      expect(pkg.devDependencies['@onecx/angular-testing']).toBe('^8.7.0');
       expect(pkg.scripts.build).toBe('nx build');
       expect(pkg.scripts['test:ci']).not.toContain('ChromeHeadless');
       if (flavor !== 'angular') {

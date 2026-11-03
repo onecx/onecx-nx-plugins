@@ -33,7 +33,7 @@ const PARAMETERS: GeneratorParameter<AngularGeneratorSchema>[] = [
     type: 'boolean',
     required: 'never',
     default: false,
-  }
+  },
 ];
 
 export async function angularGenerator(
@@ -114,14 +114,16 @@ export async function angularGenerator(
       '@onecx/angular-remote-components': oneCXLibVersion,
       '@onecx/angular-webcomponents': oneCXLibVersion,
       '@onecx/angular-utils': oneCXLibVersion,
-      ...(options.standalone ? { '@onecx/angular-standalone-shell': oneCXLibVersion } : {}),
+      ...(options.standalone
+        ? { '@onecx/angular-standalone-shell': oneCXLibVersion }
+        : {}),
       '@onecx/integration-interface': oneCXLibVersion,
       '@onecx/angular-integration-interface': oneCXLibVersion,
       '@onecx/ngrx-accelerator': oneCXLibVersion,
-      "@onecx/ngrx-integration-interface": oneCXLibVersion,
+      '@onecx/ngrx-integration-interface': oneCXLibVersion,
       '@ngx-translate/core': '^17.0.0',
       '@ngx-translate/http-loader': '^17.0.0',
-      "@module-federation/enhanced": "^2.4.0",
+      '@module-federation/enhanced': '^2.4.0',
       'ngrx-store-localstorage': '^20.1.0',
       '@ngrx/component': '^21.1.0',
       '@ngrx/effects': '^21.1.0',
@@ -134,7 +136,7 @@ export async function angularGenerator(
       '@protobi/exceljs': '^4.4.0-protobi.9',
       'chart.js': '^4.4.3',
       'd3-scale-chromatic': '^3.1.0',
-      'ngxtension': '^7.1.0',
+      ngxtension: '^7.1.0',
       'zone.js': '~0.16.1',
       'ts-semaphore': '^1.0.0',
       '@angular/animations': angularVersion,
@@ -147,13 +149,13 @@ export async function angularGenerator(
       '@angular/platform-browser': angularVersion,
       '@angular/platform-browser-dynamic': angularVersion,
       '@angular/router': angularVersion,
-      'primeflex': '^3.3.1',
-      'primeicons': '^7.0.0',
-      'primeng': '^21.0.0',
+      primeflex: '^3.3.1',
+      primeicons: '^7.0.0',
+      primeng: '^21.0.0',
       '@primeng/themes': '^21.0.0',
     },
     {
-      "@onecx/build-utils": oneCXLibVersion,
+      '@onecx/build-utils': oneCXLibVersion,
       '@nx/angular': '22.7.1',
       '@nx/devkit': '22.7.1',
       '@nx/jest': '22.7.1',
@@ -166,6 +168,7 @@ export async function angularGenerator(
       '@nx/angular-rspack': '22.7.1',
       '@rspack/core': '1.6.8',
       '@openapitools/openapi-generator-cli': '^2.16.3',
+      '@onecx/angular-testing': oneCXLibVersion,
       'ngx-translate-testing': '^7.0.0',
       '@schematics/angular': `~${angularVersion.substring(1)}`,
       '@swc-node/register': '~1.11.1',
@@ -224,8 +227,8 @@ export async function angularGenerator(
     log(cmd);
     execSync(cmd, { cwd: tree.root, stdio: 'inherit' });
 
-    // Replace the generated solution for gitignore and jest testing, 
-    // because they do not fit the needs of the generated application and 
+    // Replace the generated solution for gitignore and jest testing,
+    // because they do not fit the needs of the generated application and
     // would require manual adjustments after generation otherwise.
     cmd = 'mv -f .gitignore.org .gitignore';
     log(cmd);
@@ -269,7 +272,6 @@ function addExtensionsToPackageJson(tree: Tree) {
   });
 }
 
-
 function addScriptsToPackageJson(tree: Tree, options: AngularGeneratorSchema) {
   updateJson(tree, 'package.json', (pkgJson) => {
     pkgJson.scripts = pkgJson.scripts ?? {};
@@ -288,8 +290,7 @@ function addScriptsToPackageJson(tree: Tree, options: AngularGeneratorSchema) {
     pkgJson.scripts['lint:fix'] = 'nx lint --fix';
     pkgJson.scripts['sonar'] = 'npx sonar-scanner';
     pkgJson.scripts['test'] = 'nx test';
-    pkgJson.scripts['test:ci'] =
-      'nx test --watch=false --runInBand --coverage';
+    pkgJson.scripts['test:ci'] = 'nx test --watch=false --runInBand --coverage';
     return pkgJson;
   });
 }
