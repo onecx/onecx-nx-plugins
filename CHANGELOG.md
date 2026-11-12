@@ -1,3 +1,9 @@
+## [9.0.0-rc.6](https://github.com/onecx/onecx-nx-plugins/compare/v9.0.0-rc.5...v9.0.0-rc.6) (2026-11-12)
+
+### Features
+
+* support configurable application prefixes ([#431](https://github.com/onecx/onecx-nx-plugins/issues/431)) ([35de8dc](https://github.com/onecx/onecx-nx-plugins/commit/35de8dcdf2b51ee9bffd8ad8fb62300e5d56cf6b))
+
 ## [9.0.0-rc.5](https://github.com/onecx/onecx-nx-plugins/compare/v9.0.0-rc.4...v9.0.0-rc.5) (2026-11-12)
 
 ### Features
