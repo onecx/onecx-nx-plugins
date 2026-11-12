@@ -4,6 +4,13 @@
   "sourceRoot": "generator-utils/src",
   "projectType": "library",
   "targets": {
+    "compile": {
+      "executor": "nx:run-commands",
+      "outputs": ["{workspaceRoot}/dist/generator-utils"],
+      "options": {
+        "command": "nx run generator-utils:build"
+      }
+    },
     "build": {
       "executor": "@nx/js:tsc",
       "outputs": ["{options.outputPath}"],
@@ -32,6 +39,14 @@
     },
     "test": {
       "executor": "@nx/jest:jest",
+      "inputs": [
+        "default",
+        "^default",
+        "{workspaceRoot}/jest.preset.js",
+        {
+          "runtime": "node tools/scripts/pre-commit-template.mjs hash angular-generator"
+        }
+      ],
       "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
       "options": {
         "jestConfig": "generator-utils/jest.config.ts"

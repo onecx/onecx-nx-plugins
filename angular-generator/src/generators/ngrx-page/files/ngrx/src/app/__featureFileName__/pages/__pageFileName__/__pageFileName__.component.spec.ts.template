@@ -14,9 +14,9 @@ describe('<%= pageClassName %>Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [<%= pageClassName %>Component],
       providers: [PermissionService, provideRouter([])],
       imports: [
+        <%= pageClassName %>Component,
         LetDirective,
         StoreModule.forRoot({}),
         TranslateModule.forRoot(),

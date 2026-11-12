@@ -1,4 +1,4 @@
-import { Injectable, SkipSelf } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Actions, createEffect } from '@ngrx/effects';
 import { Action, Store } from '@ngrx/store';
@@ -9,13 +9,11 @@ import {
 
 @Injectable()
 export class <%= pageClassName %>Effects {
-  constructor(
-    private actions$: Actions,
-    @SkipSelf() private route: ActivatedRoute,
-    private router: Router,
-    private store: Store,
-    private messageService: PortalMessageService,  
-  ) {}
+  private readonly actions$ = inject(Actions);
+  private readonly route = inject(ActivatedRoute, { skipSelf: true });
+  private readonly router = inject(Router);
+  private readonly store = inject(Store);
+  private readonly messageService = inject(PortalMessageService);
 
   errorMessages: { action: Action; key: string }[] = [];
   

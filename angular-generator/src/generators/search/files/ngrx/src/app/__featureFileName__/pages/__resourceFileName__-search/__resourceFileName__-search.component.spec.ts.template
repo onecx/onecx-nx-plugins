@@ -126,8 +126,8 @@ describe('<%= resourceClassName %>SearchComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [<%= resourceClassName %>SearchComponent],
       imports: [
+        <%= resourceClassName %>SearchComponent,
         AngularAcceleratorModule,
         PortalPageComponent,
         LetDirective,
@@ -299,7 +299,9 @@ describe('<%= resourceClassName %>SearchComponent', () => {
   });
 
   it('should display correct breadcrumbs', async () => {
-    const breadcrumbService = TestBed.inject(BreadcrumbService);
+    const breadcrumbService = fixture.debugElement.injector.get(
+      BreadcrumbService
+    );
     jest.spyOn(breadcrumbService, 'setItems');
 
     component.ngOnInit();

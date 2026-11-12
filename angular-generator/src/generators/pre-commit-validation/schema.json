@@ -4,21 +4,29 @@
   "title": "",
   "type": "object",
   "properties": {
+    "enableEslint": {
+      "type": "boolean",
+      "description": "Install the upstream quality hook, including ESLint, Stylelint and Prettier."
+    },
+    "enableConventionalCommits": {
+      "type": "boolean",
+      "description": "Install the conventional commit message check."
+    },
+    "enableDetectSecrets": {
+      "type": "boolean",
+      "description": "Check staged content against BLACKLIST_FILE or ~/blacklist.txt."
+    },
     "enableEslintCheck": {
       "type": "boolean",
-      "description": "",
-      "default": true
+      "description": "Legacy alias for enableEslint."
     },
     "enableConventionalCommitsCheck": {
       "type": "boolean",
-      "description": "",
-      "default": true
+      "description": "Legacy alias for enableConventionalCommits."
     },
     "enableDetectSecretsCheck": {
       "type": "boolean",
-      "description": "",
-      "default": true
+      "description": "Legacy alias for enableDetectSecrets."
     }
-  },
-  "required": ["enableEslintCheck", "enableConventionalCommitsCheck", "enableDetectSecretsCheck"]
+  }
 }

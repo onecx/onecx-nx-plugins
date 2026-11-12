@@ -42,6 +42,7 @@ module.exports = [
   {
     files: ['**/*.ts'],
     rules: {
+      '@angular-eslint/prefer-standalone': 'error',
       "@typescript-eslint/no-unused-vars": ["error", { "vars": "all", "args": "none" }],
       '@typescript-eslint/no-explicit-any': 'warn',
       '@angular-eslint/directive-selector': [

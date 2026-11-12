@@ -60,10 +60,8 @@ export const commonImports = [CommonModule];
 <% } %>
 
 @NgModule({
-  declarations: [
-    AppEntrypointComponent
-  ],
   imports: [
+    AppEntrypointComponent,
     ...commonImports,
     AngularAcceleratorModule,
     RouterModule.forRoot(routes),

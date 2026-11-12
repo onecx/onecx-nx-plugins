@@ -11,7 +11,7 @@ import { execSync } from 'child_process';
 import { readFileSync, writeFileSync } from 'fs';
 
 import devkit from '@nx/devkit';
-const { readCachedProjectGraph } = devkit;
+const { getOutputsForTargetAndConfiguration, readCachedProjectGraph } = devkit;
 
 function invariant(condition, message) {
   if (!condition) {
@@ -58,13 +58,17 @@ for (const node of Object.values(graph.nodes)) {
   }
 }
 
-const outputPath = project.data?.targets?.build?.options?.outputPath;
+const outputPaths = getOutputsForTargetAndConfiguration(
+  { project: name, target: 'build' },
+  {},
+  project
+);
 invariant(
-  outputPath,
-  `Could not find "build.options.outputPath" of project "${name}". Is project.json configured  correctly?`
+  outputPaths.length === 1,
+  `Expected one build output for publishable project "${name}", got ${outputPaths.length}.`
 );
 
-process.chdir(outputPath);
+process.chdir(outputPaths[0]);
 
 // Updating the version in "package.json" before publishing
 try {

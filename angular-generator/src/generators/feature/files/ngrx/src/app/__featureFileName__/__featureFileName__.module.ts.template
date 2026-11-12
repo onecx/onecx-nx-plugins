@@ -30,8 +30,6 @@ import { PermissionService, PortalPageComponent } from '@onecx/angular-utils';
 
 @NgModule({
   providers: [providePortalDialogService(), PermissionService],
-  declarations: [
-  ],
   imports: [
     CommonModule,
     SharedModule,

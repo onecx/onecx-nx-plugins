@@ -2,6 +2,7 @@ import { execSync, ExecSyncOptionsWithBufferEncoding } from 'child_process';
 import { join, dirname } from 'path';
 import { existsSync, mkdirSync, readFileSync, rmSync } from 'fs';
 import * as os from 'os';
+import { assertGeneratedGuardrails } from './guardrails.utils';
 
 const NON_INTERACTIVE_KEY = 'non-interactive';
 const projectName = 'test-project';
@@ -310,6 +311,7 @@ function createTestProject(flavor) {
     }
   );
   console.log(`Created test project in "${projectDirectory}"`);
+  assertGeneratedGuardrails(projectDirectory);
 
   return projectDirectory;
 }

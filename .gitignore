@@ -24,6 +24,8 @@ speed-measure-plugin*.json
 
 # misc
 .copy-build-to
+angular-generator/src/generators/pre-commit-validation/files-upstream/
+react-generator/src/generators/pre-commit-validation/files-upstream/
 .nx
 .angular
 .eslintcache

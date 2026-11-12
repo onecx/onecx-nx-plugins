@@ -1,116 +1,178 @@
 /** @jest-environment node */
-
-import { readJson, readProjectConfiguration } from '@nx/devkit';
+import { readJson, Tree } from '@nx/devkit';
 import { createTreeWithEmptyWorkspace } from '@nx/devkit/testing';
-import { presetGenerator } from './generator';
-import { runInNewContext } from 'vm';
+import { readFileSync } from 'fs';
+import { join } from 'path';
+import presetGenerator from './generator';
+import featureGenerator from '../feature/generator';
+import searchGenerator from '../search/generator';
+import detailsGenerator from '../details/generator';
+import createUpdateGenerator from '../create-update/generator';
+import pageGenerator from '../ngrx-page/generator';
 
-describe('Rspack preset output', () => {
-  const originalDaemon = process.env.NX_DAEMON;
+describe('preset quality guardrails', () => {
+  const argv = process.argv;
   beforeAll(() => {
-    process.env.NX_DAEMON = 'false';
+    process.argv = [...argv, '--non-interactive'];
   });
   afterAll(() => {
-    if (originalDaemon === undefined) {
-      delete process.env.NX_DAEMON;
-    } else {
-      process.env.NX_DAEMON = originalDaemon;
-    }
+    process.argv = argv;
   });
+
   it.each(['angular', 'ngrx', 'standalone-ngrx'])(
-    'scaffolds %s without requiring consumer migrations',
+    'installs the packaged hook and style checks for %s',
     async (flavor) => {
       const tree = createTreeWithEmptyWorkspace();
-      tree.write('.gitignore', '');
-      const callback = await presetGenerator(tree, {
-        name: 'rspack-test',
-        flavor,
-      });
-      const project = readProjectConfiguration(tree, 'rspack-test');
-      const pkg = readJson(tree, 'package.json');
+      await presetGenerator(tree, { name: 'example', flavor });
 
-      expect(typeof callback).toBe('function');
-      expect(project.targets.build.executor).toBe('@nx/rspack:rspack');
-      expect(project.targets.build.options.rspackConfig).toBe(
-        'rspack.config.js'
+      expect(tree.exists('.husky/pre-commit')).toBe(true);
+      expect(tree.exists('scripts/pre-commit-qa')).toBe(true);
+      expect(tree.read('AGENTS.md')!.toString()).toContain(
+        '[best-practices.md](./best-practices.md)'
       );
-      expect(project.targets.build.configurations.production.mode).toBe(
-        'production'
-      );
-      expect(project.targets.build.configurations.development.mode).toBe(
-        'development'
-      );
-      expect(project.targets.serve.executor).toBe('@nx/rspack:dev-server');
-      expect(project.targets.serve.options.buildTarget).toBe(
-        'rspack-test:build'
-      );
-      expect(project.targets['extract-i18n'].executor).toBe(
-        '@angular/build:extract-i18n'
-      );
-      expect(pkg.devDependencies['@nx/rspack']).toBe(pkg.devDependencies.nx);
-      expect(pkg.devDependencies['@nx/angular-rspack']).toBe(
-        pkg.devDependencies.nx
-      );
-      expect(pkg.devDependencies['@rspack/core']).toBeDefined();
-      expect(pkg.devDependencies['@onecx/angular-testing']).toBe('^8.7.0');
-      expect(pkg.scripts.build).toBe('nx build');
-      expect(pkg.scripts['test:ci']).not.toContain('ChromeHeadless');
-      if (flavor !== 'angular') {
-        expect(pkg.dependencies['@ngrx/operators']).toBe('21.1.0');
+      for (const file of ['best-practices.md', 'best-practices.LICENSE']) {
+        expect(tree.read(file)?.toString()).toBe(
+          readFileSync(join(__dirname, '../angular/files', file), 'utf8')
+        );
       }
-      expect(
-        pkg.devDependencies['modify-source-webpack-plugin']
-      ).toBeUndefined();
-      expect(tree.exists('webpack.config.js')).toBe(false);
-      expect(tree.exists('webpack.prod.config.js')).toBe(false);
-      expect(tree.exists('onecx-patch.loader.js')).toBe(true);
-
-      const rspack = tree.read('rspack.config.js', 'utf8');
-      expect(rspack).toContain('@module-federation/enhanced/rspack');
-      expect(rspack).toContain("require('./onecx-patch.loader.js')");
-      expect(rspack).toContain('rules: [getOneCXRspackPatchLoaderRule()]');
-      expect(tree.read('src/polyfills.ts', 'utf8')).toContain(
-        'createElementFromPrimeNg'
+      expect(readJson(tree, 'package.json')).toMatchObject({
+        scripts: {
+          prepare: 'husky',
+          lint: 'npm run lint:eslint && npm run lint:styles',
+          prettier: 'prettier --check .',
+          'test:ci': 'nx test --watch=false --coverage',
+          'sonar:scan': 'sonar-scanner',
+        },
+        devDependencies: {
+          husky: '^9.1.7',
+          'stylelint-config-standard-scss': '^14.0.0',
+        },
+      });
+      expect(readJson(tree, 'package.json').scripts.sonar).toBeUndefined();
+      const entrypoint = tree
+        .read('src/app/app-entrypoint.component.ts')!
+        .toString();
+      expect(entrypoint).not.toContain('standalone: false');
+      expect(entrypoint).toContain('imports: [RouterOutlet]');
+      expect(entrypoint).toContain(
+        'changeDetection: ChangeDetectionStrategy.OnPush'
       );
-    }
+      const remoteModule = tree
+        .read('src/app/onecx-example.remote.module.ts')!
+        .toString();
+      expect(remoteModule).not.toContain('declarations:');
+      expect(remoteModule).toContain('AppEntrypointComponent,');
+      expect(remoteModule).toContain(
+        "createAppEntrypoint(AppEntrypointComponent, 'ocx-example-component'"
+      );
+      if (flavor === 'standalone-ngrx') {
+        expect(tree.read('src/app/app.component.ts')!.toString()).not.toContain(
+          'standalone: false'
+        );
+        expect(tree.read('src/app/app.module.ts')!.toString()).not.toContain(
+          'bootstrap: [AppComponent]'
+        );
+        expect(
+          tree.read('src/app/app.component.spec.ts')!.toString()
+        ).not.toContain('declarations:');
+      }
+    },
+    60000
   );
-});
 
-describe('OneCX patch-loader', () => {
-  const loader = jest.requireActual('../angular/files/onecx-patch.loader') as ((
-    source: string
-  ) => string) & {
-    getOneCXRspackPatchLoaderRule(): {
-      test: RegExp;
-      use: { loader: string }[];
-    };
-  };
+  describe('generated page best practices', () => {
+    let tree: Tree;
 
-  it('forwards original DOM arguments and neutralizes style registration', () => {
-    const createElementFromPrimeNg = jest.fn();
-    const patched = loader(
-      'document.createElement("button", { is: "onecx-button" }); Theme.setLoadedStyleName("x");'
-    );
-    runInNewContext(patched, {
-      document: { createElementFromPrimeNg },
+    beforeAll(async () => {
+      const originalArgv = process.argv;
+      process.argv = [
+        ...originalArgv,
+        '--resource',
+        'Book',
+        '--pageName',
+        'Overview',
+        '--pageTitle',
+        'Overview',
+      ];
+      try {
+        tree = createTreeWithEmptyWorkspace();
+        await presetGenerator(tree, { name: 'example', flavor: 'ngrx' });
+        await featureGenerator(tree, {
+          name: 'books',
+          resource: 'Book',
+          customizeNamingForAPI: false,
+          existStrategy: 'skip',
+        });
+        const options = {
+          featureName: 'books',
+          resource: 'Book',
+          customizeNamingForAPI: false,
+          serviceName: 'BookAPIService',
+          updateRequestName: 'UpdateBookRequest',
+          updateResponseName: 'UpdateBookResponse',
+        };
+        await searchGenerator(tree, {
+          ...options,
+          existStrategy: 'skip',
+          searchRequestName: 'SearchBooksRequest',
+          searchResponseName: 'SearchBooksResponse',
+        });
+        await detailsGenerator(tree, {
+          ...options,
+          getResponseName: 'GetBookResponse',
+          editMode: true,
+          allowDelete: true,
+        });
+        await createUpdateGenerator(tree, {
+          ...options,
+          createRequestName: 'CreateBookRequest',
+          createResponseName: 'CreateBookResponse',
+          createRequestPropertyName: 'createBookRequest',
+          createResponsePropertyName: 'createBookResponse',
+          updateRequestPropertyName: 'updateBookRequest',
+          updateResponsePropertyName: 'updateBookResponse',
+        });
+        await pageGenerator(tree, {
+          featureName: 'books',
+          pageName: 'Overview',
+          pageTitle: 'Overview',
+        });
+      } finally {
+        process.argv = originalArgv;
+      }
+    }, 60000);
+
+    it('sets OnPush on every generated page and dialog component', () => {
+      for (const component of [
+        'book-search/book-search',
+        'book-details/book-details',
+        'book-search/dialogs/book-create-update/book-create-update',
+        'overview/overview',
+      ]) {
+        const content = tree
+          .read(`src/app/books/pages/${component}.component.ts`)!
+          .toString();
+        expect(content).toContain('ChangeDetectionStrategy');
+        expect(content).toContain(
+          'changeDetection: ChangeDetectionStrategy.OnPush'
+        );
+      }
     });
-    expect(createElementFromPrimeNg).toHaveBeenCalledWith('button', {
-      is: 'onecx-button',
-    });
-    expect(patched).not.toContain('Theme.setLoadedStyleName');
-    expect(loader('const value = 42;')).toBe('const value = 42;');
-  });
 
-  it('resolves a loader rule scoped to PrimeNG modules', () => {
-    const rule = loader.getOneCXRspackPatchLoaderRule();
-    expect(
-      rule.test.test('/node_modules/primeng/fesm2022/primeng-button.mjs')
-    ).toBe(true);
-    expect(
-      rule.test.test('/node_modules/@angular/core/fesm2022/core.mjs')
-    ).toBe(false);
-    expect(rule.use[0].loader).toBe(
-      require.resolve('../angular/files/onecx-patch.loader')
-    );
+    it('uses inject() in effects while preserving parent route resolution', () => {
+      const effects = tree
+        .read('src/app/books/pages/overview/overview.effects.ts')!
+        .toString();
+      expect(effects).not.toContain('constructor(');
+      expect(effects).toContain('inject(ActivatedRoute, { skipSelf: true })');
+      for (const dependency of [
+        'Actions',
+        'Router',
+        'Store',
+        'PortalMessageService',
+      ]) {
+        expect(effects).toContain(`inject(${dependency})`);
+      }
+    });
   });
 });

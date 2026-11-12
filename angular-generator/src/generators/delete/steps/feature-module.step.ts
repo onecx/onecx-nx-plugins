@@ -1,7 +1,7 @@
 import { Tree, joinPathFragments, names } from '@nx/devkit';
 
 import { GeneratorStep } from '../../shared/generator.utils';
-import { safeReplace } from '@onecx/generator-utils';
+import { ensurePortalDialogProvider } from '../../shared/portal-dialog-provider.utils';
 import { DeleteGeneratorSchema } from '../schema';
 
 export class FeatureModuleStep implements GeneratorStep<DeleteGeneratorSchema> {
@@ -12,25 +12,7 @@ export class FeatureModuleStep implements GeneratorStep<DeleteGeneratorSchema> {
       featureFileName,
       featureFileName + '.module.ts'
     );
-    const find = [`from '@ngrx/effects'`];
-    const replaceWith = [
-      `from '@ngrx/effects';
-         import { providePortalDialogService } from '@onecx/angular-accelerator';`,
-    ];
-    const moduleContent = tree.read(moduleFilePath, 'utf8');
-    if (!moduleContent.includes('providePortalDialogService()')) {
-      find.push('declarations:');
-      replaceWith.push(`
-    providers: [providePortalDialogService()],
-    declarations:`);
-    }
-    safeReplace(
-      `Add providePortalDialogService to ${featureFileName}Module providers`,
-      moduleFilePath,
-      find,
-      replaceWith,
-      tree
-    );
+    ensurePortalDialogProvider(tree, moduleFilePath);
   }
   getTitle(): string {
     return 'Adapting Feature Module';

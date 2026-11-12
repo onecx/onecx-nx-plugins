@@ -17,22 +17,23 @@ export class FeatureModuleStep implements GeneratorStep<PageGeneratorSchema> {
     );
 
     const find = [
-      'declarations: [',      
       'EffectsModule.forFeature()',
       'EffectsModule.forFeature([',
       /^/,
+      `imports: [`,
     ];
 
     const replaceWith = [
-      `declarations: [${pageClassName}Component,`,      
       `EffectsModule.forFeature([])`,
       `EffectsModule.forFeature([${pageClassName}Effects,`,
       `import { ${pageClassName}Effects } from './pages/${pageFileName}/${pageFileName}.effects';
        import { ${pageClassName}Component } from './pages/${pageFileName}/${pageFileName}.component';`,
+      `imports: [
+      ${pageClassName}Component,`,
     ];
 
     safeReplace(
-      `Update ${fileName}Module to declare ${pageClassName}Component, add ${pageClassName}Effects to EffectsModule.forFeature, and extend import statements to include necessary dependencies`,
+      `Update ${fileName}Module to import ${pageClassName}Component, add ${pageClassName}Effects to EffectsModule.forFeature, and extend import statements to include necessary dependencies`,
       moduleFilePath,
       find,
       replaceWith,

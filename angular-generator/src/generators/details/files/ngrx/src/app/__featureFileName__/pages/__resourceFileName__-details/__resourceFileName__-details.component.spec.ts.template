@@ -1,4 +1,4 @@
-import { signal } from '@angular/core'
+import { ChangeDetectorRef, signal } from '@angular/core'
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
@@ -98,8 +98,8 @@ describe('<%= resourceClassName %>DetailsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [<%= resourceClassName %>DetailsComponent],
       imports: [
+        <%= resourceClassName %>DetailsComponent,
         AngularAcceleratorModule,
         PortalPageComponent,
         LetDirective,
@@ -157,7 +157,7 @@ describe('<%= resourceClassName %>DetailsComponent', () => {
 
     fixture = TestBed.createComponent(<%= resourceClassName %>DetailsComponent);
     component = fixture.componentInstance;
-    breadcrumbService = TestBed.inject(BreadcrumbService);
+    breadcrumbService = fixture.debugElement.injector.get(BreadcrumbService);
     fixture.detectChanges();
     <%= resourcePropertyName %>Details = await TestbedHarnessEnvironment.harnessForFixture(
       fixture,
@@ -355,6 +355,8 @@ describe('<%= resourceClassName %>DetailsComponent', () => {
         icon: PrimeIcons.QUESTION,
       },
     ]);
+    fixture.debugElement.injector.get(ChangeDetectorRef).markForCheck();
+    fixture.detectChanges();
 
     const pageHeader = await <%= resourcePropertyName %>Details.getHeader();
     const objectDetails = await pageHeader.getObjectInfos();

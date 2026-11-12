@@ -7,6 +7,7 @@
     "OneCX Development Team <onecx_dev@1000kit.org>"
   ],
   "scripts": {
+    "prepare:templates": "node tools/scripts/sync-pre-commit-template.mjs",
     "build": "nx run generator-utils:build && nx run angular-generator:build && nx run create-workspace:build && nx run react-generator:build",
     "build-copy": "npm run build && node copy-build.js",
     "test": "nx run nx-plugin-e2e:e2e",
@@ -29,6 +30,7 @@
     "@nx/eslint-plugin": "^19.8.14",
     "@nx/jest": "^19.8.14",
     "@nx/js": "^19.8.14",
+    "@nx/vite": "^19.8.14",
     "@semantic-release/changelog": "^6.0.3",
     "@semantic-release/commit-analyzer": "^13.0.1",
     "@semantic-release/exec": "^7.1.0",

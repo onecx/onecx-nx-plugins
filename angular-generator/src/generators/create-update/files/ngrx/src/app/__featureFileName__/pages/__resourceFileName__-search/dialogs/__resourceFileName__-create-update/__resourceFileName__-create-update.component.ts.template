@@ -1,12 +1,16 @@
-import { Component, effect, EventEmitter, input, OnInit, Signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, effect, EventEmitter, input, OnInit, Signal } from '@angular/core';
 
-import { FormControl, FormGroup, Validators, FormControlStatus } from '@angular/forms';
+import { FormControl, FormGroup, Validators, FormControlStatus, ReactiveFormsModule } from '@angular/forms';
 
 import {
+  AngularAcceleratorModule,
   DialogPrimaryButtonDisabled,
   DialogResult,
   DialogButtonClicked,
 } from '@onecx/angular-accelerator';
+import { TranslatePipe } from '@ngx-translate/core';
+import { FloatLabelModule } from 'primeng/floatlabel';
+import { InputTextModule } from 'primeng/inputtext';
 
 import { <%= resource%> } from 'src/app/shared/generated';
 import { <%= resourceClassName%>CreateUpdateViewModel } from './<%= resourceFileName %>-create-update.viewmodel';
@@ -16,7 +20,14 @@ import { toSignal } from '@angular/core/rxjs-interop'
   selector: 'app-<%= resourceFileName %>-create-update',
   templateUrl: './<%= resourceFileName %>-create-update.component.html',
   styleUrls: ['./<%= resourceFileName %>-create-update.component.scss'],
-  standalone: false
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    AngularAcceleratorModule,
+    TranslatePipe,
+    ReactiveFormsModule,
+    FloatLabelModule,
+    InputTextModule,
+  ]
 })
 export class <%= resourceClassName%>CreateUpdateComponent 
   implements

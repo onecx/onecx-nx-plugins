@@ -3,23 +3,79 @@
 :idprefix:
 :idseparator: -
 
-The fastest way to validate code changes for linting issues, conventional commits messages and potential secrets in the code is by using the OneCX generator.
+New Angular, NgRx, standalone NgRx and React repositories include quality checks
+and a Husky pre-commit hook by default. The hook comes from
+`onecx/onecx-ai-workflows`, snapshotted when the generator package is built.
+Generating a repository does not download the hook.
 
-******
-To run the generator, execute the following command: 
+=== Generated quality checks
+
+[cols="1,3",options="header"]
+|===
+|npm script |Purpose
+|`lint` |ESLint followed by Stylelint.
+|`lint:eslint` |ESLint through Nx.
+|`lint:styles` |Stylelint for application CSS and SCSS, excluding generated code.
+|`lint:fix` |Apply ESLint and Stylelint fixes.
+|`prettier` |Check formatting without modifying files.
+|`format` |Write formatting changes.
+|`build` |Build the application.
+|`test:ci` |Run Jest (Angular) or Vitest (React) without watching, with coverage.
+|`sonar:scan` |Run SonarScanner manually; server configuration and credentials must be supplied.
+|===
+
+`lint` and `prettier` run on every commit. `build`, `test:ci`, `sonar`,
+`test:arch` and `test:a11y` run only when `CI` or `FORCE_CI_COMMIT_HOOKS`
+is non-empty, and only if the corresponding npm script exists.
+No placeholder architecture or accessibility tests are generated.
+Sonar is opt-in: after supplying a real project configuration, server and
+credentials, add the hook entrypoint with
+`npm pkg set 'scripts.sonar=npm run sonar:scan'`.
+New repositories deliberately do not define `sonar`, so CI commits are not blocked
+by an unconfigured external service. Existing custom `sonar` scripts are retained.
+Use `EXTRA_LINT_SCRIPTS` for additional always-run scripts and
+`EXTRA_QA_SCRIPTS` for additional CI-gated scripts (space-separated names).
+
+To run the heavier checks locally:
+
 ----
-nx generate <namespaceOfTheGenerator>/angular-generator:pre-commit-validation
+FORCE_CI_COMMIT_HOOKS=1 sh .husky/pre-commit
 ----
 
+The generated `.husky/pre-commit` is a small entrypoint that runs the unmodified
+upstream template in `scripts/pre-commit-qa`. Its companion
+`scripts/pre-commit-qa.provenance.json` identifies the upstream commit and checksum.
+Commit these generated files in the application repository.
+`npm install` / `npm ci` installs the hook through `prepare`; an existing prepare
+command is retained. `@onecx/create-workspace` repeats this setup after Nx
+initializes Git. When initializing Git manually after installing dependencies,
+run `npm run prepare` again.
 
-TIP: Next, the CLI will ask if you want to enable validation checks with three questions: Lint-check, Conventional Commits message check and scanning for blacklisted words in the code.
-For each check, you can choose "yes" or "no". 
+Hooks can be bypassed. Require the same checks in the application's CI;
+do not rely on hooks as the only enforcement mechanism.
 
-If "yes" is selected, the CLI installs the necessary dependencies if not already present - husky (used for all checks), lint-staged for linting, 
-commitlint for Conventional Commits check and detect-secrets for blacklist-scanning.
+=== Optional secret and commit-message checks
 
-The blacklist file used for the blacklist scanning should be in the users home directory (`+~/blacklist.txt+`). 
+For an existing repository, or to add optional checks, run:
 
-The required configuration files for the enabled validation checks will be generated and the enabled checks are automatically performed before the changes can be committed.
+----
+nx generate @onecx/angular-generator:pre-commit-validation --non-interactive --enableEslint=true --enableConventionalCommits=true --enableDetectSecrets=true
+----
 
-******
+For React, use `@onecx/react-generator:pre-commit-validation`.
+
+Without `--non-interactive`, the CLI asks which checks to enable.
+`enableEslint` now installs the complete upstream quality hook, including Stylelint
+and Prettier; the legacy `enableEslintCheck`, `enableConventionalCommitsCheck`
+and `enableDetectSecretsCheck` aliases remain accepted.
+An unrelated existing pre-commit hook or custom lint command is not overwritten:
+integrate it manually when the generator reports a conflict.
+
+Secret scanning adds `npm run secrets:check` to the always-run checks through
+`EXTRA_LINT_SCRIPTS`. It scans the staged content, including filenames containing
+spaces, using `BLACKLIST_FILE` or `~/blacklist.txt`. A missing blacklist is an
+error. Matched blacklist values are never printed. This check is also available
+when the quality hook is disabled.
+
+Commit-message validation installs commitlint and its conventional-commit config.
+It is separate from the upstream pre-commit template.

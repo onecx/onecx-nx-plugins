@@ -15,7 +15,11 @@ import { execSync } from 'child_process';
 import * as ora from 'ora';
 
 import processParams, { GeneratorParameter } from '../shared/parameters.utils';
-import { safeReplace } from '@onecx/generator-utils';
+import {
+  configurePreCommit,
+  configureQualityChecks,
+  safeReplace,
+} from '@onecx/generator-utils';
 import { GeneratorProcessor } from '../shared/generator.utils';
 import { AngularGeneratorSchema } from './schema';
 import { GeneralOpenAPIStep } from './steps/general-openapi.step';
@@ -101,6 +105,11 @@ export async function angularGenerator(
   addBaseToPackageJson(tree, options);
   addScriptsToPackageJson(tree, options);
   addExtensionsToPackageJson(tree);
+  configureQualityChecks(tree, 'angular');
+  configurePreCommit(
+    tree,
+    joinPathFragments(__dirname, '../pre-commit-validation/files-upstream')
+  );
 
   const oneCXLibVersion = '^8.7.0';
   const angularVersion = '^21.2.9';
@@ -124,9 +133,11 @@ export async function angularGenerator(
       '@ngx-translate/core': '^17.0.0',
       '@ngx-translate/http-loader': '^17.0.0',
       '@module-federation/enhanced': '^2.4.0',
+      '@ngneat/until-destroy': '^10.0.0',
       'ngrx-store-localstorage': '^20.1.0',
       '@ngrx/component': '^21.1.0',
       '@ngrx/effects': '^21.1.0',
+      '@ngrx/operators': '^21.1.0',
       '@ngrx/router-store': '^21.1.0',
       '@ngrx/store': '^21.1.0',
       '@ngrx/store-devtools': '^21.1.0',
@@ -153,9 +164,15 @@ export async function angularGenerator(
       primeicons: '^7.0.0',
       primeng: '^21.0.0',
       '@primeng/themes': '^21.0.0',
+      '@protobi/exceljs': '^4.4.0-protobi.9',
+      'chart.js': '^4.4.3',
+      'd3-scale-chromatic': '^3.1.0',
+      ngxtension: '^7.1.0',
+      'ts-semaphore': '^1.0.0',
     },
     {
       '@onecx/build-utils': oneCXLibVersion,
+      '@onecx/angular-testing': oneCXLibVersion,
       '@nx/angular': '22.7.1',
       '@nx/devkit': '22.7.1',
       '@nx/jest': '22.7.1',
@@ -180,7 +197,7 @@ export async function angularGenerator(
       '@angular/localize': angularVersion,
       '@angular-devkit/core': angularVersion,
       '@angular-devkit/schematics': angularVersion,
-      '@angular-devkit/build-angular': angularVersion,
+      '@angular-devkit/build-angular': angularVersion.substring(1),
       '@angular/cli': angularVersion,
       '@angular/compiler-cli': angularVersion,
       '@angular/language-service': angularVersion,
@@ -208,7 +225,7 @@ export async function angularGenerator(
       typescript: '^5.9.0',
       'typescript-eslint': '^8.33.1',
       '@typescript-eslint/utils': '^8.33.1',
-      'webpack-merge': '^6.0.1',
+      webpack: '5.105.2',
     }
   );
 
@@ -243,14 +260,9 @@ export async function angularGenerator(
     log(cmd);
     execSync(cmd, { cwd: tree.root, stdio: 'inherit' });
 
-    const files = tree
-      .listChanges()
-      .map((c) => c.path)
-      .filter((p) => p.endsWith('.ts'))
-      .join(' ');
-    cmd = 'npx prettier --write ';
+    cmd = 'npm run format';
     log(cmd);
-    execSync(cmd + files, { cwd: tree.root, stdio: 'inherit' });
+    execSync(cmd, { cwd: tree.root, stdio: 'inherit' });
   };
 }
 
@@ -285,12 +297,12 @@ function addScriptsToPackageJson(tree: Tree, options: AngularGeneratorSchema) {
     ] = `mv "$(find dist/${options['name']} -maxdepth 1 -type f -name 'styles.*.css' | head -n 1)" dist/${options['name']}/styles.css`;
     pkgJson.scripts['clean'] =
       'npm cache clean --force && npx clear-npx-cache && rm -rf *.log dist reports .nx .angular .eslintcache ./node_modules/.cache/prettier/.prettier-cache';
-    pkgJson.scripts['format'] = 'nx format:write --uncommitted';
+    pkgJson.scripts['format'] = 'prettier --write .';
     pkgJson.scripts['lint'] = 'nx lint';
     pkgJson.scripts['lint:fix'] = 'nx lint --fix';
-    pkgJson.scripts['sonar'] = 'npx sonar-scanner';
+    pkgJson.scripts['sonar:scan'] = 'sonar-scanner';
     pkgJson.scripts['test'] = 'nx test';
-    pkgJson.scripts['test:ci'] = 'nx test --watch=false --runInBand --coverage';
+    pkgJson.scripts['test:ci'] = 'nx test --watch=false --coverage';
     return pkgJson;
   });
 }

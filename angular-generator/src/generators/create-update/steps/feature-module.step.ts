@@ -1,6 +1,7 @@
 import { Tree, joinPathFragments, names } from '@nx/devkit';
 import { GeneratorStep } from '../../shared/generator.utils';
 import { safeReplace } from '@onecx/generator-utils';
+import { ensurePortalDialogProvider } from '../../shared/portal-dialog-provider.utils';
 import { CreateUpdateGeneratorSchema } from '../schema';
 
 export class FeatureModuleStep
@@ -15,31 +16,21 @@ export class FeatureModuleStep
       featureFileName,
       featureFileName + '.module.ts'
     );
-    const find = ['declarations: [', /^/, `imports: [`];
+    const find = [/^/, `imports: [`];
     const replaceWith = [
-      `declarations: [${resourceClassName}CreateUpdateComponent,`,
-      `import { FloatLabelModule } from 'primeng/floatlabel';
-       import { InputTextModule } from 'primeng/inputtext';
-       import { ${resourceClassName}CreateUpdateComponent } from './pages/${resourceFileName}-search/dialogs/${resourceFileName}-create-update/${resourceFileName}-create-update.component';
-       import { providePortalDialogService } from '@onecx/angular-accelerator';`,
+      `import { ${resourceClassName}CreateUpdateComponent } from './pages/${resourceFileName}-search/dialogs/${resourceFileName}-create-update/${resourceFileName}-create-update.component';\n`,
       `imports: [
-      FloatLabelModule,
-      InputTextModule,`
+      ${resourceClassName}CreateUpdateComponent,`,
     ];
-    const moduleContent = tree.read(moduleFilePath, 'utf8');
-    if (!moduleContent.includes('providePortalDialogService()')) {
-      find.push('declarations:');
-      replaceWith.push(`
-    providers: [providePortalDialogService()],
-    declarations:`);
-    }
     safeReplace(
-      `Update feature module to include ${resourceClassName}CreateUpdateComponent in declarations, add providePortalDialogService to providers, and extend import statements to include necessary dependencies`,
+      `Update feature module to import ${resourceClassName}CreateUpdateComponent, add providePortalDialogService to providers when missing, and extend import statements to include necessary dependencies`,
       moduleFilePath,
       find,
       replaceWith,
       tree
     );
+
+    ensurePortalDialogProvider(tree, moduleFilePath);
   }
   getTitle(): string {
     return 'Adapting Feature Module (create/update)';

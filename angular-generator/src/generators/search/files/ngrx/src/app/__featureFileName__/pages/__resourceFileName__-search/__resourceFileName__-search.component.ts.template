@@ -1,12 +1,17 @@
-import { Component, computed, effect, inject, LOCALE_ID, OnInit, viewChildren, Signal } from '@angular/core'
-import { FormBuilder, FormGroup } from '@angular/forms'
+import { ChangeDetectionStrategy, Component, computed, effect, inject, LOCALE_ID, OnInit, viewChildren, Signal } from '@angular/core'
+import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms'
 import { Store } from '@ngrx/store'
 import { PrimeIcons } from 'primeng/api'
 import { DatePicker } from 'primeng/datepicker'
+import { FloatLabelModule } from 'primeng/floatlabel'
+import { InputTextModule } from 'primeng/inputtext'
+import { TooltipModule } from 'primeng/tooltip'
 import { toSignal } from '@angular/core/rxjs-interop'
+import { TranslatePipe } from '@ngx-translate/core'
 import { isValidDate } from '@onecx/accelerator'
 import {
   Action,
+  AngularAcceleratorModule,
   BreadcrumbService,
   buildSearchCriteria,
   DataSortDirection,
@@ -16,6 +21,7 @@ import {
   InteractiveDataViewComponentState,
   SearchHeaderComponentState,
 } from '@onecx/angular-accelerator'
+import { PortalPageComponent } from '@onecx/angular-utils'
 
 import { <%= resourcePropertyName %>SearchActions } from './<%= resourceFileName %>-search.actions';
 import {
@@ -29,7 +35,16 @@ import { <%= resourceClassName %>SearchViewModel } from './<%= resourceFileName 
   selector: 'app-<%= resourceFileName %>-search',
   templateUrl: './<%= resourceFileName %>-search.component.html',
   styleUrls: ['./<%= resourceFileName %>-search.component.scss'],
-  standalone: false,
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    AngularAcceleratorModule,
+    PortalPageComponent,
+    TranslatePipe,
+    ReactiveFormsModule,
+    FloatLabelModule,
+    InputTextModule,
+    TooltipModule,
+  ],
 })
 
 export class <%= resourceClassName %>SearchComponent implements OnInit {

@@ -38,8 +38,8 @@ describe('<%= resourceClassName%>CreateUpdateComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [<%= resourceClassName%>CreateUpdateComponent],
       imports: [
+        <%= resourceClassName%>CreateUpdateComponent,
         AngularAcceleratorModule,
         FloatLabelModule,
         InputTextModule,

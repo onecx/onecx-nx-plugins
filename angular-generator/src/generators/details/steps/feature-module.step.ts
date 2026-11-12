@@ -1,6 +1,7 @@
 import { Tree, names } from '@nx/devkit';
 import { GeneratorStep } from '../../shared/generator.utils';
 import { safeReplace } from '@onecx/generator-utils';
+import { ensurePortalDialogProvider } from '../../shared/portal-dialog-provider.utils';
 import { DetailsGeneratorSchema } from '../schema';
 
 export class FeatureModuleStep
@@ -13,28 +14,19 @@ export class FeatureModuleStep
     const resourceClassName = names(options.resource).className;
     const moduleFilePath = `src/app/${featureFileName}/${featureFileName}.module.ts`;
     const find = [
-      'declarations: [',
-      `} from '@onecx/angular-accelerator'`,
       'EffectsModule.forFeature()',
       'EffectsModule.forFeature([',
       `from '@ngrx/effects'`,
-      `imports: [`
+      `imports: [`,
     ];
     const replaceWith = [
-      `declarations: [${resourceClassName}DetailsComponent,`,
-      `} from '@onecx/angular-accelerator'`,
       `EffectsModule.forFeature([])`,
       `EffectsModule.forFeature([${resourceClassName}DetailsEffects,`,
       `from '@ngrx/effects';
-  import { FloatLabelModule } from 'primeng/floatlabel';
-  import { InputTextModule } from 'primeng/inputtext';
   import { ${resourceClassName}DetailsEffects } from './pages/${resourceFileName}-details/${resourceFileName}-details.effects';
-  import { ${resourceClassName}DetailsComponent } from './pages/${resourceFileName}-details/${resourceFileName}-details.component';
-  import { providePortalDialogService } from '@onecx/angular-accelerator';
-  `,
+  import { ${resourceClassName}DetailsComponent } from './pages/${resourceFileName}-details/${resourceFileName}-details.component';`,
       `imports: [
-      FloatLabelModule,
-      InputTextModule,`
+      ${resourceClassName}DetailsComponent,`,
     ];
     safeReplace(
       `Enhance ${featureClassName}Module with details component and effects`,
@@ -45,20 +37,7 @@ export class FeatureModuleStep
     );
 
     if (options.editMode || options.allowDelete) {
-      const moduleContent = tree.read(moduleFilePath, 'utf8');
-      if (!moduleContent.includes('providePortalDialogService()')) {
-        find.push('declarations:');
-        replaceWith.push(`
-    providers: [providePortalDialogService()],
-    declarations:`);
-      }
-      safeReplace(
-        `Add providePortalDialogService()`,
-        moduleFilePath,
-        find,
-        replaceWith,
-        tree
-      );
+      ensurePortalDialogProvider(tree, moduleFilePath);
     }
   }
   getTitle(): string {

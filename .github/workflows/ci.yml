@@ -14,6 +14,7 @@ on:
     - cron: "0 1 * * *"
 jobs:
   main:
+    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -30,6 +31,12 @@ jobs:
       - name: Install deps
         run: npm ci
         working-directory: repo
+
+      - name: Snapshot upstream pre-commit template
+        run: npm run prepare:templates
+        working-directory: repo
+        env:
+          GH_TOKEN: ${{ secrets.CI_PAT }}
 
       - name: Lint
         run: npx nx run-many -t lint

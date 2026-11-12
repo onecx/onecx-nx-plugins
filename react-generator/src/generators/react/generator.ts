@@ -18,6 +18,10 @@ import { StylesStep } from './steps/styles.step';
 import { AIStep } from './steps/ai.step';
 import { StateManagementStep } from './steps/state-management.step';
 import {
+  configurePreCommit,
+  configureQualityChecks,
+} from '@onecx/generator-utils';
+import {
   addBaseToPackageJson,
   addScriptsToPackageJson,
 } from './utils/package-json.utils';
@@ -122,6 +126,11 @@ export async function reactGenerator(
 
   addBaseToPackageJson(tree, options);
   addScriptsToPackageJson(tree);
+  configureQualityChecks(tree, 'react');
+  configurePreCommit(
+    tree,
+    joinPathFragments(__dirname, '../pre-commit-validation/files-upstream')
+  );
 
   const oneCXLibVersion = '^8.12.0';
   const reactVersion = '^19.0.0';
@@ -223,14 +232,9 @@ export async function reactGenerator(
     log(cmd);
     execSync(cmd, { cwd: tree.root, stdio: 'inherit' });
 
-    const files = tree
-      .listChanges()
-      .map((c) => c.path)
-      .filter((p) => p.endsWith('.ts') || p.endsWith('.tsx'))
-      .join(' ');
-    const prettierCmd = 'npx prettier --write ';
+    const prettierCmd = 'npm run format';
     log(prettierCmd);
-    execSync(prettierCmd + files, { cwd: tree.root, stdio: 'inherit' });
+    execSync(prettierCmd, { cwd: tree.root, stdio: 'inherit' });
   };
 }
 

@@ -2,6 +2,7 @@
 
 import { createWorkspace } from 'create-nx-workspace';
 import { readFileSync, existsSync } from 'fs';
+import { execFileSync } from 'child_process';
 
 const SUPPORTED_FLAVORS = ['angular', 'react', 'ngrx', 'standalone-ngrx'];
 
@@ -38,7 +39,7 @@ async function main() {
   // eslint-disable-next-line @typescript-eslint/no-var-requires
   const presetVersion = require('../package.json').version;
 
-  await createWorkspace(`${plugin}@${presetVersion}`, {
+  const { directory } = await createWorkspace(`${plugin}@${presetVersion}`, {
     flavor,
     name,
     nxCloud: 'skip',
@@ -46,6 +47,9 @@ async function main() {
     interactive: false,
     verbose: true,
   });
+
+  // Nx initializes Git after installing dependencies, when Husky's prepare first ran.
+  execFileSync('npm', ['run', 'prepare'], { cwd: directory, stdio: 'inherit' });
 
   console.log(
     `Successfully created the workspace ${name} with the ${flavor} preset`
