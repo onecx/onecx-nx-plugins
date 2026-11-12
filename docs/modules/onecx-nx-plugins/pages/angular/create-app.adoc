@@ -21,6 +21,14 @@ The generator supports three flavors of projects: *angular*, *with NgRx* and *wi
 It is **recommended to use the NgRx** flavor, because it leads to better structured projects and the state management is already in place. +
 The creation of a new workspace takes a while, as the generator sets up a complete Angular application with all necessary dependencies and configurations.
 
+[NOTE]
+====
+Generated UI Apps build and serve with Rspack (`@nx/rspack`) instead of Webpack, configured through the generated `rspack.config.js`.
+This describes the current generator implementation; previously published versions can still scaffold Webpack.
+For local branch validation, publish the matching launcher, generator and utility packages to a local registry as described in the repository README, then use the same version and registry when creating the app.
+An unversioned `npx` command selects the public `latest` tag, not your local checkout.
+====
+
 .Generate the UI App with following commands
 [source,bash]
 ----
@@ -38,6 +46,7 @@ include::partial$_parameter.adoc[tag=product]
 endif::[]
 
 The generator creates a new directory with the specified product name and sets up the OneCX UI App according to the chosen flavor. +
+Use a new directory to validate scaffolding. Installing or copying an updated generator does not migrate an existing application's build configuration. +
 Please note that the product name from your command is used as base of some essential application parts as following:
 
 === Key Naming Conventions

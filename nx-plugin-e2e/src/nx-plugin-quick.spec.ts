@@ -1,6 +1,6 @@
 import { execSync, ExecSyncOptionsWithBufferEncoding } from 'child_process';
 import { join, dirname } from 'path';
-import { existsSync, mkdirSync, rmSync } from 'fs';
+import { existsSync, mkdirSync, readFileSync, rmSync } from 'fs';
 import * as os from 'os';
 import { assertGeneratedGuardrails } from './guardrails.utils';
 
@@ -20,43 +20,23 @@ describe('nx-plugin', () => {
   beforeAll(() => {
     projectDirectory = createTestProject('ngrx');
 
-    // Upgrade Nx to version 22.7.1 to match the plugin's @nx/* package versions
-    console.log('Upgrading Nx to version 22.7.1...');
-    execSync(`npx nx migrate 22.7.1`, {
-      cwd: projectDirectory,
-      stdio: 'inherit',
-      env: { ...process.env, NX_NO_CLOUD: 'true', CI: 'true' },
-    });
-
-    // Run migrations if migrations.json was created
-    if (existsSync(`${projectDirectory}/migrations.json`)) {
-      console.log('Installing dependencies for migration...');
-      execSync(`npm install`, {
-        cwd: projectDirectory,
-        stdio: 'inherit',
-        env: process.env,
-      });
-      console.log('Running migrations...');
-      execSync(`npx nx migrate --run-migrations`, {
-        cwd: projectDirectory,
-        stdio: 'inherit',
-        env: process.env,
-      });
-      console.log('Cleaning up migration artifacts...');
-      execSync(`rm migrations.json`, {
-        cwd: projectDirectory,
-        stdio: 'inherit',
-        env: process.env,
-      });
-    }
-
-    // The plugin has been built and published to a local registry in the jest globalSetup
-    // Install the plugin built with the latest source code into the test repo
-    execSync(`npm install @onecx/angular-generator@e2e`, {
-      cwd: projectDirectory,
-      stdio: 'inherit',
-      env: process.env,
-    });
+    const project = JSON.parse(
+      readFileSync(join(projectDirectory, 'project.json'), 'utf-8')
+    );
+    expect(project.targets.build.executor).toBe('@nx/rspack:rspack');
+    expect(project.targets.serve.executor).toBe('@nx/rspack:dev-server');
+    expect(existsSync(join(projectDirectory, 'webpack.config.js'))).toBe(false);
+    const installedGenerator = JSON.parse(
+      readFileSync(
+        join(
+          projectDirectory,
+          'node_modules/@onecx/angular-generator/package.json'
+        ),
+        'utf-8'
+      )
+    );
+    expect(installedGenerator.name).toBe('@onecx/angular-generator');
+    expect(installedGenerator.version).toBe('0.0.0-e2e');
   });
 
   afterAll(() => {
@@ -284,6 +264,23 @@ describe('nx-plugin', () => {
     console.log('### ==> final build + test ###############################');
 
     execSync(`nx run build --skip-nx-cache`, tcOption);
+    // The Rspack production build must emit the Module Federation remote entry.
+    expect(
+      existsSync(join(projectDirectory, 'dist', projectName, 'remoteEntry.js'))
+    ).toBe(true);
+    // The patch-loader rewrites primeng's `document.createElement` to the
+    // `document.createElementFromPrimeNg` hook; the generated app must ship a default for that
+    // hook (in its polyfills) or a standalone app crashes when served without a shell host.
+    expect(
+      readFileSync(join(projectDirectory, 'src', 'polyfills.ts'), 'utf-8')
+    ).toContain('createElementFromPrimeNg');
+    // The extract-i18n target (kept on @angular/build:extract-i18n) must run and write a
+    // translation bundle (`messages.xlf` at the app root by default).
+    execSync(`nx run extract-i18n --skip-nx-cache`, tcOption);
+    const xlfFile = join(projectDirectory, 'messages.xlf');
+    expect(existsSync(xlfFile)).toBe(true);
+    expect(readFileSync(xlfFile, 'utf-8').length).toBeGreaterThan(0);
+
     execSync(`nx run test --skip-nx-cache`, tcOption);
   });
 });
