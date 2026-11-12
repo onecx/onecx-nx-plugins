@@ -1,7 +1,7 @@
 app:
-  name: ui
+  name: <%= applicationName %>
   image:
-    repository: 'onecx-apps/onecx-<%= fileName %>-ui'
+    repository: 'onecx-apps/<%= applicationName %>'
   routing:
     enabled: true
     path: /mfe/<%= propertyName %>/
@@ -11,19 +11,19 @@ app:
       enabled: true
       specs:
         main:
-          exposedModule: './OneCX<%= remoteModuleName %>Module'        
+          exposedModule: './<%= remoteModuleName %>'
           shareScope: angular_21       
-          description: 'OneCX <%= remoteModuleName %> UI'
-          note: 'OneCX <%= remoteModuleName %> UI module auto import via MF operator'
+          description: 'OneCX <%= className %> UI'
+          note: 'OneCX <%= className %> UI module auto import via MF operator'
           type: MODULE
           technology: WEBCOMPONENTMODULE
-          remoteName: <%= remoteModuleFileName %>
-          tagName: ocx-<%= remoteModuleFileName %>-component
+          remoteName: <%= remoteName %>
+          tagName: <%= tagName %>
     # Microservice
     microservice:
       spec:
-        name: OneCX <%= remoteModuleName %> UI
-        description: OneCX <%= remoteModuleName %> Frontend
+        name: <%= applicationName %>
+        description: OneCX <%= className %> Frontend
     # Permission
     permission:
       enabled: true

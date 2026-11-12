@@ -1,4 +1,5 @@
 export * from './lib/deepMerge';
+export * from './lib/application-names';
 export * from './lib/renderJsonFile';
 export * from './lib/yaml';
 export * from './lib/safeReplace';

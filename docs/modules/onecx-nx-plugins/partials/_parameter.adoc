@@ -4,13 +4,19 @@
     For the OneCX, use `+@onecx+`.
 # end::namespace[]
 # tag::flavor[]
-  _<flavor>_::           `+ngrx+` (or `+angular+`).
+  _<flavor>_::           `+angular+`, `+ngrx+`, `+standalone-ngrx+` or `+react+`.
 # end::flavor[]
 # tag::product[]
   _<product>_::
     The technical base name of the application (product) for a certain business case. +
     E.g. `+bookstore+` for an application named "Book Store".
 # end::product[]
+# tag::appPrefix[]
+  _--appPrefix_::
+    Optional application prefix, default empty. Use `+--appPrefix=onecx+` for legacy
+    application naming, `+--appPrefix=acme+` for a custom prefix, or
+    `+--appPrefix=""+` for explicitly empty. Do not include a trailing separator.
+# end::appPrefix[]
 # tag::feature[]
   _<feature>_::
     The name of the generated feature module. +

@@ -38,11 +38,12 @@ src/
 
 ## Module Federation
 
-This app exposes `./OneCX<%= className %>Module` as a remote module under the name `onecx-<%= fileName %>`.
+This app exposes `./<%= remoteModuleName %>` as a remote module under the name `<%= remoteName %>`.
+The application identity is `<%= applicationName %>` and its build output is `dist/<%= applicationName %>/`.
 
 ## Environment variables
 
 | Variable       | Default                        | Description          |
 |----------------|--------------------------------|----------------------|
-| `BFF_URL`      | `http://<%= fileName %>-bff:8080/` | Backend-for-Frontend URL |
+| `BFF_URL`      | `http://<%= bffName %>:8080/` | Backend-for-Frontend URL |
 | `APP_BASE_HREF` | `/`                           | App base href        |

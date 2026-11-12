@@ -20,6 +20,7 @@ import { StateManagementStep } from './steps/state-management.step';
 import {
   configurePreCommit,
   configureQualityChecks,
+  applicationNames,
 } from '@onecx/generator-utils';
 import {
   addBaseToPackageJson,
@@ -76,6 +77,7 @@ export async function reactGenerator(
     options
   );
   Object.assign(options, parameters);
+  const appNames = applicationNames(options);
 
   const spinner = ora('Adding React').start();
   const directory = '.';
@@ -83,7 +85,7 @@ export async function reactGenerator(
   const { applicationGenerator } = await import('@nx/react');
 
   const applicationGeneratorCallback = await applicationGenerator(tree, {
-    name: options.name,
+    name: appNames.applicationName,
     directory: directory,
     style: 'css',
     tags: ``,
@@ -108,8 +110,7 @@ export async function reactGenerator(
     {
       ...options,
       className: names(options.name).className,
-      remoteModuleName: names(options.name).className,
-      remoteModuleFileName: names(options.name).fileName,
+      ...appNames,
       fileName: names(options.name).fileName,
       constantName: names(options.name).constantName,
       propertyName: names(options.name).propertyName,

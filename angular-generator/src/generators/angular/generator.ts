@@ -18,6 +18,7 @@ import processParams, { GeneratorParameter } from '../shared/parameters.utils';
 import {
   configurePreCommit,
   configureQualityChecks,
+  applicationNames,
   safeReplace,
 } from '@onecx/generator-utils';
 import { GeneratorProcessor } from '../shared/generator.utils';
@@ -55,12 +56,13 @@ export async function angularGenerator(
     options
   );
   Object.assign(options, parameters);
+  const appNames = applicationNames(options);
 
   const spinner = ora('Adding Angular').start();
   const directory = '.';
 
   const applicationGeneratorCallback = await applicationGenerator(tree, {
-    name: options.name,
+    name: appNames.applicationName,
     directory: directory,
     style: 'scss',
     tags: ``,
@@ -80,8 +82,7 @@ export async function angularGenerator(
     {
       ...options,
       className: names(options.name).className,
-      remoteModuleName: names(options.name).className,
-      remoteModuleFileName: names(options.name).fileName,
+      ...appNames,
       fileName: names(options.name).fileName,
       constantName: names(options.name).constantName,
       propertyName: names(options.name).propertyName,
@@ -252,7 +253,7 @@ export async function angularGenerator(
 
 function addBaseToPackageJson(tree: Tree, options: AngularGeneratorSchema) {
   updateJson(tree, 'package.json', (pkgJson) => {
-    pkgJson.name = 'onecx-' + names(options.name).fileName + '-ui';
+    pkgJson.name = applicationNames(options).applicationName;
     pkgJson.private = true;
     pkgJson.license = 'Apache-2.0';
     return pkgJson;
@@ -270,16 +271,17 @@ function addExtensionsToPackageJson(tree: Tree) {
 
 
 function addScriptsToPackageJson(tree: Tree, options: AngularGeneratorSchema) {
+  const { applicationName } = applicationNames(options);
   updateJson(tree, 'package.json', (pkgJson) => {
     pkgJson.scripts = pkgJson.scripts ?? {};
     pkgJson.scripts[
       'apigen'
     ] = `openapi-generator-cli generate -i src/assets/api/openapi-bff.yaml -c apigen.yaml -o src/app/shared/generated -g typescript-angular --type-mappings AnyType=object`;
     pkgJson.scripts['start'] = 'nx serve --host 0.0.0.0 --disable-host-check';
-    pkgJson.scripts['build'] = `nx build && cp dist/${options['name']}/styles.*.css dist/${options['name']}/styles.css`;
+    pkgJson.scripts['build'] = `nx build && cp dist/${applicationName}/styles.*.css dist/${applicationName}/styles.css`;
     pkgJson.scripts[
       'postbuild'
-    ] = `mv "$(find dist/${options['name']} -maxdepth 1 -type f -name 'styles.*.css' | head -n 1)" dist/${options['name']}/styles.css`;
+    ] = `mv "$(find dist/${applicationName} -maxdepth 1 -type f -name 'styles.*.css' | head -n 1)" dist/${applicationName}/styles.css`;
     pkgJson.scripts['clean'] =
       'npm cache clean --force && npx clear-npx-cache && rm -rf *.log dist reports .nx .angular .eslintcache ./node_modules/.cache/prettier/.prettier-cache';
     pkgJson.scripts['format'] = 'prettier --write .';
@@ -294,12 +296,12 @@ function addScriptsToPackageJson(tree: Tree, options: AngularGeneratorSchema) {
 }
 
 function adaptTsConfig(tree: Tree, options: AngularGeneratorSchema) {
-  const fileName = names(options.name).fileName;
+  const { remoteModuleFileName } = applicationNames(options);
   const filePath = 'tsconfig.app.json';
   const find = ['"files": [', '"compilerOptions": {'];
   const replaceWith = [
     `"files": [
-    "src/app/onecx-${fileName}.remote.module.ts",
+    "src/app/${remoteModuleFileName}.remote.module.ts",
     "src/polyfills.ts",
   `,
     `"compilerOptions": {
@@ -328,7 +330,8 @@ function adaptProjectConfiguration(
   tree: Tree,
   options: AngularGeneratorSchema
 ) {
-  const config = readProjectConfiguration(tree, options.name);
+  const { applicationName } = applicationNames(options);
+  const config = readProjectConfiguration(tree, applicationName);
   config.targets['serve'].executor = '@nx/angular:dev-server';
   config.targets['serve'].options = {
     ...(config.targets['serve'].options ?? {}),
@@ -346,6 +349,7 @@ function adaptProjectConfiguration(
   config.targets['build'].executor = '@nx/angular:webpack-browser';
   config.targets['build'].options = {
     ...(config.targets['build'].options ?? {}),
+    outputPath: `dist/${applicationName}`,
     polyfills: 'src/polyfills.ts',
     assets: [
       ...(config.targets['build'].options.assets ?? []),
@@ -401,7 +405,7 @@ function adaptProjectConfiguration(
     },
   };
   config.targets['extract-i18n'].executor = '@angular/build:extract-i18n';
-  updateProjectConfiguration(tree, names(options.name).fileName, config);
+  updateProjectConfiguration(tree, applicationName, config);
 }
 
 function adaptJestConfig(tree: Tree) {

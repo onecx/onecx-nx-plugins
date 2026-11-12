@@ -17,6 +17,20 @@ npx nx run-many --targets publish --ver 1.0.0 --tag latest --skip-nx-cache
 ```
 
 
+## Application naming
+
+New applications have no application prefix by default. To retain the legacy
+`onecx-<product>-ui` identity, supply `--appPrefix=onecx`:
+
+```sh
+npx @onecx/create-workspace ngrx orders --appPrefix=onecx
+npx @onecx/create-workspace react orders --appPrefix=acme
+npx @onecx/create-workspace angular orders --appPrefix=""
+```
+
+See the [workspace CLI guide](create-workspace/README.md#creating-a-workspace)
+for exact syntax, direct-generator usage and derived deployment identifiers.
+
 ## Local Development
 
 Before building the Angular or React generator, snapshot the current shared

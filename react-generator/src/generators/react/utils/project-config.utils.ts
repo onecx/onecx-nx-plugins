@@ -1,16 +1,16 @@
 import {
-  names,
   readProjectConfiguration,
   Tree,
   updateProjectConfiguration,
 } from '@nx/devkit';
 import { ReactGeneratorSchema } from '../schema';
+import { applicationNames } from '@onecx/generator-utils';
 
 export function adaptProjectConfiguration(
   tree: Tree,
   options: ReactGeneratorSchema
 ) {
-  const projectName = names(options.name).fileName;
+  const projectName = applicationNames(options).applicationName;
   const config = readProjectConfiguration(tree, projectName);
   config.targets['serve'].executor = '@nx/vite:dev-server';
   config.targets['serve'].options = {
@@ -27,7 +27,7 @@ export function adaptProjectConfiguration(
   config.targets['build'].executor = '@nx/vite:build';
   config.targets['build'].options = {
     ...(config.targets['build'].options ?? {}),
-    outputPath: 'dist',
+    outputPath: `dist/${projectName}`,
     assets: [
       ...(config.targets['build'].options?.assets ?? []),
       {
