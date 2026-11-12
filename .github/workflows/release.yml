@@ -47,7 +47,7 @@ jobs:
       - name: E2E Tests
         run: npm run test
         env: 
-          WORKING_DIR: ${{github.workspace}}/test-output
+          WORKING_DIR: ${{ runner.temp }}/test-output
 
       - name: Release
         run: npx semantic-release
@@ -69,4 +69,4 @@ jobs:
         with:
           name: test-output
           path: |
-            ${{github.workspace}}/test-output
+            ${{ runner.temp }}/test-output
