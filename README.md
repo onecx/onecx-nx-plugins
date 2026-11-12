@@ -4,6 +4,17 @@ This is the repository for OneCX UI App Generator. It is build with [Nx](https:/
 
 Learn more about [Nx generators](https://nx.dev/plugin-features/use-code-generators).
 
+## Releases
+
+The `v9` branch publishes stable version 9 releases to the npm `latest` tag.
+The `main` branch continues to publish prereleases to the `rc` tag.
+Branches `v5` through `v8` retain their existing maintenance channels.
+
+Run the `create-release` GitHub Actions workflow (`release.yml`) on `v9` for
+a stable release, or on `main` for a prerelease. Verify that all four packages
+are available on npm at the resulting version before considering a release
+complete.
+
 ## Steps to reproduce how this generator was created
 
 ```
