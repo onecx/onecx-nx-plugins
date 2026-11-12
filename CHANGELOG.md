@@ -1,3 +1,43 @@
+## [9.0.0](https://github.com/onecx/onecx-nx-plugins/compare/v8.9999.0...v9.0.0) (2026-11-12)
+
+### ⚠ BREAKING CHANGES
+
+* Promote the version 9 generator line, including the renamed @onecx/angular-generator package, shared @onecx/generator-utils package, and standalone Angular component templates.
+
+Co-authored-by: Copilot <223556219+Copilot@users.noreply.github.com>
+
+### Features
+
+* add generated repository quality guardrails ([bdd3c51](https://github.com/onecx/onecx-nx-plugins/commit/bdd3c513f5cc15ddc7f84ffd0dbe42ddeb0f0ab1))
+* add react generator ([37214f5](https://github.com/onecx/onecx-nx-plugins/commit/37214f5b3b70d33f90aabab97f37cfac709ddfd3))
+* add react-generator to build and release pipeline ([#383](https://github.com/onecx/onecx-nx-plugins/issues/383)) ([9705c0a](https://github.com/onecx/onecx-nx-plugins/commit/9705c0a67921add0d4d9ec293d8eb3ebabe430db))
+* generate standalone Angular components ([#428](https://github.com/onecx/onecx-nx-plugins/issues/428)) ([d2c8eb1](https://github.com/onecx/onecx-nx-plugins/commit/d2c8eb1c53f0d8b094886d9e4b85f8499354d42a))
+* **react-generator:** share r2wc and update OneCX dependencies ([#405](https://github.com/onecx/onecx-nx-plugins/issues/405)) ([5f0457c](https://github.com/onecx/onecx-nx-plugins/commit/5f0457c39f596b68781e77901532ec672effcd39))
+* **react-helm-updates:** align react helm templates with OneCX conventions ([#401](https://github.com/onecx/onecx-nx-plugins/issues/401)) ([6d9a11a](https://github.com/onecx/onecx-nx-plugins/commit/6d9a11aa6a732a9cc3f0d6b11ec568629f8bc783))
+* support configurable application prefixes ([#431](https://github.com/onecx/onecx-nx-plugins/issues/431)) ([35de8dc](https://github.com/onecx/onecx-nx-plugins/commit/35de8dcdf2b51ee9bffd8ad8fb62300e5d56cf6b))
+
+### Bug Fixes
+
+* adjust version to be the same across all publishable packages ([#408](https://github.com/onecx/onecx-nx-plugins/issues/408)) ([cd0dd84](https://github.com/onecx/onecx-nx-plugins/commit/cd0dd849cafcf94d8b5af2a81be97215196835c7))
+
+### Chores
+
+* configure v9 stable releases ([3a807d1](https://github.com/onecx/onecx-nx-plugins/commit/3a807d16bb7f371047f49186bf3a749e761be2b5))
+* **deps:** update js-yaml, @semantic-release/npm, semantic-release to patched versions (security fixes) ([#396](https://github.com/onecx/onecx-nx-plugins/issues/396)) ([7fe7166](https://github.com/onecx/onecx-nx-plugins/commit/7fe71662418cbef154f505696020f4ee783c8576))
+* release config for v8 ([#380](https://github.com/onecx/onecx-nx-plugins/issues/380)) ([85b47eb](https://github.com/onecx/onecx-nx-plugins/commit/85b47ebe026011a4ff524f942c6154925a30310e))
+* release stable version 9 ([a400f6c](https://github.com/onecx/onecx-nx-plugins/commit/a400f6c021f5d8ca463f40fdc8eeacd1bfddf990))
+* **release:** -v9.0.0-rc.1 [skip ci] ([16790a0](https://github.com/onecx/onecx-nx-plugins/commit/16790a00993d247c0816e3fc064840d764a13a4f)), closes [#379](https://github.com/onecx/onecx-nx-plugins/issues/379)
+* **release:** -v9.0.0-rc.2 [skip ci] ([ae7a80c](https://github.com/onecx/onecx-nx-plugins/commit/ae7a80c24a2a0b1e3e7df3c4170829d7b11a5e2d))
+* **release:** -v9.0.0-rc.3 [skip ci] ([15c91d2](https://github.com/onecx/onecx-nx-plugins/commit/15c91d2cf14ab6308a6603d5fe15f37806ec487d))
+* **release:** -v9.0.0-rc.4 [skip ci] ([400582f](https://github.com/onecx/onecx-nx-plugins/commit/400582f3d3a9e6f549187e35a4847101a15caf98))
+* **release:** -v9.0.0-rc.5 [skip ci] ([0db6531](https://github.com/onecx/onecx-nx-plugins/commit/0db6531183696d5874ea6928a90adbabbbb3d163))
+* **release:** -v9.0.0-rc.6 [skip ci] ([171d855](https://github.com/onecx/onecx-nx-plugins/commit/171d855d055c990166a2359bb39f996e77e545f3))
+* rename generator-shared to generator-utils in release script ([#407](https://github.com/onecx/onecx-nx-plugins/issues/407)) ([a1bab4e](https://github.com/onecx/onecx-nx-plugins/commit/a1bab4ef593ca9ce58b82164509afb53380ff2ec))
+
+### Refactoring
+
+* create seperate package generator-utils to be used for shared files across react and angular generators, rename nx-plugin to angular-generator ([#390](https://github.com/onecx/onecx-nx-plugins/issues/390)) ([320ee6d](https://github.com/onecx/onecx-nx-plugins/commit/320ee6d65809286deba463d50dc22e378a04c924))
+
 ## [9.0.0-rc.6](https://github.com/onecx/onecx-nx-plugins/compare/v9.0.0-rc.5...v9.0.0-rc.6) (2026-11-12)
 
 ### Features
