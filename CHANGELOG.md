@@ -1,3 +1,10 @@
+## [9.0.0-rc.5](https://github.com/onecx/onecx-nx-plugins/compare/v9.0.0-rc.4...v9.0.0-rc.5) (2026-11-12)
+
+### Features
+
+* add generated repository quality guardrails ([bdd3c51](https://github.com/onecx/onecx-nx-plugins/commit/bdd3c513f5cc15ddc7f84ffd0dbe42ddeb0f0ab1))
+* generate standalone Angular components ([#428](https://github.com/onecx/onecx-nx-plugins/issues/428)) ([d2c8eb1](https://github.com/onecx/onecx-nx-plugins/commit/d2c8eb1c53f0d8b094886d9e4b85f8499354d42a))
+
 ## [9.0.0-rc.4](https://github.com/onecx/onecx-nx-plugins/compare/v9.0.0-rc.3...v9.0.0-rc.4) (2026-10-13)
 
 ### Bug Fixes
