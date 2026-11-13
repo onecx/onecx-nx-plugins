@@ -17,8 +17,9 @@ const onProxyRes = function (_proxyRes, req, res) {
   }
 }
 
-const PROXY_CONFIG = {
-  '/bff': {
+const PROXY_CONFIG = [
+  {
+    context: ['/bff'],
     target: 'http://<%= bffName %>:8080',
     secure: false,
     pathRewrite: { '^.*/bff': '' },
@@ -26,7 +27,8 @@ const PROXY_CONFIG = {
     logLevel: 'debug',
     onProxyRes: onProxyRes
   },
-  '/mfe/<%= fileName %>': {
+  {
+    context: ['/mfe/<%= fileName %>'],
     target: 'http://localhost:4200',
     secure: false,
     pathRewrite: { '^.*/mfe/<%= fileName %>': '' },
@@ -34,6 +36,6 @@ const PROXY_CONFIG = {
     logLevel: 'debug',
     onProxyRes: onProxyRes
   }
-}
+]
 
 module.exports = PROXY_CONFIG

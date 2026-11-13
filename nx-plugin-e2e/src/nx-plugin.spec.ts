@@ -1,8 +1,8 @@
 import { execSync, ExecSyncOptionsWithBufferEncoding } from 'child_process';
-import { join, dirname } from 'path';
-import { existsSync, mkdirSync, rmSync } from 'fs';
-import * as os from 'os';
-import { assertGeneratedGuardrails } from './guardrails.utils';
+import { join } from 'path';
+import { existsSync, readdirSync, readFileSync, rmSync } from 'fs';
+import { createRequire } from 'module';
+import { createTestProject } from './test-project.utils';
 
 const NON_INTERACTIVE_KEY = 'non-interactive';
 const projectName = 'test-project';
@@ -18,45 +18,25 @@ describe('nx-plugin', () => {
   };
 
   beforeAll(() => {
-    projectDirectory = createTestProject('ngrx');
+    projectDirectory = createTestProject('ngrx', projectName);
 
-    // Upgrade Nx to version 22.7.1 to match the plugin's @nx/* package versions
-    console.log('Upgrading Nx to version 22.7.1...');
-    execSync(`npx nx migrate 22.7.1`, {
-      cwd: projectDirectory,
-      stdio: 'inherit',
-      env: { ...process.env, NX_NO_CLOUD: 'true', CI: 'true' },
-    });
-
-    // Run migrations if migrations.json was created
-    if (existsSync(`${projectDirectory}/migrations.json`)) {
-      console.log('Installing dependencies for migration...');
-      execSync(`npm install`, {
-        cwd: projectDirectory,
-        stdio: 'inherit',
-        env: process.env,
-      });
-      console.log('Running migrations...');
-      execSync(`npx nx migrate --run-migrations`, {
-        cwd: projectDirectory,
-        stdio: 'inherit',
-        env: process.env,
-      });
-      console.log('Cleaning up migration artifacts...');
-      execSync(`rm migrations.json`, {
-        cwd: projectDirectory,
-        stdio: 'inherit',
-        env: process.env,
-      });
-    }
-
-    // The plugin has been built and published to a local registry in the jest globalSetup
-    // Install the plugin built with the latest source code into the test repo
-    execSync(`npm install @onecx/angular-generator@e2e`, {
-      cwd: projectDirectory,
-      stdio: 'inherit',
-      env: process.env,
-    });
+    const project = JSON.parse(
+      readFileSync(join(projectDirectory, 'project.json'), 'utf-8')
+    );
+    expect(project.targets.build.executor).toBe('@nx/rspack:rspack');
+    expect(project.targets.serve.executor).toBe('@nx/rspack:dev-server');
+    expect(existsSync(join(projectDirectory, 'webpack.config.js'))).toBe(false);
+    const installedGenerator = JSON.parse(
+      readFileSync(
+        join(
+          projectDirectory,
+          'node_modules/@onecx/angular-generator/package.json'
+        ),
+        'utf-8'
+      )
+    );
+    expect(installedGenerator.name).toBe('@onecx/angular-generator');
+    expect(installedGenerator.version).toBe('0.0.0-e2e');
   });
 
   afterAll(() => {
@@ -96,11 +76,109 @@ describe('nx-plugin', () => {
       stdio: 'inherit',
       env: process.env,
     });
+    const project = JSON.parse(
+      readFileSync(join(projectDirectory, 'project.json'), 'utf-8')
+    );
+    const outputDirectory = join(
+      projectDirectory,
+      project.targets.build.options.outputPath
+    );
+    const styleFiles = readdirSync(outputDirectory).filter((file) =>
+      /^styles(?:\.[^.]+)?\.css$/.test(file)
+    );
+    expect(styleFiles.length).toBeGreaterThan(0);
+    const styles = styleFiles
+      .map((file) => readFileSync(join(outputDirectory, file), 'utf-8'))
+      .join('\n');
+    expect(styles).toMatch(/\.grid\s*\{/);
+    expect(styles).toMatch(/\.pi-check:before\s*\{/);
+
     execSync(`nx run test --skip-nx-cache`, {
       cwd: projectDirectory,
       stdio: 'inherit',
       env: process.env,
     });
+  });
+
+  it('should build the remote and expose Module Federation', () => {
+    // The generated app builds with the Rspack build target and, because its rspack config
+    // wires the ModuleFederationPlugin, the production build must emit the remote entry.
+    const tcOption = { ...option, cwd: projectDirectory };
+    execSync(`nx run build --skip-nx-cache`, tcOption);
+    expect(
+      existsSync(join(projectDirectory, 'dist', projectName, 'remoteEntry.js'))
+    ).toBe(true);
+  });
+
+  it('should extract i18n messages', () => {
+    // The generated extract-i18n target (kept on @angular/build:extract-i18n) must run and
+    // write a translation bundle. The default output is `messages.xlf` at the app root.
+    const tcOption = { ...option, cwd: projectDirectory };
+    execSync(`nx run extract-i18n --skip-nx-cache`, tcOption);
+    const xlfFile = join(projectDirectory, 'messages.xlf');
+    expect(existsSync(xlfFile)).toBe(true);
+    // A successful run writes a non-empty serialized XLIFF bundle.
+    expect(readFileSync(xlfFile, 'utf-8').length).toBeGreaterThan(0);
+  });
+
+  it('should generate a Rspack-based build/serve setup', () => {
+    // The generated app must build/serve with the Rspack executors instead of webpack.
+    expect(existsSync(join(projectDirectory, 'rspack.config.js'))).toBe(true);
+    expect(existsSync(join(projectDirectory, 'onecx-patch.loader.js'))).toBe(
+      true
+    );
+
+    const project = JSON.parse(
+      readFileSync(join(projectDirectory, 'project.json'), 'utf-8')
+    );
+    expect(project.targets.build.executor).toBe('@nx/rspack:rspack');
+    expect(project.targets.build.options.rspackConfig).toBe('rspack.config.js');
+    expect(project.targets.serve.executor).toBe('@nx/rspack:dev-server');
+    expect(project.targets.serve.options.buildTarget).toBe(
+      'test-project:build'
+    );
+    // The i18n extraction keeps its existing executor.
+    expect(project.targets['extract-i18n'].executor).toBe(
+      '@angular/build:extract-i18n'
+    );
+
+    // The rspack config must wire the OneCX patch-loader into module.rules (not a no-op).
+    const rspackConfig = readFileSync(
+      join(projectDirectory, 'rspack.config.js'),
+      'utf-8'
+    );
+    expect(rspackConfig).toContain('@module-federation/enhanced/rspack');
+    expect(rspackConfig).toContain("require('./onecx-patch.loader.js')");
+    expect(rspackConfig).toContain('getOneCXRspackPatchLoaderRule');
+
+    // Execute the generated patch-loader to prove it provides real protection (the
+    // "bug fixed" DoD): it must rewrite primeng's runtime DOM creation into a call to the
+    // `document.createElementFromPrimeNg` host hook, forwarding the ORIGINAL element
+    // arguments. It must not synthesize a context object (`{this, arguments}`) because primeng
+    // modules are strict-mode ESM, where a bare top-level `arguments` throws a ReferenceError
+    // and `this`/`arguments` inside a method capture the enclosing scope, not the
+    // `createElement` arguments. If the loader were a no-op the patched output would equal the
+    // raw source and these assertions would fail.
+    const patchLoader = createRequire(
+      join(projectDirectory, 'onecx-patch.loader.js')
+    )(join(projectDirectory, 'onecx-patch.loader.js'));
+    const primengSource =
+      'const el = document.createElement("div"); Theme.setLoadedStyleName("x");';
+    const patched = patchLoader(primengSource);
+    expect(patched).toContain('document.createElementFromPrimeNg("div")');
+    expect(patched).toContain('(function(_){})');
+    expect(patched).not.toContain('document.createElement("div")');
+    expect(patched).not.toContain('Theme.setLoadedStyleName');
+    expect(patched).not.toContain('Array.from(arguments)');
+    // The rewritten modules call `document.createElementFromPrimeNg`, which must exist in a
+    // freshly generated app or serving it crashes (the host is not present when the app runs
+    // standalone). The generated polyfills ship a default that delegates back to the native
+    // `document.createElement`, so the hook resolves and a shell host can still override it.
+    const polyfills = readFileSync(
+      join(projectDirectory, 'src', 'polyfills.ts'),
+      'utf-8'
+    );
+    expect(polyfills).toContain('createElementFromPrimeNg');
   });
 
   beforeEach(() => {
@@ -312,37 +390,6 @@ describe('nx-plugin', () => {
     });
   });
 });
-
-/**
- * Creates a test project with @onecx/create-workspace and installs the plugin
- * @returns The directory where the test project was created
- */
-function createTestProject(flavor) {
-  const workingDir = process.env.WORKING_DIR ?? os.tmpdir();
-  const projectDirectory = join(workingDir, 'nx-plugin-out', projectName);
-
-  // Ensure projectDirectory is empty
-  rmSync(projectDirectory, {
-    recursive: true,
-    force: true,
-  });
-  mkdirSync(dirname(projectDirectory), {
-    recursive: true,
-  });
-
-  execSync(
-    `npx --yes @onecx/create-workspace@e2e ${flavor} ${projectName} --nxCloud skip --no-interactive --verbose`,
-    {
-      cwd: dirname(projectDirectory),
-      stdio: 'inherit',
-      env: process.env,
-    }
-  );
-  console.log(`Created test project in "${projectDirectory}"`);
-  assertGeneratedGuardrails(projectDirectory);
-
-  return projectDirectory;
-}
 
 /**
  * Creates a string of CLI parameters from the given array of key-value pairs, adding a non-interactive parameter to ensure the generators run without blocking for user input.

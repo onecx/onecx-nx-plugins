@@ -1,0 +1,123 @@
+const { createConfig } = require('@nx/angular-rspack');
+const { ModuleFederationPlugin } = require('@module-federation/enhanced/rspack');
+const { DefinePlugin } = require('@rspack/core');
+const webpackMerge = require('webpack-merge');
+
+const isProduction = process.env.NODE_ENV === 'production';
+
+const mfConfig = require('./module-federation.config');
+const { getOneCXRspackPatchLoaderRule } = require('./onecx-patch.loader.js');
+
+/**
+ * Rspack configuration for the generated OneCX UI app.
+ *
+ * Both `nx build` (@nx/rspack:rspack) and `nx serve` (@nx/rspack:dev-server) run with
+ * `standardRspackConfigFunction: false`, so Nx invokes this async function and uses its
+ * returned value as the complete Rspack configuration. All Angular build inputs are
+ * therefore baked in below via `createConfig` from `@nx/angular-rspack` (which installs
+ * the NgRspackPlugin), merged with the OneCX-specific overrides.
+ *
+ * The dev/production split is driven by `process.env.NODE_ENV` (set by both executors
+ * before the config is loaded) because `@rspack/dev-server` only sets `WEBPACK_SERVE`
+ * after the config has already been evaluated.
+ */
+module.exports = async (_config, args = {}) => {
+  // The Rspack dev-server executor passes its resolved dev-server config (host, port,
+  // proxy, publicHost, ...) as `options.devServer` on the second argument. Re-emit it so
+  // the final dev-server merge keeps the serve target's host (0.0.0.0) instead of the
+  // `localhost` default that createConfig injects, then layer `allowedHosts` on top.
+  const executorDevServer = (args && args.options && args.options.devServer) || {};
+
+  const baseConfig = await createConfig({
+    options: {
+      root: __dirname,
+      index: './src/index.html',
+      browser: './src/main.ts',
+      polyfills: ['./src/polyfills.ts'],
+      tsConfig: './tsconfig.app.json',
+      inlineStyleLanguage: 'scss',
+      assets: [
+        'src/favicon.ico',
+        'src/assets',
+        {
+          glob: '**/*',
+          input: './node_modules/@onecx/angular-accelerator/assets/',
+          output: '/onecx-angular-accelerator/assets/',
+        },
+        {
+          glob: '**/*',
+          input: './node_modules/@onecx/angular-utils/assets/',
+          output: '/onecx-angular-utils/assets/',
+        },
+      ],
+      styles: [{ input: 'src/styles.scss', bundleName: 'styles', inject: true }],
+      scripts: ['node_modules/@webcomponents/webcomponentsjs/webcomponents-bundle.js'],
+      budgets: isProduction
+        ? [
+            { type: 'initial', maximumWarning: '1mb', maximumError: '2mb' },
+            { type: 'anyComponentStyle', maximumWarning: '8kb', maximumError: '10kb' },
+          ]
+        : [],
+      fileReplacements: isProduction
+        ? [
+            {
+              replace: 'src/environments/environment.ts',
+              with: 'src/environments/environment.prod.ts',
+            },
+          ]
+        : [],
+      optimization: isProduction,
+      sourceMap: !isProduction,
+      // The license-webpack-plugin that @nx/angular-rspack enables by default
+      // (extractLicenses) crashes with `scandir ''` on the entry module (an empty
+      // directory) and aborts the production build before emitting any assets, including
+      // the Module Federation remoteEntry.js. The generated app does not rely on the
+      // extracted 3rdpartylicenses.txt file, so keep the license pass off.
+      extractLicenses: false,
+      // Emit a flat dist/<name>/ layout (matching the npm build scripts and the Dockerfile).
+      outputPath: { base: 'dist/<%= applicationName %>', browser: '.' },
+      outputHashing: isProduction ? 'all' : 'none',
+      devServer: { publicHost: 'http://localhost:4200', port: 4200 },
+    },
+  });
+
+  const customConfig = {
+    devServer: {
+      ...executorDevServer,
+      allowedHosts: 'all',
+      // Cross-origin protection for dev-time Module Federation. The Rspack dev-server
+      // executor only accepts host/publicHost/proxyConfig/port/mode/ssl, so the CORS
+      // headers the old @nx/angular dev-server carried are set here instead.
+      headers: {
+        Allow: 'GET, POST, PUT, DELETE, PATCH, OPTIONS',
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Headers': '*',
+        'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, PATCH, OPTIONS',
+      },
+    },
+    plugins: [
+      new ModuleFederationPlugin(mfConfig),
+      new DefinePlugin({ ngDevMode: JSON.stringify(!isProduction) }),
+    ],
+    module: {
+      parser: {
+        javascript: {
+          importMeta: true,
+        },
+      },
+      // Candidate A: OneCX-specific Rspack source patching. The onecx-patch.loader.js
+      // rule (test: /primeng/) rewrites primeng's runtime DOM access at bundle time so
+      // module-federation remotes interoperate.
+      rules: [getOneCXRspackPatchLoaderRule()],
+    },
+    output: {
+      uniqueName: '<%= applicationName %>',
+      publicPath: 'auto',
+      module: true,
+    },
+    experiments: { topLevelAwait: true, outputModule: true },
+    optimization: { runtimeChunk: false, splitChunks: false },
+  };
+
+  return webpackMerge.merge(baseConfig[0], customConfig);
+};

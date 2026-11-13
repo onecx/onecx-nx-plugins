@@ -26,6 +26,7 @@ describe('preset quality guardrails', () => {
       const tree = createTreeWithEmptyWorkspace();
       await presetGenerator(tree, { name: 'example', flavor });
 
+      expect(tree.exists('.babelrc')).toBe(false);
       expect(tree.exists('.husky/pre-commit')).toBe(true);
       expect(tree.exists('scripts/pre-commit-qa')).toBe(true);
       expect(tree.read('AGENTS.md')!.toString()).toContain(
@@ -151,7 +152,7 @@ describe('preset quality guardrails', () => {
           expect(content('module-federation.config.js')).toContain(
             `'./${moduleName}': './src/main.ts'`
           );
-          expect(content('webpack.config.js')).toContain(
+          expect(content('rspack.config.js')).toContain(
             `uniqueName: '${appName}'`
           );
           const values = parse(content('helm/values.yaml'));

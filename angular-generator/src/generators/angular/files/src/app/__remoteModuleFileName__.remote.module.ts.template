@@ -36,7 +36,6 @@ import { AppEntrypointComponent } from './app-entrypoint.component';
 import { metaReducers, reducers } from './app.reducers';
 
 import {
-  provideTranslationPathFromMeta,
   provideAngularUtils,
   MultiLanguageMissingTranslationHandler,
   OnecxTranslateLoader
@@ -45,6 +44,7 @@ import { provideThemeConfig } from '@onecx/angular-utils/theme/primeng';
 import { Configuration } from 'src/app/shared/generated';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { apiConfigProvider } from 'src/app/shared/utils/apiConfigProvider.utils';
+import { provideTranslationPathFromPublicPath } from 'src/app/shared/utils/translation-path-from-public-path.provider';
 
 // Workaround for the following issue:
 // https://github.com/ngrx/platform/issues/3700
@@ -88,7 +88,7 @@ export const commonImports = [CommonModule];
       deps: [ConfigurationService, AppStateService],
     },
     provideHttpClient(withInterceptorsFromDi()),
-    provideTranslationPathFromMeta(import.meta.url, 'assets/i18n/'),
+    provideTranslationPathFromPublicPath('assets/i18n/'),
     provideAppInitializer(() => {
       const initializerFn = initializeRouter(
         inject(Router),
