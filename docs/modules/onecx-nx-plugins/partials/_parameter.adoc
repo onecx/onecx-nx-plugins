@@ -53,4 +53,8 @@
   _--standalone_::
     Optional. If set, the generated page is not gated on a permission. +
     Use this for standalone apps that do not run inside the OneCX permission context.
+    For a feature, this installs an always-grant permission checker for the feature;
+    do not use it when the feature must enforce OneCX permissions.
+    This option is separate from Angular standalone components, which are generated
+    by default.
 # end::standalone[]

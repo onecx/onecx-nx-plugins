@@ -1,8 +1,7 @@
 import { execSync, ExecSyncOptionsWithBufferEncoding } from 'child_process';
-import { join, dirname } from 'path';
-import { existsSync, mkdirSync, readFileSync, rmSync } from 'fs';
-import * as os from 'os';
-import { assertGeneratedGuardrails } from './guardrails.utils';
+import { join } from 'path';
+import { existsSync, readFileSync, rmSync } from 'fs';
+import { createTestProject } from './test-project.utils';
 
 const NON_INTERACTIVE_KEY = 'non-interactive';
 const projectName = 'test-project';
@@ -18,7 +17,7 @@ describe('nx-plugin', () => {
   };
 
   beforeAll(() => {
-    projectDirectory = createTestProject('ngrx');
+    projectDirectory = createTestProject('ngrx', projectName);
 
     const project = JSON.parse(
       readFileSync(join(projectDirectory, 'project.json'), 'utf-8')
@@ -284,37 +283,6 @@ describe('nx-plugin', () => {
     execSync(`nx run test --skip-nx-cache`, tcOption);
   });
 });
-
-/**
- * Creates a test project with @onecx/create-workspace and installs the plugin
- * @returns The directory where the test project was created
- */
-function createTestProject(flavor) {
-  const workingDir = process.env.WORKING_DIR ?? os.tmpdir();
-  const projectDirectory = join(workingDir, 'nx-plugin-out', projectName);
-
-  // Ensure projectDirectory is empty
-  rmSync(projectDirectory, {
-    recursive: true,
-    force: true,
-  });
-  mkdirSync(dirname(projectDirectory), {
-    recursive: true,
-  });
-
-  execSync(
-    `npx --yes @onecx/create-workspace@e2e ${flavor} ${projectName} --nxCloud skip --no-interactive --verbose`,
-    {
-      cwd: dirname(projectDirectory),
-      stdio: 'inherit',
-      env: process.env,
-    }
-  );
-  console.log(`Created test project in "${projectDirectory}"`);
-  assertGeneratedGuardrails(projectDirectory);
-
-  return projectDirectory;
-}
 
 /**
  * Creates a string of CLI parameters from the given array of key-value pairs, adding a non-interactive parameter to ensure the generators run without blocking for user input.

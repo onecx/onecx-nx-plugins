@@ -26,6 +26,7 @@ describe('preset quality guardrails', () => {
       const tree = createTreeWithEmptyWorkspace();
       await presetGenerator(tree, { name: 'example', flavor });
 
+      expect(tree.exists('.babelrc')).toBe(false);
       expect(tree.exists('.husky/pre-commit')).toBe(true);
       expect(tree.exists('scripts/pre-commit-qa')).toBe(true);
       expect(tree.read('AGENTS.md')!.toString()).toContain(

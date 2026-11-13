@@ -1,9 +1,8 @@
 import { execSync, ExecSyncOptionsWithBufferEncoding } from 'child_process';
-import { join, dirname } from 'path';
-import { existsSync, mkdirSync, readFileSync, rmSync } from 'fs';
+import { join } from 'path';
+import { existsSync, readdirSync, readFileSync, rmSync } from 'fs';
 import { createRequire } from 'module';
-import * as os from 'os';
-import { assertGeneratedGuardrails } from './guardrails.utils';
+import { createTestProject } from './test-project.utils';
 
 const NON_INTERACTIVE_KEY = 'non-interactive';
 const projectName = 'test-project';
@@ -19,7 +18,7 @@ describe('nx-plugin', () => {
   };
 
   beforeAll(() => {
-    projectDirectory = createTestProject('ngrx');
+    projectDirectory = createTestProject('ngrx', projectName);
 
     const project = JSON.parse(
       readFileSync(join(projectDirectory, 'project.json'), 'utf-8')
@@ -77,6 +76,23 @@ describe('nx-plugin', () => {
       stdio: 'inherit',
       env: process.env,
     });
+    const project = JSON.parse(
+      readFileSync(join(projectDirectory, 'project.json'), 'utf-8')
+    );
+    const outputDirectory = join(
+      projectDirectory,
+      project.targets.build.options.outputPath
+    );
+    const styleFiles = readdirSync(outputDirectory).filter((file) =>
+      /^styles(?:\.[^.]+)?\.css$/.test(file)
+    );
+    expect(styleFiles.length).toBeGreaterThan(0);
+    const styles = styleFiles
+      .map((file) => readFileSync(join(outputDirectory, file), 'utf-8'))
+      .join('\n');
+    expect(styles).toMatch(/\.grid\s*\{/);
+    expect(styles).toMatch(/\.pi-check:before\s*\{/);
+
     execSync(`nx run test --skip-nx-cache`, {
       cwd: projectDirectory,
       stdio: 'inherit',
@@ -374,37 +390,6 @@ describe('nx-plugin', () => {
     });
   });
 });
-
-/**
- * Creates a test project with @onecx/create-workspace and installs the plugin
- * @returns The directory where the test project was created
- */
-function createTestProject(flavor) {
-  const workingDir = process.env.WORKING_DIR ?? os.tmpdir();
-  const projectDirectory = join(workingDir, 'nx-plugin-out', projectName);
-
-  // Ensure projectDirectory is empty
-  rmSync(projectDirectory, {
-    recursive: true,
-    force: true,
-  });
-  mkdirSync(dirname(projectDirectory), {
-    recursive: true,
-  });
-
-  execSync(
-    `npx --yes @onecx/create-workspace@e2e ${flavor} ${projectName} --nxCloud skip --no-interactive --verbose`,
-    {
-      cwd: dirname(projectDirectory),
-      stdio: 'inherit',
-      env: process.env,
-    }
-  );
-  console.log(`Created test project in "${projectDirectory}"`);
-  assertGeneratedGuardrails(projectDirectory);
-
-  return projectDirectory;
-}
 
 /**
  * Creates a string of CLI parameters from the given array of key-value pairs, adding a non-interactive parameter to ensure the generators run without blocking for user input.
