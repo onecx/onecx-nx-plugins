@@ -110,7 +110,11 @@ module.exports = async (_config, args = {}) => {
       // module-federation remotes interoperate.
       rules: [getOneCXRspackPatchLoaderRule()],
     },
-    output: { uniqueName: '<%= applicationName %>', publicPath: 'auto' },
+    output: {
+      uniqueName: '<%= applicationName %>',
+      publicPath: 'auto',
+      module: true,
+    },
     experiments: { topLevelAwait: true, outputModule: true },
     optimization: { runtimeChunk: false, splitChunks: false },
   };
