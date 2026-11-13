@@ -7,11 +7,12 @@ product:
       displayName: "OneCX <%= fileName %>"
       basePath: "/onecx-<%= fileName %>"
 app:
-  name: onecx-<%= fileName %>-ui
+  name: <%= applicationName %>
   image:
-    repository: 'onecx-apps/onecx-<%= fileName %>-ui'
+    repository: 'onecx-apps/<%= applicationName %>'
   routing:
     enabled: true
+    path: /mfe/onecx-<%= fileName %>/
   operator:
     # Microfrontend
     microfrontend:
@@ -19,20 +20,20 @@ app:
       specs:
         main:
           productName: *product_name
-          exposedModule: './OneCX<%= className %>Module'
+          exposedModule: './<%= remoteModuleName %>'
           shareScope: 'react_19'
           description: 'OneCX <%= fileName %> UI'
           note: 'OneCX <%= fileName %> UI auto import via MF operator'
           type: MODULE
           technology: WEBCOMPONENTMODULE
-          remoteName: <%= remoteModuleFileName %>
-          tagName: ocx-<%= fileName %>-entrypoint
+          remoteName: <%= remoteName %>
+          tagName: <%= tagName %>
     # Microservice
     microservice:
       spec:
         productName: *product_name
-        name: OneCX <%= remoteModuleName %> UI
-        description: OneCX <%= remoteModuleName %> Frontend
+        name: <%= applicationName %>
+        description: OneCX <%= className %> Frontend
         type: ui
     # Permission
     permission:

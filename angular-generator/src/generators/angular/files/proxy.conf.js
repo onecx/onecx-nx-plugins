@@ -20,7 +20,7 @@ const onProxyRes = function (_proxyRes, req, res) {
 const PROXY_CONFIG = [
   {
     context: ['/bff'],
-    target: 'http://<%= fileName %>-bff',
+    target: 'http://<%= bffName %>:8080',
     secure: false,
     pathRewrite: { '^.*/bff': '' },
     changeOrigin: true,

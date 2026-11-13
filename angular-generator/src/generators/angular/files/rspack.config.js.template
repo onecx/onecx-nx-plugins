@@ -75,7 +75,7 @@ module.exports = async (_config, args = {}) => {
       // extracted 3rdpartylicenses.txt file, so keep the license pass off.
       extractLicenses: false,
       // Emit a flat dist/<name>/ layout (matching the npm build scripts and the Dockerfile).
-      outputPath: { base: './dist/<%= fileName %>', browser: '.' },
+      outputPath: { base: 'dist/<%= applicationName %>', browser: '.' },
       outputHashing: isProduction ? 'all' : 'none',
       devServer: { publicHost: 'http://localhost:4200', port: 4200 },
     },
@@ -110,7 +110,7 @@ module.exports = async (_config, args = {}) => {
       // module-federation remotes interoperate.
       rules: [getOneCXRspackPatchLoaderRule()],
     },
-    output: { uniqueName: 'onecx-<%= fileName %>-ui', publicPath: 'auto' },
+    output: { uniqueName: '<%= applicationName %>', publicPath: 'auto' },
     experiments: { topLevelAwait: true, outputModule: true },
     optimization: { runtimeChunk: false, splitChunks: false },
   };

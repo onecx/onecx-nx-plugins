@@ -2,6 +2,7 @@ import { Tree, joinPathFragments } from '@nx/devkit';
 import { GeneratorStep } from '../../shared/generator.utils';
 import { AngularGeneratorSchema } from '../schema';
 import { OpenAPIUtil } from '../../shared/openapi/openapi.utils';
+import { applicationNames } from '@onecx/generator-utils';
 
 export class GeneralOpenAPIStep
   implements GeneratorStep<AngularGeneratorSchema>
@@ -14,13 +15,13 @@ export class GeneralOpenAPIStep
       'utf8'
     );
 
-    const resource = options.name;
+    const { bffName } = applicationNames(options);
 
     const apiUtil = new OpenAPIUtil(bffOpenApiContent);
     const res = apiUtil
       .servers()
-      .add(`http://onecx-${resource.toLocaleLowerCase()}-bff:8080/`, {
-        url: `http://onecx-${resource.toLocaleLowerCase()}-bff:8080/`,
+      .add(`http://${bffName}:8080/`, {
+        url: `http://${bffName}:8080/`,
       })
       .done()
       .finalize();

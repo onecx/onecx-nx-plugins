@@ -9,6 +9,7 @@ import searchGenerator from '../search/generator';
 import detailsGenerator from '../details/generator';
 import createUpdateGenerator from '../create-update/generator';
 import pageGenerator from '../ngrx-page/generator';
+import { parse } from 'yaml';
 
 describe('preset quality guardrails', () => {
   const argv = process.argv;
@@ -58,12 +59,12 @@ describe('preset quality guardrails', () => {
         'changeDetection: ChangeDetectionStrategy.OnPush'
       );
       const remoteModule = tree
-        .read('src/app/onecx-example.remote.module.ts')!
+        .read('src/app/example-ui.remote.module.ts')!
         .toString();
       expect(remoteModule).not.toContain('declarations:');
       expect(remoteModule).toContain('AppEntrypointComponent,');
       expect(remoteModule).toContain(
-        "createAppEntrypoint(AppEntrypointComponent, 'ocx-example-component'"
+        "createAppEntrypoint(AppEntrypointComponent, 'example-ui-component'"
       );
       if (flavor === 'standalone-ngrx') {
         expect(tree.read('src/app/app.component.ts')!.toString()).not.toContain(
@@ -78,6 +79,105 @@ describe('preset quality guardrails', () => {
       }
     },
     60000
+  );
+
+  describe.each(['angular', 'ngrx', 'standalone-ngrx'])(
+    '%s naming',
+    (flavor) => {
+      it.each([
+        [undefined, 'orders-ui', 'ordersUi', 'OrdersUiModule', 'orders-bff'],
+        ['', 'orders-ui', 'ordersUi', 'OrdersUiModule', 'orders-bff'],
+        [
+          'onecx',
+          'onecx-orders-ui',
+          'onecxOrdersUi',
+          'OnecxOrdersUiModule',
+          'onecx-orders-bff',
+        ],
+        [
+          'acme',
+          'acme-orders-ui',
+          'acmeOrdersUi',
+          'AcmeOrdersUiModule',
+          'acme-orders-bff',
+        ],
+      ])(
+        'wires appPrefix=%s throughout the generated workspace',
+        async (appPrefix, appName, remoteName, moduleName, bffName) => {
+          const tree = createTreeWithEmptyWorkspace();
+          await presetGenerator(tree, {
+            name: 'orders',
+            flavor,
+            ...(appPrefix !== undefined ? { appPrefix } : {}),
+          });
+          const content = (path: string) => {
+            const value = tree.read(path, 'utf8');
+            if (value === null)
+              throw new Error(`Missing generated file: ${path}`);
+            return value;
+          };
+          const project = readJson(tree, 'project.json');
+          const pkg = readJson(tree, 'package.json');
+          expect(pkg.name).toBe(appName);
+          expect(
+            pkg.dependencies['@onecx/angular-webcomponents']
+          ).toBeDefined();
+          expect(project.name).toBe(appName);
+          expect(project.targets.build.options.outputPath).toBe(
+            `dist/${appName}`
+          );
+          expect(
+            project.targets.serve.configurations.production.buildTarget
+          ).toContain(`${appName}:build`);
+          expect(pkg.scripts.build).toContain(`dist/${appName}/styles`);
+          expect(pkg.scripts.postbuild).toContain(`dist/${appName}`);
+          expect(content('jest.config.ts.org')).toContain(
+            `displayName: '${appName}'`
+          );
+          expect(readJson(tree, 'tsconfig.app.json').files).toContain(
+            `src/app/${appName}.remote.module.ts`
+          );
+          expect(content('src/bootstrap.ts')).toContain(
+            `import { ${moduleName} } from './app/${appName}.remote.module'`
+          );
+          const remote = content(`src/app/${appName}.remote.module.ts`);
+          expect(remote).toContain(
+            `export class ${moduleName} implements DoBootstrap`
+          );
+          expect(remote).toContain(`'${appName}-component'`);
+          expect(content('module-federation.config.js')).toContain(
+            `name: '${remoteName}'`
+          );
+          expect(content('module-federation.config.js')).toContain(
+            `'./${moduleName}': './src/main.ts'`
+          );
+          expect(content('rspack.config.js')).toContain(
+            `uniqueName: '${appName}'`
+          );
+          const values = parse(content('helm/values.yaml'));
+          expect(values.app.name).toBe(appName);
+          expect(values.app.image.repository).toBe(`onecx-apps/${appName}`);
+          expect(values.app.routing.path).toBe('/mfe/orders/');
+          expect(values.app.operator.microfrontend.specs.main).toMatchObject({
+            remoteName,
+            exposedModule: `./${moduleName}`,
+            tagName: `${appName}-component`,
+          });
+          expect(values.app.operator.microservice.spec.name).toBe(appName);
+          expect(parse(content('helm/Chart.yaml')).name).toBe(appName);
+          expect(content('Dockerfile')).toContain(
+            `COPY dist/${appName}/ $DIR_HTML`
+          );
+          expect(content('Dockerfile')).toContain(`http://${bffName}:8080/`);
+          expect(content('proxy.conf.js')).toContain(`http://${bffName}:8080`);
+          expect(content('proxy.conf.js')).toContain("'/mfe/orders'");
+          expect(
+            parse(content('src/assets/api/openapi-bff.yaml')).servers
+          ).toEqual([{ url: `http://${bffName}:8080/` }]);
+        },
+        60000
+      );
+    }
   );
 
   describe('generated page best practices', () => {

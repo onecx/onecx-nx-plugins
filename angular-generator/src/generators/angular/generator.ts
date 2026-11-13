@@ -18,6 +18,7 @@ import processParams, { GeneratorParameter } from '../shared/parameters.utils';
 import {
   configurePreCommit,
   configureQualityChecks,
+  applicationNames,
   safeReplace,
 } from '@onecx/generator-utils';
 import { GeneratorProcessor } from '../shared/generator.utils';
@@ -55,12 +56,13 @@ export async function angularGenerator(
     options
   );
   Object.assign(options, parameters);
+  const appNames = applicationNames(options);
 
   const spinner = ora('Adding Angular').start();
   const directory = '.';
 
   const applicationGeneratorCallback = await applicationGenerator(tree, {
-    name: options.name,
+    name: appNames.applicationName,
     directory: directory,
     style: 'scss',
     tags: ``,
@@ -80,8 +82,7 @@ export async function angularGenerator(
     {
       ...options,
       className: names(options.name).className,
-      remoteModuleName: names(options.name).className,
-      remoteModuleFileName: names(options.name).fileName,
+      ...appNames,
       fileName: names(options.name).fileName,
       constantName: names(options.name).constantName,
       propertyName: names(options.name).propertyName,
@@ -257,7 +258,7 @@ export async function angularGenerator(
 
 function addBaseToPackageJson(tree: Tree, options: AngularGeneratorSchema) {
   updateJson(tree, 'package.json', (pkgJson) => {
-    pkgJson.name = 'onecx-' + names(options.name).fileName + '-ui';
+    pkgJson.name = applicationNames(options).applicationName;
     pkgJson.private = true;
     pkgJson.license = 'Apache-2.0';
     return pkgJson;
@@ -275,16 +276,17 @@ function addExtensionsToPackageJson(tree: Tree) {
 
 
 function addScriptsToPackageJson(tree: Tree, options: AngularGeneratorSchema) {
+  const { applicationName } = applicationNames(options);
   updateJson(tree, 'package.json', (pkgJson) => {
     pkgJson.scripts = pkgJson.scripts ?? {};
     pkgJson.scripts[
       'apigen'
     ] = `openapi-generator-cli generate -i src/assets/api/openapi-bff.yaml -c apigen.yaml -o src/app/shared/generated -g typescript-angular --type-mappings AnyType=object`;
     pkgJson.scripts['start'] = 'nx serve --host 0.0.0.0 --disable-host-check';
-    pkgJson.scripts['build'] = `nx build && cp dist/${options['name']}/styles.*.css dist/${options['name']}/styles.css`;
+    pkgJson.scripts['build'] = `nx build && cp dist/${applicationName}/styles.*.css dist/${applicationName}/styles.css`;
     pkgJson.scripts[
       'postbuild'
-    ] = `mv "$(find dist/${options['name']} -maxdepth 1 -type f -name 'styles.*.css' | head -n 1)" dist/${options['name']}/styles.css`;
+    ] = `mv "$(find dist/${applicationName} -maxdepth 1 -type f -name 'styles.*.css' | head -n 1)" dist/${applicationName}/styles.css`;
     pkgJson.scripts['clean'] =
       'npm cache clean --force && npx clear-npx-cache && rm -rf *.log dist reports .nx .angular .eslintcache ./node_modules/.cache/prettier/.prettier-cache';
     pkgJson.scripts['format'] = 'prettier --write .';
@@ -299,12 +301,12 @@ function addScriptsToPackageJson(tree: Tree, options: AngularGeneratorSchema) {
 }
 
 function adaptTsConfig(tree: Tree, options: AngularGeneratorSchema) {
-  const fileName = names(options.name).fileName;
+  const { remoteModuleFileName } = applicationNames(options);
   const filePath = 'tsconfig.app.json';
   const find = ['"files": [', '"compilerOptions": {'];
   const replaceWith = [
     `"files": [
-    "src/app/onecx-${fileName}.remote.module.ts",
+    "src/app/${remoteModuleFileName}.remote.module.ts",
     "src/polyfills.ts",
   `,
     `"compilerOptions": {
@@ -333,18 +335,11 @@ function adaptProjectConfiguration(
   tree: Tree,
   options: AngularGeneratorSchema
 ) {
-  const config = readProjectConfiguration(tree, options.name);
-  const fileName = names(options.name).fileName;
-  const outputPath = `./dist/${fileName}`;
+  const { applicationName } = applicationNames(options);
+  const config = readProjectConfiguration(tree, applicationName);
+  const fileName = names(applicationName).fileName;
+  const outputPath = `dist/${fileName}`;
 
-  // Build & serve are backed by the Rspack executors. They run with
-  // `standardRspackConfigFunction: false` (the default), so Nx invokes the async
-  // `rspack.config.js` and uses its return value as the complete Rspack configuration. All
-  // Angular build inputs are therefore baked in inside `rspack.config.js` (via `createConfig`
-  // from `@nx/angular-rspack`, which installs the NgRspackPlugin), and the project.json
-  // options below only carry what the executors read directly (rspackConfig, tsConfig for
-  // type-checking, outputPath for the outfile and outputs, and index for the dev-server
-  // history fallback).
   config.targets['build'].executor = '@nx/rspack:rspack';
   config.targets['build'].options = {
     outputPath,
@@ -352,11 +347,6 @@ function adaptProjectConfiguration(
     tsConfig: 'tsconfig.app.json',
     rspackConfig: 'rspack.config.js',
   };
-  // With `standardRspackConfigFunction: false` the generated rspack.config.js discards the
-  // Nx-composed config and returns the `createConfig(...)` merge, so executor-level options
-  // like budgets/fileReplacements never take effect — the effective values live in
-  // rspack.config.js behind the `isProduction` split. Only `mode` is set here: the executor
-  // maps it to NODE_ENV, which drives that split.
   config.targets['build'].configurations = {
     ...(config.targets['build'].configurations ?? {}),
     development: {
@@ -372,14 +362,14 @@ function adaptProjectConfiguration(
   config.targets['serve'].executor = '@nx/rspack:dev-server';
   config.targets['serve'].options = {
     ...(config.targets['serve'].options ?? {}),
-    buildTarget: `${fileName}:build`,
+    buildTarget: `${applicationName}:build`,
     host: '0.0.0.0',
     publicHost: 'http://localhost:4200',
     proxyConfig: 'proxy.conf.js',
   };
 
   config.targets['extract-i18n'].executor = '@angular/build:extract-i18n';
-  updateProjectConfiguration(tree, fileName, config);
+  updateProjectConfiguration(tree, applicationName, config);
 }
 
 function adaptJestConfig(tree: Tree) {

@@ -14,8 +14,8 @@ function resolvePlugin(flavor: string): string {
   return PLUGIN_MAP[flavor] ?? '@onecx/angular-generator';
 }
 
-async function main() {
-  const flavor = process.argv[2]; // TODO: use libraries like yargs or enquirer to set your workspace name
+export async function main(args = process.argv.slice(2)) {
+  const flavor = args[0];
   if (!flavor) {
     throw new Error('Please provide a flavor for the workspace.');
   }
@@ -26,12 +26,26 @@ async function main() {
       )}`
     );
   }
-  const name = process.argv[3]; // TODO: use libraries like yargs or enquirer to set your workspace name
+  const name = args[1];
   if (!name) {
     throw new Error('Please provide a name for the workspace.');
   }
 
   const plugin = resolvePlugin(flavor);
+  let appPrefix: string | undefined;
+  for (let i = 2; i < args.length; i++) {
+    if (args[i].startsWith('--appPrefix=')) {
+      appPrefix = args[i].slice('--appPrefix='.length);
+    } else if (args[i] === '--appPrefix') {
+      const value = args[++i];
+      if (value === undefined || value.startsWith('--')) {
+        throw new Error(
+          'Please provide a value for --appPrefix (use --appPrefix="" for no prefix).'
+        );
+      }
+      appPrefix = value;
+    }
+  }
 
   console.log(`Creating the workspace ${name} with the ${flavor} preset`);
 
@@ -42,9 +56,11 @@ async function main() {
   const { directory } = await createWorkspace(`${plugin}@${presetVersion}`, {
     flavor,
     name,
+    ...(appPrefix !== undefined ? { appPrefix } : {}),
     nxCloud: 'skip',
     packageManager: 'npm',
     interactive: false,
+    'non-interactive': true,
     verbose: true,
   });
 
@@ -56,18 +72,19 @@ async function main() {
   );
 }
 
-main().catch((e) => {
-  console.error(e.message);
+if (require.main === module)
+  main().catch((e) => {
+    console.error(e.message);
 
-  const logFileMatch = (e.message as string).match(/Log file:\s*(\S+)/);
-  if (logFileMatch) {
-    const logPath = logFileMatch[1];
-    if (existsSync(logPath)) {
-      console.error('\n── Error details ─────────────────────────────');
-      console.error(readFileSync(logPath, 'utf-8'));
-      console.error('──────────────────────────────────────────────');
+    const logFileMatch = (e.message as string).match(/Log file:\s*(\S+)/);
+    if (logFileMatch) {
+      const logPath = logFileMatch[1];
+      if (existsSync(logPath)) {
+        console.error('\n── Error details ─────────────────────────────');
+        console.error(readFileSync(logPath, 'utf-8'));
+        console.error('──────────────────────────────────────────────');
+      }
     }
-  }
 
-  process.exit(1);
-});
+    process.exit(1);
+  });

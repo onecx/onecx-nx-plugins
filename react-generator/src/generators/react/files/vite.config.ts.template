@@ -8,10 +8,10 @@ import path from "node:path";
 import { federation, type ModuleFederationOptions } from "@module-federation/vite"
 
 const mfConfig: ModuleFederationOptions = {
-  name: "onecx-<%= fileName %>-ui",
+  name: "<%= remoteName %>",
   filename: "remoteEntry.js",
   exposes: {
-    "./OneCX<%= className %>Module": "./src/bootstrap.ts",
+    "./<%= remoteModuleName %>": "./src/bootstrap.ts",
   },
    shared: {
     react: {
@@ -90,6 +90,7 @@ export default defineConfig(({ mode }) => {
       tailwindcss(),<% } %>
     ],
     build: {
+      outDir: "dist/<%= applicationName %>",
       rollupOptions: {
         external: ['chart.js', 'chart.js/auto', 'quill']
       }
@@ -102,10 +103,10 @@ export default defineConfig(({ mode }) => {
         'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, PATCH, OPTIONS'
       },
       proxy: {
-        "/api": {
-          target: "http://localhost:8080",
+        "/bff": {
+          target: "http://<%= bffName %>:8080",
           changeOrigin: true,
-          rewrite: (path) => path.replace(/^\/api/, ""),
+          rewrite: (path) => path.replace(/^\/bff/, ""),
         },
       },
     },

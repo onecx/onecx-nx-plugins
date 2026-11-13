@@ -4,6 +4,12 @@
   "title": "",
   "type": "object",
   "properties": {
+    "appPrefix": {
+      "type": "string",
+      "description": "Application prefix without a trailing separator; use onecx for legacy naming.",
+      "default": "",
+      "pattern": "^([a-z][a-z0-9]*(-[a-z0-9]+)*)?$"
+    },
     "flavor": {
       "type": "string",
       "description": "",

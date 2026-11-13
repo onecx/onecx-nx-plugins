@@ -1,4 +1,5 @@
-import { names, Tree, updateJson } from '@nx/devkit';
+import { Tree, updateJson } from '@nx/devkit';
+import { applicationNames } from '@onecx/generator-utils';
 import { ReactGeneratorSchema } from '../schema';
 
 export function addBaseToPackageJson(
@@ -6,7 +7,7 @@ export function addBaseToPackageJson(
   options: ReactGeneratorSchema
 ) {
   updateJson(tree, 'package.json', (pkgJson) => {
-    pkgJson.name = 'onecx-' + names(options.name).fileName + '-ui';
+    pkgJson.name = applicationNames(options).applicationName;
     pkgJson.private = true;
     pkgJson.license = 'Apache-2.0';
 

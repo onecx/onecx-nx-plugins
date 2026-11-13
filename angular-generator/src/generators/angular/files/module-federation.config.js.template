@@ -5,11 +5,11 @@ const { dependencies } = pkg
 const sharedEntries = getOneCXSharedLibraryConfig(dependencies, true);
 
 module.exports = {
-  name: 'onecx-<%= remoteModuleFileName %>-ui',
+  name: '<%= remoteName %>',
   filename: 'remoteEntry.js',
   library: { type: 'module' },
   exposes: {
-    './OneCX<%= remoteModuleName %>Module': './src/main.ts'
+    './<%= remoteModuleName %>': './src/main.ts'
   },
   shared: sharedEntries,
   shareScope: 'angular_21',

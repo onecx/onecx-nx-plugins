@@ -1,8 +1,8 @@
 ---
 openapi: 3.0.3
 info:
-  title: onecx-<%= fileName %>-bff
-  description: Backend-For-Frontend (BFF) services for onecx-<%= fileName %>. This API provides endpoints to manage <%= fileName %> items.
+  title: <%= bffName %>
+  description: Backend-For-Frontend (BFF) services for <%= applicationName %>. This API provides endpoints to manage <%= productSlug %> items.
   version: 1.0.0
 servers: []
 tags: []
