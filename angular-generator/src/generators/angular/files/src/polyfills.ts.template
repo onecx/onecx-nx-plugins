@@ -50,3 +50,26 @@ import 'zone.js' // Included with Angular CLI.
 /***************************************************************************************************
  * APPLICATION IMPORTS
  */
+
+/**
+ * Default implementation of the OneCX Module Federation remote hook
+ * `document.createElementFromPrimeNg`.
+ *
+ * `onecx-patch.loader.js` (wired into `rspack.config.js`) rewrites PrimeNG's
+ * `document.createElement(...)` calls to `document.createElementFromPrimeNg(...)` at bundle time
+ * so that, when this app runs as a Module Federation *remote*, the OneCX shell host can
+ * intercept PrimeNG's runtime DOM creation. The hook receives the original
+ * `createElement` arguments, so it can be overridden by a host. When the app is served
+ * standalone there is no host to provide that global, so this default delegates straight to the
+ * native `document.createElement` (preserving the original arguments). A host embedding this
+ * remote overrides the global with its own interceptor.
+ */
+if (typeof document !== 'undefined') {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const doc = document as any;
+  if (typeof doc.createElementFromPrimeNg !== 'function') {
+    doc.createElementFromPrimeNg = (...args: unknown[]): Element =>
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      (document.createElement as any).apply(document, args);
+  }
+}

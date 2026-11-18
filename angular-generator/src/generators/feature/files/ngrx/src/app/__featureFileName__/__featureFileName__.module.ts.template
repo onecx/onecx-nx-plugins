@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
-import { RouterModule, Routes } from '@angular/router';
+import { RouterModule } from '@angular/router';
 import { SharedModule } from '../shared/shared.module';
 import {
   AngularAcceleratorModule,
@@ -13,23 +12,19 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { LetDirective } from '@ngrx/component';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
-import {
-  MissingTranslationHandler,
-  TranslateLoader,
-  TranslateModule
-} from '@ngx-translate/core';
-import { CalendarModule } from 'primeng/calendar';
-
-import { addInitializeModuleGuard } from '@onecx/angular-integration-interface'
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { TranslateModule } from '@ngx-translate/core';
 
 import { routes } from './<%= featureFileName %>.routes';
 import { <%= featurePropertyName %>Feature } from './<%= featureFileName %>.reducers';
-import { PermissionService, PortalPageComponent } from '@onecx/angular-utils';
+import { PermissionService, PortalPageComponent<% if (standalone) { %>, provideAlwaysGrantPermissionChecker<% } %> } from '@onecx/angular-utils';
 
 
 @NgModule({
-  providers: [providePortalDialogService(), PermissionService],
+  providers: [
+    providePortalDialogService(),
+    PermissionService,<% if (standalone) { %>
+    provideAlwaysGrantPermissionChecker(),<% } %>
+  ],
   imports: [
     CommonModule,
     SharedModule,
@@ -45,12 +40,5 @@ import { PermissionService, PortalPageComponent } from '@onecx/angular-utils';
     EffectsModule.forFeature(),
     TranslateModule
   ],
-  <%_ if(standalone){ _%>providers: [
-    {
-      provide: HAS_PERMISSION_CHECKER,
-      useValue: AlwaysGrantPermissionChecker,
-    },
-  ],
-  <%_ } _%>
 })
 export class <%= featureClassName %>Module {}

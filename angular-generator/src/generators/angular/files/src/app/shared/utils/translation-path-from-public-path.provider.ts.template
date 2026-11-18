@@ -1,0 +1,28 @@
+import { Provider } from '@angular/core';
+import { provideTranslationPathFromMeta } from '@onecx/angular-utils';
+
+declare let __webpack_public_path__: string | undefined;
+
+const RSPACK_RUNTIME_MODULE_NAME = '__onecx_rspack_runtime__.js';
+
+export function provideTranslationPathFromPublicPath(path: string): Provider {
+  const publicPath =
+    typeof __webpack_public_path__ === 'string'
+      ? __webpack_public_path__
+      : undefined;
+
+  if (!publicPath || publicPath === 'auto' || publicPath.startsWith('file://')) {
+    throw new Error(
+      'Cannot construct the translation path from the Rspack public path. Ensure the remote is loaded through Module Federation.'
+    );
+  }
+
+  const normalizedPublicPath = publicPath.endsWith('/')
+    ? publicPath
+    : `${publicPath}/`;
+
+  return provideTranslationPathFromMeta(
+    `${normalizedPublicPath}${RSPACK_RUNTIME_MODULE_NAME}`,
+    path
+  );
+}

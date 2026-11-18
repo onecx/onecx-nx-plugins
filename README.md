@@ -33,6 +33,11 @@ for exact syntax, direct-generator usage and derived deployment identifiers.
 
 ## Local Development
 
+E2E suites create isolated workspaces under
+`${WORKING_DIR:-<system temp directory>}/nx-plugin-out/run-*/test-project`.
+Each run gets a unique directory to avoid collisions between suites or concurrent
+runs. Workspaces are retained for inspection; the generated path is logged.
+
 Before building the Angular or React generator, snapshot the current shared
 pre-commit template:
 
