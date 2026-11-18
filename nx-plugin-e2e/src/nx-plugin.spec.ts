@@ -105,14 +105,23 @@ describe('nx-plugin', () => {
     // wires the ModuleFederationPlugin, the production build must emit the remote entry.
     const tcOption = { ...option, cwd: projectDirectory };
     execSync(`nx run build --skip-nx-cache`, tcOption);
+    const project = JSON.parse(
+      readFileSync(join(projectDirectory, 'project.json'), 'utf-8')
+    );
     expect(
-      existsSync(join(projectDirectory, 'dist', projectName, 'remoteEntry.js'))
+      existsSync(
+        join(
+          projectDirectory,
+          project.targets.build.options.outputPath,
+          'remoteEntry.js'
+        )
+      )
     ).toBe(true);
   });
 
   it('should extract i18n messages', () => {
-    // The generated extract-i18n target (kept on @angular/build:extract-i18n) must run and
-    // write a translation bundle. The default output is `messages.xlf` at the app root.
+    // The devkit extract-i18n target builds through the shadow browser target rather than
+    // the Rspack build, then writes a translation bundle at the app root.
     const tcOption = { ...option, cwd: projectDirectory };
     execSync(`nx run extract-i18n --skip-nx-cache`, tcOption);
     const xlfFile = join(projectDirectory, 'messages.xlf');
@@ -135,11 +144,17 @@ describe('nx-plugin', () => {
     expect(project.targets.build.options.rspackConfig).toBe('rspack.config.js');
     expect(project.targets.serve.executor).toBe('@nx/rspack:dev-server');
     expect(project.targets.serve.options.buildTarget).toBe(
-      'test-project:build'
+      `${project.name}:build`
     );
-    // The i18n extraction keeps its existing executor.
+    expect(project.targets['build-i18n'].executor).toBe(
+      '@angular-devkit/build-angular:browser'
+    );
+    expect(project.targets['build-i18n'].options.main).toBe('./src/main.ts');
     expect(project.targets['extract-i18n'].executor).toBe(
-      '@angular/build:extract-i18n'
+      '@angular-devkit/build-angular:extract-i18n'
+    );
+    expect(project.targets['extract-i18n'].options.buildTarget).toBe(
+      `${project.name}:build-i18n`
     );
 
     // The rspack config must wire the OneCX patch-loader into module.rules (not a no-op).
@@ -150,6 +165,7 @@ describe('nx-plugin', () => {
     expect(rspackConfig).toContain('@module-federation/enhanced/rspack');
     expect(rspackConfig).toContain("require('./onecx-patch.loader.js')");
     expect(rspackConfig).toContain('getOneCXRspackPatchLoaderRule');
+    expect(rspackConfig).toContain('importMeta: false');
 
     // Execute the generated patch-loader to prove it provides real protection (the
     // "bug fixed" DoD): it must rewrite primeng's runtime DOM creation into a call to the
@@ -162,6 +178,21 @@ describe('nx-plugin', () => {
     const patchLoader = createRequire(
       join(projectDirectory, 'onecx-patch.loader.js')
     )(join(projectDirectory, 'onecx-patch.loader.js'));
+    const patchRule = patchLoader.getOneCXRspackPatchLoaderRule();
+    expect(
+      patchRule.test.test('/workspace/node_modules/primeng/fesm2022/index.mjs')
+    ).toBe(true);
+    expect(
+      patchRule.test.test(
+        'C:\\workspace\\node_modules\\primeng\\fesm2022\\index.mjs'
+      )
+    ).toBe(true);
+    expect(
+      patchRule.test.test('/workspace/node_modules/app-code/primeng/main.js')
+    ).toBe(false);
+    expect(
+      patchRule.test.test('/workspace/node_modules/not-primeng/main.js')
+    ).toBe(false);
     const primengSource =
       'const el = document.createElement("div"); Theme.setLoadedStyleName("x");';
     const patched = patchLoader(primengSource);

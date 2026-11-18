@@ -102,7 +102,7 @@ module.exports = async (_config, args = {}) => {
     module: {
       parser: {
         javascript: {
-          importMeta: true,
+          importMeta: false,
         },
       },
       // Candidate A: OneCX-specific Rspack source patching. The onecx-patch.loader.js

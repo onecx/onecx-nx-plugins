@@ -264,8 +264,17 @@ describe('nx-plugin', () => {
 
     execSync(`nx run build --skip-nx-cache`, tcOption);
     // The Rspack production build must emit the Module Federation remote entry.
+    const project = JSON.parse(
+      readFileSync(join(projectDirectory, 'project.json'), 'utf-8')
+    );
     expect(
-      existsSync(join(projectDirectory, 'dist', projectName, 'remoteEntry.js'))
+      existsSync(
+        join(
+          projectDirectory,
+          project.targets.build.options.outputPath,
+          'remoteEntry.js'
+        )
+      )
     ).toBe(true);
     // The patch-loader rewrites primeng's `document.createElement` to the
     // `document.createElementFromPrimeNg` hook; the generated app must ship a default for that
@@ -273,8 +282,8 @@ describe('nx-plugin', () => {
     expect(
       readFileSync(join(projectDirectory, 'src', 'polyfills.ts'), 'utf-8')
     ).toContain('createElementFromPrimeNg');
-    // The extract-i18n target (kept on @angular/build:extract-i18n) must run and write a
-    // translation bundle (`messages.xlf` at the app root by default).
+    // The devkit extract-i18n target builds through the shadow browser target rather than
+    // the Rspack build, then writes a translation bundle at the app root.
     execSync(`nx run extract-i18n --skip-nx-cache`, tcOption);
     const xlfFile = join(projectDirectory, 'messages.xlf');
     expect(existsSync(xlfFile)).toBe(true);

@@ -21,6 +21,9 @@ Global styles import the packaged CSS (for example, `primeflex/primeflex.css`)
 without `node_modules/` prefixes, so Rspack resolves and bundles dependency styles
 without compiling their Sass sources.
 
+Translation extraction uses a separate `build-i18n` target with the Angular
+DevKit browser builder; `extract-i18n` must not consume the Rspack build target.
+
 Generated Angular workspaces do not include a custom `.babelrc`; Angular's build
 and i18n extraction tools manage their own transforms. For workspaces generated
 with the old `latest`, `react`, and `stage-0` presets, remove that legacy `.babelrc`

@@ -44,10 +44,10 @@ function onecxPatchLoader(source) {
 
 // The module rule the generated rspack.config.js appends to `module.rules`.
 // Rspack honors RegExp/string `test` (not a function `test`), so use a RegExp
-// scoped to primeng module paths. The loader resolves to this file itself.
+// scoped to installed primeng package paths. The loader resolves to this file itself.
 onecxPatchLoader.getOneCXRspackPatchLoaderRule = function getOneCXRspackPatchLoaderRule() {
   return {
-    test: /primeng/,
+    test: /(?:^|[\\/])node_modules[\\/]primeng[\\/]/,
     use: [{ loader: require.resolve(__filename) }],
   };
 };

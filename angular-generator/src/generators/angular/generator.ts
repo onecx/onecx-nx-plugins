@@ -182,9 +182,8 @@ export async function angularGenerator(
       '@swc-node/register': '~1.11.1',
       '@swc/core': '~1.15.8',
       '@angular/build': angularVersion,
-      // Peer of the @angular/build:extract-i18n executor used by the extract-i18n target;
-      // the builder exits early without it. Pinned to the Angular version like the other
-      // @angular/* packages.
+      // Required by the Angular i18n extraction builder. Pinned to the Angular version
+      // like the other @angular/* packages.
       '@angular/localize': angularVersion,
       '@angular-devkit/core': angularVersion,
       '@angular-devkit/schematics': angularVersion,
@@ -234,8 +233,8 @@ export async function angularGenerator(
     log(cmd);
     execSync(cmd, { cwd: tree.root, stdio: 'inherit' });
 
-    // Replace the generated solution for gitignore and jest testing, 
-    // because they do not fit the needs of the generated application and 
+    // Replace the generated solution for gitignore and jest testing,
+    // because they do not fit the needs of the generated application and
     // would require manual adjustments after generation otherwise.
     cmd = 'mv -f .gitignore.org .gitignore';
     log(cmd);
@@ -273,7 +272,6 @@ function addExtensionsToPackageJson(tree: Tree) {
     return pkgJson;
   });
 }
-
 
 function addScriptsToPackageJson(tree: Tree, options: AngularGeneratorSchema) {
   const { applicationName } = applicationNames(options);
@@ -368,7 +366,42 @@ function adaptProjectConfiguration(
     proxyConfig: 'proxy.conf.js',
   };
 
-  config.targets['extract-i18n'].executor = '@angular/build:extract-i18n';
+  config.targets['build-i18n'] = {
+    executor: '@angular-devkit/build-angular:browser',
+    options: {
+      outputPath: `dist/${fileName}-i18n`,
+      index: './src/index.html',
+      main: './src/main.ts',
+      polyfills: ['./src/polyfills.ts'],
+      tsConfig: './tsconfig.app.json',
+      inlineStyleLanguage: 'scss',
+      assets: [
+        'src/favicon.ico',
+        'src/assets',
+        {
+          glob: '**/*',
+          input: './node_modules/@onecx/angular-accelerator/assets/',
+          output: '/onecx-angular-accelerator/assets/',
+        },
+        {
+          glob: '**/*',
+          input: './node_modules/@onecx/angular-utils/assets/',
+          output: '/onecx-angular-utils/assets/',
+        },
+      ],
+      styles: [
+        { input: 'src/styles.scss', bundleName: 'styles', inject: true },
+      ],
+      scripts: [
+        'node_modules/@webcomponents/webcomponentsjs/webcomponents-bundle.js',
+      ],
+    },
+  };
+  config.targets['extract-i18n'].executor =
+    '@angular-devkit/build-angular:extract-i18n';
+  config.targets['extract-i18n'].options = {
+    buildTarget: `${applicationName}:build-i18n`,
+  };
   updateProjectConfiguration(tree, applicationName, config);
 }
 
