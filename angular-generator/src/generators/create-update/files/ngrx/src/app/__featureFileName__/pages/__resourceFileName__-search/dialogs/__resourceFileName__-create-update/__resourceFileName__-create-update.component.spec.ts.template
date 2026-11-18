@@ -10,8 +10,8 @@ import {
 } from '@onecx/angular-accelerator';
 import { TranslateModule } from '@ngx-translate/core'
 import { provideTranslateTestingService } from '@onecx/angular-accelerator/testing'
-import { FloatLabelModule } from 'primeng/floatlabel';
-import { InputTextModule } from 'primeng/inputtext';
+import { FloatLabelModule } from '@openng/optimus-ui/floatlabel';
+import { InputTextModule } from '@openng/optimus-ui/inputtext';
 import { distinctUntilChanged, filter, skip, take, toArray } from 'rxjs'
 import { <%= resourceClassName%>CreateUpdateComponent } from './<%= resourceFileName%>-create-update.component';
 import { <%= resourceClassName%> } from 'src/app/shared/generated';
