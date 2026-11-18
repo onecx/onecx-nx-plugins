@@ -4,8 +4,8 @@ import { toSignal } from '@angular/core/rxjs-interop'
 import { TranslatePipe } from '@ngx-translate/core'
 <%_ if(editMode){ _%>
 import { ReactiveFormsModule } from '@angular/forms'
-import { FloatLabelModule } from 'primeng/floatlabel'
-import { InputTextModule } from 'primeng/inputtext'
+import { FloatLabelModule } from '@openng/optimus-ui/floatlabel'
+import { InputTextModule } from '@openng/optimus-ui/inputtext'
 <%_ } _%>
 import {
   Action,
@@ -17,7 +17,7 @@ import { PortalPageComponent } from '@onecx/angular-utils'
 
 import { select<%= resourceClassName %>DetailsViewModel } from './<%= resourceFileName %>-details.selectors'
 import { <%= resourcePropertyName %>DetailsActions } from './<%= resourceFileName %>-details.actions'
-import { PrimeIcons } from 'primeng/api';
+import { OpenngIcons } from '@openng/optimus-ui/api';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import {
   <%= resourceClassName %>DetailsViewModel
@@ -78,7 +78,7 @@ export class <%= resourceClassName %>DetailsComponent implements OnInit {
             titleKey: '<%= resourceConstantName %>_DETAILS.GENERAL.EDIT',
             labelKey: '<%= resourceConstantName %>_DETAILS.GENERAL.EDIT',
             show: 'always',
-            icon: PrimeIcons.PENCIL,
+            icon: OpenngIcons.PENCIL,
             conditional: true,
             showCondition: !vm?.editMode,
             actionCallback: () => {
@@ -89,7 +89,7 @@ export class <%= resourceClassName %>DetailsComponent implements OnInit {
             titleKey: '<%= resourceConstantName %>_DETAILS.GENERAL.CANCEL',
             labelKey: '<%= resourceConstantName %>_DETAILS.GENERAL.CANCEL',
             show: 'always',
-            icon: PrimeIcons.TIMES,
+            icon: OpenngIcons.TIMES,
             conditional: true,
             showCondition: vm?.editMode,
             disabled: vm?.isSubmitting,
@@ -101,7 +101,7 @@ export class <%= resourceClassName %>DetailsComponent implements OnInit {
             titleKey: '<%= resourceConstantName %>_DETAILS.GENERAL.SAVE',
             labelKey: '<%= resourceConstantName %>_DETAILS.GENERAL.SAVE',
             show: 'always',
-            icon: PrimeIcons.SAVE,
+            icon: OpenngIcons.SAVE,
             conditional: true,
             disabled: vm?.isSubmitting,
             showCondition: vm?.editMode,
@@ -114,7 +114,7 @@ export class <%= resourceClassName %>DetailsComponent implements OnInit {
           {
               titleKey: '<%= resourceConstantName %>_DETAILS.GENERAL.DELETE',
               labelKey: '<%= resourceConstantName %>_DETAILS.GENERAL.DELETE',
-              icon: PrimeIcons.TRASH,
+              icon: OpenngIcons.TRASH,
               show: 'always',
               btnClass: '',
               conditional: true,
@@ -128,7 +128,7 @@ export class <%= resourceClassName %>DetailsComponent implements OnInit {
           <%_ } _%>
           {
             titleKey: '<%= resourceConstantName %>_DETAILS.GENERAL.MORE',
-            icon: PrimeIcons.ELLIPSIS_V,
+            icon: OpenngIcons.ELLIPSIS_V,
             show: 'always',
             btnClass: '',
             actionCallback: () => {

@@ -13,9 +13,9 @@ import { By } from '@angular/platform-browser';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { Store, StoreModule } from '@ngrx/store';
 import { TranslateTestingModule } from 'ngx-translate-testing'
-import { PrimeIcons } from 'primeng/api';
-import { FloatLabelModule } from 'primeng/floatlabel'
-import { InputTextModule } from 'primeng/inputtext'
+import { OpenngIcons } from '@openng/optimus-ui/api';
+import { FloatLabelModule } from '@openng/optimus-ui/floatlabel'
+import { InputTextModule } from '@openng/optimus-ui/inputtext'
 import { ReactiveFormsModule } from '@angular/forms';
 import { of } from 'rxjs';
 import { UserService } from '@onecx/angular-integration-interface';
@@ -218,7 +218,7 @@ describe('<%= resourceClassName %>DetailsComponent', () => {
     expect(backAction).toBeTruthy();
 
     const moreAction = await pageHeader.getInlineActionButtonByIcon(
-      PrimeIcons.ELLIPSIS_V
+      OpenngIcons.ELLIPSIS_V
     );
     expect(moreAction).toBeTruthy();  
   });
@@ -347,12 +347,12 @@ describe('<%= resourceClassName %>DetailsComponent', () => {
       },
       {
         label: 'third',
-        icon: PrimeIcons.PLUS,
+        icon: OpenngIcons.PLUS,
       },
       {
         label: 'fourth',
         value: 'fourth value',
-        icon: PrimeIcons.QUESTION,
+        icon: OpenngIcons.QUESTION,
       },
     ]);
     fixture.debugElement.injector.get(ChangeDetectorRef).markForCheck();
@@ -381,11 +381,11 @@ describe('<%= resourceClassName %>DetailsComponent', () => {
     const thirdDetailItem = await pageHeader.getObjectInfoByLabel('third');
     expect(await thirdDetailItem?.getLabel()).toEqual('third');
     expect(await thirdDetailItem?.getValue()).toEqual('');
-    expect(await thirdDetailItem?.getIcon()).toEqual(PrimeIcons.PLUS);
+    expect(await thirdDetailItem?.getIcon()).toEqual(OpenngIcons.PLUS);
 
     const fourthDetailItem = await pageHeader.getObjectInfoByLabel('fourth');
     expect(await fourthDetailItem?.getLabel()).toEqual('fourth');
     expect(await fourthDetailItem?.getValue()).toEqual('fourth value');
-    expect(await fourthDetailItem?.getIcon()).toEqual(PrimeIcons.QUESTION);
+    expect(await fourthDetailItem?.getIcon()).toEqual(OpenngIcons.QUESTION);
   });
 });
