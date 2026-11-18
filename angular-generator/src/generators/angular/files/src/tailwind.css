@@ -1,0 +1,5 @@
+@source "./";
+@layer theme, base, components, utilities;
+@import 'tailwindcss/theme';
+@import 'tailwindcss/utilities';
+@import '@openng/optimus-ui-tailwindcss';

@@ -2,7 +2,14 @@ const { getOneCXSharedRecommendations, getOneCXSharedLibraryConfig } = require('
 const pkg = require('./package.json')
 const { dependencies } = pkg
 
-const sharedEntries = getOneCXSharedLibraryConfig(dependencies, true);
+const sharedEntries = getOneCXSharedLibraryConfig(dependencies, true, {
+  configCallback: (packageName, currentConfig) => {
+    if (packageName.startsWith('@angular/')) {
+      currentConfig.singleton = true;
+    }
+    return currentConfig;
+  },
+});
 
 module.exports = {
   name: '<%= remoteName %>',
@@ -12,5 +19,5 @@ module.exports = {
     './<%= remoteModuleName %>': './src/main.ts'
   },
   shared: sharedEntries,
-  shareScope: 'angular_21',
+  shareScope: 'angular_22',
 };

@@ -1,4 +1,5 @@
 const { ModuleFederationPlugin } = require('@module-federation/enhanced/webpack');
+const MergeGlobalCssPlugin = require('@onecx/build-utils/plugins/merge-global-css');
 const webpack = require('webpack');
 const isProduction = process.env.NODE_ENV === 'production';
 const mfConfig = require('./module-federation.config');
@@ -8,6 +9,7 @@ module.exports = {
   plugins: [
     new ModuleFederationPlugin(mfConfig),
     new webpack.DefinePlugin({ ngDevMode: JSON.stringify(!isProduction) }),
+    new MergeGlobalCssPlugin(),
   ],
   output: { uniqueName: '<%= applicationName %>', publicPath: 'auto' },
   module: { parser: { javascript: { importMeta: false } } },
