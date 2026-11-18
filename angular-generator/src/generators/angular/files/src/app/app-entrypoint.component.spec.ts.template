@@ -10,7 +10,7 @@ describe('AppEntrypointComponent', () => {
       imports: [AppEntrypointComponent],
       providers: [
         provideRouter([]),
-        provideTranslateTestingService({ en: { primeng: {} } }),
+        provideTranslateTestingService({ en: { optimus: {} } }),
       ],
     }).compileComponents();
 
