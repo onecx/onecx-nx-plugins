@@ -137,6 +137,11 @@ describe('nx-plugin', () => {
       true
     );
 
+    const packageJson = JSON.parse(
+      readFileSync(join(projectDirectory, 'package.json'), 'utf-8')
+    );
+    expect(packageJson.scripts.start).toBe('nx serve --host 0.0.0.0');
+
     const project = JSON.parse(
       readFileSync(join(projectDirectory, 'project.json'), 'utf-8')
     );
