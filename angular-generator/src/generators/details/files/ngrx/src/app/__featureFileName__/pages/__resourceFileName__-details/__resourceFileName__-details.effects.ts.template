@@ -3,7 +3,7 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Action, Store } from '@ngrx/store';
 import { concatLatestFrom } from '@ngrx/operators'
 import { routerNavigatedAction } from '@ngrx/router-store';
-import { PrimeIcons } from 'primeng/api';
+import { OpenngIcons } from '@openng/optimus-ui/api';
 import { catchError, filter, map, mergeMap, of, switchMap, tap } from 'rxjs';
 
 import { filterForNavigatedTo } from '@onecx/ngrx-accelerator';
@@ -153,11 +153,11 @@ export class <%= resourceClassName %>DetailsEffects {
             '<%= resourceConstantName%>_DETAILS.DELETE.MESSAGE',
             {
               key: '<%= resourceConstantName%>_DETAILS.DELETE.CONFIRM',
-              icon: PrimeIcons.CHECK,
+              icon: OpenngIcons.CHECK,
             },
             {
               key: '<%= resourceConstantName%>_DETAILS.DELETE.CANCEL',
-              icon: PrimeIcons.TIMES,
+              icon: OpenngIcons.TIMES,
             }
           )
           .pipe(

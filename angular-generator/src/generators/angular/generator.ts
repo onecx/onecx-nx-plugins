@@ -90,6 +90,27 @@ export async function angularGenerator(
     }
   );
 
+  // The applicationGenerator's post-run callback runs "npm install" in the project
+  // root (installPackagesTask) and would fail with ERESOLVE: the app pins
+  // @nx/*@22.7.1 (whose peer range caps @angular-devkit/* and @schematics/angular at
+  // < 22) together with @angular-devkit/*@22, @angular/build@^22 and typescript@~6.0,
+  // so a strict npm peer re-resolution of that tree is infeasible without a
+  // coordinated toolchain bump. The generated app therefore carries a .npmrc that
+  // accepts the (intentionally) mismatched optional peers. This is written directly
+  // with tree.write (rather than as a files/.npmrc template) because npm strips
+  // .npmrc from published packages, so a template never ships in the generator
+  // tarball and generateFiles would never emit it.
+  tree.write(
+    '.npmrc',
+    [
+      '# Accept the intentionally mismatched optional peers of the pinned toolchain:',
+      '# @nx/*@22.7.1 peers cap @angular-devkit/* and @schematics/angular at < 22 while',
+      '# the app pins @angular-devkit/*@22, @angular/build@^22 and typescript@~6.0.',
+      'legacy-peer-deps=true',
+      '',
+    ].join('\n')
+  );
+
   if (!options.standalone) {
     tree.delete(`${directory}/src/app/app.module.ts`);
     tree.delete(`${directory}/src/app/app.component.html`);
@@ -112,8 +133,8 @@ export async function angularGenerator(
     joinPathFragments(__dirname, '../pre-commit-validation/files-upstream')
   );
 
-  const oneCXLibVersion = '^8.7.0';
-  const angularVersion = '^21.2.9';
+  const oneCXLibVersion = '^9.2.0';
+  const angularVersion = '^22.2.3';
 
   addDependenciesToPackageJson(
     tree,
@@ -131,17 +152,17 @@ export async function angularGenerator(
       "@onecx/ngrx-integration-interface": oneCXLibVersion,
       '@ngx-translate/core': '^17.0.0',
       '@ngx-translate/http-loader': '^17.0.0',
-      "@module-federation/enhanced": "^2.4.0",
+      "@module-federation/enhanced": "^2.9.2",
       '@ngneat/until-destroy': '^10.0.0',
       'ngrx-store-localstorage': '^20.1.0',
-      '@ngrx/component': '^21.1.0',
-      '@ngrx/effects': '^21.1.0',
-      '@ngrx/operators': '^21.1.0',
-      '@ngrx/router-store': '^21.1.0',
-      '@ngrx/store': '^21.1.0',
-      '@ngrx/store-devtools': '^21.1.0',
+      '@ngrx/component': '^22.0.0',
+      '@ngrx/effects': '^22.0.0',
+      '@ngrx/operators': '^22.0.0',
+      '@ngrx/router-store': '^22.0.0',
+      '@ngrx/store': '^22.0.0',
+      '@ngrx/store-devtools': '^22.0.0',
       '@webcomponents/webcomponentsjs': '^2.8.0',
-      'zone.js': '~0.16.1',
+      'zone.js': '~0.16.0',
       '@angular/animations': angularVersion,
       '@angular/cdk': angularVersion,
       '@angular/common': angularVersion,
@@ -152,10 +173,13 @@ export async function angularGenerator(
       '@angular/platform-browser': angularVersion,
       '@angular/platform-browser-dynamic': angularVersion,
       '@angular/router': angularVersion,
-      'primeflex': '^3.3.1',
-      'primeicons': '^7.0.0',
-      'primeng': '^21.0.0',
-      '@primeng/themes': '^21.0.0',
+      '@openng/optimus-ui': '^2.0.2',
+      '@openng/icons': '^1.0.0',
+      '@openng/optimus-ui-themes': '^2.0.2',
+      '@openng/optimus-ui-locale': '^2.0.2',
+      '@openng/optimus-ui-tailwindcss': '^2.0.2',
+      'tailwindcss': '^4.1.0',
+      '@tailwindcss/postcss': '^4.1.0',
       '@protobi/exceljs': '^4.4.0-protobi.9',
       'chart.js': '^4.4.3',
       'd3-scale-chromatic': '^3.1.0',
@@ -186,12 +210,12 @@ export async function angularGenerator(
       '@angular/cli': angularVersion,
       '@angular/compiler-cli': angularVersion,
       '@angular/language-service': angularVersion,
-      'angular-eslint': '^21.3.1',
-      '@angular-eslint/builder': '^21.3.1',
-      '@angular-eslint/eslint-plugin': '^21.3.1',
-      '@angular-eslint/eslint-plugin-template': '^21.3.1',
-      '@angular-eslint/schematics': '^21.3.1',
-      '@angular-eslint/template-parser': '^21.3.1',
+      'angular-eslint': '22.6.0',
+      '@angular-eslint/builder': '22.6.0',
+      '@angular-eslint/eslint-plugin': '22.6.0',
+      '@angular-eslint/eslint-plugin-template': '22.6.0',
+      '@angular-eslint/schematics': '22.6.0',
+      '@angular-eslint/template-parser': '22.6.0',
       '@eslint/js': '^9.8.0',
       '@nx/eslint': '22.7.1',
       '@nx/eslint-plugin': '22.7.1',
@@ -207,10 +231,10 @@ export async function angularGenerator(
       nx: '22.7.1',
       prettier: '^3.5.3',
       'sonar-scanner': '^3.1.0',
-      typescript: '^5.9.0',
+      typescript: '~6.0.2',
       'typescript-eslint': '^8.33.1',
       '@typescript-eslint/utils': '^8.33.1',
-      webpack: '5.105.2',
+      webpack: '5.111.0',
     }
   );
 
@@ -278,7 +302,7 @@ function addScriptsToPackageJson(tree: Tree, options: AngularGeneratorSchema) {
       'apigen'
     ] = `openapi-generator-cli generate -i src/assets/api/openapi-bff.yaml -c apigen.yaml -o src/app/shared/generated -g typescript-angular --type-mappings AnyType=object`;
     pkgJson.scripts['start'] = 'nx serve --host 0.0.0.0 --disable-host-check';
-    pkgJson.scripts['build'] = `nx build && cp dist/${applicationName}/styles.*.css dist/${applicationName}/styles.css`;
+    pkgJson.scripts['build'] = 'nx build';
     pkgJson.scripts[
       'postbuild'
     ] = `mv "$(find dist/${applicationName} -maxdepth 1 -type f -name 'styles.*.css' | head -n 1)" dist/${applicationName}/styles.css`;
@@ -322,6 +346,20 @@ function adaptTsConfig(tree: Tree, options: AngularGeneratorSchema) {
     'tsconfig.json',
     ['"moduleResolution": "node"'],
     ['"moduleResolution": "bundler"'],
+    tree
+  );
+
+  // The application template pins typescript@~6.0.x, where `baseUrl` is a deprecated
+  // compiler option that hard-fails with TS5101 unless the deprecation is explicitly
+  // ignored. `ignoreDeprecations` is only valid on TS >= 5.0, so it is safe for every
+  // version this generator targets. Placing it in the base tsconfig covers the
+  // application, spec (jest) and the module-federation DTS tsconfigs, which all
+  // extend it.
+  safeReplace(
+    'Ignore TS6 deprecations in base tsconfig',
+    'tsconfig.json',
+    ['"baseUrl": "."'],
+    ['"baseUrl": ".",\n    "ignoreDeprecations": "6.0"'],
     tree
   );
 }
@@ -368,6 +406,11 @@ function adaptProjectConfiguration(
       {
         input: 'src/styles.scss',
         bundleName: 'styles',
+        inject: true
+      },
+      {
+        input: 'src/tailwind.css',
+        bundleName: 'tailwind',
         inject: true
       }
     ],
@@ -416,7 +459,6 @@ function adaptJestConfig(tree: Tree) {
     /transformIgnorePatterns: .+?,/,
     `transformIgnorePatterns: ['node_modules/(?!@ngrx|(?!deck.gl)|d3-scale|(?!.*\\.mjs$))'],
     moduleNameMapper: {
-    '^@primeng/themes': '<rootDir>/node_modules/@primeng/themes/index.mjs',
   },`,
     tree
   );

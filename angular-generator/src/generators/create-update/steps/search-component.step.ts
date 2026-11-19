@@ -26,7 +26,7 @@ export class SearchComponentStep
       `const actions: Action[] = [
       {
        labelKey: '${resourceConstantName}_CREATE_UPDATE.ACTION.CREATE',
-       icon: PrimeIcons.PLUS,
+       icon: OpenngIcons.PLUS,
        show: 'always',
        actionCallback: () => this.create(),
       },`,

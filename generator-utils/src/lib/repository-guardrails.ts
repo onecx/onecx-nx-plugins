@@ -21,6 +21,23 @@ export function configureQualityChecks(tree: Tree, framework: Framework) {
       version: '^38.0.0',
     },
   }[framework];
+  // Tailwind v4 emits non-standard at-rules (@source, @theme, ...) that the default
+  // stylelint presets do not recognise, so every generated project must opt out of
+  // the at-rule checks. The rule names differ by framework because the Angular
+  // projects extend the SCSS preset (scss/*) while the React ones extend the
+  // standard preset (bare names).
+  const tailwindV4IgnoreAtRules = [
+    'theme',
+    'source',
+    'utility',
+    'variant',
+    'custom-variant',
+    'apply',
+    'reference',
+    'config',
+    'plugin',
+    'tailwind',
+  ];
   addDependenciesToPackageJson(
     tree,
     {},
@@ -63,24 +80,18 @@ export function configureQualityChecks(tree: Tree, framework: Framework) {
           rules: {
             'no-empty-source': null,
             ...(framework === 'angular'
-              ? {}
+              ? {
+                  'scss/load-partial-extension': null,
+                  'scss/at-rule-no-unknown': [
+                    true,
+                    { ignoreAtRules: tailwindV4IgnoreAtRules },
+                  ],
+                  'no-invalid-position-at-import-rule': null,
+                }
               : {
                   'at-rule-no-unknown': [
                     true,
-                    {
-                      ignoreAtRules: [
-                        'theme',
-                        'source',
-                        'utility',
-                        'variant',
-                        'custom-variant',
-                        'apply',
-                        'reference',
-                        'config',
-                        'plugin',
-                        'tailwind',
-                      ],
-                    },
+                    { ignoreAtRules: tailwindV4IgnoreAtRules },
                   ],
                   'import-notation': null,
                 }),

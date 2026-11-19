@@ -1,0 +1,5 @@
+{
+  "plugins": {
+    "@onecx/build-utils/plugins/tailwind-postcss": {}
+  }
+}

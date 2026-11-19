@@ -87,7 +87,7 @@ File::      `<resource>-search.component.ts`
       const actions: Action[] = [
         {
           labelKey: '<%= resourceConstantName %>_SEARCH.HEADER_ACTIONS.EXPORT_ALL',
-          icon: PrimeIcons.DOWNLOAD,
+          icon: OpenngIcons.DOWNLOAD,
           titleKey: '<%= resourceConstantName %>_SEARCH.HEADER_ACTIONS.EXPORT_ALL',
           show: 'asOverflow',
           actionCallback: () => this.exportItems(),
@@ -116,7 +116,7 @@ File::      `book-search.component.ts`
       const actions: Action[] = [
         {
           labelKey: 'BOOK_SEARCH.HEADER_ACTIONS.EXPORT_ALL',
-          icon: PrimeIcons.DOWNLOAD,
+          icon: OpenngIcons.DOWNLOAD,
           titleKey: 'BOOK_SEARCH.HEADER_ACTIONS.EXPORT_ALL',
           show: 'asOverflow',
           actionCallback: () => this.exportItems(),

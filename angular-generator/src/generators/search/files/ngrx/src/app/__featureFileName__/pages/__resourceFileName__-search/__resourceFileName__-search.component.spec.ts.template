@@ -13,7 +13,7 @@ import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { ofType } from '@ngrx/effects';
 import { provideTranslateTestingService } from '@onecx/angular-accelerator/testing'
 import { TranslateModule, TranslateService } from '@ngx-translate/core'
-import { DialogService } from 'primeng/dynamicdialog';
+import { DialogService } from '@openng/optimus-ui/dynamicdialog';
 import { UserService } from '@onecx/angular-integration-interface';
 import {
   AngularAcceleratorModule,
@@ -28,9 +28,9 @@ import {
   HAS_PERMISSION_CHECKER,
   TranslationConnectionService,
 } from '@onecx/angular-utils';
-import { TooltipModule } from 'primeng/tooltip';
-import { FloatLabelModule } from 'primeng/floatlabel';
-import { InputTextModule } from 'primeng/inputtext';
+import { TooltipModule } from '@openng/optimus-ui/tooltip';
+import { FloatLabelModule } from '@openng/optimus-ui/floatlabel';
+import { InputTextModule } from '@openng/optimus-ui/inputtext';
 import { provideHttpClient } from '@angular/common/http';
 import { of } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
