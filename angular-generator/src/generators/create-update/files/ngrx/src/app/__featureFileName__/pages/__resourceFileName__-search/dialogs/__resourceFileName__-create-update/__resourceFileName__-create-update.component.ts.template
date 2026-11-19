@@ -9,8 +9,8 @@ import {
   DialogButtonClicked,
 } from '@onecx/angular-accelerator';
 import { TranslatePipe } from '@ngx-translate/core';
-import { FloatLabelModule } from 'primeng/floatlabel';
-import { InputTextModule } from 'primeng/inputtext';
+import { FloatLabelModule } from '@openng/optimus-ui/floatlabel';
+import { InputTextModule } from '@openng/optimus-ui/inputtext';
 
 import { <%= resource%> } from 'src/app/shared/generated';
 import { <%= resourceClassName%>CreateUpdateViewModel } from './<%= resourceFileName %>-create-update.viewmodel';

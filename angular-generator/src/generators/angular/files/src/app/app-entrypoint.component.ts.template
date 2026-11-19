@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, effect, inject } from '@angular/cor
 import { RouterOutlet } from '@angular/router'
 import { toSignal } from '@angular/core/rxjs-interop'
 import { TranslateService } from '@ngx-translate/core'
-import { PrimeNG } from 'primeng/config'
+import { Optimus } from '@openng/optimus-ui/config'
 import { merge, startWith, switchMap } from 'rxjs'
 
 @Component({
@@ -13,7 +13,7 @@ import { merge, startWith, switchMap } from 'rxjs'
 })
 export class AppEntrypointComponent {
   private readonly translateService = inject(TranslateService)
-  private readonly config = inject(PrimeNG)
+  private readonly config = inject(Optimus)
 
   private readonly translation = toSignal(
     merge(
@@ -22,7 +22,7 @@ export class AppEntrypointComponent {
       this.translateService.onFallbackLangChange
     ).pipe(
         startWith(null),
-        switchMap(() => this.translateService.get('primeng'))
+        switchMap(() => this.translateService.get('optimus'))
       )
   )
 

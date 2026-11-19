@@ -6,13 +6,13 @@ no download or network permission is required.
 
 The following compatibility rules take precedence over the upstream snapshot.
 
-## Angular 21 compatibility
+## Angular 22 compatibility
 
-Generated apps target Angular 21; framework dependency ranges allow patch updates,
-while only the builder is pinned. Some upstream recommendations require Angular 22:
+Generated apps target Angular 22; framework dependency ranges allow patch updates,
+while only the builder is pinned:
 
 - Set `changeDetection: ChangeDetectionStrategy.OnPush` on new components.
-- Use Reactive Forms for new forms; Signal Forms are not stable in Angular 21.
+- Use Reactive Forms for new forms.
 - Use `@Injectable({ providedIn: 'root' })` for singleton services rather than `@Service`.
 
 ## OneCX integration and existing code

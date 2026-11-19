@@ -41,7 +41,7 @@ import {
   MultiLanguageMissingTranslationHandler,
   OnecxTranslateLoader
 } from '@onecx/angular-utils';
-import { provideThemeConfig } from '@onecx/angular-utils/theme/primeng';
+import { provideThemeConfig } from '@onecx/angular-utils/theme/optimus';
 import { Configuration } from 'src/app/shared/generated';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { apiConfigProvider } from 'src/app/shared/utils/apiConfigProvider.utils';

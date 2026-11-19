@@ -20,7 +20,7 @@ export class SearchEffectsStep implements GeneratorStep<DeleteGeneratorSchema> {
       `import {
         ${options.resource},
       } from 'src/app/shared/generated';` +
-      `import { PrimeIcons } from 'primeng/api';`,
+      `import { OpenngIcons } from '@openng/optimus-ui/api';`,
       `
       refreshSearchAfterDelete$ = createEffect(() => {
         return this.actions$.pipe(
@@ -47,11 +47,11 @@ export class SearchEffectsStep implements GeneratorStep<DeleteGeneratorSchema> {
             '${resourceConstantName}_DELETE.MESSAGE',
             {
               key: '${resourceConstantName}_DELETE.CONFIRM',
-              icon: PrimeIcons.CHECK,
+              icon: OpenngIcons.CHECK,
             },
             {
               key: '${resourceConstantName}_DELETE.CANCEL',
-              icon: PrimeIcons.TIMES,
+              icon: OpenngIcons.TIMES,
             }
           )
           .pipe(
