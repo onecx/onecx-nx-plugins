@@ -112,8 +112,8 @@ export async function angularGenerator(
     joinPathFragments(__dirname, '../pre-commit-validation/files-upstream')
   );
 
-  const oneCXLibVersion = '^8.7.0';
-  const angularVersion = '^21.2.9';
+  const oneCXLibVersion = '^9.2.0';
+  const angularVersion = '^22.2.3';
 
   addDependenciesToPackageJson(
     tree,
@@ -131,17 +131,17 @@ export async function angularGenerator(
       "@onecx/ngrx-integration-interface": oneCXLibVersion,
       '@ngx-translate/core': '^17.0.0',
       '@ngx-translate/http-loader': '^17.0.0',
-      "@module-federation/enhanced": "^2.4.0",
+      "@module-federation/enhanced": "^2.9.2",
       '@ngneat/until-destroy': '^10.0.0',
       'ngrx-store-localstorage': '^20.1.0',
-      '@ngrx/component': '^21.1.0',
-      '@ngrx/effects': '^21.1.0',
-      '@ngrx/operators': '^21.1.0',
-      '@ngrx/router-store': '^21.1.0',
-      '@ngrx/store': '^21.1.0',
-      '@ngrx/store-devtools': '^21.1.0',
+      '@ngrx/component': '^22.0.0',
+      '@ngrx/effects': '^22.0.0',
+      '@ngrx/operators': '^22.0.0',
+      '@ngrx/router-store': '^22.0.0',
+      '@ngrx/store': '^22.0.0',
+      '@ngrx/store-devtools': '^22.0.0',
       '@webcomponents/webcomponentsjs': '^2.8.0',
-      'zone.js': '~0.16.1',
+      'zone.js': '~0.16.0',
       '@angular/animations': angularVersion,
       '@angular/cdk': angularVersion,
       '@angular/common': angularVersion,
@@ -152,10 +152,13 @@ export async function angularGenerator(
       '@angular/platform-browser': angularVersion,
       '@angular/platform-browser-dynamic': angularVersion,
       '@angular/router': angularVersion,
-      'primeflex': '^3.3.1',
-      'primeicons': '^7.0.0',
-      'primeng': '^21.0.0',
-      '@primeng/themes': '^21.0.0',
+      '@openng/optimus-ui': '^2.0.2',
+      '@openng/icons': '^1.0.0',
+      '@openng/optimus-ui-themes': '^2.0.2',
+      '@openng/optimus-ui-locale': '^2.0.2',
+      '@openng/optimus-ui-tailwindcss': '^2.0.2',
+      'tailwindcss': '^4.1.0',
+      '@tailwindcss/postcss': '^4.1.0',
       '@protobi/exceljs': '^4.4.0-protobi.9',
       'chart.js': '^4.4.3',
       'd3-scale-chromatic': '^3.1.0',
@@ -186,12 +189,12 @@ export async function angularGenerator(
       '@angular/cli': angularVersion,
       '@angular/compiler-cli': angularVersion,
       '@angular/language-service': angularVersion,
-      'angular-eslint': '^21.3.1',
-      '@angular-eslint/builder': '^21.3.1',
-      '@angular-eslint/eslint-plugin': '^21.3.1',
-      '@angular-eslint/eslint-plugin-template': '^21.3.1',
-      '@angular-eslint/schematics': '^21.3.1',
-      '@angular-eslint/template-parser': '^21.3.1',
+      'angular-eslint': '22.6.0',
+      '@angular-eslint/builder': '22.6.0',
+      '@angular-eslint/eslint-plugin': '22.6.0',
+      '@angular-eslint/eslint-plugin-template': '22.6.0',
+      '@angular-eslint/schematics': '22.6.0',
+      '@angular-eslint/template-parser': '22.6.0',
       '@eslint/js': '^9.8.0',
       '@nx/eslint': '22.7.1',
       '@nx/eslint-plugin': '22.7.1',
@@ -207,10 +210,10 @@ export async function angularGenerator(
       nx: '22.7.1',
       prettier: '^3.5.3',
       'sonar-scanner': '^3.1.0',
-      typescript: '^5.9.0',
+      typescript: '~6.0.2',
       'typescript-eslint': '^8.33.1',
       '@typescript-eslint/utils': '^8.33.1',
-      webpack: '5.105.2',
+      webpack: '5.111.0',
     }
   );
 
@@ -278,7 +281,7 @@ function addScriptsToPackageJson(tree: Tree, options: AngularGeneratorSchema) {
       'apigen'
     ] = `openapi-generator-cli generate -i src/assets/api/openapi-bff.yaml -c apigen.yaml -o src/app/shared/generated -g typescript-angular --type-mappings AnyType=object`;
     pkgJson.scripts['start'] = 'nx serve --host 0.0.0.0 --disable-host-check';
-    pkgJson.scripts['build'] = `nx build && cp dist/${applicationName}/styles.*.css dist/${applicationName}/styles.css`;
+    pkgJson.scripts['build'] = `nx build && cp dist/${applicationName}/styles.css dist/${applicationName}/styles.css`;
     pkgJson.scripts[
       'postbuild'
     ] = `mv "$(find dist/${applicationName} -maxdepth 1 -type f -name 'styles.*.css' | head -n 1)" dist/${applicationName}/styles.css`;
@@ -369,6 +372,11 @@ function adaptProjectConfiguration(
         input: 'src/styles.scss',
         bundleName: 'styles',
         inject: true
+      },
+      {
+        input: 'src/tailwind.css',
+        bundleName: 'tailwind',
+        inject: true
       }
     ],
     customWebpackConfig: {
@@ -414,10 +422,7 @@ function adaptJestConfig(tree: Tree) {
     'Adapt transformIgnorePatterns in Jest Config',
     filePath,
     /transformIgnorePatterns: .+?,/,
-    `transformIgnorePatterns: ['node_modules/(?!@ngrx|(?!deck.gl)|d3-scale|(?!.*\\.mjs$))'],
-    moduleNameMapper: {
-    '^@primeng/themes': '<rootDir>/node_modules/@primeng/themes/index.mjs',
-  },`,
+    `transformIgnorePatterns: ['node_modules/(?!@ngrx|(?!deck.gl)|d3-scale|(?!.*\\.mjs$))'],`,
     tree
   );
 }
