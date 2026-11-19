@@ -90,6 +90,27 @@ export async function angularGenerator(
     }
   );
 
+  // The applicationGenerator's post-run callback runs "npm install" in the project
+  // root (installPackagesTask) and would fail with ERESOLVE: the app pins
+  // @nx/*@22.7.1 (whose peer range caps @angular-devkit/* and @schematics/angular at
+  // < 22) together with @angular-devkit/*@22, @angular/build@^22 and typescript@~6.0,
+  // so a strict npm peer re-resolution of that tree is infeasible without a
+  // coordinated toolchain bump. The generated app therefore carries a .npmrc that
+  // accepts the (intentionally) mismatched optional peers. This is written directly
+  // with tree.write (rather than as a files/.npmrc template) because npm strips
+  // .npmrc from published packages, so a template never ships in the generator
+  // tarball and generateFiles would never emit it.
+  tree.write(
+    '.npmrc',
+    [
+      '# Accept the intentionally mismatched optional peers of the pinned toolchain:',
+      '# @nx/*@22.7.1 peers cap @angular-devkit/* and @schematics/angular at < 22 while',
+      '# the app pins @angular-devkit/*@22, @angular/build@^22 and typescript@~6.0.',
+      'legacy-peer-deps=true',
+      '',
+    ].join('\n')
+  );
+
   if (!options.standalone) {
     tree.delete(`${directory}/src/app/app.module.ts`);
     tree.delete(`${directory}/src/app/app.component.html`);
@@ -325,6 +346,20 @@ function adaptTsConfig(tree: Tree, options: AngularGeneratorSchema) {
     'tsconfig.json',
     ['"moduleResolution": "node"'],
     ['"moduleResolution": "bundler"'],
+    tree
+  );
+
+  // The application template pins typescript@~6.0.x, where `baseUrl` is a deprecated
+  // compiler option that hard-fails with TS5101 unless the deprecation is explicitly
+  // ignored. `ignoreDeprecations` is only valid on TS >= 5.0, so it is safe for every
+  // version this generator targets. Placing it in the base tsconfig covers the
+  // application, spec (jest) and the module-federation DTS tsconfigs, which all
+  // extend it.
+  safeReplace(
+    'Ignore TS6 deprecations in base tsconfig',
+    'tsconfig.json',
+    ['"baseUrl": "."'],
+    ['"baseUrl": ".",\n    "ignoreDeprecations": "6.0"'],
     tree
   );
 }

@@ -11,7 +11,19 @@ module.exports = {
     new webpack.DefinePlugin({ ngDevMode: JSON.stringify(!isProduction) }),
     new MergeGlobalCssPlugin(),
   ],
-  output: { uniqueName: '<%= applicationName %>', publicPath: 'auto' },
+  output: {
+    uniqueName: '<%= applicationName %>',
+    publicPath: 'auto',
+    // The @module-federation "federation runtime" is a webpack RuntimeModule chunk
+    // that carries no content hash. The build-angular builder defaults production
+    // chunk filenames to [name].[contenthash:20].js, and webpack throws
+    // "Path variable [contenthash:20] not implemented in this context" when it tries
+    // to name that chunk (a chunkhash hits the same wall). [fullhash] is the
+    // compilation-wide hash and is always resolvable, so the federation runtime chunk
+    // stays nameable while bundles still get a cache-busting digest.
+    filename: '[name].[fullhash:20].js',
+    chunkFilename: '[name].[fullhash:20].js',
+  },
   module: { parser: { javascript: { importMeta: false } } },
   experiments: { topLevelAwait: true, outputModule: true },
   optimization: { runtimeChunk: false, splitChunks: false },
