@@ -9,7 +9,7 @@ The following compatibility rules take precedence over the upstream snapshot.
 ## Angular 22 compatibility
 
 Generated apps target Angular 22; framework dependency ranges allow patch updates,
-while only the builder is pinned:
+while only the builder is pinned.
 
 - Set `changeDetection: ChangeDetectionStrategy.OnPush` on new components.
 - Use Reactive Forms for new forms.
