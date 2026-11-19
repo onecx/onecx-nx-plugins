@@ -7,8 +7,8 @@ import {
   AngularAcceleratorModule,
   providePortalDialogService,
 } from '@onecx/angular-accelerator';
-import { DatePickerModule } from 'primeng/datepicker';
-import { TooltipModule } from 'primeng/tooltip';
+import { DatePickerModule } from '@openng/optimus-ui/datepicker';
+import { TooltipModule } from '@openng/optimus-ui/tooltip';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { LetDirective } from '@ngrx/component';
 import { StoreModule } from '@ngrx/store';
@@ -18,8 +18,6 @@ import {
   TranslateLoader,
   TranslateModule
 } from '@ngx-translate/core';
-import { CalendarModule } from 'primeng/calendar';
-
 import { addInitializeModuleGuard } from '@onecx/angular-integration-interface'
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 

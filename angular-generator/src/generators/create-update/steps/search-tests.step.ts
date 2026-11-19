@@ -15,12 +15,12 @@ export class SearchTestsStep
 
     const content = tree.read(filePath, 'utf8') ?? '';
 
-    if (!content.includes(`PrimeIcons`)) {
+    if (!content.includes(`OpenngIcons`)) {
       safeReplace(
-        `Add PrimeIcons import to ${resourceClassName}SearchComponent spec`,
+        `Add OpenngIcons import to ${resourceClassName}SearchComponent spec`,
         filePath,
         [/^/],
-        [`import { PrimeIcons } from 'primeng/api';`],
+        [`import { OpenngIcons } from '@openng/optimus-ui/api';`],
         tree
       );
     }
